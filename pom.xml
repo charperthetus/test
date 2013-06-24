@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.thetus.savanna.html5</groupId>
+    <artifactId>Savanna-Html-Client</artifactId>
+    <version>0.1-SNAPSHOT</version>
+    <!--
+    <parent>
+        <groupId>com.thetus.lib.uikit</groupId>
+        <artifactId>UIKitProject</artifactId>
+        <version>1.1</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    -->
+    <packaging>pom</packaging>
+    <name>HTML5 Savanna Client</name>
+
+    <distributionManagement>
+        <repository>
+            <id>release</id>
+            <name>repository-releases</name>
+            <url>http://repository-prod.thetuscorp.com:80/artifactory/libs-release-local</url>
+        </repository>
+        <snapshotRepository>
+            <id>snapshot</id>
+            <name>repository-snapshots</name>
+            <url>http://repository-prod.thetuscorp.com:80/artifactory/libs-snapshot-local</url>
+        </snapshotRepository>
+        <site>
+            <id>buildreports</id>
+            <url>${thetus.report.url}/${project.artifactId}</url>
+            <name>${project.artifactId} Site</name>
+        </site>
+    </distributionManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <version>1.7</version>
+        </dependency>
+
+        <!-- DEVOPS: these were the new dependencies that will need to be added to artifactory...-->
+        <dependency>
+            <groupId>com.google.jstestdriver</groupId>
+            <artifactId>jstestdriver</artifactId>
+            <version>1.3.5</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.tntim96</groupId>
+            <artifactId>JSCover</artifactId>
+            <version>0.3.0</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- NOTE: I moved the tasks to build the JavaScript code from "build" to "package" as it is not needed for
+                       testing and actually should not happen if testing fails
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.7</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <configuration>
+                            <tasks>
+                                <ant dir="src/public" antfile="build.xml" target="clean"/>
+                                <ant dir="src/public" antfile="build.xml" target="build"/>
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <descriptors>
+                        <descriptor>src/main/assembly/assembly.xml</descriptor>
+                    </descriptors>
+                    <!-- Do not include the assemblyId in the package file name. -->
+                    <appendAssemblyId>false</appendAssemblyId>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>tar.gz</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <finalName>Savanna-HTML-Client-${project.version}</finalName>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+<!--
+            NOTE: this would be the ideal way to run (as opposed to the java exec below), but I could not get it to work
+                  my suspicion is that this plugin is either using an older version of
+            <plugin>
+                <groupId>com.googlecode.jstd-maven-plugin</groupId>
+                <artifactId>jstd-maven-plugin</artifactId>
+                <version>1.3.5.1</version>
+                <configuration>
+                    <port>9876</port>
+                    <config>${project.basedir}/src/jsTestDriver.conf</config>
+                    <testOutput>${project.basedir}/src/public/test/reports</testOutput>
+                    <browser>'phantomjs;${project.basedir}/src/public/test/lib/phantomjs-jstd-bridge.js'</browser>
+                    <runnerMode>DEBUG</runnerMode>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>run-tests</id>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>-->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.1</version>
+                <executions>
+                    <execution>
+                        <id>JsTestDriver PhantomJS Unit Testing</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>java</executable>
+                            <workingDirectory>${project.basedir}/src</workingDirectory>
+                            <arguments>
+                                <argument>-jar</argument>
+                                <!-- TODO: change this to NOT use my personal repos path for the jar -->
+                                <argument>/Users/thille/.m2/repository/com/google/jstestdriver/jstestdriver/1.3.5/jstestdriver-1.3.5.jar</argument>
+                                <argument>--port</argument>
+                                <argument>9876</argument>
+                                <argument>--tests</argument>
+                                <argument>all</argument>
+                                <argument>--config</argument>
+                                <!-- TODO: should this be configurable or just a part of the way projects are set up? -->
+                                <argument>jsTestDriver.conf</argument>
+                                <argument>--testOutput</argument>
+                                <!-- TODO: should this be configurable or just a part of the way projects are set up? -->
+                                <argument>${project.basedir}/target/surefire-reports</argument>
+                                <argument>--browserTimeout</argument>
+                                <argument>30000</argument>
+                                <argument>--captureConsole</argument>
+                                <argument>true</argument>
+                                <argument>--reset</argument> <!-- tell browser to drop any file received from previous runs -->
+                                <argument>--browser</argument>
+                                <!-- TODO: should this be configurable or just a part of the way projects are set up? -->
+                                <!-- NOTE: this assumes phantomJS (http://phantomjs.org/) is installed on the system running this
+                                           PhantomJS is a headless browser which seems to be better than installing a true desktop browser...
+                                -->
+                                <argument>'phantomjs;public/test/lib/phantomjs-jstd-bridge.js'</argument>
+                                <argument>--runnerMode</argument>
+                                <!-- possible values: DEBUG, DEBUG_NO_TRACE, DEBUG_OBSERVE, PROFILE, QUIET (default), INFO -->
+                                <argument>QUIET</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>JsCover Coverage Report Startup</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>${project.basedir}/src/public/test/test.sh</executable>
+                            <workingDirectory>${project.basedir}/src</workingDirectory>
+                            <arguments>
+                                <argument>start</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>PhantomJS Coverage Report Build</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>/usr/local/bin/phantomjs</executable>
+                            <workingDirectory>${project.basedir}</workingDirectory>
+                            <arguments>
+                                <argument>${project.basedir}/src/public/test/lib/run-jscover-jasmine.js</argument>
+                                <argument>http://localhost:8080/test/SpecRunner.html</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>JsCover Coverage Report Teardown</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>${project.basedir}/src/public/test/test.sh</executable>
+                            <workingDirectory>${project.basedir}/src</workingDirectory>
+                            <arguments>
+                                <argument>stop</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <!-- DEVOPS: Is this the right wait to make sure unit test reports are output?
+                 Also, I'm not sure that this is the correct config for Cobetura reports. We're using JsCover (http://tntim96.github.io/JSCover/manual/manual.xml)
+                 which claims to generate Cobetura-friendly mark-up.  Currently, the reports are configured (in src/public/test/test.sh) to write to src/public/test/reports/phantom
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-report-plugin</artifactId>
+                <version>2.6</version>
+                <configuration>
+                    <skipTests>false</skipTests>
+                </configuration>
+            </plugin>
+            <plugin>
+	            <groupId>org.codehaus.mojo</groupId>
+	            <artifactId>cobertura-maven-plugin</artifactId>
+	            <version>2.5.2</version>
+	            <configuration>
+	               <formats>
+	                  <format>xml</format>
+	                  <format>html</format>
+	               </formats>
+	            </configuration>
+	         </plugin>
+        </plugins>
+    </reporting>
+    -->
+</project>

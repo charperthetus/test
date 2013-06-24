@@ -1,1 +1,32 @@
-.sass-cache
+# ignore the Sencha build directory
+src/public/build
+src/public/packages/savanna/build
+sencha-compile-temp-dir
+
+# ignore Sencha auto-generated files
+src/public/bootstrap.js
+
+# ignore Idea-specific files
+*.iml
+.idea
+
+# ignore Mac-specific files
+.DS_Store
+
+# ignore vim files
+*.swp
+*.swo
+
+# ignore node_modules
+src/node_modules
+
+# ignore SASS cache in theme
+.sass-cache/
+
+# ignore temp compass compile build
+src/public/packages/savanna/sass/var/Component.css
+
+# ignore test report files
+src/public/test/reports/phantom
+target/antrun
+target/surefire-reports

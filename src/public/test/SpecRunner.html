@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title id="page-title">ItemViewer Jasmine Tester</title>
+
+    <link rel="stylesheet" type="text/css" href="lib/jasmine-1.3.1/jasmine.css">
+
+    <script type="text/javascript" src="../ext/ext-debug.js"></script>
+
+    <script type="text/javascript" src="lib/jasmine-1.3.1/jasmine.js"></script>
+    <script type="text/javascript" src="lib/jasmine-1.3.1/jasmine-html.js"></script>
+    <script type="text/javascript" src="lib/sinon-1.7.1.js"></script>
+    <script type="text/javascript" src="lib/ExtSpec-1.2.0/ExtSpec.js"></script>
+    <script type="text/javascript" src="lib/underscore.js"></script>
+    <script type="text/javascript" src="helpers/FakeServer.js"></script>
+
+    <!-- setup our namespace -->
+    <script type="text/javascript">
+        (function() {
+            Ext.Loader.setPath('Savanna', '../app');
+        })();
+    </script>
+
+    <!-- include fixture files here... -->
+    <!--<script type="text/javascript" src="fixtures/SOME_FIXTURE_FILE.js"></script>-->
+
+    <!-- include spec files here... -->
+    <script type="text/javascript" src="specs/MainSpec.js"></script>
+
+    <script type="text/javascript">
+        (function() {
+            var jasmineEnv = jasmine.getEnv();
+            jasmineEnv.updateInterval = 1000;
+
+            var htmlReporter = new jasmine.HtmlReporter();
+
+            jasmineEnv.addReporter(htmlReporter);
+
+            jasmineEnv.specFilter = function(spec) {
+                return htmlReporter.specFilter(spec);
+            };
+
+            var currentWindowOnload = window.onload;
+
+            window.onload = function() {
+                if (currentWindowOnload) {
+                    currentWindowOnload();
+                }
+                execJasmine();
+            };
+
+            function execJasmine() {
+                Ext.onReady(function() {
+                    jasmineEnv.execute();
+                });
+            }
+
+        })();
+    </script>
+</head>
+<body>
+    <div id="test-html"></div>
+</body>
+</html>
