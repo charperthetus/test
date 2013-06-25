@@ -29,7 +29,7 @@ Ext.define('Savanna.controller.Main', {
         //TODO - Check the event to see a valid loggedin message
         this.app.viewport.remove('login');
         this.app.viewport.add({
-            xtype:  'mainview',
+            xtype:  Savanna.Config.desktopType,
             itemId: 'main',
             region: 'center'
         });
