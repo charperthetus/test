@@ -31,34 +31,36 @@ console.log('app', app);
                 }
             }
         });
-    },
-
-    onLaunch: function() {
-        this.checkIfLoggedIn(function(data) {
-            if (!data.isLoggedIn) {
-                // TODO: need to develop Thetus.utils.Logger for error logging...
-                console.log('User not logged in')
-            }
-            else {
-                Savanna.jsessionid = data.sessionId;
-            }
-        });
-    },
-
-    // CUSTOM METHODS
-    checkIfLoggedIn: function(callback) {
-        Ext.Ajax.request({
-            withCredentials: true,
-            cors: true,
-            disableCaching: false,
-            url: Savanna.Config.savannaUrlRoot + Savanna.Config.pingUrl,
-            failure: function(){
-                callback(false);
-            },
-            success: function(response){
-                var data = Ext.decode(response.responseText);
-                callback(data);
-            }
-        });
     }
+// We don't need this now that we are always going to the login page first.  keeping around in case we need to use it for server session timeout.
+//,
+//
+//    onLaunch: function() {
+//        this.checkIfLoggedIn(function(data) {
+//            if (!data.isLoggedIn) {
+//                // TODO: need to develop Thetus.utils.Logger for error logging...
+//                console.log('User not logged in')
+//            }
+//            else {
+//                Savanna.jsessionid = data.sessionId;
+//            }
+//        });
+//    },
+//
+//    // CUSTOM METHODS
+//    checkIfLoggedIn: function(callback) {
+//        Ext.Ajax.request({
+//            withCredentials: true,
+//            cors: true,
+//            disableCaching: false,
+//            url: Savanna.Config.savannaUrlRoot + Savanna.Config.pingUrl,
+//            failure: function(){
+//                callback(false);
+//            },
+//            success: function(response){
+//                var data = Ext.decode(response.responseText);
+//                callback(data);
+//            }
+//        });
+//    }
 });
