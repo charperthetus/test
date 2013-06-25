@@ -27,3 +27,4 @@ src/public/packages/savanna/sass/var/Component.css
 src/public/test/reports/phantom
 target/antrun
 target/surefire-reports
+src/public/test/reports/errors.log
