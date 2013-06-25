@@ -23,7 +23,7 @@ console.log('app', app);
                         console.log('going to call remove...');
                         me.app.viewport.remove('login');
                         me.app.viewport.add({
-                            xtype:  'mainview',
+                            xtype:  Savanna.Config.desktopType,
                             itemId: 'main',
                             region: 'center'
                         });

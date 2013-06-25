@@ -12,5 +12,6 @@ Ext.define('Savanna.Config', {
     pingUrl: '/public/ping/',
     loginUrl: '/authcheck/loggedIn.html',
     searchUrl: '/rest/c2is2/model/search',
-    itemViewUrl: '/rest/c2is2/model/item/'
+    itemViewUrl: '/rest/c2is2/model/item/',
+    desktopType: 'simpletabbeddesktop'
 });
