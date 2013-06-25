@@ -3,9 +3,6 @@ src/public/build
 src/public/packages/savanna/build
 sencha-compile-temp-dir
 
-# ignore Sencha auto-generated files
-src/public/bootstrap.js
-
 # ignore Idea-specific files
 *.iml
 .idea
