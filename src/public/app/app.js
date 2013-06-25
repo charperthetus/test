@@ -17,6 +17,7 @@ Ext.application({
     name: 'Savanna',
 
     views: [
+        'Login',
         'Main',
         'Viewport'
     ],
@@ -25,5 +26,16 @@ Ext.application({
         'Main'
     ],
 
-    autoCreateViewport: true
+    requires: [
+        'Savanna.Config'
+    ],
+
+    autoCreateViewport: true,
+
+    launch: function() {
+        this.viewport = Ext.ComponentQuery.query('viewport')[0];
+    },
+
+    // CUSTOM CONFIGURATION
+    jsessionid: '' // keep track of the user's session id
 });

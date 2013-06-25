@@ -46,7 +46,7 @@
         "appModels": "",
         "appControllers": "Main",
         "appStores": "",
-        "appViews": "Main,Viewport"
+        "appViews": "Login,Main,Viewport"
       }
     },
     ".sencha/app/build.properties": {

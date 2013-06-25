@@ -1,24 +1,24 @@
+/**
+ * Viewport for the Savanna Client application
+ */
 Ext.define('Savanna.view.Viewport', {
     extend: 'Ext.container.Viewport',
-    requires:[
+
+    requires: [
         'Ext.tab.Panel',
-        'Ext.layout.container.Border'
+        'Ext.layout.container.Border',
+        'Savanna.view.Login'
     ],
 
     layout: {
         type: 'border'
     },
 
-    items: [{
-        region: 'west',
-        xtype: 'panel',
-        title: 'west',
-        width: 150
-    },{
-        region: 'center',
-        xtype: 'tabpanel',
-        items:[{
-            title: 'Center Tab 1'
-        }]
-    }]
+    items: [
+        {
+            xtype: 'login',
+            itemId: 'login',
+            region: 'center'
+        }
+    ]
 });
