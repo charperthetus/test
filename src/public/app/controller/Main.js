@@ -11,22 +11,12 @@ Ext.define('Savanna.controller.Main', {
         var me = this;
 
         this.app = app;
-console.log('app', app);
+
         this.control({
             login: {
                 render: function(view) {
                     Ext.EventManager.on(window, 'message', function(e, t) {
-                        console.log('listening...', me.app);
-                        Savanna.jsessionid = e.browserEvent.data;
-
-                        //TODO - Check the event to see a valid loggedin message
-                        console.log('going to call remove...');
-                        me.app.viewport.remove('login');
-                        me.app.viewport.add({
-                            xtype:  'mainview',
-                            itemId: 'main',
-                            region: 'center'
-                        });
+                        me.swapLogin(e.browserEvent.data);
                     });
                 }
             }
@@ -59,6 +49,18 @@ console.log('app', app);
                 var data = Ext.decode(response.responseText);
                 callback(data);
             }
+        });
+    },
+
+    swapLogin: function(sessionId) {
+        Savanna.jsessionid = sessionId;
+
+        //TODO - Check the event to see a valid loggedin message
+        this.app.viewport.remove('login');
+        this.app.viewport.add({
+            xtype:  'mainview',
+            itemId: 'main',
+            region: 'center'
         });
     }
 });

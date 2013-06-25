@@ -136,7 +136,7 @@ describe('Savanna Main', function() {
                         viewport: {
                             add: function() {},
                             remove: function() {
-                                removeCalled = true; console.log('removeCalled');
+                                removeCalled = true;
                             }
                         }
                     };
@@ -148,6 +148,8 @@ describe('Savanna Main', function() {
                     view = null;
                     mockApplication = null;
                     removeCalled = false;
+
+                    if (controller.swapLogin.restore) controller.swapLogin.restore();
                 });
 
                 it('should listen for "render" event on login view', function() {
@@ -156,22 +158,25 @@ describe('Savanna Main', function() {
                     expect(view.hasListener('render')).toBeTruthy();
                 });
 
-                it('should process "render" event on login iframe message', function() {
-
-                    controller.init(mockApplication);
-
-                    view.fireEvent('render');
+                it('should process message from login iframe', function() {
+                    var spy = sinon.spy(controller, 'swapLogin');
 
                     runs(function() {
-                        window.postMessage('foo', '*');
+                        controller.init(mockApplication);
+
+                        view.fireEvent('render');
+                    });
+
+                    runs(function() {
+                        window.postMessage(TEST_SESSION_ID, '*');
                     });
 
                     waitsFor(function() {
-                        return removeCalled;
-                    }, 'removeCalled to be true');
+                        return controller.swapLogin.called;
+                    }, 'swapLogin to be called', 300);
 
                     runs(function() {
-                        expect(removeCalled).toBeTruthy();
+                        expect(controller.swapLogin.called).toBeTruthy();
                     });
                 });
             });
