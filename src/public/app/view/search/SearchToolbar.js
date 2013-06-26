@@ -29,6 +29,12 @@ Ext.define("Savanna.view.search.SearchToolbar", {
                     {text: 'Cats'},
                     {text: 'Dogs'},
                     {text: 'Terrorists'}
+                    ,
+                    {
+                        xtype: "panel",
+                        title:"test",
+                        html:"test"
+                    }
                 ]
             },
             {
