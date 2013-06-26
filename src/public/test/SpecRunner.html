@@ -56,6 +56,9 @@
 
             function execJasmine() {
                 Ext.onReady(function() {
+                    // HACK: run-jscover-jasmine was gated on things dynamic to Jasmine which did not always show up in time for it to evaluate
+                    //       We hacked in a "waiting" node and test for that
+                    document.body.removeChild(document.getElementById('waiting'));
                     jasmineEnv.execute();
                 });
             }
@@ -64,6 +67,7 @@
     </script>
 </head>
 <body>
+    <div id="waiting"></div>
     <div id="test-html"></div>
 </body>
 </html>

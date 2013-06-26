@@ -18,7 +18,9 @@ Ext.application({
 
     views: [
         'Login',
-        'Main',
+        //TODO - This is loading both desktops right now, and we will need to decide which one to use going forward.  If we need both as a configuration option we will need to make a new app.js file.
+        'SimpleTabbedDesktop',
+        'SavannaDesktop',
         'Viewport'
     ],
 

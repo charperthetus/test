@@ -15,12 +15,6 @@ Ext.define('Savanna.view.Login', {
 
     layout: 'fit',
 
-    initComponent: function() {
-        console.log('initComponent', arguments);
-
-        this.callParent(arguments);
-    },
-
     items: [
         {
             xtype: 'uxiframe',

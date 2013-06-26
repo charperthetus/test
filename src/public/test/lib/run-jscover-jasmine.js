@@ -56,6 +56,9 @@ page.open(system.args[1], function(status){
     } else {
         waitFor(function(){
             return page.evaluate(function(){
+                // HACK: the second line is what was part of this originally, but Ext.onReady takes too long and so we
+                //       get false positives.  SpecRunner.html now has a "waiting" div to help with this...
+                return document.body.querySelector('#waiting') === null;
                 return document.body.querySelector('.symbolSummary .pending') === null
             });
         }, function(){

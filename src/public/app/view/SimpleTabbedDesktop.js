@@ -1,10 +1,9 @@
 /**
  * Central view for the Savanna client application
  */
-Ext.define('Savanna.view.Main', {
+Ext.define('Savanna.view.SimpleTabbedDesktop', {
     extend: 'Ext.panel.Panel',
-    alias: 'widget.mainview',
-    id: 'mainview',
+    alias: 'widget.simpletabbeddesktop',
 
     items: [
         {
@@ -13,14 +12,13 @@ Ext.define('Savanna.view.Main', {
             region: 'center',
             deferredRender: false,
             activeTab: 0,
-/*            items: [
+            items: [
                 {
-                    xtype: 'modelsearch',
-                    title: 'Model Search',
+                    title: 'Simple Tabbed Desktop',
                     closable: false,
                     flex: 4
                 }
-            ]*/
+            ]
         }
     ]
 });
