@@ -36,6 +36,7 @@ Ext.application({
 
     launch: function() {
         this.viewport = Ext.ComponentQuery.query('viewport')[0];
+        _savanna = this;
     },
 
     // CUSTOM CONFIGURATION

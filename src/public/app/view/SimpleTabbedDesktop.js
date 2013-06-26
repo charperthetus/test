@@ -4,7 +4,10 @@
 Ext.define('Savanna.view.SimpleTabbedDesktop', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.simpletabbeddesktop',
-
+    requires:[
+        "Savanna.view.search.SearchToolbar",
+        "Savanna.view.search.SearchBar"
+    ],
     items: [
         {
             xtype: 'tabpanel',
@@ -16,7 +19,17 @@ Ext.define('Savanna.view.SimpleTabbedDesktop', {
                 {
                     title: 'Simple Tabbed Desktop',
                     closable: false,
-                    flex: 4
+                    flex: 4,
+                    items:[
+                        {
+                            xtype:"mainsearchtoolbar",
+                            itemId:"toptoolbar"
+                        },
+                        {
+                            xtype:"mainsearchbar",
+                            itemId:"searchbar"
+                        }
+                    ]
                 }
             ]
         }
