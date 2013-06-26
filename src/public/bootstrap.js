@@ -17,7 +17,8 @@ Ext.ClassManager.addNameAlternateMappings({
   "Ext.ux.grid.TransformGrid": [],
   "Ext.ux.FieldReplicator": [],
   "Ext.ux.grid.filter.ListFilter": [],
-  "Savanna.view.Main": [],
+  "Savanna.view.SavannaDesktop": [],
+  "Savanna.view.SimpleTabbedDesktop": [],
   "Ext.ux.ajax.XmlSimlet": [],
   "Ext.ux.event.Driver": [],
   "Ext.ux.dd.PanelFieldDragZone": [],
@@ -88,7 +89,8 @@ Ext.ClassManager.addNameAliasMappings({
   "Ext.ux.grid.filter.ListFilter": [
     "gridfilter.list"
   ],
-  "Savanna.view.Main": [],
+  "Savanna.view.SimpleTabbedDesktop": [],
+  "Savanna.view.SavannaDesktop": [],
   "Ext.ux.ajax.XmlSimlet": [
     "simlet.xml"
   ],

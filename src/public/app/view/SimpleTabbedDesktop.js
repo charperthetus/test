@@ -4,7 +4,6 @@
 Ext.define('Savanna.view.SimpleTabbedDesktop', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.simpletabbeddesktop',
-    id: 'mainview',
 
     items: [
         {
