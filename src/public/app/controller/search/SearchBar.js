@@ -14,7 +14,7 @@ Ext.define("Savanna.controller.search.SearchBar", {
 
     ],
     views: [
-        "Savanna.view.search.SearchBar"
+        "search.SearchBar"
     ],
     init: function () {
         var me = this;
