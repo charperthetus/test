@@ -7,8 +7,7 @@ Ext.define('Savanna.view.search.SearchBar', {
 
     requires: [
         'Ext.ux.layout.Center',
-        'Ext.form.field.Text',
-        'Savanna.controller.Factory'
+        'Ext.form.field.Text'
     ],
 
     bodyPadding: 5,
@@ -82,6 +81,6 @@ Ext.define('Savanna.view.search.SearchBar', {
         this.callParent(arguments);
 
         // instantiate the controller for this view
-        Savanna.controller.Factory.getController('search.SearchBar');
+        _savanna.getController('search.SearchBar');
     }
 });
