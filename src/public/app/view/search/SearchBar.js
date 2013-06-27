@@ -7,8 +7,7 @@ Ext.define('Savanna.view.search.SearchBar', {
 
     requires: [
         'Ext.ux.layout.Center',
-        'Ext.form.field.Text',
-        'Savanna.controller.Factory'
+        'Ext.form.field.Text'
     ],
 
     bodyPadding: 5,

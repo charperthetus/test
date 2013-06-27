@@ -11,14 +11,14 @@ Ext.define('Savanna.view.search.SearchBody', {
     items: [
         /*
          This is the panel that contains Search Options,
-         controlled by the docked toolbar
+         need to make another absolutely
+         positioned panel for results, controlled by
+         the docked toolbar
          */
         {
             xtype: 'panel',
             layout: 'border',
             itemId: 'mainsearchoptions',
-            float:true,
-
             items: [
                 {
                     xtype: 'tabpanel',
@@ -67,15 +67,12 @@ Ext.define('Savanna.view.search.SearchBody', {
     dockedItems: [
         {
             xtype: 'toolbar',
-            itemId: 'searchbodytoolbar',
             border: false,
             width: '100%',
             docked: 'top',
-
             items: [
                 {
                     xtype: 'button',
-                    itemId: 'optionsbutton',
                     text: 'Search Options',
                     style: {
                         background: 'transparent',
@@ -84,7 +81,6 @@ Ext.define('Savanna.view.search.SearchBody', {
                 },
                 {
                     xtype: 'button',
-                    itemId: 'resultsbutton',
                     text: 'Results',
                     style: {
                         background: 'transparent',
