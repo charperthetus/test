@@ -1,22 +1,18 @@
 /**
- * Created with JetBrains WebStorm.
- * User: ksonger
- * Date: 6/14/13
- * Time: 1:48 PM
- * To change this template use File | Settings | File Templates.
+ * TODO: Document what events we may emit/consume...
  */
-Ext.define("Savanna.controller.search.SearchToolbar", {
-    extend: "Ext.app.Controller",
+Ext.define('Savanna.controller.search.SearchToolbar', {
+    extend: 'Ext.app.Controller',
+
     models: [
-
+        // coming soon
     ],
+
     stores: [
+        // coming soon
+    ],
 
-    ],
     views: [
-        "Savanna.view.search.SearchToolbar"
-    ],
-    init: function () {
-        var me = this;
-    }
+        'search.SearchToolbar'
+    ]
 });
