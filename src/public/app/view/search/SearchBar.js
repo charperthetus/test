@@ -21,61 +21,61 @@ Ext.define('Savanna.view.search.SearchBar', {
     items: [
         {
             xtype:  'panel',
-            layout: "ux.center",
-            border:false,
+            layout: 'ux.center',
+            border: false,
             items: [
                 {
-                    xtype: "panel",
-                    layout: "vbox",
+                    xtype:  'panel',
+                    layout: 'vbox',
                     border: false,
+                    width: '30%',
+                    minWidth: 420,
                     items: [
                         {
-                            xtype: "panel",
-                            layout: "hbox",
+                            xtype:  'panel',
+                            layout: 'hbox',
                             border: false,
                             items: [
                                 {
-                                    xtype: "textfield",
+                                    xtype: 'textfield',
                                     width: 300,
-                                    fieldLabel: "",
-                                    name: "search_terms",
+                                    fieldLabel: '',
+                                    name: 'search_terms',
                                     enableKeyEvents: true,
-                                    emptyText:"Search"
+                                    emptyText: 'Search'
                                 },
                                 {
-                                    xtype: "button",
-                                    text: "Search"
+                                    xtype: 'button',
+                                    text:  'Search'
                                 },
                                 {
-                                    xtype: "button",
-                                    text: "Advanced",
+                                    xtype: 'button',
+                                    text:  'Advanced',
                                     style: {
-                                        background: "transparent",
-                                        border: "none"
+                                        background: 'transparent',
+                                        border: 'none'
                                     }
                                 }
                             ]
                         },
                         {
-                            xtype: "panel",
-                            border:false,
-                            bodyPadding:0,
+                            xtype: 'panel',
+                            border: false,
+                            bodyPadding: 0,
                             items: [
                                 {
-                                    xtype: "button",
-                                    text: "Start New Search",
+                                    xtype: 'button',
+                                    text: 'Start New Search',
                                     style: {
-                                        background: "transparent",
-                                        border: "none",
-                                        margin:"0px",
-                                        padding:"0px"
+                                        background: 'transparent',
+                                        border: 'none',
+                                        margin: '0px',
+                                        padding: '0px'
                                     }
                                 }
                             ]
                         }
-                    ],
-                    width: '30%',
-                    minWidth: 420
+                    ]
                 }
             ]
         }
