@@ -1,6 +1,6 @@
-Ext.Loader.setConfig({ enabled: true, syncModeEnabled: true, disableCaching: false }); // NOTE: A great example of a confusing option "disableCaching is false when we do not want to prevent caching...":)
 Ext.require('Savanna.Config');
 Ext.require('Savanna.controller.Main');
+Ext.require('Savanna.view.Login');
 
 describe('Savanna Main', function() {
     var TEST_SESSION_ID = 'TEST_SESSION_ID',
@@ -98,7 +98,7 @@ describe('Savanna Main', function() {
                 });
 
                 it('should process message from login iframe', function() {
-                    var spy = sinon.spy(controller, 'swapLogin');
+                    sinon.spy(controller, 'swapLogin');
 
                     runs(function() {
                         controller.init(mockApplication);
@@ -119,24 +119,6 @@ describe('Savanna Main', function() {
                     });
                 });
             });
-        });
-    });
-
-    describe('View', function() {
-        var view = null;
-
-        beforeEach(function() {
-            view = Ext.create('Savanna.view.SimpleTabbedDesktop', { renderTo: Ext.dom.Query.selectNode('#test-html') });
-        });
-
-        afterEach(function() {
-            if (view) view.destroy();
-            view = null;
-        });
-
-        it('should have a view of the correct type instantiated', function() {
-            expect(view).not.toBeNull();
-            expect(view instanceof Savanna.view.SimpleTabbedDesktop).toBeTruthy();
         });
     });
 });

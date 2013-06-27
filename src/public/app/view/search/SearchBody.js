@@ -1,23 +1,13 @@
 /**
- * Created with JetBrains WebStorm.
- * User: ksonger
- * Date: 6/17/13
- * Time: 11:55 AM
- * To change this template use File | Settings | File Templates.
+ * TODO: Document what events we may emit...
  */
-Ext.define("Savanna.view.search.SearchBody", {
-    extend: "Ext.panel.Panel",
-    alias: "widget.mainsearchbody",
-    layout: "fit",
-    border: false,
-    requires: [
+Ext.define('Savanna.view.search.SearchBody', {
+    extend: 'Ext.panel.Panel',
+    alias: 'widget.search.searchbody',
 
-    ],
-    initComponent: function () {
-        var me = this;
-        me.callParent(arguments);
-        _savanna.getController("search.SearchBody");
-    },
+    layout: 'fit',
+    border: false,
+
     items: [
         /*
          This is the panel that contains Search Options,
@@ -25,11 +15,10 @@ Ext.define("Savanna.view.search.SearchBody", {
          positioned panel for results, controlled by
          the docked toolbar
          */
-
         {
-            xtype: "panel",
-            layout: "border",
-            itemId: "mainsearchoptions",
+            xtype: 'panel',
+            layout: 'border',
+            itemId: 'mainsearchoptions',
             items: [
                 {
                     xtype: 'tabpanel',
@@ -43,12 +32,12 @@ Ext.define("Savanna.view.search.SearchBody", {
                     border: false,
                     items: [
                         {
-                            title: "Search Sources",
-                            html: "sources here"
+                            title: 'Search Sources',
+                            html: 'sources here'
                         },
                         {
-                            title: "Location",
-                            html: "leaflet here"
+                            title: 'Location',
+                            html: 'leaflet here'
                         }
                     ]
                 }
@@ -56,30 +45,37 @@ Ext.define("Savanna.view.search.SearchBody", {
 
         }
     ],
+
     dockedItems: [
         {
-            xtype: "toolbar",
+            xtype: 'toolbar',
             border: false,
-            width: "100%",
-            docked: "top",
+            width: '100%',
+            docked: 'top',
             items: [
                 {
-                    xtype: "button",
-                    text: "Search Options",
+                    xtype: 'button',
+                    text: 'Search Options',
                     style: {
-                        background: "transparent",
-                        border: "none"
+                        background: 'transparent',
+                        border: 'none'
                     }
                 },
                 {
-                    xtype: "button",
-                    text: "Results",
+                    xtype: 'button',
+                    text: 'Results',
                     style: {
-                        background: "transparent",
-                        border: "none"
+                        background: 'transparent',
+                        border: 'none'
                     }
                 }
             ]
         }
-    ]
-})
+    ],
+
+    initComponent: function () {
+        this.callParent(arguments);
+
+        Savanna.controller.Factory.getController('search.SearchBody');
+    }
+});

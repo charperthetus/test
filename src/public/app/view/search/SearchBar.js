@@ -1,13 +1,9 @@
 /**
- * Created with JetBrains WebStorm.
- * User: ksonger
- * Date: 6/14/13
- * Time: 1:39 PM
- * To change this template use File | Settings | File Templates.
+ * TODO: Document what events we may emit...
  */
 Ext.define('Savanna.view.search.SearchBar', {
     extend: 'Ext.panel.Panel',
-    alias:  'widget.mainsearchbar',
+    alias:  'widget.search.searchbar',
 
     requires: [
         'Ext.ux.layout.Center',
@@ -85,6 +81,6 @@ Ext.define('Savanna.view.search.SearchBar', {
         this.callParent(arguments);
 
         // instantiate the controller for this view
-        _savanna.getController('search.SearchBar');
+        Savanna.controller.Factory.getController('search.SearchBar');
     }
 });
