@@ -77,9 +77,9 @@ Ext.define('Savanna.view.search.SearchBar', {
         }
     ],
 
-    initComponent: function () {
+    initComponent: function() {
         this.callParent(arguments);
-
+        
         // instantiate the controller for this view
         Savanna.controller.Factory.getController('search.SearchBar');
     }
