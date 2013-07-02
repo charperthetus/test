@@ -30,19 +30,19 @@ Ext.define('Savanna.view.SimpleTabbedDesktop', {
                     border: false,
                     items: [
                         {
-                            xtype:  'mainsearchbar',
+                            xtype:  'search.searchbar',
                             itemId: 'searchbar',
                             region: 'north'
                         },
                         {
-                            xtype:  'mainsearchbody',
+                            xtype:  'search.searchbody',
                             itemId: 'searchbody',
                             region: 'center'
                         }
                     ],
                     dockedItems: [
                         {
-                            xtype:  'mainsearchtoolbar',
+                            xtype:  'search.searchtoolbar',
                             itemId: 'searchtoolbar'
                         }
                     ]
