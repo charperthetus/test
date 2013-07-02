@@ -4,7 +4,6 @@
 Ext.define('Savanna.view.SavannaDesktop', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.savannadesktop',
-    id: 'mainview',
     requires:[
             'Ext.form.RadioGroup',
             'Ext.dd.DragZone'

@@ -4,7 +4,7 @@
 Ext.define('Savanna.view.search.SearchBody', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.search.searchbody',
-
+    requires: ['Savanna.controller.Factory'],
     layout: 'fit',
     border: false,
 
@@ -17,7 +17,7 @@ Ext.define('Savanna.view.search.SearchBody', {
             xtype: 'panel',
             layout: 'border',
             itemId: 'mainsearchoptions',
-            float:true,
+            'float':true,
 
             items: [
                 {
@@ -51,7 +51,7 @@ Ext.define('Savanna.view.search.SearchBody', {
         {
             xtype: 'panel',
             layout: 'border',
-            float: true,
+            'float': true,
             itemId: 'mainresults',
             items: [
                 {
