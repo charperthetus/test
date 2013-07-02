@@ -4,4 +4,8 @@ Ext.Loader.setConfig({
     syncModeEnabled: true,
     disableCaching: false // NOTE: A great example of a confusing option "disableCaching is false when we do not want to prevent caching...":)
 });
-Ext.application({ name: 'Savanna', paths: { Savanna: '../app' }  });
+Ext.application({
+    name: 'Savanna',
+    autoCreateViewport: false,
+    paths: { Savanna: '../app' }
+});
