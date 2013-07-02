@@ -30,13 +30,22 @@ Ext.application({
     ],
 
     requires: [
-        'Savanna.Config'
+        'Savanna.Config',
+        'Savanna.controller.Factory'
     ],
 
     autoCreateViewport: true,
 
     launch: function() {
-        this.viewport = Ext.ComponentQuery.query('viewport')[0];
+        var viewportQueryResults = Ext.ComponentQuery.query('viewport');
+
+        if (viewportQueryResults && viewportQueryResults.length > 0) {
+            this.viewport = viewportQueryResults[0]
+        }
+        else {
+            // TODO: Fatal condition...how to handle?
+            console.error('no viewport found. cannot start application');
+        }
     },
 
     // CUSTOM CONFIGURATION

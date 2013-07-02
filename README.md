@@ -11,4 +11,6 @@ From there, if you are using IntelliJ Idea, you need to go to `Run -> Edit Confi
 
 If you like CLI, you can `cd /path/to/repos/src` and then `node server.js` which will do the same thing.
 
+Cool!
+
 

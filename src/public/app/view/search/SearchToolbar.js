@@ -1,0 +1,45 @@
+/**
+ * TODO: Document what events we may emit...
+ */
+
+Ext.define('Savanna.view.search.SearchToolbar', {
+    extend: 'Ext.toolbar.Toolbar',
+    alias: 'widget.search.searchtoolbar',
+
+    border: false,
+    frame: false,
+    docked: 'top',
+
+    items: [
+        {
+            text: 'Recent Searches',
+            itemId: 'startbutton',
+            menu: [
+                {text: 'Cats'},
+                {text: 'Dogs'},
+                {text: 'Terrorists'},
+                {
+                    xtype: 'panel',
+                    title: 'test',
+                    html: 'test'
+                }
+            ]
+        },
+        {
+            xtype: 'tbfill'
+        },
+        {
+            text: 'Add to MyStuff'
+        },
+        {
+            text: 'Help'
+        }
+    ],
+
+    initComponent: function () {
+        this.callParent(arguments);
+
+        // instantiate the controller for this view
+        Savanna.controller.Factory.getController('search.SearchToolbar');
+    }
+});

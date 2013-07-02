@@ -1,17 +1,15 @@
-Ext.Loader.setConfig({ enabled: true, syncModeEnabled: true, disableCaching: false }); // NOTE: A great example of a confusing option "disableCaching is false when we do not want to prevent caching...":)
 Ext.require('Savanna.Config');
 Ext.require('Savanna.controller.Main');
+Ext.require('Savanna.view.Login');
 
 describe('Savanna Main', function() {
     var TEST_SESSION_ID = 'TEST_SESSION_ID',
         fixtures = {},
         controller = null,
-        LOGIN_URL = '',
-        PING_URL = '';
+        LOGIN_URL = '';
 
     beforeEach(function() {
         LOGIN_URL = LOGIN_URL || Savanna.Config.savannaUrlRoot + Savanna.Config.loginUrl;
-        PING_URL = PING_URL || Savanna.Config.savannaUrlRoot + Savanna.Config.pingUrl;
 
         this.addMatchers(ExtSpec.Jasmine.Matchers);
 
@@ -66,65 +64,6 @@ describe('Savanna Main', function() {
                 loginFixtures = null;
             });
 
-            describe('user is not logged in', function() {
-
-                beforeEach(function() {
-                    server.respondWith('GET', PING_URL, { isLoggedIn: false });
-                });
-
-                it('should get a "not logged in" response from the ping service', function() {
-                    var pingResponse = {};
-
-                    controller.checkIfLoggedIn(function(data) {
-                        pingResponse = data;
-                    });
-
-                    server.respond({
-                        errorOnInvalidRequest: true
-                    });
-
-                    expect(pingResponse.isLoggedIn).toBeFalsy();
-                });
-            });
-
-            describe('user is already logged in', function() {
-
-                beforeEach(function() {
-                    server.respondWith('GET', PING_URL, { isLoggedIn: true, sessionId: TEST_SESSION_ID });
-                });
-
-                it('should store session ID in Savanna when ping is successful', function() {
-                    expect(Savanna.jsessionid).toBeUndefined();
-
-                    controller.onLaunch();
-
-                    server.respond({
-                        errorOnInvalidRequest: true
-                    });
-
-                    expect(Savanna.jsessionid).toBe(TEST_SESSION_ID);
-                });
-            });
-
-            describe('ping service is down', function() {
-
-                beforeEach(function() {
-                    server.respondWith('GET', PING_URL, { _statusCode: 500, _headers: { 'Content-Type': 'text/html' } });
-                });
-
-                it('should NOT store session ID in Savanna when ping is successful', function() {
-                    expect(Savanna.jsessionid).toBeUndefined();
-
-                    controller.onLaunch();
-
-                    server.respond({
-                        errorOnInvalidRequest: true
-                    });
-
-                    expect(Savanna.jsessionid).toBeUndefined();
-                });
-            });
-
             describe('listens to Login view for events', function() {
                 var view = null,
                     mockApplication = null,
@@ -136,7 +75,7 @@ describe('Savanna Main', function() {
                         viewport: {
                             add: function() {},
                             remove: function() {
-                                removeCalled = true; console.log('removeCalled');
+                                removeCalled = true;
                             }
                         }
                     };
@@ -148,6 +87,8 @@ describe('Savanna Main', function() {
                     view = null;
                     mockApplication = null;
                     removeCalled = false;
+
+                    if (controller.swapLogin.restore) controller.swapLogin.restore();
                 });
 
                 it('should listen for "render" event on login view', function() {
@@ -156,43 +97,28 @@ describe('Savanna Main', function() {
                     expect(view.hasListener('render')).toBeTruthy();
                 });
 
-                it('should process "render" event on login iframe message', function() {
-
-                    controller.init(mockApplication);
-
-                    view.fireEvent('render');
+                it('should process message from login iframe', function() {
+                    sinon.spy(controller, 'swapLogin');
 
                     runs(function() {
-                        window.postMessage('foo', '*');
+                        controller.init(mockApplication);
+
+                        view.fireEvent('render');
+                    });
+
+                    runs(function() {
+                        window.postMessage(TEST_SESSION_ID, '*');
                     });
 
                     waitsFor(function() {
-                        return removeCalled;
-                    }, 'removeCalled to be true');
+                        return controller.swapLogin.called;
+                    }, 'swapLogin to be called', 300);
 
                     runs(function() {
-                        expect(removeCalled).toBeTruthy();
+                        expect(controller.swapLogin.called).toBeTruthy();
                     });
                 });
             });
-        });
-    });
-
-    describe('View', function() {
-        var view = null;
-
-        beforeEach(function() {
-            view = Ext.create('Savanna.view.Main', { renderTo: Ext.dom.Query.selectNode('#test-html') });
-        });
-
-        afterEach(function() {
-            if (view) view.destroy();
-            view = null;
-        });
-
-        it('should have a view of the correct type instantiated', function() {
-            expect(view).not.toBeNull();
-            expect(view instanceof Savanna.view.Main).toBeTruthy();
         });
     });
 });

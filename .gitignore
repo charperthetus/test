@@ -22,8 +22,11 @@ src/node_modules
 
 # ignore temp compass compile build
 src/public/packages/savanna/sass/var/Component.css
+src/public/sass/example/bootstrap.js
+src/public/sass/example/example.css
 
 # ignore test report files
 src/public/test/reports/phantom
 target/antrun
 target/surefire-reports
+src/public/test/reports/errors.log
