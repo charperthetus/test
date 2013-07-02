@@ -3,18 +3,21 @@
  */
 Ext.define('Savanna.view.Viewport', {
     extend: 'Ext.container.Viewport',
-    border:false,
+
     requires: [
         'Ext.tab.Panel',
         'Ext.layout.container.Border',
         'Savanna.view.Login'
     ],
+
+    border: false,
     layout: {
         type: 'border'
     },
+
     items: [
         {
-            xtype: 'login',
+            xtype:  'login',
             itemId: 'login',
             region: 'center'
         }

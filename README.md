@@ -11,6 +11,8 @@ From there, if you are using IntelliJ Idea, you need to go to `Run -> Edit Confi
 
 If you like CLI, you can `cd /path/to/repos/src` and then `node server.js` which will do the same thing.
 
+Lastly, you will need to navigate (via command line) to `src/public` and run `sencha app build` to build out the theme resources for thie project (NOTE: requires [Sencha Cmd](http://www.sencha.com/products/sencha-cmd/download))
+
 Cool!
 
 

@@ -4,21 +4,21 @@
 Ext.define('Savanna.view.search.SearchBody', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.search.searchbody',
-    requires: ['Savanna.controller.Factory'],
+
     layout: 'fit',
     border: false,
 
     items: [
         /*
          This is the panel that contains Search Options,
-         controlled by the docked toolbar
+         need to make another absolutely
+         positioned panel for results, controlled by
+         the docked toolbar
          */
         {
             xtype: 'panel',
             layout: 'border',
             itemId: 'mainsearchoptions',
-            'float':true,
-
             items: [
                 {
                     xtype: 'tabpanel',
@@ -42,40 +42,19 @@ Ext.define('Savanna.view.search.SearchBody', {
                     ]
                 }
             ]
-        },
-        /*
-         This is the panel that contains Search Results,
-         controlled by the docked toolbar
-         */
 
-        {
-            xtype: 'panel',
-            layout: 'border',
-            'float': true,
-            itemId: 'mainresults',
-            items: [
-                {
-                    xtype: 'panel',
-                    region: 'center',
-                    border: false,
-                    html: 'results here'
-                }
-            ]
         }
     ],
 
     dockedItems: [
         {
             xtype: 'toolbar',
-            itemId: 'searchbodytoolbar',
             border: false,
             width: '100%',
             docked: 'top',
-
             items: [
                 {
                     xtype: 'button',
-                    itemId: 'optionsbutton',
                     text: 'Search Options',
                     style: {
                         background: 'transparent',
@@ -84,7 +63,6 @@ Ext.define('Savanna.view.search.SearchBody', {
                 },
                 {
                     xtype: 'button',
-                    itemId: 'resultsbutton',
                     text: 'Results',
                     style: {
                         background: 'transparent',
