@@ -5,21 +5,183 @@ Ext.define('Savanna.view.SavannaDesktop', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.savannadesktop',
     id: 'mainview',
-
+    requires:[
+            'Ext.form.RadioGroup',
+            'Ext.dd.DragZone'
+    ],
+    layout: {
+        type: 'vbox'
+    },
     items: [
         {
-            xtype: 'tabpanel',
-            itemId: 'maintabs',
-            region: 'center',
-            deferredRender: false,
-            activeTab: 0,
+            xtype: 'panel',
+            itemId: 'buttonbarpanel',
+            region: 'top',
+            width: '100%',
+            layout: {
+                type: 'hbox',
+                pack: 'center'
+            },
+            defaults: {
+                xtype: 'button',
+                scale: 'medium',
+                iconAlign: 'top',
+                toggleGroup: 'mygroup',
+                enableToggle: true,
+                listeners: {
+                    click: function(me, event) {
+                        // make sure a button cannot be de-selected
+                        me.toggle(true);
+                    }
+                }
+            },
             items: [
-             {
-             title: 'Savanna Desktop',
-             closable: false,
-             flex: 4
-             }
-             ]
+                //TODO - make a buttonbar / togglebuttonbar component
+                {
+                    icon: 'app/assets/icons/workspaceicon.png',
+                    text: 'Workspace',
+                    pressed: true
+                }, {
+                    icon: 'app/assets/icons/dashboardicon.png',
+                    text: 'Dashboard'
+                }, {
+                    xtype: '',
+                    padding: 3,
+                    type: 'rect',
+                    width: 8,
+                    height: '100%'
+                }, {
+                    icon: 'app/assets/icons/searchicon.png',
+                    text: 'Search'
+                }
+            ]
+        },
+        {
+            xtype: 'panel',
+            region: 'center',
+            flex: 1,
+            width: '100%',
+            layout: {
+                type: 'hbox'
+            },
+            items: [
+                {
+                    xtype: 'tabpanel',
+                    itemId: 'tabpanel1',
+                    deferredRender: false,
+                    activeTab: 0,
+                    height: '100%',
+                    flex: 2,
+                    items: [
+                        {
+                            xtype: 'draw',
+                            title: 'Savanna Workspace',
+                            closable: false,
+                            items: [
+
+                                {
+                                    type: 'circle',
+                                    radius: 90,
+                                    x: 100,
+                                    y: 100,
+                                    fill: 'red'
+                                }
+                            ]
+                        },
+                        {
+                            xtype: 'draw',
+                            title: 'Another Tab',
+                            closable: true,
+                            items: [
+
+                                {
+                                    type: 'circle',
+                                    radius: 90,
+                                    x: 100,
+                                    y: 100,
+                                    fill: 'yellow'
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    xtype: 'tabpanel',
+                    itemId: 'tabpanel2',
+                    deferredRender: false,
+                    activeTab: 0,
+                    height: '100%',
+                    flex: 2,
+                    listeners: {
+                        add: function(me, tab, tabindex) {
+                            var tabBarButton = me.tabBar.items.items[tabindex];
+                            var tabEl = tab.getEl();
+                            console.log('add', tabBarButton, tab);
+                            tabBarButton.addListener('afterrender', function(tabbutton){
+                                console.log('tabBarButton Render', arguments);
+                                tabbutton.dragZone = Ext.create('Ext.dd.DragZone', tabbutton.getEl(), {
+                                    getDragData: function(e) {
+                                        console.log('GetDragData', e);
+                                        var sourceEl = e.getTarget(tabbutton.itemSelector, 10), d;
+                                        if (sourceEl) {
+                                            d = sourceEl.cloneNode(true);
+                                            d.id = Ext.id();
+                                            return (tabbutton.dragData = {
+                                                sourceEl: sourceEl,
+                                                repairXY: Ext.fly(sourceEl).getXY(),
+                                                ddel: d,
+//                                                tab: tab
+                                            });
+                                        }
+                                    },
+
+                                    getRepairXY: function() {
+                                        return this.dragData.repairXY;
+                                    }
+                                });
+
+                            })
+//                            tab.dragZone = Ext.create('Ext.dd.DragZone', tab.id, {
+//
+//
+//                            });
+                        }
+                    },
+                    items: [
+                        {
+                            xtype: 'draw',
+                            title: 'Savanna Workspace',
+                            closable: false,
+                            items: [
+
+                                {
+                                    type: 'circle',
+                                    radius: 90,
+                                    x: 100,
+                                    y: 100,
+                                    fill: 'green'
+                                }
+                            ]
+                        },
+                        {
+                            xtype: 'draw',
+                            title: 'Another Tab',
+                            closable: true,
+                            items: [
+
+                                {
+                                    type: 'circle',
+                                    radius: 90,
+                                    x: 100,
+                                    y: 100,
+                                    fill: 'blue'
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
         }
+
     ]
 });
