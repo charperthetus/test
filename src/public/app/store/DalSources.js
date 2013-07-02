@@ -16,7 +16,11 @@ Ext.define('Savanna.store.DalSources', {
 
         var me = this,
             restUrl = Savanna.Config.savannaUrlRoot + Savanna.Config.dalSourcesUrl,
-            readerClass = Ext.extend(Ext.data.JsonReader, {
+            readerClass;
+
+        // NOTE: we have to create a custom instance of the Json Reader in order to be able
+        //       to parse the defaultId from the returned data since it is outside of the root...
+        readerClass = Ext.extend(Ext.data.JsonReader, {
             root: 'sources',
             readRecords: function(data) {
                 me.defaultId = data.defaultId || data.sources[0].id;
