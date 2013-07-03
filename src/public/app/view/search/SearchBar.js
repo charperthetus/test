@@ -3,7 +3,7 @@
  */
 Ext.define('Savanna.view.search.SearchBar', {
     extend: 'Ext.panel.Panel',
-    alias:  'widget.search.searchbar',
+    alias:  'widget.search_searchbar',
 
     requires: [
         'Ext.ux.layout.Center',

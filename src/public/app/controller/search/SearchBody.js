@@ -12,7 +12,7 @@ Ext.define('Savanna.controller.search.SearchBody', {
     ],
 
     views: [
-        'Savanna.view.search.SearchBody'
+        'search.SearchBody'
     ],
 
     currentPanel: 'searchoptions',
@@ -23,20 +23,20 @@ Ext.define('Savanna.controller.search.SearchBody', {
          These listeners toggle visibility between search options and search results
          */
         me.control({
-            'mainsearchbody > #searchbodytoolbar #optionsbutton': {
+            'search_searchbody > #searchbodytoolbar #optionsbutton': {
                 click: function (button, event) {
                     if (me.currentPanel != "searchoptions") {
-                        button.up("mainsearchbody").queryById("mainsearchoptions").show();
-                        button.up("mainsearchbody").queryById("mainresults").hide();
+                        button.up("search_searchbody").queryById("mainsearchoptions").show();
+                        button.up("search_searchbody").queryById("mainresults").hide();
                         me.currentPanel = "searchoptions";
                     }
                 }
             },
-            'mainsearchbody > #searchbodytoolbar #resultsbutton': {
+            'search_searchbody > #searchbodytoolbar #resultsbutton': {
                 click: function (button, event) {
                     if (me.currentPanel != "results") {
-                        button.up("mainsearchbody").queryById("mainsearchoptions").hide();
-                        button.up("mainsearchbody").queryById("mainresults").show();
+                        button.up("search_searchbody").queryById("mainsearchoptions").hide();
+                        button.up("search_searchbody").queryById("mainresults").show();
                         me.currentPanel = "results";
                     }
                 }

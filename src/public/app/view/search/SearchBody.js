@@ -3,7 +3,7 @@
  */
 Ext.define('Savanna.view.search.SearchBody', {
     extend: 'Ext.panel.Panel',
-    alias: 'widget.search.searchbody',
+    alias: 'widget.search_searchbody',
 
     layout: 'fit',
     border: false,
@@ -43,6 +43,12 @@ Ext.define('Savanna.view.search.SearchBody', {
                 }
             ]
 
+        },
+        {
+            xtype: 'panel',
+            layout: 'border',
+            itemId: 'mainresults',
+            html: "results here"
         }
     ],
 
@@ -52,10 +58,12 @@ Ext.define('Savanna.view.search.SearchBody', {
             border: false,
             width: '100%',
             docked: 'top',
+            itemId:"searchbodytoolbar",
             items: [
                 {
                     xtype: 'button',
                     text: 'Search Options',
+                    itemId:"optionsbutton",
                     style: {
                         background: 'transparent',
                         border: 'none'
@@ -64,6 +72,7 @@ Ext.define('Savanna.view.search.SearchBody', {
                 {
                     xtype: 'button',
                     text: 'Results',
+                    itemId:"resultsbutton",
                     style: {
                         background: 'transparent',
                         border: 'none'

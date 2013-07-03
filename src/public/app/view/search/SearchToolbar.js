@@ -4,7 +4,7 @@
 
 Ext.define('Savanna.view.search.SearchToolbar', {
     extend: 'Ext.toolbar.Toolbar',
-    alias: 'widget.search.searchtoolbar',
+    alias: 'widget.search_searchtoolbar',
 
     border: false,
     frame: false,
