@@ -5,6 +5,9 @@ Ext.define('Savanna.view.search.SearchBody', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.search_searchbody',
 
+    requires: [
+        'Savanna.view.search.SearchDals'
+    ],
     layout: 'fit',
     border: false,
 
@@ -33,11 +36,45 @@ Ext.define('Savanna.view.search.SearchBody', {
                     items: [
                         {
                             title: 'Search Sources',
-                            html: 'sources here'
+                            xtype: 'search.searchdals'
                         },
                         {
                             title: 'Location',
                             html: 'leaflet here'
+                        }
+                    ],
+                    dockedItems: [
+                        {
+                            xtype: 'toolbar',
+                            border: false,
+                            width: '100%',
+                            docked: 'top',
+                            items: [
+                                {
+                                    xtype: 'label',
+                                    text: 'Select sources to include in your search.'
+                                },
+                                {
+                                    xtype: 'button',
+                                    text: 'Select All',
+                                    style: {
+                                        background: 'transparent',
+                                        border: 'none'
+                                    }
+                                },
+                                {
+                                    xtype: 'tbspacer',
+                                    width: 100
+                                },
+                                {
+                                    xtype: 'button',
+                                    text: 'Reset All Search Options',
+                                    style: {
+                                        background: 'transparent',
+                                        border: 'none'
+                                    }
+                                }
+                            ]
                         }
                     ]
                 }
