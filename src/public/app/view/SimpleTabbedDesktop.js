@@ -10,6 +10,9 @@ Ext.define('Savanna.view.SimpleTabbedDesktop', {
         'Savanna.view.search.SearchBar',
         'Savanna.view.search.SearchBody'
     ],
+
+    layout: 'fit',
+
     items: [
         {
             xtype:  'tabpanel',
