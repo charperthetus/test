@@ -1,0 +1,104 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+
+    <!-- </x-flexpaper> -->
+
+    <link rel="stylesheet" type="text/css" href="./css/flexpaper.css"/>
+    <script type="text/javascript" src="./js/jquery.min.js"></script>
+    <script type="text/javascript" src="./js/jquery.extensions.min.js"></script>
+    <script type="text/javascript" src="./js/flexpaper.js"></script>
+    <script type="text/javascript" src="./js/flexpaper_handlers.js"></script>
+
+    <script>
+
+        var fp;
+
+        function gup(name) {
+            name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+            var regexS = "[\\?&]" + name + "=([^&#]*)";
+            var regex = new RegExp(regexS);
+            var results = regex.exec(window.location.href);
+            if (results == null)
+                return "";
+            else
+                return results[1];
+        }
+        function loadPaper() {
+            jQuery.get((!window.isTouchScreen) ? 'UI_flexpaper_desktop.html' : 'UI_flexpaper_mobile.html',
+                    function (toolbarData) {
+                        $("#documentViewer").FlexPaperViewer(
+                                {
+                                    config: {
+                                        IMGFiles: gup("img"),
+                                        JSONFile: gup("json"),
+                                        PDFFile: gup("pdf"),
+
+                                        Scale: 0.6,
+                                        ZoomTransition: 'easeOut',
+                                        ZoomTime: 0.5,
+                                        ZoomInterval: 0.2,
+                                        FitPageOnLoad: false,
+                                        FitWidthOnLoad: true,
+                                        FullScreenAsMaxWindow: true,
+                                        ProgressiveLoading: false,
+                                        MinZoomSize: 0.2,
+                                        MaxZoomSize: 5,
+                                        SearchMatchAll: false,
+
+
+                                        Toolbar: 'none',
+                                        BottomToolbar: 'UI_flexpaper_anotations.html',
+                                        InitViewMode: 'Portrait',
+                                        RenderingOrder: 'html5,html',
+                                        StartAtPage: '',
+
+                                        ViewModeToolsVisible: true,
+                                        ZoomToolsVisible: true,
+                                        NavToolsVisible: true,
+                                        CursorToolsVisible: true,
+                                        SearchToolsVisible: true,
+                                        WMode: 'window',
+                                        localeChain: 'en_US'
+                                    }
+                                }
+                        );
+                        jQuery('#documentViewer').bind('onMarkCreated', function (e, mark) {
+                            // do something
+                            console.log(mark);
+                        });
+
+                        jQuery('#documentViewer').bind('onMarkClicked', function (e, mark) {
+                            // do something
+                            console.log(JSON.stringify($FlexPaper('documentViewer').getMarkList()));
+                        });
+
+                        jQuery('#documentViewer').bind('onMarkDeleted', function (e, mark) {
+                            // do something
+                            console.log("mark deleted: " + mark);
+                        });
+
+                        jQuery('#documentViewer').bind('onMarkChanged', function (e, mark) {
+                            // do something
+                            console.log("mark changed: " + mark);
+                        });
+                        jQuery('#documentViewer').bind('onDocumentLoaded', function (e) {
+                            // do something
+                            fp = $FlexPaper('documentViewer');
+                            //console.log($(window).parent().find("flexcomponent"));
+
+                        });
+
+                    });
+
+        }
+
+    </script>
+
+</head>
+<body onLoad="loadPaper()">
+<div id="documentViewer" class="flexpaper_viewer"></div>
+</body>
+</html>
