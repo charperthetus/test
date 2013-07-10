@@ -155,7 +155,13 @@ var ThetusTestHelpers;
         "searchGeoTypes": [ "sav_searchInputType_Geo" ],
         "supportsHyperDynamicFacets": false,
         "textDescription": "",
-        "customSearchDescription": null
+
+        /* WARNING, WARNING, WARNING!!!!!!
+         We restructured the data to get rid of the parent "customSearchDescription" data-member since it
+         only has "customSearchGroups" and we do not really want to create a has-a relationship for a model
+         that is just a wrapper for a has-many....
+         */
+        "customSearchGroups": null
     };
 
     var groupedDal = {
@@ -177,7 +183,12 @@ var ThetusTestHelpers;
         "searchGeoTypes" : null,
         "supportsHyperDynamicFacets" : false,
         "textDescription" : "",
-        "customSearchDescription" : {
+
+        /* WARNING, WARNING, WARNING!!!!!!
+         We restructured the data to get rid of the parent "customSearchDescription" data-member since it
+         only has "customSearchGroups" and we do not really want to create a has-a relationship for a model
+         that is just a wrapper for a has-many....
+         */
             "customSearchGroups" : [ {
                 "id" : "group1",
                 "customSearchParameters" : [ {
@@ -236,7 +247,6 @@ var ThetusTestHelpers;
                 } ],
                 "displayLabel" : "Group 3"
             } ]
-        }
     };
 
     var allDals = {
@@ -266,9 +276,13 @@ var ThetusTestHelpers;
                 "searchGeoTypes": null,
                 "supportsHyperDynamicFacets": false,
                 "textDescription": "Pages on Wikipedia",
-                "customSearchDescription": {
-                    "customSearchGroups": null
-                }
+
+                /* WARNING, WARNING, WARNING!!!!!!
+                 We restructured the data to get rid of the parent "customSearchDescription" data-member since it
+                 only has "customSearchGroups" and we do not really want to create a has-a relationship for a model
+                 that is just a wrapper for a has-many....
+                 */
+                "customSearchGroups": null
             }, {
                 "id": "Linkedin",
                 "inputTypes": [
@@ -413,9 +427,13 @@ var ThetusTestHelpers;
                 "searchGeoTypes": null,
                 "supportsHyperDynamicFacets": false,
                 "textDescription": "Users on Linkedin",
-                "customSearchDescription": {
-                    "customSearchGroups": null
-                }
+
+                /* WARNING, WARNING, WARNING!!!!!!
+                 We restructured the data to get rid of the parent "customSearchDescription" data-member since it
+                 only has "customSearchGroups" and we do not really want to create a has-a relationship for a model
+                 that is just a wrapper for a has-many....
+                 */
+                "customSearchGroups": null
             }, {
                 "id": "Flickr",
                 "inputTypes": [
@@ -451,9 +469,13 @@ var ThetusTestHelpers;
                 "searchGeoTypes": null,
                 "supportsHyperDynamicFacets": false,
                 "textDescription": "Photos on Flickr",
-                "customSearchDescription": {
-                    "customSearchGroups": null
-                }
+
+                /* WARNING, WARNING, WARNING!!!!!!
+                 We restructured the data to get rid of the parent "customSearchDescription" data-member since it
+                 only has "customSearchGroups" and we do not really want to create a has-a relationship for a model
+                 that is just a wrapper for a has-many....
+                 */
+                "customSearchGroups": null
             }, {
                 "id": "Twitter",
                 "inputTypes": [
@@ -473,9 +495,13 @@ var ThetusTestHelpers;
                 "searchGeoTypes": null,
                 "supportsHyperDynamicFacets": false,
                 "textDescription": "Twitter tweets",
-                "customSearchDescription": {
-                    "customSearchGroups": null
-                }
+
+                /* WARNING, WARNING, WARNING!!!!!!
+                 We restructured the data to get rid of the parent "customSearchDescription" data-member since it
+                 only has "customSearchGroups" and we do not really want to create a has-a relationship for a model
+                 that is just a wrapper for a has-many....
+                 */
+                "customSearchGroups": null
             }, {
                 "id": "EBSCO",
                 "inputTypes": [
@@ -586,9 +612,13 @@ var ThetusTestHelpers;
                 "searchGeoTypes": null,
                 "supportsHyperDynamicFacets": false,
                 "textDescription": "Documents on EBSCO",
-                "customSearchDescription": {
-                    "customSearchGroups": null
-                }
+
+                /* WARNING, WARNING, WARNING!!!!!!
+                 We restructured the data to get rid of the parent "customSearchDescription" data-member since it
+                 only has "customSearchGroups" and we do not really want to create a has-a relationship for a model
+                 that is just a wrapper for a has-many....
+                 */
+                "customSearchGroups": null
             }, {
                 "id": "MOCK",
                 "inputTypes": [
@@ -614,7 +644,12 @@ var ThetusTestHelpers;
                 "searchGeoTypes": null,
                 "supportsHyperDynamicFacets": false,
                 "textDescription": "A MOCK Dal For Testing Custom Search Options",
-                "customSearchDescription": {
+
+                /* WARNING, WARNING, WARNING!!!!!!
+                 We restructured the data to get rid of the parent "customSearchDescription" data-member since it
+                 only has "customSearchGroups" and we do not really want to create a has-a relationship for a model
+                 that is just a wrapper for a has-many....
+                 */
                     "customSearchGroups": [
                         {
                             "id": "group1",
@@ -693,7 +728,6 @@ var ThetusTestHelpers;
                             "displayLabel": "Group 3"
                         }
                     ]
-                }
             } ]
     };
 
