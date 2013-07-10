@@ -2,6 +2,7 @@
 				require_once("lib/common.php");
 				
 				$configManager = new Config();
+				if(isset($_GET["subfolder"])){$subfolder=$_GET["subfolder"];}else{$subfolder="";}					
 				?>
 				// displaying previously stored annotations when document has loaded
 				<?php 
@@ -27,7 +28,7 @@
 						    $doc = "Paper.pdf";
 						    if($_GET["doc"]!=null){$doc = $_GET["doc"];}
 
-							$select = mysql_query("SELECT * FROM mark WHERE document_filename = '" . mysql_real_escape_string($_GET["doc"]) . "'");
+							$select = mysql_query("SELECT * FROM mark WHERE document_filename = '" . mysql_real_escape_string($_GET["doc"]) . "' AND document_relative_path = '" . $subfolder ."'");
 							for ($a=0; $a<mysql_num_rows($select); $a++) {
 								$row=mysql_fetch_array($select);
 								if($row["type"] == "note"){
@@ -97,6 +98,7 @@
 						  url: "services/annotations/create_mark.php",
 						  data : {
 							'DOCUMENT_FILENAME' : startDocument,
+							'DOCUMENT_PATH' : '<?php echo $subfolder ?>',
 						  	'MARK' : JSON.stringify(mark, null, 2)
 						  },
 						  context: document.body,
@@ -117,6 +119,7 @@
 						  url: "services/annotations/delete_mark.php",
 						  data : {
 							'DOCUMENT_FILENAME' : startDocument,
+							'DOCUMENT_PATH' : '<?php echo $subfolder ?>',							
 						  	'MARK' : JSON.stringify(mark, null, 2)
 						  },
 						  context: document.body,
@@ -137,6 +140,7 @@
 						  url: "services/annotations/change_mark.php",
 						  data : {
 							'DOCUMENT_FILENAME' : startDocument,
+							'DOCUMENT_PATH' : '<?php echo $subfolder ?>',							
 						  	'MARK' : JSON.stringify(mark, null, 2)
 						  },
 						  context: document.body,

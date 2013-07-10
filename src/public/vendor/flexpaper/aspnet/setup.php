@@ -9,7 +9,7 @@
 	$pdf2swf_exec		= '';
 	$pdf2json_exec		= '';
 	$path_to_pdftk		= '';
-
+	
 	if(	PHP_OS == "WIN32" || PHP_OS == "WINNT"	){
 		$path_to_pdf2swf 	= 'C:\Program Files\SWFTools\\';
 		$path_to_pdf2json 	= 'C:\Program Files\PDF2JSON\\';
@@ -25,10 +25,10 @@
 		if(!pdf2jsonEnabled($path_to_pdf2json . $pdf2json_exec)){
 			$path_to_pdf2json 	= 'C:\Program Files (x86)\PDF2JSON\\';
 		}
-
+		
 		if(!pdftkEnabled($path_to_pdftk . $pdftk_exec)){
-            $path_to_pdftk 	    = 'C:\Program Files (x86)\PDF Labs\PDFtk Server\bin\\';
-        }
+			$path_to_pdftk 	    = 'C:\Program Files (x86)\PDF Labs\PDFtk Server\bin\\';
+		}
 	}else{
 		$path_to_pdf2swf 	= '';
 		$path_to_pdf2json 	= '';
@@ -89,6 +89,7 @@
 	$_SESSION['PDF2JSON_PATH'] = $path_to_pdf2json;
 	/* -------------------------------------------- */
 
+
 	/* PDFTK PATH */
     /* -------------------------------------------- */
     if(isset($_GET['PDFTK_PATH'])){
@@ -132,6 +133,7 @@
 		$configs['pdf2swf'] 					= (bool) pdf2swfEnabled($path_to_pdf2swf . $pdf2swf_exec);
 		$configs['pdf2json'] 					= (bool) pdf2jsonEnabled($path_to_pdf2json . $pdf2json_exec);
 		$configs['pdftk']						= (bool) pdftkEnabled($path_to_pdftk . $pdftk_exec);
+				
 		$configs['admin.username'] 				= $_POST['ADMIN_USERNAME'];
 		$configs['admin.password'] 				= $_POST['ADMIN_PASSWORD'];
 		$configs['licensekey'] 					= $_POST['LICENSEKEY'];
@@ -146,78 +148,22 @@
 			$configs['cmd.conversion.rendersplitpage'] 	= str_replace("swfrender.exe", "\"" . $path_to_pdf2swf . "swfrender.exe" . "\"",$configs['cmd.conversion.rendersplitpage']);	
 			$configs['cmd.conversion.jsonfile'] 		= str_replace("pdf2json.exe", "\"" . $path_to_pdf2json . "pdf2json.exe" . "\"",$configs['cmd.conversion.jsonfile']);
 			$configs['cmd.conversion.splitjsonfile'] 	= str_replace("pdf2json.exe", "\"" . $path_to_pdf2json . "pdf2json.exe" . "\"",$configs['cmd.conversion.splitjsonfile']);
-            $configs['cmd.conversion.splitpdffile'] 	= str_replace("pdftk.exe", "\"" . $path_to_pdftk . "pdftk.exe" . "\"",$configs['cmd.conversion.splitpdffile']);
+			$configs['cmd.conversion.splitpdffile'] 	= str_replace("pdftk.exe", "\"" . $path_to_pdftk . "pdftk.exe" . "\"",$configs['cmd.conversion.splitpdffile']);
 			$configs['cmd.searching.extracttext'] 		= str_replace("swfstrings.exe", "\"" . $path_to_pdf2swf . "swfstrings.exe" . "\"",$configs['cmd.searching.extracttext']);
 		}else{
 			$configs['cmd.conversion.singledoc'] 		= str_replace("pdf2swf", "\"" . $path_to_pdf2swf . "pdf2swf" . "\"",$configs['cmd.conversion.singledoc']);
 			$configs['cmd.conversion.splitpages'] 		= str_replace("pdf2swf", "\"" . $path_to_pdf2swf . "pdf2swf" . "\"",$configs['cmd.conversion.splitpages']);
 			$configs['cmd.conversion.renderpage'] 		= str_replace("swfrender", "\"" . $path_to_pdf2swf . "swfrender" . "\"",$configs['cmd.conversion.renderpage']);
-			$configs['cmd.conversion.rendersplitpage'] 	= str_replace("swfrender", "\"" . $path_to_pdf2swf . "swfrender" . "\"",$configs['cmd.conversion.rendersplitpage']);	
+			$configs['cmd.conversion.rendersplitpage'] 	= str_replace("swfrender", "\"" . $path_to_pdf2swf . "swfrender" . "\"",$configs['cmd.conversion.rendersplitpage']);
 			$configs['cmd.conversion.jsonfile'] 		= str_replace("pdf2json", "\"" . $path_to_pdf2json . "pdf2json" . "\"",$configs['cmd.conversion.jsonfile']);
 			$configs['cmd.conversion.splitjsonfile'] 	= str_replace("pdf2json", "\"" . $path_to_pdf2json . "pdf2json" . "\"",$configs['cmd.conversion.splitjsonfile']);
-            $configs['cmd.conversion.splitpdffile'] 	= str_replace("pdftk", "\"" . $path_to_pdftk . "pdftk" . "\"",$configs['cmd.conversion.splitpdffile']);
+			$configs['cmd.conversion.splitpdffile'] 	= str_replace("pdftk", "\"" . $path_to_pdftk . "pdftk" . "\"",$configs['cmd.conversion.splitpdffile']);
 			$configs['cmd.searching.extracttext'] 		= str_replace("swfstrings", "\"" . $path_to_pdf2swf . "swfstrings" . "\"",$configs['cmd.searching.extracttext']);			
 		}	
-
-		// configure annotatinos sample database
-		$db_pass = true;
-		if(	isset($_POST["SQL_PASSWORD"]) &&
-			isset($_POST["SQL_USERNAME"]) &&
-			isset($_POST["SQL_HOST"]) &&
-			isset($_POST["SQL_DATABASE"]) &&
-			strlen($_POST["SQL_HOST"])>0){
-			
-			$configs['sql.host']  						= $_POST['SQL_HOST'];
-			$configs['sql.username']  					= $_POST['SQL_USERNAME'];
-			$configs['sql.password']  					= $_POST['SQL_PASSWORD'];
-			$configs['sql.database']  					= $_POST['SQL_DATABASE'];
-
-			$con = mysql_connect($_POST["SQL_HOST"], $_POST["SQL_USERNAME"], $_POST["SQL_PASSWORD"]);
-			if($con){
-
-				$configs['sql.verified']					= "true";
-				$database = mysql_select_db($_POST["SQL_DATABASE"], $con);
-
-				if($database){
-					$sql = "CREATE TABLE mark (
-					`id` varchar(255) NOT NULL,
-					`document_filename` varchar(255),
-					`document_relative_path` varchar(255),
-					`selection_text` text,
-					`has_selection` int(11),
-					`color` varchar(7),
-					`selection_info` varchar(30),
-					`readonly` tinyint(1),
-					`type` varchar(30),
-					`displayFormat` varchar(30),
-					`note` text,
-					`pageIndex` int(11),
-					`positionX` FLOAT,
-					`positionY` FLOAT,
-					`width` int(11),
-					`height` int(11),
-					`collapsed` tinyint(1),
-					`points` text,
-					`datecreated` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
-					`datechanged` datetime,
-					PRIMARY KEY (`id`)
-					)";
-						
-					$sql = mysql_query($sql, $con);
-					if(!$sql)
-					    $db_pass = false;
-				}else{
-					$db_pass = false;
-				}
-			}else{
-				$db_pass = false;
-			}
-		}
 		
 		$configManager->saveConfig($configs);
 
 		header("Location: index.php");
-
 		exit;	
 	}
 	
@@ -234,7 +180,12 @@
 				if (!isset($test['msg'])) {
 					$test['nomsg'] = 'No';
 				}
-				$i .= '<td class="fail">' . $test['nomsg'] . '</td>';
+				if($test['sev']=='1'){
+					$i .= '<td class="warn">' . $test['nomsg'] . '</td>';
+				}else{
+					$i .= '<td class="fail">' . $test['nomsg'] . '</td>';
+				}
+				
 				$fatals++;
 				array_push($fatal_msg, $test['failmsg']);
 			}
@@ -275,6 +226,27 @@
 					return false;
 				} else {
 					if (strpos($out[0], 'devaldi') !== false) {
+						return false;
+					} else {
+						return false;
+					}
+				}
+			} else {
+				return false;
+		}	
+	}
+	
+	function pdftkEnabled($path_to_pdftk){
+		if (function_exists('exec') && (DIRECTORY_SEPARATOR == '/' || (DIRECTORY_SEPARATOR == '\\' && $path_to_pdftk != 'pdf2json'))) {
+			if(	PHP_OS == "WIN32" || PHP_OS == "WINNT"	){
+				exec('"' . $path_to_pdftk . '"' . ' --version 2>&1', $out);
+			}else{
+				exec($path_to_pdftk . ' --version 2>&1', $out);
+			}
+				if (empty($out)) {
+					return false;
+				} else {
+					if (strpos(arrayToString($out), 'Manipulating PDF Documents') !== false) {
 						return true;
 					} else {
 						return false;
@@ -284,27 +256,6 @@
 				return false;
 		}	
 	}
-
-	function pdftkEnabled($path_to_pdftk){
-    		if (function_exists('exec') && (DIRECTORY_SEPARATOR == '/' || (DIRECTORY_SEPARATOR == '\\' && $path_to_pdftk != 'pdf2json'))) {
-    			if(	PHP_OS == "WIN32" || PHP_OS == "WINNT"	){
-    				exec('"' . $path_to_pdftk . '"' . ' --version 2>&1', $out);
-    			}else{
-    				exec($path_to_pdftk . ' --version 2>&1', $out);
-    			}
-    				if (empty($out)) {
-    					return false;
-    				} else {
-    					if (strpos(arrayToString($out), 'Manipulating PDF Documents') !== false) {
-    						return true;
-    					} else {
-    						return false;
-    					}
-    				}
-    			} else {
-    				return false;
-    		}
-    	}
 	
 	function exec_enabled() {
 	  $disabled = explode(', ', ini_get('disable_functions'));
@@ -393,6 +344,9 @@
 		
 		?>
 			<h3>FlexPaper Configuration: Server Requirements</h3>
+			<?php if(PHP_OS == "WINNT"){ ?>
+				<font color='#de0000' size=2>Please note that hosting FlexPaper with PHP on Windows is considered experimental. We recommend using our ASP.NET setup package for improved stability if you want to host your documents on Windows.</font><br/><br/>
+			<?php } ?>	
 			<table width="100%" cellspacing="0" cellpadding="0" class="sortable">
 					<tr>
 						<th class="title">Test</th>
@@ -444,10 +398,10 @@
 					"test" => (max_upload_gt_10()),
 					"failmsg" => "Your max upload size for your server is restricted to less than 10 megabytes. You can still use FlexPaper but will be unable to upload large files through the admin interface. To allow larger files, please increase 'upload_max_filesize' and 'post_max_size' in your php.ini file. For more information on this please see <a href='http://www.php.net/manual/en/ini.core.php#ini.upload-max-filesize'>the PHP documentation</a>",
 					"sev" => 0),
-        4 => array ("desc" => "PDFTK support",
-                    "test" => $pdftk,
-                    "failmsg" => "The HTML5 mode cannot be used in split mode without PDFTK installed. <br/><br/>Have you installed PDFTK at a different location? Please enter the full path to your PDFTK installation below<br/><form class='devaldi'><div class='text' style='width:400px;float:left;'><input type='text' name='PDFTK_PATH' id='PDFTK_PATH' value='" . $path_to_pdftk . "' onkeydown='updatepdftkpath()'/><div class='effects'></div><div class='loader'></div></div></form><br/>",
-                    "sev" => 1));
+		4 => array ("desc" => "PDFTK support",
+					"test" => $pdftk,
+					"failmsg" => "The HTML5 mode cannot be used in split mode without PDFTK installed. <br/><br/>Have you installed PDFTK at a different location? Please enter the full path to your PDFTK installation below<br/><form class='devaldi'><div class='text' style='width:400px;float:left;'><input type='text' name='PDFTK_PATH' id='PDFTK_PATH' value='" . $path_to_pdftk . "' onkeydown='updatepdftkpath()'/><div class='effects'></div><div class='loader'></div></div></form><br/>",
+					"sev" => 1));
 					
 		exec_tests($tests);
 		?>
@@ -461,11 +415,11 @@
 				$('#bttn_final').hide();
 				$('#bttn_updatepath_pdf2swf').show();				
 			}
-
+			
 			function updatepdftkpath(){
-                $('#bttn_final').hide();
-                $('#bttn_updatepath_pdftk').show();
-            }
+				$('#bttn_final').hide();
+				$('#bttn_updatepath_pdftk').show();				
+			}
 		</script>
 		<h3>FlexPaper Configuration: Recommended Components</h3>
 			<table width="100%" cellspacing="0" cellpadding="0" class="sortable">
@@ -498,11 +452,11 @@
 			<div style="margin-top:10px;float:right;display:none;" id="bttn_updatepath_pdf2swf">
 				<button class="tiny main n_button" type="submit" onclick="location.href='setup.php?step=2&PDF2SWF_PATH='+$('#PDF2SWF_PATH').val()"><span></span><em style="min-width:150px">retry <img src='admin_files/images/reload.png' style='margin-top:3px'/></em></button>&nbsp;<br/>
 			</div>
-
+			
 			<div style="margin-top:10px;float:right;display:none;" id="bttn_updatepath_pdftk">
 				<button class="tiny main n_button" type="submit" onclick="location.href='setup.php?step=2&PDFTK_PATH='+$('#PDFTK_PATH').val()"><span></span><em style="min-width:150px">retry <img src='admin_files/images/reload.png' style='margin-top:3px'/></em></button>&nbsp;<br/>
-			</div>
-
+			</div>			
+		
 			<?php 
 			break;
 			default:
@@ -528,13 +482,6 @@
 						$('#PUBLISHED_PDF_DIR_ERROR').html('Working directory needs to be set');
 						return false;
 					}
-
-					if(	$("INPUT#SQL_PASSWORD, INPUT#SQL_USERNAME, INPUT#SQL_HOST, INPUT#SQL_DATABASE_RESULT").val().length>0 &&
-						($("INPUT#SQL_PASSWORD").val()==0||$("INPUT#SQL_USERNAME").val()==0||$("INPUT#SQL_HOST").val()==0||$("INPUT#SQL_DATABASE_RESULT").val()==0)){
-						$('#SQL_CONNECT_RESULT').html('<font color="red">All fields need to be set to set up the sample database</font>');
-						$('INPUT#SQL_HOST').focus();
-						return false;
-					}
 					
 					/*if($('#LICENSEKEY').val().length==0){
 						$('#LICENSEKEY_ERROR').html('License key needs to be set');
@@ -543,16 +490,16 @@
 				}
 			</script>
 			<h3>FlexPaper: Configuration</h3>
-			<?php
-            $pdf2swf 	= pdf2swfEnabled($path_to_pdf2swf . $pdf2swf_exec);
-            $pdf2json 	= pdf2jsonEnabled($path_to_pdf2json . $pdf2json_exec);
-            $pdftk		= pdftkEnabled($path_to_pdftk . $pdftk_exec);
-            ?>
+			<?php 
+			$pdf2swf 	= pdf2swfEnabled($path_to_pdf2swf . $pdf2swf_exec);
+			$pdf2json 	= pdf2jsonEnabled($path_to_pdf2json . $pdf2json_exec);
+			$pdftk		= pdftkEnabled($path_to_pdftk . $pdftk_exec);
+			?>
 			<form class="devaldi" action="setup.php" method="post" onsubmit="return validateConfiguration()">
 				<input type="hidden" id="step" name="step" value="4" />
 				<table width="100%" cellspacing="0" cellpadding="0" class="sortable">
 						<tr>
-							<td>Admin Username</th>
+							<td>Admin Username</td>
 							<td>
 								<div class='text' style="width:150px;float:left;">
 											<input type="text" name="ADMIN_USERNAME" id="ADMIN_USERNAME" value="<?php echo $configManager->getConfig('admin.username')?>"/>
@@ -564,7 +511,7 @@
 						</tr>
 						
 						<tr>
-							<td>Admin Password</th>
+							<td>Admin Password</td>
 							<td>
 								<div class='text' style="width:150px;float:left">
 											<input type="text" name="ADMIN_PASSWORD" id="ADMIN_PASSWORD" value="<?php echo $configManager->getConfig('admin.password')?>"/>
@@ -582,7 +529,7 @@
 											<input type="text" name="PDF_DIR" id="PDF_DIR" value=""/>
 											<div class="effects"></div><div class="loader"></div>
 								</div>
-								<div style="float:left;font-size:10px;padding-top:5px;">This directory should reside outside of your web application root folder to protect your documents.</div>
+								<div style="float:left;font-size:10px;padding-top:5px;">Please enter the full absolute path to the directory where you want to store your PDF files</div>
 								<div id="PDF_DIR_ERROR" class="formError" style="float:right;"></div>
 							</td>
 						</tr>
@@ -594,7 +541,7 @@
 											<input type="text" name="PUBLISHED_PDF_DIR" id="PUBLISHED_PDF_DIR" value=""/>
 											<div class="effects"></div><div class="loader"></div>
 								</div>
-								<div style="float:left;font-size:10px;padding-top:5px;">This directory should reside outside of your web application root folder to protect your documents.</div>
+								<div style="float:left;font-size:10px;padding-top:5px;">Please enter the full absolute path to the directory where you want to store your published files</div>
 								<div id="PUBLISHED_PDF_DIR_ERROR" class="formError" style="float:right;"></div>
 							</td>
 						</tr>
@@ -605,16 +552,16 @@
 							</td>
 							<td>
 								<div style="width:300px;float:left;">
-                                    <select id="RenderingOrder_PRIM" name="RenderingOrder_PRIM" style="font-size:12pt;float:left;">
-                                        <?php if($pdf2swf){ ?>
-                                        <option value="flash" <?php if($configManager->getConfig('renderingorder.primary') == "flash") { ?>selected="true"<?php } ?>>flash</option>
-                                        <?php }?>
-                                        <?php if($pdf2json && $pdf2swf){ ?>
-                                        <option value="html" <?php if($configManager->getConfig('renderingorder.primary') == "html") { ?>selected="true"<?php } ?>>html</option>
-                                        <?php }?>
-                                        <option value="html5" <?php if($configManager->getConfig('renderingorder.primary') == "html5") { ?>selected="true"<?php } ?>>html5</option>
-                                    </select>
-                                </div>
+									<select id="RenderingOrder_PRIM" name="RenderingOrder_PRIM" style="font-size:12pt;float:left;">
+										<?php if($pdf2swf){ ?>
+										<option value="flash" <?php if($configManager->getConfig('renderingorder.primary') == "flash") { ?>selected="true"<?php } ?>>flash</option>
+										<?php }?>
+										<?php if($pdf2json && $pdf2swf){ ?>
+										<option value="html" <?php if($configManager->getConfig('renderingorder.primary') == "html") { ?>selected="true"<?php } ?>>html</option>
+										<?php }?>										
+										<option value="html5" <?php if($configManager->getConfig('renderingorder.primary') == "html5") { ?>selected="true"<?php } ?>>html5</option>
+									</select>
+								</div>
 								<div style="float:left;font-size:10px;padding-top:5px;">This decides what to use as primary media format to use for your visitors. </div>
 							</td>
 						</tr>
@@ -629,28 +576,26 @@
 										<?php if($pdf2swf){ ?>
 										<option value="flash" <?php if($configManager->getConfig('renderingorder.secondary') == "flash") { ?>selected="true"<?php } ?>>flash</option>
 										<?php } ?>
-										<?php if($pdf2json && $pdf2swf){ ?>
+										<?php if($pdf2json && $pdf2swf){ ?>										
 										<option value="html" <?php if($configManager->getConfig('renderingorder.secondary') == "html") { ?>selected="true"<?php } ?>>html</option>
-										<?php } ?>
+										<?php } ?>										
 										<option value="html5" <?php if($configManager->getConfig('renderingorder.secondary') == "html5") { ?>selected="true"<?php } ?>>html5</option>
 									</select>
 								</div>	
 								<div style="float:left;font-size:10px;padding-top:5px;">This decides what to use as secondary media format to use for your visitors. </div>
 							</td>
 						</tr>
-
 						<?php if($pdf2json) { ?>
-                        <tr>
-                            <td>Split mode publishing? </th>
-                            <td>
-                                    <INPUT TYPE=RADIO NAME="SPLITMODE" id="SPLITMODE1" VALUE="0" <?php if($configManager->getConfig('splitmode') == "false" || $configManager->getConfig('splitmode') == "" || $configManager->getConfig('splitmode') == "0") { ?>checked="true"<?php } ?> style="vertical-align: middle"> No
-                                    <INPUT TYPE=RADIO NAME="SPLITMODE" id="SPLITMODE2" VALUE="1" <?php if($configManager->getConfig('splitmode') == "true" || $configManager->getConfig('splitmode') == "1") { ?>checked="true"<?php } ?> style="vertical-align: middle;margin-left:30px;"> Yes<BR>
-                                <div style="float:left;font-size:10px;padding-top:5px;">If you generally publish large PDF documents then running split mode is recommended.</div>
-
-                            </td>
-                        </tr>
-                        <?php } ?>
-
+						<tr>
+							<td>Split mode publishing? </th>
+							<td>
+									<INPUT TYPE=RADIO NAME="SPLITMODE" id="SPLITMODE1" VALUE="0" <?php if($configManager->getConfig('splitmode') == "false" || $configManager->getConfig('splitmode') == "" || $configManager->getConfig('splitmode') == "0") { ?>checked="true"<?php } ?> style="vertical-align: middle"> No
+									<INPUT TYPE=RADIO NAME="SPLITMODE" id="SPLITMODE2" VALUE="1" <?php if($configManager->getConfig('splitmode') == "true" || $configManager->getConfig('splitmode') == "1") { ?>checked="true"<?php } ?> style="vertical-align: middle;margin-left:30px;"> Yes<BR>
+								<div style="float:left;font-size:10px;padding-top:5px;">If you generally publish large PDF documents then running split mode is recommended.</div>
+								
+							</td>
+						</tr>
+						<?php } ?>
 						<tr>
 							<td>License Key</th>
 							<td>
@@ -663,61 +608,6 @@
 							</td>
 						</tr>
 				</table>
-
-				<br/>
-				<h3>Optional: Install Sample Database</h3>
-				<p class="psmall">Enter database details below to create a sample database in where annotations can be stored.<br/>Make sure you have a empty database prepared on your host before submitting your configuration.</p>
-				<table width="100%" cellspacing="0" cellpadding="0" class="sortable">
-						<tr>
-							<td>MySQL Host</th>
-							<td>
-								<div class='text' style="width:300px;float:left;">
-											<input type="text" name="SQL_HOST" id="SQL_HOST" value="<?php echo $configManager->getConfig('sql.host')?>"/>
-											<div class="effects"></div><div class="loader"></div>
-								</div>
-								<div style="float:left;font-size:10px;padding-top:5px;">Host address where your database is located</div>
-								<div id="SQL_HOST_RESULT" class="formError" style="float:right;"></div>
-							</td>
-						</tr>
-						<tr>
-							<td>MySQL Username</th>
-							<td>
-								<div class='text' style="width:300px;float:left;">
-											<input type="text" name="SQL_USERNAME" id="SQL_USERNAME" value="<?php echo $configManager->getConfig('sql.username')?>"/>
-											<div class="effects"></div><div class="loader"></div>
-								</div>
-								<div style="float:left;font-size:10px;padding-top:5px;">Username to use when connecting to the database</div>
-								<div id="SQL_USERNAME_RESULT" class="formError" style="float:right;"></div>
-							</td>
-						</tr>
-						<tr>
-							<td>MySQL Password</th>
-							<td>
-								<div class='text' style="width:300px;float:left;">
-											<input type="text" name="SQL_PASSWORD" id="SQL_PASSWORD" value="<?php echo $configManager->getConfig('sql.password')?>"/>
-											<div class="effects"></div><div class="loader"></div>
-								</div>
-								<div style="float:left;font-size:10px;padding-top:5px;">Password to use when connecting to the database</div>
-								<div id="SQL_PASSWORD_RESULT" class="formError" style="float:right;"></div>
-							</td>
-						</tr>
-						<tr>
-							<td>MySQL Database</th>
-							<td>
-								<div class='text' style="width:300px;float:left;">
-											<input type="text" name="SQL_DATABASE" id="SQL_DATABASE" value="<?php echo $configManager->getConfig('sql.database')?>"/>
-											<div class="effects"></div><div class="loader"></div>
-								</div>
-								<div style="float:left;font-size:10px;padding-top:5px;">Database which you wan to used for the sample</div>
-								<div id="SQL_DATABASE_RESULT" class="formError" style="float:right;"></div>
-							</td>
-						</tr>
-
-						<tr>
-							<td colspan=2><div id="SQL_CONNECT_RESULT"></div></th>
-						</tr>
-				</table>
-
 				<script language="JavaScript">
 					$(document).ready(function(){
 						$("input#PDF_DIR").keyup(initTimer);
@@ -725,12 +615,6 @@
 						
 						$("input#PUBLISHED_PDF_DIR").keyup(initTimer);
 						$("input#PUBLISHED_PDF_DIR").change(checkDirectoryChangePermissionsHandler);
-
-						$("INPUT#SQL_PASSWORD, INPUT#SQL_USERNAME, INPUT#SQL_HOST, INPUT#SQL_DATABASE").keyup(function(e){
-							currentTimeoutField = $(this);	
-						    if (window.globalTimeout) clearTimeout(window.globalTimeout);	
-						    window.globalTimeout = setTimeout(checkDatabaseConnectivityHandler, 2000);
-						});
 					});
 					
 					var globalTimeout;
@@ -752,48 +636,11 @@
 						  context: document.body,
 						  success: function(data){
 						  	if(data=="0"){
-								$('#'+infield.attr("id")+'_ERROR').html('Cannot write to directory. Please verify path & permissions (needs to be writable).');
+								$('#'+infield.attr("id")+'_ERROR').html('Cannot write to directory. Please verify path & permissions (needs to be writable).<br/>Windows users: please wait a minute before trying again after changing permissions<br/><button class="tiny main n_button" type="submit" onclick="checkDirectoryPermissions(jQuery(\'input#'+infield.attr('id')+'\'));return false;"><span></span><em style="min-width:100px">retry <img src="admin_files/images/reload.png"  style="margin-top:3px"/></em></button>');
 								return false;
 							}else{
 								$('#'+infield.attr("id")+'_ERROR').html('');
 								return true;
-							}
-						  }
-						});	
-					}
-
-					function checkDatabaseConnectivity(){
-						if($("INPUT#SQL_PASSWORD").val().length==0){return;}
-						if($("INPUT#SQL_USERNAME").val().length==0){return;}
-						if($("INPUT#SQL_HOST").val().length==0){return;}
-						if($("INPUT#SQL_DATABASE").val().length==0){return;}
-
-						$.ajax({
-						  url: "checkdatabaseconnectivity.php",
-						  data : {
-						  	'SQL_HOST' : $("INPUT#SQL_HOST").val(),
-							'SQL_PASSWORD' : $("INPUT#SQL_PASSWORD").val(),
-							'SQL_USERNAME' : $("INPUT#SQL_USERNAME").val(),
-							'SQL_DATABASE' : $("INPUT#SQL_DATABASE").val()
-						  },
-						  context: document.body,
-						  type: 'POST',
-						  success: function(data){
-							var retryicon = "<br/><br/><button class='tiny main n_button' type='submit' onclick='checkDatabaseConnectivity();return false;'><span></span><em style='min-width:100px'>retry <img src='admin_files/images/reload.png' style='margin-top:3px'/></em></button>&nbsp;";
-
-							if(data=="no_mysql_extensions"){
-								$('#SQL_CONNECT_RESULT').html('<font color="red">Cannot find the MySQL extensions for PHP. Please install these before proceeding.</font>');
-								return false;
-							}else if(data=="no_db"){
-								$('#SQL_CONNECT_RESULT').html('<font color="red">Cannot connect to database, please check your configuration.</font>'+retryicon);
-								return false;
-							}else if(data=="1"){
-								$('#SQL_CONNECT_RESULT').html('<font color="green">Connection test successful</font>');
-								$('#SQL_DATABASE_VERIFIED').val('true');
-								return true;
-							}else{
-								$('#SQL_CONNECT_RESULT').html('<font color="red">Cannot connect to database, please check your configuration.</font>');
-								return false;
 							}
 						  }
 						});	
@@ -808,15 +655,10 @@
 						var infield = currentTimeoutField;
 						checkDirectoryPermissions(infield);						
 					}
-
-					function checkDatabaseConnectivityHandler(event){
-						checkDatabaseConnectivity();		
-					}
 				</script>
 				<div style="margin-top:10px;float:right;">
 					<button class="tiny main n_button" type="submit"><span></span><em style="min-width:150px">Save &amp; Complete Setup</em></button>&nbsp;<br/>
 				</div>
-				<input type="hidden" name="SQL_DATABASE_VERIFIED" id="SQL_DATABASE_VERIFIED" value="false"/>
 			</form>
 				
 			<?php break;?>

@@ -2,10 +2,10 @@
  * Helper function for appending the output log
  */
 function appendLog(val){
-	$("#txt_eventlog").val(val + '\n' + $("#txt_eventlog").val());
+	jQuery("#txt_eventlog").val(val + '\n' + jQuery("#txt_eventlog").val());
 }
 
-$(function() {
+jQuery(function() {
     /**
      * Handles the event of external links getting clicked in the document.
      *
@@ -16,7 +16,7 @@ $(function() {
     jQuery('#documentViewer').bind('onExternalLinkClicked',function(e,link){
         jQuery("#txt_eventlog").val('onExternalLinkClicked:' + link + '\n' + jQuery("#txt_eventlog").val());
 
-        //window.location.href = link; //uncomment to let viewer navigate
+        window.open(link,'_flexpaper_exturl');
     });
 
     /**
@@ -65,22 +65,23 @@ $(function() {
      *
      * @param int totalPages
      */
-    jQuery('#documentViewer').bind('onDocumentLoaded',function(e,totalPages){
-        jQuery("#txt_eventlog").val('onDocumentLoaded:' + totalPages + '\n' + jQuery("#txt_eventlog").val());
-
-        chainOfMethods();
-    });
-
-    /**
-     * Receives messages about the page loaded
-     *
-     * @example onPageLoaded( 1 );
-     *
-     * @param int pageNumber
-     */
     jQuery('#documentViewer').bind('onPageLoaded',function(e,pageNumber){
-        jQuery("#txt_eventlog").val('onPageLoaded:' + pageNumber + '\n' + jQuery("#txt_eventlog").val());
+        if(pageNumber == 1 && !window.firstTimeLoaded){
+            window.firstTimeLoaded = true;
+            jQuery('#documentViewer').trigger('onDocumentLoaded',$FlexPaper('documentViewer').getTotalPages());
+        }
     });
+
+    jQuery('#documentViewer').bind('onDocumentLoaded',function(e,totalPages){
+
+        $FlexPaper('documentViewer').addMark({id : '22b3e0f3-c711-a957-858f-64a55fb1edc1',type : 'note',note : 'asdasdasdads!!!!!!',positionX : 223.906,positionY : 350,width : 250,height : 250,pageIndex : 5 ,collapsed : false,readonly : false,color : '',displayFormat : 'html'});
+
+        $FlexPaper('documentViewer').addMark({id : '5935d894-7b21-2a49-434d-95209aae6a01',type : 'note',note : 'asdasdasd',positionX : 333.906,positionY : 440,width : 250,height : 250,pageIndex : 1 ,collapsed : false,readonly : false,color : '',displayFormat : 'html'});
+
+        $FlexPaper('documentViewer').addMark({id : 'fe657522-59e8-bad0-94f8-82fc2f0634ba',type : 'drawing',color : '#000000',points : '311.40625,380:308.90625,390:296.40625,440:228.90625,597.5:208.90625,622.5:193.90625,625:173.90625,612.5:118.90625,565:93.90625,527.5:78.90625,490:76.40625,470:76.40625,457.5:78.90625,452.5:83.90625,445:103.90625,430:133.90625,417.5:173.90625,405:196.40625,405:211.40625,407.5:228.90625,425:248.90625,452.5:281.40625,520:306.40625,592.5:321.40625,667.5:328.90625,720:336.40625,732.5:341.40625,732.5:371.40625,705:476.40625,585:543.90625,497.5:608.90625,407.5:636.40625,357.5:641.40625,345:638.90625,337.5:631.40625,332.5:613.90625,330:596.40625,330:561.40625,345:521.40625,367.5:506.40625,380:506.40625,385:508.90625,390:508.90625,392.5:',pageIndex : 2 ,readonly : false,displayFormat : 'html'});
+
+    });
+
 
     /**
      * Receives messages about the page loaded
@@ -176,7 +177,7 @@ function chainOfMethods(){
     var sampleList = new Array(mark3);
     viewer.addMarks(sampleList);
 
-	viewer.addMark({type:'note', note: 'The annotations plug-in allows both highlighting and notes to be created\n\nNotes can be resized, moved and deleted.',positionX:-5,positionY:330,width:200,height:180,pageIndex:1,collapsed:false,readonly:true,displayFormat:'html'});
+	viewer.addMark({type:'note', note: 'The annotations plug-in allows both highlighting and notes to be created\n\nNotes can be resized, moved and deleted.',positionX:-5,positionY:330,width:200,height:180,pageIndex:2,collapsed:false,readonly:true,displayFormat:'html'});
 	viewer.addMark({type:'note', note: 'The plug-in features a full set of API functions which can be used to interact with the viewer so that annotations can be stored and recreated later.',positionX:530,positionY:150,width:200,height:180,pageIndex:1,collapsed:false,displayFormat:'html'});
 	viewer.addMark({type:'highlight', selection_info: '1;0;20',has_selection:false,color:'#facd56'});
 	viewer.addMark({type:'highlight', selection_info: '3;23;58',has_selection:false,color:'#fffc15'});

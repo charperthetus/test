@@ -57,6 +57,10 @@ class Config {
 			$ret = json_decode($contents, true);
 			if($ret != null)
 				return $ret;
+			else{ // try to replace \/ with / and decode again
+                $contents = str_replace("\/", "/",$contents);
+                $ret = json_decode($contents, true);
+            }
 		}
 		$ret = $this->newConfig();
 		$this->saveConfig($ret);

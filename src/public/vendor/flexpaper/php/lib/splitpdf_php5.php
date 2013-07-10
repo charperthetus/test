@@ -34,12 +34,12 @@ class splitpdf
 	/**
 	* Method:splitPDF
 	*/
-	public function splitPDF($pdfdoc)
+	public function splitPDF($pdfdoc,$subfolder)
 	{
 		$output=array();
         $command = $this->configManager->getConfig('cmd.conversion.splitpdffile');
-        $command = str_replace("{path.pdf}",$this->configManager->getConfig('path.pdf'),$command);
-        $command = str_replace("{path.swf}",$this->configManager->getConfig('path.swf'),$command);
+        $command = str_replace("{path.pdf}",$this->configManager->getConfig('path.pdf') . $subfolder,$command);
+        $command = str_replace("{path.swf}",$this->configManager->getConfig('path.swf') . $subfolder,$command);
         $command = str_replace("{pdffile}",$pdfdoc,$command);
 
 		try {

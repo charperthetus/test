@@ -37,21 +37,21 @@ class pdf2swf
 	/**
 	* Method:convert
 	*/
-	public function convert($doc,$page)
+	public function convert($doc,$page,$subfolder)
 	{
 		$output=array();
-		$pdfFilePath = $this->configManager->getConfig('path.pdf') . $doc;
-		$swfFilePath = $this->configManager->getConfig('path.swf') . $doc  . $page. ".swf";
-		
+		$pdfFilePath = $this->configManager->getConfig('path.pdf') . $subfolder . $doc;
+		$swfFilePath = $this->configManager->getConfig('path.swf') . $subfolder . $doc  . $page. ".swf";
+				
 		if($this->configManager->getConfig('splitmode')=='true')
 			$command = $this->configManager->getConfig('cmd.conversion.splitpages');
 		else
 			$command = $this->configManager->getConfig('cmd.conversion.singledoc');
 			
-		$command = str_replace("{path.pdf}",$this->configManager->getConfig('path.pdf'),$command);
-		$command = str_replace("{path.swf}",$this->configManager->getConfig('path.swf'),$command);
+		$command = str_replace("{path.pdf}",$this->configManager->getConfig('path.pdf') . $subfolder,$command);
+		$command = str_replace("{path.swf}",$this->configManager->getConfig('path.swf') . $subfolder,$command);
 		$command = str_replace("{pdffile}",$doc,$command);
-		
+
 		try {
 			if (!$this->isNotConverted($pdfFilePath,$swfFilePath)) {
 				array_push ($output, utf8_encode("[Converted]"));

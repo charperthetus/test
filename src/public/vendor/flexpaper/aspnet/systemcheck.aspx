@@ -1,9 +1,20 @@
 <%@ Page Title="" Language="C#" %>
 <%@ Import Namespace="System.Web.Hosting" %>
+<%@ Import Namespace="System.Configuration" %>
+
 <script runat="server">
 		void Page_Load() {
-        
-			if(!HostingEnvironment.IsHosted){
+			if(ConfigurationManager.AppSettings.Count > 0){
+				if(!ConfigurationManager.AppSettings[0].ToString().Equals("flexpaper_test")){
+					Response.Write("You need to make the aspnet directory a ASP.NET 4.0 web application before you can proceed further.<br/><br/>For more information on how to do this, please <a href='http://flexpaper.devaldi.com/docs_publishing_with_ASPNET.jsp'>see our documentation</a>. ");
+					Response.End();
+				}
+			}else{
+				Response.Write("You need to make the aspnet directory a ASP.NET 4.0 web application before you can proceed further.<br/><br/>For more information on how to do this, please <a href='http://flexpaper.devaldi.com/docs_publishing_with_ASPNET.jsp'>see our documentation</a>. ");
+				Response.End();
+			}	
+		
+        		if(!HostingEnvironment.IsHosted){
 				Response.Write("You need to make the aspnet directory a ASP.NET 4.0 web application before you can proceed further.<br/><br/>For more information on how to do this, please <a href='http://flexpaper.devaldi.com/docs_publishing_with_ASPNET.jsp'>see our documentation</a>. ");
 				Response.End();
 			}

@@ -35,7 +35,7 @@ class swfrender
 	/**
 	* Method:render page as image
 	*/
-	public function renderPage($pdfdoc,$swfdoc,$page)
+	public function renderPage($pdfdoc,$swfdoc,$page,$subfolder)
 	{
 		$output=array();
 
@@ -45,11 +45,11 @@ class swfrender
 			}else{
 				$command = $this->configManager->getConfig('cmd.conversion.renderpage');
 			}
-			$command = str_replace("{path.swf}",$this->configManager->getConfig('path.swf'),$command);
+			$command = str_replace("{path.swf}",$this->configManager->getConfig('path.swf') . $subfolder,$command);
 			$command = str_replace("{swffile}",$swfdoc,$command);
 			$command = str_replace("{pdffile}",$pdfdoc,$command);
 			$command = str_replace("{page}",$page,$command);
-			
+
 			$return_var=0;
 			exec($command,$output,$return_var);
 			if($return_var==0){

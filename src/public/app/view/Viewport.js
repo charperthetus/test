@@ -6,7 +6,6 @@ Ext.define('Savanna.view.Viewport', {
 
     requires: [
         'Ext.tab.Panel',
-        'Ext.layout.container.Border',
         'Savanna.view.Login'
     ],
 
@@ -17,9 +16,20 @@ Ext.define('Savanna.view.Viewport', {
 
     items: [
         {
-            xtype:  'login',
-            itemId: 'login',
-            region: 'center'
+            xtype:"panel",
+            region:"center",
+            layout:"fit",
+            items:  [
+                {
+                    xtype:  'login',
+                    itemId: 'login'
+                },
+                {
+                    xtype:  Savanna.Config.desktopType,
+                    itemId: 'main'
+                }
+            ]
         }
+
     ]
 });

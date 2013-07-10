@@ -91,6 +91,7 @@
 					<h3>FlexPaper Configuration</h3>
 					<form class="devaldi" method="post" action="change_config.php" style="padding-bottom:30px;width:650px;"> 
 									<table>
+									    <?php if($configManager->getConfig('pdf2json')){ ?>
 										<tr>
 											<td style="border:0px;" valign="top">
 												<label><nobr>Publishing Mode</nobr></label>
@@ -102,7 +103,7 @@
 												</font>
 											</td>
 										</tr>
-										
+										<?php } ?>
 										<tr>
 											<td style="border:0px" valign="top">
 												<label><nobr>PDF Directory</nobr></label>
@@ -137,9 +138,13 @@
 											</td>
 											<td style="border:0px">
 													<select id="RenderingOrder_PRIM" name="RenderingOrder_PRIM" style="font-size:12pt;">
+													    <?php if($configManager->getConfig('pdf2swf')) { ?>
 														<option value="flash" <?php if($configManager->getConfig('renderingorder.primary') == "flash") { ?>selected="true"<?php } ?>>flash</option>
+														<?php } ?>
+														<?php if($configManager->getConfig('pdf2swf') && $configManager->getConfig('pdf2json')) { ?>
 														<option value="html" <?php if($configManager->getConfig('renderingorder.primary') == "html") { ?>selected="true"<?php } ?>>html</option>
-														<option value="html5" <?php if($configManager->getConfig('renderingorder.primary') == "html5") { ?>selected="true"<?php } ?>>html5 (beta)</option>
+														<?php } ?>
+														<option value="html5" <?php if($configManager->getConfig('renderingorder.primary') == "html5") { ?>selected="true"<?php } ?>>html5</option>
 													</select><br/>
 												<div style="float:left;font-size:10px;padding-top:5px;">This decides what to use as primary media format to use for your visitors. </div>
 											</td>
@@ -151,9 +156,13 @@
 											</td>
 											<td style="border:0px">
 													<select id="RenderingOrder_SEC" name="RenderingOrder_SEC" style="font-size:12pt;">
+													    <?php if($configManager->getConfig('pdf2swf')) { ?>
 														<option value="flash" <?php if($configManager->getConfig('renderingorder.secondary') == "flash") { ?>selected="true"<?php } ?>>flash</option>
+														<?php } ?>
+														<?php if($configManager->getConfig('pdf2swf') && $configManager->getConfig('pdf2json')) { ?>
 														<option value="html" <?php if($configManager->getConfig('renderingorder.secondary') == "html") { ?>selected="true"<?php } ?>>html</option>
-														<option value="html5" <?php if($configManager->getConfig('renderingorder.secondary') == "html5") { ?>selected="true"<?php } ?>>html5 (beta)</option>
+														<?php } ?>
+														<option value="html5" <?php if($configManager->getConfig('renderingorder.secondary') == "html5") { ?>selected="true"<?php } ?>>html5</option>
 													</select><br/>
 												<div style="float:left;font-size:10px;padding-top:5px;">This decides what to use as secondary media format to use for your visitors. </div>
 											</td>

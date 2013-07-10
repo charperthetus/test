@@ -20,6 +20,10 @@
 	session_start();
 	
 	$pdfFilePath = $configManager->getConfig('path.pdf');
+	$subFolder = "";
+	if(isset($_GET['subfolder'])){
+		$subFolder = $_GET['subfolder'];
+	}
 	
 	if(isset($_POST['pdfFile'])){
 		for ($i = 0; $i < count($_POST['pdfFile']); $i++) {
@@ -102,12 +106,14 @@ $(function() {
 			$(this).removeClass('checkedRow');
 		 }
       }).click(function(event){
+      	if(jQuery(event.target).hasClass('folder')){return;}
+      	
       	 var tagName = (event && event.target)?event.target.tagName:window.event.srcElement.tagName;
 		 if(tagName != 'INPUT' && !jQuery(event.target).hasClass('title')){
 			<?php if(!$configManager->getConfig('splitmode') || $configManager->getConfig('splitmode') == "false"){ ?>
-            var newWindow = window.open('simple_document.php?doc='+ $('input:first', this).val(),'open_window','menubar, toolbar, location, directories, status, scrollbars, resizable, dependent, width=640, height=480, left=0, top=0');
+            var newWindow = window.open('simple_document.php?subfolder=<?php echo $subFolder ?>&doc='+ $('input:first', this).val(),'open_window','menubar, toolbar, location, directories, status, scrollbars, resizable, dependent, width=640, height=480, left=0, top=0');
             <?php }else{ ?>
-            var newWindow = window.open('split_document.php?doc='+ $('input:first', this).val(),'open_window','menubar, toolbar, location, directories, status, scrollbars, resizable, dependent, width=640, height=480, left=0, top=0');
+            var newWindow = window.open('split_document.php?subfolder=<?php echo $subFolder ?>&doc='+ $('input:first', this).val(),'open_window','menubar, toolbar, location, directories, status, scrollbars, resizable, dependent, width=640, height=480, left=0, top=0');
             <?php } ?>
       	 }else{
 			if(tagName != 'INPUT')
@@ -130,13 +136,26 @@ $(function() {
 			<!-- <div style="float:left;"><button class="tiny main n_button disabled" id="bttn_view" onclick="window.location.href='simple_document.php';return false; " type="submit"><span></span><em style="min-width:100px">view</em></button>&nbsp;</div><br/>   -->
 				<table width="100%" style="width:880px" cellspacing="0" cellpadding="0" class="selectable_sortable">
 				<?php 
-				if ($handle = opendir($configManager->getConfig('path.pdf'))) { 
+				if ($handle = opendir($configManager->getConfig('path.pdf') . $subFolder)) { 
+					$blacklist = array('.', '..');					
+					
 					while (false !== ($file = readdir($handle))) { 
-						if(endsWith($file,'.pdf') && $file != "Sample.pdf") {?>
+						if(!in_array($file, $blacklist) && !endsWith($file,'.pdf') && !startsWith($file,'.')) {?>						
+						<tr class="unselectedRow folder" onclick="location.href='index.php?subfolder=<?php echo $subFolder . $file . '/' ?>'">
+							<th class="title folder" style="width:15px"><img src="admin_files/images/folder.png"/></th>
+							<td class="tr folder" style="text-align:left;" colspan="2"><?php echo "$file"; ?></td>
+						</tr>
+						<?php }
+					}
+					closedir($handle);
+					 
+					$handle = opendir($configManager->getConfig('path.pdf') . $subFolder);
+					while (false !== ($file = readdir($handle))) { 
+						if(!in_array($file, $blacklist) && endsWith($file,'.pdf') && $file != "Sample.pdf") {?>
 						<tr class="unselectedRow">
 							<th class="title" style="width:15px"><input type="checkbox" id="pdfFile" name="pdfFile[]" value="<?php echo "$file"; ?>" class="fileCheckBox"></th>
 							<td class="tr" style="text-align:left;"><?php echo "$file"; ?></td>
-							<td class="tr" style="text-align:left;"><?php echo filesize($configManager->getConfig('path.pdf') . $file)?>&nbsp;bytes</td>
+							<td class="tr" style="text-align:left;"><?php echo filesize($configManager->getConfig('path.pdf') . $subFolder . $file)?>&nbsp;bytes</td>
 						</tr>
 						<?php } ?>
 					<?php } ?>

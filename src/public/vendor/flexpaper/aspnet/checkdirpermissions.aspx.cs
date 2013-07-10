@@ -39,13 +39,23 @@ public partial class checkdirpermissions : System.Web.UI.Page
             {
                 if (Request["pdfdir"] != null&&Request["docsdir"] !=null && Request["pdfdir"].ToString().Length > 0 && Request["docsdir"].ToString().Length >0)
                 {
-                    try
+					
+                    String docsdir = Request["docsdir"];
+                    String pdfdir = Request["pdfdir"];
+
+					if(docsdir.LastIndexOf(@"\")!=docsdir.Length-1){docsdir+=@"\";}
+					if(pdfdir.LastIndexOf(@"\")!=pdfdir.Length-1){pdfdir+=@"\";}
+
+					try
                     {
+						if(!File.Exists(Server.MapPath(VirtualPathUtility.GetDirectory(Request.Path))+@"\pdf\Paper.pdf"))
+							File.Copy(Server.MapPath(VirtualPathUtility.GetDirectory(Request.Path))+@"\pdf\Paper.pdf",pdfdir+@"Paper.pdf");
+					
                         string command = configManager.getConfig("cmd.conversion.test");
                         command = command.Replace("{path.swftools}", lpath_to_pdf2swf);
-                        command = command.Replace("{path.pdf}", Request["pdfdir"]);
-                        command = command.Replace("{path.swf}", Request["docsdir"]);
-
+                        command = command.Replace("{path.pdf}", pdfdir);
+                        command = command.Replace("{path.swf}", docsdir);
+						
                         System.Diagnostics.Process proc = new System.Diagnostics.Process();
                         proc.StartInfo.FileName = command.Substring(0, command.IndexOf(".exe") + 5);
                         command = command.Substring(command.IndexOf(".exe") + 5);
@@ -61,7 +71,7 @@ public partial class checkdirpermissions : System.Web.UI.Page
 							proc.WaitForExit();
 							proc.Close();
 							
-							if(File.Exists(Request["docsdir"]+"flexpaper_test.swf")){
+							if(File.Exists(docsdir+"flexpaper_test.swf")){
 								Response.Write("1");
 							}else{
 								Response.Write("0");
@@ -83,8 +93,8 @@ public partial class checkdirpermissions : System.Web.UI.Page
 						{
 							string command = configManager.getConfig("cmd.conversion.pdf2jsontest");
 							command = command.Replace("{path.pdf2json}", lpath_to_pdf2json);
-							command = command.Replace("{path.pdf}", Request["pdfdir"]);
-							command = command.Replace("{path.swf}", Request["docsdir"]);
+							command = command.Replace("{path.pdf}", pdfdir);
+							command = command.Replace("{path.swf}", docsdir);
 
 							System.Diagnostics.Process proc = new System.Diagnostics.Process();
 							proc.StartInfo.FileName = command.Substring(0, command.IndexOf(".exe") + 5);
@@ -100,7 +110,7 @@ public partial class checkdirpermissions : System.Web.UI.Page
 								proc.WaitForExit();
 								proc.Close();
 								
-								if(File.Exists(Request["docsdir"]+"flexpaper_test.js")){
+								if(File.Exists(docsdir+"flexpaper_test.js")){
 									Response.Write("1");
 								}else{
 									Response.Write("0");

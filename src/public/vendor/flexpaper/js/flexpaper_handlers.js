@@ -1,6 +1,6 @@
 
 
-$(function() {
+jQuery(function() {
     /**
      * Handles the event of external links getting clicked in the document.
      *
@@ -10,7 +10,7 @@ $(function() {
      */
     jQuery('#documentViewer').bind('onExternalLinkClicked',function(e,link){
 
-        //window.location.href = link; //uncomment to let viewer navigate
+        window.open(link,'_flexpaper_exturl');
     });
 
     /**

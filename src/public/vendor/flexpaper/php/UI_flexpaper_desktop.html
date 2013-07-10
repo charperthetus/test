@@ -25,3 +25,14 @@
     <img src='images/bar.gif' class='flexpaper_tbseparator' alt='' />
     <img src='images/loader.gif' class='flexpaper_progress flexpaper_tbloader' alt='' />
 </div>
+
+<script language="javascript">
+    // adjust IE 7 and below for textbox input size
+    var userAgent   = navigator.userAgent.toLowerCase();
+    var ismsie      = /msie/.test(userAgent) && !/opera/.test(userAgent);
+    var browser_v   = (userAgent.match(/.+?(?:rv|it|ra|ie)[\/: ]([\d.]+)(?!.+opera)/) || [])[1];
+
+    if(ismsie && browser_v < 8){
+        jQuery('.flexpaper_tbtextinput').css('height','12px');
+    }
+</script>

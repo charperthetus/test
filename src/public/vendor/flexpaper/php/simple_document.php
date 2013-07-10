@@ -32,7 +32,7 @@ if($configManager->getConfig('admin.password')==null){
 	        
 	        <script type="text/javascript">   
 		        function getDocumentUrl(document){
-					return "services/view.php?doc={doc}&format={format}&page={page}".replace("{doc}",document);     
+					return "services/view.php?doc={doc}&format={format}&page={page}&subfolder=<?php echo $_GET["subfolder"] ?>".replace("{doc}",document);
 		        }
 		        
 		        function getDocQueryServiceUrl(document){

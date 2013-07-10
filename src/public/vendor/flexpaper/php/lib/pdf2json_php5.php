@@ -35,7 +35,7 @@ class pdf2json
 	/**
 	* Method:render page as image
 	*/
-	public function convert($pdfdoc,$jsondoc,$page)
+	public function convert($pdfdoc,$jsondoc,$page,$subfolder)
 	{
 		$output=array();
 	
@@ -46,8 +46,8 @@ class pdf2json
 			    $command = $this->configManager->getConfig('cmd.conversion.jsonfile');
 			}
 
-			$command = str_replace("{path.pdf}",$this->configManager->getConfig('path.pdf'),$command);
-			$command = str_replace("{path.swf}",$this->configManager->getConfig('path.swf'),$command);
+			$command = str_replace("{path.pdf}",$this->configManager->getConfig('path.pdf') . $subfolder,$command);
+			$command = str_replace("{path.swf}",$this->configManager->getConfig('path.swf') . $subfolder,$command);
 			$command = str_replace("{pdffile}",$pdfdoc,$command);
 			$command = str_replace("{jsonfile}",$jsondoc,$command);
 			

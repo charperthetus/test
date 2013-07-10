@@ -36,12 +36,12 @@ if($configManager->getConfig('admin.password')==null){
 	            $doc = "Report";
 	        }
 
-			$pdfFilePath = $configManager->getConfig('path.pdf'); 
+			$pdfFilePath = $configManager->getConfig('path.pdf') . $_GET["subfolder"];
 			?>
 	        <script type="text/javascript">   
 		        function getDocumentUrl(document){
 		        	var numPages 			= <?php echo getTotalPages($pdfFilePath . $doc . ".pdf") ?>;
-					var url = "{services/view.php?doc={doc}&format={format}&page=[*,0],{numPages}}";
+					var url = "{services/view.php?doc={doc}&format={format}&subfolder=<?php echo $_GET["subfolder"] ?>&page=[*,0],{numPages}}";
 						url = url.replace("{doc}",document);
 						url = url.replace("{numPages}",numPages);
 						return url;	        

@@ -105,7 +105,7 @@ function checkDirectoryPermissionsHandler(event) {
 									<select id="RenderingOrder_PRIM" name="RenderingOrder_PRIM" style="font-size:12pt;">
 										<option value="flash" <% if(configManager.getConfig("renderingorder.primary") == "flash") { %>selected="true"<% } %>>flash</option>
 										<option value="html" <% if(configManager.getConfig("renderingorder.primary") == "html") { %>selected="true"<% } %>>html</option>
-										<option value="html5" <% if(configManager.getConfig("renderingorder.primary") == "html5") { %>selected="true"<% } %>>html5 (beta)</option>
+										<option value="html5" <% if(configManager.getConfig("renderingorder.primary") == "html5") { %>selected="true"<% } %>>html5</option>
 									</select><br/>
 								<div style="float:left;font-size:10px;padding-top:5px;">This decides what to use as primary media format to use for your visitors. </div>
 							</td>
@@ -121,7 +121,7 @@ function checkDirectoryPermissionsHandler(event) {
 									<select id="RenderingOrder_SEC" name="RenderingOrder_SEC" style="font-size:12pt;">
 										<option value="flash" <% if(configManager.getConfig("renderingorder.secondary") == "flash") { %>selected="true"<% } %>>flash</option>
 										<option value="html" <% if(configManager.getConfig("renderingorder.secondary") == "html") { %>selected="true"<% } %>>html</option>
-										<option value="html5" <% if(configManager.getConfig("renderingorder.secondary") == "html5") { %>selected="true"<% } %>>html5 (beta)</option>
+										<option value="html5" <% if(configManager.getConfig("renderingorder.secondary") == "html5") { %>selected="true"<% } %>>html5</option>
 									</select><br/>
 								<div style="float:left;font-size:10px;padding-top:5px;">This decides what to use as secondary media format to use for your visitors. </div>
 							</td>

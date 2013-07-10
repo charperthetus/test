@@ -14,8 +14,8 @@ Ext.define("Savanna.view.flexpaper.FlexpaperToolbar", {
     ctrl:null,
     border:false,
     initComponent:function(){
-        this.callParent(arguments);
-        this.ctrl = Savanna.controller.Factory.getController('flexpaper.FlexpaperToolbar');
+        this.callParent();
+        this.ctrl = Savanna.controller.Factory.getController('flexpaper.FlexpaperComponent');
     },
     items:  [
         {
@@ -88,8 +88,9 @@ Ext.define("Savanna.view.flexpaper.FlexpaperToolbar", {
                             itemId:"legendview"
                         }
                     ]
+
                 }
             ]
         }
     ]
-})
+});

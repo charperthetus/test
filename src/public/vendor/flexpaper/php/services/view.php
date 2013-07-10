@@ -26,18 +26,19 @@ require_once("../lib/splitpdf_php5.php");
 	if(isset($_GET["callback"])){$callback = $_GET["callback"];}else{$callback = "";}
     if($configManager->getConfig('splitmode')=='true'){$jsondoc = $pdfdoc . "_" . $page . ".js";}else{$jsondoc = $pdfdoc . ".js";}
 	if(isset($_GET["resolution"])){$resolution=$_GET["resolution"];}else{$resolution=null;}
+	if(isset($_GET["subfolder"])){$subfolder=$_GET["subfolder"];}else{$subfolder="";}
 
 	$pngdoc 		= $pdfdoc . "_" . $page . ".png";
 	$jpgcachedoc 	= $pdfdoc . "_" . $page . "_res_" . $resolution . ".jpg";
 
 	$messages 		= "";
 
-	$swfFilePath 	= $configManager->getConfig('path.swf') . $swfdoc;
-	$pdfFilePath 	= $configManager->getConfig('path.pdf') . $pdfdoc;
-	$pdfSplitPath	= $configManager->getConfig('path.swf') . $pdfdoc . "_" . $page . ".pdf";
-	$pngFilePath 	= $configManager->getConfig('path.swf') . $pngdoc;
-	$jpgCachePath 	= $configManager->getConfig('path.swf') . $jpgcachedoc;
-	$jsonFilePath 	= $configManager->getConfig('path.swf') . $jsondoc;
+	$swfFilePath 	= $configManager->getConfig('path.swf') . $subfolder . $swfdoc;
+	$pdfFilePath 	= $configManager->getConfig('path.pdf') . $subfolder . $pdfdoc;
+	$pdfSplitPath	= $configManager->getConfig('path.swf') . $subfolder . $pdfdoc . "_" . $page . ".pdf";
+	$pngFilePath 	= $configManager->getConfig('path.swf') . $subfolder . $pngdoc;
+	$jpgCachePath 	= $configManager->getConfig('path.swf') . $subfolder . $jpgcachedoc;
+	$jsonFilePath 	= $configManager->getConfig('path.swf') . $subfolder . $jsondoc;
 	$validatedConfig = true;
 
 	session_start();
@@ -59,10 +60,15 @@ require_once("../lib/splitpdf_php5.php");
 	}else{
 		if($format == "swf" || $format == "png" || $format == "pdf" || $format == "jpg" || $format == "jpgpageslice"){
 
+			// check if output folder exists (subfolder)
+			if(!file_exists($configManager->getConfig('path.swf') . $subfolder)){
+				mkdir($configManager->getConfig('path.swf') . $subfolder);
+			}
+
 			// converting pdf files to swf format
 			if(!file_exists($swfFilePath)){
 				$pdfconv=new pdf2swf();
-				$messages=$pdfconv->convert($pdfdoc,$page);
+				$messages=$pdfconv->convert($pdfdoc,$page,$subfolder);
 			}
 
 			// rendering swf files to png images
@@ -97,7 +103,7 @@ require_once("../lib/splitpdf_php5.php");
 				if(validSwfParams($swfFilePath,$swfdoc,$page)){
 					if(!file_exists($pngFilePath)){
 						$pngconv=new swfrender();
-						$pngconv->renderPage($pdfdoc,$swfdoc,$page);
+						$pngconv->renderPage($pdfdoc,$swfdoc,$page,$subfolder);
 					}
 					
 					if($configManager->getConfig('allowcache')){
@@ -295,7 +301,7 @@ require_once("../lib/splitpdf_php5.php");
 								
 				if($configManager->getConfig('splitmode') == "true"){
 					$pdfsplit = new splitpdf();					
-					if($pdfsplit->splitPDF($pdfdoc) == "[OK]"){
+					if($pdfsplit->splitPDF($pdfdoc,$subfolder) == "[OK]"){
 						header('Content-type: application/pdf');
 						echo file_get_contents($pdfSplitPath);
 					}
@@ -330,7 +336,7 @@ require_once("../lib/splitpdf_php5.php");
 		if($format == "json" || $format == "jsonp"){
 			if(!file_exists($jsonFilePath)){
 				$jsonconv = new pdf2json();
-				$messages=$jsonconv->convert($pdfdoc,$jsondoc,$page);
+				$messages=$jsonconv->convert($pdfdoc,$jsondoc,$page,$subfolder);
 			}
 
 			if(file_exists($jsonFilePath)){
