@@ -1,41 +1,3 @@
-/**
- * Created with IntelliJ IDEA.
- * User: swatson
- * Date: 7/3/13
- * Time: 3:18 PM
- * To change this template use File | Settings | File Templates.
- */
-Ext.define('sources',{
-    extend: 'Ext.data.Model',
-    fields: [
-        { name: 'id', type: 'string' },
-        { name: 'displayName', type: 'string' },
-        { name: 'textDescription', type: 'string' },
-        { name: 'customSearchDescription' },
-
-        // These are fields that currently are not used
-        { name: 'timeoutMillis', type: 'int' },
-        { name: 'inputTypes' },
-        { name: 'outputTypes' }
-    ],
-    hasMany: { model: 'facets', name: 'facetDescriptions' }
-});
-
-Ext.define("facets", {
-    extend: 'Ext.data.Model',
-    fields: [
-        { name: "facetId", type: 'string' },
-        { name: "facetDataType", type: 'string' },
-        { name: "providesAggregateData", type: 'boolean' },
-        { name: "canFilterOn", type: 'boolean' },
-        { name: "enumValuesType", type: 'string' },
-        { name: "enumValues" }, // null,
-        { name: "displayValue", type: 'string' }
-    ],
-
-    belongsTo: 'sources'
-});
-
 Ext.define('Savanna.controller.search.SearchDals', {
     extend: 'Ext.app.Controller',
 
@@ -48,7 +10,8 @@ Ext.define('Savanna.controller.search.SearchDals', {
 
     views: [
         'search.SearchDals',
-        'search.searchDals.SearchOptions'
+        'search.searchDals.SearchOptions',
+        'search.searchDals.CustomSearchGroupForm'
     ],
     layout: 'hbox',
 
@@ -60,38 +23,40 @@ Ext.define('Savanna.controller.search.SearchDals', {
         });
     },
 
+    createCustomSearchGroupPanel: function(myRecord) {
+        return Ext.create('Savanna.view.search.searchDals.CustomSearchGroupForm', {
+            record: myRecord
+        });
+    },
+
     init: function (app) {
         var me = this;
 
-        var mySources = Ext.create('Ext.data.Store', {
-           autoLoad: true,
-           data : this.data,
-           model: 'sources',
-           proxy: {
-               type: 'memory',
-               reader: {
-                   type: 'json',
-                   root: 'sources'
-               }
-           }
-        });
+        this.getDalSourcesStore().loadRawData(this.data);
 
         me.control({
             'search_searchdals': {
                 render: function (body) {
-                    mySources.each(function (record) {
+                    me.getDalSourcesStore().each(function (record) {
                         var myPanel = me.createPanel(record);
                         body.add(myPanel);
                     })
                 }
             },
             'search_searchDals_searchoptions > #searchOptionsToggle': {
-                click: function(button, evt) {
-                    console.log('args', arguments);
-                    console.log('itemId', button.up('search_searchDals_searchoptions').itemId);
-                }
+                click: this.renderCustomOptions
             }
         });
+    },
+
+    renderCustomOptions: function(button, evt) {
+        var parentView = button.up('search_searchDals_searchoptions');
+            parentViewId = parentView.itemId,
+            store = this.getDalSourcesStore(),
+            record = store.getById(parentViewId),
+            panel = this.createCustomSearchGroupPanel(record);
+
+        parentView.add(panel);
     },
 
     data: {
@@ -119,9 +84,7 @@ Ext.define('Savanna.controller.search.SearchDals', {
                 "searchGeoTypes": null,
                 "supportsHyperDynamicFacets": false,
                 "textDescription": "Pages on Wikipedia",
-                "customSearchDescription": {
-                    "customSearchGroups": null
-                }
+                "customSearchGroups":  null
             }, {
                 "id": "Linkedin",
                 "inputTypes": [
@@ -266,9 +229,7 @@ Ext.define('Savanna.controller.search.SearchDals', {
                 "searchGeoTypes": null,
                 "supportsHyperDynamicFacets": false,
                 "textDescription": "Users on Linkedin",
-                "customSearchDescription": {
-                    "customSearchGroups": null
-                }
+                "customSearchGroups": null
             }, {
                 "id": "Flickr",
                 "inputTypes": [
@@ -304,9 +265,7 @@ Ext.define('Savanna.controller.search.SearchDals', {
                 "searchGeoTypes": null,
                 "supportsHyperDynamicFacets": false,
                 "textDescription": "Photos on Flickr",
-                "customSearchDescription": {
-                    "customSearchGroups": null
-                }
+                "customSearchGroups": null
             }, {
                 "id": "Twitter",
                 "inputTypes": [
@@ -326,9 +285,7 @@ Ext.define('Savanna.controller.search.SearchDals', {
                 "searchGeoTypes": null,
                 "supportsHyperDynamicFacets": false,
                 "textDescription": "Twitter tweets",
-                "customSearchDescription": {
-                    "customSearchGroups": null
-                }
+                "customSearchGroups": null
             }, {
                 "id": "EBSCO",
                 "inputTypes": [
@@ -439,9 +396,7 @@ Ext.define('Savanna.controller.search.SearchDals', {
                 "searchGeoTypes": null,
                 "supportsHyperDynamicFacets": false,
                 "textDescription": "Documents on EBSCO",
-                "customSearchDescription": {
-                    "customSearchGroups": null
-                }
+                "customSearchGroups": null
             }, {
                 "id": "MOCK",
                 "inputTypes": [
@@ -467,8 +422,13 @@ Ext.define('Savanna.controller.search.SearchDals', {
                 "searchGeoTypes": null,
                 "supportsHyperDynamicFacets": false,
                 "textDescription": "A MOCK Dal For Testing Custom Search Options",
-                "customSearchDescription": {
-                    "customSearchGroups": [
+
+                /* WARNING, WARNING, WARNING!!!!!!
+                    We restructured the data to get rid of the parent "customSearchDescription" data-member since it
+                    only has "customSearchGroups" and we do not really want to create a has-a relationship for a model
+                    that is just a wrapper for a has-many....
+                 */
+                "customSearchGroups": [
                         {
                             "id": "group1",
                             "customSearchParameters": [
@@ -546,7 +506,6 @@ Ext.define('Savanna.controller.search.SearchDals', {
                             "displayLabel": "Group 3"
                         }
                     ]
-                }
             }
         ]
     }

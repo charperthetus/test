@@ -3,9 +3,8 @@ Ext.define('Savanna.model.DalSource', {
 
     fields: [
         { name: 'id', type: 'string' },
-        { name: 'disaplayName', type: 'string' },
+        { name: 'displayName', type: 'string' },
         { name: 'textDescription', type: 'string' },
-        { name: 'customSearchDescription' },
 
         // This is data that is not needed for search display, but IS needed for results display...
         { name: 'facetDescriptions' },
@@ -14,5 +13,7 @@ Ext.define('Savanna.model.DalSource', {
         { name: 'timeoutMillis', type: 'int' },
         { name: 'inputTypes' },
         { name: 'outputTypes' }
-    ]
+    ],
+
+    hasMany: { model: 'dalSource.CustomSearchGroup', name: 'customSearchGroups' }
 });

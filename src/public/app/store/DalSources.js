@@ -23,13 +23,14 @@ Ext.define('Savanna.store.DalSources', {
         readerClass = Ext.extend(Ext.data.JsonReader, {
             root: 'sources',
             readRecords: function(data) {
+                console.log('readRecord', data);
                 me.defaultId = data.defaultId || data.sources[0].id;
                 return this.callParent([data]);
             }
         });
 
         this.setProxy({
-            type: 'rest',
+            type: 'memory',// TODO: change back to "rest" when we have a service endpoint...
             url: restUrl,
             buildUrl: function(request) {
                 // TODO: WE REALLY NEED A Savanna.utils.UrlBuilder lib...
