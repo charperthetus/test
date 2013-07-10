@@ -10,6 +10,10 @@ Ext.define('Savanna.view.search.SearchDals', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.search_searchdals',
 
+    requires: [
+        'Ext.form.Label'
+    ],
+
     layout: 'vbox',
 
     border: false,

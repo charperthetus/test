@@ -2,6 +2,7 @@ Ext.define('Savanna.store.DalSources', {
     extend: 'Ext.data.JsonStore',
 
     requires: [
+        'Ext.data.proxy.Rest',
         'Savanna.Config'
     ],
 

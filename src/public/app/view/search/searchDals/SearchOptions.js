@@ -2,6 +2,10 @@ Ext.define('Savanna.view.search.searchDals.SearchOptions', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.search_searchDals_searchoptions',
 
+    requires: [
+        'Ext.form.field.Checkbox'
+    ],
+
     header: false,
 
     width: '100%',
