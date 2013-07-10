@@ -36,45 +36,12 @@ Ext.define('Savanna.view.search.SearchBody', {
                     items: [
                         {
                             title: 'Search Sources',
-                            xtype: 'search.searchdals'
+                            autoScroll: true,
+                            xtype: 'search_searchdals'
                         },
                         {
                             title: 'Location',
                             html: 'leaflet here'
-                        }
-                    ],
-                    dockedItems: [
-                        {
-                            xtype: 'toolbar',
-                            border: false,
-                            width: '100%',
-                            docked: 'top',
-                            items: [
-                                {
-                                    xtype: 'label',
-                                    text: 'Select sources to include in your search.'
-                                },
-                                {
-                                    xtype: 'button',
-                                    text: 'Select All',
-                                    style: {
-                                        background: 'transparent',
-                                        border: 'none'
-                                    }
-                                },
-                                {
-                                    xtype: 'tbspacer',
-                                    width: 100
-                                },
-                                {
-                                    xtype: 'button',
-                                    text: 'Reset All Search Options',
-                                    style: {
-                                        background: 'transparent',
-                                        border: 'none'
-                                    }
-                                }
-                            ]
                         }
                     ]
                 }
