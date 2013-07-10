@@ -52,6 +52,7 @@ Ext.define('Savanna.view.search.SearchDals', {
             ]
         }
     ],
+
     initComponent: function () {
         this.callParent(arguments);
 
