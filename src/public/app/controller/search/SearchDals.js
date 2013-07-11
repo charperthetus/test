@@ -25,9 +25,9 @@ Ext.define('Savanna.controller.search.SearchDals', {
         });
     },
 
-    createCustomSearchGroupPanel: function(myRecord) {
+    createCustomSearchGroupPanel: function(store) {
         return Ext.create('Savanna.view.search.searchDals.CustomSearchGroupForm', {
-            record: myRecord
+            store: store
         });
     },
 
@@ -42,7 +42,7 @@ Ext.define('Savanna.controller.search.SearchDals', {
                     me.getDalSourcesStore().each(function (record) {
                         var myPanel = me.createPanel(record);
                         body.add(myPanel);
-                    })
+                    });
                 }
             },
             'search_searchDals_searchoptions > #searchOptionsToggle': {
@@ -52,11 +52,11 @@ Ext.define('Savanna.controller.search.SearchDals', {
     },
 
     renderCustomOptions: function(button, evt) {
-        var parentView = button.up('search_searchDals_searchoptions');
+        var parentView = button.up('search_searchDals_searchoptions'),
             parentViewId = parentView.itemId,
             store = this.getDalSourcesStore(),
             record = store.getById(parentViewId),
-            panel = this.createCustomSearchGroupPanel(record);
+            panel = this.createCustomSearchGroupPanel(record.customSearchGroups());
 
         parentView.add(panel);
     },
@@ -86,6 +86,12 @@ Ext.define('Savanna.controller.search.SearchDals', {
                 "searchGeoTypes": null,
                 "supportsHyperDynamicFacets": false,
                 "textDescription": "Pages on Wikipedia",
+
+                /* WARNING, WARNING, WARNING!!!!!!
+                 We restructured the data to get rid of the parent "customSearchDescription" data-member since it
+                 only has "customSearchGroups" and we do not really want to create a has-a relationship for a model
+                 that is just a wrapper for a has-many....
+                 */
                 "customSearchGroups":  null
             }, {
                 "id": "Linkedin",
@@ -231,6 +237,12 @@ Ext.define('Savanna.controller.search.SearchDals', {
                 "searchGeoTypes": null,
                 "supportsHyperDynamicFacets": false,
                 "textDescription": "Users on Linkedin",
+
+                /* WARNING, WARNING, WARNING!!!!!!
+                 We restructured the data to get rid of the parent "customSearchDescription" data-member since it
+                 only has "customSearchGroups" and we do not really want to create a has-a relationship for a model
+                 that is just a wrapper for a has-many....
+                 */
                 "customSearchGroups": null
             }, {
                 "id": "Flickr",
@@ -267,6 +279,12 @@ Ext.define('Savanna.controller.search.SearchDals', {
                 "searchGeoTypes": null,
                 "supportsHyperDynamicFacets": false,
                 "textDescription": "Photos on Flickr",
+
+                /* WARNING, WARNING, WARNING!!!!!!
+                 We restructured the data to get rid of the parent "customSearchDescription" data-member since it
+                 only has "customSearchGroups" and we do not really want to create a has-a relationship for a model
+                 that is just a wrapper for a has-many....
+                 */
                 "customSearchGroups": null
             }, {
                 "id": "Twitter",
@@ -287,6 +305,12 @@ Ext.define('Savanna.controller.search.SearchDals', {
                 "searchGeoTypes": null,
                 "supportsHyperDynamicFacets": false,
                 "textDescription": "Twitter tweets",
+
+                /* WARNING, WARNING, WARNING!!!!!!
+                 We restructured the data to get rid of the parent "customSearchDescription" data-member since it
+                 only has "customSearchGroups" and we do not really want to create a has-a relationship for a model
+                 that is just a wrapper for a has-many....
+                 */
                 "customSearchGroups": null
             }, {
                 "id": "EBSCO",
@@ -398,6 +422,12 @@ Ext.define('Savanna.controller.search.SearchDals', {
                 "searchGeoTypes": null,
                 "supportsHyperDynamicFacets": false,
                 "textDescription": "Documents on EBSCO",
+
+                /* WARNING, WARNING, WARNING!!!!!!
+                 We restructured the data to get rid of the parent "customSearchDescription" data-member since it
+                 only has "customSearchGroups" and we do not really want to create a has-a relationship for a model
+                 that is just a wrapper for a has-many....
+                 */
                 "customSearchGroups": null
             }, {
                 "id": "MOCK",
