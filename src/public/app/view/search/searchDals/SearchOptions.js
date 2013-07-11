@@ -28,9 +28,12 @@ Ext.define('Savanna.view.search.searchDals.SearchOptions', {
             var config = this.initialConfig || {};
             var checkboxLabel = config.checkboxLabel || 'NO LABEL';
             var label = config.label || 'NO LABEL';
-
+            var showButton = config.showButton || null;
             this.down('checkbox').boxLabel = checkboxLabel;
             this.down('label').text = label;
+            if (!showButton) {
+                this.down('button').hide()
+            }
         }, this));
     }
 });
