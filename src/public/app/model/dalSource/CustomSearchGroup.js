@@ -3,13 +3,18 @@ Ext.define('Savanna.model.dalSource.CustomSearchGroup', {
 
     alternateClassName: 'DalCustomSearchGroup',
 
-    fields: [
-        { name: 'id', type: 'string' },
-        { name: 'displayLabel', type: 'string' },
-
-        // TODO: this should probably be a has-many for another sub-model
-        { name: 'customSearchParameters' }
+    requires: [
+        'Savanna.model.dalSource.CustomSearchParameter'
     ],
 
-    belongsTo: 'Savanna.model.DalSource'
+    fields: [
+        { name: 'id', type: 'string' },
+        { name: 'displayLabel', type: 'string' }
+    ],
+
+    belongsTo: 'Savanna.model.DalSource',
+
+    hasMany: [
+        { model: 'Savanna.model.dalSource.CustomSearchParameter', name: 'customSearchParameters' }
+    ]
 });

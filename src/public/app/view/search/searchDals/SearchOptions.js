@@ -9,7 +9,6 @@ Ext.define('Savanna.view.search.searchDals.SearchOptions', {
     header: false,
 
     width: '100%',
-    height: 100,
 
     itemId: 'NO_ID',
 
@@ -33,8 +32,10 @@ Ext.define('Savanna.view.search.searchDals.SearchOptions', {
             var checkboxLabel = config.checkboxLabel || 'NO LABEL';
             var label = config.label || 'NO LABEL';
             var showButton = config.showButton || null;
+
             this.down('checkbox').boxLabel = checkboxLabel;
             this.down('label').text = label;
+
             if (!showButton) {
                 this.down('button').hide()
             }

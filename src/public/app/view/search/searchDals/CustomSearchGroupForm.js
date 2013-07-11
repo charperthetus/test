@@ -1,15 +1,27 @@
 Ext.define('Savanna.view.search.searchDals.CustomSearchGroupForm', {
-    extend: 'Ext.Component',
-    alias: 'widget.search_searchDals_customsearchgroupform',
+    extend: 'Ext.container.Container',
+    alias: 'widget.search_searchDals_custom-search-group-form',
 
-    record: null,
+    requires: [
+        'Savanna.view.search.searchDals.CustomGroup'
+    ],
 
-    html: 'booo',
+    store: null,
 
-    initComponent: function() {
-        this.store = this.initialConfig.store;
+    items: [],
 
-        console.log('store', this.store);
+    constructor: function(config) {
+        config = config || {};
+
+        var me = this;
+
+        this.store = config.store;
+
+        this.store.each(function(record) {
+            me.items.push(Ext.create('Savanna.view.search.searchDals.CustomGroup', { model: record }));
+        });
+
+        console.log('items', this.items);
 
         this.callParent(arguments);
     }

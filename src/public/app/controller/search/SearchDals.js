@@ -4,6 +4,7 @@ Ext.define('Savanna.controller.search.SearchDals', {
     models: [
         'DalSource'
     ],
+
     stores: [
         'DalSources'
     ],
@@ -13,6 +14,7 @@ Ext.define('Savanna.controller.search.SearchDals', {
         'search.searchDals.SearchOptions',
         'search.searchDals.CustomSearchGroupForm'
     ],
+
     layout: 'hbox',
 
     addDalDetailText: 'Show Search Options',
@@ -35,14 +37,13 @@ Ext.define('Savanna.controller.search.SearchDals', {
     },
 
     init: function (app) {
-        var me = this;
-
         this.getDalSourcesStore().loadRawData(this.data2);
 
-        me.control({
+        this.control({
             'search_searchdals': {
                 render: function (body) {
-                    me.getDalSourcesStore().each(function (record) {
+                    var me = this;
+                    this.getDalSourcesStore().each(function (record) {
                         var myPanel = me.createPanel(record);
                         body.add(myPanel);
                     });
@@ -55,19 +56,24 @@ Ext.define('Savanna.controller.search.SearchDals', {
     },
 
     renderCustomOptions: function(button, evt) {
-        console.log(button);
-        if (!this.dalPanel){
+        if (!this.dalPanel) {
+            // NOTE: I'm not sure this is the correct way to do this since the controller is a singleton
+            //       (if we can have more than one search, this will break...)
             var parentView = button.up('search_searchDals_searchoptions');
             var parentViewId = parentView.itemId;
             var store = this.getDalSourcesStore();
             var record = store.getById(parentViewId);
+
             this.dalPanel = this.createCustomSearchGroupPanel(record.customSearchGroups());
+
             parentView.add(this.dalPanel);
         }
-        if (button.text == this.addDalDetailText ) {
+
+        if (button.text == this.addDalDetailText) {
             button.setText(this.removeDalDetailText);
             this.dalPanel.show();
-        } else {
+        }
+        else {
             button.setText(this.addDalDetailText);
             this.dalPanel.hide();
         }
