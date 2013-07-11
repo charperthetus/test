@@ -9,7 +9,7 @@ Ext.define('Savanna.view.search.searchDals.CustomSearchGroupForm', {
     initComponent: function() {
         this.record = this.initialConfig.record;
 
-        console.log('record', record);
+        console.log('record', this.record);
 
         this.callParent(arguments);
     }
