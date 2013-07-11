@@ -15,8 +15,11 @@ Ext.define('Savanna.controller.search.SearchDals', {
     ],
     layout: 'hbox',
 
+    addDalDetailText: 'Show Search Options',
+    removeDalDetailText: 'Hide Search Options',
+    dalPanel: null,
+
     createPanel: function(myRecord) {
-        console.log('myRecord.customSearchGroups',myRecord.customSearchGroups().data.length);
         return Ext.create('Savanna.view.search.searchDals.SearchOptions', {
             itemId: myRecord.data.id,
             checkboxLabel: myRecord.data.displayName,
@@ -52,13 +55,22 @@ Ext.define('Savanna.controller.search.SearchDals', {
     },
 
     renderCustomOptions: function(button, evt) {
-        var parentView = button.up('search_searchDals_searchoptions'),
-            parentViewId = parentView.itemId,
-            store = this.getDalSourcesStore(),
-            record = store.getById(parentViewId),
-            panel = this.createCustomSearchGroupPanel(record.customSearchGroups());
-
-        parentView.add(panel);
+        console.log(button);
+        if (!this.dalPanel){
+            var parentView = button.up('search_searchDals_searchoptions');
+            var parentViewId = parentView.itemId;
+            var store = this.getDalSourcesStore();
+            var record = store.getById(parentViewId);
+            this.dalPanel = this.createCustomSearchGroupPanel(record.customSearchGroups());
+            parentView.add(this.dalPanel);
+        }
+        if (button.text == this.addDalDetailText ) {
+            button.setText(this.removeDalDetailText);
+            this.dalPanel.show();
+        } else {
+            button.setText(this.addDalDetailText);
+            this.dalPanel.hide();
+        }
     },
 
     data: {
