@@ -10,6 +10,12 @@
 // Custom stylesheets to be included
 @import 'Search/Typography.scss';
 
-// Component.scss specific code
+/*
+ * Component.scss specific code here
+ */
+
+ // Base color to white so we're not overwriting a bunch of color code
 $base-color: #fff;
-$font-family: 'OpenSansRegular'; // This is for NORMAL, each weight has it's own FF!s
+
+// This is for NORMAL, each weight has it's own FF!s
+$font-family: 'OpenSansRegular';

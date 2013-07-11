@@ -26,6 +26,57 @@
 /* including package ext-theme-classic */
 /* including package search-skin */
 /* including package search-skin */
+/*
+ * TCIL Search
+ * This Component.scss file is, for better or worse, the "entry" point for including
+ * custom.scss files. Since Component.scss is rather generic, it won't breach any
+ * semantic naming conventions. If you add some custom CSS (EG, Baby-gate), please
+ * create a semantically named file for what you are doing and include it here so it will
+ * be compiled with others. Let's keep it clean!
+ */
+@font-face {
+  font-family: 'OpenSansRegular';
+  src: url("fonts/opensans-regular-webfont.eot");
+  src: url("fonts/opensans-regular-webfont.eot?#iefix") format("embedded-opentype"), url("fonts/opensans-regular-webfont.woff") format("woff"), url("fonts/opensans-regular-webfont.ttf") format("truetype"), url("fonts/opensans-regular-webfont.svg#OpenSansRegular") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'OpenSansLight';
+  src: url("fonts/opensans-light-webfont.eot");
+  src: url("fonts/opensans-light-webfont.eot?#iefix") format("embedded-opentype"), url("fonts/opensans-light-webfont.woff") format("woff"), url("fonts/opensans-light-webfont.ttf") format("truetype"), url("fonts/opensans-light-webfont.svg#OpenSansLight") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'OpenSansBold';
+  src: url("fonts/opensans-bold-webfont.eot");
+  src: url("fonts/opensans-bold-webfont.eot?#iefix") format("embedded-opentype"), url("fonts/opensans-bold-webfont.woff") format("woff"), url("fonts/opensans-bold-webfont.ttf") format("truetype"), url("fonts/opensans-bold-webfont.svg#OpenSansBold") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'OpenSansItalic';
+  src: url("fonts/opensans-italic-webfont.eot");
+  src: url("fonts/opensans-italic-webfont.eot?#iefix") format("embedded-opentype"), url("fonts/opensans-italic-webfont.woff") format("woff"), url("fonts/opensans-italic-webfont.ttf") format("truetype"), url("fonts/opensans-italic-webfont.svg#OpenSansItalic") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'FontAwesome';
+  src: url("fonts/fontawesome-webfont.eot");
+  src: url("fonts/fontawesome-webfont.eot?#iefix") format("embedded-opentype"), url("fonts/fontawesome-webfont.woff") format("woff"), url("fonts/fontawesome-webfont.ttf") format("truetype"), url("fonts/fontawesome-webfont.svg#FontAwesome") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+/*
+ * Component.scss specific code here
+ */
 /* including package ext-theme-classic */
 /* including package ext-theme-neutral */
 /**
@@ -1003,7 +1054,7 @@ img {
   padding-left: 20px;
   white-space: nowrap;
   color: #000;
-  font: normal 11px tahoma, arial, verdana, sans-serif;
+  font: normal 11px "OpenSansRegular";
   border: 1px solid;
   border-color: #ddd #bbb #bbb #ddd;
   background-color: #fff;
@@ -1902,7 +1953,7 @@ table.x-form-checkboxgroup {
 .x-body {
   color: black;
   font-size: 12px;
-  font-family: tahoma, arial, verdana, sans-serif;
+  font-family: "OpenSansRegular";
 }
 
 /* line 13, ../../../ext-theme-neutral/sass/src/Component.scss */
@@ -1984,7 +2035,7 @@ table.x-form-checkboxgroup {
   border-color: #e6e6e6;
   background-color: #eeeeee;
   color: #222222;
-  font: normal 11px tahoma, arial, verdana, sans-serif;
+  font: normal 11px "OpenSansRegular";
 }
 
 /* line 41, ../../../ext-theme-neutral/sass/src/LoadMask.scss */
@@ -2221,7 +2272,7 @@ body.x-nbr .x-btn-default-small {
 .x-btn-default-small .x-btn-inner {
   font-size: 11px;
   font-weight: normal;
-  font-family: tahoma, arial, verdana, sans-serif;
+  font-family: "OpenSansRegular";
   color: #333333;
   padding: 0 4px;
 }
@@ -2786,7 +2837,7 @@ body.x-nbr .x-btn-default-medium {
 .x-btn-default-medium .x-btn-inner {
   font-size: 11px;
   font-weight: normal;
-  font-family: tahoma, arial, verdana, sans-serif;
+  font-family: "OpenSansRegular";
   color: #333333;
   padding: 0 3px;
 }
@@ -3351,7 +3402,7 @@ body.x-nbr .x-btn-default-large {
 .x-btn-default-large .x-btn-inner {
   font-size: 11px;
   font-weight: normal;
-  font-family: tahoma, arial, verdana, sans-serif;
+  font-family: "OpenSansRegular";
   color: #333333;
   padding: 0 3px;
 }
@@ -3891,7 +3942,7 @@ body.x-nbr .x-btn-default-toolbar-small {
 .x-btn-default-toolbar-small .x-btn-inner {
   font-size: 11px;
   font-weight: normal;
-  font-family: tahoma, arial, verdana, sans-serif;
+  font-family: "OpenSansRegular";
   color: #333333;
   padding: 0 4px;
 }
@@ -4416,7 +4467,7 @@ body.x-nbr .x-btn-default-toolbar-medium {
 .x-btn-default-toolbar-medium .x-btn-inner {
   font-size: 11px;
   font-weight: normal;
-  font-family: tahoma, arial, verdana, sans-serif;
+  font-family: "OpenSansRegular";
   color: #333333;
   padding: 0 3px;
 }
@@ -4941,7 +4992,7 @@ body.x-nbr .x-btn-default-toolbar-large {
 .x-btn-default-toolbar-large .x-btn-inner {
   font-size: 11px;
   font-weight: normal;
-  font-family: tahoma, arial, verdana, sans-serif;
+  font-family: "OpenSansRegular";
   color: #333333;
   padding: 0 3px;
 }
@@ -5428,7 +5479,7 @@ body.x-nbr .x-btn-default-toolbar-large {
   margin: 0 6px 0 4px;
   color: #4c4c4c;
   line-height: 16px;
-  font-family: tahoma, arial, verdana, sans-serif;
+  font-family: "OpenSansRegular";
   font-size: 11px;
   font-weight: normal;
 }
@@ -5658,7 +5709,7 @@ body.x-nbr .x-btn-default-toolbar-large {
   color: #803939;
   font-size: 11px;
   font-weight: bold;
-  font-family: tahoma, arial, verdana, sans-serif;
+  font-family: "OpenSansRegular";
   line-height: 15px;
   padding: 0 2px 1px;
   text-transform: none;
@@ -5996,7 +6047,7 @@ body.x-nbr .x-btn-default-toolbar-large {
   color: #803939;
   font-size: 11px;
   font-weight: bold;
-  font-family: tahoma, arial, verdana, sans-serif;
+  font-family: "OpenSansRegular";
   line-height: 15px;
   padding: 0 2px 1px;
   text-transform: none;
@@ -8315,7 +8366,7 @@ body.x-nbr .x-tip-form-invalid {
 
 /* line 80, ../../../ext-theme-neutral/sass/src/container/ButtonGroup.scss */
 .x-btn-group-header-text-container-default {
-  font: normal 11px tahoma, arial, verdana, sans-serif;
+  font: normal 11px "OpenSansRegular";
   line-height: 15px;
   color: #9d9d9d;
 }
@@ -8641,7 +8692,7 @@ body.x-nbr .x-btn-group-default-framed-notitle {
 
 /* line 80, ../../../ext-theme-neutral/sass/src/container/ButtonGroup.scss */
 .x-btn-group-header-text-container-default-framed {
-  font: normal 11px tahoma, arial, verdana, sans-serif;
+  font: normal 11px "OpenSansRegular";
   line-height: 15px;
   color: #9d9d9d;
 }
@@ -8901,7 +8952,7 @@ body.x-nbr .x-window-default {
   color: #9c4548;
   font-weight: bold;
   line-height: 15px;
-  font-family: tahoma, arial, verdana, sans-serif;
+  font-family: "OpenSansRegular";
   font-size: 11px;
   padding: 0 2px 1px;
   text-transform: none;
@@ -10222,7 +10273,7 @@ body.x-nbr .x-window-header-default-collapsed-left {
 .x-form-invalid-under {
   padding: 2px 2px 2px 20px;
   color: #c0272b;
-  font: normal 11px tahoma, arial, verdana, sans-serif;
+  font: normal 11px "OpenSansRegular";
   line-height: 16px;
   background: no-repeat 0 2px;
   background-image: url(images/form/exclamation.gif);
@@ -10245,7 +10296,7 @@ div.x-lbl-top-err-icon {
 /* line 26, ../../../ext-theme-neutral/sass/src/form/Labelable.scss */
 .x-form-item-label {
   color: black;
-  font: normal 12px/22px tahoma, arial, verdana, sans-serif;
+  font: normal 12px/22px "OpenSansRegular";
 }
 /* line 30, ../../../ext-theme-neutral/sass/src/form/Labelable.scss */
 .x-toolbar-item .x-form-item-label {
@@ -10279,7 +10330,7 @@ div.x-lbl-top-err-icon {
 /* line 6, ../../../ext-theme-neutral/sass/src/form/field/Base.scss */
 .x-form-item,
 .x-form-field {
-  font: normal 12px tahoma, arial, verdana, sans-serif;
+  font: normal 12px "OpenSansRegular";
 }
 
 /* line 11, ../../../ext-theme-neutral/sass/src/form/field/Base.scss */
@@ -10365,7 +10416,7 @@ textarea.x-form-empty-field {
 
 /* line 1, ../../../ext-theme-neutral/sass/src/form/field/Display.scss */
 .x-form-display-field {
-  font: normal 12px tahoma, arial, verdana, sans-serif;
+  font: normal 12px "OpenSansRegular";
   color: black;
   line-height: 22px;
 }
@@ -10489,7 +10540,7 @@ textarea.x-form-empty-field {
 
 /* line 39, ../../../ext-theme-neutral/sass/src/form/FieldSet.scss */
 .x-fieldset-header-text {
-  font: 11px/14px bold tahoma, arial, verdana, sans-serif;
+  font: 11px/14px bold "OpenSansRegular";
   color: #8e6563;
   padding: 1px 0;
 }
@@ -11037,7 +11088,7 @@ a.x-datepicker-arrow:hover {
 .x-datepicker-column-header {
   width: 25px;
   color: #717171;
-  font: normal 10px tahoma, arial, verdana, sans-serif;
+  font: normal 10px "OpenSansRegular";
   text-align: right;
   border-width: 0 0 1px;
   border-style: solid;
@@ -11068,7 +11119,7 @@ a.x-datepicker-arrow:hover {
 /* line 128, ../../../ext-theme-neutral/sass/src/picker/Date.scss */
 .x-datepicker-date {
   padding: 0 4px 0 0;
-  font: normal 11px tahoma, arial, verdana, sans-serif;
+  font: normal 11px "OpenSansRegular";
   color: black;
   cursor: pointer;
   line-height: 18px;
@@ -11170,7 +11221,7 @@ a.x-datepicker-date:hover {
 /* line 233, ../../../ext-theme-neutral/sass/src/picker/Date.scss */
 .x-monthpicker-item {
   margin: 5px 0 4px;
-  font: normal 11px tahoma, arial, verdana, sans-serif;
+  font: normal 11px "OpenSansRegular";
   text-align: center;
 }
 
@@ -11467,7 +11518,7 @@ a.x-color-picker-item:hover {
 
 /* line 100, ../../../ext-theme-neutral/sass/src/form/field/HtmlEditor.scss */
 .x-html-editor-wrap textarea {
-  font: normal 12px tahoma, arial, verdana, sans-serif;
+  font: normal 12px "OpenSansRegular";
   background-color: white;
   resize: none;
 }
@@ -11524,7 +11575,7 @@ a.x-color-picker-item:hover {
 /* line 25, ../../../ext-theme-neutral/sass/src/panel/Table.scss */
 .x-grid-row .x-grid-cell {
   color: null;
-  font: normal 11px/13px tahoma, arial, verdana, sans-serif;
+  font: normal 11px/13px "OpenSansRegular";
   background-color: white;
   border-color: white;
   border-style: solid;
@@ -11769,7 +11820,7 @@ a.x-color-picker-item:hover {
   border-right: 1px solid #c5c5c5;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
   color: black;
-  font: normal 11px tahoma, arial, verdana, sans-serif;
+  font: normal 11px "OpenSansRegular";
   background-image: none;
   background-color: #c5c5c5;
   background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #f9f9f9), color-stop(100%, #e3e4e6));
@@ -12074,7 +12125,7 @@ a.x-color-picker-item:hover {
 /* line 42, ../../../ext-theme-neutral/sass/src/grid/feature/Grouping.scss */
 .x-grid-group-title {
   color: #949494;
-  font: bold 11px tahoma, arial, verdana, sans-serif;
+  font: bold 11px "OpenSansRegular";
 }
 
 /* line 48, ../../../ext-theme-neutral/sass/src/grid/feature/Grouping.scss */
@@ -12104,7 +12155,7 @@ a.x-color-picker-item:hover {
 
 /* line 1, ../../../ext-theme-neutral/sass/src/grid/feature/RowBody.scss */
 .x-grid-rowbody {
-  font: normal 11px/13px tahoma, arial, verdana, sans-serif;
+  font: normal 11px/13px "OpenSansRegular";
   padding: 0;
 }
 /* line 6, ../../../ext-theme-neutral/sass/src/grid/feature/RowBody.scss */
@@ -12168,7 +12219,7 @@ a.x-color-picker-item:hover {
   border-color: #ededed;
   background-color: transparent !important;
   border-top-width: 0;
-  font: normal 11px/13px tahoma, arial, verdana, sans-serif;
+  font: normal 11px/13px "OpenSansRegular";
 }
 
 /* line 1, ../../../ext-theme-neutral/sass/src/grid/locking/Lockable.scss */
@@ -12217,7 +12268,7 @@ a.x-color-picker-item:hover {
 }
 /* line 7, ../../../ext-theme-neutral/sass/src/grid/plugin/Editing.scss */
 .x-grid-editor .x-form-text {
-  font: normal 11px/15px tahoma, arial, verdana, sans-serif;
+  font: normal 11px/15px "OpenSansRegular";
 }
 
 /* line 3, ../../../ext-theme-neutral/sass/src/grid/plugin/CellEditing.scss */
@@ -12266,7 +12317,7 @@ a.x-color-picker-item:hover {
 }
 /* line 7, ../../../ext-theme-neutral/sass/src/grid/plugin/RowEditing.scss */
 .x-grid-row-editor .x-form-display-field {
-  font: normal 11px/15px tahoma, arial, verdana, sans-serif;
+  font: normal 11px/15px "OpenSansRegular";
 }
 /* line 11, ../../../ext-theme-neutral/sass/src/grid/plugin/RowEditing.scss */
 .x-grid-row-editor .x-panel-body {
@@ -12516,7 +12567,7 @@ body.x-nbr .x-grid-row-editor-buttons {
 .x-accordion-hd .x-panel-header-text-container {
   color: black;
   font-weight: normal;
-  font-family: tahoma, arial, verdana, sans-serif;
+  font-family: "OpenSansRegular";
   text-transform: none;
 }
 
@@ -14258,7 +14309,7 @@ body.x-nbr .x-tab-default-right {
 .x-tab-default .x-tab-inner {
   font-size: 11px;
   font-weight: bold;
-  font-family: tahoma, arial, verdana, sans-serif;
+  font-family: "OpenSansRegular";
   color: #848484;
   line-height: 13px;
 }
