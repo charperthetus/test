@@ -5,6 +5,7 @@ Ext.define('Savanna.view.search.searchDals.CustomGroup', {
     // NOTE: Been trying to figure out how to configure the collapse to be left-aligned and this appears to be the best candidate (though it is all CSS)
     //       http://www.sencha.com/forum/showthread.php?91512-moving-toggle-button-to-the-left
     collapsible: true,
+    collapsed: true,
 
     items: [],
 
