@@ -11,5 +11,5 @@ Ext.define('Savanna.model.dalSource.CustomSearchGroup', {
         { name: 'customSearchParameters' }
     ],
 
-    belongsTo: 'DalSource'
+    belongsTo: 'Savanna.model.DalSource'
 });
