@@ -17,6 +17,9 @@ sencha-compile-temp-dir
 # ignore node_modules
 src/node_modules
 
+# ignore npm debug log
+npm-debug.log
+
 # ignore SASS cache in theme
 .sass-cache/
 
