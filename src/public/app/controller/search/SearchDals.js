@@ -23,9 +23,9 @@ Ext.define('Savanna.controller.search.SearchDals', {
         });
     },
 
-    createCustomSearchGroupPanel: function(myRecord) {
+    createCustomSearchGroupPanel: function(store) {
         return Ext.create('Savanna.view.search.searchDals.CustomSearchGroupForm', {
-            record: myRecord
+            store: store
         });
     },
 
@@ -54,7 +54,7 @@ Ext.define('Savanna.controller.search.SearchDals', {
             parentViewId = parentView.itemId,
             store = this.getDalSourcesStore(),
             record = store.getById(parentViewId),
-            panel = this.createCustomSearchGroupPanel(record);
+            panel = this.createCustomSearchGroupPanel(record.customSearchGroups());
 
         parentView.add(panel);
     },

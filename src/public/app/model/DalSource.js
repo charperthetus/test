@@ -1,6 +1,10 @@
 Ext.define('Savanna.model.DalSource', {
     extend: 'Ext.data.Model',
 
+    requires: [
+        'Savanna.model.dalSource.CustomSearchGroup'
+    ],
+
     fields: [
         { name: 'id', type: 'string' },
         { name: 'displayName', type: 'string' },
@@ -15,5 +19,7 @@ Ext.define('Savanna.model.DalSource', {
         { name: 'outputTypes' }
     ],
 
-    hasMany: { model: 'dalSource.CustomSearchGroup', name: 'customSearchGroups' }
+    hasMany: [
+        { model: 'Savanna.model.dalSource.CustomSearchGroup', name: 'customSearchGroups' }
+    ]
 });
