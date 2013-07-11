@@ -1,15 +1,11 @@
 /*
 
-This is definitely not ready for prime time - just adding
+This is definitely not ready for usage - just adding
 it as a starting point for testing the Flexpaper Component
 
  */
 
-
-Ext.require("Savanna.controller.flexpaper.FlexpaperBody");
 Ext.require("Savanna.controller.flexpaper.FlexpaperComponent");
-Ext.require("Savanna.controller.flexpaper.FlexpaperToolbar");
-
 
 Ext.require("Savanna.view.flexpaper.FlexpaperBody");
 Ext.require("Savanna.view.flexpaper.FlexpaperComponent");
