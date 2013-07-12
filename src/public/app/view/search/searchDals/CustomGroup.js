@@ -18,6 +18,8 @@ Ext.define('Savanna.view.search.searchDals.CustomGroup', {
     constructor: function(config) {
         config = config || {};
 
+        this.callParent(arguments);
+
         var me = this;
 
         this.model = config.model;
@@ -26,11 +28,9 @@ Ext.define('Savanna.view.search.searchDals.CustomGroup', {
             this.title = this.model.get('displayLabel');
 
             this.model.customSearchParameters().each(function(record) {
-               me.items.push(me.buildFormXtype(record));
+               me.add(me.buildFormXtype(record));
             });
         }
-
-        this.callParent(arguments);
     },
 
     // CUSTOM METHODS
