@@ -12,11 +12,10 @@ Ext.define("Savanna.view.flexpaper.FlexpaperBody", {
     autoScroll: false,
     requires:[],
     border:false,
-    ctrl:null,
 
     initComponent:function()    {
         this.callParent();
-        this.ctrl = Savanna.controller.Factory.getController('flexpaper.FlexpaperComponent');
+        Savanna.controller.Factory.getController('flexpaper.FlexpaperComponent');
     }
 });
 

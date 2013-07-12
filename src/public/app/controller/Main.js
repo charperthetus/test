@@ -26,7 +26,6 @@ Ext.define('Savanna.controller.Main', {
     swapLogin: function(sessionId) {
         Savanna.jsessionid = sessionId;
         //TODO - Check the event to see a valid loggedin message
-        this.app.viewport.items.items[0].remove('login');
-
+        this.app.viewport.queryById("viewport_main").remove('login');
     }
 });

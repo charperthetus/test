@@ -28,38 +28,38 @@ describe("Flexpaper Component", function () {
 
     describe('Component View', function () {
         var server = null;
-        var comp_view = null;
+        var compView = null;
         beforeEach(function () {
             server = new ThetusTestHelpers.FakeServer(sinon);
-            comp_view = Ext.create("Savanna.view.flexpaper.FlexpaperComponent");
+            compView = Ext.create("Savanna.view.flexpaper.FlexpaperComponent");
         });
 
         afterEach(function () {
             if (server) server.restore();
             server = null;
-            if (comp_view) comp_view.destroy();
-            comp_view = null;
+            if (compView) compView.destroy();
+            compView = null;
         });
         it('view should be of the correct type', function () {
-            expect(comp_view instanceof Savanna.view.flexpaper.FlexpaperComponent).toBeTruthy();
+            expect(compView instanceof Savanna.view.flexpaper.FlexpaperComponent).toBeTruthy();
         });
         it('view should have a controller of the correct type', function () {
-            expect(comp_view.ctrl instanceof Savanna.controller.flexpaper.FlexpaperComponent).toBeTruthy();
+            expect(compView.ctrl instanceof Savanna.controller.flexpaper.FlexpaperComponent).toBeTruthy();
         });
     });
 
     describe('Component Controller', function () {
         var server = null;
-        var comp_view = null;
-        var comp_controller = null;
+        var compView = null;
+        var compController = null;
         beforeEach(function () {
             server = new ThetusTestHelpers.FakeServer(sinon);
-            comp_controller = Ext.create("Savanna.controller.flexpaper.FlexpaperComponent");
+            compController = Ext.create("Savanna.controller.flexpaper.FlexpaperComponent");
 
-            comp_view = Ext.create("Savanna.view.flexpaper.FlexpaperComponent");
-            comp_view.add = function(){};
-            comp_view.remove = function(){};
-            comp_view.items = {
+            compView = Ext.create("Savanna.view.flexpaper.FlexpaperComponent");
+            compView.add = function(){};
+            compView.remove = function(){};
+            compView.items = {
                 items:[
                     {
                         ctrl:   {
@@ -73,17 +73,17 @@ describe("Flexpaper Component", function () {
                     }
                 ]
             };
-            comp_view.fireEvent("render", comp_view);
+            compView.fireEvent("render", compView);
         });
 
         afterEach(function () {
             if (server) server.restore();
             server = null;
-            if (comp_controller) comp_controller.destroy();
-            comp_controller = null;
+            if (compController) compController.destroy();
+            compController = null;
         });
         it('controller should be of the correct type', function () {
-            expect(comp_controller instanceof Savanna.controller.flexpaper.FlexpaperComponent).toBeTruthy();
+            expect(compController instanceof Savanna.controller.flexpaper.FlexpaperComponent).toBeTruthy();
         });
 
     });

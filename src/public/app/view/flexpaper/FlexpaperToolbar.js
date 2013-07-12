@@ -11,11 +11,10 @@ Ext.define("Savanna.view.flexpaper.FlexpaperToolbar", {
     requires:   [
         "Ext.toolbar.Toolbar"
     ],
-    ctrl:null,
     border:false,
     initComponent:function(){
         this.callParent();
-        this.ctrl = Savanna.controller.Factory.getController('flexpaper.FlexpaperComponent');
+        Savanna.controller.Factory.getController('flexpaper.FlexpaperComponent');
     },
     items:  [
         {

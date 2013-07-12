@@ -10,11 +10,13 @@ Ext.define("Savanna.controller.flexpaper.FlexpaperComponent", {
     views: [
         "Savanna.view.flexpaper.FlexpaperComponent",
         "Savanna.view.flexpaper.FlexpaperBody",
-        "Savanna.view.flexpaper.FlexpaperToolbar"
+        "Savanna.view.flexpaper.FlexpaperToolbar",
+        "Savanna.view.flexpaper.FlexpaperEntityWindow"
     ],
     stores: [/* coming soon */],
     models: [/* coming soon */],
     requires: [/* coming soon */],
+    load_delay:1200,
     init: function (app) {
         var me = this;
         me.control({
@@ -27,93 +29,28 @@ Ext.define("Savanna.controller.flexpaper.FlexpaperComponent", {
                 render: function (paper, evt) {
                     var fpid = "documentViewer" + paper.up("#flexcomponent").configs.guid;
                     Ext.DomHelper.insertHtml("afterBegin", paper.getEl().dom, "<div id='" + fpid + "' class='flexpaper_viewer'></div>");
-                    paper.up("#flexcomponent").ctrl.loadPaper(fpid, paper.up("#flexcomponent").configs.asset, me, paper, me)
+                    me.loadPaper(fpid, paper.up("#flexcomponent").configs.asset, me, paper, me)
                 }
             },
             "flexpaper_flexpapertoolbar > #tools button": {
                 click: function (btn, evt) {
                     var viewer = "documentViewer" + btn.up("#flexcomponent").configs.guid;
-                    if (btn.itemId == "handtool")
-                    {
-                        // coming soon
-                    }
-                    else if (btn.itemId == "selecttool")
-                    {
-                        $FlexPaper(viewer).enableHighlighter();
-                        me.currentTool = "select";
-                    }
-                    else if (btn.itemId == "penciltool")
-                    {
-                        $FlexPaper(viewer).enableDrawMode();
-                        me.currentTool = "pencil";
-                    }
-                    else if (btn.itemId == "commenttool")
-                    {
-                        $FlexPaper(viewer).addNote();
-                        me.currentTool = "comment";
-                    }
-                    else if (btn.itemId == "entitytool")
-                    {
-                        $FlexPaper(viewer).enableStrikeout();
-                        me.currentTool = "entity";
-                    }
-                    else if (btn.itemId == "zoomintool")
-                    {
-                        $FlexPaper(viewer).setZoom($FlexPaper(viewer).scale + .2);
-                    }
-                    else if (btn.itemId == "zoomouttool")
-                    {
-                        $FlexPaper(viewer).setZoom($FlexPaper(viewer).scale - .2);
-                    }
-                    else if (btn.itemId == "zoomfittool")
-                    {
-                        $FlexPaper(viewer).fitHeight();
-                    }
-                    else if (btn.itemId == "toolmenu")
-                    {
+                    if (btn.itemId == "toolmenu")   {
                         $.each(btn.menu.items.items, function (index, item)
                         {
-                            item.on("click", function (e)
-                            {
-                                if (this.itemId == "singlepageview")
-                                {
-                                    $FlexPaper(viewer).switchMode("Portrait");
-                                }
-                                else if (this.itemId == "twopageview")
-                                {
-                                    $FlexPaper(viewer).switchMode("TwoPage");
-                                }
-                                else if (this.itemId == "thumbview")
-                                {
-                                    $FlexPaper(viewer).switchMode("Tile");
-                                }
-                                else if (this.itemId == "entitiesview")
-                                {
-                                    // coming soon
-                                }
-                                else if (this.itemId == "mycommentsview")
-                                {
-                                    // coming soon
-                                }
-                                else if (this.itemId == "othercommentsview")
-                                {
-                                    // coming soon
-                                }
-                                else if (this.itemId == "legendview")
-                                {
-                                    // coming soon
-                                }
-                            })
-                        })
+                            item.on("click", function (e)   {
+                                me[this.itemId](viewer);
+                            });
+                        });
                     } else {
-                        //console.log("unexpected itemID")
+                        me[this.itemId](viewer);
                     }
                 }
             }
         });
     },
     loadPaper: function (viewer, asset, ctrl, view, comp) {
-        $("#" + viewer).FlexPaperViewer(
+        jQuery("#" + viewer).FlexPaperViewer(
             {
                 config: {
                     PDFFile: asset,
@@ -144,67 +81,91 @@ Ext.define("Savanna.controller.flexpaper.FlexpaperComponent", {
             }
         );
 
-        $("#" + viewer).bind('onMarkCreated onMarkClicked onMarkDeleted', function (e, mark) {
+        jQuery("#" + viewer).bind('onMarkCreated onMarkClicked onMarkDeleted', function (e, mark) {
             //console.log(e);
             //console.log(mark);
             // Show a pop-up to specify an entity type - this should eventually be a view
             if (mark.type == "highlight" && comp.currentTool == "entity") {
-                var entity_opts = Ext.create("Ext.window.Window", {
-                    x: ctrl.mouseCoords[0],
-                    y: ctrl.mouseCoords[1],
-                    autoShow: true,
-                    align: "stretchmax",
-                    title: 'Entity Types',
-                    minWidth: 120,
-                    items: [
-                        {
-                            xtype: "form",
-                            itemID: "entity_form",
-                            minWidth: 120,
-                            items: [
-                                {
-                                    xtype: 'radiogroup',
-                                    fieldLabel: "",
-                                    layout: "vbox",
-                                    width: '100%',
-                                    padding: '10 10 10 10',
-                                    items: [
-                                        { boxLabel: 'Person', name: 'ent', inputValue: 'person' },
-                                        { boxLabel: 'Place', name: 'ent', inputValue: 'place' },
-                                        { boxLabel: 'Thing', name: 'ent', inputValue: 'thing' }
-                                    ]
-                                }
-                            ]
-                        }
-                    ]
-                });
+                var entity_opts = Ext.create("Savanna.view.flexpaper.FlexpaperEntityWindow", {
+                    x:ctrl.mouseCoords[0],
+                    y:ctrl.mouseCoords[1]
+                })
             }
         });
-
-        $("#" + viewer).bind('onDocumentLoaded', function (e) {
-            $("#toolbar_" + viewer + "_annotations_container").css({"display": "none"});
+        var elem = this.getEl();
+        jQuery("#" + viewer).bind('onDocumentLoaded', function (e) {
+            jQuery("#toolbar_" + viewer + "_annotations_container").css({"display": "none"});
             view.on("resize", function (evt) {
-                $("#" + viewer).css(
+                jQuery("#" + viewer).css(
                     {
-                        "width": this.getEl().dom.style["width"],
-                        "height": this.getEl().dom.style["height"]
+                        "width": elem.dom.style["width"],
+                        "height": elem.dom.style["height"]
                     }
                 );
-                $("#" + viewer).find("#pagesContainer_" + viewer).css(
+                jQuery("#" + viewer).find("#pagesContainer_" + viewer).css(
                     {
-                        "width": this.getEl().dom.style["width"],
-                        "height": this.getEl().dom.style["height"]
+                        "width": elem.dom.style["width"],
+                        "height": elem.dom.style["height"]
                     }
                 );
             });
 
             Ext.defer(function () {
                 view.fireEvent("resize")
-            }, 1200);
+            }, ctrl.load_delay);
 
             Ext.getDoc().on('mousemove', function (e) {
                 ctrl.mouseCoords = e.getXY();
             });
         });
+    },
+    handtool:function(viewer) {
+        // coming soon
+    },
+    selecttool:function(viewer)   {
+        $FlexPaper(viewer).enableHighlighter();
+        this.currentTool = "select";
+    },
+    penciltool:function(viewer)   {
+        $FlexPaper(viewer).enableDrawMode();
+        this.currentTool = "pencil";
+    },
+    commenttool:function(viewer)  {
+        $FlexPaper(viewer).addNote();
+        this.currentTool = "comment";
+    },
+    entitytool:function(viewer)   {
+        $FlexPaper(viewer).enableStrikeout();
+        this.currentTool = "entity";
+    },
+    zoomintool:function(viewer)   {
+        $FlexPaper(viewer).setZoom($FlexPaper(viewer).scale + .2);
+    },
+    zoomouttool:function(viewer)  {
+        $FlexPaper(viewer).setZoom($FlexPaper(viewer).scale - .2);
+    },
+    zoomfittool:function(viewer)  {
+        $FlexPaper(viewer).fitHeight();
+    },
+    singlepageview:function(viewer)   {
+        $FlexPaper(viewer).switchMode("Portrait");
+    },
+    twopageview:function(viewer)  {
+        $FlexPaper(viewer).switchMode("TwoPage");
+    },
+    thumbview:function(viewer)    {
+        $FlexPaper(viewer).switchMode("Tile");
+    },
+    entitiesview:function(viewer)   {
+        // coming soon
+    },
+    mycommentsview:function(viewer)   {
+        // coming soon
+    },
+    othercommentsview:function(viewer)    {
+        // coming soon
+    },
+    legendview:function(viewer)   {
+        // coming soon
     }
 });

@@ -10,7 +10,6 @@ Ext.define("Savanna.view.flexpaper.FlexpaperComponent", {
     alias: "widget.flexpaper_flexpapercomponent",
     layout:"fit",
     border:false,
-    ctrl:null,
     currentTool: null,
     requires: [
         "Savanna.view.flexpaper.FlexpaperToolbar",
@@ -18,7 +17,7 @@ Ext.define("Savanna.view.flexpaper.FlexpaperComponent", {
     ],
     initComponent:function()    {
         this.callParent();
-        this.ctrl = Savanna.controller.Factory.getController('flexpaper.FlexpaperComponent');
+        Savanna.controller.Factory.getController('flexpaper.FlexpaperComponent');
     },
     items:  [
         {
@@ -37,7 +36,7 @@ Ext.define("Savanna.view.flexpaper.FlexpaperComponent", {
 /*
 
  getFlexpaper: function (div, asset, tgt, title) {
- var guid = this.guid();
+ var guid = Ext.id();
  var fp = Ext.create("Ext.panel.Panel", {
  title: title,
  closable: true,
@@ -56,15 +55,6 @@ Ext.define("Savanna.view.flexpaper.FlexpaperComponent", {
  this.queryById(tgt).add(fp);
  this.queryById(tgt).setActiveTab(fp);
  },
- s4: function () {
- return Math.floor((1 + Math.random()) * 0x10000)
- .toString(16)
- .substring(1);
- },
- guid: function () {
- return this.s4() + this.s4() + '-' + this.s4() + '-' + this.s4() + '-' +
- this.s4() + '-' + this.s4() + this.s4() + this.s4();
- }
 
  app.viewport.queryById("main").getFlexpaper("documentViewer", "flexpaper/pdf/Paper.pdf", "maintabs", "Flexpaper");
 
