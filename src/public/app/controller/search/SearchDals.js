@@ -19,7 +19,6 @@ Ext.define('Savanna.controller.search.SearchDals', {
 
     addDalDetailText: 'Show Search Options',
     removeDalDetailText: 'Hide Search Options',
-    dalPanel: null,
 
     createPanel: function(myRecord) {
         return Ext.create('Savanna.view.search.searchDals.SearchOptions', {
@@ -56,26 +55,31 @@ Ext.define('Savanna.controller.search.SearchDals', {
     },
 
     renderCustomOptions: function(button, evt) {
-        if (!this.dalPanel) {
-            // NOTE: I'm not sure this is the correct way to do this since the controller is a singleton
-            //       (if we can have more than one search, this will break...)
-            var parentView = button.up('search_searchDals_searchoptions');
+        // NOTE: I'm not sure this is the correct way to do this since the controller is a singleton
+        //       (if we can have more than one search, this will break...)
+        var parentView = button.up('search_searchDals_searchoptions');
+        var childSearchDalsPanel = parentView.down('search_searchDals_custom-search-group-form');
+        console.log('parentView', parentView);
+        console.log('childSearchDalsPanel',childSearchDalsPanel);
+        if (!childSearchDalsPanel) {
             var parentViewId = parentView.itemId;
             var store = this.getDalSourcesStore();
             var record = store.getById(parentViewId);
 
-            this.dalPanel = this.createCustomSearchGroupPanel(record.customSearchGroups());
+            var dalPanel = this.createCustomSearchGroupPanel(record.customSearchGroups());
 
-            parentView.add(this.dalPanel);
+            parentView.add(dalPanel);
+            childSearchDalsPanel = parentView.down('search_searchDals_custom-search-group-form');
+            console.log('childSearchDalsPanel',childSearchDalsPanel);
         }
 
         if (button.text == this.addDalDetailText) {
             button.setText(this.removeDalDetailText);
-            this.dalPanel.show();
+            childSearchDalsPanel.show();
         }
         else {
             button.setText(this.addDalDetailText);
-            this.dalPanel.hide();
+            childSearchDalsPanel.hide();
         }
     },
 
@@ -575,7 +579,7 @@ Ext.define('Savanna.controller.search.SearchDals', {
                         "type": "sav_searchOutputFlagType_ReturnFacets"
                     }
                 ],
-                "displayName": "MOCK",
+                "displayName": "MOCK2",
                 "facetDescriptions": [ ],
                 "timeoutMillis": 5000,
                 "sortOrderVOs": null,
