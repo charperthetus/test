@@ -5,6 +5,9 @@ Ext.define('Savanna.view.search.SearchBody', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.search_searchbody',
 
+    requires: [
+        'Savanna.view.search.SearchDals'
+    ],
     layout: 'fit',
     border: false,
 
@@ -33,7 +36,8 @@ Ext.define('Savanna.view.search.SearchBody', {
                     items: [
                         {
                             title: 'Search Sources',
-                            html: 'sources here'
+                            autoScroll: true,
+                            xtype: 'search_searchdals'
                         },
                         {
                             title: 'Location',

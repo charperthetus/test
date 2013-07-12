@@ -1,259 +1,94 @@
-var ThetusTestHelpers;
+Ext.define('Savanna.controller.search.SearchDals', {
+    extend: 'Ext.app.Controller',
 
-(function (ThetusHelpers) {
-    'use strict';
+    models: [
+        'DalSource'
+    ],
 
-    var legacyDal = {
-        "displayName": "Savanna",
-        "id": "SolrJdbc",
-        "outputTypes": [
-            {
-                "type": "sav_searchOutputFlagType_ReturnResults"
+    stores: [
+        'DalSources'
+    ],
+
+    views: [
+        'search.SearchDals',
+        'search.searchDals.SearchOptions',
+        'search.searchDals.CustomSearchGroupForm'
+    ],
+
+    layout: 'hbox',
+
+    addDalDetailText: 'Show Search Options',
+    removeDalDetailText: 'Hide Search Options',
+
+    createPanel: function(myRecord) {
+        return Ext.create('Savanna.view.search.searchDals.SearchOptions', {
+            itemId: myRecord.data.id,
+            checkboxLabel: myRecord.data.displayName,
+            label: myRecord.data.textDescription,
+            showButton: myRecord.customSearchGroups().data.length
+        });
+    },
+
+    createCustomSearchGroupPanel: function(store) {
+        return Ext.create('Savanna.view.search.searchDals.CustomSearchGroupForm', {
+            store: store
+        });
+    },
+
+    init: function (app) {
+        this.getDalSourcesStore().loadRawData(this.data);
+
+        this.control({
+            'search_searchdals': {
+                render: function (body) {
+                    var me = this;
+                    this.getDalSourcesStore().each(function (record) {
+                        var myPanel = me.createPanel(record);
+                        body.add(myPanel);
+                    });
+                }
             },
-            {
-                "type": "sav_searchOutputFlagType_ReturnTagCloud"
-            },
-            {
-                "type": "sav_searchOutputFlagType_ReturnFacets"
-            },
-            {
-                "type": "sav_searchOutputFlagType_ReturnTermCloud"
-            },
-            {
-                "type": "sav_searchOutputFlagType_Buckets"
+            'search_searchDals_searchoptions > #searchOptionsToggle': {
+                click: this.renderCustomOptions
             }
-        ],
-        "inputTypes": [
-            {
-                "type": "sav_searchInputType_DateRange"
-            },
-            {
-                "type": "sav_searchInputType_TagCloud"
-            },
-            {
-                "type": "sav_searchInputType_NounVerbPhrase"
-            },
-            {
-                "type": "sav_searchInputType_PosProximity"
-            },
-            {
-                "type": "sav_searchInputType_TextWithinDoc"
-            },
-            {
-                "type": "sav_searchInputType_Text"
-            },
-            {
-                "type": "sav_searchInputType_NumberRange"
-            },
-            {
-                "type": "sav_searchInputType_QuerySuggest"
-            },
-            {
-                "type": "sav_searchInputType_FacetFilter"
-            },
-            {
-                "type": "sav_searchInputType_TermCloud"
-            },
-            {
-                "type": "sav_searchInputType_BucketedRange"
-            },
-            {
-                "type": "sav_searchInputType_Heatmap"
-            },
-            {
-                "type": "sav_searchInputType_Proximity"
-            },
-            {
-                "type": "sav_searchInputType_Geo"
-            },
-            {
-                "type": "sav_searchInputType_AbacFilter"
-            },
-            {
-                "type": "sav_searchInputType_GetFacetNames"
-            },
-            {
-                "type": "sav_searchInputType_SortOrder"
-            },
-            {
-                "type": "sav_searchInputType_ContentDocUri"
-            },
-            {
-                "type": "sav_searchInputType_PublisherId"
-            },
-            {
-                "type": "sav_searchInputType_FacetName"
-            }
-        ],
-        "facetDescriptions": [
-            {
-                "enumValues": null,
-                "facetId": "published-date",
-                "facetDataType": "DATE",
-                "providesAggregateData": true,
-                "canFilterOn": true,
-                "displayValue": "Publish Date",
-                "enumValuesType": "sav_facetEnumType_None"
-            },
-            {
-                "enumValues": null,
-                "facetId": "ingest-date",
-                "facetDataType": "DATE",
-                "providesAggregateData": true,
-                "canFilterOn": true,
-                "displayValue": "Ingest Date",
-                "enumValuesType": "sav_facetEnumType_None"
-            },
-            {
-                "enumValues": null,
-                "facetId": "producer",
-                "facetDataType": "STRING",
-                "providesAggregateData": true,
-                "canFilterOn": true,
-                "displayValue": "Producer",
-                "enumValuesType": "sav_facetEnumType_None"
-            },
-            {
-                "enumValues": null,
-                "facetId": "producer-category",
-                "facetDataType": "STRING",
-                "providesAggregateData": true,
-                "canFilterOn": true,
-                "displayValue": "Category",
-                "enumValuesType": "sav_facetEnumType_None"
-            },
-            {
-                "enumValues": null,
-                "facetId": "distributor",
-                "facetDataType": "STRING",
-                "providesAggregateData": true,
-                "canFilterOn": true,
-                "displayValue": "Distributor",
-                "enumValuesType": "sav_facetEnumType_None"
-            },
-            {
-                "enumValues": null,
-                "facetId": "composite",
-                "facetDataType": "STRING",
-                "providesAggregateData": true,
-                "canFilterOn": true,
-                "displayValue": "Classification",
-                "enumValuesType": "sav_facetEnumType_None"
-            },
-            {
-                "enumValues": null,
-                "facetId": "isf-source-type",
-                "facetDataType": "STRING",
-                "providesAggregateData": true,
-                "canFilterOn": true,
-                "displayValue": "ISF Source Type",
-                "enumValuesType": "sav_facetEnumType_None"
-            }
-        ],
-        "timeoutMillis": 5000,
-        "sortOrderVOs": null,
-        "searchGeoTypes": [ "sav_searchInputType_Geo" ],
-        "supportsHyperDynamicFacets": false,
-        "textDescription": "",
+        });
+    },
 
-        /* WARNING, WARNING, WARNING!!!!!!
-         We restructured the data to get rid of the parent "customSearchDescription" data-member since it
-         only has "customSearchGroups" and we do not really want to create a has-a relationship for a model
-         that is just a wrapper for a has-many....
-         */
-        "customSearchGroups": null
-    };
+    renderCustomOptions: function(button, evt) {
+        // NOTE: I'm not sure this is the correct way to do this since the controller is a singleton
+        //       (if we can have more than one search, this will break...)
+        var parentView = button.up('search_searchDals_searchoptions');
+        var childSearchDalsPanel = parentView.down('search_searchDals_custom-search-group-form');
+        console.log('parentView', parentView);
+        console.log('childSearchDalsPanel',childSearchDalsPanel);
+        if (!childSearchDalsPanel) {
+            var parentViewId = parentView.itemId;
+            var store = this.getDalSourcesStore();
+            var record = store.getById(parentViewId);
 
-    var groupedDal = {
-        "id" : "mockDAL",
-        "inputTypes" : [ {
-            "type" : "sav_searchInputType_Text"
-        }, {
-            "type" : "sav_searchInputType_FacetFilter"
-        } ],
-        "outputTypes" : [ {
-            "type" : "sav_searchOutputFlagType_ReturnResults"
-        }, {
-            "type" : "sav_searchOutputFlagType_ReturnFacets"
-        } ],
-        "displayName" : "mockDAL",
-        "facetDescriptions" : [ ],
-        "timeoutMillis" : 5000,
-        "sortOrderVOs" : null,
-        "searchGeoTypes" : null,
-        "supportsHyperDynamicFacets" : false,
-        "textDescription" : "",
+            var dalPanel = this.createCustomSearchGroupPanel(record.customSearchGroups());
 
-        /* WARNING, WARNING, WARNING!!!!!!
-         We restructured the data to get rid of the parent "customSearchDescription" data-member since it
-         only has "customSearchGroups" and we do not really want to create a has-a relationship for a model
-         that is just a wrapper for a has-many....
-         */
-            "customSearchGroups" : [ {
-                "id" : "group1",
-                "customSearchParameters" : [ {
-                    "list" : [ "a good option", "a bad option", "a so-so option" ],
-                    "id" : "dropdown1",
-                    "displayLabel" : "It's a dropdown"
-                }, {
-                    "defaultValue" : "",
-                    "id" : "field1",
-                    "displayLabel" : "How are you feeling today?"
-                }, {
-                    "date" : 1340895610082,
-                    "id" : "date1",
-                    "displayLabel" : "When it started"
-                }, {
-                    "date" : 1372431610082,
-                    "id" : "date2",
-                    "displayLabel" : "When it ended"
-                } ],
-                "displayLabel" : "Group 1"
-            }, {
-                "id" : "group2",
-                "customSearchParameters" : [ {
-                    "defaultValue" : true,
-                    "id" : "check1",
-                    "displayLabel" : "Make it good"
-                }, {
-                    "defaultValue" : false,
-                    "id" : "check2",
-                    "displayLabel" : "Make it better than that"
-                }, {
-                    "radioOptions" : [ {
-                        "id" : "chicken",
-                        "displayLabel" : "Chicken"
-                    }, {
-                        "id" : "turkey",
-                        "displayLabel" : "Turkey"
-                    }, {
-                        "id" : "roastbeef",
-                        "displayLabel" : "Roast Beef"
-                    } ],
-                    "id" : "radio1",
-                    "displayLabel" : "Which do you prefer?"
-                }, {
-                    "list" : [ "score", "coolness", "price", "length" ],
-                    "id" : "savannaSortOrder",
-                    "displayLabel" : "How do you want to sort it?"
-                } ],
-                "displayLabel" : "Group 2"
-            }, {
-                "id" : "group3",
-                "customSearchParameters" : [ {
-                    "list" : [ "name", "country", "company", "type" ],
-                    "id" : "keyvalues1",
-                    "displayLabel" : "Set some filters"
-                } ],
-                "displayLabel" : "Group 3"
-            } ]
-    };
+            parentView.add(dalPanel);
 
-    var allDals = {
+            childSearchDalsPanel = parentView.down('search_searchDals_custom-search-group-form');
+            console.log('childSearchDalsPanel',childSearchDalsPanel);
+        }
+
+        if (button.text == this.addDalDetailText) {
+            button.setText(this.removeDalDetailText);
+            childSearchDalsPanel.show();
+        }
+        else {
+            button.setText(this.addDalDetailText);
+            childSearchDalsPanel.hide();
+        }
+
+        parentView.doLayout();
+    },
+
+    data: {
         defaultId: 'mockDAL',
         sources: [
-            legacyDal,
-            groupedDal,
             {
                 "id": "MediaWiki",
                 "inputTypes": [
@@ -282,7 +117,7 @@ var ThetusTestHelpers;
                  only has "customSearchGroups" and we do not really want to create a has-a relationship for a model
                  that is just a wrapper for a has-many....
                  */
-                "customSearchGroups": null
+                "customSearchGroups":  null
             }, {
                 "id": "Linkedin",
                 "inputTypes": [
@@ -646,11 +481,11 @@ var ThetusTestHelpers;
                 "textDescription": "A MOCK Dal For Testing Custom Search Options",
 
                 /* WARNING, WARNING, WARNING!!!!!!
-                 We restructured the data to get rid of the parent "customSearchDescription" data-member since it
-                 only has "customSearchGroups" and we do not really want to create a has-a relationship for a model
-                 that is just a wrapper for a has-many....
+                    We restructured the data to get rid of the parent "customSearchDescription" data-member since it
+                    only has "customSearchGroups" and we do not really want to create a has-a relationship for a model
+                    that is just a wrapper for a has-many....
                  */
-                    "customSearchGroups": [
+                "customSearchGroups": [
                         {
                             "id": "group1",
                             "customSearchParameters": [
@@ -728,14 +563,221 @@ var ThetusTestHelpers;
                             "displayLabel": "Group 3"
                         }
                     ]
+            },
+            {
+                "id": "MOCK2",
+                "inputTypes": [
+                    {
+                        "type": "sav_searchInputType_Text"
+                    },
+                    {
+                        "type": "sav_searchInputType_FacetFilter"
+                    }
+                ],
+                "outputTypes": [
+                    {
+                        "type": "sav_searchOutputFlagType_ReturnResults"
+                    },
+                    {
+                        "type": "sav_searchOutputFlagType_ReturnFacets"
+                    }
+                ],
+                "displayName": "MOCK2",
+                "facetDescriptions": [ ],
+                "timeoutMillis": 5000,
+                "sortOrderVOs": null,
+                "searchGeoTypes": null,
+                "supportsHyperDynamicFacets": false,
+                "textDescription": "A MOCK Dal For Testing Custom Search Options",
+
+                /* WARNING, WARNING, WARNING!!!!!!
+                 We restructured the data to get rid of the parent "customSearchDescription" data-member since it
+                 only has "customSearchGroups" and we do not really want to create a has-a relationship for a model
+                 that is just a wrapper for a has-many....
+                 */
+                "customSearchGroups": [
+                    {
+                        "id": "group1a",
+                        "customSearchParameters": [
+                            {
+                                "list": [ "a good option", "a bad option", "a so-so option" ],
+                                "id": "dropdown1a",
+                                "displayLabel": "It's a dropdown"
+                            },
+                            {
+                                "defaultValue": "",
+                                "id": "field1a",
+                                "displayLabel": "How are you feeling today?"
+                            },
+                            {
+                                "date": 1340895610082,
+                                "id": "date1a",
+                                "displayLabel": "When it started"
+                            },
+                            {
+                                "date": 1372431610082,
+                                "id": "date2a",
+                                "displayLabel": "When it ended"
+                            }
+                        ],
+                        "displayLabel": "Group 1a"
+                    },
+                    {
+                        "id": "group2a",
+                        "customSearchParameters": [
+                            {
+                                "defaultValue": true,
+                                "id": "check1a",
+                                "displayLabel": "Make it good"
+                            },
+                            {
+                                "defaultValue": false,
+                                "id": "check2a",
+                                "displayLabel": "Make it better than that"
+                            },
+                            {
+                                "radioOptions": [
+                                    {
+                                        "id": "chickena",
+                                        "displayLabel": "Chicken"
+                                    },
+                                    {
+                                        "id": "turkeya",
+                                        "displayLabel": "Turkey"
+                                    },
+                                    {
+                                        "id": "roastbeefa",
+                                        "displayLabel": "Roast Beef"
+                                    }
+                                ],
+                                "id": "radio1a",
+                                "displayLabel": "Which do you prefer?"
+                            },
+                            {
+                                "list": [ "score", "coolness", "price", "length" ],
+                                "id": "savannaSortOrdera",
+                                "displayLabel": "How do you want to sort it?"
+                            }
+                        ],
+                        "displayLabel": "Group 2a"
+                    },
+                    {
+                        "id": "group3a",
+                        "customSearchParameters": [
+                            {
+                                "list": [ "name", "country", "company", "type" ],
+                                "id": "keyvalues1a",
+                                "displayLabel": "Set some filters"
+                            }
+                        ],
+                        "displayLabel": "Group 3a"
+                    }
+                ]
+            }
+        ]
+    },
+    data2:{
+        "defaultId" : "mockDAL",
+        'sources' : [ {
+            id: 'Ted DAL',
+            "inputTypes" : [ {
+                "type" : "sav_searchInputType_Text"
+            }, {
+                "type" : "sav_searchInputType_FacetFilter"
+            } ],
+            "outputTypes" : [ {
+                "type" : "sav_searchOutputFlagType_ReturnResults"
+            }, {
+                "type" : "sav_searchOutputFlagType_ReturnFacets"
+            } ],
+            "displayName" : "Ted DAL",
+            "facetDescriptions" : [ ],
+            "timeoutMillis" : 5000,
+            "sortOrderVOs" : null,
+            "searchGeoTypes" : null,
+            "supportsHyperDynamicFacets" : false,
+            "textDescription" : "",
+            "customSearchGroups" : [ {
+                "id" : "group1",
+                "customSearchParameters" : [ {
+                    "list" : [ "a good option", "a bad option", "a so-so option" ],
+                    "id" : "dropdown1",
+                    "displayLabel" : "It's a dropdown"
+                }, {
+                    "defaultValue" : "",
+                    "id" : "field1",
+                    "displayLabel" : "How are you feeling today?"
+                }, {
+                    "date" : 1340895610082,
+                    "id" : "date1",
+                    "displayLabel" : "When it started"
+                }, {
+                    "date" : 1372431610082,
+                    "id" : "date2",
+                    "displayLabel" : "When it ended"
+                } ],
+                "displayLabel" : "Group 1"
+            }, {
+                "id" : "group2",
+                "customSearchParameters" : [ {
+                    "defaultValue" : true,
+                    "id" : "check1",
+                    "displayLabel" : "Make it good"
+                }, {
+                    "defaultValue" : false,
+                    "id" : "check2",
+                    "displayLabel" : "Make it better than that"
+                }, {
+                    "radioOptions" : [ {
+                        "id" : "chicken",
+                        "displayLabel" : "Chicken"
+                    }, {
+                        "id" : "turkey",
+                        "displayLabel" : "Turkey"
+                    }, {
+                        "id" : "roastbeef",
+                        "displayLabel" : "Roast Beef"
+                    } ],
+                    "id" : "radio1",
+                    "displayLabel" : "Which do you prefer?"
+                }, {
+                    "list" : [ "score", "coolness", "price", "length" ],
+                    "id" : "savannaSortOrder",
+                    "displayLabel" : "How do you want to sort it?"
+                } ],
+                "displayLabel" : "Group 2"
+            }, {
+                "id" : "group3",
+                "customSearchParameters" : [ {
+                    "list" : [ "name", "country", "company", "type" ],
+                    "id" : "keyvalues1",
+                    "displayLabel" : "Set some filters"
+                } ],
+                "displayLabel" : "Group 3"
             } ]
-    };
 
-    ThetusHelpers.Fixtures = ThetusHelpers.Fixtures || {};
-    ThetusHelpers.Fixtures.DalSources = ThetusHelpers.Fixtures.DalSources || {};
+        },{
+            id: 'Steve DAL',
+            "inputTypes" : [ {
+                "type" : "sav_searchInputType_Text"
+            }, {
+                "type" : "sav_searchInputType_FacetFilter"
+            } ],
+            "outputTypes" : [ {
+                "type" : "sav_searchOutputFlagType_ReturnResults"
+            }, {
+                "type" : "sav_searchOutputFlagType_ReturnFacets"
+            } ],
+            "displayName" : "Steve DAL",
+            "facetDescriptions" : [ ],
+            "timeoutMillis" : 5000,
+            "sortOrderVOs" : null,
+            "searchGeoTypes" : null,
+            "supportsHyperDynamicFacets" : false,
+            "textDescription" : "",
+            "customSearchGroups" : [ ]
 
-    ThetusHelpers.Fixtures.DalSources.legacyDal = legacyDal;
-    ThetusHelpers.Fixtures.DalSources.groupedDal = groupedDal;
-    ThetusHelpers.Fixtures.DalSources.allDals = allDals;
-
-})(ThetusTestHelpers || (ThetusTestHelpers = {}));
+        }
+    ]
+    }
+});
