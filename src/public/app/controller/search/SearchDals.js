@@ -69,6 +69,7 @@ Ext.define('Savanna.controller.search.SearchDals', {
             var dalPanel = this.createCustomSearchGroupPanel(record.customSearchGroups());
 
             parentView.add(dalPanel);
+
             childSearchDalsPanel = parentView.down('search_searchDals_custom-search-group-form');
             console.log('childSearchDalsPanel',childSearchDalsPanel);
         }
@@ -81,6 +82,8 @@ Ext.define('Savanna.controller.search.SearchDals', {
             button.setText(this.addDalDetailText);
             childSearchDalsPanel.hide();
         }
+
+        parentView.doLayout();
     },
 
     data: {
@@ -594,80 +597,80 @@ Ext.define('Savanna.controller.search.SearchDals', {
                  */
                 "customSearchGroups": [
                     {
-                        "id": "group1",
+                        "id": "group1a",
                         "customSearchParameters": [
                             {
                                 "list": [ "a good option", "a bad option", "a so-so option" ],
-                                "id": "dropdown1",
+                                "id": "dropdown1a",
                                 "displayLabel": "It's a dropdown"
                             },
                             {
                                 "defaultValue": "",
-                                "id": "field1",
+                                "id": "field1a",
                                 "displayLabel": "How are you feeling today?"
                             },
                             {
                                 "date": 1340895610082,
-                                "id": "date1",
+                                "id": "date1a",
                                 "displayLabel": "When it started"
                             },
                             {
                                 "date": 1372431610082,
-                                "id": "date2",
+                                "id": "date2a",
                                 "displayLabel": "When it ended"
                             }
                         ],
-                        "displayLabel": "Group 1"
+                        "displayLabel": "Group 1a"
                     },
                     {
-                        "id": "group2",
+                        "id": "group2a",
                         "customSearchParameters": [
                             {
                                 "defaultValue": true,
-                                "id": "check1",
+                                "id": "check1a",
                                 "displayLabel": "Make it good"
                             },
                             {
                                 "defaultValue": false,
-                                "id": "check2",
+                                "id": "check2a",
                                 "displayLabel": "Make it better than that"
                             },
                             {
                                 "radioOptions": [
                                     {
-                                        "id": "chicken",
+                                        "id": "chickena",
                                         "displayLabel": "Chicken"
                                     },
                                     {
-                                        "id": "turkey",
+                                        "id": "turkeya",
                                         "displayLabel": "Turkey"
                                     },
                                     {
-                                        "id": "roastbeef",
+                                        "id": "roastbeefa",
                                         "displayLabel": "Roast Beef"
                                     }
                                 ],
-                                "id": "radio1",
+                                "id": "radio1a",
                                 "displayLabel": "Which do you prefer?"
                             },
                             {
                                 "list": [ "score", "coolness", "price", "length" ],
-                                "id": "savannaSortOrder",
+                                "id": "savannaSortOrdera",
                                 "displayLabel": "How do you want to sort it?"
                             }
                         ],
-                        "displayLabel": "Group 2"
+                        "displayLabel": "Group 2a"
                     },
                     {
-                        "id": "group3",
+                        "id": "group3a",
                         "customSearchParameters": [
                             {
                                 "list": [ "name", "country", "company", "type" ],
-                                "id": "keyvalues1",
+                                "id": "keyvalues1a",
                                 "displayLabel": "Set some filters"
                             }
                         ],
-                        "displayLabel": "Group 3"
+                        "displayLabel": "Group 3a"
                     }
                 ]
             }

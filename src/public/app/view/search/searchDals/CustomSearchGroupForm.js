@@ -13,16 +13,14 @@ Ext.define('Savanna.view.search.searchDals.CustomSearchGroupForm', {
     constructor: function(config) {
         config = config || {};
 
+        this.callParent(arguments);
+
         var me = this;
 
         this.store = config.store;
 
         this.store.each(function(record) {
-            me.items.push(Ext.create('Savanna.view.search.searchDals.CustomGroup', { model: record }));
+            me.add(Ext.create('Savanna.view.search.searchDals.CustomGroup', { model: record }));
         });
-
-        console.log('items', this.items);
-
-        this.callParent(arguments);
     }
 });

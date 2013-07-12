@@ -10,6 +10,8 @@ Ext.define('Savanna.view.search.searchDals.SearchOptions', {
 
     width: '100%',
 
+    padding: 20,
+
     itemId: 'NO_ID',
 
     items: [{
