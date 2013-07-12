@@ -7,7 +7,10 @@ describe('Dal Search', function() {
         fixtures = {};
 
     beforeEach(function() {
+        this.addMatchers(ExtSpec.Jasmine.Matchers);
+
         DAL_SOURCES_URL = DAL_SOURCES_URL || (Savanna.Config.savannaUrlRoot + Savanna.Config.dalSourcesUrl + ';jsessionid=undefined?page=1&start=0&limit=50');
+
         fixtures = Ext.clone(ThetusTestHelpers.Fixtures.DalSources);
     });
 
@@ -21,8 +24,6 @@ describe('Dal Search', function() {
 
             it('should be able to create a model with canonical data', function() {
                 var dal = Ext.create('Savanna.model.DalSource', fixtures.groupedDal);
-
-                console.log(dal);
 
                 expect(dal instanceof Savanna.model.DalSource).toBeTruthy();
 
@@ -51,12 +52,6 @@ describe('Dal Search', function() {
 
         describe('default data loading', function() {
 
-            beforeEach(function() {
-            });
-
-            afterEach(function() {
-            });
-
             it('should load data', function() {
                 expect(store.getTotalCount()).toBe(0);
 
@@ -71,6 +66,28 @@ describe('Dal Search', function() {
                 expect(store.getTotalCount()).toBe(8);
                 expect(store.defaultId).toBe('mockDAL');
             });
+        });
+    });
+
+    describe('Savanna.view.search.SearchBody', function() {
+        var view = null;
+
+        beforeEach(function() {
+            view = Ext.create('Savanna.view.search.SearchBody');
+            spyOn(Savanna.controller.Factory, 'getController');
+        });
+
+        afterEach(function() {
+            if (view && view.destroy) view.destroy();
+
+            view = null;
+        });
+
+        it('initComponent should ask for a controller', function() {
+
+            view.initComponent();
+
+            expect(Savanna.controller.Factory.getController).toHaveBeenCalledWith('search.SearchBody');
         });
     });
 });

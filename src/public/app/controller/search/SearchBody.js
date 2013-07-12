@@ -4,6 +4,10 @@
 Ext.define('Savanna.controller.search.SearchBody', {
     extend: 'Ext.app.Controller',
 
+    requires: [
+        'Savanna.controller.search.SearchDals'
+    ],
+
     models: [
         // coming soon...
     ],
