@@ -39,11 +39,11 @@ Ext.define("Savanna.controller.flexpaper.FlexpaperComponent", {
                         $.each(btn.menu.items.items, function (index, item)
                         {
                             item.on("click", function (e)   {
-                                me[this.itemId](viewer);
+                                me[btn.itemId](viewer);
                             });
                         });
                     } else {
-                        me[this.itemId](viewer);
+                        me[btn.itemId](viewer);
                     }
                 }
             }
@@ -92,10 +92,11 @@ Ext.define("Savanna.controller.flexpaper.FlexpaperComponent", {
                 })
             }
         });
-        var elem = this.getEl();
+
         jQuery("#" + viewer).bind('onDocumentLoaded', function (e) {
             jQuery("#toolbar_" + viewer + "_annotations_container").css({"display": "none"});
             view.on("resize", function (evt) {
+                var elem = this.getEl();
                 jQuery("#" + viewer).css(
                     {
                         "width": elem.dom.style["width"],

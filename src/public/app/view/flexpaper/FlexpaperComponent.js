@@ -56,6 +56,6 @@ Ext.define("Savanna.view.flexpaper.FlexpaperComponent", {
  this.queryById(tgt).setActiveTab(fp);
  },
 
- app.viewport.queryById("main").getFlexpaper("documentViewer", "flexpaper/pdf/Paper.pdf", "maintabs", "Flexpaper");
+ app.viewport.queryById("main").getFlexpaper("documentViewer", "http://localhost/flexpaper/pdf/Paper.pdf", "mainsearchoptions_tabs", "Flexpaper");
 
  */
