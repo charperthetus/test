@@ -15927,3 +15927,1617 @@ body.x-nbr .x-tab-default-right {
 .x-tab-noicon .x-tab-icon {
   display: none;
 }
+
+/* including package search-skin */
+/* line 143, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-top {
+  -moz-border-radius-topleft: 4px;
+  -webkit-border-top-left-radius: 4px;
+  border-top-left-radius: 4px;
+  -moz-border-radius-topright: 4px;
+  -webkit-border-top-right-radius: 4px;
+  border-top-right-radius: 4px;
+  -moz-border-radius-bottomright: 0;
+  -webkit-border-bottom-right-radius: 0;
+  border-bottom-right-radius: 0;
+  -moz-border-radius-bottomleft: 0;
+  -webkit-border-bottom-left-radius: 0;
+  border-bottom-left-radius: 0;
+  padding: 3px 9px 3px 9px;
+  border-width: 1px 1px 0 1px;
+  border-style: solid;
+  background-image: none;
+  background-color: white;
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #f4f1f1), color-stop(25%, #fbf8f8), color-stop(45%, #ffffff));
+  background-image: -webkit-linear-gradient(top, #f4f1f1, #fbf8f8 25%, #ffffff 45%);
+  background-image: -moz-linear-gradient(top, #f4f1f1, #fbf8f8 25%, #ffffff 45%);
+  background-image: -o-linear-gradient(top, #f4f1f1, #fbf8f8 25%, #ffffff 45%);
+  background-image: linear-gradient(top, #f4f1f1, #fbf8f8 25%, #ffffff 45%);
+}
+
+/* line 195, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-top-mc {
+  background-image: url(images/tab/tab-link-tabpanel-top-fbg.gif);
+  background-position: 0 top;
+  background-color: white;
+}
+
+/* line 218, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-nlg .x-tab-link-tabpanel-top {
+  background-image: url(images/tab/tab-link-tabpanel-top-bg.gif);
+  background-position: 0 top;
+}
+
+/* line 241, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-nbr .x-tab-link-tabpanel-top {
+  padding: 0 !important;
+  border-width: 0 !important;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  -ms-border-radius: 0px;
+  -o-border-radius: 0px;
+  border-radius: 0px;
+  background-color: transparent;
+}
+
+/* line 260, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+body.x-nbr .x-tab-link-tabpanel-top {
+  /* Pass along Div/Table, Horz/Vert, border-radius and border-width: */
+  background-image: url("about:blank#th-4-4-0-0-1-1-0-1-3-9-3-9");
+}
+
+/* line 315, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-top-tl {
+  background-position: 0 -8px;
+}
+
+/* line 319, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-top-tr {
+  background-position: right -12px;
+}
+
+/* line 323, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-top-bl {
+  background-position: 0 -16px;
+}
+
+/* line 327, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-top-br {
+  background-position: right -20px;
+}
+
+/* line 331, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-top-ml {
+  background-position: 0 top;
+}
+
+/* line 335, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-top-mr {
+  background-position: right top;
+}
+
+/* line 339, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-top-tc {
+  background-position: 0 0;
+}
+
+/* line 343, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-top-bc {
+  background-position: 0 -4px;
+}
+
+/* line 350, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-top-tr,
+.x-tab-link-tabpanel-top-br,
+.x-tab-link-tabpanel-top-mr {
+  padding-right: 4px;
+}
+
+/* line 356, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-top-tl,
+.x-tab-link-tabpanel-top-bl,
+.x-tab-link-tabpanel-top-ml {
+  padding-left: 4px;
+}
+
+/* line 360, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-top-tc {
+  height: 4px;
+}
+
+/* line 363, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-top-bc {
+  height: 0;
+}
+
+/* line 374, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-top-tl,
+.x-tab-link-tabpanel-top-bl,
+.x-tab-link-tabpanel-top-tr,
+.x-tab-link-tabpanel-top-br,
+.x-tab-link-tabpanel-top-tc,
+.x-tab-link-tabpanel-top-bc,
+.x-tab-link-tabpanel-top-ml,
+.x-tab-link-tabpanel-top-mr {
+  zoom: 1;
+  background-image: url(images/tab/tab-link-tabpanel-top-corners.gif);
+}
+
+/* line 418, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-top-ml,
+.x-tab-link-tabpanel-top-mr {
+  zoom: 1;
+  background-image: url(images/tab/tab-link-tabpanel-top-sides.gif);
+}
+
+/* line 430, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-top-mc {
+  padding: 0px 6px 3px 6px;
+}
+
+/* line 439, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-strict .x-ie7 .x-tab-link-tabpanel-top-tl,
+.x-strict .x-ie7 .x-tab-link-tabpanel-top-bl {
+  position: relative;
+  right: 0;
+}
+
+/*<if slicer>*/
+/* line 78, ../../../ext-theme-base/sass/etc/mixins/slicer.scss */
+.x-tab-link-tabpanel-top:after {
+  display: none;
+  content: "x-slicer:stretch:bottom, frame-bg:url(images/tab/tab-link-tabpanel-top-fbg.gif), bg:url(images/tab/tab-link-tabpanel-top-bg.gif), corners:url(images/tab/tab-link-tabpanel-top-corners.gif), sides:url(images/tab/tab-link-tabpanel-top-sides.gif)";
+}
+
+/*</if slicer>*/
+/* */
+/* line 143, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-bottom {
+  -moz-border-radius-topleft: 0;
+  -webkit-border-top-left-radius: 0;
+  border-top-left-radius: 0;
+  -moz-border-radius-topright: 0;
+  -webkit-border-top-right-radius: 0;
+  border-top-right-radius: 0;
+  -moz-border-radius-bottomright: 4px;
+  -webkit-border-bottom-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+  -moz-border-radius-bottomleft: 4px;
+  -webkit-border-bottom-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+  padding: 3px 9px 3px 9px;
+  border-width: 0 1px 1px 1px;
+  border-style: solid;
+  background-image: none;
+  background-color: white;
+  background-image: -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, #f4f1f1), color-stop(25%, #fbf8f8), color-stop(45%, #ffffff));
+  background-image: -webkit-linear-gradient(bottom, #f4f1f1, #fbf8f8 25%, #ffffff 45%);
+  background-image: -moz-linear-gradient(bottom, #f4f1f1, #fbf8f8 25%, #ffffff 45%);
+  background-image: -o-linear-gradient(bottom, #f4f1f1, #fbf8f8 25%, #ffffff 45%);
+  background-image: linear-gradient(bottom, #f4f1f1, #fbf8f8 25%, #ffffff 45%);
+}
+
+/* line 195, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-bottom-mc {
+  background-image: url(images/tab/tab-link-tabpanel-bottom-fbg.gif);
+  background-position: 0 top;
+  background-color: white;
+}
+
+/* line 218, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-nlg .x-tab-link-tabpanel-bottom {
+  background-image: url(images/tab/tab-link-tabpanel-bottom-bg.gif);
+  background-position: 0 top;
+}
+
+/* line 241, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-nbr .x-tab-link-tabpanel-bottom {
+  padding: 0 !important;
+  border-width: 0 !important;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  -ms-border-radius: 0px;
+  -o-border-radius: 0px;
+  border-radius: 0px;
+  background-color: transparent;
+}
+
+/* line 260, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+body.x-nbr .x-tab-link-tabpanel-bottom {
+  /* Pass along Div/Table, Horz/Vert, border-radius and border-width: */
+  background-image: url("about:blank#th-0-0-4-4-0-1-1-1-3-9-3-9");
+}
+
+/* line 315, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-bottom-tl {
+  background-position: 0 -8px;
+}
+
+/* line 319, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-bottom-tr {
+  background-position: right -12px;
+}
+
+/* line 323, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-bottom-bl {
+  background-position: 0 -16px;
+}
+
+/* line 327, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-bottom-br {
+  background-position: right -20px;
+}
+
+/* line 331, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-bottom-ml {
+  background-position: 0 top;
+}
+
+/* line 335, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-bottom-mr {
+  background-position: right top;
+}
+
+/* line 339, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-bottom-tc {
+  background-position: 0 0;
+}
+
+/* line 343, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-bottom-bc {
+  background-position: 0 -4px;
+}
+
+/* line 350, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-bottom-tr,
+.x-tab-link-tabpanel-bottom-br,
+.x-tab-link-tabpanel-bottom-mr {
+  padding-right: 4px;
+}
+
+/* line 356, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-bottom-tl,
+.x-tab-link-tabpanel-bottom-bl,
+.x-tab-link-tabpanel-bottom-ml {
+  padding-left: 4px;
+}
+
+/* line 360, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-bottom-tc {
+  height: 0;
+}
+
+/* line 363, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-bottom-bc {
+  height: 4px;
+}
+
+/* line 374, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-bottom-tl,
+.x-tab-link-tabpanel-bottom-bl,
+.x-tab-link-tabpanel-bottom-tr,
+.x-tab-link-tabpanel-bottom-br,
+.x-tab-link-tabpanel-bottom-tc,
+.x-tab-link-tabpanel-bottom-bc,
+.x-tab-link-tabpanel-bottom-ml,
+.x-tab-link-tabpanel-bottom-mr {
+  zoom: 1;
+  background-image: url(images/tab/tab-link-tabpanel-bottom-corners.gif);
+}
+
+/* line 418, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-bottom-ml,
+.x-tab-link-tabpanel-bottom-mr {
+  zoom: 1;
+  background-image: url(images/tab/tab-link-tabpanel-bottom-sides.gif);
+}
+
+/* line 430, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-bottom-mc {
+  padding: 3px 6px 0px 6px;
+}
+
+/* line 439, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-strict .x-ie7 .x-tab-link-tabpanel-bottom-tl,
+.x-strict .x-ie7 .x-tab-link-tabpanel-bottom-bl {
+  position: relative;
+  right: 0;
+}
+
+/*<if slicer>*/
+/* line 78, ../../../ext-theme-base/sass/etc/mixins/slicer.scss */
+.x-tab-link-tabpanel-bottom:after {
+  display: none;
+  content: "x-slicer:stretch:bottom, frame-bg:url(images/tab/tab-link-tabpanel-bottom-fbg.gif), bg:url(images/tab/tab-link-tabpanel-bottom-bg.gif), corners:url(images/tab/tab-link-tabpanel-bottom-corners.gif), sides:url(images/tab/tab-link-tabpanel-bottom-sides.gif)";
+}
+
+/*</if slicer>*/
+/* */
+/* line 143, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-left {
+  -moz-border-radius-topleft: 4px;
+  -webkit-border-top-left-radius: 4px;
+  border-top-left-radius: 4px;
+  -moz-border-radius-topright: 4px;
+  -webkit-border-top-right-radius: 4px;
+  border-top-right-radius: 4px;
+  -moz-border-radius-bottomright: 0;
+  -webkit-border-bottom-right-radius: 0;
+  border-bottom-right-radius: 0;
+  -moz-border-radius-bottomleft: 0;
+  -webkit-border-bottom-left-radius: 0;
+  border-bottom-left-radius: 0;
+  padding: 3px 9px 3px 9px;
+  border-width: 1px 1px 0 1px;
+  border-style: solid;
+  background-image: none;
+  background-color: white;
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #f4f1f1), color-stop(25%, #fbf8f8), color-stop(45%, #ffffff));
+  background-image: -webkit-linear-gradient(top, #f4f1f1, #fbf8f8 25%, #ffffff 45%);
+  background-image: -moz-linear-gradient(top, #f4f1f1, #fbf8f8 25%, #ffffff 45%);
+  background-image: -o-linear-gradient(top, #f4f1f1, #fbf8f8 25%, #ffffff 45%);
+  background-image: linear-gradient(top, #f4f1f1, #fbf8f8 25%, #ffffff 45%);
+}
+
+/* line 195, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-left-mc {
+  background-image: url(images/tab/tab-link-tabpanel-top-fbg.gif);
+  background-position: 0 top;
+  background-color: white;
+}
+
+/* line 218, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-nlg .x-tab-link-tabpanel-left {
+  background-image: url(images/tab/tab-link-tabpanel-top-bg.gif);
+  background-position: 0 top;
+}
+
+/* line 241, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-nbr .x-tab-link-tabpanel-left {
+  padding: 0 !important;
+  border-width: 0 !important;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  -ms-border-radius: 0px;
+  -o-border-radius: 0px;
+  border-radius: 0px;
+  background-color: transparent;
+}
+
+/* line 260, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+body.x-nbr .x-tab-link-tabpanel-left {
+  /* Pass along Div/Table, Horz/Vert, border-radius and border-width: */
+  background-image: url("about:blank#th-4-4-0-0-1-1-0-1-3-9-3-9");
+}
+
+/* line 315, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-left-tl {
+  background-position: 0 -8px;
+}
+
+/* line 319, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-left-tr {
+  background-position: right -12px;
+}
+
+/* line 323, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-left-bl {
+  background-position: 0 -16px;
+}
+
+/* line 327, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-left-br {
+  background-position: right -20px;
+}
+
+/* line 331, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-left-ml {
+  background-position: 0 top;
+}
+
+/* line 335, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-left-mr {
+  background-position: right top;
+}
+
+/* line 339, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-left-tc {
+  background-position: 0 0;
+}
+
+/* line 343, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-left-bc {
+  background-position: 0 -4px;
+}
+
+/* line 350, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-left-tr,
+.x-tab-link-tabpanel-left-br,
+.x-tab-link-tabpanel-left-mr {
+  padding-right: 4px;
+}
+
+/* line 356, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-left-tl,
+.x-tab-link-tabpanel-left-bl,
+.x-tab-link-tabpanel-left-ml {
+  padding-left: 4px;
+}
+
+/* line 360, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-left-tc {
+  height: 4px;
+}
+
+/* line 363, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-left-bc {
+  height: 0;
+}
+
+/* line 374, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-left-tl,
+.x-tab-link-tabpanel-left-bl,
+.x-tab-link-tabpanel-left-tr,
+.x-tab-link-tabpanel-left-br,
+.x-tab-link-tabpanel-left-tc,
+.x-tab-link-tabpanel-left-bc,
+.x-tab-link-tabpanel-left-ml,
+.x-tab-link-tabpanel-left-mr {
+  zoom: 1;
+  background-image: url(images/tab/tab-link-tabpanel-top-corners.gif);
+}
+
+/* line 418, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-left-ml,
+.x-tab-link-tabpanel-left-mr {
+  zoom: 1;
+  background-image: url(images/tab/tab-link-tabpanel-top-sides.gif);
+}
+
+/* line 430, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-left-mc {
+  padding: 0px 6px 3px 6px;
+}
+
+/* line 439, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-strict .x-ie7 .x-tab-link-tabpanel-left-tl,
+.x-strict .x-ie7 .x-tab-link-tabpanel-left-bl {
+  position: relative;
+  right: 0;
+}
+
+/*<if slicer>*/
+/* line 78, ../../../ext-theme-base/sass/etc/mixins/slicer.scss */
+.x-tab-link-tabpanel-left:after {
+  display: none;
+  content: "x-slicer:stretch:bottom, frame-bg:url(images/tab/tab-link-tabpanel-top-fbg.gif), bg:url(images/tab/tab-link-tabpanel-top-bg.gif), corners:url(images/tab/tab-link-tabpanel-top-corners.gif), sides:url(images/tab/tab-link-tabpanel-top-sides.gif)";
+}
+
+/*</if slicer>*/
+/* */
+/* line 143, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-right {
+  -moz-border-radius-topleft: 4px;
+  -webkit-border-top-left-radius: 4px;
+  border-top-left-radius: 4px;
+  -moz-border-radius-topright: 4px;
+  -webkit-border-top-right-radius: 4px;
+  border-top-right-radius: 4px;
+  -moz-border-radius-bottomright: 0;
+  -webkit-border-bottom-right-radius: 0;
+  border-bottom-right-radius: 0;
+  -moz-border-radius-bottomleft: 0;
+  -webkit-border-bottom-left-radius: 0;
+  border-bottom-left-radius: 0;
+  padding: 3px 9px 3px 9px;
+  border-width: 1px 1px 0 1px;
+  border-style: solid;
+  background-image: none;
+  background-color: white;
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #f4f1f1), color-stop(25%, #fbf8f8), color-stop(45%, #ffffff));
+  background-image: -webkit-linear-gradient(top, #f4f1f1, #fbf8f8 25%, #ffffff 45%);
+  background-image: -moz-linear-gradient(top, #f4f1f1, #fbf8f8 25%, #ffffff 45%);
+  background-image: -o-linear-gradient(top, #f4f1f1, #fbf8f8 25%, #ffffff 45%);
+  background-image: linear-gradient(top, #f4f1f1, #fbf8f8 25%, #ffffff 45%);
+}
+
+/* line 195, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-right-mc {
+  background-image: url(images/tab/tab-link-tabpanel-top-fbg.gif);
+  background-position: 0 top;
+  background-color: white;
+}
+
+/* line 218, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-nlg .x-tab-link-tabpanel-right {
+  background-image: url(images/tab/tab-link-tabpanel-top-bg.gif);
+  background-position: 0 top;
+}
+
+/* line 241, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-nbr .x-tab-link-tabpanel-right {
+  padding: 0 !important;
+  border-width: 0 !important;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  -ms-border-radius: 0px;
+  -o-border-radius: 0px;
+  border-radius: 0px;
+  background-color: transparent;
+}
+
+/* line 260, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+body.x-nbr .x-tab-link-tabpanel-right {
+  /* Pass along Div/Table, Horz/Vert, border-radius and border-width: */
+  background-image: url("about:blank#th-4-4-0-0-1-1-0-1-3-9-3-9");
+}
+
+/* line 315, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-right-tl {
+  background-position: 0 -8px;
+}
+
+/* line 319, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-right-tr {
+  background-position: right -12px;
+}
+
+/* line 323, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-right-bl {
+  background-position: 0 -16px;
+}
+
+/* line 327, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-right-br {
+  background-position: right -20px;
+}
+
+/* line 331, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-right-ml {
+  background-position: 0 top;
+}
+
+/* line 335, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-right-mr {
+  background-position: right top;
+}
+
+/* line 339, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-right-tc {
+  background-position: 0 0;
+}
+
+/* line 343, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-right-bc {
+  background-position: 0 -4px;
+}
+
+/* line 350, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-right-tr,
+.x-tab-link-tabpanel-right-br,
+.x-tab-link-tabpanel-right-mr {
+  padding-right: 4px;
+}
+
+/* line 356, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-right-tl,
+.x-tab-link-tabpanel-right-bl,
+.x-tab-link-tabpanel-right-ml {
+  padding-left: 4px;
+}
+
+/* line 360, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-right-tc {
+  height: 4px;
+}
+
+/* line 363, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-right-bc {
+  height: 0;
+}
+
+/* line 374, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-right-tl,
+.x-tab-link-tabpanel-right-bl,
+.x-tab-link-tabpanel-right-tr,
+.x-tab-link-tabpanel-right-br,
+.x-tab-link-tabpanel-right-tc,
+.x-tab-link-tabpanel-right-bc,
+.x-tab-link-tabpanel-right-ml,
+.x-tab-link-tabpanel-right-mr {
+  zoom: 1;
+  background-image: url(images/tab/tab-link-tabpanel-top-corners.gif);
+}
+
+/* line 418, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-right-ml,
+.x-tab-link-tabpanel-right-mr {
+  zoom: 1;
+  background-image: url(images/tab/tab-link-tabpanel-top-sides.gif);
+}
+
+/* line 430, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-tab-link-tabpanel-right-mc {
+  padding: 0px 6px 3px 6px;
+}
+
+/* line 439, ../../../ext-theme-base/sass/etc/mixins/frame.scss */
+.x-strict .x-ie7 .x-tab-link-tabpanel-right-tl,
+.x-strict .x-ie7 .x-tab-link-tabpanel-right-bl {
+  position: relative;
+  right: 0;
+}
+
+/*<if slicer>*/
+/* line 78, ../../../ext-theme-base/sass/etc/mixins/slicer.scss */
+.x-tab-link-tabpanel-right:after {
+  display: none;
+  content: "x-slicer:stretch:bottom, frame-bg:url(images/tab/tab-link-tabpanel-top-fbg.gif), bg:url(images/tab/tab-link-tabpanel-top-bg.gif), corners:url(images/tab/tab-link-tabpanel-top-corners.gif), sides:url(images/tab/tab-link-tabpanel-top-sides.gif)";
+}
+
+/*</if slicer>*/
+/* */
+/* line 140, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-link-tabpanel {
+  border-color: #ccc7c7;
+  margin: 0 0 0 2px;
+  cursor: pointer;
+}
+/* line 145, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-link-tabpanel .x-tab-inner {
+  font-size: 11px;
+  font-weight: bold;
+  font-family: "OpenSansRegular";
+  color: #bada55;
+  line-height: 13px;
+}
+/* line 155, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-link-tabpanel .x-tab-icon-el {
+  width: 16px;
+  height: 16px;
+  line-height: 16px;
+  background-position: center center;
+}
+/* line 162, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-link-tabpanel .x-tab-glyph {
+  font-size: 16px;
+  color: #848484;
+  opacity: 0.5;
+}
+/* line 176, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-ie8m .x-tab-link-tabpanel .x-tab-glyph {
+  color: #c1c1c1;
+}
+/* line 184, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-strict .x-ie9 .x-tab-bar-vertical .x-tab-link-tabpanel {
+  padding-left: 0;
+}
+/* line 187, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-strict .x-ie9 .x-tab-bar-vertical .x-tab-link-tabpanel .x-tab-button {
+  padding-left: 9px;
+}
+/* line 191, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-strict .x-ie9 .x-tab-bar-vertical .x-tab-link-tabpanel .x-tab-icon-el {
+  left: 9px;
+}
+
+/* line 199, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-link-tabpanel-icon .x-tab-inner {
+  width: 16px;
+}
+
+/* line 206, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-rtl.x-tab-link-tabpanel {
+  margin: 0 2px 0 0;
+}
+
+/* line 212, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-rtl.x-tab-link-tabpanel {
+  margin: 0 2px 0 0;
+}
+
+/* line 217, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-link-tabpanel-left {
+  margin: 0 2px 0 0;
+}
+
+/* line 222, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-rtl.x-tab-link-tabpanel-left {
+  margin: 0 0 0 2px;
+}
+
+/* line 229, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-link-tabpanel-top,
+.x-tab-link-tabpanel-left,
+.x-tab-link-tabpanel-right {
+  border-bottom: 1px solid #ebe7e7;
+  background-image: none;
+  background-color: white;
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #f4f1f1), color-stop(25%, #fbf8f8), color-stop(45%, #ffffff));
+  background-image: -webkit-linear-gradient(top, #f4f1f1, #fbf8f8 25%, #ffffff 45%);
+  background-image: -moz-linear-gradient(top, #f4f1f1, #fbf8f8 25%, #ffffff 45%);
+  background-image: -o-linear-gradient(top, #f4f1f1, #fbf8f8 25%, #ffffff 45%);
+  background-image: linear-gradient(top, #f4f1f1, #fbf8f8 25%, #ffffff 45%);
+  -webkit-box-shadow: white 0 1px 0px 0 inset, white -1px 0 0px 0 inset, white 1px 0 0px 0 inset;
+  -moz-box-shadow: white 0 1px 0px 0 inset, white -1px 0 0px 0 inset, white 1px 0 0px 0 inset;
+  box-shadow: white 0 1px 0px 0 inset, white -1px 0 0px 0 inset, white 1px 0 0px 0 inset;
+}
+/* line 236, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-nlg .x-tab-link-tabpanel-top, .x-nlg
+.x-tab-link-tabpanel-left, .x-nlg
+.x-tab-link-tabpanel-right {
+  background-image: url(images/tab/tab-link-tabpanel-top-bg.gif);
+}
+
+/* line 250, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-link-tabpanel-bottom {
+  border-top: 1px solid #ebe7e7;
+  background-image: none;
+  background-color: white;
+  background-image: -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, #f4f1f1), color-stop(25%, #fbf8f8), color-stop(45%, #ffffff));
+  background-image: -webkit-linear-gradient(bottom, #f4f1f1, #fbf8f8 25%, #ffffff 45%);
+  background-image: -moz-linear-gradient(bottom, #f4f1f1, #fbf8f8 25%, #ffffff 45%);
+  background-image: -o-linear-gradient(bottom, #f4f1f1, #fbf8f8 25%, #ffffff 45%);
+  background-image: linear-gradient(bottom, #f4f1f1, #fbf8f8 25%, #ffffff 45%);
+  -webkit-box-shadow: white 0 -1px 0px 0 inset, white -1px 0 0px 0 inset, white 1px 0 0px 0 inset;
+  -moz-box-shadow: white 0 -1px 0px 0 inset, white -1px 0 0px 0 inset, white 1px 0 0px 0 inset;
+  box-shadow: white 0 -1px 0px 0 inset, white -1px 0 0px 0 inset, white 1px 0 0px 0 inset;
+}
+/* line 257, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-nlg .x-tab-link-tabpanel-bottom {
+  background-image: url(images/tab/tab-link-tabpanel-bottom-bg.gif);
+}
+
+/* line 271, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-link-tabpanel-left {
+  -webkit-transform: rotate(270deg);
+  -webkit-transform-origin: 100% 0;
+  -moz-transform: rotate(270deg);
+  -moz-transform-origin: 100% 0;
+  -o-transform: rotate(270deg);
+  -o-transform-origin: 100% 0;
+  transform: rotate(270deg);
+  transform-origin: 100% 0;
+}
+/* line 36, ../../../ext-theme-base/sass/etc/mixins/rotate-element.scss */
+.x-ie9m .x-tab-link-tabpanel-left {
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+}
+
+/* line 282, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-rtl.x-tab-link-tabpanel-left {
+  -webkit-transform: rotate(90deg);
+  -webkit-transform-origin: 0 0;
+  -moz-transform: rotate(90deg);
+  -moz-transform-origin: 0 0;
+  -o-transform: rotate(90deg);
+  -o-transform-origin: 0 0;
+  transform: rotate(90deg);
+  transform-origin: 0 0;
+}
+/* line 36, ../../../ext-theme-base/sass/etc/mixins/rotate-element.scss */
+.x-ie9m .x-rtl.x-tab-link-tabpanel-left {
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
+}
+
+/* line 287, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-link-tabpanel-right {
+  -webkit-transform: rotate(90deg);
+  -webkit-transform-origin: 0 0;
+  -moz-transform: rotate(90deg);
+  -moz-transform-origin: 0 0;
+  -o-transform: rotate(90deg);
+  -o-transform-origin: 0 0;
+  transform: rotate(90deg);
+  transform-origin: 0 0;
+}
+/* line 36, ../../../ext-theme-base/sass/etc/mixins/rotate-element.scss */
+.x-ie9m .x-tab-link-tabpanel-right {
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
+}
+
+/* line 298, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-rtl.x-tab-link-tabpanel-right {
+  -webkit-transform: rotate(270deg);
+  -webkit-transform-origin: 100% 0;
+  -moz-transform: rotate(270deg);
+  -moz-transform-origin: 100% 0;
+  -o-transform: rotate(270deg);
+  -o-transform-origin: 100% 0;
+  transform: rotate(270deg);
+  transform-origin: 100% 0;
+}
+/* line 36, ../../../ext-theme-base/sass/etc/mixins/rotate-element.scss */
+.x-ie9m .x-rtl.x-tab-link-tabpanel-right {
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+}
+
+/* line 304, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-link-tabpanel-icon-text-left .x-tab-inner {
+  padding-left: 20px;
+}
+
+/* line 311, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-rtl.x-tab-link-tabpanel-icon-text-left .x-tab-inner {
+  padding-left: 0;
+  padding-right: 20px;
+}
+
+/* line 327, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-link-tabpanel-over .x-tab-inner {
+  color: #848484;
+}
+/* line 342, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-link-tabpanel-over .x-tab-glyph {
+  color: #848484;
+}
+/* line 349, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-ie8m .x-tab-link-tabpanel-over .x-tab-glyph {
+  color: #c1c1c1;
+}
+
+/* line 358, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-link-tabpanel-top-over,
+.x-tab-link-tabpanel-left-over,
+.x-tab-link-tabpanel-right-over {
+  background-image: none;
+  background-color: white;
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #f9f3f2), color-stop(25%, #fdf9f9), color-stop(45%, #ffffff));
+  background-image: -webkit-linear-gradient(top, #f9f3f2, #fdf9f9 25%, #ffffff 45%);
+  background-image: -moz-linear-gradient(top, #f9f3f2, #fdf9f9 25%, #ffffff 45%);
+  background-image: -o-linear-gradient(top, #f9f3f2, #fdf9f9 25%, #ffffff 45%);
+  background-image: linear-gradient(top, #f9f3f2, #fdf9f9 25%, #ffffff 45%);
+}
+/* line 362, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-nlg .x-tab-link-tabpanel-top-over, .x-nlg
+.x-tab-link-tabpanel-left-over, .x-nlg
+.x-tab-link-tabpanel-right-over {
+  background-image: url(images/tab/tab-link-tabpanel-top-over-bg.gif);
+}
+
+/* line 367, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-link-tabpanel-bottom-over {
+  background-image: none;
+  background-color: white;
+  background-image: -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, #f9f3f2), color-stop(25%, #fdf9f9), color-stop(45%, #ffffff));
+  background-image: -webkit-linear-gradient(bottom, #f9f3f2, #fdf9f9 25%, #ffffff 45%);
+  background-image: -moz-linear-gradient(bottom, #f9f3f2, #fdf9f9 25%, #ffffff 45%);
+  background-image: -o-linear-gradient(bottom, #f9f3f2, #fdf9f9 25%, #ffffff 45%);
+  background-image: linear-gradient(bottom, #f9f3f2, #fdf9f9 25%, #ffffff 45%);
+}
+/* line 371, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-nlg .x-tab-link-tabpanel-bottom-over {
+  background-image: url(images/tab/tab-link-tabpanel-bottom-over-bg.gif);
+}
+
+/* line 378, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-link-tabpanel-active {
+  background-color: white;
+}
+/* line 384, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-link-tabpanel-active .x-tab-inner {
+  color: #804444;
+}
+/* line 399, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-link-tabpanel-active .x-tab-glyph {
+  color: #804444;
+}
+/* line 406, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-ie8m .x-tab-link-tabpanel-active .x-tab-glyph {
+  color: #bfa1a1;
+}
+
+/* line 414, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-link-tabpanel-top-active,
+.x-tab-link-tabpanel-left-active,
+.x-tab-link-tabpanel-right-active {
+  border-bottom-color: white;
+  background-image: none;
+  background-color: white;
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ffffff), color-stop(25%, #ffffff), color-stop(45%, #ffffff));
+  background-image: -webkit-linear-gradient(top, #ffffff, #ffffff 25%, #ffffff 45%);
+  background-image: -moz-linear-gradient(top, #ffffff, #ffffff 25%, #ffffff 45%);
+  background-image: -o-linear-gradient(top, #ffffff, #ffffff 25%, #ffffff 45%);
+  background-image: linear-gradient(top, #ffffff, #ffffff 25%, #ffffff 45%);
+}
+/* line 420, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-nlg .x-tab-link-tabpanel-top-active, .x-nlg
+.x-tab-link-tabpanel-left-active, .x-nlg
+.x-tab-link-tabpanel-right-active {
+  background-image: url(images/tab/tab-link-tabpanel-top-active-bg.gif);
+}
+
+/* line 427, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-link-tabpanel-bottom-active {
+  border-top-color: white;
+  background-image: none;
+  background-color: white;
+  background-image: -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, #ffffff), color-stop(25%, #ffffff), color-stop(45%, #ffffff));
+  background-image: -webkit-linear-gradient(bottom, #ffffff, #ffffff 25%, #ffffff 45%);
+  background-image: -moz-linear-gradient(bottom, #ffffff, #ffffff 25%, #ffffff 45%);
+  background-image: -o-linear-gradient(bottom, #ffffff, #ffffff 25%, #ffffff 45%);
+  background-image: linear-gradient(bottom, #ffffff, #ffffff 25%, #ffffff 45%);
+}
+/* line 433, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-nlg .x-tab-link-tabpanel-bottom-active {
+  background-image: url(images/tab/tab-link-tabpanel-bottom-active-bg.gif);
+}
+
+/* line 440, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-link-tabpanel-disabled {
+  border-color: #fefdfd;
+  cursor: default;
+}
+/* line 453, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-link-tabpanel-disabled .x-tab-inner {
+  color: #c3b3b3;
+}
+/* line 472, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-link-tabpanel-disabled .x-tab-icon-el {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
+  opacity: 0.5;
+}
+/* line 477, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-link-tabpanel-disabled .x-tab-glyph {
+  color: #c3b3b3;
+  opacity: 0.3;
+  filter: none;
+}
+/* line 491, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-ie8m .x-tab-link-tabpanel-disabled .x-tab-glyph {
+  color: #ede8e8;
+}
+
+/* line 500, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-link-tabpanel-top-disabled,
+.x-tab-link-tabpanel-left-disabled,
+.x-tab-link-tabpanel-right-disabled {
+  background-image: none;
+  background-color: white;
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ffffff), color-stop(100%, #ffffff));
+  background-image: -webkit-linear-gradient(top, #ffffff, #ffffff);
+  background-image: -moz-linear-gradient(top, #ffffff, #ffffff);
+  background-image: -o-linear-gradient(top, #ffffff, #ffffff);
+  background-image: linear-gradient(top, #ffffff, #ffffff);
+}
+/* line 504, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-nlg .x-tab-link-tabpanel-top-disabled, .x-nlg
+.x-tab-link-tabpanel-left-disabled, .x-nlg
+.x-tab-link-tabpanel-right-disabled {
+  background-image: url(images/tab/tab-link-tabpanel-top-disabled-bg.gif);
+}
+
+/* line 509, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-link-tabpanel-bottom-disabled {
+  background-image: none;
+  background-color: white;
+  background-image: -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, #ffffff), color-stop(100%, #ffffff));
+  background-image: -webkit-linear-gradient(bottom, #ffffff, #ffffff);
+  background-image: -moz-linear-gradient(bottom, #ffffff, #ffffff);
+  background-image: -o-linear-gradient(bottom, #ffffff, #ffffff);
+  background-image: linear-gradient(bottom, #ffffff, #ffffff);
+}
+/* line 513, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-nlg .x-tab-link-tabpanel-bottom-disabled {
+  background-image: url(images/tab/tab-link-tabpanel-bottom-disabled-bg.gif);
+}
+
+/* line 529, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-link-tabpanel-top-over .x-frame-tl,
+.x-tab-link-tabpanel-top-over .x-frame-bl,
+.x-tab-link-tabpanel-top-over .x-frame-tr,
+.x-tab-link-tabpanel-top-over .x-frame-br,
+.x-tab-link-tabpanel-top-over .x-frame-tc,
+.x-tab-link-tabpanel-top-over .x-frame-bc,
+.x-tab-link-tabpanel-left-over .x-frame-tl,
+.x-tab-link-tabpanel-left-over .x-frame-bl,
+.x-tab-link-tabpanel-left-over .x-frame-tr,
+.x-tab-link-tabpanel-left-over .x-frame-br,
+.x-tab-link-tabpanel-left-over .x-frame-tc,
+.x-tab-link-tabpanel-left-over .x-frame-bc,
+.x-tab-link-tabpanel-right-over .x-frame-tl,
+.x-tab-link-tabpanel-right-over .x-frame-bl,
+.x-tab-link-tabpanel-right-over .x-frame-tr,
+.x-tab-link-tabpanel-right-over .x-frame-br,
+.x-tab-link-tabpanel-right-over .x-frame-tc,
+.x-tab-link-tabpanel-right-over .x-frame-bc {
+  background-image: url(images/tab/tab-link-tabpanel-top-over-corners.gif);
+}
+/* line 533, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-link-tabpanel-top-over .x-frame-ml,
+.x-tab-link-tabpanel-top-over .x-frame-mr,
+.x-tab-link-tabpanel-left-over .x-frame-ml,
+.x-tab-link-tabpanel-left-over .x-frame-mr,
+.x-tab-link-tabpanel-right-over .x-frame-ml,
+.x-tab-link-tabpanel-right-over .x-frame-mr {
+  background-image: url(images/tab/tab-link-tabpanel-top-over-sides.gif);
+}
+/* line 536, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-link-tabpanel-top-over .x-frame-mc,
+.x-tab-link-tabpanel-left-over .x-frame-mc,
+.x-tab-link-tabpanel-right-over .x-frame-mc {
+  background-color: white;
+  background-repeat: repeat-x;
+  background-image: url(images/tab/tab-link-tabpanel-top-over-fbg.gif);
+}
+
+/* line 551, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-link-tabpanel-bottom-over .x-frame-tl,
+.x-tab-link-tabpanel-bottom-over .x-frame-bl,
+.x-tab-link-tabpanel-bottom-over .x-frame-tr,
+.x-tab-link-tabpanel-bottom-over .x-frame-br,
+.x-tab-link-tabpanel-bottom-over .x-frame-tc,
+.x-tab-link-tabpanel-bottom-over .x-frame-bc {
+  background-image: url(images/tab/tab-link-tabpanel-bottom-over-corners.gif);
+}
+/* line 555, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-link-tabpanel-bottom-over .x-frame-ml,
+.x-tab-link-tabpanel-bottom-over .x-frame-mr {
+  background-image: url(images/tab/tab-link-tabpanel-bottom-over-sides.gif);
+}
+/* line 558, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-link-tabpanel-bottom-over .x-frame-mc {
+  background-color: white;
+  background-repeat: repeat-x;
+  background-image: url(images/tab/tab-link-tabpanel-bottom-over-fbg.gif);
+}
+
+/* line 575, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-link-tabpanel-top-active .x-frame-tl,
+.x-tab-link-tabpanel-top-active .x-frame-bl,
+.x-tab-link-tabpanel-top-active .x-frame-tr,
+.x-tab-link-tabpanel-top-active .x-frame-br,
+.x-tab-link-tabpanel-top-active .x-frame-tc,
+.x-tab-link-tabpanel-top-active .x-frame-bc,
+.x-tab-link-tabpanel-left-active .x-frame-tl,
+.x-tab-link-tabpanel-left-active .x-frame-bl,
+.x-tab-link-tabpanel-left-active .x-frame-tr,
+.x-tab-link-tabpanel-left-active .x-frame-br,
+.x-tab-link-tabpanel-left-active .x-frame-tc,
+.x-tab-link-tabpanel-left-active .x-frame-bc,
+.x-tab-link-tabpanel-right-active .x-frame-tl,
+.x-tab-link-tabpanel-right-active .x-frame-bl,
+.x-tab-link-tabpanel-right-active .x-frame-tr,
+.x-tab-link-tabpanel-right-active .x-frame-br,
+.x-tab-link-tabpanel-right-active .x-frame-tc,
+.x-tab-link-tabpanel-right-active .x-frame-bc {
+  background-image: url(images/tab/tab-link-tabpanel-top-active-corners.gif);
+}
+/* line 579, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-link-tabpanel-top-active .x-frame-ml,
+.x-tab-link-tabpanel-top-active .x-frame-mr,
+.x-tab-link-tabpanel-left-active .x-frame-ml,
+.x-tab-link-tabpanel-left-active .x-frame-mr,
+.x-tab-link-tabpanel-right-active .x-frame-ml,
+.x-tab-link-tabpanel-right-active .x-frame-mr {
+  background-image: url(images/tab/tab-link-tabpanel-top-active-sides.gif);
+}
+/* line 582, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-link-tabpanel-top-active .x-frame-mc,
+.x-tab-link-tabpanel-left-active .x-frame-mc,
+.x-tab-link-tabpanel-right-active .x-frame-mc {
+  background-color: white;
+  background-repeat: repeat-x;
+  background-image: url(images/tab/tab-link-tabpanel-top-active-fbg.gif);
+}
+
+/* line 597, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-link-tabpanel-bottom-active .x-frame-tl,
+.x-tab-link-tabpanel-bottom-active .x-frame-bl,
+.x-tab-link-tabpanel-bottom-active .x-frame-tr,
+.x-tab-link-tabpanel-bottom-active .x-frame-br,
+.x-tab-link-tabpanel-bottom-active .x-frame-tc,
+.x-tab-link-tabpanel-bottom-active .x-frame-bc {
+  background-image: url(images/tab/tab-link-tabpanel-bottom-active-corners.gif);
+}
+/* line 601, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-link-tabpanel-bottom-active .x-frame-ml,
+.x-tab-link-tabpanel-bottom-active .x-frame-mr {
+  background-image: url(images/tab/tab-link-tabpanel-bottom-active-sides.gif);
+}
+/* line 604, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-link-tabpanel-bottom-active .x-frame-mc {
+  background-color: white;
+  background-repeat: repeat-x;
+  background-image: url(images/tab/tab-link-tabpanel-bottom-active-fbg.gif);
+}
+
+/* line 621, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-link-tabpanel-top-disabled .x-frame-tl,
+.x-tab-link-tabpanel-top-disabled .x-frame-bl,
+.x-tab-link-tabpanel-top-disabled .x-frame-tr,
+.x-tab-link-tabpanel-top-disabled .x-frame-br,
+.x-tab-link-tabpanel-top-disabled .x-frame-tc,
+.x-tab-link-tabpanel-top-disabled .x-frame-bc,
+.x-tab-link-tabpanel-left-disabled .x-frame-tl,
+.x-tab-link-tabpanel-left-disabled .x-frame-bl,
+.x-tab-link-tabpanel-left-disabled .x-frame-tr,
+.x-tab-link-tabpanel-left-disabled .x-frame-br,
+.x-tab-link-tabpanel-left-disabled .x-frame-tc,
+.x-tab-link-tabpanel-left-disabled .x-frame-bc,
+.x-tab-link-tabpanel-right-disabled .x-frame-tl,
+.x-tab-link-tabpanel-right-disabled .x-frame-bl,
+.x-tab-link-tabpanel-right-disabled .x-frame-tr,
+.x-tab-link-tabpanel-right-disabled .x-frame-br,
+.x-tab-link-tabpanel-right-disabled .x-frame-tc,
+.x-tab-link-tabpanel-right-disabled .x-frame-bc {
+  background-image: url(images/tab/tab-link-tabpanel-top-disabled-corners.gif);
+}
+/* line 625, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-link-tabpanel-top-disabled .x-frame-ml,
+.x-tab-link-tabpanel-top-disabled .x-frame-mr,
+.x-tab-link-tabpanel-left-disabled .x-frame-ml,
+.x-tab-link-tabpanel-left-disabled .x-frame-mr,
+.x-tab-link-tabpanel-right-disabled .x-frame-ml,
+.x-tab-link-tabpanel-right-disabled .x-frame-mr {
+  background-image: url(images/tab/tab-link-tabpanel-top-disabled-sides.gif);
+}
+/* line 628, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-link-tabpanel-top-disabled .x-frame-mc,
+.x-tab-link-tabpanel-left-disabled .x-frame-mc,
+.x-tab-link-tabpanel-right-disabled .x-frame-mc {
+  background-color: white;
+  background-repeat: repeat-x;
+  background-image: url(images/tab/tab-link-tabpanel-top-disabled-fbg.gif);
+}
+
+/* line 643, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-link-tabpanel-bottom-disabled .x-frame-tl,
+.x-tab-link-tabpanel-bottom-disabled .x-frame-bl,
+.x-tab-link-tabpanel-bottom-disabled .x-frame-tr,
+.x-tab-link-tabpanel-bottom-disabled .x-frame-br,
+.x-tab-link-tabpanel-bottom-disabled .x-frame-tc,
+.x-tab-link-tabpanel-bottom-disabled .x-frame-bc {
+  background-image: url(images/tab/tab-link-tabpanel-bottom-disabled-corners.gif);
+}
+/* line 647, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-link-tabpanel-bottom-disabled .x-frame-ml,
+.x-tab-link-tabpanel-bottom-disabled .x-frame-mr {
+  background-image: url(images/tab/tab-link-tabpanel-bottom-disabled-sides.gif);
+}
+/* line 650, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-link-tabpanel-bottom-disabled .x-frame-mc {
+  background-color: white;
+  background-repeat: repeat-x;
+  background-image: url(images/tab/tab-link-tabpanel-bottom-disabled-fbg.gif);
+}
+
+/* line 670, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-nbr .x-tab-link-tabpanel-top,
+.x-nbr .x-tab-link-tabpanel-left,
+.x-nbr .x-tab-link-tabpanel-right {
+  border-bottom-width: 1px !important;
+}
+/* line 673, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-nbr .x-tab-link-tabpanel-bottom {
+  border-top-width: 1px !important;
+}
+
+/* line 681, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-bar-link-tabpanel {
+  border-style: solid;
+  border-color: #ebe7e7;
+}
+
+/* line 687, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-bar-link-tabpanel-top {
+  padding: 1px 0 0 0;
+  border-width: 1px 1px 0 1px;
+}
+
+/* line 694, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-bar-link-tabpanel-bottom {
+  padding: 0 0 1px 0;
+  border-width: 0 1px 1px 1px;
+}
+
+/* line 701, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-bar-link-tabpanel-left {
+  padding: 0 0 0 1px;
+  border-width: 1px 0 1px 1px;
+}
+
+/* line 708, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-bar-link-tabpanel-right {
+  padding: 0 1px 0 0;
+  border-width: 1px 1px 1px 0;
+}
+
+/* line 719, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-bar-body-link-tabpanel-horizontal {
+  height: 23px;
+}
+/* line 724, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-strict .x-ie6 .x-tab-bar-body-link-tabpanel-horizontal, .x-strict .x-ie7 .x-tab-bar-body-link-tabpanel-horizontal {
+  height: 21px;
+}
+
+/* line 730, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-bar-body-link-tabpanel-vertical {
+  width: 23px;
+}
+/* line 735, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-strict .x-ie6 .x-tab-bar-body-link-tabpanel-vertical, .x-strict .x-ie7 .x-tab-bar-body-link-tabpanel-vertical {
+  width: 21px;
+}
+
+/* line 741, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-bar-body-link-tabpanel-top {
+  padding-bottom: 2px;
+}
+
+/* line 745, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-bar-body-link-tabpanel-bottom {
+  padding-top: 2px;
+}
+
+/* line 749, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-bar-body-link-tabpanel-left {
+  padding-right: 2px;
+}
+
+/* line 753, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-bar-body-link-tabpanel-right {
+  padding-left: 2px;
+}
+
+/* line 757, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-bar-strip-link-tabpanel {
+  border-style: solid;
+  border-color: #ebe7e7;
+  background-color: white;
+}
+
+/* line 766, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-strict .x-ie6 .x-tab-bar-strip-link-tabpanel-horizontal, .x-strict .x-ie7 .x-tab-bar-strip-link-tabpanel-horizontal {
+  height: 2px;
+}
+
+/* line 775, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-strict .x-ie6 .x-tab-bar-strip-link-tabpanel-vertical, .x-strict .x-ie7 .x-tab-bar-strip-link-tabpanel-vertical {
+  width: 2px;
+}
+
+/* line 781, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-bar-strip-link-tabpanel-top {
+  border-width: 1px 0 0 0;
+  height: 3px;
+}
+/* line 784, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-bar-plain .x-tab-bar-strip-link-tabpanel-top {
+  border-width: 1px 1px 0 1px;
+}
+
+/* line 789, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-bar-strip-link-tabpanel-bottom {
+  border-width: 0 0 1px 0;
+  height: 3px;
+}
+/* line 792, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-bar-plain .x-tab-bar-strip-link-tabpanel-bottom {
+  border-width: 0 1px 1px 1px;
+}
+
+/* line 797, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-bar-strip-link-tabpanel-left {
+  border-width: 0 0 0 1px;
+  width: 3px;
+}
+/* line 800, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-bar-plain .x-tab-bar-strip-link-tabpanel-left {
+  border-width: 1px 0 1px 1px;
+}
+
+/* line 805, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-bar-strip-link-tabpanel-right {
+  border-width: 0 1px 0 0;
+  width: 3px;
+}
+/* line 808, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-bar-plain .x-tab-bar-strip-link-tabpanel-right {
+  border-width: 1px 1px 1px 0;
+}
+
+/* line 813, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-bar-link-tabpanel {
+  background-color: #f2f2f2;
+}
+
+/* line 818, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-bar-link-tabpanel-top {
+  background-image: none;
+  background-color: #f2f2f2;
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #fefdfd), color-stop(100%, #f2f2f2));
+  background-image: -webkit-linear-gradient(top, #fefdfd, #f2f2f2);
+  background-image: -moz-linear-gradient(top, #fefdfd, #f2f2f2);
+  background-image: -o-linear-gradient(top, #fefdfd, #f2f2f2);
+  background-image: linear-gradient(top, #fefdfd, #f2f2f2);
+}
+/* line 822, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-nlg .x-tab-bar-link-tabpanel-top {
+  background-image: url(images/tab-bar/tab-bar-link-tabpanel-top-bg.gif);
+}
+
+/* line 828, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-bar-link-tabpanel-bottom {
+  background-image: none;
+  background-color: #f2f2f2;
+  background-image: -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, #fefdfd), color-stop(100%, #f2f2f2));
+  background-image: -webkit-linear-gradient(bottom, #fefdfd, #f2f2f2);
+  background-image: -moz-linear-gradient(bottom, #fefdfd, #f2f2f2);
+  background-image: -o-linear-gradient(bottom, #fefdfd, #f2f2f2);
+  background-image: linear-gradient(bottom, #fefdfd, #f2f2f2);
+}
+/* line 832, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-nlg .x-tab-bar-link-tabpanel-bottom {
+  background-image: url(images/tab-bar/tab-bar-link-tabpanel-bottom-bg.gif);
+}
+
+/* line 838, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-bar-link-tabpanel-left {
+  background-image: none;
+  background-color: #f2f2f2;
+  background-image: -webkit-gradient(linear, 0% 50%, 100% 50%, color-stop(0%, #fefdfd), color-stop(100%, #f2f2f2));
+  background-image: -webkit-linear-gradient(left, #fefdfd, #f2f2f2);
+  background-image: -moz-linear-gradient(left, #fefdfd, #f2f2f2);
+  background-image: -o-linear-gradient(left, #fefdfd, #f2f2f2);
+  background-image: linear-gradient(left, #fefdfd, #f2f2f2);
+}
+/* line 842, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-nlg .x-tab-bar-link-tabpanel-left {
+  background-image: url(images/tab-bar/tab-bar-link-tabpanel-left-bg.gif);
+}
+
+/* line 848, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-bar-link-tabpanel-right {
+  background-image: none;
+  background-color: #f2f2f2;
+  background-image: -webkit-gradient(linear, 100% 50%, 0% 50%, color-stop(0%, #fefdfd), color-stop(100%, #f2f2f2));
+  background-image: -webkit-linear-gradient(right, #fefdfd, #f2f2f2);
+  background-image: -moz-linear-gradient(right, #fefdfd, #f2f2f2);
+  background-image: -o-linear-gradient(right, #fefdfd, #f2f2f2);
+  background-image: linear-gradient(right, #fefdfd, #f2f2f2);
+}
+/* line 852, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-nlg .x-tab-bar-link-tabpanel-right {
+  background-image: url(images/tab-bar/tab-bar-link-tabpanel-right-bg.gif);
+}
+
+/* line 860, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-link-tabpanel .x-tab-close-btn {
+  width: 11px;
+  height: 11px;
+  background-image: url(images/tab/tab-link-tabpanel-close.gif);
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=60);
+  opacity: 0.6;
+}
+/* line 870, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-link-tabpanel a.x-tab-close-btn:hover {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
+}
+
+/* line 880, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-link-tabpanel .x-tab-close-btn {
+  top: 2px;
+  right: 2px;
+}
+
+/* line 886, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-rtl.x-tab-link-tabpanel .x-tab-close-btn {
+  right: auto;
+  left: 2px;
+}
+
+/* line 925, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-bar .x-tab-link-tabpanel-disabled a.x-tab-close-btn {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=30);
+  opacity: 0.3;
+}
+
+/* line 941, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-link-tabpanel-closable .x-tab-wrap {
+  padding-right: 14px;
+}
+
+/* line 946, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-rtl.x-tab-link-tabpanel-closable .x-tab-wrap {
+  padding-right: 0px;
+  padding-left: 14px;
+}
+
+/* line 987, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-bar-link-tabpanel .x-box-scroller {
+  cursor: pointer;
+}
+/* line 1028, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-bar-link-tabpanel .x-tabbar-scroll-left,
+.x-tab-bar-link-tabpanel .x-tabbar-scroll-right {
+  height: 20px;
+  width: 18px;
+}
+/* line 1034, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-bar-link-tabpanel .x-tabbar-scroll-top,
+.x-tab-bar-link-tabpanel .x-tabbar-scroll-bottom {
+  width: 20px;
+  height: 18px;
+}
+
+/* line 1042, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-bar-link-tabpanel-bottom .x-box-scroller {
+  margin-top: 1px;
+}
+/* line 1046, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-bar-link-tabpanel-right .x-box-scroller {
+  margin-left: 1px;
+}
+/* line 1051, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-rtl.x-tab-bar-link-tabpanel-right .x-box-scroller {
+  margin-left: 0;
+}
+/* line 1054, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-rtl.x-tab-bar-link-tabpanel-left .x-box-scroller {
+  margin-right: 1px;
+}
+
+/* line 1123, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-bar-link-tabpanel-top .x-tabbar-scroll-left {
+  background-image: url(images/tab-bar/link-tabpanel-scroll-left-top.gif);
+}
+/* line 1126, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-bar-link-tabpanel-top .x-tabbar-scroll-right {
+  background-image: url(images/tab-bar/link-tabpanel-scroll-right-top.gif);
+}
+
+/* line 1133, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-rtl.x-tab-bar-link-tabpanel-top .x-tabbar-scroll-left {
+  background-image: url(images/tab-bar/link-tabpanel-scroll-right-top.gif);
+}
+/* line 1136, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-rtl.x-tab-bar-link-tabpanel-top .x-tabbar-scroll-right {
+  background-image: url(images/tab-bar/link-tabpanel-scroll-left-top.gif);
+}
+
+/* line 1143, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-bar-link-tabpanel-bottom .x-tabbar-scroll-left {
+  background-image: url(images/tab-bar/link-tabpanel-scroll-left-bottom.gif);
+}
+/* line 1146, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-bar-link-tabpanel-bottom .x-tabbar-scroll-right {
+  background-image: url(images/tab-bar/link-tabpanel-scroll-right-bottom.gif);
+}
+
+/* line 1153, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-rtl.x-tab-bar-link-tabpanel-bottom .x-tabbar-scroll-left {
+  background-image: url(images/tab-bar/link-tabpanel-scroll-right-bottom.gif);
+}
+/* line 1156, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-rtl.x-tab-bar-link-tabpanel-bottom .x-tabbar-scroll-right {
+  background-image: url(images/tab-bar/link-tabpanel-scroll-left-bottom.gif);
+}
+
+/* line 1163, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-bar-link-tabpanel-left .x-tabbar-scroll-top {
+  background-image: url(images/tab-bar/link-tabpanel-scroll-top-left.gif);
+}
+/* line 1166, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-bar-link-tabpanel-left .x-tabbar-scroll-bottom {
+  background-image: url(images/tab-bar/link-tabpanel-scroll-bottom-left.gif);
+}
+
+/* line 1172, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-bar-link-tabpanel-right .x-tabbar-scroll-top {
+  background-image: url(images/tab-bar/link-tabpanel-scroll-top-right.gif);
+}
+/* line 1175, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-bar-link-tabpanel-right .x-tabbar-scroll-bottom {
+  background-image: url(images/tab-bar/link-tabpanel-scroll-bottom-right.gif);
+}
+
+/* line 1184, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-bar-link-tabpanel .x-tabbar-scroll-left-hover,
+.x-tab-bar-link-tabpanel .x-tabbar-scroll-right-hover {
+  background-position: -18px 0;
+}
+/* line 1189, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-bar-link-tabpanel .x-tabbar-scroll-top-hover,
+.x-tab-bar-link-tabpanel .x-tabbar-scroll-bottom-hover {
+  background-position: 0 -18px;
+}
+/* line 1194, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
+.x-tab-bar-link-tabpanel .x-box-scroller-disabled {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
+  opacity: 0.5;
+  cursor: default;
+}
+
+/*<if slicer>*/
+/* line 78, ../../../ext-theme-base/sass/etc/mixins/slicer.scss */
+.x-tab-link-tabpanel-top-over:after {
+  display: none;
+  content: "x-slicer:bg:url(images/tab/tab-link-tabpanel-top-over-bg.gif), corners:url(images/tab/tab-link-tabpanel-top-over-corners.gif), sides:url(images/tab/tab-link-tabpanel-top-over-sides.gif), frame-bg:url(images/tab/tab-link-tabpanel-top-over-fbg.gif)";
+}
+
+/*</if slicer>*/
+/* */
+/*<if slicer>*/
+/* line 78, ../../../ext-theme-base/sass/etc/mixins/slicer.scss */
+.x-tab-link-tabpanel-bottom-over:after {
+  display: none;
+  content: "x-slicer:bg:url(images/tab/tab-link-tabpanel-bottom-over-bg.gif), corners:url(images/tab/tab-link-tabpanel-bottom-over-corners.gif), sides:url(images/tab/tab-link-tabpanel-bottom-over-sides.gif), frame-bg:url(images/tab/tab-link-tabpanel-bottom-over-fbg.gif)";
+}
+
+/*</if slicer>*/
+/* */
+/*<if slicer>*/
+/* line 78, ../../../ext-theme-base/sass/etc/mixins/slicer.scss */
+.x-tab-link-tabpanel-top-active:after {
+  display: none;
+  content: "x-slicer:bg:url(images/tab/tab-link-tabpanel-top-active-bg.gif), corners:url(images/tab/tab-link-tabpanel-top-active-corners.gif), sides:url(images/tab/tab-link-tabpanel-top-active-sides.gif), frame-bg:url(images/tab/tab-link-tabpanel-top-active-fbg.gif)";
+}
+
+/*</if slicer>*/
+/* */
+/*<if slicer>*/
+/* line 78, ../../../ext-theme-base/sass/etc/mixins/slicer.scss */
+.x-tab-link-tabpanel-bottom-active:after {
+  display: none;
+  content: "x-slicer:bg:url(images/tab/tab-link-tabpanel-bottom-active-bg.gif), corners:url(images/tab/tab-link-tabpanel-bottom-active-corners.gif), sides:url(images/tab/tab-link-tabpanel-bottom-active-sides.gif), frame-bg:url(images/tab/tab-link-tabpanel-bottom-active-fbg.gif)";
+}
+
+/*</if slicer>*/
+/* */
+/*<if slicer>*/
+/* line 78, ../../../ext-theme-base/sass/etc/mixins/slicer.scss */
+.x-tab-link-tabpanel-top-disabled:after {
+  display: none;
+  content: "x-slicer:bg:url(images/tab/tab-link-tabpanel-top-disabled-bg.gif), corners:url(images/tab/tab-link-tabpanel-top-disabled-corners.gif), sides:url(images/tab/tab-link-tabpanel-top-disabled-sides.gif), frame-bg:url(images/tab/tab-link-tabpanel-top-disabled-fbg.gif)";
+}
+
+/*</if slicer>*/
+/* */
+/*<if slicer>*/
+/* line 78, ../../../ext-theme-base/sass/etc/mixins/slicer.scss */
+.x-tab-link-tabpanel-bottom-disabled:after {
+  display: none;
+  content: "x-slicer:bg:url(images/tab/tab-link-tabpanel-bottom-disabled-bg.gif), corners:url(images/tab/tab-link-tabpanel-bottom-disabled-corners.gif), sides:url(images/tab/tab-link-tabpanel-bottom-disabled-sides.gif), frame-bg:url(images/tab/tab-link-tabpanel-bottom-disabled-fbg.gif)";
+}
+
+/*</if slicer>*/
+/* */
+/*<if slicer>*/
+/* line 78, ../../../ext-theme-base/sass/etc/mixins/slicer.scss */
+.x-tab-bar-link-tabpanel-top:after {
+  display: none;
+  content: "x-slicer:bg:url(images/tab-bar/tab-bar-link-tabpanel-top-bg.gif)";
+}
+
+/*</if slicer>*/
+/* */
+/*<if slicer>*/
+/* line 78, ../../../ext-theme-base/sass/etc/mixins/slicer.scss */
+.x-tab-bar-link-tabpanel-bottom:after {
+  display: none;
+  content: "x-slicer:bg:url(images/tab-bar/tab-bar-link-tabpanel-bottom-bg.gif)";
+}
+
+/*</if slicer>*/
+/* */
+/*<if slicer>*/
+/* line 78, ../../../ext-theme-base/sass/etc/mixins/slicer.scss */
+.x-tab-bar-link-tabpanel-left:after {
+  display: none;
+  content: "x-slicer:bg:url(images/tab-bar/tab-bar-link-tabpanel-left-bg.gif)";
+}
+
+/*</if slicer>*/
+/* */
+/*<if slicer>*/
+/* line 78, ../../../ext-theme-base/sass/etc/mixins/slicer.scss */
+.x-tab-bar-link-tabpanel-right:after {
+  display: none;
+  content: "x-slicer:bg:url(images/tab-bar/tab-bar-link-tabpanel-right-bg.gif)";
+}
+
+/*</if slicer>*/
+/* */

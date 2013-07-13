@@ -2,9 +2,9 @@
   "name": "search-skin",
   "format": "1",
   "version": "1.0.0",
-  "creator": "anonymous",
-  "summary": "Short summary",
-  "detailedDescription": "Long description of package",
+  "creator": "The great and powerful Joel Griffith",
+  "summary": "Skin/Theme for HTML5 Search and Doc Viewer",
+  "detailedDescription": "A one-off (so to speak) theme for Doc and HTML5. This theme has a dependency on ext-theme-classic and adds some custom logic",
   "type": "theme",
   "extend": "ext-theme-classic",
   "local": true
