@@ -34,19 +34,19 @@ Ext.define('Savanna.controller.search.SearchDals', {
             store: store
         });
     },
-
+    createDalPanels: function (body) {
+        var me = this;
+        this.getDalSourcesStore().each(function (record) {
+            var myPanel = me.createPanel(record);
+            body.add(myPanel);
+        });
+    },
     init: function (app) {
         this.getDalSourcesStore().loadRawData(this.data);
 
         this.control({
             'search_searchdals': {
-                render: function (body) {
-                    var me = this;
-                    this.getDalSourcesStore().each(function (record) {
-                        var myPanel = me.createPanel(record);
-                        body.add(myPanel);
-                    });
-                }
+                render: this.createDalPanels
             },
             'search_searchDals_searchoptions > #searchOptionsToggle': {
                 click: this.renderCustomOptions
