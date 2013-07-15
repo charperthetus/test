@@ -1,0 +1,5 @@
+.flat-tabpanel {
+	@include thetus-flat-tab-ui(
+		$border-radius: 0px
+	);
+}
