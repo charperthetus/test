@@ -55,23 +55,17 @@ Ext.define('Savanna.controller.search.SearchDals', {
     },
 
     renderCustomOptions: function(button, evt) {
-        // NOTE: I'm not sure this is the correct way to do this since the controller is a singleton
-        //       (if we can have more than one search, this will break...)
         var parentView = button.up('search_searchDals_searchoptions');
         var childSearchDalsPanel = parentView.down('search_searchDals_custom-search-group-form');
-        console.log('parentView', parentView);
-        console.log('childSearchDalsPanel',childSearchDalsPanel);
+
         if (!childSearchDalsPanel) {
             var parentViewId = parentView.itemId;
             var store = this.getDalSourcesStore();
             var record = store.getById(parentViewId);
 
-            var dalPanel = this.createCustomSearchGroupPanel(record.customSearchGroups());
+            childSearchDalsPanel = this.createCustomSearchGroupPanel(record.customSearchGroups());
 
-            parentView.add(dalPanel);
-
-            childSearchDalsPanel = parentView.down('search_searchDals_custom-search-group-form');
-            console.log('childSearchDalsPanel',childSearchDalsPanel);
+            parentView.add(childSearchDalsPanel);
         }
 
         if (button.text == this.addDalDetailText) {
