@@ -29,7 +29,7 @@ Ext.define("Savanna.controller.flexpaper.FlexpaperComponent", {
                 render: function (paper, evt) {
                     var fpid = "documentViewer" + paper.up("#flexcomponent").configs.guid;
                     Ext.DomHelper.insertHtml("afterBegin", paper.getEl().dom, "<div id='" + fpid + "' class='flexpaper_viewer'></div>");
-                    me.loadPaper(fpid, paper.up("#flexcomponent").configs.asset, me, paper, me)
+                    me.loadPaper(fpid, paper.up("#flexcomponent").configs.asset, paper)
                 }
             },
             "flexpaper_flexpapertoolbar > #tools button": {
@@ -38,18 +38,26 @@ Ext.define("Savanna.controller.flexpaper.FlexpaperComponent", {
                     if (btn.itemId == "toolmenu")   {
                         $.each(btn.menu.items.items, function (index, item)
                         {
-                            item.on("click", function (e)   {
-                                me[btn.itemId](viewer);
-                            });
+                            try {
+                                item.on("click", function (e)   {
+                                    me["onToolSelect_" + btn.itemId](viewer);
+                                });
+                            }   catch(e)    {
+                                console.log("FlexpaperComponent.js, error calling method: " + btn.itemId)
+                            }
                         });
                     } else {
-                        me[btn.itemId](viewer);
+                        try {
+                            me["onToolSelect_" + btn.itemId](viewer);
+                        }   catch(e)    {
+                            console.log("FlexpaperComponent, error calling method: " + btn.itemId)
+                        }
                     }
                 }
             }
         });
     },
-    loadPaper: function (viewer, asset, ctrl, view, comp) {
+    loadPaper: function (viewer, asset, view) {
         jQuery("#" + viewer).FlexPaperViewer(
             {
                 config: {
@@ -80,7 +88,7 @@ Ext.define("Savanna.controller.flexpaper.FlexpaperComponent", {
                 }
             }
         );
-
+        var ctrl = this;
         jQuery("#" + viewer).bind('onMarkCreated onMarkClicked onMarkDeleted', function (e, mark) {
             //console.log(e);
             //console.log(mark);
@@ -120,53 +128,58 @@ Ext.define("Savanna.controller.flexpaper.FlexpaperComponent", {
             });
         });
     },
-    handtool:function(viewer) {
+
+    /*
+    Tool selection handlers
+    */
+
+    onToolSelect_handtool:function(viewer) {
         // coming soon
     },
-    selecttool:function(viewer)   {
+    onToolSelect_selecttool:function(viewer)   {
         $FlexPaper(viewer).enableHighlighter();
         this.currentTool = "select";
     },
-    penciltool:function(viewer)   {
+    onToolSelect_penciltool:function(viewer)   {
         $FlexPaper(viewer).enableDrawMode();
         this.currentTool = "pencil";
     },
-    commenttool:function(viewer)  {
+    onToolSelect_commenttool:function(viewer)  {
         $FlexPaper(viewer).addNote();
         this.currentTool = "comment";
     },
-    entitytool:function(viewer)   {
+    onToolSelect_entitytool:function(viewer)   {
         $FlexPaper(viewer).enableStrikeout();
         this.currentTool = "entity";
     },
-    zoomintool:function(viewer)   {
+    onToolSelect_zoomintool:function(viewer)   {
         $FlexPaper(viewer).setZoom($FlexPaper(viewer).scale + .2);
     },
-    zoomouttool:function(viewer)  {
+    onToolSelect_zoomouttool:function(viewer)  {
         $FlexPaper(viewer).setZoom($FlexPaper(viewer).scale - .2);
     },
-    zoomfittool:function(viewer)  {
+    onToolSelect_zoomfittool:function(viewer)  {
         $FlexPaper(viewer).fitHeight();
     },
-    singlepageview:function(viewer)   {
+    onToolSelect_singlepageview:function(viewer)   {
         $FlexPaper(viewer).switchMode("Portrait");
     },
-    twopageview:function(viewer)  {
+    onToolSelect_twopageview:function(viewer)  {
         $FlexPaper(viewer).switchMode("TwoPage");
     },
-    thumbview:function(viewer)    {
+    onToolSelect_thumbview:function(viewer)    {
         $FlexPaper(viewer).switchMode("Tile");
     },
-    entitiesview:function(viewer)   {
+    onToolSelect_entitiesview:function(viewer)   {
         // coming soon
     },
-    mycommentsview:function(viewer)   {
+    onToolSelect_mycommentsview:function(viewer)   {
         // coming soon
     },
-    othercommentsview:function(viewer)    {
+    onToolSelect_othercommentsview:function(viewer)    {
         // coming soon
     },
-    legendview:function(viewer)   {
+    onToolSelect_legendview:function(viewer)   {
         // coming soon
     }
 });
