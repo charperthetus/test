@@ -22,7 +22,7 @@ Ext.define('Savanna.view.search.SearchBody', {
             items: [
                 {
                     xtype: 'tabpanel',
-                    plain: true,
+                    cls: 'flat-tabpanel',
                     region: 'center',
                     margins: '10 0 0 0',
                     activeTab: 0,

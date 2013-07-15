@@ -1,4 +1,4 @@
-$image-search-path: '/Users/joelgriffith/Projects/Savanna4/src/public/packages/search-skin/build/resources' !default;
+$image-search-path: '/Users/joelgriffith/Projects/sav4/src/public/packages/search-skin/build/resources' !default;
 $theme-name:  'search-skin' !default;
 $include-ext-abstractcomponent: true;
 $include-ext-abstractmanager: true;
@@ -529,6 +529,7 @@ $include-ext-window-window: true;
 @import '../sass/etc/all';
 /* including package search-skin */
 @import '../sass/var/Component';
+@import '../sass/var/tab/Panel';
 /* including package ext-theme-classic */
 @import '../../ext-theme-classic/sass/var/Component';
 @import '../../ext-theme-classic/sass/var/LoadMask';
