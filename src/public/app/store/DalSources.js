@@ -2,6 +2,7 @@ Ext.define('Savanna.store.DalSources', {
     extend: 'Ext.data.JsonStore',
 
     requires: [
+        'Ext.data.proxy.Rest',
         'Savanna.Config'
     ],
 
@@ -29,7 +30,7 @@ Ext.define('Savanna.store.DalSources', {
         });
 
         this.setProxy({
-            type: 'rest',
+            type: 'rest',// TODO: change back to "rest" when we have a service endpoint...
             url: restUrl,
             buildUrl: function(request) {
                 // TODO: WE REALLY NEED A Savanna.utils.UrlBuilder lib...

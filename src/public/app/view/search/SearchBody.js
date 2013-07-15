@@ -5,8 +5,10 @@ Ext.define('Savanna.view.search.SearchBody', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.search_searchbody',
 
+    requires: [
+        'Savanna.view.search.SearchDals'
+    ],
     layout: 'fit',
-    border: false,
 
     items: [
         /*
@@ -28,11 +30,11 @@ Ext.define('Savanna.view.search.SearchBody', {
                     flex: 3,
                     anchor: '100% 100%',
                     tabPosition: 'top',
-                    border: false,
                     items: [
                         {
                             title: 'Search Sources',
-                            html: 'sources here'
+                            autoScroll: true,
+                            xtype: 'search_searchdals'
                         },
                         {
                             title: 'Location',
@@ -54,28 +56,21 @@ Ext.define('Savanna.view.search.SearchBody', {
     dockedItems: [
         {
             xtype: 'toolbar',
-            border: false,
+            ui: 'link-toolbar',
             width: '100%',
-            docked: 'top',
             itemId:"searchbodytoolbar",
             items: [
                 {
                     xtype: 'button',
+                    ui: 'link-button',
                     text: 'Search Options',
-                    itemId:"optionsbutton",
-                    style: {
-                        background: 'transparent',
-                        border: 'none'
-                    }
+                    itemId:"optionsbutton"
                 },
                 {
                     xtype: 'button',
+                    ui: 'link-button',
                     text: 'Results',
-                    itemId:"resultsbutton",
-                    style: {
-                        background: 'transparent',
-                        border: 'none'
-                    }
+                    itemId:"resultsbutton"
                 }
             ]
         }
