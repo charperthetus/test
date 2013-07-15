@@ -3,9 +3,9 @@
  */
 Ext.define('Savanna.view.SimpleTabbedDesktop', {
     extend: 'Ext.panel.Panel',
-    alias:  'widget.simpletabbeddesktop',
+    alias: 'widget.simpletabbeddesktop',
 
-    requires:[
+    requires: [
         'Savanna.view.search.SearchToolbar',
         'Savanna.view.search.SearchBar',
         'Savanna.view.search.SearchBody'
@@ -15,7 +15,7 @@ Ext.define('Savanna.view.SimpleTabbedDesktop', {
 
     items: [
         {
-            xtype:  'tabpanel',
+            xtype: 'tabpanel',
             itemId: 'maintabs',
             region: 'center',
             deferredRender: false,
@@ -30,19 +30,19 @@ Ext.define('Savanna.view.SimpleTabbedDesktop', {
                     border: false,
                     items: [
                         {
-                            xtype:  'search_searchbar',
+                            xtype: 'search_searchbar',
                             itemId: 'searchbar',
                             region: 'north'
                         },
                         {
-                            xtype:  'search_searchbody',
+                            xtype: 'search_searchbody',
                             itemId: 'searchbody',
                             region: 'center'
                         }
                     ],
                     dockedItems: [
                         {
-                            xtype:  'search_searchtoolbar',
+                            xtype: 'search_searchtoolbar',
                             itemId: 'searchtoolbar'
                         }
                     ]

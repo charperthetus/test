@@ -17,7 +17,7 @@ Ext.define('Savanna.view.search.SearchToolbar', {
             menu: [
                 {text: 'Cats'},
                 {text: 'Dogs'},
-                {text: 'Terrorists'},
+                {text: 'Evil-Doers'},
                 {
                     xtype: 'panel',
                     title: 'test',
@@ -38,7 +38,6 @@ Ext.define('Savanna.view.search.SearchToolbar', {
 
     initComponent: function () {
         this.callParent(arguments);
-
         // instantiate the controller for this view
         Savanna.controller.Factory.getController('search.SearchToolbar');
     }
