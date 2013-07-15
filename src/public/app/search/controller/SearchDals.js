@@ -1,12 +1,12 @@
-Ext.define('Savanna.search.controller.SearchDals', {
+Ext.define('Savanna.controller.search.SearchDals', {
     extend: 'Ext.app.Controller',
 
     models: [
-        'Savanna.search.model.DalSource'
+        'DalSource'
     ],
 
     stores: [
-        'Savanna.search.store.DalSources'
+        'DalSources'
     ],
 
     views: [
@@ -34,19 +34,19 @@ Ext.define('Savanna.search.controller.SearchDals', {
             store: store
         });
     },
-
+    createDalPanels: function (body) {
+        var me = this;
+        this.getStore('Savanna.search.store.DalSources').each(function (record) {
+            var myPanel = me.createPanel(record);
+            body.add(myPanel);
+        });
+    },
     init: function (app) {
         this.getStore('Savanna.search.store.DalSources').loadRawData(this.data);
 
         this.control({
             'search_searchdals': {
-                render: function (body) {
-                    var me = this;
-                    this.getStore('Savanna.search.store.DalSources').each(function (record) {
-                        var myPanel = me.createPanel(record);
-                        body.add(myPanel);
-                    });
-                }
+                render: this.createDalPanels
             },
             'search_searchDals_searchoptions > #searchOptionsToggle': {
                 click: this.renderCustomOptions
@@ -63,7 +63,7 @@ Ext.define('Savanna.search.controller.SearchDals', {
         console.log('childSearchDalsPanel',childSearchDalsPanel);
         if (!childSearchDalsPanel) {
             var parentViewId = parentView.itemId;
-            var store = this.getStore('Savanna.search.store.DalSources');
+            var store = this.getDalSourcesStore();
             var record = store.getById(parentViewId);
 
             var dalPanel = this.createCustomSearchGroupPanel(record.customSearchGroups());
