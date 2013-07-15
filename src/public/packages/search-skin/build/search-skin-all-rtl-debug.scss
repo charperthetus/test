@@ -1,4 +1,4 @@
-$image-search-path: '/Users/joelgriffith/Projects/Savanna4/src/public/packages/search-skin/build/resources' !default;
+$image-search-path: '/Users/astump/Global/CurrentProjects/Savanna-4Fork/src/public/packages/search-skin/build/resources' !default;
 $theme-name:  'search-skin' !default;
 $include-ext-abstractcomponent: true;
 $include-ext-abstractmanager: true;
@@ -733,3 +733,8 @@ $relative-image-path-for-uis: $ext-theme-classic-resource-path;
 @import '../../ext-theme-classic/sass/src/resizer/Resizer';
 @import '../../ext-theme-classic/sass/src/slider/Multi';
 @import '../../ext-theme-classic/sass/src/tab/Panel';
+/* including package search-skin */
+$search-skin-resource-path: 'images' !default;
+$relative-image-path-for-uis: $search-skin-resource-path;
+@import '../sass/src/button/Button';
+@import '../sass/src/toolbar/Toolbar';

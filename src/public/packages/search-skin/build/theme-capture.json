@@ -469,16 +469,16 @@
       },
       "box": {
         "h": 22,
-        "w": 49,
+        "w": 97,
         "x": 10,
         "y": 671
       },
       "id": "button-1026",
       "radius": {
-        "bl": 3,
-        "br": 3,
-        "tl": 3,
-        "tr": 3
+        "bl": 0,
+        "br": 0,
+        "tl": 0,
+        "tr": 0
       },
       "slices": {}
     },
@@ -491,17 +491,16 @@
       },
       "box": {
         "h": 22,
-        "w": 49,
+        "w": 97,
         "x": 10,
         "y": 703
       },
-      "gradient": "top",
       "id": "button-1027",
       "radius": {
-        "bl": 3,
-        "br": 3,
-        "tl": 3,
-        "tr": 3
+        "bl": 0,
+        "br": 0,
+        "tl": 0,
+        "tr": 0
       },
       "slices": {
         "bg": "images/btn/btn-default-toolbar-small-over-bg.gif",
@@ -520,17 +519,16 @@
       },
       "box": {
         "h": 22,
-        "w": 49,
+        "w": 97,
         "x": 10,
         "y": 735
       },
-      "gradient": "top",
       "id": "button-1028",
       "radius": {
-        "bl": 3,
-        "br": 3,
-        "tl": 3,
-        "tr": 3
+        "bl": 0,
+        "br": 0,
+        "tl": 0,
+        "tr": 0
       },
       "slices": {
         "bg": "images/btn/btn-default-toolbar-small-focus-bg.gif",
@@ -549,17 +547,16 @@
       },
       "box": {
         "h": 22,
-        "w": 49,
+        "w": 97,
         "x": 10,
         "y": 767
       },
-      "gradient": "top",
       "id": "button-1029",
       "radius": {
-        "bl": 3,
-        "br": 3,
-        "tl": 3,
-        "tr": 3
+        "bl": 0,
+        "br": 0,
+        "tl": 0,
+        "tr": 0
       },
       "slices": {
         "bg": "images/btn/btn-default-toolbar-small-pressed-bg.gif",
@@ -578,16 +575,16 @@
       },
       "box": {
         "h": 22,
-        "w": 49,
+        "w": 97,
         "x": 10,
         "y": 799
       },
       "id": "button-1030",
       "radius": {
-        "bl": 3,
-        "br": 3,
-        "tl": 3,
-        "tr": 3
+        "bl": 0,
+        "br": 0,
+        "tl": 0,
+        "tr": 0
       },
       "slices": {
         "corners": "images/btn/btn-default-toolbar-small-disabled-corners.gif",
@@ -2025,7 +2022,7 @@
       },
       "box": {
         "h": 31,
-        "w": 164,
+        "w": 210,
         "x": 10,
         "y": 5460
       },
