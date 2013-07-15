@@ -163,49 +163,5 @@ describe('Dal Search', function() {
                 expect(view.add.callCount).toBe(controller.getDalSourcesStore().count());
             });
         });
-
-        describe('renderCustomOptions', function() {
-            var view = null,
-                button = null;
-
-            beforeEach(function() {
-                var uberParent = Ext.create('Savanna.view.search.SearchDals', { renderTo: 'test-html' });
-
-                view = uberParent.down('search_searchDals_searchoptions:last');
-                button = view.down('#searchOptionsToggle');
-
-                spyOn(view, 'add').andCallThrough();
-                spyOn(view, 'doLayout'); // don't necessarily need to redo the layout...
-                spyOn(button, 'setText').andCallThrough();
-            });
-
-            afterEach(function() {
-                if (view && view.destroy) view.destroy();
-
-                view = null;
-                button = null;
-
-                Ext.get('test-html').remove();
-            });
-
-            it('should render a group form if it has not been built yet', function() {
-                controller.renderCustomOptions(button);
-
-                expect(view.add).toHaveBeenCalled();
-                expect(button.setText).toHaveBeenCalledWith('Hide Search Options');
-                expect(view.doLayout).toHaveBeenCalled();
-
-                // "click" the button again to validate that we change the button text to "show"
-                button.setText.reset();
-                view.add.reset();
-                view.doLayout.reset();
-
-                controller.renderCustomOptions(button);
-
-                expect(view.add).not.toHaveBeenCalled();
-                expect(button.setText).toHaveBeenCalledWith('Show Search Options');
-                expect(view.doLayout).toHaveBeenCalled();
-            });
-        });
     });
 });
