@@ -1,0 +1,33 @@
+@include extjs-button-ui(
+	$ui: 'link-button-toolbar-small',
+
+    $border-radius: 0px,
+
+    $border-width: 0px,
+
+    $border-color: transparent,
+    $border-color-over: transparent,
+    $border-color-focus: transparent,
+    $border-color-pressed: transparent,
+    $border-color-disabled: transparent,
+	
+	$padding: 0 0 0 20px,
+    
+	$background-color: transparent,
+    $background-color-over: transparent,
+    $background-color-focus: transparent,
+    $background-color-pressed: transparent,
+    $background-color-disabled: transparent,
+
+    $color: #f1f1f1,
+    $color-over: #f1f1f1,
+    $color-focus: #f1f1f1,
+    $color-pressed: #ffffff,
+    $color-disabled: #747475,
+
+    $font-size: 14px,
+    $font-family: $Open-Sans-Bold,
+    
+    $icon-size: 30px,
+    $glyph-color: #ffffff
+    );

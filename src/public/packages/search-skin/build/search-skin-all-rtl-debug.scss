@@ -736,4 +736,5 @@ $relative-image-path-for-uis: $ext-theme-classic-resource-path;
 /* including package search-skin */
 $search-skin-resource-path: 'images' !default;
 $relative-image-path-for-uis: $search-skin-resource-path;
-@import '../sass/src/tab/Panel';
+@import '../sass/src/button/Button';
+@import '../sass/src/toolbar/Toolbar';
