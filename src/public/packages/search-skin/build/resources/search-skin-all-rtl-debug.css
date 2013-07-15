@@ -15933,21 +15933,22 @@ body.x-nbr .x-tab-default-right {
  * Flat Tab mixin
  * Visually styles a tab to visually appear flat based off of a class (user defined)
  */
-/* line 21, ../../sass/src/button/FlatTab.scss */
+/* line 26, ../../sass/src/button/FlatTab.scss */
 .flat-tab .x-tab-bar-default-top {
-  background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #cfcece), color-stop(35%, #ededed));
-  background: -webkit-linear-gradient(top, #cfcece 0%, #ededed 35%);
-  background: -moz-linear-gradient(top, #cfcece 0%, #ededed 35%);
-  background: -o-linear-gradient(top, #cfcece 0%, #ededed 35%);
-  background: linear-gradient(top, #cfcece 0%, #ededed 35%);
+  background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #cfcece), color-stop(30%, #ededed));
+  background: -webkit-linear-gradient(top, #cfcece 0%, #ededed 30%);
+  background: -moz-linear-gradient(top, #cfcece 0%, #ededed 30%);
+  background: -o-linear-gradient(top, #cfcece 0%, #ededed 30%);
+  background: linear-gradient(top, #cfcece 0%, #ededed 30%);
   padding: 8px 0 0 20px;
 }
-/* line 27, ../../sass/src/button/FlatTab.scss */
+/* line 32, ../../sass/src/button/FlatTab.scss */
 .flat-tab .x-tab-inner {
   font-weight: normal;
+  font-size: 10px;
   color: white;
 }
-/* line 33, ../../sass/src/button/FlatTab.scss */
+/* line 39, ../../sass/src/button/FlatTab.scss */
 .flat-tab .x-tab-default-top {
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
@@ -15958,25 +15959,28 @@ body.x-nbr .x-tab-default-right {
   -o-border-radius: 0px;
   border-radius: 0px;
   border: 1px solid #424242;
-  padding: 3px 20px;
+  border-bottom-color: #424242;
+  padding: 2px 20px 4px;
   color: white;
   background: #424242;
+  min-width: 125px;
 }
-/* line 42, ../../sass/src/button/FlatTab.scss */
+/* line 50, ../../sass/src/button/FlatTab.scss */
 .flat-tab .x-tab-default-top-active {
   background: white;
+  border: 1px solid #989898;
   border-bottom: 1px solid white;
 }
-/* line 46, ../../sass/src/button/FlatTab.scss */
+/* line 55, ../../sass/src/button/FlatTab.scss */
 .flat-tab .x-tab-default-top-active .x-tab-inner {
   color: #505050;
 }
-/* line 52, ../../sass/src/button/FlatTab.scss */
+/* line 61, ../../sass/src/button/FlatTab.scss */
 .flat-tab .x-tab-bar-strip-default {
   border: none;
-  border-top: 1px solid #424242;
+  border-top: 1px solid #989898;
 }
-/* line 57, ../../sass/src/button/FlatTab.scss */
+/* line 66, ../../sass/src/button/FlatTab.scss */
 .flat-tab .x-panel-body {
   border-color: white;
 }
