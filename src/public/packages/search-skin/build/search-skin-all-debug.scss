@@ -733,3 +733,7 @@ $relative-image-path-for-uis: $ext-theme-classic-resource-path;
 @import '../../ext-theme-classic/sass/src/resizer/Resizer';
 @import '../../ext-theme-classic/sass/src/slider/Multi';
 @import '../../ext-theme-classic/sass/src/tab/Panel';
+/* including package search-skin */
+$search-skin-resource-path: 'images' !default;
+$relative-image-path-for-uis: $search-skin-resource-path;
+@import '../sass/src/button/Button';
