@@ -1,3 +1,6 @@
+// Pull in the flat-tab mixin
+@import 'FlatTab.scss';
+@include flat-tab();
 @include extjs-button-ui(
 	$ui: 'link-button-toolbar-small',
 
