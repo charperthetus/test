@@ -9,11 +9,7 @@ Ext.define('Savanna.controller.Main', {
     ],
 
     controllers: [
-        'Savanna.flexpaper.controller.FlexpaperComponent',
-        'Savanna.search.controller.SearchBody',
-        'Savanna.search.controller.SearchBar',
-        'Savanna.search.controller.SearchDals',
-        'Savanna.search.controller.Toolbar'
+        'Savanna.flexpaper.controller.FlexpaperComponent'
     ],
 
     init: function(app) {
