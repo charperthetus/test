@@ -128,8 +128,7 @@ Ext.define('Savanna.view.SavannaDesktop', {
                                             return (tabbutton.dragData = {
                                                 sourceEl: sourceEl,
                                                 repairXY: Ext.fly(sourceEl).getXY(),
-                                                ddel: d,
-//                                                tab: tab
+                                                ddel: d
                                             });
                                         }
                                     },
@@ -139,11 +138,7 @@ Ext.define('Savanna.view.SavannaDesktop', {
                                     }
                                 });
 
-                            })
-//                            tab.dragZone = Ext.create('Ext.dd.DragZone', tab.id, {
-//
-//
-//                            });
+                            });
                         }
                     },
                     items: [
