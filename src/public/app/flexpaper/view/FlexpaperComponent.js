@@ -12,12 +12,12 @@ Ext.define("Savanna.flexpaper.view.FlexpaperComponent", {
     border:false,
     currentTool: null,
     requires: [
-        "Savanna.view.flexpaper.FlexpaperToolbar",
-        "Savanna.view.flexpaper.FlexpaperBody"
+        "Savanna.flexpaper.view.FlexpaperToolbar",
+        "Savanna.flexpaper.view.FlexpaperBody"
     ],
     initComponent:function()    {
         this.callParent();
-        Savanna.controller.Factory.getController('flexpaper.FlexpaperComponent');
+        Savanna.controller.Factory.getController('Savanna.flexpaper.controller.FlexpaperComponent');
     },
     items:  [
         {

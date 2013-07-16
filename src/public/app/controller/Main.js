@@ -8,6 +8,14 @@ Ext.define('Savanna.controller.Main', {
         'Login'
     ],
 
+    controllers: [
+        'Savanna.flexpaper.controller.FlexpaperComponent',
+        'Savanna.search.controller.SearchBody',
+        'Savanna.search.controller.SearchBar',
+        'Savanna.search.controller.SearchDals',
+        'Savanna.search.controller.Toolbar'
+    ],
+
     init: function(app) {
         var me = this;
 
