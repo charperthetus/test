@@ -26,7 +26,7 @@ Ext.define('Savanna.view.Viewport', {
                     itemId: 'login'
                 },
                 {
-                    xtype:  Savanna.Config.desktopType,
+                    xtype:  'savannadesktop',
                     itemId: 'main'
                 }
             ]

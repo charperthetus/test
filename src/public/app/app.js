@@ -19,8 +19,6 @@ Ext.application({
 
     views: [
         'Login',
-        //TODO - This is loading both desktops right now, and we will need to decide which one to use going forward.  If we need both as a configuration option we will need to make a new app.js file.
-        'SimpleTabbedDesktop',
         'SavannaDesktop',
         'Viewport'
     ],
@@ -30,13 +28,18 @@ Ext.application({
     ],
 
     requires: [
+        //Main
         'Savanna.Config',
         'Savanna.controller.Factory',
+        //Flexpaper
         'Savanna.flexpaper.controller.FlexpaperComponent',
+        //Search
         'Savanna.search.controller.SearchBody',
         'Savanna.search.controller.SearchBar',
         'Savanna.search.controller.SearchDals',
-        'Savanna.search.controller.SearchToolbar'
+        'Savanna.search.controller.SearchToolbar',
+        //Crumbnet
+        'Savanna.crumbnet.controller.GoGraph'
     ],
 
     autoCreateViewport: true,

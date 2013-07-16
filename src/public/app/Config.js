@@ -17,7 +17,4 @@ Ext.define('Savanna.Config', {
     searchUrl: '/rest/c2is2/model/search',
     itemViewUrl: '/rest/c2is2/model/item/',
     dalSourcesUrl: '/rest/search/sources',
-
-    // Configuration for which top-level UI component to use
-    desktopType: 'simpletabbeddesktop'
 });
