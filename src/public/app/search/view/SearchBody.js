@@ -1,12 +1,12 @@
 /**
  * TODO: Document what events we may emit...
  */
-Ext.define('Savanna.view.search.SearchBody', {
+Ext.define('Savanna.search.view.SearchBody', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.search_searchbody',
 
     requires: [
-        'Savanna.view.search.SearchDals'
+        'Savanna.search.view.SearchDals'
     ],
     layout: 'fit',
 
@@ -24,7 +24,7 @@ Ext.define('Savanna.view.search.SearchBody', {
             items: [
                 {
                     xtype: 'tabpanel',
-                    plain: true,
+                    cls: 'flat-tabpanel',
                     region: 'center',
                     margins: '10 0 0 0',
                     activeTab: 0,
@@ -80,6 +80,6 @@ Ext.define('Savanna.view.search.SearchBody', {
     initComponent: function () {
         this.callParent(arguments);
 
-        Savanna.controller.Factory.getController('search.SearchBody');
+        Savanna.controller.Factory.getController('Savanna.search.controller.SearchBody');
     }
 });

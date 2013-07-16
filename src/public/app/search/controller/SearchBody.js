@@ -1,11 +1,11 @@
 /**
  * TODO: Document what events we may emit...
  */
-Ext.define('Savanna.controller.search.SearchBody', {
+Ext.define('Savanna.search.controller.SearchBody', {
     extend: 'Ext.app.Controller',
 
     requires: [
-        'Savanna.controller.search.SearchDals'
+        'Savanna.search.controller.SearchDals'
     ],
 
     models: [
@@ -16,7 +16,7 @@ Ext.define('Savanna.controller.search.SearchBody', {
     ],
 
     views: [
-        'search.SearchBody'
+        'Savanna.search.view.SearchBody'
     ],
 
     currentPanel: 'searchoptions',

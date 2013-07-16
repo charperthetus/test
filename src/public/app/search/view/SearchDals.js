@@ -6,7 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 
-Ext.define('Savanna.view.search.SearchDals', {
+Ext.define('Savanna.search.view.SearchDals', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.search_searchdals',
 
@@ -61,7 +61,7 @@ Ext.define('Savanna.view.search.SearchDals', {
     initComponent: function () {
         this.callParent(arguments);
 
-        Savanna.controller.Factory.getController('search.SearchDals');
+        Savanna.controller.Factory.getController('Savanna.search.controller.SearchDals');
     }
 
 

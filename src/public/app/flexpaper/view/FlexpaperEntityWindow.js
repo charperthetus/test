@@ -5,7 +5,7 @@
  * Time: 2:55 PM
  * To change this template use File | Settings | File Templates.
  */
-Ext.define("Savanna.view.flexpaper.FlexpaperEntityWindow", {
+Ext.define("Savanna.flexpaper.view.FlexpaperEntityWindow", {
     extend: "Ext.window.Window",
     autoShow: true,
     align: "stretchmax",

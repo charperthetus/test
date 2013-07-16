@@ -5,7 +5,7 @@
  * Time: 9:11 AM
  * To change this template use File | Settings | File Templates.
  */
-Ext.define("Savanna.view.flexpaper.FlexpaperToolbar", {
+Ext.define("Savanna.flexpaper.view.FlexpaperToolbar", {
     extend:"Ext.panel.Panel",
     alias:"widget.flexpaper_flexpapertoolbar",
     requires:   [

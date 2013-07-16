@@ -1,9 +1,9 @@
-Ext.define('Savanna.model.DalSource', {
+Ext.define('Savanna.search.model.DalSource', {
     extend: 'Ext.data.Model',
 
     // NOTE: if you have a relationship, you need to be sure to require that model...
     requires: [
-        'Savanna.model.dalSource.CustomSearchGroup'
+        'Savanna.search.model.dalSource.CustomSearchGroup'
     ],
 
     fields: [
@@ -22,6 +22,6 @@ Ext.define('Savanna.model.DalSource', {
 
     // NOTE: the model class must be fully qualififed in your relationship definition
     hasMany: [
-        { model: 'Savanna.model.dalSource.CustomSearchGroup', name: 'customSearchGroups' }
+        { model: 'Savanna.search.model.dalSource.CustomSearchGroup', name: 'customSearchGroups' }
     ]
 });

@@ -1,4 +1,4 @@
-Ext.define('Savanna.store.DalSources', {
+Ext.define('Savanna.search.store.DalSources', {
     extend: 'Ext.data.JsonStore',
 
     requires: [
@@ -6,7 +6,7 @@ Ext.define('Savanna.store.DalSources', {
         'Savanna.Config'
     ],
 
-    model: 'Savanna.model.DalSource',
+    model: 'Savanna.search.model.DalSource',
 
     storeId: 'dalSources',
 

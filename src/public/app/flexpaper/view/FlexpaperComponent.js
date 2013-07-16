@@ -5,7 +5,7 @@
  * Time: 10:41 AM
  * To change this template use File | Settings | File Templates.
  */
-Ext.define("Savanna.view.flexpaper.FlexpaperComponent", {
+Ext.define("Savanna.flexpaper.view.FlexpaperComponent", {
     extend: "Ext.panel.Panel",
     alias: "widget.flexpaper_flexpapercomponent",
     layout:"fit",

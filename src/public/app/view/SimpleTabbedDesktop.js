@@ -6,9 +6,9 @@ Ext.define('Savanna.view.SimpleTabbedDesktop', {
     alias: 'widget.simpletabbeddesktop',
 
     requires: [
-        'Savanna.view.search.SearchToolbar',
-        'Savanna.view.search.SearchBar',
-        'Savanna.view.search.SearchBody'
+        'Savanna.search.view.SearchToolbar',
+        'Savanna.search.view.SearchBar',
+        'Savanna.search.view.SearchBody'
     ],
 
     layout: 'fit',

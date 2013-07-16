@@ -1,4 +1,4 @@
-Ext.define('Savanna.model.dalSource.CustomSearchParameter', {
+Ext.define('Savanna.search.model.dalSource.CustomSearchParameter', {
     extend: 'Ext.data.Model',
 
     fields: [
@@ -12,5 +12,5 @@ Ext.define('Savanna.model.dalSource.CustomSearchParameter', {
         { name: 'radioOptions' }
     ],
 
-    belongsTo: 'Savanna.model.dalSource.CustomSearchGroup'
+    belongsTo: 'Savanna.search.model.dalSource.CustomSearchGroup'
 });

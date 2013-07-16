@@ -1,7 +1,7 @@
 /**
  * TODO: Document what events we may emit...
  */
-Ext.define('Savanna.view.search.SearchBar', {
+Ext.define('Savanna.search.view.SearchBar', {
     extend: 'Ext.panel.Panel',
     alias:  'widget.search_searchbar',
 
@@ -82,6 +82,6 @@ Ext.define('Savanna.view.search.SearchBar', {
         this.callParent(arguments);
 
         // instantiate the controller for this view
-        Savanna.controller.Factory.getController('search.SearchBar');
+        Savanna.controller.Factory.getController('Savanna.search.controller.SearchBar');
     }
 });

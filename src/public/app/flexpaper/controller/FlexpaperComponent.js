@@ -5,13 +5,13 @@
  * Time: 10:43 AM
  * To change this template use File | Settings | File Templates.
  */
-Ext.define("Savanna.controller.flexpaper.FlexpaperComponent", {
+Ext.define("Savanna.flexpaer.controller.FlexpaperComponent", {
     extend: "Ext.app.Controller",
     views: [
-        "Savanna.view.flexpaper.FlexpaperComponent",
-        "Savanna.view.flexpaper.FlexpaperBody",
-        "Savanna.view.flexpaper.FlexpaperToolbar",
-        "Savanna.view.flexpaper.FlexpaperEntityWindow"
+        "Savanna.flexpaper.view.FlexpaperComponent",
+        "Savanna.flexpaper.view.FlexpaperBody",
+        "Savanna.flexpaper.view.FlexpaperToolbar",
+        "Savanna.flexpaper.view.FlexpaperEntityWindow"
     ],
     stores: [/* coming soon */],
     models: [/* coming soon */],

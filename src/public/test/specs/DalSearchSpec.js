@@ -1,6 +1,6 @@
 Ext.require('Savanna.Config');
-Ext.require('Savanna.model.DalSource');
-Ext.require('Savanna.store.DalSources');
+Ext.require('Savanna.search.model.DalSource');
+Ext.require('Savanna.search.store.DalSources');
 
 describe('Dal Search', function() {
     var DAL_SOURCES_URL = '',
@@ -18,27 +18,27 @@ describe('Dal Search', function() {
         fixtures = null;
     });
 
-    describe('Savanna.model.DalSource', function() {
+    describe('Savanna.search.model.DalSource', function() {
 
         describe('constructor', function() {
 
             it('should be able to create a model with canonical data', function() {
-                var dal = Ext.create('Savanna.model.DalSource', fixtures.groupedDal);
+                var dal = Ext.create('Savanna.search.model.DalSource', fixtures.groupedDal);
 
-                expect(dal instanceof Savanna.model.DalSource).toBeTruthy();
+                expect(dal instanceof Savanna.search.model.DalSource).toBeTruthy();
 
                 expect(dal.get('inputTypes').length).toBeGreaterThan(0);
             });
         });
     });
 
-    describe('Savanna.store.DalSources', function() {
+    describe('Savanna.search.store.DalSources', function() {
         var server = null,
             store = null;
 
         beforeEach(function() {
             // NOTE: this has to happen BEFORE your create a FakeServer,
-            store = Ext.create('Savanna.store.DalSources', { autoLoad: false });
+            store = Ext.create('Savanna.search.store.DalSources', { autoLoad: false });
 
             server = new ThetusTestHelpers.FakeServer(sinon);
         });
@@ -69,11 +69,11 @@ describe('Dal Search', function() {
         });
     });
 
-    describe('Savanna.view.search.SearchBody', function() {
+    describe('Savanna.search.view.SearchBody', function() {
         var view = null;
 
         beforeEach(function() {
-            view = Ext.create('Savanna.view.search.SearchBody');
+            view = Ext.create('Savanna.search.view.SearchBody');
             spyOn(Savanna.controller.Factory, 'getController');
         });
 
@@ -87,7 +87,7 @@ describe('Dal Search', function() {
 
             view.initComponent();
 
-            expect(Savanna.controller.Factory.getController).toHaveBeenCalledWith('search.SearchBody');
+            expect(Savanna.controller.Factory.getController).toHaveBeenCalledWith('Savanna.search.controller.SearchBody');
         });
     });
 });

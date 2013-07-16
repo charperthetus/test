@@ -8,12 +8,6 @@ Ext.define('Savanna.controller.Main', {
         'Login'
     ],
 
-    requires: [
-        'Savanna.controller.search.SearchBar',
-        'Savanna.controller.search.SearchToolbar',
-        'Savanna.controller.search.SearchBody'
-    ],
-
     init: function(app) {
         var me = this;
 

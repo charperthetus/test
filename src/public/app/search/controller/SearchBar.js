@@ -1,7 +1,7 @@
 /**
  * TODO: Document what events we may emit/consume...
  */
-Ext.define('Savanna.controller.search.SearchBar', {
+Ext.define('Savanna.search.controller.SearchBar', {
     extend: 'Ext.app.Controller',
 
     models: [
@@ -13,7 +13,7 @@ Ext.define('Savanna.controller.search.SearchBar', {
     ],
 
     views: [
-        'search.SearchBar'
+        'Savanna.search.view.SearchBar'
     ],
 
     handleKeyPress: function(evt)    {

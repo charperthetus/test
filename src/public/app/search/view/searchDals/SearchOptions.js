@@ -1,4 +1,4 @@
-Ext.define('Savanna.view.search.searchDals.SearchOptions', {
+Ext.define('Savanna.search.view.searchDals.SearchOptions', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.search_searchDals_searchoptions',
 
