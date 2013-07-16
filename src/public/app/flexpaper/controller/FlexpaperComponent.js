@@ -5,7 +5,7 @@
  * Time: 10:43 AM
  * To change this template use File | Settings | File Templates.
  */
-Ext.define("Savanna.flexpaer.controller.FlexpaperComponent", {
+Ext.define("Savanna.flexpaper.controller.FlexpaperComponent", {
     extend: "Ext.app.Controller",
     views: [
         "Savanna.flexpaper.view.FlexpaperComponent",

@@ -31,7 +31,12 @@ Ext.application({
 
     requires: [
         'Savanna.Config',
-        'Savanna.controller.Factory'
+        'Savanna.controller.Factory',
+        'Savanna.flexpaper.controller.FlexpaperComponent',
+        'Savanna.search.controller.SearchBody',
+        'Savanna.search.controller.SearchBar',
+        'Savanna.search.controller.SearchDals',
+        'Savanna.search.controller.SearchToolbar'
     ],
 
     autoCreateViewport: true,
