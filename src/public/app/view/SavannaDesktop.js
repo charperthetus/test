@@ -105,16 +105,16 @@ Ext.define('Savanna.view.SavannaDesktop', {
                         add: function(me, tab, tabindex) {
                             var tabBarButton = me.tabBar.items.items[tabindex];
                             var tabEl = tab.getEl();
-                            console.log('add', tabBarButton, tab);
-                            tabBarButton.addListener('afterrender', function(tabbutton){
-                                console.log('tabBarButton Render', arguments);
+
+                            tabBarButton.addListener('afterrender', function(tabbutton) {
                                 tabbutton.dragZone = Ext.create('Ext.dd.DragZone', tabbutton.getEl(), {
                                     getDragData: function(e) {
-                                        console.log('GetDragData', e);
                                         var sourceEl = e.getTarget(tabbutton.itemSelector, 10), d;
+
                                         if (sourceEl) {
                                             d = sourceEl.cloneNode(true);
                                             d.id = Ext.id();
+
                                             return (tabbutton.dragData = {
                                                 sourceEl: sourceEl,
                                                 repairXY: Ext.fly(sourceEl).getXY(),

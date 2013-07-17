@@ -64,7 +64,5 @@ Ext.define('Savanna.crumbnet.store.Graph', {
                 generatedLink[key] = true;
             }
         }
-
-        console.log('BuildData', this.data)
     }
 });
