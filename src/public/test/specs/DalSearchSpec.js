@@ -172,7 +172,9 @@ describe('Dal Search', function() {
                 var uberParent = Ext.create('Savanna.search.view.SearchDals', { renderTo: 'test-html' });
 
                 view = uberParent.down('search_searchDals_searchoptions:last');
+                console.log(view);
                 button = view.down('#searchOptionsToggle');
+                console.log(button);
 
                 spyOn(view, 'add').andCallThrough();
                 spyOn(view, 'doLayout'); // don't necessarily need to redo the layout...
