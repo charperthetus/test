@@ -5,57 +5,57 @@ Ext.define('Savanna.view.SavannaDesktop', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.savannadesktop',
     requires:[
-            'Ext.form.RadioGroup',
-            'Ext.dd.DragZone'
+        'Ext.form.RadioGroup',
+        'Ext.dd.DragZone'
     ],
     layout: {
         type: 'vbox'
     },
     items: [
         //Not sure if we are going to need this section or not
-/*        {
-            xtype: 'panel',
-            itemId: 'buttonbarpanel',
-            region: 'top',
-            width: '100%',
-            layout: {
-                type: 'hbox',
-                pack: 'center'
-            },
-            defaults: {
-                xtype: 'button',
-                scale: 'medium',
-                iconAlign: 'top',
-                toggleGroup: 'mygroup',
-                enableToggle: true,
-                listeners: {
-                    click: function(me, event) {
-                        // make sure a button cannot be de-selected
-                        me.toggle(true);
-                    }
-                }
-            },
-            items: [
-                //TODO - make a buttonbar / togglebuttonbar component
-                {
-                    icon: 'app/assets/icons/workspaceicon.png',
-                    text: 'Workspace',
-                    pressed: true
-                }, {
-                    icon: 'app/assets/icons/dashboardicon.png',
-                    text: 'Dashboard'
-                }, {
-                    xtype: '',
-                    padding: 3,
-                    type: 'rect',
-                    width: 8,
-                    height: '100%'
-                }, {
-                    icon: 'app/assets/icons/searchicon.png',
-                    text: 'Search'
-                }
-            ]
-        },*/
+        /*        {
+         xtype: 'panel',
+         itemId: 'buttonbarpanel',
+         region: 'top',
+         width: '100%',
+         layout: {
+         type: 'hbox',
+         pack: 'center'
+         },
+         defaults: {
+         xtype: 'button',
+         scale: 'medium',
+         iconAlign: 'top',
+         toggleGroup: 'mygroup',
+         enableToggle: true,
+         listeners: {
+         click: function(me, event) {
+         // make sure a button cannot be de-selected
+         me.toggle(true);
+         }
+         }
+         },
+         items: [
+         //TODO - make a buttonbar / togglebuttonbar component
+         {
+         icon: 'app/assets/icons/workspaceicon.png',
+         text: 'Workspace',
+         pressed: true
+         }, {
+         icon: 'app/assets/icons/dashboardicon.png',
+         text: 'Dashboard'
+         }, {
+         xtype: '',
+         padding: 3,
+         type: 'rect',
+         width: 8,
+         height: '100%'
+         }, {
+         icon: 'app/assets/icons/searchicon.png',
+         text: 'Search'
+         }
+         ]
+         },*/
         {
             xtype: 'panel',
             region: 'center',
@@ -74,29 +74,8 @@ Ext.define('Savanna.view.SavannaDesktop', {
                     flex: 2,
                     items: [
                         {
-                            title: 'Search',
-                            closable: false,
-                            flex: 4,
-                            layout: 'border',
-                            border: false,
-                            items: [
-                                {
-                                    xtype: 'search_searchbar',
-                                    itemId: 'searchbar',
-                                    region: 'north'
-                                },
-                                {
-                                    xtype: 'search_searchbody',
-                                    itemId: 'searchbody',
-                                    region: 'center'
-                                }
-                            ],
-                            dockedItems: [
-                                {
-                                    xtype: 'search_searchtoolbar',
-                                    itemId: 'searchtoolbar'
-                                }
-                            ]
+                            xtype:"search_searchcomponent",
+                            itemId:"searchcomponent"
                         },
                         {
                             xtype: 'draw',
