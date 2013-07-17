@@ -12,7 +12,8 @@ Ext.define('Savanna.view.SavannaDesktop', {
         type: 'vbox'
     },
     items: [
-        {
+        //Not sure if we are going to need this section or not
+/*        {
             xtype: 'panel',
             itemId: 'buttonbarpanel',
             region: 'top',
@@ -54,7 +55,7 @@ Ext.define('Savanna.view.SavannaDesktop', {
                     text: 'Search'
                 }
             ]
-        },
+        },*/
         {
             xtype: 'panel',
             region: 'center',
@@ -73,17 +74,27 @@ Ext.define('Savanna.view.SavannaDesktop', {
                     flex: 2,
                     items: [
                         {
-                            xtype: 'draw',
-                            title: 'Savanna Workspace',
+                            title: 'Search',
                             closable: false,
+                            flex: 4,
+                            layout: 'border',
+                            border: false,
                             items: [
-
                                 {
-                                    type: 'circle',
-                                    radius: 90,
-                                    x: 100,
-                                    y: 100,
-                                    fill: 'red'
+                                    xtype: 'search_searchbar',
+                                    itemId: 'searchbar',
+                                    region: 'north'
+                                },
+                                {
+                                    xtype: 'search_searchbody',
+                                    itemId: 'searchbody',
+                                    region: 'center'
+                                }
+                            ],
+                            dockedItems: [
+                                {
+                                    xtype: 'search_searchtoolbar',
+                                    itemId: 'searchtoolbar'
                                 }
                             ]
                         },
@@ -128,8 +139,7 @@ Ext.define('Savanna.view.SavannaDesktop', {
                                             return (tabbutton.dragData = {
                                                 sourceEl: sourceEl,
                                                 repairXY: Ext.fly(sourceEl).getXY(),
-                                                ddel: d,
-//                                                tab: tab
+                                                ddel: d
                                             });
                                         }
                                     },
@@ -139,28 +149,14 @@ Ext.define('Savanna.view.SavannaDesktop', {
                                     }
                                 });
 
-                            })
-//                            tab.dragZone = Ext.create('Ext.dd.DragZone', tab.id, {
-//
-//
-//                            });
+                            });
                         }
                     },
                     items: [
                         {
-                            xtype: 'draw',
-                            title: 'Savanna Workspace',
-                            closable: false,
-                            items: [
-
-                                {
-                                    type: 'circle',
-                                    radius: 90,
-                                    x: 100,
-                                    y: 100,
-                                    fill: 'green'
-                                }
-                            ]
+                            title: 'Crumbnet',
+                            xtype: 'go-graph',
+                            itemId: 'GRAPH_ONE'
                         },
                         {
                             xtype: 'draw',

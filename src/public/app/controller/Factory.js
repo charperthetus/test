@@ -22,17 +22,10 @@ Ext.define('Savanna.controller.Factory', {
     /**
      * Retrieves the given controller (via Ext.app.Application.getController) based upon given controller name
      *
-     * @param {String} controllerName either the fully-qualified or relative package name
+     * @param {String} controllerName fully-qualified
      * @return {Ext.app.Application}
      */
     getController: function(controllerName) {
-
-        // NOTE: Ext.app.Applicaiton.getController will return different instances based upon whether you return a
-        //       fully-qualified controller name or a relative one, so we normalize it to always be relative
-        if (controllerName.match(/[^.]+\.controller\./)) {
-            controllerName = controllerName.substr(controllerName.indexOf('.controller.') + '.controller.'.length);
-        }
-
         return Savanna.getApplication().getController(controllerName);
     }
 });

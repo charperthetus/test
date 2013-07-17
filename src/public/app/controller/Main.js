@@ -8,10 +8,8 @@ Ext.define('Savanna.controller.Main', {
         'Login'
     ],
 
-    requires: [
-        'Savanna.controller.search.SearchBar',
-        'Savanna.controller.search.SearchToolbar',
-        'Savanna.controller.search.SearchBody'
+    controllers: [
+        'Savanna.flexpaper.controller.FlexpaperComponent'
     ],
 
     init: function(app) {
@@ -32,13 +30,7 @@ Ext.define('Savanna.controller.Main', {
 
     swapLogin: function(sessionId) {
         Savanna.jsessionid = sessionId;
-
         //TODO - Check the event to see a valid loggedin message
-        this.app.viewport.remove('login');
-        this.app.viewport.add({
-            xtype:  Savanna.Config.desktopType,
-            itemId: 'main',
-            region: 'center'
-        });
+        this.app.viewport.queryById("viewport_main").remove('login');
     }
 });

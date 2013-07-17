@@ -5,7 +5,3 @@
  * support development time inspection of css output.
  */
 @import 'build/Savanna/production/resources/Savanna-all.css';
-
-/* NOTE: this is in here manually to get the full theme....it will likely be blown away, but if you're looking at the history, you'll see this... */
-@import 'packages/ext-theme-classic/build/resources/ext-theme-classic-all.css';
-
