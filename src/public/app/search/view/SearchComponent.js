@@ -13,13 +13,16 @@ Ext.define('Savanna.search.view.SearchComponent', {
     requires: [
         'Savanna.search.view.SearchBody',
         'Savanna.search.view.SearchBar',
-        'Savanna.search.view.SearchToolbar'
+        'Savanna.search.view.SearchToolbar',
+        'Savanna.controller.Factory'
     ],
+
     layout: 'border',
     flex:4,
-    title:"Search",
+    title: 'Search',
     closable:false,
     border:false,
+
     items: [
         {
             xtype: 'search_searchbar',
