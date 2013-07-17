@@ -52,9 +52,6 @@ Ext.define('Savanna.crumbnet.view.goGraph.Canvas', {
     diagram: null,
 
     initComponent: function() {
-
-        console.log(this.store);
-
         Savanna.controller.Factory.getController('Savanna.crumbnet.controller.GoGraph');
 
         // NOTE: borrowed from Ext.panel.Table (abbreviated version of how it uses a store for it's data backend)
@@ -105,7 +102,6 @@ Ext.define('Savanna.crumbnet.view.goGraph.Canvas', {
     onStoreLoad: function(store) {
         if (this.diagram) {
             var graphRecord = store.getById(this.up('go-graph').itemId);
-            console.log('graphRecord', graphRecord, this.up('go-graph').itemId);
 
             this.diagram.model = go.GraphObject.make(go.GraphLinksModel, {
                 nodeDataArray: graphRecord.get('nodeDataArray'),

@@ -59,8 +59,7 @@ Ext.define('Savanna.search.controller.SearchDals', {
         //       (if we can have more than one search, this will break...)
         var parentView = button.up('search_searchDals_searchoptions');
         var childSearchDalsPanel = parentView.down('search_searchDals_custom-search-group-form');
-        console.log('parentView', parentView);
-        console.log('childSearchDalsPanel',childSearchDalsPanel);
+
         if (!childSearchDalsPanel) {
             var parentViewId = parentView.itemId;
             var store = this.getStore('Savanna.search.store.DalSources');
@@ -71,7 +70,6 @@ Ext.define('Savanna.search.controller.SearchDals', {
             parentView.add(dalPanel);
 
             childSearchDalsPanel = parentView.down('search_searchDals_custom-search-group-form');
-            console.log('childSearchDalsPanel',childSearchDalsPanel);
         }
 
         if (button.text == this.addDalDetailText) {
