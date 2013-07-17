@@ -1,12 +1,12 @@
-Ext.define('Savanna.controller.search.SearchDals', {
+Ext.define('Savanna.search.controller.SearchDals', {
     extend: 'Ext.app.Controller',
 
     models: [
-        'DalSource'
+        'Savanna.search.model.DalSource'
     ],
 
     stores: [
-        'DalSources'
+        'Savanna.search.store.DalSources'
     ],
 
     views: [
@@ -60,7 +60,7 @@ Ext.define('Savanna.controller.search.SearchDals', {
 
         if (!childSearchDalsPanel) {
             var parentViewId = parentView.itemId;
-            var store = this.getDalSourcesStore();
+            var store = this.getStore('Savanna.search.store.DalSources');
             var record = store.getById(parentViewId);
 
             childSearchDalsPanel = this.createCustomSearchGroupPanel(record.customSearchGroups());
