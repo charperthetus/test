@@ -31,7 +31,7 @@ describe('Dal Search', function() {
             });
 
             it('should correctly create an empty store for "CustomSearchGroup" when null passed for that value', function() {
-                var dal = Ext.create('Savanna.model.DalSource', fixtures.legacyDal);
+                var dal = Ext.create('Savanna.search.model.DalSource', fixtures.legacyDal);
 
                 expect(dal.customSearchGroups().count()).toBe(0);
             })
@@ -97,11 +97,11 @@ describe('Dal Search', function() {
         });
     });
 
-    describe('Savanna.view.search.SearchDals', function() {
+    describe('Savanna.search.view.SearchDals', function() {
         var view = null;
 
         beforeEach(function() {
-            view = Ext.create('Savanna.view.search.SearchDals');
+            view = Ext.create('Savanna.search.view.SearchDals');
             spyOn(Savanna.controller.Factory, 'getController');
         });
 
@@ -115,15 +115,15 @@ describe('Dal Search', function() {
 
             view.initComponent();
 
-            expect(Savanna.controller.Factory.getController).toHaveBeenCalledWith('search.SearchDals');
+            expect(Savanna.controller.Factory.getController).toHaveBeenCalledWith('Savanna.search.controller.SearchDals');
         });
     });
 
-    describe('Savanna.controller.search.SearchDals', function() {
+    describe('Savanna.search.controller.SearchDals', function() {
         var controller = null;
 
         beforeEach(function() {
-            controller = Ext.create('Savanna.controller.search.SearchDals');
+            controller = Ext.create('Savanna.search.controller.SearchDals');
         });
 
         afterEach(function() {
@@ -134,33 +134,33 @@ describe('Dal Search', function() {
 
         describe('createPanel', function() {
             it('should create an instance of the SearchOptions panel', function() {
-                var model = new Savanna.model.DalSource(fixtures.legacyDal);
+                var model = new Savanna.search.model.DalSource(fixtures.legacyDal);
 
                 var view = controller.createPanel(model);
 
-                expect(view instanceof Savanna.view.search.searchDals.SearchOptions).toBeTruthy();
+                expect(view instanceof Savanna.search.view.searchDals.SearchOptions).toBeTruthy();
             });
         });
         describe('createCustomSearchGroupPanel', function() {
-            it('should create an instance of the Savanna.view.search.searchDals.CustomSearchGroupForm', function() {
-                var store = Ext.create('Savanna.store.DalSources', {
+            it('should create an instance of the Savanna.search.view.searchDals.CustomSearchGroupForm', function() {
+                var store = Ext.create('Savanna.search.store.DalSources', {
                     autoload: false
                 });
                 store.loadData(fixtures.allDals);
                 var view = controller.createCustomSearchGroupPanel(store);
 
-                expect(view instanceof Savanna.view.search.searchDals.CustomSearchGroupForm).toBeTruthy();
+                expect(view instanceof Savanna.search.view.searchDals.CustomSearchGroupForm).toBeTruthy();
             });
         });
 
         describe('createDalPanels', function() {
             it('should create a Paenl for every record in the store', function() {
-                var view = Ext.create('Savanna.view.search.SearchDals');
+                var view = Ext.create('Savanna.search.view.SearchDals');
                 spyOn(view, 'add');
 
                 controller.createDalPanels(view);
 
-                expect(view.add.callCount).toBe(controller.getDalSourcesStore().count());
+                expect(view.add.callCount).toBe(controller.getStore('Savanna.search.store.DalSources').count());
             });
         });
 
@@ -169,7 +169,119 @@ describe('Dal Search', function() {
                 button = null;
 
             beforeEach(function() {
-                var uberParent = Ext.create('Savanna.view.search.SearchDals', { renderTo: 'test-html' });
+                var uberParent = Ext.create('Savanna.search.view.SearchDals', { renderTo: 'test-html' });
+
+                view = uberParent.down('search_searchDals_searchoptions:last');
+                button = view.down('#searchOptionsToggle');
+
+                spyOn(view, 'add').andCallThrough();
+                spyOn(view, 'doLayout'); // don't necessarily need to redo the layout...
+                spyOn(button, 'setText').andCallThrough();
+            });
+
+            afterEach(function() {
+                if (view && view.destroy) view.destroy();
+
+                view = null;
+                button = null;
+
+                Ext.get('test-html').remove();
+            });
+
+            it('should render a group form if it has not been built yet', function() {
+                controller.renderCustomOptions(button);
+
+                expect(view.add).toHaveBeenCalled();
+                expect(button.setText).toHaveBeenCalledWith('Hide Search Options');
+                expect(view.doLayout).toHaveBeenCalled();
+
+                // "click" the button again to validate that we change the button text to "show"
+                button.setText.reset();
+                view.add.reset();
+                view.doLayout.reset();
+
+                controller.renderCustomOptions(button);
+
+                expect(view.add).not.toHaveBeenCalled();
+                expect(button.setText).toHaveBeenCalledWith('Show Search Options');
+                expect(view.doLayout).toHaveBeenCalled();
+            });
+        });
+    });
+
+    describe('Savanna.search.view.SearchDals', function() {
+        var view = null;
+
+        beforeEach(function() {
+            view = Ext.create('Savanna.search.view.SearchDals');
+            spyOn(Savanna.controller.Factory, 'getController');
+        });
+
+        afterEach(function() {
+            if (view && view.destroy) view.destroy();
+
+            view = null;
+        });
+
+        it('initComponent should ask for a controller', function() {
+
+            view.initComponent();
+
+            expect(Savanna.controller.Factory.getController).toHaveBeenCalledWith('Savanna.search.controller.SearchDals');
+        });
+    });
+
+    describe('Savanna.search.controller.SearchDals', function() {
+        var controller = null;
+
+        beforeEach(function() {
+            controller = Ext.create('Savanna.search.controller.SearchDals');
+        });
+
+        afterEach(function() {
+            if (controller && controller.destroy) controller.destroy();
+
+            controller = null;
+        });
+
+        describe('createPanel', function() {
+            it('should create an instance of the SearchOptions panel', function() {
+                var model = new Savanna.search.model.DalSource(fixtures.legacyDal);
+
+                var view = controller.createPanel(model);
+
+                expect(view instanceof Savanna.search.view.searchDals.SearchOptions).toBeTruthy();
+            });
+        });
+        describe('createCustomSearchGroupPanel', function() {
+            it('should create an instance of the Savanna.search.view.searchDals.CustomSearchGroupForm', function() {
+                var store = Ext.create('Savanna.search.store.DalSources', {
+                    autoload: false
+                });
+                store.loadData(fixtures.allDals);
+                var view = controller.createCustomSearchGroupPanel(store);
+
+                expect(view instanceof Savanna.search.view.searchDals.CustomSearchGroupForm).toBeTruthy();
+            });
+        });
+
+        describe('createDalPanels', function() {
+            it('should create a Paenl for every record in the store', function() {
+                var view = Ext.create('Savanna.search.view.SearchDals');
+                spyOn(view, 'add');
+
+                controller.createDalPanels(view);
+
+                expect(view.add.callCount).toBe(controller.getStore('Savanna.search.store.DalSources').count());
+            });
+        });
+
+        describe('renderCustomOptions', function() {
+            var view = null,
+                button = null;
+
+            beforeEach(function() {
+                var uberParent = Ext.create('Savanna.search.view.SearchDals', { renderTo: 'test-html' });
 
                 view = uberParent.down('search_searchDals_searchoptions:last');
                 button = view.down('#searchOptionsToggle');
