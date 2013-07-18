@@ -126,9 +126,7 @@ Ext.define('Savanna.view.SavannaDesktop', {
                         add: function(me, tab, tabindex) {
                             var tabBarButton = me.tabBar.items.items[tabindex];
                             var tabEl = tab.getEl();
-                            console.log('add', tabBarButton, tab);
                             tabBarButton.addListener('afterrender', function(tabbutton){
-                                console.log('tabBarButton Render', arguments);
                                 tabbutton.dragZone = Ext.create('Ext.dd.DragZone', tabbutton.getEl(), {
                                     getDragData: function(e) {
                                         console.log('GetDragData', e);

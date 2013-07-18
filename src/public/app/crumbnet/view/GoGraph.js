@@ -12,56 +12,16 @@ Ext.define('Savanna.crumbnet.view.GoGraph', {
     },
 
     tbar: [
-        {
-            type: 'grid',
-            html: 'Grid',
-            tooltip: 'use grid layout'
-        },
-        {
-            type: 'tree',
-            html: 'Tree',
-            tooltip: 'use tree layout'
-        },
-        {
-            type: 'force',
-            html: 'Force',
-            tooltip: 'use force layout'
-        },
-        {
-            type: 'layeredDigraph',
-            html: 'Layered Digraph',
-            tooltip: 'use layered digraph layout'
-        },
-        {
-            type: 'circular',
-            html: 'Circular',
-            tooltip: 'use circular layout'
-        },
-        {
-            type: 'right',
-            html: 'Right',
-            tooltip: 'align right'
-        },
-        {
-            type: 'left',
-            html: 'Left',
-            tooltip: 'align left'
-        },
-        {
-            type: 'top',
-            html: 'Top',
-            tooltip: 'top align'
-        },
-        {
-            type: 'bottom',
-            html: 'Bottom',
-            tooltip: 'bottom align'
-        },
-        {
-            type: 'center',
-            html: 'Center',
-            tooltip: 'center align'
-        }
+        { type: 'grid', html: 'Grid', tooltip: 'use grid layout' },
+        { type: 'tree', html: 'Tree', tooltip: 'use tree layout' },
+        { type: 'force', html: 'Force', tooltip: 'use force layout' },
+        { type: 'layeredDigraph', html: 'Layered Digraph', tooltip: 'use layered digraph layout' },
+        { type: 'circular', html: 'Circular', tooltip: 'use circular layout' },
+        { type: 'right', html: 'Right', tooltip: 'align right' },
+        { type: 'left', html: 'Left', tooltip: 'align left' },
+        { type: 'top', html: 'Top', tooltip: 'top align' },
+        { type: 'bottom', html: 'Bottom', tooltip: 'bottom align' },
+        { type: 'center', html: 'Center', tooltip: 'center align' }
     ],
 
     initComponent: function() {
@@ -76,8 +36,7 @@ Ext.define('Savanna.crumbnet.view.GoGraph', {
         return [
             {
                 xtype: 'go-graph_palette',
-                flex: 1,
-                width: '100%',
+                width: 100,
                 height: '100%',
                 config: this.getPaletteConfig()
             },
@@ -105,28 +64,8 @@ Ext.define('Savanna.crumbnet.view.GoGraph', {
         return {
             label: initialConfig.label,
             nodeTemplateMap: this.setupNodeTemplateMap(),
-            nodeTemplate: this.getNodeTemplate(), //This sets up both a single simple node template, and a template map and we can choose which one to use
-            linkTemplate: go.GraphObject.make(go.Link,
-                { selectable: false },
-                go.GraphObject.make(go.Shape))//this.generateLinkTemplate()
+            linkTemplate: this.generateLinkTemplate()
         }
-    },
-
-    getNodeTemplate: function(){
-        var $ = go.GraphObject.make;
-        return $(go.Node, go.Panel.Spot,
-            // make sure the Node.location is different from the Node.position
-            { locationSpot: go.Spot.Center },
-            new go.Binding("text", "text"),  // for sorting
-            $(go.Shape, "Ellipse",  // the default value for the Shape.figure property
-                { fill: "lightgray",
-                    stroke: "black",
-                    desiredSize: new go.Size(30, 30) },
-                new go.Binding("figure", "figure"),
-                new go.Binding("fill", "fill"),
-                new go.Binding("desiredSize", "size")),
-            $(go.TextBlock,
-                new go.Binding("text", "text")));
     },
 
     setupNodeTemplateMap: function(options) {
@@ -134,69 +73,92 @@ Ext.define('Savanna.crumbnet.view.GoGraph', {
 
         var $ = go.GraphObject.make;  // for conciseness in defining templates
 
-        var greengrad = $(go.Brush, go.Brush.Linear, { 0: "#D5D96C", 1: "#D4D94E" });
-        var bluegrad = $(go.Brush, go.Brush.Linear, { 0: "#79C1FF", 1: "#67B4FF" });
-        var redgrad = $(go.Brush, go.Brush.Linear, { 0: "#FF530D", 1: "#E82C0C" });
-
-        var UndesiredEventAdornment = this.generateAdornmentTemplate({
-            buttonOpts: {
-                alignment: go.Spot.BottomRight,
-                click: function() { console.log('TODO: undesired event callback...'); },
-                shape: $(go.Shape, 'TriangleDown', { desiredSize: new go.Size(10, 10) })
-            }
-        });
-
-        var defaultNodeTemplate = this.generateDefaultNodeTemplate(options);
+        var defaultAdornment =
+            $(go.Adornment, go.Panel.Spot,
+                $(go.Panel, go.Panel.Auto,
+                    $(go.Shape, { fill: null, stroke: "blue", strokeWidth: 2 }),
+                    $(go.Placeholder)),
+                // the button to create a "next" node, at the top-right corner
+                $("Button",
+                    { alignment: go.Spot.BottomRight,
+                        click: this.addNodeAndLink },  // this function is defined below
+                    $(go.Shape, "PlusLine", { desiredSize: new go.Size(6, 6) })
+                )
+            );
 
         var nodeTemplateMap = new go.Map();
 
-        nodeTemplateMap.add('', defaultNodeTemplate);
-
-        nodeTemplateMap.add('Source', this.generateNodeTemplate({
-            isPalette: options.isPalette,
+        nodeTemplateMap.add('', this.generateNodeTemplate({
+            resizable: true,
+            adornmentTemplate: defaultAdornment,
             shapeOpts: {
-                icon: './resources/images/face-grin.svg',
-                fill: bluegrad,
-                fromLinkable: true
+                icon: 'resources/images/conceptIcon.svg'
             },
             textOpts: {
-                text: 'Source'
+                text: 'Concept'
             }
         }));
 
-        nodeTemplateMap.add('DesiredEvent', this.generateNodeTemplate({
-            isPalette: options.isPalette,
+        nodeTemplateMap.add('Question', this.generateNodeTemplate({
+            adornmentTemplate: defaultAdornment,
             shapeOpts: {
-                icon: './resources/images/face-plain-2.svg',
-                fill: greengrad
+                icon: './resources/images/questionIcon.svg'
             },
             textOpts: {
-                text: 'Success!'
+                text: 'Question'
             }
         }));
 
-        nodeTemplateMap.add('UndesiredEvent', this.generateNodeTemplate({
-            isPalette: options.isPalette,
-            adornmentTemplate: UndesiredEventAdornment,
+        nodeTemplateMap.add('Problem', this.generateNodeTemplate({
+            adornmentTemplate: defaultAdornment,
             shapeOpts: {
-                icon: './resources/images/face-surprise-3.svg',
-                fill: redgrad
+                icon: './resources/images/problemIcon.svg'
             },
             textOpts: {
-                stroke: 'whitesmoke',
-                text: 'Drop'
+                text: 'Problem'
             }
         }));
 
-        nodeTemplateMap.add('Comment', this.generateNodeTemplate({
-            isPalette: options.isPalette,
+        nodeTemplateMap.add('Fact', this.generateNodeTemplate({
+            adornmentTemplate: defaultAdornment,
             shapeOpts: {
-                icon: './resources/images/face-worried.svg',
-                fromLinkable: true
+                icon: './resources/images/factIcon.svg'
+            },
+            textOpts: {
+                text: 'Fact'
+            }
+        }));
+
+        nodeTemplateMap.add('Hypothesis', this.generateNodeTemplate({
+            adornmentTemplate: defaultAdornment,
+            shapeOpts: {
+                icon: './resources/images/hypothesisIcon.svg'
             },
             textOpts: {
                 wrap: go.TextBlock.WrapFit,
-                text: 'Comment'
+                text: 'Hypothesis'
+            }
+        }));
+
+        nodeTemplateMap.add('Conclusion', this.generateNodeTemplate({
+            adornmentTemplate: defaultAdornment,
+            shapeOpts: {
+                icon: './resources/images/conclusionIcon.svg'
+            },
+            textOpts: {
+                wrap: go.TextBlock.WrapFit,
+                text: 'Conclusion'
+            }
+        }));
+
+        nodeTemplateMap.add('Assumption', this.generateNodeTemplate({
+            adornmentTemplate: defaultAdornment,
+            shapeOpts: {
+                icon: './resources/images/assumptionIcon.svg'
+            },
+            textOpts: {
+                wrap: go.TextBlock.WrapFit,
+                text: 'Assumption'
             }
         }));
 
@@ -212,9 +174,16 @@ Ext.define('Savanna.crumbnet.view.GoGraph', {
 
         textBlock = this.generateTextBlockTemplate(options);
 
+        var triangle = go.Geometry.parse("M 0,0 L 12,0 12,12 0,0", true);
+
         return $(
-            go.Node, go.Panel.Auto, { selectionAdornmentTemplate: options.adornmentTemplate ? options.adornmentTemplate : null, toLinkable: true, fromLinkable: true },
-            $(go.Panel, go.Panel.Table, icon, textBlock)
+            go.Node, go.Panel.Auto, { selectionAdornmentTemplate: options.adornmentTemplate ? options.adornmentTemplate : null, desiredSize: new go.Size(70, 80), toLinkable: true },
+            $(go.Panel, go.Panel.Table, icon, textBlock),
+            $(go.Panel,
+                { alignment: go.Spot.TopRight },  // this function is defined below
+                $(go.Shape, { geometry: triangle, fill: 'Red' }, {portId: 'out', fromLinkable: true })
+            )
+
         );
     },
 
@@ -228,66 +197,9 @@ Ext.define('Savanna.crumbnet.view.GoGraph', {
         icon.fromLinkable = true;
         icon.cursor = "pointer";
 
-        if (options.isPalette) {
-            icon.width = icon.height = 64;
-        }
-        else {
-            icon.width = icon.height = 64;
-        }
+        icon.width = icon.height = 46;
 
         return icon;
-    },
-
-    generateShapeTemplate: function(options) {
-        options = options || {};
-
-        var shapeOpts = options.shapeOpts || {},
-            shape = new go.Shape();
-
-        shapeOpts = Ext.merge({
-            figure: 'Circle',
-            fill: go.GraphObject.make(go.Brush, go.Brush.Linear, { 0: '#FDFDFD', 1: '#F7F7F7' }),
-            stroke: '#DADADA',
-            cursor: 'pointer',
-            name: 'shape',
-            portId: '',
-            toLinkable: true,
-            fromLinkable: false
-        }, shapeOpts);
-
-        shape = Ext.apply(shape, shapeOpts);
-
-        return shape;
-    },
-
-    generateDefaultNodeTemplate: function(options) {
-        options = options || {};
-
-        var adornmentTemplate = this.generateAdornmentTemplate({
-            buttonOpts: {
-                click: Ext.bind(function(mouseEvent, button) {
-                    var commandHandler = button.diagram.commandHandler;
-
-                    commandHandler.copySelection();
-                    commandHandler.pasteSelection();
-                }, this)
-            }
-        });
-
-        return this.generateNodeTemplate({
-            isPalette: options.isPalette,
-            resizable: true,
-            selectionAdornmentTemplate: adornmentTemplate,
-            shapeOpts: {
-                icon: 'resources/images/face-monkey.svg',
-                fill: go.GraphObject.make(go.Brush, go.Brush.Linear, { 0: 'rgb(254, 201, 0)', 1: 'rgb(254, 162, 0)' }),
-                toLinkable: true,
-                fromLinkable: true
-            },
-            textOpts: {
-                text: 'Page'
-            }
-        });
     },
 
     generateTextBlockTemplate: function(options) {
@@ -295,12 +207,10 @@ Ext.define('Savanna.crumbnet.view.GoGraph', {
 
         var textOpts = options.textOpts || {}, binding, textBlock;
 
-//        if (options.isPalette) {
-            textOpts.font = '10pt Helvetitca, Arial, sans-serif';
-            textOpts.stroke = 'black';
-            textOpts.row = 1;
-            textOpts.column = 0;
-//        }
+        textOpts.font = '10pt Helvetitca, Arial, sans-serif';
+        textOpts.stroke = 'black';
+        textOpts.row = 1;
+        textOpts.column = 0;
 
         binding = typeof(textOpts.binding) === 'undefined' ? new go.Binding('text', 'text').makeTwoWay() : textOpts.binding;
 
@@ -319,37 +229,6 @@ Ext.define('Savanna.crumbnet.view.GoGraph', {
         if (binding) textBlock.bind(binding);
 
         return textBlock;
-    },
-
-    generateAdornmentTemplate: function(options) {
-        options = options || {};
-
-        options = Ext.merge({
-           shapeOpts: {
-               fill: null,
-               stroke: 'blue',
-               strokeWidth: 2
-           },
-           buttonOpts: {
-               alignment: go.Spot.TopRight,
-               click: function() { console.log('you should define your own click handler...'); }
-           }
-        }, options);
-
-        var adornment = new go.Adornment(go.Panel.Spot),
-            panel = new go.Panel(go.Panel.Auto),
-            shape = go.GraphObject.make(go.Shape, options.shapeOpts),
-            buttonShape = options.buttonOpts.shape || go.GraphObject.make(go.Shape, 'PlusLine', { desiredSize: new go.Size(6, 6) });
-
-        delete options.buttonOpts.shape;
-
-        panel.add(shape);
-        panel.add(new go.Placeholder());
-
-        adornment.add(panel);
-        adornment.add(go.GraphObject.make('Button', options.buttonOpts, buttonShape));
-
-        return adornment;
     },
 
     generateLinkTemplate: function() {
@@ -379,5 +258,33 @@ Ext.define('Savanna.crumbnet.view.GoGraph', {
         link.add(label);
 
         return link;
+    },
+
+    addNodeAndLink: function(e, obj) {
+        var adorn = obj.part;
+        if (adorn === null) return;
+        e.handled = true;
+        var diagram = adorn.diagram;
+        diagram.startTransaction("Add State");
+        // get the node data for which the user clicked the button
+        var fromNode = adorn.adornedPart;
+        var fromData = fromNode.data;
+        // create a new "State" data object, positioned off to the right of the adorned Node
+        var toData = { text: "new" };
+        var p = fromNode.location;
+        toData.loc = p.x + 200 + " " + p.y;  // the "loc" property is a string, not a Point object
+        // add the new node data to the model
+        var model = diagram.model;
+        model.addNodeData(toData);
+        // create a link data from the old node data to the new node data
+        var linkdata = {};
+        linkdata[model.linkFromKeyProperty] = model.getKeyForNodeData(fromData);
+        linkdata[model.linkToKeyProperty] = model.getKeyForNodeData(toData);
+        // and add the link data to the model
+        model.addLinkData(linkdata);
+        // select the new Node
+        var newnode = diagram.findNodeForData(toData);
+        diagram.select(newnode);
+        diagram.commitTransaction("Add State");
     }
 });

@@ -18,11 +18,13 @@ Ext.define('Savanna.crumbnet.view.goGraph.Palette', {
         this.palette.nodeTemplateMap = config.paletteNodeTemplateMap;
 
         this.palette.model.nodeDataArray = [
-            { category: '' }, // default node
-            { category: 'Source' },
-            { category: 'DesiredEvent' },
-            { category: 'UndesiredEvent' },
-            { category: 'Comment' }
+            { category: 'Concept' },
+            { category: 'Question' },
+            { category: 'Problem' },
+            { category: 'Fact' },
+            { category: 'Hypothesis' },
+            { category: 'Conclusion' },
+            { category: 'Assumption' }
         ];
 
         this.on('resize', Ext.bind(function() { this.palette.requestUpdate(); }, this));

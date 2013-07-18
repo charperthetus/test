@@ -31,13 +31,13 @@ Ext.define('Savanna.crumbnet.controller.GoGraph', {
 
                     switch (button.type) {
                         case 'tree':
-                            layout = go.GraphObject.make(go.TreeLayout);
+                            layout = go.GraphObject.make(go.TreeLayout,{ isOngoing: false });
                             break;
                         case 'grid':
-                            layout = go.GraphObject.make(go.GridLayout, { comparer: go.GridLayout.smartComparer });
+                            layout = go.GraphObject.make(go.GridLayout, { comparer: go.GridLayout.smartComparer, isOngoing: false });
                             break;
                         case 'force':
-                            layout = go.GraphObject.make(go.ForceDirectedLayout);
+                            layout = go.GraphObject.make(go.ForceDirectedLayout, { isOngoing: false });
                             break;
                         case 'right':
                             align = go.Spot.Right;
@@ -55,10 +55,10 @@ Ext.define('Savanna.crumbnet.controller.GoGraph', {
                             align = go.Spot.Center;
                             break;
                         case 'circular':
-                            layout = go.GraphObject.make(go.CircularLayout);
+                            layout = go.GraphObject.make(go.CircularLayout, { isOngoing: false });
                             break;
                         case 'layeredDigraph':
-                            layout = go.GraphObject.make(go.LayeredDigraphLayout);
+                            layout = go.GraphObject.make(go.LayeredDigraphLayout, { isOngoing: false, layerSpacing: 50 });
                             break;
                         default:
                             console.error('unknown type (' + button.type + ')');
@@ -80,22 +80,7 @@ Ext.define('Savanna.crumbnet.controller.GoGraph', {
     DEFAULT_GRAPH_RECORD_ID: 'TEST_DATA_ID',
 
     registerGraphEventHandlers: function(canvasView) {
-        for (var i = 0; i < Savanna.crumbnet.view.goGraph.Canvas.goChangeEvents.length; ++i) {
-            var eventName = 'go.change.' + Savanna.crumbnet.view.goGraph.Canvas.goChangeEvents[i];
-            canvasView.on(eventName, Ext.bind(this.handleCanvasChange, this, [eventName], true));
-        }
 
-        for (i = 0; i < Savanna.crumbnet.view.goGraph.Canvas.goDiagramEvents.length; ++i) {
-            var eventName = Savanna.crumbnet.view.goGraph.Canvas.goDiagramEvents[i];
-            canvasView.on(eventName, Ext.bind(this.handleCanvasDiagramChange, this, [eventName], true));
-        }
-    },
-
-    handleCanvasChange: function(changedEvent, eventName) {
-        //console.log('handleCanvasChange', eventName, changedEvent);
-    },
-
-    handleCanvasDiagramChange: function(diagramEvent, eventName) {
-        //console.log('handleCanvasDiagramChange', eventName, diagramEvent);
     }
+
 });
