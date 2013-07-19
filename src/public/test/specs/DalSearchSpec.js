@@ -1,6 +1,11 @@
 Ext.require('Savanna.Config');
 Ext.require('Savanna.search.model.DalSource');
 Ext.require('Savanna.search.store.DalSources');
+Ext.require('Savanna.search.view.SearchBody');
+Ext.require('Savanna.search.view.SearchComponent');
+Ext.require('Savanna.search.view.searchDals.CustomGroup');
+Ext.require('Savanna.search.view.searchDals.CustomSearchGroupForm');
+Ext.require('Savanna.search.view.searchDals.SearchOptions');
 
 describe('Dal Search', function() {
     var DAL_SOURCES_URL = '',
@@ -16,6 +21,7 @@ describe('Dal Search', function() {
 
     afterEach(function() {
         fixtures = null;
+		cleanTestDom();
     });
 
     describe('Savanna.search.model.DalSource', function() {
@@ -79,8 +85,8 @@ describe('Dal Search', function() {
         var view = null;
 
         beforeEach(function() {
-            view = Ext.create('Savanna.search.view.SearchBody');
             spyOn(Savanna.controller.Factory, 'getController');
+            view = Ext.create('Savanna.search.view.SearchBody', { renderTo: 'test-html' });
         });
 
         afterEach(function() {
@@ -90,9 +96,6 @@ describe('Dal Search', function() {
         });
 
         it('initComponent should ask for a controller', function() {
-
-            view.initComponent();
-
             expect(Savanna.controller.Factory.getController).toHaveBeenCalledWith('Savanna.search.controller.SearchBody');
         });
     });
@@ -101,8 +104,8 @@ describe('Dal Search', function() {
         var view = null;
 
         beforeEach(function() {
-            view = Ext.create('Savanna.search.view.SearchDals');
             spyOn(Savanna.controller.Factory, 'getController');
+            view = Ext.create('Savanna.search.view.SearchDals', { renderTo: 'test-html' });
         });
 
         afterEach(function() {
@@ -112,32 +115,6 @@ describe('Dal Search', function() {
         });
 
         it('initComponent should ask for a controller', function() {
-
-            view.initComponent();
-
-            expect(Savanna.controller.Factory.getController).toHaveBeenCalledWith('Savanna.search.controller.SearchDals');
-        });
-    });
-
-
-    describe('Savanna.search.view.SearchDals', function() {
-        var view = null;
-
-        beforeEach(function() {
-            view = Ext.create('Savanna.search.view.SearchDals');
-            spyOn(Savanna.controller.Factory, 'getController');
-        });
-
-        afterEach(function() {
-            if (view && view.destroy) view.destroy();
-
-            view = null;
-        });
-
-        it('initComponent should ask for a controller', function() {
-
-            view.initComponent();
-
             expect(Savanna.controller.Factory.getController).toHaveBeenCalledWith('Savanna.search.controller.SearchDals');
         });
     });
@@ -178,7 +155,7 @@ describe('Dal Search', function() {
 
         describe('createDalPanels', function() {
             it('should create a Paenl for every record in the store', function() {
-                var view = Ext.create('Savanna.search.view.SearchDals');
+                var view = Ext.create('Savanna.search.view.SearchDals', { renderTo: 'test-html' });
                 spyOn(view, 'add');
 
                 controller.createDalPanels(view);
@@ -207,8 +184,6 @@ describe('Dal Search', function() {
 
                 view = null;
                 button = null;
-
-                Ext.get('test-html').remove();
             });
 
             it('should render a group form if it has not been built yet', function() {
