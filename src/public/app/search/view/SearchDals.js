@@ -24,7 +24,7 @@ Ext.define('Savanna.search.view.SearchDals', {
             xtype: 'toolbar',
             border: false,
             width: '100%',
-            docked: 'top',
+            dock: 'top',
             items: [
                 {
                     xtype: 'label',
@@ -36,11 +36,7 @@ Ext.define('Savanna.search.view.SearchDals', {
                 },
                 {
                     xtype: 'button',
-                    text: 'Select All',
-                    style: {
-                        background: 'transparent',
-                        border: 'none'
-                    }
+                    text: 'Select All'
                 },
                 {
                     xtype: 'tbspacer',
@@ -48,11 +44,7 @@ Ext.define('Savanna.search.view.SearchDals', {
                 },
                 {
                     xtype: 'button',
-                    text: 'Reset All Search Options',
-                    style: {
-                        background: 'transparent',
-                        border: 'none'
-                    }
+                    text: 'Reset All Search Options'
                 }
             ]
         }
