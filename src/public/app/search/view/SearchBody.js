@@ -6,8 +6,10 @@ Ext.define('Savanna.search.view.SearchBody', {
     alias: 'widget.search_searchbody',
 
     requires: [
-        'Savanna.search.view.SearchDals'
+        'Savanna.search.view.SearchDals',
+        'Savanna.controller.Factory'
     ],
+
     layout: 'fit',
 
     items: [

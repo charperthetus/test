@@ -5,8 +5,8 @@ Ext.define('Savanna.view.SavannaDesktop', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.savannadesktop',
     requires:[
-            'Ext.form.RadioGroup',
-            'Ext.dd.DragZone'
+        'Ext.form.RadioGroup',
+        'Ext.dd.DragZone'
     ],
     layout: {
         type: 'vbox'
@@ -74,29 +74,8 @@ Ext.define('Savanna.view.SavannaDesktop', {
                     flex: 2,
                     items: [
                         {
-                            title: 'Search',
-                            closable: false,
-                            flex: 4,
-                            layout: 'border',
-                            border: false,
-                            items: [
-                                {
-                                    xtype: 'search_searchbar',
-                                    itemId: 'searchbar',
-                                    region: 'north'
-                                },
-                                {
-                                    xtype: 'search_searchbody',
-                                    itemId: 'searchbody',
-                                    region: 'center'
-                                }
-                            ],
-                            dockedItems: [
-                                {
-                                    xtype: 'search_searchtoolbar',
-                                    itemId: 'searchtoolbar'
-                                }
-                            ]
+                            xtype:"search_searchcomponent",
+                            itemId:"searchcomponent"
                         },
                         {
                             xtype: 'draw',
@@ -129,7 +108,6 @@ Ext.define('Savanna.view.SavannaDesktop', {
                             tabBarButton.addListener('afterrender', function(tabbutton){
                                 tabbutton.dragZone = Ext.create('Ext.dd.DragZone', tabbutton.getEl(), {
                                     getDragData: function(e) {
-                                        console.log('GetDragData', e);
                                         var sourceEl = e.getTarget(tabbutton.itemSelector, 10), d;
                                         if (sourceEl) {
                                             d = sourceEl.cloneNode(true);
