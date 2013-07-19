@@ -177,7 +177,15 @@ Ext.define('Savanna.crumbnet.view.GoGraph', {
         var triangle = go.Geometry.parse("M 0,0 L 12,0 12,12 0,0", true);
 
         return $(
-            go.Node, go.Panel.Auto, { selectionAdornmentTemplate: options.adornmentTemplate ? options.adornmentTemplate : null, desiredSize: new go.Size(70, 80), toLinkable: true },
+            go.Node, go.Panel.Auto,
+            {
+                fromSpot: go.Spot.AllSides,
+                toSpot: go.Spot.AllSides,
+                selectionAdornmentTemplate: options.adornmentTemplate ? options.adornmentTemplate : null,
+                desiredSize: new go.Size(70, 80),
+                toLinkable: true
+            },
+
             $(go.Panel, go.Panel.Table, icon, textBlock),
             $(go.Panel,
                 { alignment: go.Spot.TopRight },  // this function is defined below
@@ -224,7 +232,7 @@ Ext.define('Savanna.crumbnet.view.GoGraph', {
             name: 'label'
         }, textOpts);
 
-        textBlock = go.GraphObject.make(go.TextBlock, textOpts, {fromLinkable: true, toLinkable: true, cursor: "pointer"});
+        textBlock = go.GraphObject.make(go.TextBlock, textOpts, { cursor: "pointer"});
 
         if (binding) textBlock.bind(binding);
 
@@ -232,32 +240,26 @@ Ext.define('Savanna.crumbnet.view.GoGraph', {
     },
 
     generateLinkTemplate: function() {
-        var link = new go.Link(),
-            addLineShape = new go.Shape(),
-            addedLineShape = new go.Shape(),
-            label = new go.TextBlock(go.Link.OrientUpright);
+        var $ = go.GraphObject.make;
 
-        link.relinkableTo = true;
-        link.canRelinkFrom = true;
-        link.toShortLength = 2;
-        link.curve = go.Link.None;
-
-        addedLineShape.stroke = addLineShape.stroke = addedLineShape.fill = addLineShape.fill = 'blue';
-        addLineShape.strokeWidth = 2;
-        addLineShape.toArrow = 'OpenTriangle';
-
-        addedLineShape.toArrow = 'Standard';
-
-        label.background = 'white';
-        label.text = 'edit me';
-        label.editable = true;
-        label.bind(new go.Binding('text', 'text'));
-
-        link.add(addLineShape);
-        link.add(addedLineShape);
-        link.add(label);
-
-        return link;
+        return $(go.Link,  // the whole link panel
+            { selectionAdorned: true,
+                layerName: "Foreground",
+                routing: go.Link.AvoidsNodes,
+                corner: 5
+            },
+            $(go.Shape,  // the link shape
+                { isPanelMain: true,
+                    stroke: "#303B45",
+                    strokeWidth: 2.5 }),
+            $(go.TextBlock,  // the "from" label
+                { textAlign: "center",
+                    font: "bold 14px sans-serif",
+                    stroke: "#1967B3",
+                    segmentIndex: 0,
+                    segmentOffset: new go.Point(NaN, NaN),
+                    segmentOrientation: go.Link.OrientUpright },
+                new go.Binding("text", "text")));
     },
 
     addNodeAndLink: function(e, obj) {

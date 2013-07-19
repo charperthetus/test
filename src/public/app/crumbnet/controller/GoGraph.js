@@ -65,11 +65,13 @@ Ext.define('Savanna.crumbnet.controller.GoGraph', {
                             break;
                     }
 
+                    diagram.startTransaction('ChangeLayout');
                     if (layout) diagram.layout = layout;
                     if (align) {
                         diagram.contentAlignment = align;
                         diagram.contentAlignment = go.Spot.Default;
                     }
+                    diagram.commitTransaction('ChangeLayout');
                 }
             }
         });
