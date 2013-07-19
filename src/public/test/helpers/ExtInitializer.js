@@ -14,5 +14,19 @@ Ext.application({
 function cleanTestDom() {
 	var testDom = Ext.get('test-html');
 
-	testDom.dom.innerHTML = '';
+	if (testDom && testDom.dom && testDom.dom.children ) testDom.dom.innerHTML = '';
+}
+
+function createTestDom() {
+    if (!document.querySelector('#test-html')) {
+        var body = document.querySelector('body');
+        if (body) {
+            var div = document.createElement('div');
+            div.id = 'test-html';
+            body.appendChild(div);
+        }
+        else {
+            console.error('no body tag to append our test container to');
+        }
+    }
 }

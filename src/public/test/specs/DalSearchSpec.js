@@ -17,6 +17,8 @@ describe('Dal Search', function() {
         DAL_SOURCES_URL = DAL_SOURCES_URL || (Savanna.Config.savannaUrlRoot + Savanna.Config.dalSourcesUrl + ';jsessionid=undefined?page=1&start=0&limit=50');
 
         fixtures = Ext.clone(ThetusTestHelpers.Fixtures.DalSources);
+
+        createTestDom();
     });
 
     afterEach(function() {
@@ -165,44 +167,46 @@ describe('Dal Search', function() {
         });
 
         describe('renderCustomOptions', function() {
-            var view = null,
-                button = null;
+            var topView = null;
+            var testView = null;
+            var button = null;
 
             beforeEach(function() {
-                var uberParent = Ext.create('Savanna.search.view.SearchDals', { renderTo: 'test-html' });
+                var topView = Ext.create('Savanna.search.view.SearchDals', { renderTo: 'test-html' });
 
-                view = uberParent.down('search_searchDals_searchoptions:last');
-                button = view.down('#searchOptionsToggle');
+                testView = topView.down('search_searchDals_searchoptions:last');
+                button = testView.down('#searchOptionsToggle');
 
-                spyOn(view, 'add').andCallThrough();
-                spyOn(view, 'doLayout'); // don't necessarily need to redo the layout...
+                spyOn(testView, 'add').andCallThrough();
+                spyOn(testView, 'doLayout'); // don't necessarily need to redo the layout...
                 spyOn(button, 'setText').andCallThrough();
             });
 
             afterEach(function() {
-                if (view && view.destroy) view.destroy();
+                if (topView && topView.destroy) topView.destroy();
 
-                view = null;
+                topView = null;
+                testView = null;
                 button = null;
             });
 
             it('should render a group form if it has not been built yet', function() {
                 controller.renderCustomOptions(button);
 
-                expect(view.add).toHaveBeenCalled();
+                expect(testView.add).toHaveBeenCalled();
                 expect(button.setText).toHaveBeenCalledWith('Hide Search Options');
-                expect(view.doLayout).toHaveBeenCalled();
+                expect(testView.doLayout).toHaveBeenCalled();
 
                 // "click" the button again to validate that we change the button text to "show"
                 button.setText.reset();
-                view.add.reset();
-                view.doLayout.reset();
+                testView.add.reset();
+                testView.doLayout.reset();
 
                 controller.renderCustomOptions(button);
 
-                expect(view.add).not.toHaveBeenCalled();
+                expect(testView.add).not.toHaveBeenCalled();
                 expect(button.setText).toHaveBeenCalledWith('Show Search Options');
-                expect(view.doLayout).toHaveBeenCalled();
+                expect(testView.doLayout).toHaveBeenCalled();
             });
         });
     });
