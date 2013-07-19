@@ -42,10 +42,12 @@ Ext.define('Savanna.crumbnet.view.goGraph.Canvas', {
         this.on('resize', Ext.bind(function() { this.diagram.requestUpdate(); }, this));
         this.on('show', Ext.bind(function() { this.diagram.requestUpdate(); }, this));
 
-        this.diagram.layout = go.GraphObject.make(go.LayeredDigraphLayout, { isOngoing: false, layerSpacing: 50 });
+        this.diagram.layout = go.GraphObject.make(go.ForceDirectedLayout, { isOngoing: false });
 
         this.diagram.toolManager.linkingTool.direction = go.LinkingTool.ForwardsOnly;
         this.diagram.toolManager.linkingTool.portGravity = 10;
+
+        this.diagram.model.undoManager.isEnabled = true;
     },
 
     // CUSTOM METHODS
