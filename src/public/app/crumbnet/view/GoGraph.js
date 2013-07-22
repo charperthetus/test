@@ -14,6 +14,7 @@ Ext.define('Savanna.crumbnet.view.GoGraph', {
     tbar: [
         {
             xtype: 'button',
+            itemId: 'layoutMenu',
             text: 'Layout',
             menu: [{ type: 'grid', text: 'Grid' },
                 { type: 'tree', text: 'Tree' },
@@ -24,6 +25,7 @@ Ext.define('Savanna.crumbnet.view.GoGraph', {
         },
         {
             xtype: 'button',
+            itemId: 'alignmentMenu',
             text: 'Alignment',
             menu: [{ type: 'right', text: 'Right' },
                 { type: 'left', text: 'Left' },
@@ -110,7 +112,7 @@ Ext.define('Savanna.crumbnet.view.GoGraph', {
             resizable: true,
             adornmentTemplate: defaultAdornment,
             shapeOpts: {
-                icon: 'resources/images/conceptIcon.svg'
+                icon: '/resources/images/conceptIcon.svg'
             },
             textOpts: {
                 text: 'Concept'
@@ -120,7 +122,7 @@ Ext.define('Savanna.crumbnet.view.GoGraph', {
         nodeTemplateMap.add('Question', this.generateNodeTemplate({
             adornmentTemplate: defaultAdornment,
             shapeOpts: {
-                icon: './resources/images/questionIcon.svg'
+                icon: '/resources/images/questionIcon.svg'
             },
             textOpts: {
                 text: 'Question'
@@ -130,7 +132,7 @@ Ext.define('Savanna.crumbnet.view.GoGraph', {
         nodeTemplateMap.add('Problem', this.generateNodeTemplate({
             adornmentTemplate: defaultAdornment,
             shapeOpts: {
-                icon: './resources/images/problemIcon.svg'
+                icon: '/resources/images/problemIcon.svg'
             },
             textOpts: {
                 text: 'Problem'
@@ -140,7 +142,7 @@ Ext.define('Savanna.crumbnet.view.GoGraph', {
         nodeTemplateMap.add('Fact', this.generateNodeTemplate({
             adornmentTemplate: defaultAdornment,
             shapeOpts: {
-                icon: './resources/images/factIcon.svg'
+                icon: '/resources/images/factIcon.svg'
             },
             textOpts: {
                 text: 'Fact'
@@ -150,7 +152,7 @@ Ext.define('Savanna.crumbnet.view.GoGraph', {
         nodeTemplateMap.add('Hypothesis', this.generateNodeTemplate({
             adornmentTemplate: defaultAdornment,
             shapeOpts: {
-                icon: './resources/images/hypothesisIcon.svg'
+                icon: '/resources/images/hypothesisIcon.svg'
             },
             textOpts: {
                 wrap: go.TextBlock.WrapFit,
@@ -161,7 +163,7 @@ Ext.define('Savanna.crumbnet.view.GoGraph', {
         nodeTemplateMap.add('Conclusion', this.generateNodeTemplate({
             adornmentTemplate: defaultAdornment,
             shapeOpts: {
-                icon: './resources/images/conclusionIcon.svg'
+                icon: '/resources/images/conclusionIcon.svg'
             },
             textOpts: {
                 wrap: go.TextBlock.WrapFit,
@@ -172,7 +174,7 @@ Ext.define('Savanna.crumbnet.view.GoGraph', {
         nodeTemplateMap.add('Assumption', this.generateNodeTemplate({
             adornmentTemplate: defaultAdornment,
             shapeOpts: {
-                icon: './resources/images/assumptionIcon.svg'
+                icon: '/resources/images/assumptionIcon.svg'
             },
             textOpts: {
                 wrap: go.TextBlock.WrapFit,
