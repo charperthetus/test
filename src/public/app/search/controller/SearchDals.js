@@ -34,19 +34,19 @@ Ext.define('Savanna.search.controller.SearchDals', {
             store: store
         });
     },
-
+    createDalPanels: function (body) {
+        var me = this;
+        this.getStore('Savanna.search.store.DalSources').each(function (record) {
+            var myPanel = me.createPanel(record);
+            body.add(myPanel);
+        });
+    },
     init: function (app) {
         this.getStore('Savanna.search.store.DalSources').loadRawData(this.data);
 
         this.control({
             'search_searchdals': {
-                render: function (body) {
-                    var me = this;
-                    this.getStore('Savanna.search.store.DalSources').each(function (record) {
-                        var myPanel = me.createPanel(record);
-                        body.add(myPanel);
-                    });
-                }
+                render: this.createDalPanels
             },
             'search_searchDals_searchoptions > #searchOptionsToggle': {
                 click: this.renderCustomOptions
@@ -55,8 +55,6 @@ Ext.define('Savanna.search.controller.SearchDals', {
     },
 
     renderCustomOptions: function(button, evt) {
-        // NOTE: I'm not sure this is the correct way to do this since the controller is a singleton
-        //       (if we can have more than one search, this will break...)
         var parentView = button.up('search_searchDals_searchoptions');
         var childSearchDalsPanel = parentView.down('search_searchDals_custom-search-group-form');
 
@@ -65,11 +63,9 @@ Ext.define('Savanna.search.controller.SearchDals', {
             var store = this.getStore('Savanna.search.store.DalSources');
             var record = store.getById(parentViewId);
 
-            var dalPanel = this.createCustomSearchGroupPanel(record.customSearchGroups());
+            childSearchDalsPanel = this.createCustomSearchGroupPanel(record.customSearchGroups());
 
-            parentView.add(dalPanel);
-
-            childSearchDalsPanel = parentView.down('search_searchDals_custom-search-group-form');
+            parentView.add(childSearchDalsPanel);
         }
 
         if (button.text == this.addDalDetailText) {

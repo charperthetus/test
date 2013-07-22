@@ -13,49 +13,49 @@ Ext.define('Savanna.view.SavannaDesktop', {
     },
     items: [
         //Not sure if we are going to need this section or not
-        /*        {
-         xtype: 'panel',
-         itemId: 'buttonbarpanel',
-         region: 'top',
-         width: '100%',
-         layout: {
-         type: 'hbox',
-         pack: 'center'
-         },
-         defaults: {
-         xtype: 'button',
-         scale: 'medium',
-         iconAlign: 'top',
-         toggleGroup: 'mygroup',
-         enableToggle: true,
-         listeners: {
-         click: function(me, event) {
-         // make sure a button cannot be de-selected
-         me.toggle(true);
-         }
-         }
-         },
-         items: [
-         //TODO - make a buttonbar / togglebuttonbar component
-         {
-         icon: 'app/assets/icons/workspaceicon.png',
-         text: 'Workspace',
-         pressed: true
-         }, {
-         icon: 'app/assets/icons/dashboardicon.png',
-         text: 'Dashboard'
-         }, {
-         xtype: '',
-         padding: 3,
-         type: 'rect',
-         width: 8,
-         height: '100%'
-         }, {
-         icon: 'app/assets/icons/searchicon.png',
-         text: 'Search'
-         }
-         ]
-         },*/
+/*        {
+            xtype: 'panel',
+            itemId: 'buttonbarpanel',
+            region: 'top',
+            width: '100%',
+            layout: {
+                type: 'hbox',
+                pack: 'center'
+            },
+            defaults: {
+                xtype: 'button',
+                scale: 'medium',
+                iconAlign: 'top',
+                toggleGroup: 'mygroup',
+                enableToggle: true,
+                listeners: {
+                    click: function(me, event) {
+                        // make sure a button cannot be de-selected
+                        me.toggle(true);
+                    }
+                }
+            },
+            items: [
+                //TODO - make a buttonbar / togglebuttonbar component
+                {
+                    icon: 'app/assets/icons/workspaceicon.png',
+                    text: 'Workspace',
+                    pressed: true
+                }, {
+                    icon: 'app/assets/icons/dashboardicon.png',
+                    text: 'Dashboard'
+                }, {
+                    xtype: '',
+                    padding: 3,
+                    type: 'rect',
+                    width: 8,
+                    height: '100%'
+                }, {
+                    icon: 'app/assets/icons/searchicon.png',
+                    text: 'Search'
+                }
+            ]
+        },*/
         {
             xtype: 'panel',
             region: 'center',
@@ -105,16 +105,13 @@ Ext.define('Savanna.view.SavannaDesktop', {
                         add: function(me, tab, tabindex) {
                             var tabBarButton = me.tabBar.items.items[tabindex];
                             var tabEl = tab.getEl();
-
-                            tabBarButton.addListener('afterrender', function(tabbutton) {
+                            tabBarButton.addListener('afterrender', function(tabbutton){
                                 tabbutton.dragZone = Ext.create('Ext.dd.DragZone', tabbutton.getEl(), {
                                     getDragData: function(e) {
                                         var sourceEl = e.getTarget(tabbutton.itemSelector, 10), d;
-
                                         if (sourceEl) {
                                             d = sourceEl.cloneNode(true);
                                             d.id = Ext.id();
-
                                             return (tabbutton.dragData = {
                                                 sourceEl: sourceEl,
                                                 repairXY: Ext.fly(sourceEl).getXY(),

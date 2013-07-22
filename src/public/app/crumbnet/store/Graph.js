@@ -41,7 +41,7 @@ Ext.define('Savanna.crumbnet.store.Graph', {
             }
         ];
 
-        var categories = ['', 'Source', 'DesiredEvent', 'Comment', 'DesiredEvent'];
+        var categories = ['Concept', 'Question', 'Problem', 'Fact', 'Hypothesis', 'Conclusion', 'Assumption'];
         var TOT_NODE_COUNT = 50; // NOTE: change this to 1000 and performance will degrade...
         var generatedLink = {};
 
@@ -53,7 +53,7 @@ Ext.define('Savanna.crumbnet.store.Graph', {
         for (var i = 0; i < TOT_NODE_COUNT; ++i) {
             var category = categories[i % categories.length];
 
-            this.data[0].nodeDataArray.push({ key: i, text: i.toString(), category: category});
+            this.data[0].nodeDataArray.push({ key: i, text: category, category: category});
 
             var to = randomInt(0, TOT_NODE_COUNT-1);
             var from = randomInt(0, TOT_NODE_COUNT-1);
