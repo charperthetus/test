@@ -10,9 +10,9 @@ Ext.define('Savanna.search.view.searchDals.SearchOptions', {
 
     width: '100%',
 
-    padding: 20,
-
     itemId: 'NO_ID',
+
+    cls: 'search-dal',
 
     items: [{
         xtype: 'checkbox',

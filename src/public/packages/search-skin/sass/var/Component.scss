@@ -6,10 +6,6 @@
  * create a semantically named file for what you are doing and include it here so it will
  * be compiled with others. Let's keep it clean!
  */
-
-// Custom stylesheets to be included
-@import 'Search/Typography.scss';
-
 /*
  * Component.scss specific code here
  */
@@ -21,4 +17,13 @@ $base-color: #fff;
 $font-family: 'OpenSansRegular';
 
 // Global CSS Configs
+$prefix: 'x-';
 $include-rtl: false;
+
+
+/*
+ *	Import the other SCSS files
+ */
+@import 'Search/Typography.scss';
+@import 'Search/Colors.scss';
+@import 'shame.scss';

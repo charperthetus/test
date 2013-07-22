@@ -31,28 +31,20 @@ Ext.define('Savanna.search.view.SearchDals', {
                     text: 'Select sources to include in your search.'
                 },
                 {
-                    xtype: 'tbspacer',
-                    width: 10
+                    xtype: 'button',
+                    ui: 'link',
+                    text: 'Select All'
                 },
                 {
                     xtype: 'button',
-                    text: 'Select All',
-                    style: {
-                        background: 'transparent',
-                        border: 'none'
-                    }
+                    ui: 'link',
+                    text: 'Deselect All'
                 },
-                {
-                    xtype: 'tbspacer',
-                    width: 100
-                },
+                '->',
                 {
                     xtype: 'button',
-                    text: 'Reset All Search Options',
-                    style: {
-                        background: 'transparent',
-                        border: 'none'
-                    }
+                    ui: 'link',
+                    text: 'Reset All Search Options'
                 }
             ]
         }
