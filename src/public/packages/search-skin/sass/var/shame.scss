@@ -5,5 +5,8 @@
  *	should not be abused as it's meant to be only temporary!
  */
 .#{$prefix}panel-default.search-dal {
- 	padding: 10px 20px 20px;
+ 	padding: 10px 0 10px;
+}
+.#{$prefix}tabpanel-child.search-dal {
+	padding: 10px 25px 10px;
 }
