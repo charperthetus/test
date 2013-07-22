@@ -1,0 +1,7 @@
+// TODO: Abstract this into a mixin
+.#{$prefix}panel-default.search-dal {
+ 	padding: 10px 0 10px;
+}
+.#{$prefix}tabpanel-child.search-dal {
+	padding: 10px 25px 10px;
+}
