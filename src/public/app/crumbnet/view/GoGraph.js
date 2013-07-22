@@ -12,16 +12,34 @@ Ext.define('Savanna.crumbnet.view.GoGraph', {
     },
 
     tbar: [
-        { type: 'grid', html: 'Grid', tooltip: 'use grid layout' },
-        { type: 'tree', html: 'Tree', tooltip: 'use tree layout' },
-        { type: 'force', html: 'Force', tooltip: 'use force layout' },
-        { type: 'layeredDigraph', html: 'Layered Digraph', tooltip: 'use layered digraph layout' },
-        { type: 'circular', html: 'Circular', tooltip: 'use circular layout' },
-        { type: 'right', html: 'Right', tooltip: 'align right' },
-        { type: 'left', html: 'Left', tooltip: 'align left' },
-        { type: 'top', html: 'Top', tooltip: 'top align' },
-        { type: 'bottom', html: 'Bottom', tooltip: 'bottom align' },
-        { type: 'center', html: 'Center', tooltip: 'center align' }
+        {
+            xtype: 'button',
+            text: 'Layout',
+            menu: [{ type: 'grid', text: 'Grid' },
+                { type: 'tree', text: 'Tree' },
+                { type: 'force', text: 'Force' },
+                { type: 'layeredDigraph', text: 'Layered Digraph' },
+                { type: 'circular', text: 'Circular' }
+            ]
+        },
+        {
+            xtype: 'button',
+            text: 'Alignment',
+            menu: [{ type: 'right', text: 'Right' },
+                { type: 'left', text: 'Left' },
+                { type: 'top', text: 'Top' },
+                { type: 'bottom', text: 'Bottom' },
+                { type: 'center', text: 'Center' }
+            ]
+        },
+        '->',
+        {type: 'zoomIn', icon:'resources/images/zoom_in.png', tooltip: 'Zoom In'},
+        {type: 'zoomOut', icon:'resources/images/zoom_out.png', tooltip: 'Zoom Out'},
+        {type: 'zoomToFit', icon:'resources/images/show_all.png', tooltip: 'Zoom To Fit'},
+        {type: 'undo', icon:'resources/images/undo.png', tooltip: 'Undo'},
+        {type: 'redo', icon:'resources/images/redo.png', tooltip: 'Redo'},
+        {type: 'grid', icon:'resources/images/gridview.png', tooltip: 'Toggle Grid'},
+        {type: 'overview', icon:'resources/images/globe.png', tooltip: 'Toggle Overview'}
     ],
 
     initComponent: function() {
@@ -206,7 +224,6 @@ Ext.define('Savanna.crumbnet.view.GoGraph', {
         icon.cursor = "pointer";
 
         icon.width = icon.height = 46;
-
         return icon;
     },
 
@@ -267,13 +284,14 @@ Ext.define('Savanna.crumbnet.view.GoGraph', {
         if (adorn === null) return;
         e.handled = true;
         var diagram = adorn.diagram;
-        diagram.startTransaction("Add State");
+        diagram.startTransaction("Add Node");
         // get the node data for which the user clicked the button
         var fromNode = adorn.adornedPart;
         var fromData = fromNode.data;
         // create a new "State" data object, positioned off to the right of the adorned Node
-        var toData = { text: "new" };
+        var toData = { text: "new", category: fromData.category, key: Ext.id() };
         var p = fromNode.location;
+        //TODO - find all of the nodes that the starting node is linked to and add 50px to the lowest one for this y coord, use the same x coord
         toData.loc = p.x + 200 + " " + p.y;  // the "loc" property is a string, not a Point object
         // add the new node data to the model
         var model = diagram.model;
@@ -284,9 +302,6 @@ Ext.define('Savanna.crumbnet.view.GoGraph', {
         linkdata[model.linkToKeyProperty] = model.getKeyForNodeData(toData);
         // and add the link data to the model
         model.addLinkData(linkdata);
-        // select the new Node
-        var newnode = diagram.findNodeForData(toData);
-        diagram.select(newnode);
-        diagram.commitTransaction("Add State");
+        diagram.commitTransaction("Add Node");
     }
 });
