@@ -4,13 +4,13 @@
 Ext.define('Savanna.search.view.SearchBar', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.search_searchbar',
+    cls: 'search-prime',
     requires: [
         'Ext.ux.layout.Center',
         'Ext.form.field.Text',
         'Savanna.controller.Factory',
         'Savanna.search.view.SearchBarTools'
     ],
-    bodyPadding: 5,
     border: false,
     frame: false,
     layout: "ux.center",
@@ -33,13 +33,7 @@ Ext.define('Savanna.search.view.SearchBar', {
                     items: [
                         {
                             xtype: 'button',
-                            text: 'Start New Search',
-                            style: {
-                                background: 'transparent',
-                                border: 'none',
-                                margin: '0px',
-                                padding: '0px'
-                            }
+                            text: 'Start New Search'
                         }
                     ]
                 }

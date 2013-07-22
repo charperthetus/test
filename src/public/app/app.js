@@ -13,7 +13,7 @@
 // DO NOT DELETE - this directive is required for Sencha Cmd packages to work.
 //@require @packageOverrides
 Ext.Loader.setConfig( {enabled: true, disableCaching: false} );
-
+Ext.setGlyphFontFamily('FontAwesome');
 Ext.application({
     name: 'Savanna',
 
