@@ -1,6 +1,7 @@
 // TODO: Abstract this into a mixin
-.#{$prefix}panel-default.search-dal {
+.#{$prefix}box-item.search-dal {
  	padding: 10px 0 10px;
+ 	border-top: 1px solid #cccccc;
 }
 .#{$prefix}tabpanel-child.search-dal {
 	padding: 10px 25px 10px;
