@@ -166,7 +166,7 @@ describe('Savanna.crumbnet', function() {
     });
 
     describe('Model', function() {
-        it('should have nodeDataArray and linkDataArray properties defined', function() {
+        it('should be able to instantiate', function() {
             var cModel = Ext.create('Savanna.crumbnet.model.Graph');
             expect(cModel).not.toBeNull();
         });
@@ -180,6 +180,42 @@ describe('Savanna.crumbnet', function() {
     });
 
     describe('Views', function() {
+        var view = null
 
+        beforeEach(function() {
+            view = Ext.create('Savanna.crumbnet.view.GoGraph', {renderTo: 'test-html'});
+        });
+
+        afterEach(function() {
+            view.destroy();
+            view = null;
+        });
+
+        describe('Main Crumbnet View', function(){
+            it('should set up a palette config', function() {
+                var palette = view.down('go-graph_palette');
+                console.log(palette.config);
+                expect(palette.config.paletteNodeTemplateMap.count).toBeGreaterThan(0);
+            });
+
+            it('should set up a canvas config', function() {
+                var canvas = view.down('go-graph_canvas');
+                expect(canvas.config.nodeTemplateMap.count).toBeGreaterThan(0);
+                var iter = canvas.config.nodeTemplateMap.iterator;
+                iter.next();
+                var firstItem = iter.value;
+                expect(firstItem.findObject('icon')).not.toBeNull();
+                expect(firstItem.findObject('label')).not.toBeNull();
+            });
+        });
+
+        describe('Crumbnet Canvas View', function(){
+            it('should have a store and a diagram', function() {
+                var canvas = view.down('go-graph_canvas');
+                expect(canvas.store instanceof Savanna.crumbnet.store.Graph).toBeTruthy();
+                //This could be brittle because the diagram is created in the onRender function which is async
+                expect(canvas.diagram).not.toBeNull();
+            });
+        });
     });
 });
