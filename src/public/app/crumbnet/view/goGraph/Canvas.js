@@ -54,7 +54,8 @@ Ext.define('Savanna.crumbnet.view.goGraph.Canvas', {
 
     onStoreLoad: function(store) {
         if (this.diagram) {
-            var graphRecord = store.getById(this.up('go-graph').itemId);
+            //TODO - this is just getting the first array in the store - we need to figure out how we really want to use the stores
+            var graphRecord = store.getAt(0);
 
             this.diagram.model = go.GraphObject.make(go.GraphLinksModel, {
                 nodeDataArray: graphRecord.get('nodeDataArray'),
