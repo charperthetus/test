@@ -35,6 +35,9 @@ Ext.application({
         'Savanna.flexpaper.controller.FlexpaperComponent',
         //Search
         'Savanna.search.controller.SearchComponent',
+        'Savanna.search.controller.SearchBody',
+        'Savanna.search.controller.SearchBar',
+        'Savanna.search.controller.SearchToolbar',
         //Crumbnet
         'Savanna.crumbnet.controller.GoGraph'
     ],
