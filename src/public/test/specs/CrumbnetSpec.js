@@ -166,11 +166,17 @@ describe('Savanna.crumbnet', function() {
     });
 
     describe('Model', function() {
-
+        it('should have nodeDataArray and linkDataArray properties defined', function() {
+            var cModel = Ext.create('Savanna.crumbnet.model.Graph');
+            expect(cModel).not.toBeNull();
+        });
     });
 
     describe('Store', function() {
-
+        it('should have nodeDataArray and linkDataArray properties defined', function() {
+            var cStore = Ext.create('Savanna.crumbnet.store.Graph');
+            expect(cStore).not.toBeNull();
+        });
     });
 
     describe('Views', function() {
