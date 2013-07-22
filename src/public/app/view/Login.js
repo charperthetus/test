@@ -15,10 +15,16 @@ Ext.define('Savanna.view.Login', {
 
     layout: 'fit',
 
-    items: [
-        {
-            xtype: 'uxiframe',
-            src: Savanna.Config.savannaUrlRoot + Savanna.Config.loginUrl
-        }
-    ]
+    items: [],
+
+    initComponent: function() {
+        this.items = [
+            {
+                xtype: 'uxiframe',
+                src: Savanna.Config.savannaUrlRoot + Savanna.Config.loginUrl
+            }
+        ];
+
+        this.callParent(arguments);
+    }
 });
