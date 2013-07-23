@@ -2,6 +2,9 @@
 @import 'FlatTab.scss';
 @include flat-tab();
 
+// Pull in the link button mixin
+@import 'Link.scss';
+
 @import '../mixin-spacing-classes.scss';
 @include top-spacing();
 
