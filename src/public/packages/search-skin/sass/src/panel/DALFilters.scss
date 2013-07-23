@@ -9,6 +9,10 @@
 .#{$prefix}box-item.search-dal {
  	padding: 10px 0 10px;
  	border-top: 1px solid $gray-border;
+
+ 	&:hover {
+ 		background-color: #ebf1f4;
+ 	}
 }
 .#{$prefix}tabpanel-child.search-dal {
 	padding: 10px 25px 10px;
