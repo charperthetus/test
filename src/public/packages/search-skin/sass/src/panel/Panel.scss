@@ -1,1 +1,19 @@
 @import 'DALFilters.scss';
+
+// A.S. - This is to style the Top Search Bar background
+@import '../mixin-search-prime.scss';
+
+@include search-prime();
+@include search-prime(
+    $panel-main-background: #333,
+    $panel-main-padding: 20px 0px,
+    $input-padding: 0px 10px,
+    $input-background: #fff,
+    $input-font-family: $Open-Sans-Normal,
+    $input-border: 1px solid #999999,
+    $button-color: #000,
+    $button-padding: 5px,
+    $button-border: 1px solid #999999,
+    $button-margin: 0px 3px 0px -2px,
+    $button-font-family: 'FontAwesome'
+);
