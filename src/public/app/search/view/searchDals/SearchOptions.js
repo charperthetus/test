@@ -35,8 +35,7 @@ Ext.define('Savanna.search.view.searchDals.SearchOptions', {
         {
             xtype: 'button',
             itemId: 'searchOptionsToggle',
-            text: 'Show Search Options',
-            flex: 1
+            text: 'Show Search Options'
         }]
     }],
 
