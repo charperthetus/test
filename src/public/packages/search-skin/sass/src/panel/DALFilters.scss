@@ -1,7 +1,14 @@
-// TODO: Abstract this into a mixin
+// TODO: Abstract this into a mixin?
+.search-dal {
+	.#{$prefix}form-cb-label {
+		font-family: $Open-Sans-Bold;
+		margin-left: 6px;
+		color: $gray-font
+	}
+}
 .#{$prefix}box-item.search-dal {
  	padding: 10px 0 10px;
- 	border-top: 1px solid #cccccc;
+ 	border-top: 1px solid $gray-border;
 }
 .#{$prefix}tabpanel-child.search-dal {
 	padding: 10px 25px 10px;
