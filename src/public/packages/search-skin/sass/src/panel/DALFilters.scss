@@ -5,6 +5,22 @@
 		margin-left: 8px;
 		color: $gray-font
 	}
+	.dal-label,
+	.dal-toggle,
+	.dal-checkbox {
+		display: inline-block;
+		vertical-align: middle;
+	}
+	.dal-label {
+		position: absolute;
+		left: 30%;
+		top: 5px;
+	}
+	.dal-toggle {
+		position: absolute;
+		padding: 4px 13px;
+		right: 0;
+	}
 }
 .#{$prefix}box-item.search-dal {
  	padding: 10px 0 10px;

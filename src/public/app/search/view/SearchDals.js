@@ -22,6 +22,7 @@ Ext.define('Savanna.search.view.SearchDals', {
     dockedItems: [
         {
             xtype: 'toolbar',
+            marginBottom: '10px',
             border: false,
             width: '100%',
             dock: 'top',

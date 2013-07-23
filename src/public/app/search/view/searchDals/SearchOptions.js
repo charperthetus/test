@@ -14,29 +14,20 @@ Ext.define('Savanna.search.view.searchDals.SearchOptions', {
 
     cls: 'search-dal',
 
-    layout: {
-        type: 'hbox'
-    },
-
     items: [{
         xtype: 'checkbox',
         boxLabel: 'NO LABEL',
-        flex: 1
+        cls: 'dal-checkbox'
     }, {
-        flex: 3,
-        layout: {
-            type: 'hbox'
-        },
-        items: [{
-            xtype: 'label',
-            text: 'NO LABEL',
-            flex: 2
-        },
-        {
-            xtype: 'button',
-            itemId: 'searchOptionsToggle',
-            text: 'Show Search Options'
-        }]
+        xtype: 'label',
+        cls: 'dal-label',
+        text: 'NO LABEL'
+    },
+    {
+        xtype: 'button',
+        itemId: 'searchOptionsToggle',
+        cls: 'dal-toggle',
+        text: 'Show Search Options'
     }],
 
     initComponent: function() {

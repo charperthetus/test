@@ -1,5 +1,13 @@
 /*
  *	Default button (UIKit light gray button)
  */
-$button-default-background-gradient: #ffffff, #f2f2f2;
-$button-small-padding: 6px 13px;
+
+// Default state
+$button-small-border-radius: 4px;
+$button-default-background-gradient: #ffffff, #e6e6e6;
+
+// :hover
+$button-default-background-gradient-over: #ffffff, #f2f2f2;
+
+// :active
+$button-default-background-gradient-pressed: #e6e6e6, #fefefe;
