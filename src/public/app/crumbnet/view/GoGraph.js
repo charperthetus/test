@@ -2,9 +2,11 @@ Ext.define('Savanna.crumbnet.view.GoGraph', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.go-graph',
 
+    overview: null,
     requires: [
         'Savanna.crumbnet.view.goGraph.Palette',
-        'Savanna.crumbnet.view.goGraph.Canvas'
+        'Savanna.crumbnet.view.goGraph.Canvas',
+        'Savanna.crumbnet.view.goGraph.Overview'
     ],
 
     layout: {
@@ -53,7 +55,8 @@ Ext.define('Savanna.crumbnet.view.GoGraph', {
     // CUSTOM METHODS
 
     setupItems: function() {
-        return [
+        var overview, canvas;
+        var items = [
             {
                 xtype: 'go-graph_palette',
                 width: 100,
@@ -61,13 +64,32 @@ Ext.define('Savanna.crumbnet.view.GoGraph', {
                 config: this.getPaletteConfig()
             },
             {
-                xtype: 'go-graph_canvas',
-                flex: 11,
-                width: '100%',
+                flex: 10,
                 height: '100%',
-                config: this.getCanvasConfig()
+                layout: {
+                    type: 'absolute'
+                },
+                items:[
+                    canvas = Ext.create('Savanna.crumbnet.view.goGraph.Canvas',
+                        {
+                        width: '100%',
+                        height: '50%',
+                        config: this.getCanvasConfig()
+                    }),
+                    overview = Ext.create('Savanna.crumbnet.view.goGraph.Overview',
+                    {
+                    })
+                ]
             }
         ];
+        this.overview = overview;
+        overview.setVisible(false);
+        canvas.addListener('afterrender', function(){
+            console.log(canvas.diagram);
+            overview.setDiagram(canvas.diagram);
+        });
+
+        return items;
     },
 
     // GoDiagram HELPER METHODS
