@@ -7,6 +7,7 @@ Ext.define('Savanna.search.view.SearchBody', {
 
     requires: [
         'Savanna.search.view.SearchDals',
+        'Savanna.search.view.SearchMap',
         'Savanna.controller.Factory'
     ],
 
@@ -27,11 +28,11 @@ Ext.define('Savanna.search.view.SearchBody', {
                 {
                     xtype: 'tabpanel',
                     cls: 'flat-tab',
-                    region: 'center',
                     activeTab: 0,
                     flex: 3,
                     anchor: '100% 100%',
                     tabPosition: 'top',
+                    region: 'center',
                     items: [
                         {
                             title: 'Search Sources',
@@ -40,7 +41,7 @@ Ext.define('Savanna.search.view.SearchBody', {
                         },
                         {
                             title: 'Location',
-                            html: 'leaflet here'
+                            xtype: 'search_searchmap'
                         }
                     ]
                 }

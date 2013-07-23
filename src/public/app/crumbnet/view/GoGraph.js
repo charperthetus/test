@@ -241,6 +241,8 @@ Ext.define('Savanna.crumbnet.view.GoGraph', {
         options = options || {};
 
         var icon = new go.Picture();
+        icon.name = 'icon';
+
         icon.source = options.shapeOpts.icon;
 
         icon.toLinkable = true;
