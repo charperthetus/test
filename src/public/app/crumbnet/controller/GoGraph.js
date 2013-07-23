@@ -71,7 +71,6 @@ Ext.define('Savanna.crumbnet.controller.GoGraph', {
                 break;
             case 'overview':
                 var crumbnetView = button.up('go-graph');
-                console.log(crumbnetView.overview.isVisible());
                 crumbnetView.overview.setVisible(!crumbnetView.overview.isVisible());
                 break;
         }

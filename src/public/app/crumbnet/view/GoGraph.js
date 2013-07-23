@@ -73,7 +73,7 @@ Ext.define('Savanna.crumbnet.view.GoGraph', {
                     canvas = Ext.create('Savanna.crumbnet.view.goGraph.Canvas',
                         {
                         width: '100%',
-                        height: '50%',
+                        height: '000%',
                         config: this.getCanvasConfig()
                     }),
                     overview = Ext.create('Savanna.crumbnet.view.goGraph.Overview',
@@ -85,7 +85,6 @@ Ext.define('Savanna.crumbnet.view.GoGraph', {
         this.overview = overview;
         overview.setVisible(false);
         canvas.addListener('afterrender', function(){
-            console.log(canvas.diagram);
             overview.setDiagram(canvas.diagram);
         });
 

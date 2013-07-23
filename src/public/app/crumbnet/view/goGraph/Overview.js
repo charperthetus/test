@@ -15,10 +15,6 @@ Ext.define('Savanna.crumbnet.view.goGraph.Overview', {
     onRender: function(parentNode, containerIdx) {
         this.callParent(parentNode, containerIdx);
 
-//        <span style="display: inline-block; vertical-align: top; padding: 5px; width:200px">
-//            <div id="palette" style="background-color: Snow; border: solid 1px gray; height: 200px"></div>
-//        </span>
-
         var domElem = Ext.DomHelper.insertHtml('afterBegin', this.getEl().dom, '<div class="go-graph-overview" ' +
             'style="background-color: ' +
             'white; border-style:solid; ' +
