@@ -10,8 +10,6 @@ Ext.define('Savanna.search.view.searchDals.SearchOptions', {
 
     width: '100%',
 
-    padding: 20,
-
     itemId: 'NO_ID',
 
     items: [{
@@ -39,7 +37,7 @@ Ext.define('Savanna.search.view.searchDals.SearchOptions', {
             this.down('label').text = label;
 
             if (!showButton) {
-                this.down('button').hide()
+                this.down('button').hide();
             }
         }, this));
     }
