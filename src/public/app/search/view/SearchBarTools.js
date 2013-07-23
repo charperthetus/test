@@ -26,23 +26,17 @@ Ext.define("Savanna.search.view.SearchBarTools", {
         },
         {
             xtype: 'button',
-            text: 'Search',
-            itemId: "search_submit"
+            itemId: "search_submit",
+            glyph: 61442
         },
         {
 
             text: 'Advanced',
             itemId: "searchadvanced_btn",
-            style: {
-                background: 'transparent',
-                border: 'none',
-                padding: "0px"
-            },
             menu: {
                 xtype: "menu",
                 plain: true,
                 itemId: "searchadvanced_menu",
-                bodyPadding: 10,
                 minWidth: 380,
                 enableKeyNav:false,
                 items: [
