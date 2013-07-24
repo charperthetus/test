@@ -36,8 +36,20 @@ Ext.define('Savanna.crumbnet.controller.GoGraph', {
 
         switch (button.type) {
             case 'zoomIn':
+                var viewBounds = diagram.viewportBounds.copy();
+                var centerPoint = viewBounds.center.copy();
+                viewBounds.width = viewBounds.width * 0.9
+                viewBounds.height = viewBounds.height * 0.9;
+                viewBounds.center = centerPoint;
+                diagram.zoomToRect(viewBounds);
                 break;
             case 'zoomOut':
+                var viewBounds = diagram.viewportBounds.copy();
+                var centerPoint = viewBounds.center.copy();
+                viewBounds.width = viewBounds.width * 1.1
+                viewBounds.height = viewBounds.height * 1.1;
+                viewBounds.center = centerPoint;
+                diagram.zoomToRect(viewBounds);
                 break;
             case 'zoomToFit':
                 diagram.zoomToFit();
@@ -58,6 +70,8 @@ Ext.define('Savanna.crumbnet.controller.GoGraph', {
                 diagram.update(); //this is not working - try something else
                 break;
             case 'overview':
+                var crumbnetView = button.up('go-graph');
+                crumbnetView.overview.setVisible(!crumbnetView.overview.isVisible());
                 break;
         }
     },

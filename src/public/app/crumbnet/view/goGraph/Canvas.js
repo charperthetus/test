@@ -23,7 +23,7 @@ Ext.define('Savanna.crumbnet.view.goGraph.Canvas', {
 
         this.callParent(parentNode, containerIdx);
 
-        domElem = Ext.DomHelper.insertHtml('afterBegin', this.getEl().dom, '<div class="go-graph" style="width: 100%; height: 100%;"></div>');
+        domElem = Ext.DomHelper.insertHtml('afterBegin', this.getEl().dom, '<div class="go-graph" style="width: 100%; height: 100%; position: absolute;"></div>');
         config = this.getInitialConfig();
 
         this.diagram = new go.Diagram(domElem);
