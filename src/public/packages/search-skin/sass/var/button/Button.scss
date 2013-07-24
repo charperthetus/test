@@ -24,7 +24,6 @@ $button-default-border-color-pressed: #999;
 	border-right-color: #d5d5d5 !important;
 	@include single-box-shadow( rgba(50, 50, 50, 0.5), 0px, 2px, 3px);
 }
-
 .#{$prefix}btn-default-small-pressed {
 	border-top-color: #666 !important;
 	border-bottom-color: #f2f2f2 !important;
