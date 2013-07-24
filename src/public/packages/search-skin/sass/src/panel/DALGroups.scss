@@ -1,0 +1,33 @@
+.search-dal-group{
+	background-color: #ededef;
+	&:first-child{box-shadow: inset 0 7px 7px -5px #999;}
+
+	.#{$prefix}panel-header-default{
+		background-image: none;
+		background: transparent;
+		border: none;
+	}
+	.#{$prefix}panel-header-default-top{
+		box-shadow: none;
+		margin-top: 15px;
+	}
+	.#{$prefix}panel-header-text{
+		font-family: OpenSansBold;
+		color: #333;
+		margin-left: 25px;
+	}
+	.#{$prefix}tool-default {
+		background-image: url(images/minBtn.ico); //put a minimize image here
+		float: left;
+		left: 2px !important;
+	}
+	.#{$prefix}panel-body-default{
+		padding: 5px 0 5px 60px;
+	}
+	.#{$prefix}tool-expand-bottom{
+		background-position: 0 -60px;
+	}
+	.#{$prefix}tool-collapse-top{
+		background-position: 0 -75px;
+	}
+}

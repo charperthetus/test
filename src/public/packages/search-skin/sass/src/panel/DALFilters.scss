@@ -32,6 +32,7 @@ $dal-panel-padding: 20px;
 		padding: 4px 13px;
 		right: $dal-panel-padding;
 	}
+	.#{$prefix}container{ margin-top: 15px; }
 }
 .#{$prefix}box-item.search-dal {
  	padding: 12px 0 12px;
