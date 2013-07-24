@@ -23,7 +23,7 @@
     $button-link-hover-text-decoration: underline,
     $button-link-color: #fff,
     $button-link-color-hover: #fff,
-    $input-height: 28px
+    $input-height: 32px
     ){
      
     .#{$class}{
@@ -33,53 +33,68 @@
         .#{$prefix}panel-body-default{
             background: $panel-background;
             border: $panel-border;
-        }
-        .#{$prefix}toolbar-default{
-            @extend .#{$prefix}panel-body-default;
-        }
-        .#{$prefix}panel-default{
-            @extend .#{$prefix}panel-body-default;
-        }
-
-        .#{$prefix}form-text{
-            background: $input-background;
-            padding:  $input-padding;
-            font-family: $input-font-family;
-            border: $input-border;
-            height: $input-height;
-        }
-        .#{$prefix}btn-default-toolbar-small{
-            background: $button-link-background;
-            border: $button-link-border;
-            padding: $button-link-padding;
-            border-radius: $button-border-radius;
-             
-            .#{$prefix}btn-inner{
-                color: $button-link-color;
-                text-decoration: $button-link-text-decoration;
+            
+            .#{$prefix}toolbar-default{
+                @extend .#{$prefix}panel-body-default;
             }
-            &.#{$prefix}btn-default-toolbar-small-icon{
-                background: $button-background-gradient;
-                border: $button-border;
-                padding: $button-padding;
-                margin: $button-margin;
+            .#{$prefix}form-item{
+                height: $input-height;
+                .#{$prefix}form-text{
+                    background: $input-background;
+                    padding:  $input-padding;
+                    font-family: $input-font-family;
+                    border: $input-border;
+                    height: $input-height;
+                }
+            }
+            .#{$prefix}btn-default-toolbar-small{
+                background: $button-link-background;
+                border: $button-link-border;
+                border-radius: $button-border-radius;
+                
+                .#{$prefix}btn-button{
+                    height: 18px;
+                    padding: 1px;
+                }
                 .#{$prefix}btn-inner{
-                    color: $button-color;
+                    color: $button-link-color;
+                    text-decoration: $button-link-text-decoration;
+                }
+                &.#{$prefix}btn-default-toolbar-small-icon{
+                    background: $button-background-gradient;
+                    border: $button-border;
                     padding: $button-padding;
-                    font-family: $button-font-family;
+                    margin: $button-margin;
 
+                    
+                    .#{$prefix}btn-inner{
+                        color: $button-color;
+                        padding: $button-padding;
+                        font-family: $button-font-family;
+
+                    }
+                    .#{$prefix}btn-glyph{ 
+                        color: $button-color; 
+                        font-size: 18px;
+                        padding: 1px;
+                        opacity: 1;
+                    }
                 }
-                .#{$prefix}btn-glyph{ color: $button-color; }
-            }
-            &:hover{
-                .#{$prefix}btn-inner{
-                    text-decoration: $button-link-hover-text-decoration;
-                    color: $button-link-color-hover;
+                &:hover{
+                    .#{$prefix}btn-inner{
+                        text-decoration: $button-link-hover-text-decoration;
+                        color: $button-link-color-hover;
+                    }
                 }
             }
-        }
-        .#{$prefix}btn-default-small{
-            @extend .#{$prefix}btn-default-toolbar-small;
+
+            .#{$prefix}panel-default{
+                @extend .#{$prefix}panel-body-default;
+                .#{$prefix}btn-default-small{
+                    @extend .#{$prefix}btn-default-toolbar-small;
+                }
+            }
+            
         }
          
     }
