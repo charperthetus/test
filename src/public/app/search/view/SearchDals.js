@@ -22,6 +22,7 @@ Ext.define('Savanna.search.view.SearchDals', {
     dockedItems: [
         {
             xtype: 'toolbar',
+            marginBottom: '10px',
             border: false,
             width: '100%',
             dock: 'top',
@@ -31,19 +32,19 @@ Ext.define('Savanna.search.view.SearchDals', {
                     text: 'Select sources to include in your search.'
                 },
                 {
-                    xtype: 'tbspacer',
-                    width: 10
-                },
-                {
                     xtype: 'button',
+                    ui: 'link',
                     text: 'Select All'
                 },
                 {
-                    xtype: 'tbspacer',
-                    width: 100
+                    xtype: 'button',
+                    ui: 'link',
+                    text: 'Deselect All'
                 },
+                '->',
                 {
                     xtype: 'button',
+                    ui: 'link',
                     text: 'Reset All Search Options'
                 }
             ]

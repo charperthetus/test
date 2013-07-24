@@ -12,15 +12,21 @@ Ext.define('Savanna.search.view.searchDals.SearchOptions', {
 
     itemId: 'NO_ID',
 
+    cls: 'search-dal',
+
     items: [{
         xtype: 'checkbox',
-        boxLabel: 'NO LABEL'
+        boxLabel: 'NO LABEL',
+        cls: 'dal-checkbox'
     }, {
         xtype: 'label',
+        cls: 'dal-label',
         text: 'NO LABEL'
-    },{
+    },
+    {
         xtype: 'button',
         itemId: 'searchOptionsToggle',
+        cls: 'dal-toggle',
         text: 'Show Search Options'
     }],
 

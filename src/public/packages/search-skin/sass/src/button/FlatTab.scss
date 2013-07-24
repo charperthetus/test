@@ -64,7 +64,8 @@
 		}
 
 		.#{$prefix}panel-body {
-			border-color: white;
+			border-color: transparent;
+			background: transparent;
 		}
 	}
 }
