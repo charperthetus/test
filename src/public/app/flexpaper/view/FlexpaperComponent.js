@@ -16,8 +16,8 @@ Ext.define("Savanna.flexpaper.view.FlexpaperComponent", {
         "Savanna.flexpaper.view.FlexpaperBody"
     ],
     initComponent:function()    {
-        this.callParent();
-        Savanna.controller.Factory.getController('Savanna.flexpaper.controller.FlexpaperComponent');
+        this.ctrl = Savanna.controller.Factory.getController('Savanna.flexpaper.controller.FlexpaperComponent');
+        this.callParent(arguments);
     },
     items:  [
         {
@@ -42,7 +42,7 @@ Ext.define("Savanna.flexpaper.view.FlexpaperComponent", {
  closable: true,
  layout: "border"
  });
- var fpc = Ext.create("Savanna.view.flexpaper.FlexpaperComponent", {
+ var fpc = Ext.create("Savanna.flexpaper.view.FlexpaperComponent", {
  itemId: "flexcomponent",
  layout: "fit",
  region: "center",

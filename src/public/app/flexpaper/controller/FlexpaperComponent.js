@@ -17,43 +17,40 @@ Ext.define("Savanna.flexpaper.controller.FlexpaperComponent", {
     models: [/* coming soon */],
     requires: [/* coming soon */],
     load_delay:1200,
+
+    onFlexpaperRender:function (paper, evt) {
+        var fpid = "documentViewer" + paper.up("#flexcomponent").configs.guid;
+        Ext.DomHelper.insertHtml("afterBegin", paper.getEl().dom, "<div id='" + fpid + "' class='flexpaper_viewer'></div>");
+        this.loadPaper(fpid, paper.up("#flexcomponent").configs.asset, paper)
+    },
+    onToolSelect:function (btn, evt) {
+        var viewer = "documentViewer" + btn.up("#flexcomponent").configs.guid;
+        if (btn.itemId == "toolmenu")   {
+            $.each(btn.menu.items.items, function (index, item)
+            {
+                try {
+                    item.on("click", function (e)   {
+                        me["onToolSelect_" + btn.itemId](viewer);
+                    });
+                }   catch(e)    {
+                    console.log("FlexpaperComponent.js, error calling method: " + btn.itemId)
+                }
+            });
+        } else {
+            try {
+                me["onToolSelect_" + btn.itemId](viewer);
+            }   catch(e)    {
+                console.log("FlexpaperComponent, error calling method: " + btn.itemId)
+            }
+        }
+    },
     init: function (app) {
-        var me = this;
-        me.control({
-            "flexpaper_flexpapercomponent": {
-                render: function (component, evt) {
-                    // do something
-                }
-            },
+        this.control({
             "flexpaper_flexpaperbody": {
-                render: function (paper, evt) {
-                    var fpid = "documentViewer" + paper.up("#flexcomponent").configs.guid;
-                    Ext.DomHelper.insertHtml("afterBegin", paper.getEl().dom, "<div id='" + fpid + "' class='flexpaper_viewer'></div>");
-                    me.loadPaper(fpid, paper.up("#flexcomponent").configs.asset, paper)
-                }
+                render: this.onFlexpaperRender
             },
             "flexpaper_flexpapertoolbar > #tools button": {
-                click: function (btn, evt) {
-                    var viewer = "documentViewer" + btn.up("#flexcomponent").configs.guid;
-                    if (btn.itemId == "toolmenu")   {
-                        $.each(btn.menu.items.items, function (index, item)
-                        {
-                            try {
-                                item.on("click", function (e)   {
-                                    me["onToolSelect_" + btn.itemId](viewer);
-                                });
-                            }   catch(e)    {
-                                console.log("FlexpaperComponent.js, error calling method: " + btn.itemId)
-                            }
-                        });
-                    } else {
-                        try {
-                            me["onToolSelect_" + btn.itemId](viewer);
-                        }   catch(e)    {
-                            console.log("FlexpaperComponent, error calling method: " + btn.itemId)
-                        }
-                    }
-                }
+                click: this.onToolSelect
             }
         });
     },
@@ -130,8 +127,8 @@ Ext.define("Savanna.flexpaper.controller.FlexpaperComponent", {
     },
 
     /*
-    Tool selection handlers
-    */
+     Tool selection handlers
+     */
 
     onToolSelect_handtool:function(viewer) {
         // coming soon

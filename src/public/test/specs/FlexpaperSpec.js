@@ -1,90 +1,76 @@
-/*
-
-This is definitely not ready for usage - just adding
-it as a starting point for testing the Flexpaper Component
-
- */
-
 Ext.require("Savanna.flexpaper.controller.FlexpaperComponent");
-
-Ext.require("Savanna.flexpaper.view.FlexpaperBody");
 Ext.require("Savanna.flexpaper.view.FlexpaperComponent");
+Ext.require("Savanna.flexpaper.view.FlexpaperBody");
 Ext.require("Savanna.flexpaper.view.FlexpaperToolbar");
+Ext.require("Savanna.flexpaper.view.FlexpaperEntityWindow");
 
+describe("Flexpaper", function () {
 
-
-describe("Flexpaper Component", function () {
-    var controller = null, fixtures = {};
+    var fixtures;
+    var guid = Ext.id(), fp, fpc;
 
     beforeEach(function () {
         this.addMatchers(ExtSpec.Jasmine.Matchers);
+        createTestDom();
+
+        fp = Ext.create("Ext.panel.Panel", {
+            title: "unit test",
+            closable: true,
+            layout: "border",
+            renderTo:"test-html"
+        });
+        fpc = Ext.create("Savanna.flexpaper.view.FlexpaperComponent", {
+            itemId: "flexcomponent",
+            configs: {
+                asset: "http://localhost/flexpaper/pdf/Paper.pdf",
+                guid: guid
+            }
+        });
+        spyOn(fpc.ctrl, 'loadPaper');
+        fp.add(fpc);
     });
 
     afterEach(function () {
         fixtures = null;
-        if (controller) controller.destroy();
-        controller = null;
+        cleanTestDom();
     });
 
-    describe('Component View', function () {
-        var server = null;
-        var compView = null;
-        beforeEach(function () {
-            server = new ThetusTestHelpers.FakeServer(sinon);
-            compView = Ext.create("Savanna.flexpaper.view.FlexpaperComponent");
+
+    describe('View', function () {
+
+        beforeEach(function()   {
+
+
+        });
+        afterEach(function()    {
+
         });
 
-        afterEach(function () {
-            if (server) server.restore();
-            server = null;
-            if (compView) compView.destroy();
-            compView = null;
+        it("should render the flexpaper instance", function()    {
+            expect(fpc instanceof Savanna.flexpaper.view.FlexpaperComponent).toBeTruthy();
         });
-        it('view should be of the correct type', function () {
-            expect(compView instanceof Savanna.flexpaper.view.FlexpaperComponent).toBeTruthy();
-        });
-        it('view should have a controller of the correct type', function () {
-            expect(compView.ctrl instanceof Savanna.flexpaper.controller.FlexpaperComponent).toBeTruthy();
-        });
+
+
     });
 
-    describe('Component Controller', function () {
-        var server = null;
-        var compView = null;
-        var compController = null;
-        beforeEach(function () {
-            server = new ThetusTestHelpers.FakeServer(sinon);
-            compController = Ext.create("Savanna.flexpaper.controller.FlexpaperComponent");
+    describe('Stores', function () {
 
-            compView = Ext.create("Savanna.flexpaper.view.FlexpaperComponent");
-            compView.add = function(){};
-            compView.remove = function(){};
-            compView.items = {
-                items:[
-                    {
-                        ctrl:   {
+    });
 
-                        }
-                    },
-                    {
-                        ctrl:   {
+    describe('Models', function () {
 
-                        }
-                    }
-                ]
-            };
-            compView.fireEvent("render", compView);
+    });
+
+    describe('Controller', function () {
+        beforeEach(function()   {
+
+
         });
+        afterEach(function()    {
 
-        afterEach(function () {
-            if (server) server.restore();
-            server = null;
-            if (compController) compController.destroy();
-            compController = null;
         });
-        it('controller should be of the correct type', function () {
-            expect(compController instanceof Savanna.flexpaper.controller.FlexpaperComponent).toBeTruthy();
+        it("should call the loadPaper method", function()  {
+            expect(fpc.ctrl.loadPaper).toHaveBeenCalled();
         });
-
     });
 });
