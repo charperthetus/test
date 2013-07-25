@@ -211,7 +211,7 @@
                             <workingDirectory>${project.basedir}</workingDirectory>
                             <arguments>
                                 <!--<argument>${project.basedir}/src/public/test/lib/run-jscover-jasmine.js</argument>-->
-                                <argument>http://localhost:8080/test/CoverageRunner.html</argument>
+                                <argument>http://localhost:8080/test/SpecRunner.html</argument>
                             </arguments>
                         </configuration>
                     </execution>
