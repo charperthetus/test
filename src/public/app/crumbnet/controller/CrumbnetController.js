@@ -32,24 +32,15 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
     // CUSTOM METHODS/CONFIGURATION
 
     handleGraphToolbarButtonClick: function(button) {
-        var diagram = button.up('go-graph').down('go-graph_canvas').diagram
+        var crumbnet = button.up('go-graph');
+        var diagram = crumbnet.down('go-graph_canvas').diagram;
 
         switch (button.type) {
             case 'zoomIn':
-                var viewBounds = diagram.viewportBounds.copy();
-                var centerPoint = viewBounds.center.copy();
-                viewBounds.width = viewBounds.width * 0.9
-                viewBounds.height = viewBounds.height * 0.9;
-                viewBounds.center = centerPoint;
-                diagram.zoomToRect(viewBounds);
+                this.zoomIn(diagram);
                 break;
             case 'zoomOut':
-                var viewBounds = diagram.viewportBounds.copy();
-                var centerPoint = viewBounds.center.copy();
-                viewBounds.width = viewBounds.width * 1.1
-                viewBounds.height = viewBounds.height * 1.1;
-                viewBounds.center = centerPoint;
-                diagram.zoomToRect(viewBounds);
+                this.zoomOut(diagram);
                 break;
             case 'zoomToFit':
                 diagram.zoomToFit();
@@ -61,18 +52,55 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
                 diagram.undoManager.redo();
                 break;
             case 'grid':
-                var newSetting = !diagram.grid.visible;
-                diagram.grid.visible = newSetting;
-                diagram.toolManager.draggingTool.isGridSnapEnabled = newSetting;
-                diagram.toolManager.resizingTool.isGridSnapEnabled = newSetting;
-
-                //TODO - The diagram is not auto updating itself when I turn the grid on the first time.  It does once it has been shown once.
-                diagram.update(); //this is not working - try something else
+                this.toggleGrid(diagram);
                 break;
             case 'overview':
-                var crumbnetView = button.up('go-graph');
-                crumbnetView.overview.setVisible(!crumbnetView.overview.isVisible());
+                var mainCrumbnetViewport = crumbnet.down('#mainCrumbnetViewport');
+                this.toggleOverview(mainCrumbnetViewport, diagram);
                 break;
+        }
+    },
+
+    zoomIn: function(diagram) {
+        this.zoomTo(diagram, 0.9);
+    },
+
+    zoomOut: function(diagram) {
+        this.zoomTo(diagram, 1.1);
+    },
+
+    zoomTo: function(diagram, zoomRatio) {
+        var viewBounds = diagram.viewportBounds.copy();
+        var centerPoint = viewBounds.center.copy();
+
+        viewBounds.width = viewBounds.width * zoomRatio;
+        viewBounds.height = viewBounds.height * 1.1;
+        viewBounds.center = centerPoint;
+
+        diagram.zoomToRect(viewBounds);
+    },
+
+    toggleGrid: function(diagram) {
+        var newSetting = !diagram.grid.visible;
+
+        diagram.grid.visible = newSetting;
+        diagram.toolManager.draggingTool.isGridSnapEnabled = newSetting;
+        diagram.toolManager.resizingTool.isGridSnapEnabled = newSetting;
+
+        //TODO - The diagram is not auto updating itself when I turn the grid on the first time.  It does once it has been shown once.
+        diagram.update(); //this is not working - try something else
+    },
+
+    toggleOverview: function(mainCrumbnetViewport, diagram) {
+        var overview = mainCrumbnetViewport.down('go-graph_overview');
+
+        if (overview) {
+            mainCrumbnetViewport.remove(overview);
+        }
+        else {
+            overview = Ext.create('Savanna.crumbnet.view.part.Overview', {});
+            overview.setDiagram(diagram);
+            mainCrumbnetViewport.add(overview);
         }
     },
 

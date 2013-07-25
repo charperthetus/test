@@ -13,7 +13,7 @@ if [[ $COMMAND == "start" ]]; then
     # NOTE: this assumes we are running in ${project.basedir}/src  If not, all these directories are broken
 
     # DEVOPS: this path for the JAR will likely need to be updated..
-	java -jar ~/.m2/repository/com/github/tntim96/JSCover/0.3.0/JSCover-0.3.0.jar -ws --document-root=public --report-dir=public/test/reports --no-instrument=ext --no-instrument=test > $ROOTDIR/jscover.out 2> $ROOTDIR/jscover.err < /dev/null &
+	java -jar ~/.m2/repository/com/github/tntim96/JSCover/0.3.0/JSCover-0.3.0.jar -ws --document-root=public --report-dir=public/test/reports --no-instrument=ext --no-instrument=resources --no-instrument=test > $ROOTDIR/jscover.out 2> $ROOTDIR/jscover.err < /dev/null &
 
 	echo $! > $ROOTDIR/jscover.pid
 fi

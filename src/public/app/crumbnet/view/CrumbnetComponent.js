@@ -55,8 +55,7 @@ Ext.define('Savanna.crumbnet.view.CrumbnetComponent', {
     // CUSTOM METHODS
 
     setupItems: function() {
-        var overview, canvas;
-        var items = [
+        return [
             {
                 xtype: 'go-graph_palette',
                 width: 100,
@@ -64,31 +63,23 @@ Ext.define('Savanna.crumbnet.view.CrumbnetComponent', {
                 config: this.getPaletteConfig()
             },
             {
+                xtype: 'panel',
+                itemId: 'mainCrumbnetViewport',
                 flex: 10,
                 height: '100%',
                 layout: {
                     type: 'absolute'
                 },
                 items:[
-                    canvas = Ext.create('Savanna.crumbnet.view.part.Canvas',
-                        {
+                    {
+                        xtype: 'go-graph_canvas',
                         width: '100%',
                         height: '100%',
                         config: this.getCanvasConfig()
-                    }),
-                    overview = Ext.create('Savanna.crumbnet.view.part.Overview',
-                    {
-                    })
+                    }
                 ]
             }
         ];
-        this.overview = overview;
-        overview.setVisible(false);
-        canvas.addListener('afterrender', function(){
-            overview.setDiagram(canvas.diagram);
-        });
-
-        return items;
     },
 
     // GoDiagram HELPER METHODS

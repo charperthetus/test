@@ -6,7 +6,17 @@
  * To change this template use File | Settings | File Templates.
  */
 Ext.require('Savanna.search.view.SearchBody');
+
 describe('Search Map', function() {
+
+    beforeEach(function() {
+        createTestDom();
+    });
+
+    afterEach(function() {
+        cleanTestDom();
+    });
+
     describe('Savanna.search.view.SearchMap', function() {
 
         describe('constructor', function() {
