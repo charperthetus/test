@@ -18,9 +18,16 @@ Ext.define('Savanna.search.view.SearchDals', {
     layout: 'vbox',
 
     border: false,
-    selectAllText: 'Select All',
-    unselectAllText: 'Unselect All',
 
+    dockedItems: [
+        {
+            xtype: 'toolbar',
+            cls: 'search-sources-toolbar',
+            border: false,
+            width: '100%',
+            dock: 'top'
+        }
+    ],
     selectOrUnselectAllButtonClicked: function(button, evt) {
         var parentView = button.up('search_searchdals');
         var checked = true;
@@ -40,7 +47,6 @@ Ext.define('Savanna.search.view.SearchDals', {
         button.setText(text)
     },
 
-
     initComponent: function () {
         this.dockedItems = this.setupDockedItems();
         this.callParent(arguments);
@@ -52,6 +58,7 @@ Ext.define('Savanna.search.view.SearchDals', {
         return [
             {
                 xtype: 'toolbar',
+                cls: 'search-sources-toolbar',
                 border: false,
                 width: '100%',
                 dock: 'top',
@@ -62,22 +69,17 @@ Ext.define('Savanna.search.view.SearchDals', {
                         text: 'Select sources to include in your search.'
                     },
                     {
-                        xtype: 'tbspacer',
-                        width: 10
-                    },
-                    {
                         xtype: 'button',
                         itemId: 'selectAllDals',
+                        ui: 'link',
                         text: 'Select All',
                         tooltip: 'Select/Unselect all sources',
                         handler: this.selectOrUnselectAllButtonClicked
                     },
-                    {
-                        xtype: 'tbspacer',
-                        width: 100
-                    },
+                    '->',
                     {
                         xtype: 'button',
+                        ui: 'link',
                         text: 'Reset All Search Options'
                     }
                 ]

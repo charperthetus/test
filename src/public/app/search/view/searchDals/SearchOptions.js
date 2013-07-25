@@ -10,10 +10,25 @@ Ext.define('Savanna.search.view.searchDals.SearchOptions', {
 
     width: '100%',
 
-    padding: 20,
-
     itemId: 'NO_ID',
 
+    cls: 'search-dal',
+
+    items: [{
+        xtype: 'checkbox',
+        boxLabel: 'NO LABEL',
+        cls: 'dal-checkbox'
+    }, {
+        xtype: 'label',
+        cls: 'dal-label',
+        text: 'NO LABEL'
+    },
+    {
+        xtype: 'button',
+        itemId: 'searchOptionsToggle',
+        cls: 'dal-toggle',
+        text: 'Show Search Options'
+    }],
     // check to see if all dal checkboxes are now checked or unchecked after the change.
     // if they are set the "select all" or "unselect all"  text accordingly.
     dalCheckBoxClicked: function(checkBox, evt) {
@@ -70,15 +85,18 @@ Ext.define('Savanna.search.view.searchDals.SearchOptions', {
                 xtype: 'checkbox',
                 itemId: 'includeDalCheckBox',
                 boxLabel: 'NO LABEL',
+                cls: 'dal-checkbox',
                 handler: this.dalCheckBoxClicked
             },
             {
                 xtype: 'label',
+                cls: 'dal-label',
                 text: 'NO LABEL'
             },
             {
                 xtype: 'button',
                 itemId: 'searchOptionsToggle',
+                cls: 'dal-toggle',
                 text: 'Show Search Options'
             },
             {

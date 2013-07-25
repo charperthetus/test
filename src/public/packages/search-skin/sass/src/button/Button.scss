@@ -1,13 +1,17 @@
 // Pull in the flat-tab mixin
 @import 'FlatTab.scss';
 @include flat-tab();
+
+// Pull in the link button mixin
+@import 'Link.scss';
+
 @import '../mixin-spacing-classes.scss';
 @include top-spacing();
 
 @include top-spacing(
     $main-padding: 5px 0px 0px 0px
-    );
-    
+);
+
 @include extjs-button-ui(
 	$ui: 'link-button-toolbar-small',
 
@@ -44,7 +48,7 @@
     
     $icon-size: 30px,
     $glyph-color: #ffffff
-    );
+);
 
 @include extjs-button-ui(
     $ui: 'search-button-small',
@@ -81,4 +85,4 @@
     
     $icon-size: 10px,
     $glyph-color: #333
-    );
+);

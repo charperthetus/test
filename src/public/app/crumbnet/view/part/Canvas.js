@@ -1,4 +1,4 @@
-Ext.define('Savanna.crumbnet.view.goGraph.Canvas', {
+Ext.define('Savanna.crumbnet.view.part.Canvas', {
     extend: 'Ext.Component',
     alias: 'widget.go-graph_canvas',
 
@@ -7,7 +7,7 @@ Ext.define('Savanna.crumbnet.view.goGraph.Canvas', {
     diagram: null,
 
     initComponent: function() {
-        Savanna.controller.Factory.getController('Savanna.crumbnet.controller.GoGraph');
+        Savanna.controller.Factory.getController('Savanna.crumbnet.controller.CrumbnetController');
 
         // NOTE: borrowed from Ext.panel.Table (abbreviated version of how it uses a store for it's data backend)
         this.store = Ext.data.StoreManager.lookup(this.store || 'ext-empty-store');
@@ -23,7 +23,7 @@ Ext.define('Savanna.crumbnet.view.goGraph.Canvas', {
 
         this.callParent(parentNode, containerIdx);
 
-        domElem = Ext.DomHelper.insertHtml('afterBegin', this.getEl().dom, '<div class="go-graph" style="width: 100%; height: 100%;"></div>');
+        domElem = Ext.DomHelper.insertHtml('afterBegin', this.getEl().dom, '<div class="go-graph" style="width: 100%; height: 100%; position: absolute;"></div>');
         config = this.getInitialConfig();
 
         this.diagram = new go.Diagram(domElem);
