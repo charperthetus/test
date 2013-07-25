@@ -1,7 +1,7 @@
 Ext.define('Savanna.search.view.searchDals.CustomGroup', {
     extend: 'Ext.form.Panel',
     alias: 'widget.searchDals_custom-group',
-
+    cls: 'search-dal-group',
     requires: [
         'Ext.form.field.ComboBox'
     ],
@@ -45,7 +45,7 @@ Ext.define('Savanna.search.view.searchDals.CustomGroup', {
 
         if (list) {
             config.xtype = 'combobox';
-            config.store = Ext.create('Ext.data.Store', { fields: ['name','value'], data: list.map(function(choice){return {name:choice,value:choice}}) });
+            config.store = Ext.create('Ext.data.Store', { fields: ['name','value'], data: list.map(function(choice){ return {name:choice,value:choice};})});
             config.valueField = 'value';
             config.displayField = 'value';
             config.forceSelection = true;
