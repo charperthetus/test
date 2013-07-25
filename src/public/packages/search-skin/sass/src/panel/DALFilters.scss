@@ -7,7 +7,8 @@
  */ 
 $dal-panel-padding: 20px;
 $dal-hover-background-color: #ebf1f4;
-$dal-panel-spacing: 12px;
+$dal-panel-spacing: 25px;
+$dal-panel-padding-text: $dal-panel-padding + 90px;
 
 /*
  *	@runtime CSS
@@ -46,6 +47,18 @@ $dal-panel-spacing: 12px;
 			$button-default-shadow,
 			$element-hover
 		);
+	}
+	.dal-text {
+		position: absolute;
+		right: $dal-panel-padding-text;
+		top: $dal-panel-spacing + 25px;
+		background-color: transparent;
+		border: none;
+		background: transparent;
+
+		.#{$prefix}btn-inner{
+			color: #4598c4;
+		}
 	}
 	.#{$prefix}container{ margin-top: 15px; }
 }
