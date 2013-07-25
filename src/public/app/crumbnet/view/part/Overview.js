@@ -1,4 +1,4 @@
-Ext.define('Savanna.crumbnet.view.goGraph.Overview', {
+Ext.define('Savanna.crumbnet.view.part.Overview', {
     extend: 'Ext.Component',
     alias: 'widget.go-graph_overview',
 
