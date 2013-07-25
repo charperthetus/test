@@ -18,43 +18,71 @@ Ext.define('Savanna.search.view.SearchDals', {
     layout: 'vbox',
 
     border: false,
+    selectAllText: 'Select All',
+    unselectAllText: 'Unselect All',
 
-    dockedItems: [
-        {
-            xtype: 'toolbar',
-            border: false,
-            width: '100%',
-            dock: 'top',
-            items: [
-                {
-                    xtype: 'label',
-                    text: 'Select sources to include in your search.'
-                },
-                {
-                    xtype: 'tbspacer',
-                    width: 10
-                },
-                {
-                    xtype: 'button',
-                    text: 'Select All'
-                },
-                {
-                    xtype: 'tbspacer',
-                    width: 100
-                },
-                {
-                    xtype: 'button',
-                    text: 'Reset All Search Options'
-                }
-            ]
+    selectOrUnselectAllButtonClicked: function(button, evt) {
+        var parentView = button.up('search_searchdals');
+        var checked = true;
+        var text = 'Select All';
+        if (button.text == 'Select All') {
+            text = 'Unselect All';
+        } else {
+            checked = false;
         }
-    ],
+        var dalsIncludeCheckBox = parentView.query('#includeDalCheckBox');
+        this.settingAllDalCheckBoxes = true;
+        for (dal in dalsIncludeCheckBox) {
+            dalsIncludeCheckBox[dal].setValue(checked);
+        }
+        this.settingAllDalCheckBoxes = false;
+
+        button.setText(text)
+    },
+
 
     initComponent: function () {
+        this.dockedItems = this.setupDockedItems();
         this.callParent(arguments);
 
         Savanna.controller.Factory.getController('Savanna.search.controller.SearchDals');
-    }
+    },
 
+    setupDockedItems: function() {
+        return [
+            {
+                xtype: 'toolbar',
+                border: false,
+                width: '100%',
+                dock: 'top',
+                itemId: 'searchDalDockedItems',
+                items: [
+                    {
+                        xtype: 'label',
+                        text: 'Select sources to include in your search.'
+                    },
+                    {
+                        xtype: 'tbspacer',
+                        width: 10
+                    },
+                    {
+                        xtype: 'button',
+                        itemId: 'selectAllDals',
+                        text: 'Select All',
+                        tooltip: 'Select/Unselect all sources',
+                        handler: this.selectOrUnselectAllButtonClicked
+                    },
+                    {
+                        xtype: 'tbspacer',
+                        width: 100
+                    },
+                    {
+                        xtype: 'button',
+                        text: 'Reset All Search Options'
+                    }
+                ]
+            }
+        ];
+    }
 
 });

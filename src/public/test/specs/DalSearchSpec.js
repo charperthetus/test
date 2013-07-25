@@ -165,14 +165,13 @@ describe('Dal Search', function() {
                 expect(view.add.callCount).toBe(controller.getStore('Savanna.search.store.DalSources').count());
             });
         });
-
         describe('renderCustomOptions', function() {
             var topView = null;
             var testView = null;
             var button = null;
 
             beforeEach(function() {
-                var topView = Ext.create('Savanna.search.view.SearchDals', { renderTo: 'test-html' });
+                topView = Ext.create('Savanna.search.view.SearchDals', { renderTo: 'test-html' });
 
                 testView = topView.down('search_searchDals_searchoptions:last');
                 button = testView.down('#searchOptionsToggle');
@@ -207,6 +206,72 @@ describe('Dal Search', function() {
                 expect(testView.add).not.toHaveBeenCalled();
                 expect(button.setText).toHaveBeenCalledWith('Show Search Options');
                 expect(testView.doLayout).toHaveBeenCalled();
+            });
+        });
+        describe('dalCheckBoxClicked', function() {
+            var topView = null;
+            var testView = null;
+            var checkbox = null;
+            var button = null;
+            beforeEach(function() {
+                topView = Ext.create('Savanna.search.view.SearchDals', { renderTo: 'test-html' });
+                testView = topView.down('search_searchDals_searchoptions:last');
+                checkbox = testView.queryById('includeDalCheckBox');
+                button = topView.queryById('selectAllDals');
+                spyOn(testView, 'doLayout'); // don't necessarily need to redo the layout...
+                spyOn(checkbox, 'getValue');
+                spyOn(checkbox, 'up').andCallThrough();
+                spyOn(button, 'setText').andCallThrough();
+            });
+
+            afterEach(function() {
+                if (topView && topView.destroy) topView.destroy();
+
+                topView = null;
+                testView = null;
+                checkbox = null;
+                button = null;
+            });
+
+            it('checkbox.getValue, checkbox.up and button.setText to be called', function() {
+
+                testView.dalCheckBoxClicked(checkbox);
+
+                expect(checkbox.getValue).toHaveBeenCalled();
+                expect(checkbox.up).toHaveBeenCalled();
+                expect(button.setText).toHaveBeenCalled();
+            });
+        });
+
+
+
+        describe('setAllDalCheckboxValues', function() {
+            var topView = null;
+            var testView = null;
+            var button = null;
+
+            beforeEach(function() {
+                topView = Ext.create('Savanna.search.view.SearchDals', { renderTo: 'test-html' });
+                testView = topView.down('search_searchDals_searchoptions:last');
+                button = topView.queryById('selectAllDals');
+
+                spyOn(testView, 'doLayout'); // don't necessarily need to redo the layout...
+                spyOn(topView, 'query').andCallThrough();
+            });
+
+            afterEach(function() {
+                if (topView && topView.destroy) topView.destroy();
+
+                topView = null;
+                testView = null;
+                button = null;
+            });
+
+            it('view query should be called', function() {
+
+                topView.selectOrUnselectAllButtonClicked(button);
+
+                expect(topView.query).toHaveBeenCalled();
             });
         });
     });
