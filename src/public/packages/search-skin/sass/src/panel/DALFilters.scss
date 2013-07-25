@@ -4,6 +4,7 @@
 // explicitly set padding on elements that need it, so siblings can be
 // 100% width.
 $dal-panel-padding: 20px;
+$dal-button-width: 147px;
 .search-dal {
 	.search-sources-toolbar {
 		margin-bottom: 15px;
@@ -14,6 +15,7 @@ $dal-panel-padding: 20px;
 	.dal-checkbox {
 		display: inline-block;
 		vertical-align: middle;
+		max-width: 35%;
 	}
 	.dal-checkbox {
 		position: relative;
@@ -31,7 +33,9 @@ $dal-panel-padding: 20px;
 		position: absolute;
 		padding: 4px 13px;
 		right: $dal-panel-padding;
+		width: $dal-button-width;
 	}
+	.#{$prefix}container{ margin-top: 15px; }
 }
 .#{$prefix}box-item.search-dal {
  	padding: 12px 0 12px;

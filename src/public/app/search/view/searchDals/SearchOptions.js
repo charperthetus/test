@@ -43,7 +43,7 @@ Ext.define('Savanna.search.view.searchDals.SearchOptions', {
             this.down('label').text = label;
 
             if (!showButton) {
-                this.down('button').hide()
+                this.down('button').hide();
             }
         }, this));
     }
