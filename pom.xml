@@ -206,11 +206,12 @@
                             <goal>exec</goal>
                         </goals>
                         <configuration>
-                            <executable>/usr/local/bin/phantomjs</executable>
+                            <!--<executable>/usr/local/bin/phantomjs</executable>-->
+                            <executable>/Applications/Firefox.app/Contents/MacOS/firefox</executable>
                             <workingDirectory>${project.basedir}</workingDirectory>
                             <arguments>
-                                <argument>${project.basedir}/src/public/test/lib/run-jscover-jasmine.js</argument>
-                                <argument>http://localhost:8080/test/SpecRunner.html</argument>
+                                <!--<argument>${project.basedir}/src/public/test/lib/run-jscover-jasmine.js</argument>-->
+                                <argument>http://localhost:8080/test/CoverageRunner.html</argument>
                             </arguments>
                         </configuration>
                     </execution>
