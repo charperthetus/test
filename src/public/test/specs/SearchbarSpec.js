@@ -116,7 +116,7 @@ describe("Searchbar", function () {
             var searchbar = null;
 
             beforeEach(function () {
-                searchbar = Ext.create("Savanna.search.view.SearchBar");
+                searchbar = Ext.create("Savanna.search.view.SearchBar", { renderTo: 'test-html' });
             });
 
             afterEach(function () {
