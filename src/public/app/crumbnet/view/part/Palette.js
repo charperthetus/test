@@ -1,4 +1,4 @@
-Ext.define('Savanna.crumbnet.view.goGraph.Palette', {
+Ext.define('Savanna.crumbnet.view.part.Palette', {
     extend: 'Ext.Component',
     alias: 'widget.go-graph_palette',
 

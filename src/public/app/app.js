@@ -39,7 +39,7 @@ Ext.application({
         'Savanna.search.controller.SearchBar',
         'Savanna.search.controller.SearchToolbar',
         //Crumbnet
-        'Savanna.crumbnet.controller.GoGraph'
+        'Savanna.crumbnet.controller.CrumbnetController'
     ],
 
     autoCreateViewport: true,

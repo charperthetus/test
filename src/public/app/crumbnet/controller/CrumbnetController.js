@@ -1,10 +1,10 @@
-Ext.define('Savanna.crumbnet.controller.GoGraph', {
+Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
     extend: 'Ext.app.Controller',
 
     views: [
-        'Savanna.crumbnet.view.GoGraph',
-        'Savanna.crumbnet.view.goGraph.Palette',
-        'Savanna.crumbnet.view.goGraph.Canvas'
+        'Savanna.crumbnet.view.CrumbnetComponent',
+        'Savanna.crumbnet.view.part.Palette',
+        'Savanna.crumbnet.view.part.Canvas'
     ],
 
     stores: [
