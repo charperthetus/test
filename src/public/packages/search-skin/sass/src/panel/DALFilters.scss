@@ -1,48 +1,69 @@
-// TODO: Abstract this into a mixin?
-
 // Since some UI is set to full width and others are not, we have to 
 // explicitly set padding on elements that need it, so siblings can be
 // 100% width.
+
+/*
+ *	@private variables
+ */ 
 $dal-panel-padding: 20px;
-$dal-button-width: 147px;
+$dal-hover-background-color: #ebf1f4;
+$dal-panel-spacing: 12px;
+
+/*
+ *	@runtime CSS
+ */
 .search-dal {
 	.search-sources-toolbar {
 		margin-bottom: 15px;
 		padding: 0 $dal-panel-padding 0;
 	}
-	.dal-label,
-	.dal-toggle,
+
+	// Ext JS uses this element to calculate the filter bar's height
+	// To that end, margin acts almost as a height "buffer"
+	// Act accordingly!
 	.dal-checkbox {
-		display: inline-block;
-		vertical-align: middle;
-		max-width: 35%;
-	}
-	.dal-checkbox {
+		margin: $dal-panel-spacing 0 $dal-panel-spacing;
+		float: left;
 		position: relative;
 		left: $dal-panel-padding;
+		font-family: $Open-Sans-Bold;
 	}
 	.dal-label {
-		font-family: $Open-Sans-Bold;
-		margin-left: 8px;
 		color: $gray-font;
 		position: absolute;
-		left: 25%;
-		top: 5px;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		left: 210px;
+		top: $dal-panel-spacing + 1;
 	}
 	.dal-toggle {
 		position: absolute;
-		padding: 4px 13px;
 		right: $dal-panel-padding;
-		width: $dal-button-width;
+		top: $dal-panel-spacing - 1;
+		min-width: 127px;
+
+		@include box-shadow(
+			$button-default-shadow,
+			$element-hover
+		);
 	}
 	.#{$prefix}container{ margin-top: 15px; }
 }
 .#{$prefix}box-item.search-dal {
- 	padding: 12px 0 12px;
+ 	padding: 0;
  	border-top: 1px solid $gray-border;
 
  	&:hover {
- 		background-color: #ebf1f4;
+ 		background-color: $dal-hover-background-color;
+
+ 		.dal-toggle {
+
+ 			// Changes the 'collision' shadow since the BG is different
+			@include box-shadow(
+				$button-default-shadow,
+				$dal-hover-background-color 10px 0 20px 20px
+			);
+ 		}
  	}
 }
 .#{$prefix}tabpanel-child.search-dal {

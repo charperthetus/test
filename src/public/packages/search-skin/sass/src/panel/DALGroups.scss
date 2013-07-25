@@ -2,10 +2,15 @@
 
 .search-dal-group{
 	background-color: #ededef;
-	&:first-child{
+	&:first-child {
 		@include single-box-shadow(#999, 0, 7px, 7px, -5px, inset);
-		}
+	}
+	&:last-child {
 
+		.#{$prefix}panel-header-default-top{
+			padding-bottom: 20px;			
+		}
+	}
 	.#{$prefix}panel-header-default{
 		background-image: none;
 		background: transparent;
