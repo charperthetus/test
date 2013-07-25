@@ -1,12 +1,12 @@
-Ext.define('Savanna.crumbnet.view.GoGraph', {
+Ext.define('Savanna.crumbnet.view.CrumbnetComponent', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.go-graph',
 
     overview: null,
     requires: [
-        'Savanna.crumbnet.view.goGraph.Palette',
-        'Savanna.crumbnet.view.goGraph.Canvas',
-        'Savanna.crumbnet.view.goGraph.Overview'
+        'Savanna.crumbnet.view.part.Palette',
+        'Savanna.crumbnet.view.part.Canvas',
+        'Savanna.crumbnet.view.part.Overview'
     ],
 
     layout: {
@@ -70,13 +70,13 @@ Ext.define('Savanna.crumbnet.view.GoGraph', {
                     type: 'absolute'
                 },
                 items:[
-                    canvas = Ext.create('Savanna.crumbnet.view.goGraph.Canvas',
+                    canvas = Ext.create('Savanna.crumbnet.view.part.Canvas',
                         {
                         width: '100%',
                         height: '100%',
                         config: this.getCanvasConfig()
                     }),
-                    overview = Ext.create('Savanna.crumbnet.view.goGraph.Overview',
+                    overview = Ext.create('Savanna.crumbnet.view.part.Overview',
                     {
                     })
                 ]
@@ -95,7 +95,7 @@ Ext.define('Savanna.crumbnet.view.GoGraph', {
 
     getPaletteConfig: function() {
         return {
-            paletteNodeTemplateMap: this.setupNodeTemplateMap({ isPalette: true })
+            paletteNodeTemplateMap: this.setupNodeTemplateMap()
         };
     },
 
@@ -109,9 +109,7 @@ Ext.define('Savanna.crumbnet.view.GoGraph', {
         }
     },
 
-    setupNodeTemplateMap: function(options) {
-        options = options || {};
-
+    setupNodeTemplateMap: function() {
         var $ = go.GraphObject.make;  // for conciseness in defining templates
 
         var defaultAdornment =
@@ -215,24 +213,22 @@ Ext.define('Savanna.crumbnet.view.GoGraph', {
 
         textBlock = this.generateTextBlockTemplate(options);
 
-        var triangle = go.Geometry.parse("M 0,0 L 12,0 12,12 0,0", true);
-
         return $(
             go.Node, go.Panel.Auto,
             {
                 fromSpot: go.Spot.AllSides,
                 toSpot: go.Spot.AllSides,
                 selectionAdornmentTemplate: options.adornmentTemplate ? options.adornmentTemplate : null,
-                desiredSize: new go.Size(70, 80),
-                toLinkable: true
+                toLinkable: true,
+                mouseEnter: this.nodeMouseEnter,
+                mouseLeave: this.nodeMouseLeave
             },
 
-            $(go.Panel, go.Panel.Table, icon, textBlock),
-            $(go.Panel,
-                { alignment: go.Spot.TopRight },  // this function is defined below
-                $(go.Shape, { geometry: triangle, fill: 'Red' }, {portId: 'out', fromLinkable: true })
-            )
-
+            $(go.Panel, go.Panel.Vertical, icon, textBlock),
+            this.makePort("T", go.Spot.TopRight, 0),
+            this.makePort("L", go.Spot.TopLeft, 270),
+            this.makePort("R", go.Spot.BottomRight,90),
+            this.makePort("B", go.Spot.BottomLeft, 180)
         );
     },
 
@@ -250,6 +246,15 @@ Ext.define('Savanna.crumbnet.view.GoGraph', {
 
         icon.width = icon.height = 46;
         return icon;
+    },
+
+    makePort: function (name, spot, angle) {
+        var $ = go.GraphObject.make;
+        var triangle = go.Geometry.parse("M 0,0 L 12,0 12,12 0,0", true);
+        return $(go.Panel,
+            { alignment: spot },
+            $(go.Shape, { geometry: triangle, stroke: null, fill: null, angle: angle},
+                {portId: name, fromLinkable: true }) )
     },
 
     generateTextBlockTemplate: function(options) {
@@ -270,6 +275,8 @@ Ext.define('Savanna.crumbnet.view.GoGraph', {
             wrap: go.TextBlock.None,
             textAlign: 'center',
             editable: true,
+            width: 80,
+            wrap: go.TextBlock.WrapDesiredSize,
             font: '15pt Helvetica, Arial, sans-serif',
             name: 'label'
         }, textOpts);
@@ -302,6 +309,30 @@ Ext.define('Savanna.crumbnet.view.GoGraph', {
                     segmentOffset: new go.Point(NaN, NaN),
                     segmentOrientation: go.Link.OrientUpright },
                 new go.Binding("text", "text")));
+    },
+
+    nodeMouseEnter: function(e, obj){
+        var node = obj.part;
+        var diagram = node.diagram;
+        if (!diagram || diagram.isReadOnly || !diagram.allowLink) return;
+        var it = node.ports;
+        while (it.next()) {
+            var port = it.value;
+            port.fill = "red";
+            port.stroke = "black";
+        }
+    },
+
+    nodeMouseLeave: function(e, obj){
+        var node = obj.part;
+        var diagram = node.diagram;
+        if (!diagram || diagram.isReadOnly || !diagram.allowLink) return;
+        var it = node.ports;
+        while (it.next()) {
+            var port = it.value;
+            port.fill = null;
+            port.stroke = null;
+        }
     },
 
     addNodeAndLink: function(e, obj) {
