@@ -29,7 +29,8 @@
 		padding: 5px 0 5px 60px;
 	}
 	.#{$prefix}tool-expand-bottom{
-		background-position: 0 -60px;
+		background-position: 0 -75px;
+		@include rotate(-90deg);
 	}
 	.#{$prefix}tool-collapse-top{
 		background-position: 0 -75px;
