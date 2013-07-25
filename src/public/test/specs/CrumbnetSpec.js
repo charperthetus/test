@@ -17,7 +17,7 @@ describe('Savanna.crumbnet', function() {
 
         beforeEach(function() {
             controller = Ext.create('Savanna.crumbnet.controller.CrumbnetController');
-            view = Ext.create('Savanna.crumbnet.view.CrumbnetComponent', {renderTo: 'test-html'});
+            view = Ext.create('Savanna.crumbnet.view.CrumbnetComponent', { renderTo: 'test-html' });
             diagram = view.down('go-graph_canvas').diagram;
         });
 
@@ -75,13 +75,28 @@ describe('Savanna.crumbnet', function() {
                 expect(diagram.toolManager.draggingTool.isGridSnapEnabled).not.toBe(currentVis);
                 expect(diagram.toolManager.resizingTool.isGridSnapEnabled).not.toBe(currentVis);
             });
+
+            it('should toggle the overview when we click "overview"', function() {
+                var overviewVisible = view.down('go-graph_overview') != null;
+
+                var button = view.down('button[type="overview"]');
+
+                controller.handleGraphToolbarButtonClick(button);
+
+                expect(view.down('go-graph_overview') != null).not.toBe(overviewVisible);
+
+                controller.handleGraphToolbarButtonClick(button);
+
+                expect(view.down('go-graph_overview') != null).toBe(overviewVisible);
+            });
         });
+
         describe('handleGraphMenuClick', function(){
 
             it('should change diagram layout when we click "tree"', function() {
                 var menuButton = view.down('menuitem[type="tree"]');
                 var menu = view.down('#layoutMenu');
-                controller.handleGraphToolbarButtonClick(menu, menuButton);
+                controller.handleGraphMenuClick(menu, menuButton);
 
                 expect(diagram.layout instanceof go.Layout).toBeTruthy();
             });
@@ -89,7 +104,7 @@ describe('Savanna.crumbnet', function() {
             it('should change diagram layout when we click "grid"', function() {
                 var menuButton = view.down('menuitem[type="grid"]');
                 var menu = view.down('#layoutMenu');
-                controller.handleGraphToolbarButtonClick(menu, menuButton);
+                controller.handleGraphMenuClick(menu, menuButton);
 
                 expect(diagram.layout instanceof go.Layout).toBeTruthy();
             });
@@ -97,7 +112,7 @@ describe('Savanna.crumbnet', function() {
             it('should change diagram layout when we click "force"', function() {
                 var menuButton = view.down('menuitem[type="force"]');
                 var menu = view.down('#layoutMenu');
-                controller.handleGraphToolbarButtonClick(menu, menuButton);
+                controller.handleGraphMenuClick(menu, menuButton);
 
                 expect(diagram.layout instanceof go.Layout).toBeTruthy();
             });
@@ -105,7 +120,7 @@ describe('Savanna.crumbnet', function() {
             it('should change diagram layout when we click "circular"', function() {
                 var menuButton = view.down('menuitem[type="circular"]');
                 var menu = view.down('#layoutMenu');
-                controller.handleGraphToolbarButtonClick(menu, menuButton);
+                controller.handleGraphMenuClick(menu, menuButton);
 
                 expect(diagram.layout instanceof go.Layout).toBeTruthy();
             });
@@ -113,7 +128,7 @@ describe('Savanna.crumbnet', function() {
             it('should change diagram layout when we click "layeredDigraph"', function() {
                 var menuButton = view.down('menuitem[type="layeredDigraph"]');
                 var menu = view.down('#layoutMenu');
-                controller.handleGraphToolbarButtonClick(menu, menuButton);
+                controller.handleGraphMenuClick(menu, menuButton);
 
                 expect(diagram.layout instanceof go.Layout).toBeTruthy();
             });
@@ -121,7 +136,7 @@ describe('Savanna.crumbnet', function() {
             it('should change diagram alignment when we click "right"', function() {
                 var menuButton = view.down('menuitem[type="right"]');
                 var menu = view.down('#alignmentMenu');
-                controller.handleGraphToolbarButtonClick(menu, menuButton);
+                controller.handleGraphMenuClick(menu, menuButton);
 
                 //We always set the alignment back to default after changing it
                 expect(diagram.contentAlignment).toBe(go.Spot.Default);
@@ -130,39 +145,39 @@ describe('Savanna.crumbnet', function() {
             it('should change diagram alignment when we click "left"', function() {
                 var menuButton = view.down('menuitem[type="left"]');
                 var menu = view.down('#alignmentMenu');
-                controller.handleGraphToolbarButtonClick(menu, menuButton);
+                controller.handleGraphMenuClick(menu, menuButton);
 
                 //We always set the alignment back to default after changing it
                 expect(diagram.contentAlignment).toBe(go.Spot.Default);
             });
+
             it('should change diagram alignment when we click "top"', function() {
                 var menuButton = view.down('menuitem[type="top"]');
                 var menu = view.down('#alignmentMenu');
-                controller.handleGraphToolbarButtonClick(menu, menuButton);
+                controller.handleGraphMenuClick(menu, menuButton);
 
                 //We always set the alignment back to default after changing it
                 expect(diagram.contentAlignment).toBe(go.Spot.Default);
             });
+
             it('should change diagram alignment when we click "bottom"', function() {
                 var menuButton = view.down('menuitem[type="bottom"]');
                 var menu = view.down('#alignmentMenu');
-                controller.handleGraphToolbarButtonClick(menu, menuButton);
+                controller.handleGraphMenuClick(menu, menuButton);
 
                 //We always set the alignment back to default after changing it
                 expect(diagram.contentAlignment).toBe(go.Spot.Default);
             });
+
             it('should change diagram alignment when we click "center"', function() {
                 var menuButton = view.down('menuitem[type="center"]');
                 var menu = view.down('#alignmentMenu');
-                controller.handleGraphToolbarButtonClick(menu, menuButton);
+                controller.handleGraphMenuClick(menu, menuButton);
 
                 //We always set the alignment back to default after changing it
                 expect(diagram.contentAlignment).toBe(go.Spot.Default);
             });
-
         });
-
-
     });
 
     describe('Model', function() {
@@ -180,10 +195,10 @@ describe('Savanna.crumbnet', function() {
     });
 
     describe('Views', function() {
-        var view = null
+        var view = null;
 
         beforeEach(function() {
-            view = Ext.create('Savanna.crumbnet.view.CrumbnetComponent', {renderTo: 'test-html'});
+            view = Ext.create('Savanna.crumbnet.view.CrumbnetComponent', { renderTo: 'test-html' });
         });
 
         afterEach(function() {
@@ -200,12 +215,23 @@ describe('Savanna.crumbnet', function() {
 
             it('should set up a canvas config', function() {
                 var canvas = view.down('go-graph_canvas');
+
                 expect(canvas.config.nodeTemplateMap.count).toBeGreaterThan(0);
+
                 var iter = canvas.config.nodeTemplateMap.iterator;
+
                 iter.next();
+
                 var firstItem = iter.value;
+
                 expect(firstItem.findObject('icon')).not.toBeNull();
                 expect(firstItem.findObject('label')).not.toBeNull();
+            });
+
+            it('should NOT set up an overview panel by default', function() {
+                var overview = view.down('go-graph_overview');
+                // NOTE: when I would use expect(overview).toBeNull(), the test would hang...
+                expect(overview == null).toBeTruthy();
             });
         });
 

@@ -18,10 +18,10 @@ Ext.define('Savanna.crumbnet.view.part.Canvas', {
         });
     },
 
-    onRender: function(parentNode, containerIdx) {
-        var domElem, config, i = 0, eventName;
+    onRender: function() {
+        var domElem, config;
 
-        this.callParent(parentNode, containerIdx);
+        this.callParent(arguments);
 
         domElem = Ext.DomHelper.insertHtml('afterBegin', this.getEl().dom, '<div class="go-graph" style="width: 100%; height: 100%; position: absolute;"></div>');
         config = this.getInitialConfig();
