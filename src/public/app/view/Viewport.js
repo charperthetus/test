@@ -20,6 +20,7 @@ Ext.define('Savanna.view.Viewport', {
             region:"center",
             layout:"fit",
             itemId:"viewport_main",
+            border: false,
             items:  [
                 {
                     xtype:  'login',
@@ -27,7 +28,8 @@ Ext.define('Savanna.view.Viewport', {
                 },
                 {
                     xtype:  'savannadesktop',
-                    itemId: 'main'
+                    itemId: 'main',
+                    border: false
                 }
             ]
         }

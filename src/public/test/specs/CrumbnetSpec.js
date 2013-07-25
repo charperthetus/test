@@ -1,4 +1,4 @@
-Ext.require('Savanna.crumbnet.controller.GoGraph');
+Ext.require('Savanna.crumbnet.controller.CrumbnetController');
 
 describe('Savanna.crumbnet', function() {
 
@@ -16,8 +16,8 @@ describe('Savanna.crumbnet', function() {
             diagram = null;
 
         beforeEach(function() {
-            controller = Ext.create('Savanna.crumbnet.controller.GoGraph');
-            view = Ext.create('Savanna.crumbnet.view.GoGraph', {renderTo: 'test-html'});
+            controller = Ext.create('Savanna.crumbnet.controller.CrumbnetController');
+            view = Ext.create('Savanna.crumbnet.view.CrumbnetComponent', {renderTo: 'test-html'});
             diagram = view.down('go-graph_canvas').diagram;
         });
 
@@ -29,7 +29,7 @@ describe('Savanna.crumbnet', function() {
         });
 
         it('should have a controller instance', function() {
-            expect(controller instanceof Savanna.crumbnet.controller.GoGraph).toBeTruthy();
+            expect(controller instanceof Savanna.crumbnet.controller.CrumbnetController).toBeTruthy();
         });
 
         describe('handleGraphToolbarButtonClick', function(){
@@ -183,7 +183,7 @@ describe('Savanna.crumbnet', function() {
         var view = null
 
         beforeEach(function() {
-            view = Ext.create('Savanna.crumbnet.view.GoGraph', {renderTo: 'test-html'});
+            view = Ext.create('Savanna.crumbnet.view.CrumbnetComponent', {renderTo: 'test-html'});
         });
 
         afterEach(function() {

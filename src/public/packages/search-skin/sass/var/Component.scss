@@ -7,18 +7,23 @@
  * be compiled with others. Let's keep it clean!
  */
 
-// Custom stylesheets to be included
-@import 'Search/Typography.scss';
-
 /*
  * Component.scss specific code here
  */
-
  // Base color to white so we're not overwriting a bunch of color code
 $base-color: #fff;
 
 // This is for NORMAL, each weight has it's own FF!s
 $font-family: 'OpenSansRegular';
+$color: #333;
 
 // Global CSS Configs
+$prefix: 'x-';
 $include-rtl: false;
+
+/*
+ *	Import the other SCSS files
+ */
+@import 'Search/Typography.scss';
+@import 'Search/Colors.scss';
+@import 'shame.scss';

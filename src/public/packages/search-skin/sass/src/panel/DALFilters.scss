@@ -1,0 +1,46 @@
+// TODO: Abstract this into a mixin?
+
+// Since some UI is set to full width and others are not, we have to 
+// explicitly set padding on elements that need it, so siblings can be
+// 100% width.
+$dal-panel-padding: 20px;
+.search-dal {
+	.search-sources-toolbar {
+		margin-bottom: 15px;
+		padding: 0 $dal-panel-padding 0;
+	}
+	.dal-label,
+	.dal-toggle,
+	.dal-checkbox {
+		display: inline-block;
+		vertical-align: middle;
+	}
+	.dal-checkbox {
+		position: relative;
+		left: $dal-panel-padding;
+	}
+	.dal-label {
+		font-family: $Open-Sans-Bold;
+		margin-left: 8px;
+		color: $gray-font;
+		position: absolute;
+		left: 25%;
+		top: 5px;
+	}
+	.dal-toggle {
+		position: absolute;
+		padding: 4px 13px;
+		right: $dal-panel-padding;
+	}
+}
+.#{$prefix}box-item.search-dal {
+ 	padding: 12px 0 12px;
+ 	border-top: 1px solid $gray-border;
+
+ 	&:hover {
+ 		background-color: #ebf1f4;
+ 	}
+}
+.#{$prefix}tabpanel-child.search-dal {
+	padding: 10px 0 10px; 
+}
