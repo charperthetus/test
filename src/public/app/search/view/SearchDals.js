@@ -81,6 +81,7 @@ Ext.define('Savanna.search.view.SearchDals', {
                     '->',
                     {
                         xtype: 'button',
+                        itemId: 'resetAllSearchOptions',
                         ui: 'link',
                         text: 'Reset All Search Options'
                     }
