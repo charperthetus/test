@@ -18,7 +18,6 @@ Ext.define('Savanna.search.controller.SearchDals', {
     layout: 'hbox',
     addDalDetailText: 'Show Search Options',
     removeDalDetailText: 'Hide Search Options',
-    settingAllDalCheckBoxes: false,
 
     createPanel: function(myRecord) {
         return Ext.create('Savanna.search.view.searchDals.SearchOptions', {

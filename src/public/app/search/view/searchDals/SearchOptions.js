@@ -32,12 +32,10 @@ Ext.define('Savanna.search.view.searchDals.SearchOptions', {
     // check to see if all dal checkboxes are now checked or unchecked after the change.
     // if they are set the "select all" or "unselect all"  text accordingly.
     dalCheckBoxClicked: function(checkBox, evt) {
-        console.log('checkbox', checkBox);
         var checkboxChecked;
         var allDalCheckBoxesHaveSameValue = true;
-        if (!this.settingAllDalCheckBoxes) {
-            var parentView = checkBox.up('search_searchdals');
-            console.log('parentView', parentView);
+        var parentView = checkBox.up('search_searchdals');
+        if (!parentView.settingAllDalCheckBoxes) {
             var dalIncludeCheckBoxes = parentView.query('#includeDalCheckBox');
             var button = parentView.queryById('selectAllDals');
             checkboxChecked = checkBox.getValue();
