@@ -314,7 +314,22 @@ describe('Dal Search', function() {
                 button = null;
             });
             it('expect resetAllSearchOptions to call removeAll and createDalPanels', function() {
+                var checkboxes = topView.query('#includeDalCheckBox')
+                topView.settingAllDalCheckBoxes = true;
+                for (box in checkboxes) {
+                    checkboxes[box].setValue(true);
+                }
+                topView.settingAllDalCheckBoxes = false;
+                var allCheckBoxesChecked = true;
+
+                // after resetAllSearchOptions all checkboxes should no longer be checked.
                 controller.resetAllSearchOptions(button);
+                for (box in checkboxes) {
+                    if (checkboxes[box].getValue !== true) {
+                        allCheckBoxesChecked = false;
+                    }
+                }
+                expect(allCheckBoxesChecked).toBeFalsy();
                 expect(topView.removeAll).toHaveBeenCalled();
                 expect(controller.createDalPanels).toHaveBeenCalled();
             });

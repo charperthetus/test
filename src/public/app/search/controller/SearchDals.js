@@ -46,6 +46,7 @@ Ext.define('Savanna.search.controller.SearchDals', {
         var parentView = button.up('search_searchdals');
         parentView.removeAll();
         this.createDalPanels(parentView);
+        parentView.down('#selectAllDals').setText('Select All');
     },
 
     init: function (app) {
