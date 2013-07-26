@@ -207,25 +207,21 @@ describe('Savanna.crumbnet', function() {
         });
 
         describe('Main Crumbnet View', function(){
-            it('should set up a palette config', function() {
+            it('should set up a palette node template', function() {
                 var palette = view.down('go-graph_palette');
-                console.log(palette.config);
-                expect(palette.config.paletteNodeTemplateMap.count).toBeGreaterThan(0);
+                console.log('Palette Node Template', palette.palette.nodeTemplate);
+                expect(palette.palette.nodeTemplate).not.toBeUndefined();
             });
 
-            it('should set up a canvas config', function() {
+            it('should set up a canvas node template', function() {
                 var canvas = view.down('go-graph_canvas');
 
-                expect(canvas.config.nodeTemplateMap.count).toBeGreaterThan(0);
+                expect(canvas.diagram.nodeTemplate).not.toBeUndefined();
 
-                var iter = canvas.config.nodeTemplateMap.iterator;
+                var nodeTemplate = canvas.diagram.nodeTemplate;
 
-                iter.next();
-
-                var firstItem = iter.value;
-
-                expect(firstItem.findObject('icon')).not.toBeNull();
-                expect(firstItem.findObject('label')).not.toBeNull();
+                expect(nodeTemplate.findObject('icon')).not.toBeNull();
+                expect(nodeTemplate.findObject('label')).not.toBeNull();
             });
 
             it('should NOT set up an overview panel by default', function() {
