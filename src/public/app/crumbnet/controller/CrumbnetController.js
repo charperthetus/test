@@ -3,7 +3,7 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
 
     views: [
         'Savanna.crumbnet.view.CrumbnetComponent',
-        'Savanna.crumbnet.view.part.Palette',
+        'Savanna.crumbnet.view.part.PaletteMenu',
         'Savanna.crumbnet.view.part.Canvas'
     ],
 
