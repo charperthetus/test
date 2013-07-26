@@ -19,6 +19,8 @@ Ext.define('Savanna.search.view.SearchDals', {
 
     border: false,
 
+    settingAllDalCheckBoxes: false,     // currently setting all checkboxes to checked or unchecked
+
     dockedItems: [
         {
             xtype: 'toolbar',

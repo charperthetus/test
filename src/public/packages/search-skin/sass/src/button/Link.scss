@@ -58,5 +58,6 @@
     }
 }
 .#{$prefix}btn-link-toolbar-small-focus .#{$prefix}btn-inner {
-    font-family: auto;
+    // For some reason ext js is still trying to overwrite this
+    font-family: $Open-Sans-Normal; 
 }
