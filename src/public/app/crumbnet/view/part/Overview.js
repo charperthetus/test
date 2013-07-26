@@ -5,15 +5,23 @@ Ext.define('Savanna.crumbnet.view.part.Overview', {
     overview: null,
     diagram: null,
 
+    initComponent: function(options) {
+        options = options || {};
+
+        if (options.diagram) this.diagram = options.diagram;
+    },
+
+
     setDiagram: function(val) {
         this.diagram = val;
-        if(this.overview){
+
+        if (this.overview) {
             this.overview.observed = val;
         }
     },
 
-    onRender: function(parentNode, containerIdx) {
-        this.callParent(parentNode, containerIdx);
+    onRender: function() {
+        this.callParent(arguments);
 
         var domElem = Ext.DomHelper.insertHtml('afterBegin', this.getEl().dom, '<div class="go-graph-overview" ' +
             'style="background-color: ' +
@@ -26,7 +34,8 @@ Ext.define('Savanna.crumbnet.view.part.Overview', {
             'z-index: 10"></div>');
 
         this.overview = new go.Overview(domElem);
-        if (this.diagram){
+
+        if (this.diagram) {
             this.overview.observed = this.diagram;
         }
     }

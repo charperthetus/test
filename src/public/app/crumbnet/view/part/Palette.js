@@ -4,10 +4,10 @@ Ext.define('Savanna.crumbnet.view.part.Palette', {
 
     palette: null,
 
-    onRender: function(parentNode, containerIdx) {
+    onRender: function() {
         var domElem, config, palette;
 
-        this.callParent(parentNode, containerIdx);
+        this.callParent(arguments);
 
         domElem = Ext.DomHelper.insertHtml('afterBegin', this.getEl().dom, '<div class="go-graph-palette" style="width: 100%; height: 100%;"></div>');
         config = this.getInitialConfig();

@@ -100,6 +100,7 @@ Ext.define('Savanna.search.view.searchDals.SearchOptions', {
             {
                 xtype: 'button',
                 itemId: 'resetSingleDal',
+                cls: 'dal-text',
                 text: 'Reset',
                 tooltip: 'Reset search options'
             }

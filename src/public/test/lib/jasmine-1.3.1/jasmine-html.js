@@ -356,6 +356,8 @@ jasmine.HtmlReporter.ReporterView = function(dom) {
     }
 
     dom.banner.appendChild(this.createDom('span', {className: 'duration'}, "finished in " + ((new Date().getTime() - this.startedAt.getTime()) / 1000) + "s"));
+
+    if (typeof jscoverage_report !== 'undefined') jscoverage_report('jasmine');
   };
 
   return this;
