@@ -18,7 +18,7 @@ Ext.define('Savanna.search.controller.SearchDals', {
     layout: 'hbox',
     addDalDetailText: 'Show Search Options',
     removeDalDetailText: 'Hide Search Options',
-    lastLoadedDalData: null,
+
     createPanel: function(myRecord) {
         return Ext.create('Savanna.search.view.searchDals.SearchOptions', {
             itemId: myRecord.data.id,
@@ -49,6 +49,54 @@ Ext.define('Savanna.search.controller.SearchDals', {
         parentView.down('#selectAllDals').setText('Select All');
     },
 
+    selectOrUnselectAllButtonClicked: function(button, evt) {
+        var parentView = button.up('search_searchdals');
+        var checked = true;
+        var text = 'Select All';
+        if (button.text == 'Select All') {
+            text = 'Unselect All';
+        } else {
+            checked = false;
+        }
+        var dalsIncludeCheckBox = parentView.query('#includeDalCheckBox');
+        parentView.settingAllDalCheckBoxes = true;
+        for (dal in dalsIncludeCheckBox) {
+            dalsIncludeCheckBox[dal].setValue(checked);
+        }
+        parentView.settingAllDalCheckBoxes = false;
+
+        button.setText(text)
+    },
+
+    // check to see if all dal checkboxes are now checked or unchecked after the change.
+    // if they are set the "select all" or "unselect all"  text accordingly.
+    dalCheckBoxClicked: function(checkBox, evt) {
+        var checkboxChecked;
+        var allDalCheckBoxesHaveSameValue = true;
+        var parentView = checkBox.up('search_searchdals');
+        if (!parentView.settingAllDalCheckBoxes) {
+            var dalIncludeCheckBoxes = parentView.query('#includeDalCheckBox');
+            var button = parentView.queryById('selectAllDals');
+            checkboxChecked = checkBox.getValue();
+            for (dal in dalIncludeCheckBoxes) {
+                if ( dalIncludeCheckBoxes[dal].getValue() != checkboxChecked){
+                    allDalCheckBoxesHaveSameValue = false;
+                }
+            }
+            if (allDalCheckBoxesHaveSameValue){
+                var text;
+                if (checkboxChecked){
+                    text = 'Unselect All';
+                } else {
+                    text = 'Select All';
+                }
+            } else {
+                text = 'Select All';
+            }
+            button.setText(text)
+        }
+    },
+
     init: function (app) {
         this.getStore('Savanna.search.store.DalSources').loadRawData(this.data);
 
@@ -59,8 +107,14 @@ Ext.define('Savanna.search.controller.SearchDals', {
             'search_searchdals > #searchDalDockedItems #resetAllSearchOptions': {
                 click: this.resetAllSearchOptions
             },
+            'search_searchdals > #searchDalDockedItems #selectAllDals': {
+                click: this.selectOrUnselectAllButtonClicked
+            },
             'search_searchDals_searchoptions > #searchOptionsToggle': {
                 click: this.renderCustomOptions
+            },
+            'search_searchDals_searchoptions > #includeDalCheckBox': {
+                click: this.dalCheckBoxClicked
             }
         });
     },

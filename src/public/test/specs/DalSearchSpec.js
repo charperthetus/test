@@ -235,7 +235,7 @@ describe('Dal Search', function() {
 
             it('checkbox.getValue, checkbox.up and button.setText to be called', function() {
 
-                testView.dalCheckBoxClicked(checkbox);
+                controller.dalCheckBoxClicked(checkbox);
 
                 expect(checkbox.getValue).toHaveBeenCalled();
                 expect(checkbox.up).toHaveBeenCalled();
@@ -250,7 +250,7 @@ describe('Dal Search', function() {
                 }
                 topView.settingAllDalCheckBoxes = false;
                 checkbox.setValue(true);
-                testView.dalCheckBoxClicked(checkbox);
+                controller.dalCheckBoxClicked(checkbox);
                 expect(button.setText).toHaveBeenCalledWith('Unselect All');
             });
         });
@@ -280,12 +280,12 @@ describe('Dal Search', function() {
             });
 
             it('expect all the dal checkboxes to get checked and unchecked with selectOrUnselectAllButtonClicked', function() {
-                topView.selectOrUnselectAllButtonClicked(button);
+                controller.selectOrUnselectAllButtonClicked(button);
                 var checkboxes = topView.query('#includeDalCheckBox')
                 for (box in checkboxes) {
                     expect(checkboxes[box].getValue()).toBeTruthy();
                 }
-                topView.selectOrUnselectAllButtonClicked(button);
+                controller.selectOrUnselectAllButtonClicked(button);
                 for (box in checkboxes) {
                     expect(checkboxes[box].getValue()).toBeFalsy();
                 }
