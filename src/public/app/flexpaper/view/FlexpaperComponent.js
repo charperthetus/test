@@ -11,6 +11,7 @@ Ext.define("Savanna.flexpaper.view.FlexpaperComponent", {
     layout:"fit",
     border:false,
     currentTool: null,
+    asset:null,
     requires: [
         "Savanna.flexpaper.view.FlexpaperToolbar",
         "Savanna.flexpaper.view.FlexpaperBody"
@@ -36,7 +37,6 @@ Ext.define("Savanna.flexpaper.view.FlexpaperComponent", {
 /*
 
  getFlexpaper: function (div, asset, tgt, title) {
- var guid = Ext.id();
  var fp = Ext.create("Ext.panel.Panel", {
  title: title,
  closable: true,
@@ -46,9 +46,8 @@ Ext.define("Savanna.flexpaper.view.FlexpaperComponent", {
  itemId: "flexcomponent",
  layout: "fit",
  region: "center",
- configs: {
- asset: asset,
- guid: guid
+ config: {
+ asset: asset
  }
  });
  fp.add(fpc);

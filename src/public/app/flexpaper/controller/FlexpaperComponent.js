@@ -19,14 +19,14 @@ Ext.define("Savanna.flexpaper.controller.FlexpaperComponent", {
     load_delay:1200,
 
     onFlexpaperRender:function (paper, evt) {
-        var fpid = "documentViewer" + paper.up("#flexcomponent").configs.guid;
+        var fpid = "documentViewer" + paper.up("#flexcomponent").getId();
         Ext.DomHelper.insertHtml("afterBegin", paper.getEl().dom, "<div id='" + fpid + "' class='flexpaper_viewer'></div>");
-        this.loadPaper(fpid, paper.up("#flexcomponent").configs.asset, paper)
+        this.loadPaper(fpid, paper.up("#flexcomponent").asset, paper)
     },
     onToolSelect:function (btn, evt) {
-        var viewer = "documentViewer" + btn.up("#flexcomponent").configs.guid;
+        var viewer = "documentViewer" + btn.up("#flexcomponent").getId();
         if (btn.itemId == "toolmenu")   {
-            $.each(btn.menu.items.items, function (index, item)
+            Ext.each(btn.menu.items.items, function (item)
             {
                 try {
                     item.on("click", function (e)   {

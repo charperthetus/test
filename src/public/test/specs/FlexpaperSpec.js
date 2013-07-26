@@ -21,10 +21,7 @@ describe("Flexpaper", function () {
         });
         fpc = Ext.create("Savanna.flexpaper.view.FlexpaperComponent", {
             itemId: "flexcomponent",
-            configs: {
-                asset: "http://localhost/flexpaper/pdf/Paper.pdf",
-                guid: guid
-            }
+            asset: "http://localhost/flexpaper/pdf/Paper.pdf"
         });
         spyOn(fpc.ctrl, 'loadPaper');
         fp.add(fpc);
