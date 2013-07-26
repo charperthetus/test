@@ -292,5 +292,32 @@ describe('Dal Search', function() {
                 expect(topView.query).toHaveBeenCalled();
             });
         });
+        describe('resetAllSearchOptions', function() {
+            var topView = null;
+            var testView = null;
+            var button = null;
+
+            beforeEach(function() {
+                topView = Ext.create('Savanna.search.view.SearchDals', { renderTo: 'test-html' });
+                testView = topView.down('search_searchDals_searchoptions:last');
+                button = topView.queryById('resetAllSearchOptions');
+
+                spyOn(testView, 'doLayout'); // don't necessarily need to redo the layout...
+                spyOn(topView, 'removeAll').andCallThrough();
+                spyOn(controller, 'createDalPanels').andCallThrough();
+            });
+            afterEach(function() {
+                if (topView && topView.destroy) topView.destroy();
+
+                topView = null;
+                testView = null;
+                button = null;
+            });
+            it('expect resetAllSearchOptions to call removeAll and createDalPanels', function() {
+                controller.resetAllSearchOptions(button);
+                expect(topView.removeAll).toHaveBeenCalled();
+                expect(controller.createDalPanels).toHaveBeenCalled();
+            });
+        });
     });
 });
