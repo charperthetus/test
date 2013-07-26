@@ -1,3 +1,4 @@
+/* global Ext: false, describe: false, beforeEach: false, afterEach: false, createTestDom: false, cleanTestDom: false, it: false, expect: false, Savanna: false, spyOn: false, go: false, ThetusTestHelpers: false */
 Ext.require('Savanna.crumbnet.controller.CrumbnetController');
 
 describe('Savanna.crumbnet', function() {
@@ -37,6 +38,7 @@ describe('Savanna.crumbnet', function() {
             it('should zoom the diagram when we click "zoomToFit"', function() {
                 var button = view.down('button[type="zoomToFit"]');
 
+                //noinspection JSValidateTypes
                 spyOn(diagram, 'zoomToFit');
 
                 controller.handleGraphToolbarButtonClick(button);
@@ -47,6 +49,7 @@ describe('Savanna.crumbnet', function() {
             it('should undo the last action when we click "undo"', function() {
                 var button = view.down('button[type="undo"]');
 
+                //noinspection JSValidateTypes
                 spyOn(diagram.undoManager, 'undo');
 
                 controller.handleGraphToolbarButtonClick(button);
@@ -57,6 +60,7 @@ describe('Savanna.crumbnet', function() {
             it('should redo the last action when we click "redo"', function() {
                 var button = view.down('button[type="redo"]');
 
+                //noinspection JSValidateTypes
                 spyOn(diagram.undoManager, 'redo');
 
                 controller.handleGraphToolbarButtonClick(button);
@@ -77,17 +81,17 @@ describe('Savanna.crumbnet', function() {
             });
 
             it('should toggle the overview when we click "overview"', function() {
-                var overviewVisible = view.down('go-graph_overview') != null;
+                var overviewVisible = null !== view.down('go-graph_overview');
 
                 var button = view.down('button[type="overview"]');
 
                 controller.handleGraphToolbarButtonClick(button);
 
-                expect(view.down('go-graph_overview') != null).not.toBe(overviewVisible);
+                expect(null !== view.down('go-graph_overview')).not.toBe(overviewVisible);
 
                 controller.handleGraphToolbarButtonClick(button);
 
-                expect(view.down('go-graph_overview') != null).toBe(overviewVisible);
+                expect(null !== view.down('go-graph_overview')).toBe(overviewVisible);
             });
         });
 
@@ -202,14 +206,17 @@ describe('Savanna.crumbnet', function() {
         });
 
         afterEach(function() {
-            if (view && view.destroy) view.destroy();
+            if (view && view.destroy) {
+                view.destroy();
+            }
+
             view = null;
         });
 
         describe('Main Crumbnet View', function(){
             it('should set up a palette node template', function() {
                 var palette = view.down('go-graph_palette');
-                console.log('Palette Node Template', palette.palette.nodeTemplate);
+
                 expect(palette.palette.nodeTemplate).not.toBeUndefined();
             });
 
@@ -227,7 +234,7 @@ describe('Savanna.crumbnet', function() {
             it('should NOT set up an overview panel by default', function() {
                 var overview = view.down('go-graph_overview');
                 // NOTE: when I would use expect(overview).toBeNull(), the test would hang...
-                expect(overview == null).toBeTruthy();
+                expect(null === overview).toBeTruthy();
             });
         });
 
@@ -248,7 +255,7 @@ describe('Savanna.crumbnet', function() {
             });
 
             afterEach(function() {
-                fixtures = null;
+                fixtures = {};
             });
 
             it('should render view as an accordion', function() {
