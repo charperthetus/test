@@ -15,7 +15,6 @@ Ext.define("Savanna.flexpaper.view.FlexpaperBody", {
 
     initComponent:function()    {
         this.callParent();
-        Savanna.controller.Factory.getController('flexpaper.FlexpaperComponent');
     }
 });
 
