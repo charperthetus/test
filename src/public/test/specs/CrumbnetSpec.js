@@ -213,12 +213,7 @@ describe('Savanna.crumbnet', function() {
             view = null;
         });
 
-        describe('Main Crumbnet View', function(){
-            it('should set up a palette node template', function() {
-                var palette = view.down('go-graph_palette');
-
-                expect(palette.palette.nodeTemplate).not.toBeUndefined();
-            });
+        describe('Main Crumbnet View', function() {
 
             it('should set up a canvas node template', function() {
                 var canvas = view.down('go-graph_canvas');
