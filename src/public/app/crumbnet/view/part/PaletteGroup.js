@@ -5,7 +5,7 @@
  * Time: 5:35 PM
  * To change this template use File | Settings | File Templates.
  */
-/* global Ext: false, go: false */
+/* global Ext: false, go: false, Savanna: false, go: false */
 Ext.define('Savanna.crumbnet.view.part.PaletteGroup', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.crumbnet_part_palette-group',
@@ -33,7 +33,7 @@ Ext.define('Savanna.crumbnet.view.part.PaletteGroup', {
         this.palette = new go.Palette(domElem);
         this.palette.initialAutoScale = go.Diagram.None;
 
-        this.palette.nodeTemplate = Savanna.crumbnet.utils.ViewTemplates.generateNodeTemplate();
+        this.palette.nodeTemplate = Savanna.crumbnet.utils.ViewTemplates.generateNodeTemplate({});
 
         this.palette.model.nodeDataArray = [
             { category: 'Concept', text: 'Concept' },
