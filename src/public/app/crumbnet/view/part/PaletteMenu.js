@@ -1,3 +1,4 @@
+/* global Ext: false */
 Ext.define('Savanna.crumbnet.view.part.PaletteMenu', {
     extend: 'Ext.container.Container',
     alias: 'widget.crumbnet_part_palette-menu',
