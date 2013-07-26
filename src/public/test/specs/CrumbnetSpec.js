@@ -202,7 +202,7 @@ describe('Savanna.crumbnet', function() {
         });
 
         afterEach(function() {
-            view.destroy();
+            if (view && view.destroy) view.destroy();
             view = null;
         });
 
@@ -241,6 +241,24 @@ describe('Savanna.crumbnet', function() {
                 expect(canvas.store instanceof Savanna.crumbnet.store.Graph).toBeTruthy();
                 //This could be brittle because the diagram is created in the onRender function which is async
                 expect(canvas.diagram).not.toBeNull();
+            });
+        });
+
+        describe('Crumbnet Palette View', function() {
+            var fixtures = {};
+
+            beforeEach(function() {
+                fixtures = Ext.clone(ThetusTestHelpers.Fixtures.Crumbnet);
+            });
+
+            afterEach(function() {
+                fixtures = null;
+            });
+
+            it('should render view as an accordion', function() {
+                var paletteMenu = view.down('crumbnet_part_palette-menu');
+
+                expect(paletteMenu instanceof Savanna.crumbnet.view.part.PaletteMenu).toBeTruthy();
             });
         });
     });
