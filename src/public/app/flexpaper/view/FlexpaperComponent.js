@@ -11,13 +11,14 @@ Ext.define("Savanna.flexpaper.view.FlexpaperComponent", {
     layout:"fit",
     border:false,
     currentTool: null,
+    asset:null,
     requires: [
         "Savanna.flexpaper.view.FlexpaperToolbar",
         "Savanna.flexpaper.view.FlexpaperBody"
     ],
     initComponent:function()    {
-        this.callParent();
-        Savanna.controller.Factory.getController('Savanna.flexpaper.controller.FlexpaperComponent');
+        this.ctrl = Savanna.controller.Factory.getController('Savanna.flexpaper.controller.FlexpaperComponent');
+        this.callParent(arguments);
     },
     items:  [
         {
@@ -36,19 +37,17 @@ Ext.define("Savanna.flexpaper.view.FlexpaperComponent", {
 /*
 
  getFlexpaper: function (div, asset, tgt, title) {
- var guid = Ext.id();
  var fp = Ext.create("Ext.panel.Panel", {
  title: title,
  closable: true,
  layout: "border"
  });
- var fpc = Ext.create("Savanna.view.flexpaper.FlexpaperComponent", {
+ var fpc = Ext.create("Savanna.flexpaper.view.FlexpaperComponent", {
  itemId: "flexcomponent",
  layout: "fit",
  region: "center",
- configs: {
- asset: asset,
- guid: guid
+ config: {
+ asset: asset
  }
  });
  fp.add(fpc);

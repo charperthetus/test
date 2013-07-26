@@ -13,7 +13,6 @@ Ext.define("Savanna.flexpaper.view.FlexpaperEntityWindow", {
     minWidth: 120,
     initComponent:function()    {
         this.callParent();
-        Savanna.controller.Factory.getController('flexpaper.FlexpaperComponent');
     },
     items: [
         {
