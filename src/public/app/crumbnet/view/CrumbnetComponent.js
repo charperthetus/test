@@ -4,7 +4,7 @@ Ext.define('Savanna.crumbnet.view.CrumbnetComponent', {
 
     overview: null,
     requires: [
-        'Savanna.crumbnet.view.part.Palette',
+        'Savanna.crumbnet.view.part.PaletteMenu',
         'Savanna.crumbnet.view.part.Canvas',
         'Savanna.crumbnet.view.part.Overview',
         'Savanna.crumbnet.utils.ViewTemplates'
@@ -58,7 +58,7 @@ Ext.define('Savanna.crumbnet.view.CrumbnetComponent', {
     setupItems: function() {
         return [
             {
-                xtype: 'go-graph_palette',
+                xtype: 'crumbnet_part_palette-menu',
                 width: 100,
                 height: '100%'
             },
@@ -76,6 +76,7 @@ Ext.define('Savanna.crumbnet.view.CrumbnetComponent', {
                         width: '100%',
                         height: '100%'
                     }
+                    // NOTE: there is a dynamically added "go-graph_overview" component that is managed at runtime
                 ]
             }
         ];
