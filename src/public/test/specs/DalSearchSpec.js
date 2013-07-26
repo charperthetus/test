@@ -219,7 +219,7 @@ describe('Dal Search', function() {
                 checkbox = testView.queryById('includeDalCheckBox');
                 button = topView.queryById('selectAllDals');
                 spyOn(testView, 'doLayout'); // don't necessarily need to redo the layout...
-                spyOn(checkbox, 'getValue');
+                spyOn(checkbox, 'getValue').andCallThrough();
                 spyOn(checkbox, 'up').andCallThrough();
                 spyOn(button, 'setText').andCallThrough();
             });
@@ -239,7 +239,19 @@ describe('Dal Search', function() {
 
                 expect(checkbox.getValue).toHaveBeenCalled();
                 expect(checkbox.up).toHaveBeenCalled();
-                expect(button.setText).toHaveBeenCalled();
+                expect(button.setText).toHaveBeenCalledWith('Select All');
+            });
+
+            it('button.setText should be called with Unselect All if all checkboxes are checked', function() {
+                var checkboxes = topView.query('#includeDalCheckBox')
+                topView.settingAllDalCheckBoxes = true;
+                for (box in checkboxes) {
+                    checkboxes[box].setValue(true);
+                }
+                topView.settingAllDalCheckBoxes = false;
+                checkbox.setValue(true);
+                testView.dalCheckBoxClicked(checkbox);
+                expect(button.setText).toHaveBeenCalledWith('Unselect All');
             });
         });
 
@@ -267,10 +279,16 @@ describe('Dal Search', function() {
                 button = null;
             });
 
-            it('view query should be called', function() {
-
+            it('expect all the dal checkboxes to get checked and unchecked with selectOrUnselectAllButtonClicked', function() {
                 topView.selectOrUnselectAllButtonClicked(button);
-
+                var checkboxes = topView.query('#includeDalCheckBox')
+                for (box in checkboxes) {
+                    expect(checkboxes[box].getValue()).toBeTruthy();
+                }
+                topView.selectOrUnselectAllButtonClicked(button);
+                for (box in checkboxes) {
+                    expect(checkboxes[box].getValue()).toBeFalsy();
+                }
                 expect(topView.query).toHaveBeenCalled();
             });
         });
