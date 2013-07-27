@@ -19,7 +19,7 @@ Ext.define('Savanna.search.view.SearchDals', {
 
     border: false,
 
-    settingAllDalCheckBoxes: false,     // currently setting all checkboxes to checked or unchecked
+    settingAllDalCheckBoxes: false,     // currently setting all Dal checkboxes to checked or unchecked
 
     dockedItems: [
         {
@@ -75,8 +75,7 @@ Ext.define('Savanna.search.view.SearchDals', {
                         itemId: 'selectAllDals',
                         ui: 'link',
                         text: 'Select All',
-                        tooltip: 'Select/Unselect all sources',
-                        handler: this.selectOrUnselectAllButtonClicked
+                        tooltip: 'Select/Unselect all sources'
                     },
                     '->',
                     {
