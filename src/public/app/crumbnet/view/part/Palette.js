@@ -15,16 +15,16 @@ Ext.define('Savanna.crumbnet.view.part.Palette', {
         this.palette = new go.Palette(domElem);
         this.palette.initialAutoScale = go.Diagram.None;
 
-        this.palette.nodeTemplateMap = config.paletteNodeTemplateMap;
+        this.palette.nodeTemplate = Savanna.crumbnet.utils.ViewTemplates.generateNodeTemplate();
 
         this.palette.model.nodeDataArray = [
-            { category: 'Concept' },
-            { category: 'Question' },
-            { category: 'Problem' },
-            { category: 'Fact' },
-            { category: 'Hypothesis' },
-            { category: 'Conclusion' },
-            { category: 'Assumption' }
+            { category: 'Concept', text: 'Concept' },
+            { category: 'Question', text: 'Question' },
+            { category: 'Problem', text: 'Problem' },
+            { category: 'Fact', text: 'Fact' },
+            { category: 'Hypothesis', text: 'Hypothesis' },
+            { category: 'Conclusion', text: 'Conclusion' },
+            { category: 'Assumption', text: 'Assumption' }
         ];
 
         this.on('resize', Ext.bind(function() { this.palette.requestUpdate(); }, this));

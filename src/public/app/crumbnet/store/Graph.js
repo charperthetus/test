@@ -40,8 +40,10 @@ Ext.define('Savanna.crumbnet.store.Graph', {
             var from = randomInt(0, TOT_NODE_COUNT-1);
             var key = from + '-' + to;
 
+            var type = to > from ? 'standard' : 'curvy';
+
             if (to !== from && !generatedLink[key]) {
-                this.data[0].linkDataArray.push({ from: from > to ? to : from, to: to > from ? to : from, text: key});
+                this.data[0].linkDataArray.push({ from: from > to ? to : from, to: to > from ? to : from, text: key, category: type});
                 generatedLink[key] = true;
             }
         }

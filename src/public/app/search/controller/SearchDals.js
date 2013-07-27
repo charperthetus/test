@@ -18,7 +18,7 @@ Ext.define('Savanna.search.controller.SearchDals', {
     layout: 'hbox',
     addDalDetailText: 'Show Search Options',
     removeDalDetailText: 'Hide Search Options',
-
+    lastLoadedDalData: null,
     createPanel: function(myRecord) {
         return Ext.create('Savanna.search.view.searchDals.SearchOptions', {
             itemId: myRecord.data.id,
@@ -33,6 +33,7 @@ Ext.define('Savanna.search.controller.SearchDals', {
             store: store
         });
     },
+
     createDalPanels: function (body) {
         var me = this;
         this.getStore('Savanna.search.store.DalSources').each(function (record) {
@@ -40,12 +41,23 @@ Ext.define('Savanna.search.controller.SearchDals', {
             body.add(myPanel);
         });
     },
+
+    resetAllSearchOptions: function(button, evt) {
+        var parentView = button.up('search_searchdals');
+        parentView.removeAll();
+        this.createDalPanels(parentView);
+        parentView.down('#selectAllDals').setText('Select All');
+    },
+
     init: function (app) {
         this.getStore('Savanna.search.store.DalSources').loadRawData(this.data);
 
         this.control({
             'search_searchdals': {
                 render: this.createDalPanels
+            },
+            'search_searchdals > #searchDalDockedItems #resetAllSearchOptions': {
+                click: this.resetAllSearchOptions
             },
             'search_searchDals_searchoptions > #searchOptionsToggle': {
                 click: this.renderCustomOptions
