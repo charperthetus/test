@@ -63,8 +63,6 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
     },
 
     zoomIn: function(diagram) {
-        // NOTE: this is a hack to test loading proxy data after the page has loaded
-        this.getStore('Savanna.crumbnet.store.Templates').load();
         this.zoomTo(diagram, 0.9);
     },
 
