@@ -65,25 +65,32 @@ Ext.define('Savanna.search.view.SearchBody', {
             xtype: 'toolbar',
             ui: 'link-toolbar',
             width: '100%',
-            itemId:"searchbodytoolbar",
+            itemId: "searchbodytoolbar",
             border: false,
             items: [
                 {
                     xtype: 'button',
                     ui: 'link-button',
                     text: 'Search Options',
-                    itemId:"optionsbutton"
+                    itemId: "optionsbutton"
                 },
                 {
                     xtype: 'button',
                     ui: 'link-button',
                     text: 'Results',
-                    itemId:"resultsbutton"
+                    itemId: "resultsbutton"
                 }
             ]
         }
     ],
-
+    bbar: [
+        '->',
+        {
+            xtype: 'button',
+            text: 'Search',
+            itemId: "toolbarsearchbutton"
+        }
+    ],
     initComponent: function () {
         this.callParent(arguments);
 
