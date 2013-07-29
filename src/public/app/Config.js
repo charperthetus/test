@@ -10,7 +10,7 @@ Ext.define('Savanna.Config', {
     singleton: true,
 
     // Root for all REST calls
-    savannaUrlRoot: 'http://qac2is2sav2.thetuscorp.com/c2is2/',
+    savannaUrlRoot: 'http://thedevsav1.thetuscorp.com:8080/SavannaX/',
 
     // Urls for all the searches we do
     loginUrl: '/authcheck/loggedIn.html',
