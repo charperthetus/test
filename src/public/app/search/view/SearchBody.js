@@ -15,12 +15,6 @@ Ext.define('Savanna.search.view.SearchBody', {
     border: false,
 
     items: [
-        /*
-         This is the panel that contains Search Options,
-         need to make another absolutely
-         positioned panel for results, controlled by
-         the docked toolbar
-         */
         {
             xtype: 'panel',
             layout: 'border',
@@ -92,8 +86,7 @@ Ext.define('Savanna.search.view.SearchBody', {
         }
     ],
     initComponent: function () {
-        this.callParent(arguments);
-
         Savanna.controller.Factory.getController('Savanna.search.controller.SearchBody');
+        this.callParent(arguments);
     }
 });

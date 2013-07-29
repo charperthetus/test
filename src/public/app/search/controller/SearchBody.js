@@ -18,32 +18,33 @@ Ext.define('Savanna.search.controller.SearchBody', {
     views: [
         'Savanna.search.view.SearchBody'
     ],
+    refs: [
+        { ref: 'optionsButton', selector: 'search_searchbody > #searchbodytoolbar #optionsbutton' },
+        {ref:"resultsButton", selector: "search_searchbody > #searchbodytoolbar #resultsbutton"}
+    ],
 
     currentPanel: 'searchoptions',
 
+    onButtonClick:function (button, event) {
+        if (this.currentPanel != "searchoptions" && button == this.getOptionsButton()) {
+            button.up("search_searchbody").queryById("mainsearchoptions").show();
+            button.up("search_searchbody").queryById("mainresults").hide();
+            this.currentPanel = "searchoptions";
+        }
+        if (this.currentPanel != "results" && button == this.getResultsButton()) {
+            button.up("search_searchbody").queryById("mainsearchoptions").hide();
+            button.up("search_searchbody").queryById("mainresults").show();
+            this.currentPanel = "results";
+        }
+    },
+
     init: function (app) {
-        var me = this;
-        /*
-         These listeners toggle visibility between search options and search results
-         */
-        me.control({
+        this.control({
             'search_searchbody > #searchbodytoolbar #optionsbutton': {
-                click: function (button, event) {
-                    if (me.currentPanel != "searchoptions") {
-                        button.up("search_searchbody").queryById("mainsearchoptions").show();
-                        button.up("search_searchbody").queryById("mainresults").hide();
-                        me.currentPanel = "searchoptions";
-                    }
-                }
+                click: this.onButtonClick
             },
             'search_searchbody > #searchbodytoolbar #resultsbutton': {
-                click: function (button, event) {
-                    if (me.currentPanel != "results") {
-                        button.up("search_searchbody").queryById("mainsearchoptions").hide();
-                        button.up("search_searchbody").queryById("mainresults").show();
-                        me.currentPanel = "results";
-                    }
-                }
+                click: this.onButtonClick
             }
         });
     }
