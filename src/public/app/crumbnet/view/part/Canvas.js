@@ -27,7 +27,7 @@ Ext.define('Savanna.crumbnet.view.part.Canvas', {
         config = this.getInitialConfig();
 
         this.diagram = new go.Diagram(domElem);
-        this.diagram.nodeTemplate = Savanna.crumbnet.utils.ViewTemplates.generateCanvasNodeTemplate();
+        this.diagram.nodeTemplate = Savanna.crumbnet.utils.ViewTemplates.generateNodeTemplate();
         this.diagram.linkTemplateMap = Savanna.crumbnet.utils.ViewTemplates.generateLinkTemplateMap();
 
         // have mouse wheel events zoom in and out instead of scroll up and down

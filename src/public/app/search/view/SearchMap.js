@@ -71,17 +71,6 @@ Ext.define('Savanna.search.view.SearchMap', {
                 }
             ]
 
-        },
-        {
-            xtype: 'toolbar',
-            width: '100%',
-            dock: 'bottom',
-            items: [
-                {
-                    xtype: 'button',
-                    text: 'Search'
-                }
-            ]
         }
      ]
 });

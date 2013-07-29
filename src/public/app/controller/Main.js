@@ -38,6 +38,10 @@ Ext.define('Savanna.controller.Main', {
                 var mainViewport = this.app.viewport.queryById('viewport_main');
 
                 if (mainViewport) mainViewport.remove('login');
+                var main = Ext.create("Savanna.view.SavannaDesktop", {
+                    itemId:"main"
+                });
+                if (mainViewport) mainViewport.add(main);
             }
             else {
                 console.error('unable to query the viewport');

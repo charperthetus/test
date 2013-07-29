@@ -2,25 +2,6 @@
 Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
     singleton: true,
 
-    generateCanvasNodeTemplate: function() {
-        var gmake = go.GraphObject.make;  // for conciseness in defining templates
-
-        var defaultAdornment =
-            gmake(go.Adornment, go.Panel.Spot,
-                gmake(go.Panel, go.Panel.Auto,
-                    gmake(go.Shape, { fill: null, stroke: "blue", strokeWidth: 2 }),
-                    gmake(go.Placeholder)),
-                // the button to create a "next" node, at the top-right corner
-                gmake("Button",
-                    { alignment: go.Spot.BottomRight,
-                        click: this.addNodeAndLink },  // this function is defined below
-                    gmake(go.Shape, "PlusLine", { desiredSize: new go.Size(6, 6) })
-                )
-            );
-
-        return this.generateNodeTemplate({selectionAdornmentTemplate: defaultAdornment});
-    },
-
     /**
      * Creates our default node template for use with GoJS
      *
@@ -58,12 +39,20 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
                 mouseEnter: this.nodeMouseEnter,
                 mouseLeave: this.nodeMouseLeave
             },
-
+            //Bind the location to the model text loc so when we add new nodes to the model with a location it will show correctly
+            new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
+            //Make a transparent rectangle in the background so our hover always works
+            gmake(go.Shape, { figure: "Rectangle", fill: "transparent", stroke: null }),
             gmake(go.Panel, go.Panel.Vertical, icon, textBlock),
             this.makePort("T", go.Spot.TopRight, 0),
             this.makePort("L", go.Spot.TopLeft, 270),
-            this.makePort("R", go.Spot.BottomRight,90),
-            this.makePort("B", go.Spot.BottomLeft, 180)
+            this.makePort("B", go.Spot.BottomLeft, 180),
+            //The button to make a new child node and link it
+            gmake("Button",
+                { alignment: go.Spot.BottomRight, visible: false, portId: 'R', fromLinkable: true,
+                    click: this.addNodeAndLink },  // this function is defined below
+                gmake(go.Shape, "PlusLine", { desiredSize: new go.Size(6, 6) })
+            )
         );
 
         nodeTemplate = Ext.merge(nodeTemplate, options);
@@ -76,7 +65,7 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
         var triangle = go.Geometry.parse("M 0,0 L 12,0 12,12 0,0", true);
         return gmake(go.Panel,
             { alignment: spot },
-            gmake(go.Shape, { geometry: triangle, stroke: null, fill: null, angle: angle},
+            gmake(go.Shape, { geometry: triangle, stroke: 'black', fill: 'red', angle: angle, visible: false},
                 {portId: name, fromLinkable: true }) );
     },
 
@@ -96,8 +85,7 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
 
         while (it.next()) {
             var port = it.value;
-            port.fill = "red";
-            port.stroke = "black";
+            port.visible = true;
         }
     },
 
@@ -113,8 +101,7 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
 
         while (it.next()) {
             var port = it.value;
-            port.fill = null;
-            port.stroke = null;
+            port.visible = false;
         }
     },
 
@@ -162,34 +149,53 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
     },
 
     addNodeAndLink: function(e, obj) {
-        var adorn = obj.part;
+        var fromNode = obj.part;
 
-        if (null === adorn) {
+        if (null === fromNode) {
             return;
         }
 
         e.handled = true;
 
-        var diagram = adorn.diagram;
+        var diagram = fromNode.diagram;
         diagram.startTransaction("Add Node");
 
         // get the node data for which the user clicked the button
-        var fromNode = adorn.adornedPart;
         var fromData = fromNode.data;
 
         // create a new "State" data object, positioned off to the right of the adorned Node
         var toData = { text: "new", category: fromData.category, key: Ext.id() };
         var p = fromNode.location;
 
-        //TODO - find all of the nodes that the starting node is linked to and add 50px to the lowest one for this y coord, use the same x coord
-        toData.loc = new go.Point(p.x + 200, p.y);  //TODO - This seems to not be working because the location of the node template is not bound to the model, check out http://gojs.net/latest/samples/pageflow.html
+        var nit = fromNode.findNodesOutOf();
+        if (nit.count > 0){
+            while (nit.next()){
+                var cnLoc = nit.value.location;
+
+                var x = 0;
+                var y = Number.NEGATIVE_INFINITY;
+
+                if (cnLoc.y == y){
+                    if (cnLoc.x > x){
+                        y = cnLoc.y;
+                        x = cnLoc.x;
+                    }
+                }else if (cnLoc.y > y){
+                    y = cnLoc.y;
+                    x = cnLoc.x;
+                }
+            }
+            toData.loc = x + " " + (y + 70);
+        }else{
+            toData.loc = (p.x + 200) + " " + (p.y + 50);  // the "loc" property is a string, not a Point object
+        }
 
         // add the new node data to the model
         var model = diagram.model;
         model.addNodeData(toData);
 
         // create a link data from the old node data to the new node data
-        var linkdata = {category: 'standard'}; //New link with standard category
+        var linkdata = {category: 'curvy'}; //New link with curvy category
         linkdata[model.linkFromKeyProperty] = model.getKeyForNodeData(fromData);
         linkdata[model.linkToKeyProperty] = model.getKeyForNodeData(toData);
 
