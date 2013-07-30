@@ -37,15 +37,7 @@ Ext.define('Savanna.crumbnet.view.part.PaletteGroup', {
 
         this.palette.nodeTemplate = Savanna.crumbnet.utils.ViewTemplates.generateNodeTemplate({selectionAdorned: false});
 
-        this.palette.model.nodeDataArray = [
-            { category: 'Concept', text: 'Concept' },
-            { category: 'Question', text: 'Question' },
-            { category: 'Problem', text: 'Problem' },
-            { category: 'Fact', text: 'Fact' },
-            { category: 'Hypothesis', text: 'Hypothesis' },
-            { category: 'Conclusion', text: 'Conclusion' },
-            { category: 'Assumption', text: 'Assumption' }
-        ];
+        this.palette.model.nodeDataArray = this.model.templatesAsJson();
     },
 
     requestPaletteUpdate: function() {
