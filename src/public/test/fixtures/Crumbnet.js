@@ -6,16 +6,19 @@ var ThetusTestHelpers;
     var defaultPalette = [
         {
             title: 'TEST PALETTE GROUP ONE',
-            templates: [
-                { label: 'TEST PALETTE TEMPLATE ONE', category: 'TMPL_ONE' },
-                { label: 'TEST PALETTE TEMPLATE TWO', category: 'TMPL_TWO' }
+            items: [
+                { label: 'Concept label', category: 'Concept' },
+                { label: 'Hypothesis label', category: 'Hypothesis' },
+                { label: 'Question label', category: 'Question' }
             ]
         },
         {
             title: 'TEST PALETTE GROUP TWO',
-            templates: [
-                { label: 'TEST PALETTE TEMPLATE THREE', category: 'TMPL_THREE' },
-                { label: 'TEST PALETTE TEMPLATE FOUR', category: 'TMPL_FOUR' }
+            items: [
+                { label: 'Problem label', category: 'Problem' },
+                { label: 'Conclusion label', category: 'Conclusion' },
+                { label: 'Assumption label', category: 'Assumption' },
+                { label: 'Fact label', category: 'Fact' }
             ]
         }
     ];
