@@ -9,5 +9,7 @@
 Ext.define('Savanna.crumbnet.model.Template', {
     extend: 'Ext.data.Model',
 
-    belongsTo: 'Savanna.search.model.DalSource'
+    belongsTo: 'Savanna.search.model.DalSource',
+
+    fields: ['category', 'label']
 });
