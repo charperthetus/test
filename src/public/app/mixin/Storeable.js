@@ -25,6 +25,9 @@
  *      }
  * });
  */
+
+// TODO: TEST!!!!!!
+
 Ext.define('Savanna.mixin.Storeable', {
     /**
      * initializes the store
@@ -33,7 +36,6 @@ Ext.define('Savanna.mixin.Storeable', {
      */
     initStore: function () {
         // Look up the configured Store. If none configured, use the fieldless, empty Store defined in Ext.data.Store.
-        console.log(this.store, Ext.getStore(this.store || 'ext-empty-store'));
         this.store = Ext.getStore(this.store || 'ext-empty-store') || Ext.create(this.store) || Ext.getStore('ext-empty-store');
 
         this.mon(this.store, {
