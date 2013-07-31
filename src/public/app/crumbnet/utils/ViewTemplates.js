@@ -17,8 +17,8 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
             name: 'icon',
             toLinkable: true,
             cursor: 'pointer',
-            width: 46,
-            height: 46
+            height: 46,
+            width: 46
         }, new go.Binding('source', 'category', this.convertCategoryToImage));
 
         var textBlock = gmake(go.TextBlock, {
@@ -33,6 +33,7 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
 
         var nodeTemplate = gmake(go.Node, go.Panel.Auto,
             {
+                selectionAdorned: false,
                 fromSpot: go.Spot.AllSides,
                 toSpot: go.Spot.AllSides,
                 toLinkable: true,
@@ -43,16 +44,21 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
             new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
             //Make a transparent rectangle in the background so our hover always works
             gmake(go.Shape, { figure: "Rectangle", fill: "transparent", stroke: null }),
-            gmake(go.Panel, go.Panel.Vertical, icon, textBlock),
-            this.makePort("T", go.Spot.TopRight, 0),
-            this.makePort("L", go.Spot.TopLeft, 270),
-            this.makePort("B", go.Spot.BottomLeft, 180),
-            //The button to make a new child node and link it
-            gmake("Button",
-                { alignment: go.Spot.BottomRight, visible: false, portId: 'R', fromLinkable: true,
-                    click: this.addNodeAndLink },  // this function is defined below
-                gmake(go.Shape, "PlusLine", { desiredSize: new go.Size(6, 6) })
-            )
+            gmake(go.Panel, go.Panel.Vertical,
+                gmake(go.Panel, go.Panel.Auto,
+                    gmake(go.Shape, { figure: "Rectangle", fill: "transparent", stroke: null, width: 52, height: 52 }),
+                    icon,
+                    gmake(go.Shape, { figure: "circle", fill: null, strokeWidth: 3, width: 49 }, new go.Binding("stroke", "isSelected", function (s) { return (s ? "cornflowerblue" : null); }).ofObject("") ),
+                    this.makePort("T", go.Spot.TopRight, 0),
+                    this.makePort("L", go.Spot.TopLeft, 270),
+                    this.makePort("B", go.Spot.BottomLeft, 180),
+                    //The button to make a new child node and link it
+                    gmake("Button",
+                        { alignment: go.Spot.BottomRight, visible: false, portId: 'R', fromLinkable: true,
+                            click: this.addNodeAndLink },  // this function is defined below
+                        gmake(go.Shape, "PlusLine", { desiredSize: new go.Size(6, 6) })
+                    )),
+                textBlock)
         );
 
         nodeTemplate = Ext.merge(nodeTemplate, options);
@@ -62,7 +68,7 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
 
     makePort: function (name, spot, angle) {
         var gmake = go.GraphObject.make;
-        var triangle = go.Geometry.parse("M 0,0 L 12,0 12,12 0,0", true);
+        var triangle = go.Geometry.parse("M 0,0 L 12,0 12,12 0,0 12,0", true);
         return gmake(go.Panel,
             { alignment: spot },
             gmake(go.Shape, { geometry: triangle, stroke: 'black', fill: 'red', angle: angle, visible: false},
@@ -70,7 +76,7 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
     },
 
     convertCategoryToImage: function(category){
-        return "/resources/images/" + category + "Icon.svg";
+        return "resources/images/" + category + "Icon.svg";
     },
 
     nodeMouseEnter: function(e, obj){
@@ -134,8 +140,7 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
 
         linkTemplateMap.add('curvy', gmake(go.Link,
             { curve: go.Link.Bezier,
-                fromShortLength: -2, toShortLength: -2,
-                selectable: false },
+                fromShortLength: -2, toShortLength: -2 },
             gmake(go.Shape,
                 { strokeWidth: 3, stroke: 'skyblue' } ),
             gmake(go.TextBlock,  // the "from" label
