@@ -4,18 +4,24 @@
 Ext.require('Savanna.crumbnet.controller.CrumbnetController');
 
 describe('Savanna.crumbnet', function() {
+    var CRUMBNET_PALETTE_TEMPLATES_URL = 'app/assets/data/testCrumbnetTemplates.json';
     var fixtures = {};
+    var server = null;
 
     beforeEach(function() {
         createTestDom();
 
         fixtures = Ext.clone(ThetusTestHelpers.Fixtures.Crumbnet);
+        server = new ThetusTestHelpers.FakeServer(sinon);
     });
 
     afterEach(function() {
         cleanTestDom();
 
         fixtures = {};
+        server.restore();
+
+        server = null;
     });
 
     describe('Controller', function() {
@@ -202,7 +208,8 @@ describe('Savanna.crumbnet', function() {
 
         describe('Template', function() {
             it('should be able to instantiate', function() {
-                var templateModel = Ext.create('Savanna.crumbnet.model.Template', fixtures.defaultPalette[0].templates[0]);
+                var templateData = fixtures.defaultPaletteTemplateResponse.groups[0].templates[0];
+                var templateModel = Ext.create('Savanna.crumbnet.model.Template', templateData);
 
                 expect(templateModel.get('label')).toBe('Concept label');
                 expect(templateModel.get('category')).toBe('Concept');
@@ -211,15 +218,17 @@ describe('Savanna.crumbnet', function() {
 
         describe('TemplateGroup', function() {
             it('should be able to instantiate', function() {
-                var templateGroupModel = Ext.create('Savanna.crumbnet.model.TemplateGroup', fixtures.defaultPalette[0]);
+                var templateGroupData = fixtures.defaultPaletteTemplateResponse.groups[0];
+                var templateGroupModel = Ext.create('Savanna.crumbnet.model.TemplateGroup', templateGroupData);
 
                 expect(templateGroupModel.get('title')).toBe('TEST PALETTE GROUP ONE');
                 expect(templateGroupModel.templates()).not.toBeNull();
             });
 
             it('should be able to render templates data as JSON', function() {
-                var templateGroupModel = Ext.create('Savanna.crumbnet.model.TemplateGroup', fixtures.defaultPalette[0]);
-                var templatesData = fixtures.defaultPalette[0].templates;
+                var templateGroupData = fixtures.defaultPaletteTemplateResponse.groups[0];
+                var templateGroupModel = Ext.create('Savanna.crumbnet.model.TemplateGroup', templateGroupData);
+                var templatesData = templateGroupData.templates;
 
                 for (var i = 0; i < templatesData.length; ++i) {
                     templateGroupModel.templates().add(templatesData[i]);
@@ -231,6 +240,7 @@ describe('Savanna.crumbnet', function() {
     });
 
     describe('Store', function() {
+
         describe('Graph', function() {
             it('should have nodeDataArray and linkDataArray properties defined', function() {
                 var cStore = Ext.create('Savanna.crumbnet.store.Graph');
@@ -242,10 +252,11 @@ describe('Savanna.crumbnet', function() {
             var store = null;
 
             beforeEach(function() {
-                store = Ext.create('Savanna.crumbnet.store.Templates', { autoLoad: false });
+                store = setupPaletteTemplateStore(server, fixtures);
             });
 
             afterEach(function() {
+                Ext.data.StoreManager.remove(store);
                 store = null;
             });
 
@@ -258,9 +269,12 @@ describe('Savanna.crumbnet', function() {
 
     describe('Views', function() {
         var view = null;
+        var store = null;
 
         beforeEach(function() {
+            store = setupPaletteTemplateStore(server, fixtures);
             view = Ext.create('Savanna.crumbnet.view.CrumbnetComponent', { renderTo: 'test-html' });
+            store.fireEvent('load'); // NOTE: we have to trigger the event to get the PaletteMenu to load
         });
 
         afterEach(function() {
@@ -269,6 +283,10 @@ describe('Savanna.crumbnet', function() {
             }
 
             view = null;
+
+            Ext.data.StoreManager.remove(store);
+
+            store = null;
         });
 
         describe('Main Crumbnet View', function() {
@@ -301,16 +319,13 @@ describe('Savanna.crumbnet', function() {
         });
 
         describe('Crumbnet Palette View', function() {
-            var fixtures = {};
             var paletteMenu = null;
 
             beforeEach(function() {
-                fixtures = Ext.clone(ThetusTestHelpers.Fixtures.Crumbnet);
                 paletteMenu = view.down('crumbnet_part_palette-menu');
             });
 
             afterEach(function() {
-                fixtures = {};
                 paletteMenu = null;
             });
 
@@ -335,4 +350,27 @@ describe('Savanna.crumbnet', function() {
             });
         });
     });
+
+    function setupPaletteTemplateStore(server, fixtures) {
+        server.respondWith('GET', CRUMBNET_PALETTE_TEMPLATES_URL, fixtures.defaultPaletteTemplateResponse);
+
+        var store = Ext.create('Savanna.crumbnet.store.Templates', { autoLoad: false });
+
+        // NOTE: we have to disable caching or the URL gets a cache-busting query parameter which breaks the fake server
+        var proxy = store.getProxy();
+        proxy.noCache = false;
+        proxy.startParam = undefined;
+        proxy.limitParam = undefined;
+        proxy.pageParam = undefined;
+
+        store.load();
+
+        server.respond({
+            errorOnInvalidRequest: true
+        });
+
+        Ext.data.StoreManager.add('Savanna.crumbnet.store.Templates', store);
+
+        return store;
+    }
 });

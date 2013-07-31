@@ -20,40 +20,27 @@ Ext.define('Savanna.crumbnet.view.part.PaletteMenu', {
         activeOnTop: false
     },
 
-    defaultType: 'crumbnet_part_palette-group',
+    panelClass: 'Savanna.crumbnet.view.part.PaletteGroup',
 
     items: [],
 
     initComponent: function() {
         this.mixins.storeable.initStore.call(this);
-        this.items = this.setupItems();
 
         this.callParent(arguments);
     },
 
     onStoreLoad: function() {
-        // NOTE: nothing to do yet...
-    },
-
-    setupItems: function() {
-        var items = [];
-
         if (this.store.getCount() === 0) {
             // TODO: should this be an error?
-            items.push({
-                xtype: this.defaultType,
+            this.add(Ext.create(this.panelClass, {
                 model: Ext.create('Savanna.crumbnet.model.TemplateGroup', { title: 'NO PALETTE', templates: [] })
-            });
+            }));
         }
         else {
             this.store.each(function(model) {
-                items.push({
-                    xtype: this.defaultType,
-                    model: model
-                });
+                this.add(Ext.create(this.panelClass, { model: model }));
             }, this);
         }
-
-        return items;
     }
 });

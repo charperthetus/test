@@ -13,7 +13,7 @@ Ext.define('Savanna.crumbnet.model.TemplateGroup', {
         'Savanna.crumbnet.model.Template'
     ],
 
-    fields: ['title', 'templates'],
+    fields: ['id', 'title', 'templates'],
 
     // NOTE: the model class must be fully qualififed in your relationship definition
     hasMany: [
