@@ -14,6 +14,7 @@ Ext.define('Savanna.search.view.SearchToolbar', {
         {
             text: 'Recent Searches',
             itemId: 'startbutton',
+            ui: 'flat-toolbar-button',
             menu: [
                 {text: 'Cats'},
                 {text: 'Dogs'},
@@ -29,10 +30,12 @@ Ext.define('Savanna.search.view.SearchToolbar', {
             xtype: 'tbfill'
         },
         {
-            text: 'Add to MyStuff'
+            glyph: 61786,
+            ui: 'flat-toolbar-button'
         },
         {
-            text: 'Help'
+            glyph: 61746,
+            ui: 'flat-toolbar-button'
         }
     ],
 

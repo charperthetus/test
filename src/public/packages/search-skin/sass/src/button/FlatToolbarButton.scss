@@ -1,0 +1,44 @@
+/*
+ *  Private Variables
+ */
+$js-ui: 'flat-toolbar-button';
+$ui-suffix: '-toolbar-small';
+
+/*
+ *  Logic
+ */
+@include extjs-button-ui(
+	$ui: $js-ui + $ui-suffix,
+
+    $border-radius: 0px,
+    $border-width: 1px,
+
+    $border-color: transparent,
+    $border-color-over: $gray-border,
+    $border-color-focus: $gray-border,
+    $border-color-pressed: $gray-border,
+    $border-color-disabled: $gray-border,
+    
+	$background-color: transparent,
+    $background-color-over: transparent,
+    $background-color-focus: transparent,
+    $background-color-pressed: transparent,
+    $background-color-disabled: transparent,
+
+    $padding: 3px,
+
+	$color: $gray-font,
+    $color-over: $thetus-blue,
+    $color-focus: $thetus-blue,
+    $color-pressed: $thetus-blue,
+    $color-disabled: $thetus-blue,
+
+    $font-size: 11px,
+    $font-family: $Open-Sans-Normal,
+    $font-family-over: $Open-Sans-Normal,
+    $font-family-pressed: $Open-Sans-Normal !important,
+    
+    $icon-size: 17px,
+    $glyph-color: #333,
+    $include-ui-menu-arrows: false
+);
