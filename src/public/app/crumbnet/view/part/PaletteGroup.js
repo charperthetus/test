@@ -23,7 +23,7 @@ Ext.define('Savanna.crumbnet.view.part.PaletteGroup', {
 
         this.callParent(arguments);
 
-        //this.model = config.model;
+        this.mon(this, 'expand', function() { this.requestPaletteUpdate(); }, this);
         this.mon(this, 'expand', function() { this.requestPaletteUpdate(); }, this);
     },
 

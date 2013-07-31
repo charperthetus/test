@@ -1,4 +1,6 @@
-/* global Ext: false, describe: false, beforeEach: false, afterEach: false, createTestDom: false, cleanTestDom: false, it: false, expect: false, Savanna: false, spyOn: false, go: false, ThetusTestHelpers: false */
+/* global Ext: false, describe: false, beforeEach: false, afterEach: false, createTestDom: false, cleanTestDom: false,
+          it: false, expect: false, Savanna: false, spyOn: false, go: false, ThetusTestHelpers: false, waitsFor: false,
+          runs: false */
 Ext.require('Savanna.crumbnet.controller.CrumbnetController');
 
 describe('Savanna.crumbnet', function() {
@@ -300,19 +302,36 @@ describe('Savanna.crumbnet', function() {
 
         describe('Crumbnet Palette View', function() {
             var fixtures = {};
+            var paletteMenu = null;
 
             beforeEach(function() {
                 fixtures = Ext.clone(ThetusTestHelpers.Fixtures.Crumbnet);
+                paletteMenu = view.down('crumbnet_part_palette-menu');
             });
 
             afterEach(function() {
                 fixtures = {};
+                paletteMenu = null;
             });
 
             it('should render view as an accordion', function() {
-                var paletteMenu = view.down('crumbnet_part_palette-menu');
-
                 expect(paletteMenu instanceof Savanna.crumbnet.view.part.PaletteMenu).toBeTruthy();
+            });
+
+            it('should update the palette canvas when we expand a panel in the Accordion', function() {
+                var lastPalettePanel = paletteMenu.down('crumbnet_part_palette-group:last');
+                var requestUpdateSpy = spyOn(lastPalettePanel, 'requestPaletteUpdate').andCallThrough();
+
+                lastPalettePanel.expand();
+
+                // NOTE: since expand() is asychronous, we have to wait for our spy to be called
+                waitsFor(function() {
+                    return requestUpdateSpy.wasCalled;
+                }, 'requestPaletteUpdate toHaveBeenCalled');
+
+                runs(function() {
+                    expect(requestUpdateSpy).toHaveBeenCalled();
+                });
             });
         });
     });
