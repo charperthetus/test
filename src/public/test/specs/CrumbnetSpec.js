@@ -2,13 +2,18 @@
 Ext.require('Savanna.crumbnet.controller.CrumbnetController');
 
 describe('Savanna.crumbnet', function() {
+    var fixtures = {};
 
     beforeEach(function() {
         createTestDom();
+
+        fixtures = Ext.clone(ThetusTestHelpers.Fixtures.Crumbnet);
     });
 
     afterEach(function() {
         cleanTestDom();
+
+        fixtures = {};
     });
 
     describe('Controller', function() {
@@ -185,16 +190,67 @@ describe('Savanna.crumbnet', function() {
     });
 
     describe('Model', function() {
-        it('should be able to instantiate', function() {
-            var cModel = Ext.create('Savanna.crumbnet.model.Graph');
-            expect(cModel).not.toBeNull();
+
+        describe('Graph', function() {
+            it('should be able to instantiate', function() {
+                var cModel = Ext.create('Savanna.crumbnet.model.Graph');
+                expect(cModel).not.toBeNull();
+            });
+        });
+
+        describe('Template', function() {
+            it('should be able to instantiate', function() {
+                var templateModel = Ext.create('Savanna.crumbnet.model.Template', fixtures.defaultPalette[0].templates[0]);
+
+                expect(templateModel.get('label')).toBe('Concept label');
+                expect(templateModel.get('category')).toBe('Concept');
+            });
+        });
+
+        describe('TemplateGroup', function() {
+            it('should be able to instantiate', function() {
+                var templateGroupModel = Ext.create('Savanna.crumbnet.model.TemplateGroup', fixtures.defaultPalette[0]);
+
+                expect(templateGroupModel.get('title')).toBe('TEST PALETTE GROUP ONE');
+                expect(templateGroupModel.templates()).not.toBeNull();
+            });
+
+            it('should be able to render templates data as JSON', function() {
+                var templateGroupModel = Ext.create('Savanna.crumbnet.model.TemplateGroup', fixtures.defaultPalette[0]);
+                var templatesData = fixtures.defaultPalette[0].templates;
+
+                for (var i = 0; i < templatesData.length; ++i) {
+                    templateGroupModel.templates().add(templatesData[i]);
+                }
+
+                expect(templateGroupModel.templatesAsJson()).toEqual(templatesData);
+            });
         });
     });
 
     describe('Store', function() {
-        it('should have nodeDataArray and linkDataArray properties defined', function() {
-            var cStore = Ext.create('Savanna.crumbnet.store.Graph');
-            expect(cStore).not.toBeNull();
+        describe('Graph', function() {
+            it('should have nodeDataArray and linkDataArray properties defined', function() {
+                var cStore = Ext.create('Savanna.crumbnet.store.Graph');
+                expect(cStore).not.toBeNull();
+            });
+        });
+
+        describe('Templates', function() {
+            var store = null;
+
+            beforeEach(function() {
+                store = Ext.create('Savanna.crumbnet.store.Templates', { autoLoad: false });
+            });
+
+            afterEach(function() {
+                store = null;
+            });
+
+            it('should load with temporary data', function() {
+                expect(store.getCount()).toBe(2);
+                expect(store.getAt(0) instanceof Savanna.crumbnet.model.TemplateGroup).toBeTruthy();
+            });
         });
     });
 
