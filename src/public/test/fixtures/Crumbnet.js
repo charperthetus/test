@@ -5,16 +5,18 @@ var ThetusTestHelpers;
 
     var defaultPalette = [
         {
+            id: 'TEST_PALETTE_GROUP_ONE',
             title: 'TEST PALETTE GROUP ONE',
-            items: [
+            templates: [
                 { label: 'Concept label', category: 'Concept' },
                 { label: 'Hypothesis label', category: 'Hypothesis' },
                 { label: 'Question label', category: 'Question' }
             ]
         },
         {
+            id: 'TEST_PALETTE_GROUP_TWO',
             title: 'TEST PALETTE GROUP TWO',
-            items: [
+            templates: [
                 { label: 'Problem label', category: 'Problem' },
                 { label: 'Conclusion label', category: 'Conclusion' },
                 { label: 'Assumption label', category: 'Assumption' },
