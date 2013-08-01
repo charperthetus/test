@@ -27,7 +27,7 @@ Ext.define("Savanna.search.view.SearchBarTools", {
         {
             xtype: 'button',
             itemId: "search_submit",
-            glyph: 61442
+            glyph: 61808
         },
         {
 
