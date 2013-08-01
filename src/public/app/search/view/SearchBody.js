@@ -45,6 +45,7 @@ Ext.define('Savanna.search.view.SearchBody', {
                         },
                         {
                             title: 'Location',
+                            cls: 'search-map',
                             xtype: 'search_searchmap'
                         }
                     ]
