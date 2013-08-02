@@ -334,5 +334,39 @@ describe('Dal Search', function() {
                 expect(controller.createDalPanels).toHaveBeenCalled();
             });
         });
+        describe('resetSingleDal', function() {
+            var topView = null;
+            var testView = null;
+            var button = null;
+
+            beforeEach(function() {
+                topView = Ext.create('Savanna.search.view.SearchDals', { renderTo: 'test-html' });
+                testView = topView.down('search_searchDals_searchoptions:last');
+                button = testView.queryById('resetSingleDal');
+                spyOn(testView, 'doLayout'); // don't necessarily need to redo the layout...
+                spyOn(topView, 'remove').andCallThrough();
+            });
+            afterEach(function() {
+                if (topView && topView.destroy) topView.destroy();
+
+                topView = null;
+                testView = null;
+                button = null;
+            });
+            it('expect resetSingleDal to remove CustomSearchGroupForm', function() {
+                var store = Ext.create('Savanna.search.store.DalSources', {
+                    autoload: false
+                });
+                store.loadData(fixtures.allDals);
+
+                var childSearchDalsPanel =  Ext.create('Savanna.search.view.searchDals.CustomSearchGroupForm', {
+                                                store: store
+                                            });
+                testView.add(childSearchDalsPanel);
+                expect(testView.down('search_searchDals_custom-search-group-form')).toBeTruthy();
+                controller.resetSingleDal(button);
+                expect(testView.down('search_searchDals_custom-search-group-form')).toBeFalsy();
+            });
+        });
     });
 });
