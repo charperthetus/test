@@ -25,9 +25,6 @@
  *      }
  * });
  */
-
-// TODO: TEST!!!!!!
-
 Ext.define('Savanna.mixin.Storeable', {
     /**
      * initializes the store
@@ -52,12 +49,8 @@ Ext.define('Savanna.mixin.Storeable', {
 
         this.store = tmpStore;
 
-        // TODO: test this...
         if (this.onStoreLoad) {
-            this.mon(this.store, {
-                load: this.onStoreLoad,
-                scope: this
-            });
+            this.mon(this.store, 'load', this.onStoreLoad, this);
         }
     },
 

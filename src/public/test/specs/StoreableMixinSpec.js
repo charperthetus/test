@@ -116,6 +116,7 @@ describe('Savanna.mixin.Storeable', function() {
         });
 
         describe('ability to define a handler for store loading', function() {
+            var onStoreLoadCalled = false;
 
             beforeEach(function() {
                 Ext.define('Savanna.mixin.test.ContainerWithHandler', {
@@ -129,26 +130,21 @@ describe('Savanna.mixin.Storeable', function() {
                         this.callParent(arguments);
                     },
                     onStoreLoad: function() {
-                        console.log('hey...');
-                        // do nothing, just have a handler for testing...
+                        onStoreLoadCalled = true;
                     }
                 });
+            });
+
+            afterEach(function() {
+                onStoreLoadCalled = false;
             });
 
             it('should call the handler when data is loaded in the store', function() {
                 testMixer = Ext.create('Savanna.mixin.test.ContainerWithHandler');
 
-                var handlerSpy = spyOn(testMixer, 'onStoreLoad');
-
                 testMixer.store.fireEvent('load');
 
-                waitsFor(function() {
-                    return handlerSpy.wasCalled;
-                }, 'spy handler to be called');
-
-                runs(function() {
-                    expect(testMixer.onStoreLoad).toHaveBeenCalled();
-                });
+                expect(onStoreLoadCalled).toBeTruthy();
             });
         });
     });
