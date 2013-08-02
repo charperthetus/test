@@ -2,10 +2,16 @@
 Ext.define('Savanna.crumbnet.view.part.PaletteMenu', {
     extend: 'Ext.container.Container',
     alias: 'widget.crumbnet_part_palette-menu',
+    mixins: {
+        storeable: 'Savanna.mixin.Storeable'
+    },
 
     requires: [
+        'Ext.layout.container.Accordion',
         'Savanna.crumbnet.view.part.PaletteGroup'
     ],
+
+    store: 'Savanna.crumbnet.store.Templates',
 
     layout: {
         type: 'accordion',
@@ -14,25 +20,29 @@ Ext.define('Savanna.crumbnet.view.part.PaletteMenu', {
         activeOnTop: false
     },
 
-    defaultType: 'crumbnet_part_palette-group',
+    panelClass: 'Savanna.crumbnet.view.part.PaletteGroup',
 
     items: [],
 
     initComponent: function() {
-        this.items = this.setupItems();
+        this.mixins.storeable.initStore.call(this);
 
         this.callParent(arguments);
     },
 
-    setupItems: function() {
-        return [
-            {
-                title: 'Panel 1'
-            },{
-                title: 'Panel 2'
-            },{
-                title: 'Panel 3'
-            }
-        ];
+    onStoreLoad: function() {
+        this.removeAll();
+
+        if (this.store.getCount() === 0) {
+            // TODO: should this be an error?
+            this.add(Ext.create(this.panelClass, {
+                model: Ext.create('Savanna.crumbnet.model.TemplateGroup', { title: 'NO PALETTE', templates: [] })
+            }));
+        }
+        else {
+            this.store.each(function(model) {
+                this.add(Ext.create(this.panelClass, { model: model }));
+            }, this);
+        }
     }
 });

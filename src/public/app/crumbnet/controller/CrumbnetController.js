@@ -8,7 +8,8 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
     ],
 
     stores: [
-        'Savanna.crumbnet.store.Graph'
+        'Savanna.crumbnet.store.Graph',
+        'Savanna.crumbnet.store.Templates'
     ],
 
     refs: [
