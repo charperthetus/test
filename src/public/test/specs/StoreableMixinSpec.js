@@ -38,7 +38,7 @@ describe('Savanna.mixin.Storeable', function() {
         }
     });
 
-    describe('handles error cases', function() {
+    describe('How it should handle error cases', function() {
         var raisedError = false;
         var testMixer = null;
 
@@ -72,9 +72,9 @@ describe('Savanna.mixin.Storeable', function() {
         });
     });
 
-    describe('handles valid cases', function() {
+    describe('How it should handle valid cases', function() {
 
-        describe('handles store lookup/instantation', function() {
+        describe('Store lookup/instantation', function() {
 
             beforeEach(function() {
                 Ext.define('Savanna.mixin.test.ContainerNoHandler', {
@@ -115,7 +115,7 @@ describe('Savanna.mixin.Storeable', function() {
             });
         });
 
-        describe('ability to define a handler for store loading', function() {
+        describe('Definition of a handler for store loading', function() {
             var onStoreLoadCalled = false;
 
             beforeEach(function() {
@@ -145,6 +145,32 @@ describe('Savanna.mixin.Storeable', function() {
                 testMixer.store.fireEvent('load');
 
                 expect(onStoreLoadCalled).toBeTruthy();
+            });
+        });
+
+        describe('Store access', function() {
+
+            beforeEach(function() {
+                Ext.define('Savanna.mixin.test.ContainerWithStoreGetter', {
+                    extend: 'Ext.container.Container',
+                    mixins: {
+                        storeable: 'Savanna.mixin.Storeable'
+                    },
+                    store: 'Savanna.mixin.test.Store',
+                    initComponent: function() {
+                        this.mixins.storeable.initStore.call(this);
+                        this.callParent(arguments);
+                    }
+                });
+            });
+
+            it('should be able to retrieve the store via accessor', function() {
+                var testMixer = Ext.create('Savanna.mixin.test.ContainerWithStoreGetter');
+
+                var store = testMixer.getStore();
+
+                expect(store).not.toBeUndefined();
+                expect(store instanceof Savanna.mixin.test.Store).toBeTruthy();
             });
         });
     });
