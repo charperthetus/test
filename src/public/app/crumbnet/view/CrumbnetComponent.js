@@ -38,6 +38,15 @@ Ext.define('Savanna.crumbnet.view.CrumbnetComponent', {
                 { type: 'center', text: 'Center' }
             ]
         },
+        {
+            xtype: 'button',
+            itemId: 'linkStyleMenu',
+            text: 'Link Style',
+            menu: [
+                { type: 'line', text: 'Line' },
+                { type: 'curve', text: 'Curve' }
+            ]
+        },
         '->',
         {type: 'zoomIn', icon:'resources/images/zoom_in.png', tooltip: 'Zoom In'},
         {type: 'zoomOut', icon:'resources/images/zoom_out.png', tooltip: 'Zoom Out'},
