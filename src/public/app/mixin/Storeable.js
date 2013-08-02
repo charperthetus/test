@@ -36,11 +36,17 @@ Ext.define('Savanna.mixin.Storeable', {
      */
     // TODO: Test that a store is instantiated only once...
     initStore: function () {
+        if (!this.store) {
+            Ext.Error.raise({ msg: 'No "store" defined' });
+            return;
+        }
+
         // Look up the configured Store. If none configured, use the fieldless, empty Store defined in Ext.data.Store.
-        var tmpStore = Ext.data.StoreManager.get(this.store || 'ext-empty-store');
+        var tmpStore = Ext.data.StoreManager.get(this.store);
 
         if (!tmpStore) {
-            tmpStore = Ext.create(this.store) || Ext.getStore('ext-empty-store');
+            tmpStore = Ext.create(this.store);
+
             Ext.data.StoreManager.add(this.store, tmpStore);
         }
 
