@@ -32,6 +32,5 @@ src/public/packages/search-skin/build
 # ignore test report files
 src/public/test/reports/phantom
 src/public/test/reports/jasmine
-target/antrun
-target/surefire-reports
+target/
 src/public/test/reports/errors.log
