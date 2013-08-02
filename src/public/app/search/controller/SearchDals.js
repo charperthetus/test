@@ -97,6 +97,19 @@ Ext.define('Savanna.search.controller.SearchDals', {
         }
     },
 
+    resetSingleDal: function (button, evt) {
+        var parentView = button.up('search_searchDals_searchoptions');
+        var store = this.getStore('Savanna.search.store.DalSources');
+        var parentViewId = parentView.itemId;
+        var record = store.getById(parentViewId);
+        parentView.down('#includeDalCheckBox').setValue(0);
+        var dalSearchOptionPanel = parentView.down('search_searchDals_custom-search-group-form');
+        if (dalSearchOptionPanel){
+            parentView.remove(dalSearchOptionPanel, true);
+        }
+        parentView.down('#searchOptionsToggle').setText(this.addDalDetailText);
+    },
+
     init: function (app) {
         this.getStore('Savanna.search.store.DalSources').loadRawData(this.data);
 
@@ -115,7 +128,11 @@ Ext.define('Savanna.search.controller.SearchDals', {
             },
             'search_searchDals_searchoptions > #includeDalCheckBox': {
                 click: this.dalCheckBoxClicked
+            },
+            'search_searchDals_searchoptions > #resetSingleDal': {
+                click: this.resetSingleDal
             }
+
         });
     },
 
