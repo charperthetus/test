@@ -134,6 +134,7 @@
                 </configuration>
             </plugin>
             -->
+            <!--
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
@@ -151,34 +152,33 @@
                             <arguments>
                                 <argument>-jar</argument>
                                 <argument>~/.m2/repository/com/google/jstestdriver/jstestdriver/1.3.5/jstestdriver-1.3.5.jar</argument>
-                                <argument>--port</argument>
+                                <argument>-_port</argument>
                                 <argument>9876</argument>
-                                <argument>--tests</argument>
+                                <argument>-_tests</argument>
                                 <argument>all</argument>
-                                <argument>--config</argument>
-                                <!-- TODO: should this be configurable or just a part of the way projects are set up? -->
+                                <argument>-_config</argument>
+                                <!-_ TODO: should this be configurable or just a part of the way projects are set up? -_
                                 <argument>jsTestDriver.conf</argument>
-                                <argument>--testOutput</argument>
-                                <!-- TODO: should this be configurable or just a part of the way projects are set up? -->
+                                <argument>-_testOutput</argument>
+                                <!-_ TODO: should this be configurable or just a part of the way projects are set up? -_
                                 <argument>${project.basedir}/target/surefire-reports</argument>
-                                <argument>--browserTimeout</argument>
+                                <argument>-_browserTimeout</argument>
                                 <argument>30000</argument>
-                                <argument>--captureConsole</argument>
+                                <argument>-_captureConsole</argument>
                                 <argument>true</argument>
-                                <argument>--reset</argument> <!-- tell browser to drop any file received from previous runs -->
-                                <argument>--browser</argument>
-                                <!-- TODO: should this be configurable or just a part of the way projects are set up? -->
-                                <!-- NOTE: this assumes phantomJS (http://phantomjs.org/) is installed on the system running this
+                                <argument>-_reset</argument> <!-_ tell browser to drop any file received from previous runs -_
+                                <argument>-_browser</argument>
+                                <!-_ TODO: should this be configurable or just a part of the way projects are set up? -_
+                                <!-_ NOTE: this assumes phantomJS (http://phantomjs.org/) is installed on the system running this
                                            PhantomJS is a headless browser which seems to be better than installing a true desktop browser...
-                                -->
+                                -_
                                 <argument>'phantomjs;public/test/lib/phantomjs-jstd-bridge.js'</argument>
-                                <argument>--runnerMode</argument>
-                                <!-- possible values: DEBUG, DEBUG_NO_TRACE, DEBUG_OBSERVE, PROFILE, QUIET (default), INFO -->
+                                <argument>-_runnerMode</argument>
+                                <!-_ possible values: DEBUG, DEBUG_NO_TRACE, DEBUG_OBSERVE, PROFILE, QUIET (default), INFO -_
                                 <argument>QUIET</argument>
                             </arguments>
                         </configuration>
                     </execution>
-                    <!--
                     <execution>
                         <id>JsCover Coverage Report Startup</id>
                         <phase>test</phase>
@@ -223,9 +223,10 @@
                             </arguments>
                         </configuration>
                     </execution>
-                    -->
+                    -_
                 </executions>
             </plugin>
+            -->
         </plugins>
     </build>
 
