@@ -30,24 +30,6 @@ Ext.define('Savanna.search.view.SearchDals', {
             dock: 'top'
         }
     ],
-    selectOrUnselectAllButtonClicked: function(button, evt) {
-        var parentView = button.up('search_searchdals');
-        var checked = true;
-        var text = 'Select All';
-        if (button.text == 'Select All') {
-            text = 'Unselect All';
-        } else {
-            checked = false;
-        }
-        var dalsIncludeCheckBox = parentView.query('#includeDalCheckBox');
-        this.settingAllDalCheckBoxes = true;
-        for (dal in dalsIncludeCheckBox) {
-            dalsIncludeCheckBox[dal].setValue(checked);
-        }
-        this.settingAllDalCheckBoxes = false;
-
-        button.setText(text)
-    },
 
     initComponent: function () {
         this.dockedItems = this.setupDockedItems();
