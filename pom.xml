@@ -60,6 +60,7 @@
             <!-- NOTE: I moved the tasks to build the JavaScript code from "build" to "package" as it is not needed for
                        testing and actually should not happen if testing fails
             -->
+            <!--
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>
@@ -79,18 +80,18 @@
                     </execution>
                 </executions>
             </plugin>
+            -->
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
                     <descriptors>
-                        <descriptor>src/main/assembly/assembly.xml</descriptor>
+                        <descriptor>assembly.xml</descriptor>
                     </descriptors>
-                    <!-- Do not include the assemblyId in the package file name. -->
                     <appendAssemblyId>false</appendAssemblyId>
                 </configuration>
                 <executions>
                     <execution>
-                        <id>tar.gz</id>
+                        <id>zip</id>
                         <phase>package</phase>
                         <goals>
                             <goal>single</goal>
@@ -101,6 +102,7 @@
                     </execution>
                 </executions>
             </plugin>
+
 <!--
             NOTE: this would be the ideal way to run (as opposed to the java exec below), but I could not get it to work
                   my suspicion is that this plugin is either using an older version of
@@ -124,6 +126,8 @@
                     </execution>
                 </executions>
             </plugin>-->
+
+            <!--
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-clean-plugin</artifactId>
@@ -140,6 +144,7 @@
                     </filesets>
                 </configuration>
             </plugin>
+            -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
@@ -156,8 +161,7 @@
                             <workingDirectory>${project.basedir}/src</workingDirectory>
                             <arguments>
                                 <argument>-jar</argument>
-                                <!-- TODO: change this to NOT use my personal repos path for the jar -->
-                                <argument>/Users/thille/.m2/repository/com/google/jstestdriver/jstestdriver/1.3.5/jstestdriver-1.3.5.jar</argument>
+                                <argument>~/.m2/repository/com/google/jstestdriver/jstestdriver/1.3.5/jstestdriver-1.3.5.jar</argument>
                                 <argument>--port</argument>
                                 <argument>9876</argument>
                                 <argument>--tests</argument>
@@ -185,6 +189,7 @@
                             </arguments>
                         </configuration>
                     </execution>
+                    <!--
                     <execution>
                         <id>JsCover Coverage Report Startup</id>
                         <phase>test</phase>
@@ -206,11 +211,11 @@
                             <goal>exec</goal>
                         </goals>
                         <configuration>
-                            <!--<executable>/usr/local/bin/phantomjs</executable>-->
+                            <-<executable>/usr/local/bin/phantomjs</executable>->
                             <executable>/Applications/Firefox.app/Contents/MacOS/firefox</executable>
                             <workingDirectory>${project.basedir}</workingDirectory>
                             <arguments>
-                                <!--<argument>${project.basedir}/src/public/test/lib/run-jscover-jasmine.js</argument>-->
+                                <-<argument>${project.basedir}/src/public/test/lib/run-jscover-jasmine.js</argument>->
                                 <argument>http://localhost:8080/test/SpecRunner.html</argument>
                             </arguments>
                         </configuration>
@@ -229,6 +234,7 @@
                             </arguments>
                         </configuration>
                     </execution>
+                    -->
                 </executions>
             </plugin>
         </plugins>
