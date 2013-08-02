@@ -31,6 +31,8 @@ Ext.define('Savanna.crumbnet.view.part.PaletteMenu', {
     },
 
     onStoreLoad: function() {
+        this.removeAll();
+
         if (this.store.getCount() === 0) {
             // TODO: should this be an error?
             this.add(Ext.create(this.panelClass, {

@@ -252,7 +252,7 @@ describe('Savanna.crumbnet', function() {
             var store = null;
 
             beforeEach(function() {
-                store = setupPaletteTemplateStore(server, fixtures);
+                store = setupPaletteTemplateStore(server, fixtures.defaultPaletteTemplateResponse);
             });
 
             afterEach(function() {
@@ -272,7 +272,7 @@ describe('Savanna.crumbnet', function() {
         var store = null;
 
         beforeEach(function() {
-            store = setupPaletteTemplateStore(server, fixtures);
+            store = setupPaletteTemplateStore(server, fixtures.defaultPaletteTemplateResponse);
             view = Ext.create('Savanna.crumbnet.view.CrumbnetComponent', { renderTo: 'test-html' });
             store.fireEvent('load'); // NOTE: we have to trigger the event to get the PaletteMenu to load
         });
@@ -348,11 +348,26 @@ describe('Savanna.crumbnet', function() {
                     expect(requestUpdateSpy).toHaveBeenCalled();
                 });
             });
+
+            describe('When there are no templates', function() {
+
+                beforeEach(function() {
+                    store.loadRawData(fixtures.noTemplatesResponse.groups);
+                    store.fireEvent('load');
+                });
+
+                it('should display a panel indicating no results', function() {
+                    var accordionPanels = paletteMenu.query('crumbnet_part_palette-group');
+
+                    expect(accordionPanels.length).toBe(1);
+                    expect(accordionPanels[0].title).toBe('NO PALETTE');
+                });
+            });
         });
     });
 
-    function setupPaletteTemplateStore(server, fixtures) {
-        server.respondWith('GET', CRUMBNET_PALETTE_TEMPLATES_URL, fixtures.defaultPaletteTemplateResponse);
+    function setupPaletteTemplateStore(server, fixture) {
+        server.respondWith('GET', CRUMBNET_PALETTE_TEMPLATES_URL, fixture);
 
         var store = Ext.create('Savanna.crumbnet.store.Templates', { autoLoad: false });
 
