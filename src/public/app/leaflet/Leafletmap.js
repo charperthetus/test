@@ -1,6 +1,8 @@
 Ext.define('Savanna.leaflet.Leafletmap', {
     extend: 'Ext.Component',
     alias: 'widget.leafletmap',
+    // This appears to use the Leaflet.draw plugin 
+    // https://github.com/Leaflet/Leaflet.draw/blob/master/README.md
     //polyPoints: [],
     myMap: null,
     config:{
@@ -43,7 +45,8 @@ Ext.define('Savanna.leaflet.Leafletmap', {
                             'Polygon Lines May Not Intersect' // Message that will show when intersect
                     },
                     shapeOptions: {
-                        color: '#bada55'
+                        color: '#0073ae',
+                        weight: 2
                     }
                 }
             },
