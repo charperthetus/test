@@ -47,7 +47,7 @@ describe('Savanna.crumbnet', function() {
             expect(controller instanceof Savanna.crumbnet.controller.CrumbnetController).toBeTruthy();
         });
 
-        describe('handleGraphToolbarButtonClick', function(){
+        describe('handleGraphToolbarButtonClick', function() {
 
             it('should zoom the diagram when we click "zoomToFit"', function() {
                 var button = view.down('button[type="zoomToFit"]');
@@ -109,12 +109,12 @@ describe('Savanna.crumbnet', function() {
             });
         });
 
-        describe('handleGraphMenuClick', function(){
+        describe('handleLayoutMenuClick', function() {
 
             it('should change diagram layout when we click "tree"', function() {
                 var menuButton = view.down('menuitem[type="tree"]');
                 var menu = view.down('#layoutMenu');
-                controller.handleGraphMenuClick(menu, menuButton);
+                controller.handleLayoutMenuClick(menu, menuButton);
 
                 expect(diagram.layout instanceof go.Layout).toBeTruthy();
             });
@@ -122,7 +122,7 @@ describe('Savanna.crumbnet', function() {
             it('should change diagram layout when we click "grid"', function() {
                 var menuButton = view.down('menuitem[type="grid"]');
                 var menu = view.down('#layoutMenu');
-                controller.handleGraphMenuClick(menu, menuButton);
+                controller.handleLayoutMenuClick(menu, menuButton);
 
                 expect(diagram.layout instanceof go.Layout).toBeTruthy();
             });
@@ -130,7 +130,7 @@ describe('Savanna.crumbnet', function() {
             it('should change diagram layout when we click "force"', function() {
                 var menuButton = view.down('menuitem[type="force"]');
                 var menu = view.down('#layoutMenu');
-                controller.handleGraphMenuClick(menu, menuButton);
+                controller.handleLayoutMenuClick(menu, menuButton);
 
                 expect(diagram.layout instanceof go.Layout).toBeTruthy();
             });
@@ -138,7 +138,7 @@ describe('Savanna.crumbnet', function() {
             it('should change diagram layout when we click "circular"', function() {
                 var menuButton = view.down('menuitem[type="circular"]');
                 var menu = view.down('#layoutMenu');
-                controller.handleGraphMenuClick(menu, menuButton);
+                controller.handleLayoutMenuClick(menu, menuButton);
 
                 expect(diagram.layout instanceof go.Layout).toBeTruthy();
             });
@@ -146,15 +146,18 @@ describe('Savanna.crumbnet', function() {
             it('should change diagram layout when we click "layeredDigraph"', function() {
                 var menuButton = view.down('menuitem[type="layeredDigraph"]');
                 var menu = view.down('#layoutMenu');
-                controller.handleGraphMenuClick(menu, menuButton);
+                controller.handleLayoutMenuClick(menu, menuButton);
 
                 expect(diagram.layout instanceof go.Layout).toBeTruthy();
             });
+        });
+
+        describe('handleAlignmentMenuClick', function() {
 
             it('should change diagram alignment when we click "right"', function() {
                 var menuButton = view.down('menuitem[type="right"]');
                 var menu = view.down('#alignmentMenu');
-                controller.handleGraphMenuClick(menu, menuButton);
+                controller.handleAlignmentMenuClick(menu, menuButton);
 
                 //We always set the alignment back to default after changing it
                 expect(diagram.contentAlignment).toBe(go.Spot.Default);
@@ -163,7 +166,7 @@ describe('Savanna.crumbnet', function() {
             it('should change diagram alignment when we click "left"', function() {
                 var menuButton = view.down('menuitem[type="left"]');
                 var menu = view.down('#alignmentMenu');
-                controller.handleGraphMenuClick(menu, menuButton);
+                controller.handleAlignmentMenuClick(menu, menuButton);
 
                 //We always set the alignment back to default after changing it
                 expect(diagram.contentAlignment).toBe(go.Spot.Default);
@@ -172,7 +175,7 @@ describe('Savanna.crumbnet', function() {
             it('should change diagram alignment when we click "top"', function() {
                 var menuButton = view.down('menuitem[type="top"]');
                 var menu = view.down('#alignmentMenu');
-                controller.handleGraphMenuClick(menu, menuButton);
+                controller.handleAlignmentMenuClick(menu, menuButton);
 
                 //We always set the alignment back to default after changing it
                 expect(diagram.contentAlignment).toBe(go.Spot.Default);
@@ -181,7 +184,7 @@ describe('Savanna.crumbnet', function() {
             it('should change diagram alignment when we click "bottom"', function() {
                 var menuButton = view.down('menuitem[type="bottom"]');
                 var menu = view.down('#alignmentMenu');
-                controller.handleGraphMenuClick(menu, menuButton);
+                controller.handleAlignmentMenuClick(menu, menuButton);
 
                 //We always set the alignment back to default after changing it
                 expect(diagram.contentAlignment).toBe(go.Spot.Default);
@@ -190,10 +193,26 @@ describe('Savanna.crumbnet', function() {
             it('should change diagram alignment when we click "center"', function() {
                 var menuButton = view.down('menuitem[type="center"]');
                 var menu = view.down('#alignmentMenu');
-                controller.handleGraphMenuClick(menu, menuButton);
+                controller.handleAlignmentMenuClick(menu, menuButton);
 
                 //We always set the alignment back to default after changing it
                 expect(diagram.contentAlignment).toBe(go.Spot.Default);
+            });
+        });
+
+        describe('handleLinkStyleClick', function() {
+
+            it('should change link style to "line" when that item is clicked', function() {
+                var menuButton = view.down('menuitem[type="standard"]');
+                var menu = view.down('#linkStyleMenu');
+                var diagram = controller.getDiagramForMenu(menu);
+                var selectedNodeSet = diagram.selection;
+
+                expect(selectedNodeSet.count).toBe(0);
+
+                controller.handleLinkStyleMenuClick(menu, menuButton);
+
+
             });
         });
     });

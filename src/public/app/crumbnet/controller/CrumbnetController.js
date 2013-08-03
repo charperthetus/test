@@ -24,8 +24,14 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
             'go-graph button': {
                 click: this.handleGraphToolbarButtonClick
             },
-            'go-graph menu':{
-                click: this.handleGraphMenuClick
+            'go-graph #layoutMenu menu':{
+                click: this.handleLayoutMenuClick
+            },
+            'go-graph #alignmentMenu menu':{
+                click: this.handleAlignmentMenuClick
+            },
+            'go-graph #linkStyleMenu menu': {
+                click: this.handleLinkStyleMenuClick
             }
         });
     },
@@ -59,6 +65,8 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
                 var mainCrumbnetViewport = crumbnet.down('#mainCrumbnetViewport');
                 this.toggleOverview(mainCrumbnetViewport, diagram);
                 break;
+            // NOTE: there is no "default" because we get clicks for other "buttons" (such as the dropdown menus)
+            //       which we do not need to handle
         }
     },
 
@@ -105,10 +113,9 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
         }
     },
 
-    handleGraphMenuClick: function(menu, item){
-        var diagram = menu.up('go-graph').down('go-graph_canvas').diagram,
-            layout = null,
-            align = null;
+    handleLayoutMenuClick: function(menu, item) {
+        var diagram = this.getDiagramForMenu(menu),
+            layout = null;
 
         switch (item.type) {
             case 'tree':
@@ -120,6 +127,29 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
             case 'force':
                 layout = go.GraphObject.make(go.ForceDirectedLayout, { isOngoing: false });
                 break;
+            case 'circular':
+                layout = go.GraphObject.make(go.CircularLayout, { isOngoing: false });
+                break;
+            case 'layeredDigraph':
+                layout = go.GraphObject.make(go.LayeredDigraphLayout, { isOngoing: false, layerSpacing: 50 });
+                break;
+            default:
+                Ext.Error.notify('unknown type (' + item.type + ')');
+                break;
+        }
+
+        if (layout) {
+            diagram.startTransaction('ChangeLayout');
+            diagram.layout = layout;
+            diagram.commitTransaction('ChangeLayout');
+        }
+    },
+
+    handleAlignmentMenuClick: function(menu, item) {
+        var diagram = this.getDiagramForMenu(menu),
+            align = null;
+
+        switch (item.type) {
             case 'right':
                 align = go.Spot.Right;
                 break;
@@ -135,22 +165,46 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
             case 'center':
                 align = go.Spot.Center;
                 break;
-            case 'circular':
-                layout = go.GraphObject.make(go.CircularLayout, { isOngoing: false });
-                break;
-            case 'layeredDigraph':
-                layout = go.GraphObject.make(go.LayeredDigraphLayout, { isOngoing: false, layerSpacing: 50 });
-                break;
             default:
-                console.error('unknown type (' + button.type + ')');
+                Ext.Error.notify('unknown type (' + item.type + ')');
                 break;
         }
-        diagram.startTransaction('ChangeLayout');
-        if (layout) diagram.layout = layout;
+
         if (align) {
+            diagram.startTransaction('ChangeAlignment');
             diagram.contentAlignment = align;
             diagram.contentAlignment = go.Spot.Default;
+            diagram.commitTransaction('ChangeAlignment');
         }
-        diagram.commitTransaction('ChangeLayout');
+    },
+
+    handleLinkStyleMenuClick: function(menu, item) {
+        var linkTemplateNames = Savanna.crumbnet.utils.ViewTemplates.getLinkTemplateNames();
+
+        if (Ext.Array.contains(linkTemplateNames, item.type)) {
+            var diagram = this.getDiagramForMenu(menu);
+            var selectedNodeSet = diagram.selection;
+            var iterator = selectedNodeSet.iterator;
+
+            // TODO: some interaction details to iron out
+            //        1) if no links are selected, should all link styles be changed?
+            //        2) if there are nodes selected, should anything change?
+            //        3) if nothing will happen, does anything need to be communicated to the user?
+            diagram.startTransaction('changeLinkStyle');
+            while (iterator.next()) {
+                if (iterator.value instanceof go.Link) {
+                    iterator.value.category = item.type;
+                }
+            }
+            // TODO: should this be rollbackTransaction if nothing is changed?
+            diagram.commitTransaction('changeLinkStyle');
+        }
+        else {
+            Ext.Error.notify('Unknown link style "' + item.type + '"');
+        }
+    },
+
+    getDiagramForMenu: function(menu) {
+        return menu.up('go-graph').down('go-graph_canvas').diagram;
     }
 });

@@ -54,11 +54,10 @@ Ext.define('Savanna.crumbnet.view.CrumbnetComponent', {
     },
 
     setupTbar: function() {
-        var linkStyleMenuChoices = Ext.Array.map(Savanna.crumbnet.utils.ViewTemplates.getLinkTemplateNames(), function(item, index, array) {
+        var linkTemplateNames = Savanna.crumbnet.utils.ViewTemplates.getLinkTemplateNames();
+        var linkStyleMenuChoices = Ext.Array.map(linkTemplateNames, function maplLinkTemplateNames(item) {
             return { type: item, text: item };
         });
-
-        console.log(linkStyleMenuChoices);
 
         return [
             {
