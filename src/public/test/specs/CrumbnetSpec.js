@@ -1,7 +1,8 @@
 /* global Ext: false, describe: false, beforeEach: false, afterEach: false, createTestDom: false, cleanTestDom: false,
           it: false, expect: false, Savanna: false, spyOn: false, go: false, ThetusTestHelpers: false, waitsFor: false,
-          runs: false */
+          runs: false, sinon: true */
 Ext.require('Savanna.crumbnet.controller.CrumbnetController');
+Ext.require('Savanna.crumbnet.utils.ViewTemplates');
 
 describe('Savanna.crumbnet', function() {
     var CRUMBNET_PALETTE_TEMPLATES_URL = 'app/assets/data/testCrumbnetTemplates.json';
@@ -306,6 +307,22 @@ describe('Savanna.crumbnet', function() {
                 var overview = view.down('go-graph_overview');
                 // NOTE: when I would use expect(overview).toBeNull(), the test would hang...
                 expect(null === overview).toBeTruthy();
+            });
+
+            it('should create a link template menu using keys from the linkTemplateMap', function() {
+                var linkStyleMenu = view.queryById('linkStyleMenu');
+
+                expect(linkStyleMenu).not.toBeUndefined();
+
+                var templateIds = Savanna.crumbnet.utils.ViewTemplates.getLinkTemplateNames();
+
+                var firstLinkMenuItem = linkStyleMenu.menu.child('[type=' + templateIds[0] + ']');
+
+                expect(firstLinkMenuItem).not.toBeUndefined();
+
+                var lastLinkMenuItem = linkStyleMenu.menu.child('[type=' + templateIds[templateIds.length - 1] + ']');
+
+                expect(lastLinkMenuItem).not.toBeUndefined();
             });
         });
 

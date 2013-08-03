@@ -54,6 +54,12 @@ Ext.define('Savanna.crumbnet.view.CrumbnetComponent', {
     },
 
     setupTbar: function() {
+        var linkStyleMenuChoices = Ext.Array.map(Savanna.crumbnet.utils.ViewTemplates.getLinkTemplateNames(), function(item, index, array) {
+            return { type: item, text: item };
+        });
+
+        console.log(linkStyleMenuChoices);
+
         return [
             {
                 xtype: 'button',
@@ -81,11 +87,12 @@ Ext.define('Savanna.crumbnet.view.CrumbnetComponent', {
                 xtype: 'button',
                 itemId: 'linkStyleMenu',
                 text: 'Link Style',
-                menu: Ext.Array.map(Savanna.crumbnet.utils.ViewTemplates.getLinkTemplateNames(), function(item, index, array) {
-                    return { type: item, text: item };
-                })
+                menu: {
+                    items: linkStyleMenuChoices
+                }
             },
             '->',
+            // TODO: this needs to be converted to use glyphs instead of icons...
             {type: 'zoomIn', icon:'resources/images/zoom_in.png', tooltip: 'Zoom In'},
             {type: 'zoomOut', icon:'resources/images/zoom_out.png', tooltip: 'Zoom Out'},
             {type: 'zoomToFit', icon:'resources/images/show_all.png', tooltip: 'Zoom To Fit'},
