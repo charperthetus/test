@@ -201,18 +201,121 @@ describe('Savanna.crumbnet', function() {
         });
 
         describe('handleLinkStyleClick', function() {
+            var menuButton = null,
+                menu = null,
+                diagram = null;
 
-            it('should change link style to "line" when that item is clicked', function() {
-                var menuButton = view.down('menuitem[type="standard"]');
-                var menu = view.down('#linkStyleMenu');
-                var diagram = controller.getDiagramForMenu(menu);
-                var selectedNodeSet = diagram.selection;
+            beforeEach(function() {
+                menuButton = view.down('menuitem[type="standard"]');
+                menu = view.down('#linkStyleMenu');
+                diagram = controller.getDiagramForMenu(menu);
+            });
 
-                expect(selectedNodeSet.count).toBe(0);
+            afterEach(function() {
+                menuButton = null;
+                menu = null;
+                diagram = null;
+            });
 
-                controller.handleLinkStyleMenuClick(menu, menuButton);
+            describe('error conditions', function() {
+                var raisedError = false;
 
+                beforeEach(function() {
+                    Ext.Error.handle = function() {
+                        raisedError = true;
+                        return true;
+                    };
+                });
 
+                afterEach(function() {
+                    Ext.Error.handle = function() {};
+                    raisedError = false;
+                });
+
+                it('should log an error if we send a link style that is not understood', function() {
+                    menuButton.type = 'UNKNOWN_TYPE';
+
+                    controller.handleLinkStyleMenuClick(menu, menuButton);
+
+                    expect(raisedError).toBeTruthy();
+                });
+            });
+
+            describe('valid conditions', function() {
+                // TODO: validate that this is true (it may be that if no links are selected, then ALL links should change
+                //       in which case there will be only one link category after the button is clickec)
+                it('should NOT change link styles if no link is selected', function() {
+                    var selectedNodeSet = diagram.selection;
+
+                    expect(selectedNodeSet.count).toBe(0);
+
+                    var linkIterator = diagram.links;
+                    var linkStylesSeen = {};
+
+                    while (linkIterator.next()) {
+                        linkStylesSeen[linkIterator.value.category] = true;
+                    }
+
+                    expect(Object.keys(linkStylesSeen).length).toBeGreaterThan(1);
+
+                    controller.handleLinkStyleMenuClick(menu, menuButton);
+
+                    linkIterator = diagram.links;
+                    linkStylesSeen = {};
+
+                    while (linkIterator.next()) {
+                        linkStylesSeen[linkIterator.value.category] = true;
+                    }
+
+                    expect(Object.keys(linkStylesSeen).length).toBeGreaterThan(1);
+                });
+
+                it('should only change the style for the selected links', function() {
+                    var linkIterator = diagram.links;
+                    var beforeLinkStyleCounts = {};
+                    var firstLinkStyle = null;
+                    var secondLinkStyle = null;
+
+                    // gather a count of links styles and select one link whose style will change
+                    while (linkIterator.next()) {
+                        var linkStyle = linkIterator.value.category;
+
+                        if (!firstLinkStyle) {
+                            firstLinkStyle = linkStyle;
+                        }
+                        if (!secondLinkStyle && linkStyle !== firstLinkStyle) {
+                            secondLinkStyle = linkStyle;
+                            linkIterator.value.isSelected = true;
+                        }
+
+                        typeof beforeLinkStyleCounts[linkStyle] === 'undefined' ? beforeLinkStyleCounts[linkStyle] = 1 : ++beforeLinkStyleCounts[linkStyle];
+                    }
+
+                    // make sure we made a selection and have more than one style
+                    expect(diagram.selection.count).toBe(1);
+                    expect(Object.keys(beforeLinkStyleCounts).length).toBeGreaterThan(1);
+                    expect(secondLinkStyle).toBeDefined();
+
+                    // select the menu to change the selected link to the first link style we found
+                    menuButton = view.down('menuitem[type="' + firstLinkStyle + '"]');
+
+                    expect(menuButton).toBeDefined();
+
+                    controller.handleLinkStyleMenuClick(menu, menuButton);
+
+                    // get a count of link styles after we made our change
+                    var afterLinkStyleCounts = {};
+                    linkIterator = diagram.links;
+
+                    while (linkIterator.next()) {
+                        var linkStyle = linkIterator.value.category;
+
+                        typeof afterLinkStyleCounts[linkStyle] === 'undefined' ? afterLinkStyleCounts[linkStyle] = 1 : ++afterLinkStyleCounts[linkStyle];
+                    }
+
+                    expect(afterLinkStyleCounts[firstLinkStyle]).toBe(beforeLinkStyleCounts[firstLinkStyle] + 1);
+                    expect(afterLinkStyleCounts[secondLinkStyle]).toBe(beforeLinkStyleCounts[secondLinkStyle] - 1);
+                });
             });
         });
     });

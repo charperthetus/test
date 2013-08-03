@@ -134,7 +134,7 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
                 layout = go.GraphObject.make(go.LayeredDigraphLayout, { isOngoing: false, layerSpacing: 50 });
                 break;
             default:
-                Ext.Error.notify('unknown type (' + item.type + ')');
+                Ext.Error.raise('unknown type (' + item.type + ')');
                 break;
         }
 
@@ -193,6 +193,7 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
             diagram.startTransaction('changeLinkStyle');
             while (iterator.next()) {
                 if (iterator.value instanceof go.Link) {
+                    console.log('changing link style from "' + iterator.value.category + '" to "' + item.type + '"');
                     iterator.value.category = item.type;
                 }
             }
@@ -200,7 +201,7 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
             diagram.commitTransaction('changeLinkStyle');
         }
         else {
-            Ext.Error.notify('Unknown link style "' + item.type + '"');
+            Ext.Error.raise('Unknown link style "' + item.type + '"');
         }
     },
 
