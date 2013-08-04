@@ -271,14 +271,17 @@ describe('Savanna.crumbnet', function() {
                 });
 
                 it('should only change the style for the selected links', function() {
-                    var linkIterator = diagram.links;
-                    var beforeLinkStyleCounts = {};
-                    var firstLinkStyle = null;
-                    var secondLinkStyle = null;
+                    var linkIterator = diagram.links,
+                        beforeLinkStyleCounts = {},
+                        firstLinkStyle = null,
+                        secondLinkStyle = null,
+                        linkStyle = null,
+                        node = null,
+                        nodeCategory = null;
 
                     // gather a count of links styles and select one link whose style will change
                     while (linkIterator.next()) {
-                        var linkStyle = linkIterator.value.category;
+                        linkStyle = linkIterator.value.category;
 
                         if (!firstLinkStyle) {
                             firstLinkStyle = linkStyle;
@@ -288,11 +291,17 @@ describe('Savanna.crumbnet', function() {
                             linkIterator.value.isSelected = true;
                         }
 
-                        typeof beforeLinkStyleCounts[linkStyle] === 'undefined' ? beforeLinkStyleCounts[linkStyle] = 1 : ++beforeLinkStyleCounts[linkStyle];
+                        beforeLinkStyleCounts[linkStyle] = 'undefined' === typeof beforeLinkStyleCounts[linkStyle] ?  1 : beforeLinkStyleCounts[linkStyle] + 1;
                     }
 
+                    // also select a non-link node (to show we don't alter it's style)
+                    node = diagram.nodes.first();
+                    nodeCategory = node.category;
+
+                    node.isSelected = true;
+
                     // make sure we made a selection and have more than one style
-                    expect(diagram.selection.count).toBe(1);
+                    expect(diagram.selection.count).toBe(2);
                     expect(Object.keys(beforeLinkStyleCounts).length).toBeGreaterThan(1);
                     expect(secondLinkStyle).toBeDefined();
 
@@ -308,11 +317,12 @@ describe('Savanna.crumbnet', function() {
                     linkIterator = diagram.links;
 
                     while (linkIterator.next()) {
-                        var linkStyle = linkIterator.value.category;
+                        linkStyle = linkIterator.value.category;
 
-                        typeof afterLinkStyleCounts[linkStyle] === 'undefined' ? afterLinkStyleCounts[linkStyle] = 1 : ++afterLinkStyleCounts[linkStyle];
+                        afterLinkStyleCounts[linkStyle] = 'undefined' === typeof afterLinkStyleCounts[linkStyle] ? 1 : afterLinkStyleCounts[linkStyle] + 1;
                     }
 
+                    expect(node.category).toBe(nodeCategory);
                     expect(afterLinkStyleCounts[firstLinkStyle]).toBe(beforeLinkStyleCounts[firstLinkStyle] + 1);
                     expect(afterLinkStyleCounts[secondLinkStyle]).toBe(beforeLinkStyleCounts[secondLinkStyle] - 1);
                 });

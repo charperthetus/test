@@ -193,7 +193,6 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
             diagram.startTransaction('changeLinkStyle');
             while (iterator.next()) {
                 if (iterator.value instanceof go.Link) {
-                    console.log('changing link style from "' + iterator.value.category + '" to "' + item.type + '"');
                     iterator.value.category = item.type;
                 }
             }
