@@ -1,3 +1,4 @@
+/* global Ext: false, go: false, Savanna: false */
 Ext.define('Savanna.crumbnet.view.part.Canvas', {
     extend: 'Ext.Component',
     alias: 'widget.go-graph_canvas',
@@ -19,12 +20,11 @@ Ext.define('Savanna.crumbnet.view.part.Canvas', {
     },
 
     onRender: function() {
-        var domElem, config;
+        var domElem;
 
         this.callParent(arguments);
 
         domElem = Ext.DomHelper.insertHtml('afterBegin', this.getEl().dom, '<div class="go-graph" style="width: 100%; height: 100%; position: absolute;"></div>');
-        config = this.getInitialConfig();
 
         this.diagram = new go.Diagram(domElem);
         this.diagram.nodeTemplate = Savanna.crumbnet.utils.ViewTemplates.generateNodeTemplate();
@@ -35,7 +35,7 @@ Ext.define('Savanna.crumbnet.view.part.Canvas', {
         this.diagram.allowDrop = true;
         this.diagram.initialContentAlignment = go.Spot.Center;
 
-        if (this.store.getCount() > 0) {
+        if (0 < this.store.getCount()) {
             this.onStoreLoad(this.store);
         }
 
