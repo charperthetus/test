@@ -66,8 +66,10 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
                 var mainCrumbnetViewport = crumbnet.down('#mainCrumbnetViewport');
                 this.toggleOverview(mainCrumbnetViewport, diagram);
                 break;
-            // NOTE: there is no "default" because we get clicks for other "buttons" (such as the dropdown menus)
-            //       which we do not need to handle
+            default:
+                // NOTE: there is no "default" because we get clicks for other "buttons" (such as the dropdown menus)
+                //       which we do not need to handle
+                break;
         }
     },
 
@@ -83,8 +85,8 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
         var viewBounds = diagram.viewportBounds.copy();
         var centerPoint = viewBounds.center.copy();
 
-        viewBounds.width = viewBounds.width * zoomRatio;
-        viewBounds.height = viewBounds.height * 1.1;
+        viewBounds.width *= zoomRatio;
+        viewBounds.height *= 1.1;
         viewBounds.center = centerPoint;
 
         diagram.zoomToRect(viewBounds);
