@@ -1,7 +1,8 @@
 /* global Ext: false, describe: false, beforeEach: false, afterEach: false, createTestDom: false, cleanTestDom: false,
           it: false, expect: false, Savanna: false, spyOn: false, go: false, ThetusTestHelpers: false, waitsFor: false,
-          runs: false */
+          runs: false, sinon: true */
 Ext.require('Savanna.crumbnet.controller.CrumbnetController');
+Ext.require('Savanna.crumbnet.utils.ViewTemplates');
 
 describe('Savanna.crumbnet', function() {
     var CRUMBNET_PALETTE_TEMPLATES_URL = 'app/assets/data/testCrumbnetTemplates.json';
@@ -46,7 +47,7 @@ describe('Savanna.crumbnet', function() {
             expect(controller instanceof Savanna.crumbnet.controller.CrumbnetController).toBeTruthy();
         });
 
-        describe('handleGraphToolbarButtonClick', function(){
+        describe('handleGraphToolbarButtonClick', function() {
 
             it('should zoom the diagram when we click "zoomToFit"', function() {
                 var button = view.down('button[type="zoomToFit"]');
@@ -108,12 +109,12 @@ describe('Savanna.crumbnet', function() {
             });
         });
 
-        describe('handleGraphMenuClick', function(){
+        describe('handleLayoutMenuClick', function() {
 
             it('should change diagram layout when we click "tree"', function() {
                 var menuButton = view.down('menuitem[type="tree"]');
                 var menu = view.down('#layoutMenu');
-                controller.handleGraphMenuClick(menu, menuButton);
+                controller.handleLayoutMenuClick(menu, menuButton);
 
                 expect(diagram.layout instanceof go.Layout).toBeTruthy();
             });
@@ -121,7 +122,7 @@ describe('Savanna.crumbnet', function() {
             it('should change diagram layout when we click "grid"', function() {
                 var menuButton = view.down('menuitem[type="grid"]');
                 var menu = view.down('#layoutMenu');
-                controller.handleGraphMenuClick(menu, menuButton);
+                controller.handleLayoutMenuClick(menu, menuButton);
 
                 expect(diagram.layout instanceof go.Layout).toBeTruthy();
             });
@@ -129,7 +130,7 @@ describe('Savanna.crumbnet', function() {
             it('should change diagram layout when we click "force"', function() {
                 var menuButton = view.down('menuitem[type="force"]');
                 var menu = view.down('#layoutMenu');
-                controller.handleGraphMenuClick(menu, menuButton);
+                controller.handleLayoutMenuClick(menu, menuButton);
 
                 expect(diagram.layout instanceof go.Layout).toBeTruthy();
             });
@@ -137,7 +138,7 @@ describe('Savanna.crumbnet', function() {
             it('should change diagram layout when we click "circular"', function() {
                 var menuButton = view.down('menuitem[type="circular"]');
                 var menu = view.down('#layoutMenu');
-                controller.handleGraphMenuClick(menu, menuButton);
+                controller.handleLayoutMenuClick(menu, menuButton);
 
                 expect(diagram.layout instanceof go.Layout).toBeTruthy();
             });
@@ -145,15 +146,18 @@ describe('Savanna.crumbnet', function() {
             it('should change diagram layout when we click "layeredDigraph"', function() {
                 var menuButton = view.down('menuitem[type="layeredDigraph"]');
                 var menu = view.down('#layoutMenu');
-                controller.handleGraphMenuClick(menu, menuButton);
+                controller.handleLayoutMenuClick(menu, menuButton);
 
                 expect(diagram.layout instanceof go.Layout).toBeTruthy();
             });
+        });
+
+        describe('handleAlignmentMenuClick', function() {
 
             it('should change diagram alignment when we click "right"', function() {
                 var menuButton = view.down('menuitem[type="right"]');
                 var menu = view.down('#alignmentMenu');
-                controller.handleGraphMenuClick(menu, menuButton);
+                controller.handleAlignmentMenuClick(menu, menuButton);
 
                 //We always set the alignment back to default after changing it
                 expect(diagram.contentAlignment).toBe(go.Spot.Default);
@@ -162,7 +166,7 @@ describe('Savanna.crumbnet', function() {
             it('should change diagram alignment when we click "left"', function() {
                 var menuButton = view.down('menuitem[type="left"]');
                 var menu = view.down('#alignmentMenu');
-                controller.handleGraphMenuClick(menu, menuButton);
+                controller.handleAlignmentMenuClick(menu, menuButton);
 
                 //We always set the alignment back to default after changing it
                 expect(diagram.contentAlignment).toBe(go.Spot.Default);
@@ -171,7 +175,7 @@ describe('Savanna.crumbnet', function() {
             it('should change diagram alignment when we click "top"', function() {
                 var menuButton = view.down('menuitem[type="top"]');
                 var menu = view.down('#alignmentMenu');
-                controller.handleGraphMenuClick(menu, menuButton);
+                controller.handleAlignmentMenuClick(menu, menuButton);
 
                 //We always set the alignment back to default after changing it
                 expect(diagram.contentAlignment).toBe(go.Spot.Default);
@@ -180,7 +184,7 @@ describe('Savanna.crumbnet', function() {
             it('should change diagram alignment when we click "bottom"', function() {
                 var menuButton = view.down('menuitem[type="bottom"]');
                 var menu = view.down('#alignmentMenu');
-                controller.handleGraphMenuClick(menu, menuButton);
+                controller.handleAlignmentMenuClick(menu, menuButton);
 
                 //We always set the alignment back to default after changing it
                 expect(diagram.contentAlignment).toBe(go.Spot.Default);
@@ -189,10 +193,139 @@ describe('Savanna.crumbnet', function() {
             it('should change diagram alignment when we click "center"', function() {
                 var menuButton = view.down('menuitem[type="center"]');
                 var menu = view.down('#alignmentMenu');
-                controller.handleGraphMenuClick(menu, menuButton);
+                controller.handleAlignmentMenuClick(menu, menuButton);
 
                 //We always set the alignment back to default after changing it
                 expect(diagram.contentAlignment).toBe(go.Spot.Default);
+            });
+        });
+
+        describe('handleLinkStyleClick', function() {
+            var menuButton = null,
+                menu = null,
+                diagram = null;
+
+            beforeEach(function() {
+                menuButton = view.down('menuitem[type="standard"]');
+                menu = view.down('#linkStyleMenu');
+                diagram = controller.getDiagramForMenu(menu);
+            });
+
+            afterEach(function() {
+                menuButton = null;
+                menu = null;
+                diagram = null;
+            });
+
+            describe('error conditions', function() {
+                var raisedError = false;
+
+                beforeEach(function() {
+                    Ext.Error.handle = function() {
+                        raisedError = true;
+                        return true;
+                    };
+                });
+
+                afterEach(function() {
+                    Ext.Error.handle = function() {};
+                    raisedError = false;
+                });
+
+                it('should log an error if we send a link style that is not understood', function() {
+                    menuButton.type = 'UNKNOWN_TYPE';
+
+                    controller.handleLinkStyleMenuClick(menu, menuButton);
+
+                    expect(raisedError).toBeTruthy();
+                });
+            });
+
+            describe('valid conditions', function() {
+                // TODO: validate that this is true (it may be that if no links are selected, then ALL links should change
+                //       in which case there will be only one link category after the button is clickec)
+                it('should NOT change link styles if no link is selected', function() {
+                    var selectedNodeSet = diagram.selection;
+
+                    expect(selectedNodeSet.count).toBe(0);
+
+                    var linkIterator = diagram.links;
+                    var linkStylesSeen = {};
+
+                    while (linkIterator.next()) {
+                        linkStylesSeen[linkIterator.value.category] = true;
+                    }
+
+                    expect(Object.keys(linkStylesSeen).length).toBeGreaterThan(1);
+
+                    controller.handleLinkStyleMenuClick(menu, menuButton);
+
+                    linkIterator = diagram.links;
+                    linkStylesSeen = {};
+
+                    while (linkIterator.next()) {
+                        linkStylesSeen[linkIterator.value.category] = true;
+                    }
+
+                    expect(Object.keys(linkStylesSeen).length).toBeGreaterThan(1);
+                });
+
+                it('should only change the style for the selected links', function() {
+                    var linkIterator = diagram.links,
+                        beforeLinkStyleCounts = {},
+                        firstLinkStyle = null,
+                        secondLinkStyle = null,
+                        linkStyle = null,
+                        node = null,
+                        nodeCategory = null;
+
+                    // gather a count of links styles and select one link whose style will change
+                    while (linkIterator.next()) {
+                        linkStyle = linkIterator.value.category;
+
+                        if (!firstLinkStyle) {
+                            firstLinkStyle = linkStyle;
+                        }
+                        if (!secondLinkStyle && linkStyle !== firstLinkStyle) {
+                            secondLinkStyle = linkStyle;
+                            linkIterator.value.isSelected = true;
+                        }
+
+                        beforeLinkStyleCounts[linkStyle] = 'undefined' === typeof beforeLinkStyleCounts[linkStyle] ?  1 : beforeLinkStyleCounts[linkStyle] + 1;
+                    }
+
+                    // also select a non-link node (to show we don't alter it's style)
+                    node = diagram.nodes.first();
+                    nodeCategory = node.category;
+
+                    node.isSelected = true;
+
+                    // make sure we made a selection and have more than one style
+                    expect(diagram.selection.count).toBe(2);
+                    expect(Object.keys(beforeLinkStyleCounts).length).toBeGreaterThan(1);
+                    expect(secondLinkStyle).toBeDefined();
+
+                    // select the menu to change the selected link to the first link style we found
+                    menuButton = view.down('menuitem[type="' + firstLinkStyle + '"]');
+
+                    expect(menuButton).toBeDefined();
+
+                    controller.handleLinkStyleMenuClick(menu, menuButton);
+
+                    // get a count of link styles after we made our change
+                    var afterLinkStyleCounts = {};
+                    linkIterator = diagram.links;
+
+                    while (linkIterator.next()) {
+                        linkStyle = linkIterator.value.category;
+
+                        afterLinkStyleCounts[linkStyle] = 'undefined' === typeof afterLinkStyleCounts[linkStyle] ? 1 : afterLinkStyleCounts[linkStyle] + 1;
+                    }
+
+                    expect(node.category).toBe(nodeCategory);
+                    expect(afterLinkStyleCounts[firstLinkStyle]).toBe(beforeLinkStyleCounts[firstLinkStyle] + 1);
+                    expect(afterLinkStyleCounts[secondLinkStyle]).toBe(beforeLinkStyleCounts[secondLinkStyle] - 1);
+                });
             });
         });
     });
@@ -306,6 +439,22 @@ describe('Savanna.crumbnet', function() {
                 var overview = view.down('go-graph_overview');
                 // NOTE: when I would use expect(overview).toBeNull(), the test would hang...
                 expect(null === overview).toBeTruthy();
+            });
+
+            it('should create a link template menu using keys from the linkTemplateMap', function() {
+                var linkStyleMenu = view.queryById('linkStyleMenu');
+
+                expect(linkStyleMenu).not.toBeUndefined();
+
+                var templateIds = Savanna.crumbnet.utils.ViewTemplates.getLinkTemplateNames();
+
+                var firstLinkMenuItem = linkStyleMenu.menu.child('[type=' + templateIds[0] + ']');
+
+                expect(firstLinkMenuItem).not.toBeUndefined();
+
+                var lastLinkMenuItem = linkStyleMenu.menu.child('[type=' + templateIds[templateIds.length - 1] + ']');
+
+                expect(lastLinkMenuItem).not.toBeUndefined();
             });
         });
 
