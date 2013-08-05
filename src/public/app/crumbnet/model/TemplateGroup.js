@@ -13,8 +13,27 @@ Ext.define('Savanna.crumbnet.model.TemplateGroup', {
         'Savanna.crumbnet.model.Template'
     ],
 
+    fields: ['id', 'title', 'templates'],
+
     // NOTE: the model class must be fully qualififed in your relationship definition
     hasMany: [
         { model: 'Savanna.crumbnet.model.Template', name: 'templates' }
-    ]
+    ],
+
+    // CUSTOM METHODS
+
+    /**
+     * retrieve the templates data as raw JSON
+     *
+     * @returns Array
+     */
+    templatesAsJson: function() {
+        var json = [];
+
+        this.templates().each(function(template) {
+            json.push(template.raw);
+        });
+
+        return json;
+    }
 });

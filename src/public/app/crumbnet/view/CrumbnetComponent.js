@@ -4,6 +4,7 @@ Ext.define('Savanna.crumbnet.view.CrumbnetComponent', {
 
     overview: null,
     requires: [
+        'Ext.layout.container.Absolute',
         'Savanna.crumbnet.view.part.PaletteMenu',
         'Savanna.crumbnet.view.part.Canvas',
         'Savanna.crumbnet.view.part.Overview',
