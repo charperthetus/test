@@ -1,3 +1,4 @@
+/* global Ext: false, go: false, Savanna: false */
 Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
     extend: 'Ext.app.Controller',
 
