@@ -407,6 +407,7 @@ describe('Savanna.crumbnet', function() {
         beforeEach(function() {
             store = setupPaletteTemplateStore(server, fixtures.defaultPaletteTemplateResponse);
             view = Ext.create('Savanna.crumbnet.view.CrumbnetComponent', { renderTo: 'test-html' });
+
             store.fireEvent('load'); // NOTE: we have to trigger the event to get the PaletteMenu to load
         });
 
@@ -511,6 +512,46 @@ describe('Savanna.crumbnet', function() {
                     expect(accordionPanels.length).toBe(1);
                     expect(accordionPanels[0].title).toBe('NO PALETTE');
                 });
+            });
+        });
+
+        describe('Crumbnet Overview', function() {
+
+            it('should not set up a diagram if we do not pass one in', function() {
+                var overview = Ext.create('Savanna.crumbnet.view.part.Overview');
+
+                expect(overview.diagram).toBeNull();
+            });
+
+            it('should NOT attempt to set the overview.observed property', function() {
+                var overview = Ext.create('Savanna.crumbnet.view.part.Overview', { renderTo: 'test-html' });
+
+                expect(overview.diagram).toBeNull();
+
+                spyOn(overview, 'callParent'); // just to prevent it from calling through to parent
+                spyOn(Ext.DomHelper, 'insertHtml');
+
+                overview.onRender();
+
+                expect(Ext.DomHelper.insertHtml).not.toHaveBeenCalled();
+            });
+
+            it('should set the "observed" property of the overview to whatever is passed in', function() {
+                // create a diagram....
+                var domElem = Ext.DomHelper.insertHtml('afterBegin', view.getEl().dom, '<div id="test-diagram" style="width: 100px; height: 100px;"></div>');
+                var testDiagram = new go.Diagram(domElem);
+                var overview = Ext.create('Savanna.crumbnet.view.part.Overview', {
+                    renderTo: 'test-html',
+                    diagram: view.down('go-graph_canvas').diagram
+                });
+
+                overview.onRender();
+
+                expect(overview.overview).not.toBeNull();
+
+                overview.setDiagram(testDiagram);
+
+                expect(overview.overview.observed).toEqual(testDiagram);
             });
         });
     });
