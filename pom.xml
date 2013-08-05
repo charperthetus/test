@@ -116,7 +116,6 @@
                 </executions>
             </plugin>-->
 
-            <!--
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-clean-plugin</artifactId>
@@ -124,7 +123,7 @@
                 <configuration>
                     <filesets>
                         <fileset>
-                            <directory>src/public/test/reports/phantom</directory>
+                            <directory>src/public/test/reports/jasmine</directory>
                             <includes>
                                 <include>**/*</include>
                             </includes>
@@ -133,13 +132,12 @@
                     </filesets>
                 </configuration>
             </plugin>
-            -->
-            <!--
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>1.1</version>
                 <executions>
+            <!--
                     <execution>
                         <id>JsTestDriver PhantomJS Unit Testing</id>
                         <phase>test</phase>
@@ -178,7 +176,7 @@
                                 <argument>QUIET</argument>
                             </arguments>
                         </configuration>
-                    </execution>
+                    </execution>-->
                     <execution>
                         <id>JsCover Coverage Report Startup</id>
                         <phase>test</phase>
@@ -200,11 +198,11 @@
                             <goal>exec</goal>
                         </goals>
                         <configuration>
-                            <-<executable>/usr/local/bin/phantomjs</executable>->
+                            <!--<executable>/usr/local/bin/phantomjs</executable>-->
                             <executable>/Applications/Firefox.app/Contents/MacOS/firefox</executable>
                             <workingDirectory>${project.basedir}</workingDirectory>
                             <arguments>
-                                <-<argument>${project.basedir}/src/public/test/lib/run-jscover-jasmine.js</argument>->
+                                <!--<argument>${project.basedir}/src/public/test/lib/run-jscover-jasmine.js</argument>-->
                                 <argument>http://localhost:8080/test/SpecRunner.html</argument>
                             </arguments>
                         </configuration>
@@ -223,10 +221,8 @@
                             </arguments>
                         </configuration>
                     </execution>
-                    -_
                 </executions>
             </plugin>
-            -->
         </plugins>
     </build>
 

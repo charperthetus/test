@@ -153,6 +153,13 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
         return linkTemplateMap;
     },
 
+    getLinkTemplateNames: function() {
+        var linkTemplateMap = this.generateLinkTemplateMap();
+        var keySet = linkTemplateMap.toKeySet();
+
+        return keySet.toArray();
+    },
+
     addNodeAndLink: function(e, obj) {
         var fromNode = obj.part;
 
@@ -180,7 +187,7 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
                 var x = 0;
                 var y = Number.NEGATIVE_INFINITY;
 
-                if (cnLoc.y == y){
+                if (cnLoc.y === y){
                     if (cnLoc.x > x){
                         y = cnLoc.y;
                         x = cnLoc.x;
