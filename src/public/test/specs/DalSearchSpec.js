@@ -1,3 +1,9 @@
+/* global Ext: false, ExtSpec: false,
+          describe: false, beforeEach: false, afterEach: false, expect: false, it: false,
+          sinon: false, spyOn: false,
+          ThetusTestHelpers: false, createTestDom: false, cleanTestDom: false,
+          Savanna: false
+ */
 Ext.require('Savanna.Config');
 Ext.require('Savanna.search.model.DalSource');
 Ext.require('Savanna.search.store.DalSources');
@@ -42,7 +48,7 @@ describe('Dal Search', function() {
                 var dal = Ext.create('Savanna.search.model.DalSource', fixtures.legacyDal);
 
                 expect(dal.customSearchGroups().count()).toBe(0);
-            })
+            });
         });
     });
 
@@ -92,7 +98,9 @@ describe('Dal Search', function() {
         });
 
         afterEach(function() {
-            if (view && view.destroy) view.destroy();
+            if (view && view.destroy) {
+                view.destroy();
+            }
 
             view = null;
         });
@@ -111,7 +119,9 @@ describe('Dal Search', function() {
         });
 
         afterEach(function() {
-            if (view && view.destroy) view.destroy();
+            if (view && view.destroy) {
+                view.destroy();
+            }
 
             view = null;
         });
@@ -129,7 +139,9 @@ describe('Dal Search', function() {
         });
 
         afterEach(function() {
-            if (controller && controller.destroy) controller.destroy();
+            if (controller && controller.destroy) {
+                controller.destroy();
+            }
 
             controller = null;
         });
@@ -143,6 +155,7 @@ describe('Dal Search', function() {
                 expect(view instanceof Savanna.search.view.searchDals.SearchOptions).toBeTruthy();
             });
         });
+
         describe('createCustomSearchGroupPanel', function() {
             it('should create an instance of the Savanna.search.view.searchDals.CustomSearchGroupForm', function() {
                 var store = Ext.create('Savanna.search.store.DalSources', {
@@ -165,6 +178,7 @@ describe('Dal Search', function() {
                 expect(view.add.callCount).toBe(controller.getStore('Savanna.search.store.DalSources').count());
             });
         });
+
         describe('renderCustomOptions', function() {
             var topView = null;
             var testView = null;
@@ -182,7 +196,9 @@ describe('Dal Search', function() {
             });
 
             afterEach(function() {
-                if (topView && topView.destroy) topView.destroy();
+                if (topView && topView.destroy) {
+                    topView.destroy();
+                }
 
                 topView = null;
                 testView = null;
@@ -208,16 +224,20 @@ describe('Dal Search', function() {
                 expect(testView.doLayout).toHaveBeenCalled();
             });
         });
+
         describe('dalCheckBoxClicked', function() {
             var topView = null;
             var testView = null;
             var checkbox = null;
             var button = null;
+
             beforeEach(function() {
                 topView = Ext.create('Savanna.search.view.SearchDals', { renderTo: 'test-html' });
                 testView = topView.down('search_searchDals_searchoptions:last');
+
                 checkbox = testView.queryById('includeDalCheckBox');
                 button = topView.queryById('selectAllDals');
+
                 spyOn(testView, 'doLayout'); // don't necessarily need to redo the layout...
                 spyOn(checkbox, 'getValue').andCallThrough();
                 spyOn(checkbox, 'up').andCallThrough();
@@ -225,7 +245,9 @@ describe('Dal Search', function() {
             });
 
             afterEach(function() {
-                if (topView && topView.destroy) topView.destroy();
+                if (topView && topView.destroy) {
+                    topView.destroy();
+                }
 
                 topView = null;
                 testView = null;
@@ -243,19 +265,22 @@ describe('Dal Search', function() {
             });
 
             it('button.setText should be called with Unselect All if all checkboxes are checked', function() {
-                var checkboxes = topView.query('#includeDalCheckBox')
+                var checkboxes = topView.query('#includeDalCheckBox'),
+                    i = 0;
+
                 topView.settingAllDalCheckBoxes = true;
-                for (box in checkboxes) {
-                    checkboxes[box].setValue(true);
+
+                for (i = 0; i < checkboxes.length; ++i) {
+                    checkboxes[i].setValue(true);
                 }
+
                 topView.settingAllDalCheckBoxes = false;
                 checkbox.setValue(true);
                 controller.dalCheckBoxClicked(checkbox);
+
                 expect(button.setText).toHaveBeenCalledWith('Unselect All');
             });
         });
-
-
 
         describe('setAllDalCheckboxValues', function() {
             var topView = null;
@@ -272,7 +297,9 @@ describe('Dal Search', function() {
             });
 
             afterEach(function() {
-                if (topView && topView.destroy) topView.destroy();
+                if (topView && topView.destroy) {
+                    topView.destroy();
+                }
 
                 topView = null;
                 testView = null;
@@ -281,17 +308,24 @@ describe('Dal Search', function() {
 
             it('expect all the dal checkboxes to get checked and unchecked with selectOrUnselectAllButtonClicked', function() {
                 controller.selectOrUnselectAllButtonClicked(button);
-                var checkboxes = topView.query('#includeDalCheckBox')
-                for (box in checkboxes) {
-                    expect(checkboxes[box].getValue()).toBeTruthy();
+
+                var checkboxes = topView.query('#includeDalCheckBox'),
+                    i = 0;
+
+                for (i = 0; i < checkboxes.length; ++i) {
+                    expect(checkboxes[i].getValue()).toBeTruthy();
                 }
+
                 controller.selectOrUnselectAllButtonClicked(button);
-                for (box in checkboxes) {
-                    expect(checkboxes[box].getValue()).toBeFalsy();
+
+                for (i = 0; i < checkboxes.length; ++i) {
+                    expect(checkboxes[i].getValue()).toBeFalsy();
                 }
+
                 expect(topView.query).toHaveBeenCalled();
             });
         });
+
         describe('resetAllSearchOptions', function() {
             var topView = null;
             var testView = null;
@@ -306,34 +340,46 @@ describe('Dal Search', function() {
                 spyOn(topView, 'removeAll').andCallThrough();
                 spyOn(controller, 'createDalPanels').andCallThrough();
             });
+
             afterEach(function() {
-                if (topView && topView.destroy) topView.destroy();
+                if (topView && topView.destroy) {
+                    topView.destroy();
+                }
 
                 topView = null;
                 testView = null;
                 button = null;
             });
+
             it('expect resetAllSearchOptions to call removeAll and createDalPanels', function() {
-                var checkboxes = topView.query('#includeDalCheckBox')
+                var checkboxes = topView.query('#includeDalCheckBox'),
+                    i = 0;
+
                 topView.settingAllDalCheckBoxes = true;
-                for (box in checkboxes) {
-                    checkboxes[box].setValue(true);
+
+                for (i = 0; i < checkboxes.length; ++i) {
+                    checkboxes[i].setValue(true);
                 }
+
                 topView.settingAllDalCheckBoxes = false;
+
                 var allCheckBoxesChecked = true;
 
                 // after resetAllSearchOptions all checkboxes should no longer be checked.
                 controller.resetAllSearchOptions(button);
-                for (box in checkboxes) {
-                    if (checkboxes[box].getValue !== true) {
+
+                for (i = 0; i < checkboxes.length; ++i) {
+                    if (checkboxes[i].getValue !== true) {
                         allCheckBoxesChecked = false;
                     }
                 }
+
                 expect(allCheckBoxesChecked).toBeFalsy();
                 expect(topView.removeAll).toHaveBeenCalled();
                 expect(controller.createDalPanels).toHaveBeenCalled();
             });
         });
+
         describe('resetSingleDal', function() {
             var topView = null;
             var testView = null;
@@ -342,29 +388,38 @@ describe('Dal Search', function() {
             beforeEach(function() {
                 topView = Ext.create('Savanna.search.view.SearchDals', { renderTo: 'test-html' });
                 testView = topView.down('search_searchDals_searchoptions:last');
+
                 button = testView.queryById('resetSingleDal');
+
                 spyOn(testView, 'doLayout'); // don't necessarily need to redo the layout...
                 spyOn(topView, 'remove').andCallThrough();
             });
+
             afterEach(function() {
-                if (topView && topView.destroy) topView.destroy();
+                if (topView && topView.destroy) {
+                    topView.destroy();
+                }
 
                 topView = null;
                 testView = null;
                 button = null;
             });
+
             it('expect resetSingleDal to remove CustomSearchGroupForm', function() {
                 var store = Ext.create('Savanna.search.store.DalSources', {
                     autoload: false
                 });
+
                 store.loadData(fixtures.allDals);
 
-                var childSearchDalsPanel =  Ext.create('Savanna.search.view.searchDals.CustomSearchGroupForm', {
-                                                store: store
-                                            });
+                var childSearchDalsPanel =  Ext.create('Savanna.search.view.searchDals.CustomSearchGroupForm', { store: store });
+
                 testView.add(childSearchDalsPanel);
+
                 expect(testView.down('search_searchDals_custom-search-group-form')).toBeTruthy();
+
                 controller.resetSingleDal(button);
+
                 expect(testView.down('search_searchDals_custom-search-group-form')).toBeFalsy();
             });
         });
