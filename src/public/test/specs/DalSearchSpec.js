@@ -256,7 +256,6 @@ describe('Dal Search', function() {
             });
 
             it('checkbox.getValue, checkbox.up and button.setText to be called', function() {
-
                 controller.dalCheckBoxClicked(checkbox);
 
                 expect(checkbox.getValue).toHaveBeenCalled();
@@ -279,6 +278,27 @@ describe('Dal Search', function() {
                 controller.dalCheckBoxClicked(checkbox);
 
                 expect(button.setText).toHaveBeenCalledWith('Unselect All');
+            });
+
+            it('should do nothing if called while we are in the process of setting all the dal checkboxes', function() {
+                topView.settingAllDalCheckBoxes = true;
+
+                controller.dalCheckBoxClicked(checkbox);
+
+                expect(checkbox.up).toHaveBeenCalled();
+                expect(checkbox.getValue).not.toHaveBeenCalled();
+                expect(button.setText).not.toHaveBeenCalled();
+            });
+
+            it('should change button text to indicate that clicking it will check all boxes if at least one is checked and one is unchecked', function() {
+                // NOTE: we assume all are unchecked, so we only need to set one to checked...
+                topView.down('search_searchDals_searchoptions:first').queryById('includeDalCheckBox').setValue(true);
+
+                controller.dalCheckBoxClicked(checkbox);
+
+                expect(checkbox.getValue).toHaveBeenCalled();
+                expect(checkbox.up).toHaveBeenCalled();
+                expect(button.setText).toHaveBeenCalledWith('Select All');
             });
         });
 
