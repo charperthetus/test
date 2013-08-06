@@ -177,7 +177,6 @@
                             </arguments>
                         </configuration>
                     </execution>-->
-                    <!--
                     <execution>
                         <id>JsCover Coverage Report Startup</id>
                         <phase>test</phase>
@@ -199,11 +198,11 @@
                             <goal>exec</goal>
                         </goals>
                         <configuration>
-                            <!-_<executable>/usr/local/bin/phantomjs</executable>_->
+                            <!--<executable>/usr/local/bin/phantomjs</executable>-->
                             <executable>/Applications/Firefox.app/Contents/MacOS/firefox</executable>
                             <workingDirectory>${project.basedir}</workingDirectory>
                             <arguments>
-                                <!-_<argument>${project.basedir}/src/public/test/lib/run-jscover-jasmine.js</argument>_->
+                                <!--<argument>${project.basedir}/src/public/test/lib/run-jscover-jasmine.js</argument>-->
                                 <argument>http://localhost:8080/test/SpecRunner.html</argument>
                             </arguments>
                         </configuration>
@@ -222,7 +221,6 @@
                             </arguments>
                         </configuration>
                     </execution>
-                    -->
                 </executions>
             </plugin>
         </plugins>
