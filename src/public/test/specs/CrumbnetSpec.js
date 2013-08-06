@@ -28,23 +28,67 @@ describe('Savanna.crumbnet', function() {
     describe('Controller', function() {
         var controller = null,
             view = null,
-            diagram = null;
+            diagram = null,
+            errorRaised = false,
+            origErrorHandleFn = null;
 
         beforeEach(function() {
             controller = Ext.create('Savanna.crumbnet.controller.CrumbnetController');
             view = Ext.create('Savanna.crumbnet.view.CrumbnetComponent', { renderTo: 'test-html' });
             diagram = view.down('go-graph_canvas').diagram;
+
+            origErrorHandleFn = Ext.Error.handle;
+
+            Ext.Error.handle = function() {
+                errorRaised = true;
+                return true;
+            };
         });
 
         afterEach(function() {
             controller = null;
+
             view.destroy();
             view = null;
+
             diagram = null;
+
+            errorRaised = false;
+            Ext.Error.handle = origErrorHandleFn;
         });
 
         it('should have a controller instance', function() {
             expect(controller instanceof Savanna.crumbnet.controller.CrumbnetController).toBeTruthy();
+        });
+
+        describe('zoomTo', function() {
+
+            it('should change diagram viewportBounds uniformly when calling zoomTo', function () {
+                var origViewportBounds = diagram.viewportBounds.copy();
+
+                controller.zoomTo(diagram, 2.0);
+
+                var changedViewportBounds = diagram.viewportBounds.copy();
+
+                expect(changedViewportBounds.width / changedViewportBounds.height).toBe(origViewportBounds.width / origViewportBounds.height);
+            });
+
+            it('should maintain centerPoint of diagram when calling zoomTo', function () {
+                // NOTE: we have to zoom at least once to have a center bounds set (otherwise it starts as NaN, NaN)
+                controller.zoomTo(diagram, 1.0);
+
+                waitsFor(function() {
+                    return !isNaN(origCenterPoint.x);
+                }, 'diagram to reset the center point of our diagram');
+
+                var origCenterPoint = diagram.viewportBounds.center.copy();
+
+                controller.zoomTo(diagram, 2.0);
+
+                var finalCenterPoint = diagram.viewportBounds.center.copy();
+
+                expect(origCenterPoint.equals(finalCenterPoint)).toBeTruthy();
+            });
         });
 
         describe('handleGraphToolbarButtonClick', function() {
@@ -107,6 +151,42 @@ describe('Savanna.crumbnet', function() {
 
                 expect(null !== view.down('go-graph_overview')).toBe(overviewVisible);
             });
+
+            it('should zoom in on the diagram when we click "zoomIn"', function() {
+                var button = view.down('button[type="zoomIn"]');
+
+                //noinspection JSValidateTypes
+                spyOn(controller, 'zoomTo');
+
+                controller.handleGraphToolbarButtonClick(button);
+
+                var zoomToArg = controller.zoomTo.mostRecentCall.args[1];
+
+                expect(zoomToArg).toBeLessThan(1.0);
+            });
+
+            it('should zoom out on the diagram when we click "zoomOut"', function() {
+                var button = view.down('button[type="zoomOut"]');
+
+                //noinspection JSValidateTypes
+                spyOn(controller, 'zoomTo');
+
+                controller.handleGraphToolbarButtonClick(button);
+
+                var zoomToArg = controller.zoomTo.mostRecentCall.args[1];
+
+                expect(zoomToArg).toBeGreaterThan(0.9);
+            });
+
+            it('should do nothing if we click a button it does not understand', function() {
+                var button = view.down('button[type="zoomOut"]');
+                button.type = 'UNKNOWN_TOOLBAR';
+
+                controller.handleGraphToolbarButtonClick(button);
+
+                // should not even throw an error...
+                expect(errorRaised).toBeFalsy();
+            });
         });
 
         describe('handleLayoutMenuClick', function() {
@@ -150,6 +230,15 @@ describe('Savanna.crumbnet', function() {
 
                 expect(diagram.layout instanceof go.Layout).toBeTruthy();
             });
+
+            it('should raise an Ext.Error if we pass an unknown diagram layout', function() {
+                var menuButton = view.down('menuitem[type="force"]');
+                menuButton.type = 'UNKNOWN_LAYOUT';
+                var menu = view.down('#layoutMenu');
+                controller.handleLayoutMenuClick(menu, menuButton);
+
+                expect(errorRaised).toBeTruthy();
+            });
         });
 
         describe('handleAlignmentMenuClick', function() {
@@ -159,7 +248,7 @@ describe('Savanna.crumbnet', function() {
                 var menu = view.down('#alignmentMenu');
                 controller.handleAlignmentMenuClick(menu, menuButton);
 
-                //We always set the alignment back to default after changing it
+                // We always set the alignment back to default after changing it
                 expect(diagram.contentAlignment).toBe(go.Spot.Default);
             });
 
@@ -197,6 +286,15 @@ describe('Savanna.crumbnet', function() {
 
                 //We always set the alignment back to default after changing it
                 expect(diagram.contentAlignment).toBe(go.Spot.Default);
+            });
+
+            it('should raise an Ext.Error if we pass an unknown alignment', function() {
+                var menuButton = view.down('menuitem[type="center"]');
+                menuButton.type = 'UNKNOWN';
+                var menu = view.down('#alignmentMenu');
+                controller.handleAlignmentMenuClick(menu, menuButton);
+
+                expect(errorRaised).toBeTruthy();
             });
         });
 
