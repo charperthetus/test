@@ -1,3 +1,4 @@
+/* global Ext: false, Savanna: false */
 /**
  * Central controller for the Savanna client application
  */
@@ -19,8 +20,8 @@ Ext.define('Savanna.controller.Main', {
 
         this.control({
             login: {
-                render: function(view) {
-                    Ext.EventManager.on(window, 'message', function(e, t) {
+                render: function() {
+                    Ext.EventManager.on(window, 'message', function(e) {
                         me.swapLogin(e.browserEvent.data);
                     });
                 }
@@ -31,24 +32,19 @@ Ext.define('Savanna.controller.Main', {
     swapLogin: function(sessionId) {
         Savanna.jsessionid = sessionId;
 
-        // TODO - Check the event to see a valid loggedin message
-
         if (this.app && this.app.viewport) {
-            if (this.app.viewport.queryById) {
-                var mainViewport = this.app.viewport.queryById('viewport_main');
+            var mainViewport = this.app.viewport.queryById('viewport_main');
 
-                if (mainViewport) mainViewport.remove('login');
-                var main = Ext.create("Savanna.view.SavannaDesktop", {
-                    itemId:"main"
-                });
-                if (mainViewport) mainViewport.add(main);
-            }
-            else {
-                console.error('unable to query the viewport');
+            if (mainViewport) {
+                mainViewport.remove('login');
+
+                var main = Ext.create('Savanna.view.SavannaDesktop', { itemId: 'main' });
+
+                mainViewport.add(main);
             }
         }
         else {
-            console.error('no viewport defined');
+            Ext.Error.raise('no viewport defined');
         }
     }
 });
