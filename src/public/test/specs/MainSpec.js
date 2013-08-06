@@ -1,3 +1,7 @@
+/* global
+        Ext: false, ExtSpec: false,
+        describe: false, beforeEach: false, afterEach: false, it: false, expect: false, sinon: false, waitsFor: false, runs: false,
+        Savanna: false, ThetusTestHelpers: false */
 Ext.require('Savanna.Config');
 Ext.require('Savanna.controller.Main');
 Ext.require('Savanna.view.Login');
@@ -13,19 +17,17 @@ describe('Savanna Main', function() {
 
         this.addMatchers(ExtSpec.Jasmine.Matchers);
 
-        //fixtures = Ext.clone(ThetusTestHelpers.Fixtures.Search);
-
         // NOTE: you need to set up the controller even before view tests, otherwise the view will not be able to be instantiated
 
         controller = Ext.create('Savanna.controller.Main');
-
-        //ItemViewer.jsessionid = TEST_SESSION_ID;
     });
 
     afterEach(function() {
         fixtures = null;
 
-        if (controller) controller.destroy();
+        if (controller) {
+            controller.destroy();
+        }
         controller = null;
 
         // Make sure Savanna is not keeping our session ID between tests...
@@ -40,7 +42,9 @@ describe('Savanna Main', function() {
         });
 
         afterEach(function() {
-            if (server) server.restore();
+            if (server) {
+                server.restore();
+            }
 
             server = null;
         });
@@ -53,8 +57,7 @@ describe('Savanna Main', function() {
 
         describe('Login', function() {
             // TODO: create login fixtures...
-            var loginFixtures = {},
-               view = null;
+            var loginFixtures = {};
 
             beforeEach(function() {
                 loginFixtures = {};
@@ -82,13 +85,17 @@ describe('Savanna Main', function() {
                 });
 
                 afterEach(function() {
-                    if (view) view.destroy();
+                    if (view) {
+                        view.destroy();
+                    }
 
                     view = null;
                     mockApplication = null;
                     removeCalled = false;
 
-                    if (controller.swapLogin.restore) controller.swapLogin.restore();
+                    if (controller.swapLogin.restore) {
+                        controller.swapLogin.restore();
+                    }
                 });
 
                 it('should listen for "render" event on login view', function() {
@@ -117,6 +124,21 @@ describe('Savanna Main', function() {
                     runs(function() {
                         expect(controller.swapLogin.called).toBeTruthy();
                     });
+                });
+
+                it('should raise an Ext.Error if we do not have an app defined', function() {
+                    var errorRaised = false;
+
+                    Ext.Error.handle = function() {
+                        errorRaised = true;
+                        return true;
+                    };
+
+                    controller.app = null; // make sure we do not have an app....
+
+                    controller.swapLogin('IRRELEVANT_SESSION_ID');
+
+                    expect(errorRaised).toBeTruthy();
                 });
             });
         });
