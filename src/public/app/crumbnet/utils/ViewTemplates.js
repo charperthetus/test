@@ -8,9 +8,7 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
      * @param {Object} options - optional parameter that can contain a object properties to be applied to the node template
      * @return {go.Node} - The node template for use with GoJS
      */
-    generateNodeTemplate: function(options) {
-        options = options || {};
-
+    generateNodeTemplate: function() {
         var gmake = go.GraphObject.make;
 
         var icon = go.GraphObject.make(go.Picture, {
@@ -61,8 +59,6 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
                 textBlock)
         );
 
-        nodeTemplate = Ext.merge(nodeTemplate, options);
-
         return nodeTemplate;
     },
 
@@ -75,11 +71,11 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
                 {portId: name, fromLinkable: true }) );
     },
 
-    convertCategoryToImage: function(category){
+    convertCategoryToImage: function(category) {
         return 'resources/images/' + category + 'Icon.svg';
     },
 
-    nodeMouseEnter: function(e, obj){
+    nodeMouseEnter: function(e, obj) {
         var node = obj.part;
         var diagram = node.diagram;
 
@@ -95,7 +91,7 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
         }
     },
 
-    nodeMouseLeave: function(e, obj){
+    nodeMouseLeave: function(e, obj) {
         var node = obj.part;
         var diagram = node.diagram;
 
@@ -160,10 +156,10 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
         return keySet.toArray();
     },
 
-    addNodeAndLink: function(e, obj) {
-        var fromNode = obj.part;
+    addNodeAndLink: function(e, node) {
+        var fromNode = node.part;
 
-        if (null === fromNode) {
+        if (!fromNode) {
             return;
         }
 
@@ -177,35 +173,31 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
 
         // create a new "State" data object, positioned off to the right of the adorned Node
         var toData = { text: 'new', category: fromData.category, key: Ext.id() };
-        var p = fromNode.location;
-        var nit = fromNode.findNodesOutOf();
-
+        var fromLocation = fromNode.location;
+        var siblingNodes = fromNode.findNodesOutOf();
         var x = 0;
         var y = Number.NEGATIVE_INFINITY;
 
-        if (nit.count > 0) {
-            while (nit.next()) {
-                var cnLoc = nit.value.location;
+        if (siblingNodes.count > 0) {
+            while (siblingNodes.next()) {
+                var linkedNodeLocation = siblingNodes.value.location;
 
-                x = 0;
-                y = Number.NEGATIVE_INFINITY;
-
-                if (cnLoc.y === y) {
-                    if (cnLoc.x > x) {
-                        y = cnLoc.y;
-                        x = cnLoc.x;
+                if (linkedNodeLocation.y === y) {
+                    if (linkedNodeLocation.x > x) {
+                        y = linkedNodeLocation.y;
+                        x = linkedNodeLocation.x;
                     }
                 }
-                else if (cnLoc.y > y) {
-                    y = cnLoc.y;
-                    x = cnLoc.x;
+                else if (linkedNodeLocation.y > y) {
+                    y = linkedNodeLocation.y;
+                    x = linkedNodeLocation.x;
                 }
             }
 
             toData.loc = x + ' ' + (y + 70);
         }
         else {
-            toData.loc = (p.x + 200) + ' ' + (p.y + 50);  // the "loc" property is a string, not a Point object
+            toData.loc = (fromLocation.x + 200) + ' ' + (fromLocation.y + 50);  // the "loc" property is a string, not a Point object
         }
 
         // add the new node data to the model
@@ -213,7 +205,7 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
         model.addNodeData(toData);
 
         // create a link data from the old node data to the new node data
-        var linkdata = {category: 'curvy'}; //New link with curvy category
+        var linkdata = { category: 'curvy' }; // New link with curvy category
         linkdata[model.linkFromKeyProperty] = model.getKeyForNodeData(fromData);
         linkdata[model.linkToKeyProperty] = model.getKeyForNodeData(toData);
 
