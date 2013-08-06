@@ -87,7 +87,6 @@ describe('Savanna.crumbnet', function() {
 
                 var finalCenterPoint = diagram.viewportBounds.center.copy();
 
-
                 expect(origCenterPoint.equals(finalCenterPoint)).toBeTruthy();
             });
         });
