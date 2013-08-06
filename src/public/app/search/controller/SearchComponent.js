@@ -16,7 +16,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
     ],
 
     models: [
-        // coming soon...
+        "Savanna.search.model.SearchHistory"
     ],
     stores: [
         // coming soon...
@@ -26,15 +26,18 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         'Savanna.search.view.SearchComponent'
     ],
 
-    currentPanel: 'searchoptions',
+    historyStore:null,
+
+    onRender:function (comp, event) {
+        comp.store = this.historyStore;
+    },
 
     init: function (app) {
+        this.historyStore = Ext.create('Savanna.search.store.SearchHistory');
         var me = this;
         me.control({
             'search_searchcomponent': {
-                render: function (comp, event) {
-                    // do something
-                }
+                render: this.onRender
             }
         });
     }

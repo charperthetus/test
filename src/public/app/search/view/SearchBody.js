@@ -8,11 +8,13 @@ Ext.define('Savanna.search.view.SearchBody', {
     requires: [
         'Savanna.search.view.SearchDals',
         'Savanna.search.view.SearchMap',
+        'Savanna.search.view.SearchResults',
         'Savanna.controller.Factory'
     ],
 
     layout: 'fit',
     border: false,
+    currentPanel: 'searchoptions',
 
     items: [
         {
@@ -47,10 +49,9 @@ Ext.define('Savanna.search.view.SearchBody', {
 
         },
         {
-            xtype: 'panel',
+            xtype: 'search_searchresults',
             layout: 'border',
-            itemId: 'mainresults',
-            html: "results here"
+            itemId: 'searchresults'
         }
     ],
 

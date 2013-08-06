@@ -13,19 +13,15 @@ Ext.define('Savanna.search.view.SearchToolbar', {
     items: [
         {
             text: 'Recent Searches',
-            itemId: 'startbutton',
+            itemId: 'historybutton',
             ui: 'flat-toolbar-button',
             menu: {
                 ui: 'flat-menu',
+                itemId:"historymenu",
                 items: [
                     {text: 'Cats'},
                     {text: 'Dogs'},
-                    {text: 'Evil-Doers'},
-                    {
-                        xtype: 'panel',
-                        title: 'test',
-                        html: 'test'
-                    }
+                    {text: 'Evil-Doers'}
                 ]
             }
         },
@@ -45,6 +41,6 @@ Ext.define('Savanna.search.view.SearchToolbar', {
     initComponent: function () {
         this.callParent(arguments);
         // instantiate the controller for this view
-        Savanna.controller.Factory.getController('Savanna.search.controller.SearchToolbar');
+        this.ctrl = Savanna.controller.Factory.getController('Savanna.search.controller.SearchToolbar');
     }
 });

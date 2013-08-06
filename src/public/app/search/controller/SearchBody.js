@@ -23,18 +23,16 @@ Ext.define('Savanna.search.controller.SearchBody', {
         {ref:"resultsButton", selector: "search_searchbody > #searchbodytoolbar #resultsbutton"}
     ],
 
-    currentPanel: 'searchoptions',
-
     onButtonClick:function (button, event) {
-        if (this.currentPanel != "searchoptions" && button == this.getOptionsButton()) {
+        if (button.up("#searchbody").currentPanel != "searchoptions" && button == this.getOptionsButton()) {
             button.up("search_searchbody").queryById("mainsearchoptions").show();
-            button.up("search_searchbody").queryById("mainresults").hide();
-            this.currentPanel = "searchoptions";
+            button.up("search_searchbody").queryById("searchresults").hide();
+            button.up("#searchbody").currentPanel = "searchoptions";
         }
-        if (this.currentPanel != "results" && button == this.getResultsButton()) {
+        if (button.up("#searchbody").currentPanel != "results" && button == this.getResultsButton()) {
             button.up("search_searchbody").queryById("mainsearchoptions").hide();
-            button.up("search_searchbody").queryById("mainresults").show();
-            this.currentPanel = "results";
+            button.up("search_searchbody").queryById("searchresults").show();
+            button.up("#searchbody").currentPanel = "results";
         }
     },
 

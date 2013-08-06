@@ -23,8 +23,8 @@ Ext.define('Savanna.search.view.SearchBar', {
             itemId: "main_panel",
             items: [
                 {
-                    xtype:"searchbar_tools",
-                    itemId:"search_toolbar"
+                    xtype: "searchbar_tools",
+                    itemId: "search_toolbar"
                 },
                 {
                     xtype: 'panel',
@@ -43,7 +43,7 @@ Ext.define('Savanna.search.view.SearchBar', {
     initComponent: function () {
         this.callParent(arguments);
         // instantiate the controller for this view
-        Savanna.controller.Factory.getController('Savanna.search.controller.SearchBar');
+        this.ctrl = Savanna.controller.Factory.getController('Savanna.search.controller.SearchBar');
     },
     buildSearchString: function () {
         var alls, exacts, anys, nones, final_string,
@@ -51,10 +51,14 @@ Ext.define('Savanna.search.view.SearchBar', {
             str_all = '',
             view = this,
             toolbar = view.queryById("search_toolbar");
-        Ext.each(toolbar.queryById("form_container").items.items, function(field, index) {
-             if(field.xtype == "searchadvanced_textfield" && toolbar.queryById(field.itemId).getValue() != "") {
-                 str_all = str_all + field.configs.join + toolbar.queryById(field.itemId).getBooleanValue();
-             }
+        Ext.each(toolbar.queryById("form_container").items.items, function (field, index) {
+            if (field.xtype == "searchadvanced_textfield" && toolbar.queryById(field.itemId).getValue() != "" && toolbar.queryById(field.itemId).getValue() != undefined) {
+                var join = field.configs.join;
+                if (str_all == '') {
+                    join = '';
+                }
+                str_all = str_all + join + toolbar.queryById(field.itemId).getBooleanValue();
+            }
         });
         from_bar = toolbar.queryById("search_terms").getValue().trim();
         str_all = str_all.replace(/\s+/g, ' ');
