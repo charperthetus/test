@@ -26,9 +26,6 @@ Ext.define('Savanna.search.controller.SearchBar', {
             this.doSearch();
         }
     },
-    hideMenu: function (el, evt) {
-        el.up("search_searchbar").queryById("searchadvanced_menu").hide();
-    },
     alignMenuWithTextfield: function (btn, evt) {
         btn.menu.alignTo(btn.up("#search_toolbar").getEl());
     },
@@ -48,14 +45,11 @@ Ext.define('Savanna.search.controller.SearchBar', {
             },
             "search_searchbar > #main_panel #search_toolbar #searchadvanced_menu #submit_panel #advancedsearch_submit": {
                 click: this.doSearch
-            },
-            "search_searchbar > #main_panel #search_toolbar #searchadvanced_menu #close_panel button": {
-                click: this.hideMenu
             }
-        })
+        });
     },
     doSearch: function (el, evt) {
         this.hideMenu(el, evt);
-        console.log("search for: " + el.up("search_searchbar").buildSearchString())
-    }
+        console.log("search for: " + el.up("search_searchbar").buildSearchString());
+            }
 });

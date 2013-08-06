@@ -34,10 +34,13 @@ Ext.define("Savanna.search.view.SearchBarTools", {
             text: 'Advanced',
             itemId: "searchadvanced_btn",
             menu: {
-                xtype: "menu",
+                xtype: 'panel',
+                floating: true,
+                closable: true,
+                closeAction: 'hide',
                 plain: true,
                 itemId: "searchadvanced_menu",
-                minWidth: 380,
+                minWidth: 428,
                 enableKeyNav:false,
                 items: [
                     {
@@ -48,25 +51,10 @@ Ext.define("Savanna.search.view.SearchBarTools", {
                             background: 'transparent',
                             border: 'none'
                         },
-                        items: [
-                            {
-                                xtype: "button",
-                                text: "Close",
-                                width: 40,
-                                x: 340,
-                                style: {
-                                    background: 'transparent',
-                                    border: 'none'
-                                }
-                            }
-                        ]
                     },
                     {
                         xtype: "box",
                         html: "Enter advanced keyword searches.<br /><i>Note: Not all search sources may support all advanced options.</i><br />&nbsp;",
-                        style: {
-                            marginTop: "-10px"
-                        }
                     },
                     {
                         xtype: "container",
@@ -130,4 +118,4 @@ Ext.define("Savanna.search.view.SearchBarTools", {
             }
         }
     ]
-})
+});
