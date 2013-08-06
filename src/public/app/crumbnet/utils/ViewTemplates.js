@@ -41,22 +41,22 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
                 mouseLeave: this.nodeMouseLeave
             },
             //Bind the location to the model text loc so when we add new nodes to the model with a location it will show correctly
-            new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
+            new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
             //Make a transparent rectangle in the background so our hover always works
-            gmake(go.Shape, { figure: "Rectangle", fill: "transparent", stroke: null }),
+            gmake(go.Shape, { figure: 'Rectangle', fill: 'transparent', stroke: null }),
             gmake(go.Panel, go.Panel.Vertical,
                 gmake(go.Panel, go.Panel.Auto,
-                    gmake(go.Shape, { figure: "Rectangle", fill: "transparent", stroke: null, width: 52, height: 52 }),
+                    gmake(go.Shape, { figure: 'Rectangle', fill: 'transparent', stroke: null, width: 52, height: 52 }),
                     icon,
-                    gmake(go.Shape, { figure: "circle", fill: null, strokeWidth: 3, width: 49 }, new go.Binding("stroke", "isSelected", function (s) { return (s ? "cornflowerblue" : null); }).ofObject("") ),
-                    this.makePort("T", go.Spot.TopRight, 0),
-                    this.makePort("L", go.Spot.TopLeft, 270),
-                    this.makePort("B", go.Spot.BottomLeft, 180),
+                    gmake(go.Shape, { figure: 'circle', fill: null, strokeWidth: 3, width: 49 }, new go.Binding('stroke', 'isSelected', function (s) { return (s ? 'cornflowerblue' : null); }).ofObject('') ),
+                    this.makePort('T', go.Spot.TopRight, 0),
+                    this.makePort('L', go.Spot.TopLeft, 270),
+                    this.makePort('B', go.Spot.BottomLeft, 180),
                     //The button to make a new child node and link it
-                    gmake("Button",
+                    gmake('Button',
                         { alignment: go.Spot.BottomRight, visible: false, portId: 'R', fromLinkable: true,
                             click: this.addNodeAndLink },  // this function is defined below
-                        gmake(go.Shape, "PlusLine", { desiredSize: new go.Size(6, 6) })
+                        gmake(go.Shape, 'PlusLine', { desiredSize: new go.Size(6, 6) })
                     )),
                 textBlock)
         );
@@ -68,7 +68,7 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
 
     makePort: function (name, spot, angle) {
         var gmake = go.GraphObject.make;
-        var triangle = go.Geometry.parse("M 0,0 L 12,0 12,12 0,0 12,0", true);
+        var triangle = go.Geometry.parse('M 0,0 L 12,0 12,12 0,0 12,0', true);
         return gmake(go.Panel,
             { alignment: spot },
             gmake(go.Shape, { geometry: triangle, stroke: 'black', fill: 'red', angle: angle, visible: false},
@@ -76,7 +76,7 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
     },
 
     convertCategoryToImage: function(category){
-        return "resources/images/" + category + "Icon.svg";
+        return 'resources/images/' + category + 'Icon.svg';
     },
 
     nodeMouseEnter: function(e, obj){
@@ -117,25 +117,25 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
 
         linkTemplateMap.add('standard', gmake(go.Link,  // the whole link panel
             { selectionAdorned: true,
-                layerName: "Foreground",
+                layerName: 'Foreground',
                 routing: go.Link.AvoidsNodes,
                 corner: 5,
                 toShortLength: 5
             },
             gmake(go.Shape,  // the link shape
                 { isPanelMain: true,
-                    stroke: "#303B45",
+                    stroke: '#303B45',
                     strokeWidth: 2.5}),
             gmake(go.TextBlock,  // the "from" label
-                { textAlign: "center",
-                    font: "bold 14px sans-serif",
-                    stroke: "#1967B3",
+                { textAlign: 'center',
+                    font: 'bold 14px sans-serif',
+                    stroke: '#1967B3',
                     segmentIndex: 0,
                     segmentOffset: new go.Point(NaN, NaN),
                     segmentOrientation: go.Link.OrientUpright },
-                new go.Binding("text", "text")),
+                new go.Binding('text', 'text')),
             gmake(go.Shape,  // the arrowhead
-                { toArrow: "standard",
+                { toArrow: 'standard',
                     stroke: null })));
 
         linkTemplateMap.add('curvy', gmake(go.Link,
@@ -144,11 +144,11 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
             gmake(go.Shape,
                 { strokeWidth: 3, stroke: 'skyblue' } ),
             gmake(go.TextBlock,  // the "from" label
-                { textAlign: "center",
-                    font: "bold 14px sans-serif",
-                    stroke: "#1967B3",
+                { textAlign: 'center',
+                    font: 'bold 14px sans-serif',
+                    stroke: '#1967B3',
                     segmentOffset: new go.Point(NaN, NaN) },
-                new go.Binding("text", "text"))));
+                new go.Binding('text', 'text'))));
 
         return linkTemplateMap;
     },
@@ -170,36 +170,42 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
         e.handled = true;
 
         var diagram = fromNode.diagram;
-        diagram.startTransaction("Add Node");
+        diagram.startTransaction('Add Node');
 
         // get the node data for which the user clicked the button
         var fromData = fromNode.data;
 
         // create a new "State" data object, positioned off to the right of the adorned Node
-        var toData = { text: "new", category: fromData.category, key: Ext.id() };
+        var toData = { text: 'new', category: fromData.category, key: Ext.id() };
         var p = fromNode.location;
-
         var nit = fromNode.findNodesOutOf();
-        if (nit.count > 0){
-            while (nit.next()){
+
+        var x = 0;
+        var y = Number.NEGATIVE_INFINITY;
+
+        if (nit.count > 0) {
+            while (nit.next()) {
                 var cnLoc = nit.value.location;
 
-                var x = 0;
-                var y = Number.NEGATIVE_INFINITY;
+                x = 0;
+                y = Number.NEGATIVE_INFINITY;
 
-                if (cnLoc.y === y){
-                    if (cnLoc.x > x){
+                if (cnLoc.y === y) {
+                    if (cnLoc.x > x) {
                         y = cnLoc.y;
                         x = cnLoc.x;
                     }
-                }else if (cnLoc.y > y){
+                }
+                else if (cnLoc.y > y) {
                     y = cnLoc.y;
                     x = cnLoc.x;
                 }
             }
-            toData.loc = x + " " + (y + 70);
-        }else{
-            toData.loc = (p.x + 200) + " " + (p.y + 50);  // the "loc" property is a string, not a Point object
+
+            toData.loc = x + ' ' + (y + 70);
+        }
+        else {
+            toData.loc = (p.x + 200) + ' ' + (p.y + 50);  // the "loc" property is a string, not a Point object
         }
 
         // add the new node data to the model
@@ -213,6 +219,6 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
 
         // and add the link data to the model
         model.addLinkData(linkdata);
-        diagram.commitTransaction("Add Node");
+        diagram.commitTransaction('Add Node');
     }
 });
