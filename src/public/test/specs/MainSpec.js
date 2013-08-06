@@ -69,16 +69,15 @@ describe('Savanna Main', function() {
 
             describe('listens to Login view for events', function() {
                 var view = null,
-                    mockApplication = null,
-                    removeCalled = false;
+                    mockApplication = null;
 
                 beforeEach(function() {
+                    var mock = jasmine.createSpyObj('mainViewport', ['add', 'remove']);
                     view = Ext.create('Savanna.view.Login');
                     mockApplication = {
                         viewport: {
-                            add: function() {},
-                            remove: function() {
-                                removeCalled = true;
+                            queryById: function() {
+                                return mock;
                             }
                         }
                     };
@@ -91,7 +90,6 @@ describe('Savanna Main', function() {
 
                     view = null;
                     mockApplication = null;
-                    removeCalled = false;
 
                     if (controller.swapLogin.restore) {
                         controller.swapLogin.restore();
@@ -139,6 +137,17 @@ describe('Savanna Main', function() {
                     controller.swapLogin('IRRELEVANT_SESSION_ID');
 
                     expect(errorRaised).toBeTruthy();
+                });
+
+                it('should attempt to swap viewport views if we can find our main viewport', function() {
+                    var mock = mockApplication.viewport.queryById();
+                    spyOn(Ext, 'create').andReturn('WOULD BE A VIEW'); // just have it return a string since we aren't doing anything with it
+
+                    controller.init(mockApplication);
+                    controller.swapLogin('IRRELEVANT_SESSION_ID');
+
+                    expect(mock.remove).toHaveBeenCalledWith('login');
+                    expect(mock.add).toHaveBeenCalledWith('WOULD BE A VIEW');
                 });
             });
         });
