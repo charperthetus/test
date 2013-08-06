@@ -1,14 +1,28 @@
-/* global Ext: false, describe: false, beforeEach: false, afterEach: false, createTestDom: false, cleanTestDom: false, it: false, expect: false, Savanna: false, spyOn: false, go: false, ThetusTestHelpers: false */
+/* global Ext: false, describe: false, beforeEach: false, afterEach: false, createTestDom: false, cleanTestDom: false,
+          it: false, expect: false, Savanna: false, spyOn: false, go: false, ThetusTestHelpers: false, waitsFor: false,
+          runs: false, sinon: false */
 Ext.require('Savanna.crumbnet.controller.CrumbnetController');
+Ext.require('Savanna.crumbnet.utils.ViewTemplates');
 
 describe('Savanna.crumbnet', function() {
+    var CRUMBNET_PALETTE_TEMPLATES_URL = 'app/assets/data/testCrumbnetTemplates.json';
+    var fixtures = {};
+    var server = null;
 
     beforeEach(function() {
         createTestDom();
+
+        fixtures = Ext.clone(ThetusTestHelpers.Fixtures.Crumbnet);
+        server = new ThetusTestHelpers.FakeServer(sinon);
     });
 
     afterEach(function() {
         cleanTestDom();
+
+        fixtures = {};
+        server.restore();
+
+        server = null;
     });
 
     describe('Controller', function() {
@@ -33,7 +47,7 @@ describe('Savanna.crumbnet', function() {
             expect(controller instanceof Savanna.crumbnet.controller.CrumbnetController).toBeTruthy();
         });
 
-        describe('handleGraphToolbarButtonClick', function(){
+        describe('handleGraphToolbarButtonClick', function() {
 
             it('should zoom the diagram when we click "zoomToFit"', function() {
                 var button = view.down('button[type="zoomToFit"]');
@@ -95,12 +109,12 @@ describe('Savanna.crumbnet', function() {
             });
         });
 
-        describe('handleGraphMenuClick', function(){
+        describe('handleLayoutMenuClick', function() {
 
             it('should change diagram layout when we click "tree"', function() {
                 var menuButton = view.down('menuitem[type="tree"]');
                 var menu = view.down('#layoutMenu');
-                controller.handleGraphMenuClick(menu, menuButton);
+                controller.handleLayoutMenuClick(menu, menuButton);
 
                 expect(diagram.layout instanceof go.Layout).toBeTruthy();
             });
@@ -108,7 +122,7 @@ describe('Savanna.crumbnet', function() {
             it('should change diagram layout when we click "grid"', function() {
                 var menuButton = view.down('menuitem[type="grid"]');
                 var menu = view.down('#layoutMenu');
-                controller.handleGraphMenuClick(menu, menuButton);
+                controller.handleLayoutMenuClick(menu, menuButton);
 
                 expect(diagram.layout instanceof go.Layout).toBeTruthy();
             });
@@ -116,7 +130,7 @@ describe('Savanna.crumbnet', function() {
             it('should change diagram layout when we click "force"', function() {
                 var menuButton = view.down('menuitem[type="force"]');
                 var menu = view.down('#layoutMenu');
-                controller.handleGraphMenuClick(menu, menuButton);
+                controller.handleLayoutMenuClick(menu, menuButton);
 
                 expect(diagram.layout instanceof go.Layout).toBeTruthy();
             });
@@ -124,7 +138,7 @@ describe('Savanna.crumbnet', function() {
             it('should change diagram layout when we click "circular"', function() {
                 var menuButton = view.down('menuitem[type="circular"]');
                 var menu = view.down('#layoutMenu');
-                controller.handleGraphMenuClick(menu, menuButton);
+                controller.handleLayoutMenuClick(menu, menuButton);
 
                 expect(diagram.layout instanceof go.Layout).toBeTruthy();
             });
@@ -132,15 +146,18 @@ describe('Savanna.crumbnet', function() {
             it('should change diagram layout when we click "layeredDigraph"', function() {
                 var menuButton = view.down('menuitem[type="layeredDigraph"]');
                 var menu = view.down('#layoutMenu');
-                controller.handleGraphMenuClick(menu, menuButton);
+                controller.handleLayoutMenuClick(menu, menuButton);
 
                 expect(diagram.layout instanceof go.Layout).toBeTruthy();
             });
+        });
+
+        describe('handleAlignmentMenuClick', function() {
 
             it('should change diagram alignment when we click "right"', function() {
                 var menuButton = view.down('menuitem[type="right"]');
                 var menu = view.down('#alignmentMenu');
-                controller.handleGraphMenuClick(menu, menuButton);
+                controller.handleAlignmentMenuClick(menu, menuButton);
 
                 //We always set the alignment back to default after changing it
                 expect(diagram.contentAlignment).toBe(go.Spot.Default);
@@ -149,7 +166,7 @@ describe('Savanna.crumbnet', function() {
             it('should change diagram alignment when we click "left"', function() {
                 var menuButton = view.down('menuitem[type="left"]');
                 var menu = view.down('#alignmentMenu');
-                controller.handleGraphMenuClick(menu, menuButton);
+                controller.handleAlignmentMenuClick(menu, menuButton);
 
                 //We always set the alignment back to default after changing it
                 expect(diagram.contentAlignment).toBe(go.Spot.Default);
@@ -158,7 +175,7 @@ describe('Savanna.crumbnet', function() {
             it('should change diagram alignment when we click "top"', function() {
                 var menuButton = view.down('menuitem[type="top"]');
                 var menu = view.down('#alignmentMenu');
-                controller.handleGraphMenuClick(menu, menuButton);
+                controller.handleAlignmentMenuClick(menu, menuButton);
 
                 //We always set the alignment back to default after changing it
                 expect(diagram.contentAlignment).toBe(go.Spot.Default);
@@ -167,7 +184,7 @@ describe('Savanna.crumbnet', function() {
             it('should change diagram alignment when we click "bottom"', function() {
                 var menuButton = view.down('menuitem[type="bottom"]');
                 var menu = view.down('#alignmentMenu');
-                controller.handleGraphMenuClick(menu, menuButton);
+                controller.handleAlignmentMenuClick(menu, menuButton);
 
                 //We always set the alignment back to default after changing it
                 expect(diagram.contentAlignment).toBe(go.Spot.Default);
@@ -176,33 +193,222 @@ describe('Savanna.crumbnet', function() {
             it('should change diagram alignment when we click "center"', function() {
                 var menuButton = view.down('menuitem[type="center"]');
                 var menu = view.down('#alignmentMenu');
-                controller.handleGraphMenuClick(menu, menuButton);
+                controller.handleAlignmentMenuClick(menu, menuButton);
 
                 //We always set the alignment back to default after changing it
                 expect(diagram.contentAlignment).toBe(go.Spot.Default);
             });
         });
+
+        describe('handleLinkStyleClick', function() {
+            var menuButton = null,
+                menu = null,
+                diagram = null;
+
+            beforeEach(function() {
+                menuButton = view.down('menuitem[type="standard"]');
+                menu = view.down('#linkStyleMenu');
+                diagram = controller.getDiagramForMenu(menu);
+            });
+
+            afterEach(function() {
+                menuButton = null;
+                menu = null;
+                diagram = null;
+            });
+
+            describe('error conditions', function() {
+                var raisedError = false;
+
+                beforeEach(function() {
+                    Ext.Error.handle = function() {
+                        raisedError = true;
+                        return true;
+                    };
+                });
+
+                afterEach(function() {
+                    Ext.Error.handle = function() {};
+                    raisedError = false;
+                });
+
+                it('should log an error if we send a link style that is not understood', function() {
+                    menuButton.type = 'UNKNOWN_TYPE';
+
+                    controller.handleLinkStyleMenuClick(menu, menuButton);
+
+                    expect(raisedError).toBeTruthy();
+                });
+            });
+
+            describe('valid conditions', function() {
+                // TODO: validate that this is true (it may be that if no links are selected, then ALL links should change
+                //       in which case there will be only one link category after the button is clickec)
+                it('should NOT change link styles if no link is selected', function() {
+                    var selectedNodeSet = diagram.selection;
+
+                    expect(selectedNodeSet.count).toBe(0);
+
+                    var linkIterator = diagram.links;
+                    var linkStylesSeen = {};
+
+                    while (linkIterator.next()) {
+                        linkStylesSeen[linkIterator.value.category] = true;
+                    }
+
+                    expect(Object.keys(linkStylesSeen).length).toBeGreaterThan(1);
+
+                    controller.handleLinkStyleMenuClick(menu, menuButton);
+
+                    linkIterator = diagram.links;
+                    linkStylesSeen = {};
+
+                    while (linkIterator.next()) {
+                        linkStylesSeen[linkIterator.value.category] = true;
+                    }
+
+                    expect(Object.keys(linkStylesSeen).length).toBeGreaterThan(1);
+                });
+
+                it('should only change the style for the selected links', function() {
+                    var linkIterator = diagram.links,
+                        beforeLinkStyleCounts = {},
+                        firstLinkStyle = null,
+                        secondLinkStyle = null,
+                        linkStyle = null,
+                        node = null,
+                        nodeCategory = null;
+
+                    // gather a count of links styles and select one link whose style will change
+                    while (linkIterator.next()) {
+                        linkStyle = linkIterator.value.category;
+
+                        if (!firstLinkStyle) {
+                            firstLinkStyle = linkStyle;
+                        }
+                        if (!secondLinkStyle && linkStyle !== firstLinkStyle) {
+                            secondLinkStyle = linkStyle;
+                            linkIterator.value.isSelected = true;
+                        }
+
+                        beforeLinkStyleCounts[linkStyle] = 'undefined' === typeof beforeLinkStyleCounts[linkStyle] ?  1 : beforeLinkStyleCounts[linkStyle] + 1;
+                    }
+
+                    // also select a non-link node (to show we don't alter it's style)
+                    node = diagram.nodes.first();
+                    nodeCategory = node.category;
+
+                    node.isSelected = true;
+
+                    // make sure we made a selection and have more than one style
+                    expect(diagram.selection.count).toBe(2);
+                    expect(Object.keys(beforeLinkStyleCounts).length).toBeGreaterThan(1);
+                    expect(secondLinkStyle).toBeDefined();
+
+                    // select the menu to change the selected link to the first link style we found
+                    menuButton = view.down('menuitem[type="' + firstLinkStyle + '"]');
+
+                    expect(menuButton).toBeDefined();
+
+                    controller.handleLinkStyleMenuClick(menu, menuButton);
+
+                    // get a count of link styles after we made our change
+                    var afterLinkStyleCounts = {};
+                    linkIterator = diagram.links;
+
+                    while (linkIterator.next()) {
+                        linkStyle = linkIterator.value.category;
+
+                        afterLinkStyleCounts[linkStyle] = 'undefined' === typeof afterLinkStyleCounts[linkStyle] ? 1 : afterLinkStyleCounts[linkStyle] + 1;
+                    }
+
+                    expect(node.category).toBe(nodeCategory);
+                    expect(afterLinkStyleCounts[firstLinkStyle]).toBe(beforeLinkStyleCounts[firstLinkStyle] + 1);
+                    expect(afterLinkStyleCounts[secondLinkStyle]).toBe(beforeLinkStyleCounts[secondLinkStyle] - 1);
+                });
+            });
+        });
     });
 
     describe('Model', function() {
-        it('should be able to instantiate', function() {
-            var cModel = Ext.create('Savanna.crumbnet.model.Graph');
-            expect(cModel).not.toBeNull();
+
+        describe('Graph', function() {
+            it('should be able to instantiate', function() {
+                var cModel = Ext.create('Savanna.crumbnet.model.Graph');
+                expect(cModel).not.toBeNull();
+            });
+        });
+
+        describe('Template', function() {
+            it('should be able to instantiate', function() {
+                var templateData = fixtures.defaultPaletteTemplateResponse.groups[0].templates[0];
+                var templateModel = Ext.create('Savanna.crumbnet.model.Template', templateData);
+
+                expect(templateModel.get('label')).toBe('Concept label');
+                expect(templateModel.get('category')).toBe('Concept');
+            });
+        });
+
+        describe('TemplateGroup', function() {
+            it('should be able to instantiate', function() {
+                var templateGroupData = fixtures.defaultPaletteTemplateResponse.groups[0];
+                var templateGroupModel = Ext.create('Savanna.crumbnet.model.TemplateGroup', templateGroupData);
+
+                expect(templateGroupModel.get('title')).toBe('TEST PALETTE GROUP ONE');
+                expect(templateGroupModel.templates()).not.toBeNull();
+            });
+
+            it('should be able to render templates data as JSON', function() {
+                var templateGroupData = fixtures.defaultPaletteTemplateResponse.groups[0];
+                var templateGroupModel = Ext.create('Savanna.crumbnet.model.TemplateGroup', templateGroupData);
+                var templatesData = templateGroupData.templates;
+
+                for (var i = 0; i < templatesData.length; ++i) {
+                    templateGroupModel.templates().add(templatesData[i]);
+                }
+
+                expect(templateGroupModel.templatesAsJson()).toEqual(templatesData);
+            });
         });
     });
 
     describe('Store', function() {
-        it('should have nodeDataArray and linkDataArray properties defined', function() {
-            var cStore = Ext.create('Savanna.crumbnet.store.Graph');
-            expect(cStore).not.toBeNull();
+
+        describe('Graph', function() {
+            it('should have nodeDataArray and linkDataArray properties defined', function() {
+                var cStore = Ext.create('Savanna.crumbnet.store.Graph');
+                expect(cStore).not.toBeNull();
+            });
+        });
+
+        describe('Templates', function() {
+            var store = null;
+
+            beforeEach(function() {
+                store = setupPaletteTemplateStore(server, fixtures.defaultPaletteTemplateResponse);
+            });
+
+            afterEach(function() {
+                Ext.data.StoreManager.remove(store);
+                store = null;
+            });
+
+            it('should load with temporary data', function() {
+                expect(store.getCount()).toBe(2);
+                expect(store.getAt(0) instanceof Savanna.crumbnet.model.TemplateGroup).toBeTruthy();
+            });
         });
     });
 
     describe('Views', function() {
         var view = null;
+        var store = null;
 
         beforeEach(function() {
+            store = setupPaletteTemplateStore(server, fixtures.defaultPaletteTemplateResponse);
             view = Ext.create('Savanna.crumbnet.view.CrumbnetComponent', { renderTo: 'test-html' });
+
+            store.fireEvent('load'); // NOTE: we have to trigger the event to get the PaletteMenu to load
         });
 
         afterEach(function() {
@@ -211,6 +417,10 @@ describe('Savanna.crumbnet', function() {
             }
 
             view = null;
+
+            Ext.data.StoreManager.remove(store);
+
+            store = null;
         });
 
         describe('Main Crumbnet View', function() {
@@ -231,6 +441,22 @@ describe('Savanna.crumbnet', function() {
                 // NOTE: when I would use expect(overview).toBeNull(), the test would hang...
                 expect(null === overview).toBeTruthy();
             });
+
+            it('should create a link template menu using keys from the linkTemplateMap', function() {
+                var linkStyleMenu = view.queryById('linkStyleMenu');
+
+                expect(linkStyleMenu).not.toBeUndefined();
+
+                var templateIds = Savanna.crumbnet.utils.ViewTemplates.getLinkTemplateNames();
+
+                var firstLinkMenuItem = linkStyleMenu.menu.child('[type=' + templateIds[0] + ']');
+
+                expect(firstLinkMenuItem).not.toBeUndefined();
+
+                var lastLinkMenuItem = linkStyleMenu.menu.child('[type=' + templateIds[templateIds.length - 1] + ']');
+
+                expect(lastLinkMenuItem).not.toBeUndefined();
+            });
         });
 
         describe('Crumbnet Canvas View', function(){
@@ -243,21 +469,113 @@ describe('Savanna.crumbnet', function() {
         });
 
         describe('Crumbnet Palette View', function() {
-            var fixtures = {};
+            var paletteMenu = null;
 
             beforeEach(function() {
-                fixtures = Ext.clone(ThetusTestHelpers.Fixtures.Crumbnet);
+                paletteMenu = view.down('crumbnet_part_palette-menu');
             });
 
             afterEach(function() {
-                fixtures = {};
+                paletteMenu = null;
             });
 
             it('should render view as an accordion', function() {
-                var paletteMenu = view.down('crumbnet_part_palette-menu');
-
                 expect(paletteMenu instanceof Savanna.crumbnet.view.part.PaletteMenu).toBeTruthy();
+            });
+
+            it('should update the palette canvas when we expand a panel in the Accordion', function() {
+                var lastPalettePanel = paletteMenu.down('crumbnet_part_palette-group:last');
+                var requestUpdateSpy = spyOn(lastPalettePanel, 'requestPaletteUpdate').andCallThrough();
+
+                lastPalettePanel.expand();
+
+                // NOTE: since expand() is asychronous, we have to wait for our spy to be called
+                waitsFor(function() {
+                    return requestUpdateSpy.wasCalled;
+                }, 'requestPaletteUpdate toHaveBeenCalled');
+
+                runs(function() {
+                    expect(requestUpdateSpy).toHaveBeenCalled();
+                });
+            });
+
+            describe('When there are no templates', function() {
+
+                beforeEach(function() {
+                    store.loadRawData(fixtures.noTemplatesResponse.groups);
+                    store.fireEvent('load');
+                });
+
+                it('should display a panel indicating no results', function() {
+                    var accordionPanels = paletteMenu.query('crumbnet_part_palette-group');
+
+                    expect(accordionPanels.length).toBe(1);
+                    expect(accordionPanels[0].title).toBe('NO PALETTE');
+                });
+            });
+        });
+
+        describe('Crumbnet Overview', function() {
+
+            it('should not set up a diagram if we do not pass one in', function() {
+                var overview = Ext.create('Savanna.crumbnet.view.part.Overview');
+
+                expect(overview.diagram).toBeNull();
+            });
+
+            it('should NOT attempt to set the overview.observed property', function() {
+                var overview = Ext.create('Savanna.crumbnet.view.part.Overview', { renderTo: 'test-html' });
+
+                expect(overview.diagram).toBeNull();
+
+                spyOn(overview, 'callParent'); // just to prevent it from calling through to parent
+                spyOn(Ext.DomHelper, 'insertHtml');
+
+                overview.onRender();
+
+                expect(Ext.DomHelper.insertHtml).not.toHaveBeenCalled();
+            });
+
+            it('should set the "observed" property of the overview to whatever is passed in', function() {
+                // create a diagram....
+                var domElem = Ext.DomHelper.insertHtml('afterBegin', view.getEl().dom, '<div id="test-diagram" style="width: 100px; height: 100px;"></div>');
+                var testDiagram = new go.Diagram(domElem);
+                var overview = Ext.create('Savanna.crumbnet.view.part.Overview', {
+                    renderTo: 'test-html',
+                    diagram: view.down('go-graph_canvas').diagram
+                });
+
+                overview.onRender();
+
+                expect(overview.overview).not.toBeNull();
+
+                overview.setDiagram(testDiagram);
+
+                expect(overview.overview.observed).toEqual(testDiagram);
             });
         });
     });
+
+    function setupPaletteTemplateStore(server, fixture) {
+        server.respondWith('GET', CRUMBNET_PALETTE_TEMPLATES_URL, fixture);
+
+        var store = Ext.create('Savanna.crumbnet.store.Templates', { autoLoad: false });
+
+        // NOTE: we have to disable caching or the URL gets a cache-busting query parameter which breaks the fake server
+        var proxy = store.getProxy();
+        proxy.noCache = false;
+        proxy.startParam = undefined;
+        proxy.limitParam = undefined;
+        proxy.pageParam = undefined;
+
+        store.load();
+
+        server.respond({
+            errorOnInvalidRequest: true
+        });
+
+        Ext.data.StoreManager.add('Savanna.crumbnet.store.Templates', store);
+
+        return store;
+    }
 });

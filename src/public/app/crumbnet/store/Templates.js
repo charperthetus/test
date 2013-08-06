@@ -7,39 +7,21 @@
  */
 /* global Ext: false */
 Ext.define('Savanna.crumbnet.store.Templates', {
-    extend: 'Ext.data.JsonStore',
+    extend: 'Ext.data.Store',
 
     storeId: 'templateStore',
 
-    model: 'Savanna.crumbnet.model.Template',
+    model: 'Savanna.crumbnet.model.TemplateGroup',
 
     autoLoad: true,
 
-    constructor: function() {
-        this.buildData();
-
-        this.callParent(arguments);
-    },
-
-    buildData: function() {
-        this.data = [
-            {
-                title: 'TEST PALETTE GROUP ONE',
-                items: [
-                    { label: 'Concept label', category: 'Concept' },
-                    { label: 'Hypothesis label', category: 'Hypothesis' },
-                    { label: 'Question label', category: 'Question' }
-                ]
-            },
-            {
-                title: 'TEST PALETTE GROUP TWO',
-                items: [
-                    { label: 'Problem label', category: 'Problem' },
-                    { label: 'Conclusion label', category: 'Conclusion' },
-                    { label: 'Assumption label', category: 'Assumption' },
-                    { label: 'Fact label', category: 'Fact' }
-                ]
-            }
-        ];
+    proxy: {
+        type: 'rest',
+        // TODO: replace this test URL with real endpoint once we have one...
+        url: 'app/assets/data/testCrumbnetTemplates.json',
+        reader: {
+            type: 'json',
+            root: 'groups'
+        }
     }
 });

@@ -1,3 +1,4 @@
+/* global Ext: false */
 Ext.define('Savanna.search.controller.SearchDals', {
     extend: 'Ext.app.Controller',
 
@@ -42,62 +43,80 @@ Ext.define('Savanna.search.controller.SearchDals', {
         });
     },
 
-    resetAllSearchOptions: function(button, evt) {
+    resetAllSearchOptions: function(button) {
         var parentView = button.up('search_searchdals');
         parentView.removeAll();
         this.createDalPanels(parentView);
         parentView.down('#selectAllDals').setText('Select All');
     },
 
-    selectOrUnselectAllButtonClicked: function(button, evt) {
+    selectOrUnselectAllButtonClicked: function(button) {
         var parentView = button.up('search_searchdals');
         var checked = true;
         var text = 'Select All';
-        if (button.text == 'Select All') {
+        var i = 0;
+
+        if ('Select All' === button.text) {
             text = 'Unselect All';
         } else {
             checked = false;
         }
+
         var dalsIncludeCheckBox = parentView.query('#includeDalCheckBox');
         parentView.settingAllDalCheckBoxes = true;
-        for (dal in dalsIncludeCheckBox) {
-            dalsIncludeCheckBox[dal].setValue(checked);
+
+        for (i = 0; i < dalsIncludeCheckBox.length; ++i) {
+            dalsIncludeCheckBox[i].setValue(checked);
         }
+
         parentView.settingAllDalCheckBoxes = false;
 
-        button.setText(text)
+        button.setText(text);
     },
 
     // check to see if all dal checkboxes are now checked or unchecked after the change.
     // if they are set the "select all" or "unselect all"  text accordingly.
-    dalCheckBoxClicked: function(checkBox, evt) {
+    dalCheckBoxClicked: function(checkBox) {
         var checkboxChecked;
         var allDalCheckBoxesHaveSameValue = true;
         var parentView = checkBox.up('search_searchdals');
+        var i = 0;
+        var text = 'Select All';
+
         if (!parentView.settingAllDalCheckBoxes) {
             var dalIncludeCheckBoxes = parentView.query('#includeDalCheckBox');
             var button = parentView.queryById('selectAllDals');
+
             checkboxChecked = checkBox.getValue();
-            for (dal in dalIncludeCheckBoxes) {
-                if ( dalIncludeCheckBoxes[dal].getValue() != checkboxChecked){
+
+            for (i = 0; i < dalIncludeCheckBoxes.length; ++i) {
+                if (dalIncludeCheckBoxes[i].getValue() !== checkboxChecked) {
                     allDalCheckBoxesHaveSameValue = false;
                 }
             }
-            if (allDalCheckBoxesHaveSameValue){
-                var text;
-                if (checkboxChecked){
-                    text = 'Unselect All';
-                } else {
-                    text = 'Select All';
-                }
-            } else {
-                text = 'Select All';
+
+            if (allDalCheckBoxesHaveSameValue) {
+                text = checkboxChecked ? 'Unselect All' : 'Select All';
             }
-            button.setText(text)
+
+            button.setText(text);
         }
     },
 
-    init: function (app) {
+    resetSingleDal: function (button) {
+        var parentView = button.up('search_searchDals_searchoptions');
+        var dalSearchOptionPanel = parentView.down('search_searchDals_custom-search-group-form');
+
+        parentView.down('#includeDalCheckBox').setValue(0);
+
+        if (dalSearchOptionPanel) {
+            parentView.remove(dalSearchOptionPanel, true);
+        }
+
+        parentView.down('#searchOptionsToggle').setText(this.addDalDetailText);
+    },
+
+    init: function () {
         this.getStore('Savanna.search.store.DalSources').loadRawData(this.data);
 
         this.control({
@@ -115,11 +134,15 @@ Ext.define('Savanna.search.controller.SearchDals', {
             },
             'search_searchDals_searchoptions > #includeDalCheckBox': {
                 click: this.dalCheckBoxClicked
+            },
+            'search_searchDals_searchoptions > #resetSingleDal': {
+                click: this.resetSingleDal
             }
+
         });
     },
 
-    renderCustomOptions: function(button, evt) {
+    renderCustomOptions: function(button) {
         var parentView = button.up('search_searchDals_searchoptions');
         var childSearchDalsPanel = parentView.down('search_searchDals_custom-search-group-form');
 
@@ -133,7 +156,7 @@ Ext.define('Savanna.search.controller.SearchDals', {
             parentView.add(childSearchDalsPanel);
         }
 
-        if (button.text == this.addDalDetailText) {
+        if (button.text === this.addDalDetailText) {
             button.setText(this.removeDalDetailText);
             childSearchDalsPanel.show();
         }

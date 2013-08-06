@@ -18,6 +18,7 @@ Ext.define('Savanna.search.view.SearchMap', {
     ],
 
     layout: 'fit',
+
     items: [
         {
             xtype: 'leafletmap',
@@ -39,11 +40,12 @@ Ext.define('Savanna.search.view.SearchMap', {
             items: [
                 {
                     xtype: 'label',
-                    text: 'Mark an area of interest. Note: Not all search sources support location filtering.'
+                    html: 'Mark an area of interest. <i>Note: Not all search sources support location filtering.</i>'
                 },
                 {
-                    xtype: 'panel',
+                    xtype: 'toolbar',
                     width: '100%',
+                    border: false,
                     layout: 'hbox',
                     items: [
                         {
@@ -57,15 +59,19 @@ Ext.define('Savanna.search.view.SearchMap', {
                         },
                         {
                             xtype: 'button',
-                            text: 'icon'
+                            ui: 'small-search-button',
+                            glyph: 61808
 
                         },
                         {
                             xtype: 'button',
-                            text: 'Zoom To'
+                            text: 'Zoom To',
+                            ui: 'flat-toolbar-button'
                         },
+                        '->',
                         {
                             xtype: 'button',
+                            ui: 'link',
                             text: 'Clear Location Search'
                         }
                     ]
