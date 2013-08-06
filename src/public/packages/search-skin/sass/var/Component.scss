@@ -24,7 +24,13 @@ $include-rtl: false;
 /*
  *	Import the other SCSS files
  */
+
+// Colors and Global vars
 @import 'Search/Typography.scss';
 @import 'Search/Colors.scss';
+
+// Leaflet/Map Component
 @import 'map/all.scss';
+
+// SHAME!
 @import 'shame.scss';
