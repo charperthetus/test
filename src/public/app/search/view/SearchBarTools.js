@@ -36,25 +36,20 @@ Ext.define("Savanna.search.view.SearchBarTools", {
             menu: {
                 xtype: 'panel',
                 floating: true,
-                closable: true,
-                closeAction: 'hide',
                 plain: true,
                 itemId: "searchadvanced_menu",
                 minWidth: 428,
                 enableKeyNav:false,
                 items: [
                     {
-                        xtype: "panel",
-                        layout: "absolute",
-                        itemId: "close_panel",
-                        bodyStyle: {
-                            background: 'transparent',
-                            border: 'none'
-                        },
+                        xtype: "button",
+                        text: "Close",
+                        itemId: 'close_panel',
+                        float: 'right'
                     },
                     {
                         xtype: "box",
-                        html: "Enter advanced keyword searches.<br /><i>Note: Not all search sources may support all advanced options.</i><br />&nbsp;",
+                        html: "Enter advanced keyword searches.<br /><i>Note: Not all search sources may support all advanced options.</i><br />&nbsp;"
                     },
                     {
                         xtype: "container",
