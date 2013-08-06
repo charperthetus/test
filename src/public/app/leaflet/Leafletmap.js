@@ -1,10 +1,7 @@
 Ext.define('Savanna.leaflet.Leafletmap', {
     extend: 'Ext.Component',
     alias: 'widget.leafletmap',
-    // This appears to use the Leaflet.draw plugin 
-    // https://github.com/Leaflet/Leaflet.draw/blob/master/README.md
-    //polyPoints: [],
-    myMap: null,
+    myMap: null, // keep current map accessible for all methods
     config:{
         map: null,
         lat: 45.5236,
@@ -17,7 +14,7 @@ Ext.define('Savanna.leaflet.Leafletmap', {
             this.update('No leaflet library loaded');
         } else {
             this.myMap = L.map(this.getId(), {
-                zoomControl: false,
+                zoomControl: false, // turns off default +- control from zoom
                 doubleClickZoom: false
             });
             this.myMap.setView([this.lat, this.lng], 2);
@@ -27,6 +24,7 @@ Ext.define('Savanna.leaflet.Leafletmap', {
         }
     },
     addDrawControl: function(){
+        var editMode = null;
         var editableLayers = new L.FeatureGroup();
         this.myMap.addLayer(editableLayers);
         var self = this;
@@ -34,9 +32,9 @@ Ext.define('Savanna.leaflet.Leafletmap', {
             position: 'topright',
             draw: {
                 polyline: false,
-                circle: false, // Turns off this drawing tool
+                circle: true,
                 marker: false,
-                rectangle: false,
+                rectangle: true,
                 polygon: {
                     zIndexOffset: 100000,
                     allowIntersection: false, // Restricts shapes to simple polygons
@@ -49,11 +47,13 @@ Ext.define('Savanna.leaflet.Leafletmap', {
                         weight: 2
                     }
                 }
-            },
-            edit: {
-                featureGroup: editableLayers, //REQUIRED!!
-                remove: false
             }
+            /*
+            edit: {   //adds edit icon to tool bar
+                featureGroup: editableLayers //REQUIRED!!
+                //remove: false // true adds trash can to toolbar
+            }
+            */
         };
         var drawControl = new L.Control.Draw(options);
         this.myMap.on('draw:created', function (e) {
@@ -63,9 +63,35 @@ Ext.define('Savanna.leaflet.Leafletmap', {
             if (type === 'marker') {
                 // Do marker specific actions
             }
-
+            self.fireEvent('draw:created', e);
             // Do whatever else you need to. (save to db, add to map etc)
-            self.myMap.addLayer(layer);
+            editableLayers.addLayer(layer);
+        });
+        this.myMap.on('click', function(e){
+            console.log('editMode',editMode);
+            if (editMode) {
+                editMode.save();
+                editMode.disable();
+            }
+        });
+        var popup = L.popup().setContent('<p>Hello world!<br />This is a nice popup.</p>');
+        editableLayers.on('contextmenu', function(e) {
+            popup.openOn(self.myMap);
+            console.log('contextmenu', e);
+        });
+        editableLayers.on('click', function (e) {
+
+            console.log('click', e);
+            editMode = new L.EditToolbar.Edit(self.myMap,{
+                featureGroup: editableLayers,
+                selectedPathOptions: drawControl.options.edit.selectedPathOptions
+            })
+            editMode.enable();
+            //self.myMap.removeLayer(editableLayers);
+        });
+        this.myMap.on('blur', function() {
+            editMode.save();
+            editMode.disable();
         });
         this.myMap.addControl(drawControl);
     },
