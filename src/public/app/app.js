@@ -10,6 +10,7 @@
  will need to resolve manually.
  */
 
+/* global Ext: false */
 // DO NOT DELETE - this directive is required for Sencha Cmd packages to work.
 //@require @packageOverrides
 Ext.Loader.setConfig( {enabled: true, disableCaching: false} );
@@ -50,11 +51,11 @@ Ext.application({
         var viewportQueryResults = Ext.ComponentQuery.query('viewport');
 
         if (viewportQueryResults && viewportQueryResults.length > 0) {
-            this.viewport = viewportQueryResults[0]
+            this.viewport = viewportQueryResults[0];
         }
         else {
             // TODO: Fatal condition...how to handle?
-            console.error('no viewport found. cannot start application');
+            Ext.Error.raise('no viewport found. cannot start application');
         }
     },
 

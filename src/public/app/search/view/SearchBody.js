@@ -8,7 +8,6 @@ Ext.define('Savanna.search.view.SearchBody', {
     requires: [
         'Savanna.search.view.SearchDals',
         'Savanna.search.view.SearchMap',
-        'Savanna.search.view.SearchResults',
         'Savanna.controller.Factory'
     ],
 
@@ -27,6 +26,7 @@ Ext.define('Savanna.search.view.SearchBody', {
                     xtype: 'tabpanel',
                     cls: 'flat-tab',
                     border: false,
+                    itemId: 'mainsearchtabpanel',
                     activeTab: 0,
                     flex: 3,
                     anchor: '100% 100%',
@@ -41,6 +41,8 @@ Ext.define('Savanna.search.view.SearchBody', {
                         },
                         {
                             title: 'Location',
+                            itemId: 'searchMap',
+                            cls: 'search-map',
                             xtype: 'search_searchmap'
                         }
                     ]
@@ -78,7 +80,6 @@ Ext.define('Savanna.search.view.SearchBody', {
             ]
         }
     ],
-
     bbar: [
         '->',
         {
@@ -87,7 +88,6 @@ Ext.define('Savanna.search.view.SearchBody', {
             itemId: "toolbarsearchbutton"
         }
     ],
-
     initComponent: function () {
         // this.ctrl used for unit tests
         this.ctrl = Savanna.controller.Factory.getController('Savanna.search.controller.SearchBody');

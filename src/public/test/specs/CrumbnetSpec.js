@@ -1,6 +1,6 @@
 /* global Ext: false, describe: false, beforeEach: false, afterEach: false, createTestDom: false, cleanTestDom: false,
           it: false, expect: false, Savanna: false, spyOn: false, go: false, ThetusTestHelpers: false, waitsFor: false,
-          runs: false, sinon: true */
+          runs: false, sinon: false */
 Ext.require('Savanna.crumbnet.controller.CrumbnetController');
 Ext.require('Savanna.crumbnet.utils.ViewTemplates');
 
@@ -27,24 +27,56 @@ describe('Savanna.crumbnet', function() {
 
     describe('Controller', function() {
         var controller = null,
-            view = null,
-            diagram = null;
+            diagram = null,
+            errorRaised = false,
+            origErrorHandleFn = null,
+            view = null;
 
         beforeEach(function() {
             controller = Ext.create('Savanna.crumbnet.controller.CrumbnetController');
-            view = Ext.create('Savanna.crumbnet.view.CrumbnetComponent', { renderTo: 'test-html' });
+            view = Ext.create('Savanna.crumbnet.view.CrumbnetComponent', { renderTo: 'test-html', width: 500, height: 500 });
             diagram = view.down('go-graph_canvas').diagram;
+
+            origErrorHandleFn = Ext.Error.handle;
+
+            Ext.Error.handle = function() {
+                errorRaised = true;
+                return true;
+            };
         });
 
         afterEach(function() {
             controller = null;
-            view.destroy();
-            view = null;
+
             diagram = null;
+
+            errorRaised = false;
+            Ext.Error.handle = origErrorHandleFn;
+
+            if (view) {
+                view.destroy();
+            }
+
+            view = null;
         });
 
         it('should have a controller instance', function() {
             expect(controller instanceof Savanna.crumbnet.controller.CrumbnetController).toBeTruthy();
+        });
+
+        describe('zoomTo', function() {
+
+            it('should change diagram viewportBounds uniformly when calling zoomTo', function () {
+                var origViewportBounds = diagram.viewportBounds.copy();
+
+                controller.zoomTo(diagram, 2.0);
+
+                var changedViewportBounds = diagram.viewportBounds.copy();
+
+                expect(changedViewportBounds.width / changedViewportBounds.height).toBe(origViewportBounds.width / origViewportBounds.height);
+            });
+
+            // NOTE: I tried to test that the center-point remained the same, but there is some race condition where it will sometimes come out different...
         });
 
         describe('handleGraphToolbarButtonClick', function() {
@@ -107,6 +139,42 @@ describe('Savanna.crumbnet', function() {
 
                 expect(null !== view.down('go-graph_overview')).toBe(overviewVisible);
             });
+
+            it('should zoom in on the diagram when we click "zoomIn"', function() {
+                var button = view.down('button[type="zoomIn"]');
+
+                //noinspection JSValidateTypes
+                spyOn(controller, 'zoomTo');
+
+                controller.handleGraphToolbarButtonClick(button);
+
+                var zoomToArg = controller.zoomTo.mostRecentCall.args[1];
+
+                expect(zoomToArg).toBeLessThan(1.0);
+            });
+
+            it('should zoom out on the diagram when we click "zoomOut"', function() {
+                var button = view.down('button[type="zoomOut"]');
+
+                //noinspection JSValidateTypes
+                spyOn(controller, 'zoomTo');
+
+                controller.handleGraphToolbarButtonClick(button);
+
+                var zoomToArg = controller.zoomTo.mostRecentCall.args[1];
+
+                expect(zoomToArg).toBeGreaterThan(0.9);
+            });
+
+            it('should do nothing if we click a button it does not understand', function() {
+                var button = view.down('button[type="zoomOut"]');
+                button.type = 'UNKNOWN_TOOLBAR';
+
+                controller.handleGraphToolbarButtonClick(button);
+
+                // should not even throw an error...
+                expect(errorRaised).toBeFalsy();
+            });
         });
 
         describe('handleLayoutMenuClick', function() {
@@ -150,6 +218,15 @@ describe('Savanna.crumbnet', function() {
 
                 expect(diagram.layout instanceof go.Layout).toBeTruthy();
             });
+
+            it('should raise an Ext.Error if we pass an unknown diagram layout', function() {
+                var menuButton = view.down('menuitem[type="force"]');
+                menuButton.type = 'UNKNOWN_LAYOUT';
+                var menu = view.down('#layoutMenu');
+                controller.handleLayoutMenuClick(menu, menuButton);
+
+                expect(errorRaised).toBeTruthy();
+            });
         });
 
         describe('handleAlignmentMenuClick', function() {
@@ -159,7 +236,7 @@ describe('Savanna.crumbnet', function() {
                 var menu = view.down('#alignmentMenu');
                 controller.handleAlignmentMenuClick(menu, menuButton);
 
-                //We always set the alignment back to default after changing it
+                // We always set the alignment back to default after changing it
                 expect(diagram.contentAlignment).toBe(go.Spot.Default);
             });
 
@@ -197,6 +274,15 @@ describe('Savanna.crumbnet', function() {
 
                 //We always set the alignment back to default after changing it
                 expect(diagram.contentAlignment).toBe(go.Spot.Default);
+            });
+
+            it('should raise an Ext.Error if we pass an unknown alignment', function() {
+                var menuButton = view.down('menuitem[type="center"]');
+                menuButton.type = 'UNKNOWN';
+                var menu = view.down('#alignmentMenu');
+                controller.handleAlignmentMenuClick(menu, menuButton);
+
+                expect(errorRaised).toBeTruthy();
             });
         });
 
@@ -407,6 +493,7 @@ describe('Savanna.crumbnet', function() {
         beforeEach(function() {
             store = setupPaletteTemplateStore(server, fixtures.defaultPaletteTemplateResponse);
             view = Ext.create('Savanna.crumbnet.view.CrumbnetComponent', { renderTo: 'test-html' });
+
             store.fireEvent('load'); // NOTE: we have to trigger the event to get the PaletteMenu to load
         });
 
@@ -512,6 +599,257 @@ describe('Savanna.crumbnet', function() {
                     expect(accordionPanels[0].title).toBe('NO PALETTE');
                 });
             });
+        });
+
+        describe('Crumbnet Overview', function() {
+
+            it('should not set up a diagram if we do not pass one in', function() {
+                var overview = Ext.create('Savanna.crumbnet.view.part.Overview');
+
+                expect(overview.diagram).toBeNull();
+            });
+
+            it('should NOT attempt to set the overview.observed property', function() {
+                var overview = Ext.create('Savanna.crumbnet.view.part.Overview', { renderTo: 'test-html' });
+
+                expect(overview.diagram).toBeNull();
+
+                spyOn(overview, 'callParent'); // just to prevent it from calling through to parent
+                spyOn(Ext.DomHelper, 'insertHtml');
+
+                overview.onRender();
+
+                expect(Ext.DomHelper.insertHtml).not.toHaveBeenCalled();
+            });
+
+            it('should set the "observed" property of the overview to whatever is passed in', function() {
+                // create a diagram....
+                var domElem = Ext.DomHelper.insertHtml('afterBegin', view.getEl().dom, '<div id="test-diagram" style="width: 100px; height: 100px;"></div>');
+                var testDiagram = new go.Diagram(domElem);
+                var overview = Ext.create('Savanna.crumbnet.view.part.Overview', {
+                    renderTo: 'test-html',
+                    diagram: view.down('go-graph_canvas').diagram
+                });
+
+                overview.onRender();
+
+                expect(overview.overview).not.toBeNull();
+
+                overview.setDiagram(testDiagram);
+
+                expect(overview.overview.observed).toEqual(testDiagram);
+            });
+        });
+    });
+
+    describe('Utils', function() {
+        var view = null,
+            diagram = null;
+
+        beforeEach(function() {
+            view = Ext.create('Savanna.crumbnet.view.CrumbnetComponent', { renderTo: 'test-html', width: 500, height: 500 });
+            diagram = view.down('go-graph_canvas').diagram;
+        });
+
+        afterEach(function() {
+            diagram = null;
+
+            if (view) {
+                view.destroy();
+            }
+
+            view = null;
+        });
+
+        describe('nodeMouseEnter', function() {
+
+            it('should set ports to be visible if we are part of a diagram that is not readOnly and is linkable', function() {
+                var node = diagram.nodes.first();
+
+                expect(diagram.isReadOnly).toBeFalsy();
+                expect(diagram.allowLink).toBeTruthy();
+
+                Savanna.crumbnet.utils.ViewTemplates.nodeMouseEnter(null, node);
+
+                var it = node.ports;
+
+                expect(it.count).toBeGreaterThan(0);
+
+                var port = it.next() ?it.value : null;
+
+                expect(port).not.toBeNull();
+                expect(port.visible).toBeTruthy();
+            });
+
+            it('should NOT set ports to be visible if we are part of a diagram that is readOnly', function() {
+                var node = diagram.nodes.first();
+
+                diagram.isReadOnly = true;
+
+                Savanna.crumbnet.utils.ViewTemplates.nodeMouseEnter(null, node);
+
+                var it = node.ports;
+
+                expect(it.count).toBeGreaterThan(0);
+
+                var port = it.next() ?it.value : null;
+
+                expect(port).not.toBeNull();
+                expect(port.visible).toBeFalsy();
+            });
+
+            it('should NOT set ports to be visible if we are part of a diagram that does not allowLink', function() {
+                var node = diagram.nodes.first();
+
+                diagram.allowLink = false;
+
+                Savanna.crumbnet.utils.ViewTemplates.nodeMouseEnter(null, node);
+
+                var it = node.ports;
+
+                expect(it.count).toBeGreaterThan(0);
+
+                var port = it.next() ?it.value : null;
+
+                expect(port).not.toBeNull();
+                expect(port.visible).toBeFalsy();
+            });
+        });
+
+        describe('nodeMouseLeave', function() {
+
+            beforeEach(function() {
+                // make sure at least one node has visible ports
+                Savanna.crumbnet.utils.ViewTemplates.nodeMouseEnter(null, diagram.nodes.first());
+            });
+
+            it('should set ports to NOT be visible if we are part of a diagram that is not readOnly and is linkable', function() {
+                var node = diagram.nodes.first();
+
+                expect(diagram.isReadOnly).toBeFalsy();
+                expect(diagram.allowLink).toBeTruthy();
+
+                Savanna.crumbnet.utils.ViewTemplates.nodeMouseLeave(null, node);
+
+                var it = node.ports;
+
+                expect(it.count).toBeGreaterThan(0);
+
+                var port = it.next() ?it.value : null;
+
+                expect(port).not.toBeNull();
+                expect(port.visible).toBeFalsy();
+            });
+
+            it('should NOT set ports to be visible if we are part of a diagram that is readOnly', function() {
+                var node = diagram.nodes.first();
+
+                diagram.isReadOnly = true;
+
+                Savanna.crumbnet.utils.ViewTemplates.nodeMouseLeave(null, node);
+
+                var it = node.ports;
+
+                expect(it.count).toBeGreaterThan(0);
+
+                var port = it.next() ?it.value : null;
+
+                expect(port).not.toBeNull();
+                expect(port.visible).toBeTruthy();
+            });
+
+            it('should NOT set ports to be visible if we are part of a diagram that does not allowLink', function() {
+                var node = diagram.nodes.first();
+
+                diagram.allowLink = false;
+
+                Savanna.crumbnet.utils.ViewTemplates.nodeMouseLeave(null, node);
+
+                var it = node.ports;
+
+                expect(it.count).toBeGreaterThan(0);
+
+                var port = it.next() ?it.value : null;
+
+                expect(port).not.toBeNull();
+                expect(port.visible).toBeTruthy();
+            });
+        });
+
+        describe('addNodeLink', function() {
+
+            it('should not do anything if we pass a node with that is not part of any larger graph', function() {
+                var origNodeCount = diagram.nodes.count;
+
+                expect(diagram.part).toBeUndefined();
+
+                // NOTE: the only thing I could find that is not part of a larger graph is the diagram itself...
+                Savanna.crumbnet.utils.ViewTemplates.addNodeAndLink(null, diagram);
+
+                expect(diagram.nodes.count).toBe(origNodeCount);
+            });
+
+            it('should add a node with a link between the new node and the given node', function() {
+                var node = diagram.nodes.first(),
+                    origNodeCount = diagram.nodes.count,
+                    origLinkCount = diagram.links.count,
+                    inputEvent = new go.InputEvent();
+
+                Savanna.crumbnet.utils.ViewTemplates.addNodeAndLink(inputEvent, node);
+
+                expect(diagram.nodes.count).toBe(origNodeCount + 1);
+                expect(diagram.links.count).toBe(origLinkCount + 1);
+            });
+
+            it('should add a node with a link between the new node and the given node in the case the node has no siblings', function() {
+                diagram.clear();
+
+                var model = diagram.model;
+                model.addNodeData({ text: 'TEST NODE' });
+
+                var node = diagram.nodes.first(),
+                    origNodeCount = diagram.nodes.count,
+                    origLinkCount = diagram.links.count,
+                    inputEvent = new go.InputEvent();
+
+                Savanna.crumbnet.utils.ViewTemplates.addNodeAndLink(inputEvent, node);
+
+                expect(diagram.nodes.count).toBe(origNodeCount + 1);
+                expect(diagram.links.count).toBe(origLinkCount + 1);
+            });
+
+            it('should offset the new node from lowest/most-right sibling node, accounting for node who is off the canvas', function() {
+                var node = diagram.nodes.first(),
+                    inputEvent = new go.InputEvent();
+
+                // Make sure we have at least two siblings...
+                Savanna.crumbnet.utils.ViewTemplates.addNodeAndLink(inputEvent, node);
+                Savanna.crumbnet.utils.ViewTemplates.addNodeAndLink(inputEvent, node);
+
+                // Make all siblings have the same location to test that we move beyond them...
+                var siblings = node.findNodesOutOf();
+                var prevSibling = null;
+                var x = node.location.x;
+                while (siblings.next()) {
+                    if (prevSibling) {
+                        x = prevSibling.location.x + 1;
+                    }
+
+                    siblings.value.location = new go.Point(x, node.location.y);
+
+                    prevSibling = siblings.value;
+                }
+
+                var origNodeCount = diagram.nodes.count,
+                    origLinkCount = diagram.links.count;
+
+                expect(node.findNodesOutOf().count).toBeGreaterThan(2);
+
+                Savanna.crumbnet.utils.ViewTemplates.addNodeAndLink(inputEvent, node);
+
+                expect(diagram.nodes.count).toBe(origNodeCount + 1);
+                expect(diagram.links.count).toBe(origLinkCount + 1);
+            })
         });
     });
 
