@@ -22,6 +22,7 @@ Ext.define('Savanna.search.view.SearchMap', {
     items: [
         {
             xtype: 'leafletmap',
+            itemId: 'leafletMap',
             flex: 1,
             lat: 45.3003,
             lng: -122.9719,
