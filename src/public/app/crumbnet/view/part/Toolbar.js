@@ -22,41 +22,11 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
     // CUSTOM METHODS
 
     setupItems: function() {
-        var linkTemplateNames = Savanna.crumbnet.utils.ViewTemplates.getLinkTemplateNames();
-        var linkStyleMenuChoices = Ext.Array.map(linkTemplateNames, function maplLinkTemplateNames(item) {
-            return { type: item, text: item };
-        });
-
         return [
             {
-                xtype: 'button',
-                itemId: 'layoutMenu',
-                text: 'Layout',
-                menu: [{ type: 'grid', text: 'Grid' },
-                    { type: 'tree', text: 'Tree' },
-                    { type: 'force', text: 'Force' },
-                    { type: 'layeredDigraph', text: 'Layered Digraph' },
-                    { type: 'circular', text: 'Circular' }
-                ]
-            },
-            {
-                xtype: 'button',
-                itemId: 'alignmentMenu',
-                text: 'Alignment',
-                menu: [{ type: 'right', text: 'Right' },
-                    { type: 'left', text: 'Left' },
-                    { type: 'top', text: 'Top' },
-                    { type: 'bottom', text: 'Bottom' },
-                    { type: 'center', text: 'Center' }
-                ]
-            },
-            {
-                xtype: 'button',
-                itemId: 'linkStyleMenu',
-                text: 'Link Style',
-                menu: {
-                    items: linkStyleMenuChoices
-                }
+                itemId: 'toolbarDropdown',
+                text: 'Appearance Settings',
+                menu: this.buildDropdownMenu()
             },
             { xtype: 'tbfill' },
             // TODO: this needs to be converted to use glyphs instead of icons...
@@ -67,6 +37,45 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
             { type: 'redo', icon:'resources/images/redo.png', tooltip: 'Redo' },
             { type: 'grid', icon:'resources/images/gridview.png', tooltip: 'Toggle Grid' },
             { type: 'overview', icon:'resources/images/globe.png', tooltip: 'Toggle Overview' }
+        ];
+    },
+
+    buildDropdownMenu: function() {
+        var linkTemplateNames = Savanna.crumbnet.utils.ViewTemplates.getLinkTemplateNames();
+        var linkStyleMenuChoices = Ext.Array.map(linkTemplateNames, function maplLinkTemplateNames(item) {
+            return { type: item, text: item };
+        });
+
+        return [
+            {
+                itemId: 'layoutMenu',
+                text: 'Layout',
+                menu: [
+                    { type: 'grid', text: 'Grid' },
+                    { type: 'tree', text: 'Tree' },
+                    { type: 'force', text: 'Force' },
+                    { type: 'layeredDigraph', text: 'Layered Digraph' },
+                    { type: 'circular', text: 'Circular' }
+                ]
+            },
+            {
+                itemId: 'alignmentMenu',
+                text: 'Alignment',
+                menu: [
+                    { type: 'right', text: 'Right' },
+                    { type: 'left', text: 'Left' },
+                    { type: 'top', text: 'Top' },
+                    { type: 'bottom', text: 'Bottom' },
+                    { type: 'center', text: 'Center' }
+                ]
+            },
+            {
+                itemId: 'linkStyleMenu',
+                text: 'Link Style',
+                menu: {
+                    items: linkStyleMenuChoices
+                }
+            }
         ];
     }
 });
