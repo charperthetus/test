@@ -10,7 +10,9 @@ Ext.define('Savanna.search.controller.SearchBar', {
     ],
     models: [],
 
-    stores: [],
+    stores: [
+        'Savanna.search.store.SearchResults'
+    ],
 
     views: [
         'Savanna.search.view.SearchBar'
@@ -18,7 +20,8 @@ Ext.define('Savanna.search.controller.SearchBar', {
 
     refs: [
         { ref: 'advancedButton', selector: 'search_searchbar > #main_panel #search_toolbar #searchadvanced_btn' },
-        {ref: "searchButton", selector: "search_searchbar > #main_panel #search_toolbar #search_submit"}
+        {ref: "searchButton", selector: "search_searchbar > #main_panel #search_toolbar #search_submit"},
+        {ref: "searchBar", selector: "search_searchbar"}
     ],
 
     handleSearchTermKeyUp: function (field, evt) {
@@ -28,7 +31,7 @@ Ext.define('Savanna.search.controller.SearchBar', {
         }
     },
     hideMenu: function (el, evt) {
-        if(el != undefined)  {
+        if (el != undefined) {
             el.up("search_searchbar").queryById("searchadvanced_menu").hide();
         }
     },
@@ -55,20 +58,20 @@ Ext.define('Savanna.search.controller.SearchBar', {
             "search_searchbar > #main_panel #search_toolbar #searchadvanced_menu #close_panel button": {
                 click: this.hideMenu
             }
-        })
+        });
     },
 
     doSearch: function (el, evt) {
         this.hideMenu(el, evt);
-        var s_str = el.up("search_searchbar").buildSearchString();
+        var s_str = this.getSearchBar().buildSearchString();
         var searchObj = Ext.create("Savanna.search.model.SearchRequest", {
-                "textInputString": s_str,
-                "displayLabel": s_str
-            }),
-            store = Ext.create('Savanna.search.store.SearchResults'),
-            me = this;
-        store.proxy.jsonData = Ext.JSON.encode(searchObj.data);
-        store.load({
+            "textInputString": s_str,
+            "displayLabel": s_str
+        });
+        this.getSearchBar().store = Ext.create('Savanna.search.store.SearchResults');
+        var me = this;
+        this.getSearchBar().store.proxy.jsonData = Ext.JSON.encode(searchObj.data);
+        this.getSearchBar().store.load({
             callback: me.onCallback,
             scope: me
         });
@@ -94,8 +97,8 @@ Ext.define('Savanna.search.controller.SearchBar', {
         try {
             var store = Savanna.getApplication().viewport.queryById("main").down("#searchcomponent").store;
             store.onHistory(historyObj, "POST");
-        }   catch(err)  {
-            console.log(err);
+        } catch (err) {
+            //console.log(err);
         }
 
     }

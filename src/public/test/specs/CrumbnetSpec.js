@@ -518,14 +518,7 @@ describe('Savanna.crumbnet', function() {
     function setupPaletteTemplateStore(server, fixture) {
         server.respondWith('GET', CRUMBNET_PALETTE_TEMPLATES_URL, fixture);
 
-        var store = Ext.create('Savanna.crumbnet.store.Templates', { autoLoad: false });
-
-        // NOTE: we have to disable caching or the URL gets a cache-busting query parameter which breaks the fake server
-        var proxy = store.getProxy();
-        proxy.noCache = false;
-        proxy.startParam = undefined;
-        proxy.limitParam = undefined;
-        proxy.pageParam = undefined;
+        var store = setupNoCacheNoPagingStore('Savanna.crumbnet.store.Templates');
 
         store.load();
 

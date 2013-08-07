@@ -30,3 +30,16 @@ function createTestDom() {
         }
     }
 }
+
+function setupNoCacheNoPagingStore(storeClass) {
+    var store = Ext.create(storeClass, { autoLoad: false });
+
+    // NOTE: we have to disable caching or the URL gets a cache-busting query parameter which breaks the fake server
+    var proxy = store.getProxy();
+    proxy.noCache = false;
+    proxy.startParam = undefined;
+    proxy.limitParam = undefined;
+    proxy.pageParam = undefined;
+
+    return store;
+}

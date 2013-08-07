@@ -26,7 +26,7 @@ Ext.define('Savanna.search.store.SearchHistory', {
         this.searches.push(mdl.data)
         this.setProxy({
             type: 'rest',
-            method:me.restAction,
+            actionMethods: { create: 'POST', read: 'POST', update: 'POST', destroy: 'POST' },
             url: Savanna.Config.savannaUrlRoot + "rest/search/history;jsessionid=" + Savanna.jsessionid,
             headers: {
                 'Content-Type': "application/json",
@@ -41,7 +41,7 @@ Ext.define('Savanna.search.store.SearchHistory', {
                     timeout: this.timeout,
                     scope: this,
                     callback: this.createRequestCallback(request, operation, callback, scope),
-                    method: act,
+                    method: this.getMethod(request),
                     disableCaching: false // explicitly set it to false, ServerProxy handles caching
                 });
                 if(act == "POST") {
@@ -65,6 +65,7 @@ Ext.define('Savanna.search.store.SearchHistory', {
         });
     },
     onCallback:function(records, operation, success)   {
+        console.log("holla")
         var toolbar = Savanna.getApplication().viewport.queryById("main").down("#searchtoolbar");
         toolbar.ctrl.logHistory(this.searches, toolbar);
     }
