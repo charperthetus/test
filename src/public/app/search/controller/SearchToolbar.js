@@ -16,7 +16,6 @@ Ext.define('Savanna.search.controller.SearchToolbar', {
         'Savanna.search.view.SearchToolbar'
     ],
     logHistory: function (searches, view) {
-        console.log(searches)
         while (view.queryById("historybutton").menu.items.items.length > 0) {
             view.queryById("historybutton").menu.items.items.pop();
         }
@@ -27,7 +26,6 @@ Ext.define('Savanna.search.controller.SearchToolbar', {
         })
     },
     onHistoryItemClick:function(btn, evt)   {
-        alert("here");
         var bar = btn.up("#searchcomponent").queryById("searchbar");
         var sbtn = bar.down("#search_submit");
         bar.ctrl.doSearch(sbtn, evt);

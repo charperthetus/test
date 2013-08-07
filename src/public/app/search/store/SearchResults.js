@@ -18,11 +18,13 @@ Ext.define('Savanna.search.store.SearchResults', {
 
     constructor: function (config) {
         this.callParent(arguments);
-
+        var me = this;
         this.setProxy({
             type: 'rest',
             actionMethods: { create: 'POST', read: 'POST', update: 'POST', destroy: 'POST' },
             url: Savanna.Config.savannaUrlRoot + "rest/search;jsessionid=" + Savanna.jsessionid,
+            // use this if you don't have Savanna 3.4 running
+            // url: 'app/assets/data/testSearchResults.json',
             headers: {
                 'Content-Type': "application/json",
                 'Accept': 'application/json'
@@ -43,7 +45,6 @@ Ext.define('Savanna.search.store.SearchResults', {
                     jsonData: this.jsonData,
                     disableCaching: false // explicitly set it to false, ServerProxy handles caching
                 });
-
                 Ext.Ajax.request(request);
                 return request;
             },

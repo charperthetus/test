@@ -4,14 +4,11 @@ Ext.require("Savanna.search.controller.SearchBody");
 Ext.require("Savanna.search.controller.SearchComponent");
 Ext.require("Savanna.search.controller.SearchResults");
 Ext.require("Savanna.search.controller.SearchToolbar");
-
 Ext.require("Savanna.search.model.SearchHistory");
 Ext.require("Savanna.search.model.SearchRequest");
 Ext.require("Savanna.search.model.SearchResult");
-
 Ext.require("Savanna.search.store.SearchHistory");
 Ext.require("Savanna.search.store.SearchResults");
-
 Ext.require("Savanna.search.view.SearchAdvancedTextfield");
 Ext.require("Savanna.search.view.SearchBar");
 Ext.require("Savanna.search.view.SearchBarTools");
@@ -152,6 +149,7 @@ describe("Search Component", function () {
 
             beforeEach(function () {
                 controller = component.queryById("searchbar").ctrl;
+                controller.disableCachePaging = true;
             });
 
 
@@ -235,6 +233,7 @@ describe("Search Component", function () {
                     searchbar.queryById("exact_phrase").setValue("other text");
                     searchbar.queryById("any_words").setValue("more and more text");
                     searchbar.queryById("none_words").setValue("bad terms");
+                    controller.testing = true;
                 });
 
 
@@ -247,6 +246,57 @@ describe("Search Component", function () {
                 it("should create the store", function () {
                     controller.doSearch(searchbar.items.first(), {});
                     expect(searchbar.store instanceof Savanna.search.store.SearchResults).toBeTruthy();
+                });
+            });
+
+            describe('SearchAdvancedTextfield', function()  {
+                var field = null;
+                beforeEach(function () {
+
+                });
+                afterEach(function () {
+                    if (field) field.destroy();
+                    field = null;
+                });
+                it( "getBooleanValue returns expected string for booleanType 'all'", function() {
+                    field = Ext.create("Savanna.search.view.SearchAdvancedTextfield", {
+                        configs:{"join":"", booleanType:"all"},
+                        renderTo:"test-html"
+                    });
+                    field.setValue("some   text");
+                    var expected = "some AND text";
+                    var result = field.getBooleanValue();
+                    expect(result).toEqual(expected);
+                });
+                it( "getBooleanValue returns expected string for booleanType 'exact'", function() {
+                    field = Ext.create("Savanna.search.view.SearchAdvancedTextfield", {
+                        configs:{"join":"", booleanType:"exact"},
+                        renderTo:"test-html"
+                    });
+                    field.setValue("some   text");
+                    var expected = '"some   text"';
+                    var result = field.getBooleanValue();
+                    expect(result).toEqual(expected);
+                });
+                it( "getBooleanValue returns expected string for booleanType 'any'", function() {
+                    field = Ext.create("Savanna.search.view.SearchAdvancedTextfield", {
+                        configs:{"join":"", booleanType:"any"},
+                        renderTo:"test-html"
+                    });
+                    field.setValue("some   text");
+                    var expected = "some OR text";
+                    var result = field.getBooleanValue();
+                    expect(result).toEqual(expected);
+                });
+                it( "getBooleanValue returns expected string for booleanType 'none'", function() {
+                    field = Ext.create("Savanna.search.view.SearchAdvancedTextfield", {
+                        configs:{"join":"", booleanType:"none"},
+                        renderTo:"test-html"
+                    });
+                    field.setValue("some   text");
+                    var expected = "some NOT text";
+                    var result = field.getBooleanValue();
+                    expect(result).toEqual(expected);
                 });
             });
 
@@ -346,6 +396,8 @@ describe("Search Component", function () {
         });
         afterEach(function () {
             fixtures = null;
+            store = null;
+            searchObj = null;
         });
         describe('default data loading', function () {
 
@@ -384,7 +436,6 @@ describe("Search Component", function () {
                 fixtures = Ext.clone(ThetusTestHelpers.Fixtures.HistoryResults);
                 store = setupNoCacheNoPagingStore('Savanna.search.store.SearchHistory');
                 store.searches = fixtures.historyResults;
-                store.restAction = "POST";
                 server = new ThetusTestHelpers.FakeServer(sinon);
                 mdl = Ext.create("Savanna.search.model.SearchHistory", {
                     query: "cherries",
@@ -396,15 +447,23 @@ describe("Search Component", function () {
                 mdl = null;
             });
             it('onHistory adds passed history models', function () {
-                var searchArr = [{"query": "apples","date": 1375825806861},{"query": "oranges","date": 1375825806862},{"query": "bananas","date": 1375825806863},{query:"cherries", date:1375825806864}]
-                server.respondWith('POST', HISTORY_RESULTS_URL, fixtures.historyResults);
-                store.onHistory(mdl, "POST");
-                expect(store.searches).toEqual(searchArr);
+                var expected = [{"query": "apples","date": 1375825806861},{"query": "oranges","date": 1375825806862},{"query": "bananas","date": 1375825806863},{query:"cherries", date:1375825806864}]
+                store.searches.push(mdl.data);
+                expect(store.searches).toEqual(expected);
             });
             it('onHistory posts data', function () {
-                expect(store.getTotalCount()).toBe(0);
+                var me = this;
+                me.onCallback = function(success)  {
+                    expect(success).toBeTruthy();
+                }
                 server.respondWith('POST', HISTORY_RESULTS_URL, fixtures.historyResults);
-                store.onHistory(mdl, "POST");
+                store.searches.push(mdl.data);
+                store.load({
+                    callback:me.onCallback
+                });
+                server.respond({
+                    errorOnInvalidRequest: true
+                });
             });
         });
 

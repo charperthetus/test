@@ -53,6 +53,7 @@ Ext.define('Savanna.search.view.SearchBar', {
             toolbar = view.queryById("search_toolbar");
         Ext.each(toolbar.queryById("form_container").items.items, function (field, index) {
             if (field.xtype == "searchadvanced_textfield" && toolbar.queryById(field.itemId).getValue() != "" && toolbar.queryById(field.itemId).getValue() != undefined) {
+                toolbar.queryById(field.itemId).setValue(toolbar.queryById(field.itemId).getValue().trim())
                 var join = field.configs.join;
                 if (str_all == '') {
                     join = '';
@@ -72,7 +73,6 @@ Ext.define('Savanna.search.view.SearchBar', {
                 final_string = from_bar;
             }
         };
-
         return final_string;
     }
 });

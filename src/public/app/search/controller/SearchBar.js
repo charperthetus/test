@@ -24,6 +24,8 @@ Ext.define('Savanna.search.controller.SearchBar', {
         {ref: "searchBar", selector: "search_searchbar"}
     ],
 
+    testing:false,
+
     handleSearchTermKeyUp: function (field, evt) {
         if (evt.keyCode == 13) {
             // user pressed enter
@@ -71,10 +73,13 @@ Ext.define('Savanna.search.controller.SearchBar', {
         this.getSearchBar().store = Ext.create('Savanna.search.store.SearchResults');
         var me = this;
         this.getSearchBar().store.proxy.jsonData = Ext.JSON.encode(searchObj.data);
-        this.getSearchBar().store.load({
-            callback: me.onCallback,
-            scope: me
-        });
+        if(!this.testing) {
+            this.getSearchBar().store.load({
+                callback: me.onCallback,
+                scope: me
+            });
+        }
+
         this.logHistory(s_str);
     },
     onCallback: function (records, operation, success) {
@@ -82,7 +87,7 @@ Ext.define('Savanna.search.controller.SearchBar', {
             console.log(records);
             this.showResultsPage()
         } else {
-            console.log("error loading search results");
+            //console.log("error loading search results");
         }
     },
     showResultsPage: function () {
@@ -96,7 +101,10 @@ Ext.define('Savanna.search.controller.SearchBar', {
         });
         try {
             var store = Savanna.getApplication().viewport.queryById("main").down("#searchcomponent").store;
-            store.onHistory(historyObj, "POST");
+            store.searches.push(historyObj.data);
+            store.load({
+                callback:store.onCallback
+            });
         } catch (err) {
             //console.log(err);
         }

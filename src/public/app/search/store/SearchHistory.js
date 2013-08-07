@@ -18,16 +18,19 @@ Ext.define('Savanna.search.store.SearchHistory', {
 
     searches:[],
 
+    restAction:"POST",
+
     constructor: function (config) {
         this.callParent(arguments);
-    },
-    onHistory:function(mdl, act)   {
+
         var me = this;
-        this.searches.push(mdl.data)
+
         this.setProxy({
             type: 'rest',
             actionMethods: { create: 'POST', read: 'POST', update: 'POST', destroy: 'POST' },
             url: Savanna.Config.savannaUrlRoot + "rest/search/history;jsessionid=" + Savanna.jsessionid,
+            // Use this if you don't have Savanna 3.4 running
+            // url: 'app/assets/data/testSearchHistory.json',
             headers: {
                 'Content-Type': "application/json",
                 'Accept': 'application/json'
@@ -44,7 +47,7 @@ Ext.define('Savanna.search.store.SearchHistory', {
                     method: this.getMethod(request),
                     disableCaching: false // explicitly set it to false, ServerProxy handles caching
                 });
-                if(act == "POST") {
+                if(me.restAction == "POST") {
                     Ext.apply(request, {
                         jsonData:Ext.JSON.encode(me.searches)
                     });
@@ -60,12 +63,8 @@ Ext.define('Savanna.search.store.SearchHistory', {
                 type: 'json'
             }
         });
-        this.load({
-            callback:this.onCallback
-        });
     },
     onCallback:function(records, operation, success)   {
-        console.log("holla")
         var toolbar = Savanna.getApplication().viewport.queryById("main").down("#searchtoolbar");
         toolbar.ctrl.logHistory(this.searches, toolbar);
     }
