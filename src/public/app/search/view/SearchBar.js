@@ -43,6 +43,7 @@ Ext.define('Savanna.search.view.SearchBar', {
     initComponent: function () {
         this.callParent(arguments);
         // instantiate the controller for this view
+        // this.ctrl used for unit tests
         this.ctrl = Savanna.controller.Factory.getController('Savanna.search.controller.SearchBar');
     },
     buildSearchString: function () {

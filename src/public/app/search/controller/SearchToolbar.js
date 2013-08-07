@@ -16,9 +16,11 @@ Ext.define('Savanna.search.controller.SearchToolbar', {
         'Savanna.search.view.SearchToolbar'
     ],
     logHistory: function (searches, view) {
+
         while (view.queryById("historybutton").menu.items.items.length > 0) {
             view.queryById("historybutton").menu.items.items.pop();
         }
+        //TODO: look for dupes and do not include them - or, remove at store level
         Ext.each(searches, function (search, index) {
             view.queryById("historybutton").menu.add({
                 text: search.query

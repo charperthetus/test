@@ -89,6 +89,7 @@ Ext.define('Savanna.search.view.SearchBody', {
     ],
 
     initComponent: function () {
+        // this.ctrl used for unit tests
         this.ctrl = Savanna.controller.Factory.getController('Savanna.search.controller.SearchBody');
         this.callParent(arguments);
     }

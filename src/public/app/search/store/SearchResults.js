@@ -13,7 +13,7 @@ Ext.define('Savanna.search.store.SearchResults', {
 
     autoLoad: false,
 
-    model:"Savanna.search.model.SearchResult",
+    model: "Savanna.search.model.SearchResult",
 
 
     constructor: function (config) {
@@ -22,9 +22,10 @@ Ext.define('Savanna.search.store.SearchResults', {
         this.setProxy({
             type: 'rest',
             actionMethods: { create: 'POST', read: 'POST', update: 'POST', destroy: 'POST' },
-            url: Savanna.Config.savannaUrlRoot + "rest/search;jsessionid=" + Savanna.jsessionid,
+            //url: Savanna.Config.savannaUrlRoot + "rest/search;jsessionid=" + Savanna.jsessionid,
             // use this if you don't have Savanna 3.4 running
-            // url: 'app/assets/data/testSearchResults.json',
+            // NOTE: two tests in SpecRunner fail in this circumstance, but will work once the dev server is up and running
+            url: 'app/assets/data/testSearchResults.json',
             headers: {
                 'Content-Type': "application/json",
                 'Accept': 'application/json'
@@ -50,7 +51,7 @@ Ext.define('Savanna.search.store.SearchResults', {
             },
             reader: {
                 type: 'json',
-                root:"results"
+                root: "results"
             },
             writer: {
                 type: 'json'
