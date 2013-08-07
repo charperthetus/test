@@ -1,12 +1,18 @@
 Ext.define('Savanna.leaflet.Leafletmap', {
     extend: 'Ext.Component',
     alias: 'widget.leafletmap',
+
     myMap: null, // keep current map accessible for all methods
+    editMode: null,
+    editableLayers: null,
+    drawControl: null,
+
     config:{
         map: null,
         lat: 45.5236,
         lng: -122.6750
     },
+
     afterRender: function(t, eOpts){
         this.callParent(arguments);
         var leafletRef = window.L;
@@ -23,11 +29,10 @@ Ext.define('Savanna.leaflet.Leafletmap', {
             this.addDrawControl();
         }
     },
+
     addDrawControl: function(){
-        var editMode = null;
-        var editableLayers = new L.FeatureGroup();
-        this.myMap.addLayer(editableLayers);
-        var self = this;
+        this.editableLayers = new L.FeatureGroup();
+        this.myMap.addLayer(this.editableLayers);
         var options = {
             position: 'topright',
             draw: {
@@ -48,53 +53,47 @@ Ext.define('Savanna.leaflet.Leafletmap', {
                     }
                 }
             }
-            /*
-            edit: {   //adds edit icon to tool bar
-                featureGroup: editableLayers //REQUIRED!!
-                //remove: false // true adds trash can to toolbar
-            }
-            */
         };
-        var drawControl = new L.Control.Draw(options);
-        this.myMap.on('draw:created', function (e) {
-            var type = e.layerType,
-                layer = e.layer;
 
-            if (type === 'marker') {
-                // Do marker specific actions
-            }
-            self.fireEvent('draw:created', e);
-            // Do whatever else you need to. (save to db, add to map etc)
-            editableLayers.addLayer(layer);
-        });
-        this.myMap.on('click', function(e){
-            console.log('editMode',editMode);
-            if (editMode) {
-                editMode.save();
-                editMode.disable();
-            }
-        });
-        var popup = L.popup().setContent('<p>Hello world!<br />This is a nice popup.</p>');
-        editableLayers.on('contextmenu', function(e) {
-            popup.openOn(self.myMap);
-            console.log('contextmenu', e);
-        });
-        editableLayers.on('click', function (e) {
+        this.drawControl = new L.Control.Draw(options);
+        this.myMap.addControl(this.drawControl);
 
-            console.log('click', e);
-            editMode = new L.EditToolbar.Edit(self.myMap,{
-                featureGroup: editableLayers,
-                selectedPathOptions: drawControl.options.edit.selectedPathOptions
-            })
-            editMode.enable();
-            //self.myMap.removeLayer(editableLayers);
-        });
-        this.myMap.on('blur', function() {
-            editMode.save();
-            editMode.disable();
-        });
-        this.myMap.addControl(drawControl);
+        this.myMap.on('draw:created', this.drawingAddedToMap, this);
+        this.myMap.on('click', this.clickOnMap, this);
+        this.myMap.on('blur', this.mapLostFocus, this);
+
+        this.editableLayers.on('click', this.clickOnLayer, this);
     },
+
+    drawingAddedToMap: function(e) {
+        var layer = e.layer;
+        this.fireEvent('draw:created', e); //update with new points
+        this.editableLayers.addLayer(layer);
+    },
+
+    mapLostFocus: function(e) {
+        if (this.editMode) {
+            this.editMode.save();
+            this.editMode.disable();
+        }
+    },
+
+    clickOnLayer: function(e) {
+        this.editMode = new L.EditToolbar.Edit(this.myMap,{
+            featureGroup: this.editableLayers,
+            selectedPathOptions: this.drawControl.options.edit.selectedPathOptions
+        })
+        this.editMode.enable();
+        //this.myMap.removeLayer(this.editableLayers);
+    },
+
+    clickOnMap: function(e) {
+        if (this.editMode && this.editMode._enabled) {
+            this.editMode.save();
+            this.editMode.disable();
+        }
+    },
+
     onResize: function(w, h, oW, oH){
         this.callParent(arguments);
         var map = this.getMap();
