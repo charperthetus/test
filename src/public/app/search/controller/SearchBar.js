@@ -21,6 +21,7 @@ Ext.define('Savanna.search.controller.SearchBar', {
     refs: [
         { ref: 'advancedButton', selector: 'search_searchbar > #main_panel #search_toolbar #searchadvanced_btn' },
         {ref: "searchButton", selector: "search_searchbar > #main_panel #search_toolbar #search_submit"},
+        {ref: "advancedPanel", selector: "search_searchbar > #main_panel #search_toolbar #searchadvanced_menu"},
         {ref: "searchBar", selector: "search_searchbar"}
     ],
 
@@ -33,9 +34,7 @@ Ext.define('Savanna.search.controller.SearchBar', {
         }
     },
     hideMenu: function (el, evt) {
-        if (el != undefined) {
-            el.up("search_searchbar").queryById("searchadvanced_menu").hide();
-        }
+        this.getAdvancedPanel().hide();
     },
     alignMenuWithTextfield: function (btn, evt) {
         btn.menu.alignTo(btn.up("#search_toolbar").getEl());
@@ -57,7 +56,7 @@ Ext.define('Savanna.search.controller.SearchBar', {
             "search_searchbar > #main_panel #search_toolbar #searchadvanced_menu #submit_panel #advancedsearch_submit": {
                 click: this.doSearch
             },
-            "search_searchbar > #main_panel #search_toolbar #searchadvanced_menu #close_panel button": {
+            "search_searchbar > #main_panel #search_toolbar #searchadvanced_menu #close_panel": {
                 click: this.hideMenu
             }
         });
