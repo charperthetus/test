@@ -86,7 +86,7 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
         var centerPoint = viewBounds.center.copy();
 
         viewBounds.width *= zoomRatio;
-        viewBounds.height *= 1.1;
+        viewBounds.height *= zoomRatio;
         viewBounds.center = centerPoint;
 
         diagram.zoomToRect(viewBounds);
@@ -169,7 +169,7 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
                 align = go.Spot.Center;
                 break;
             default:
-                Ext.Error.notify('unknown type (' + item.type + ')');
+                Ext.Error.raise('unknown type (' + item.type + ')');
                 break;
         }
 
