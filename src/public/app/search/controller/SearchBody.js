@@ -36,6 +36,19 @@ Ext.define('Savanna.search.controller.SearchBody', {
         }
     },
 
+    onButtonClick:function (button, event) {
+        if (this.currentPanel != "searchoptions" && button == this.getOptionsButton()) {
+            button.up("search_searchbody").queryById("mainsearchoptions").show();
+            button.up("search_searchbody").queryById("mainresults").hide();
+            this.currentPanel = "searchoptions";
+        }
+        if (this.currentPanel != "results" && button == this.getResultsButton()) {
+            button.up("search_searchbody").queryById("mainsearchoptions").hide();
+            button.up("search_searchbody").queryById("mainresults").show();
+            this.currentPanel = "results";
+        }
+    },
+
     init: function (app) {
         this.control({
             'search_searchbody > #searchbodytoolbar #optionsbutton': {
