@@ -5,7 +5,7 @@
  * Time: 10:08 AM
  * To change this template use File | Settings | File Templates.
  */
-/* global Ext: false */
+/* global Ext: false, Savanna: false */
 Ext.define('Savanna.crumbnet.view.part.Toolbar', {
     extend: 'Ext.toolbar.Toolbar',
     alias: 'widget.crumbnet_part_toolbar',
@@ -58,7 +58,7 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
                     items: linkStyleMenuChoices
                 }
             },
-            { xtype: 'tbfill', },
+            { xtype: 'tbfill' },
             // TODO: this needs to be converted to use glyphs instead of icons...
             { type: 'zoomIn', icon:'resources/images/zoom_in.png', tooltip: 'Zoom In' },
             { type: 'zoomOut', icon:'resources/images/zoom_out.png', tooltip: 'Zoom Out' },
