@@ -38,7 +38,7 @@ Ext.define("Savanna.search.view.SearchBarTools", {
                 floating: true,
                 plain: true,
                 itemId: "searchadvanced_menu",
-                minWidth: 428,
+                minWidth: 400,
                 enableKeyNav:false,
                 items: [
                     {
@@ -102,7 +102,6 @@ Ext.define("Savanna.search.view.SearchBarTools", {
                                         itemId: "advancedsearch_submit",
                                         text: "Search",
                                         ui: 'commit',
-                                        width: 80,
                                         x: 300,
                                         tabIndex: 5
                                     }

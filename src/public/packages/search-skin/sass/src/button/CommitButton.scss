@@ -8,13 +8,13 @@
  *	@variables
  */
 // Taken from var/Component.scss
-$font-color: #fff;
-$uikit-background-gradient: #389acc, #0b7bb4;
-$uikit-background-gradient-hover: #3897c8, #0b567e;
-$uikit-background-gradient-active: #448eb3, #17587c;
+$commit-font-color: #fff;
+$commit-background-gradient: #389acc, #0b7bb4;
+$commit-background-gradient-hover: #3897c8, #0b567e;
+$commit-background-gradient-active: #448eb3, #17587c;
 
-$uikit-box-shadow: 0px 2px 3px rgba(50, 50, 50, 0.5);
-$uikit-box-shadow-pressed: $uikit-box-shadow, inset 0px 2px 3px rgba(50, 50, 50, 0.5);
+$commit-box-shadow: 0px 2px 3px rgba(50, 50, 50, 0.5);
+$commit-box-shadow-pressed: $commit-box-shadow, inset 0px 2px 3px rgba(50, 50, 50, 0.5);
 
 /*
  *	@runtime
@@ -32,7 +32,7 @@ $uikit-box-shadow-pressed: $uikit-box-shadow, inset 0px 2px 3px rgba(50, 50, 50,
     $thetus-border-color-pressed: transparent,
     $thetus-border-color-disabled: transparent,
 	
-	$thetus-padding: 6px 2px,
+	$thetus-padding: 7px 20px,
     
     // Must have a non-transparent BG in order for gradients to show up.
 	$thetus-background-color: #0073ae,
@@ -41,17 +41,17 @@ $uikit-box-shadow-pressed: $uikit-box-shadow, inset 0px 2px 3px rgba(50, 50, 50,
     $thetus-background-color-pressed: #0073ae,
     $thetus-background-color-disabled: #0073ae,
 
-    $thetus-background-gradient: $uikit-background-gradient,
-    $thetus-background-gradient-over: $uikit-background-gradient-hover,
-    $thetus-background-gradient-focus: $uikit-background-gradient,
-    $thetus-background-gradient-pressed: $uikit-background-gradient-active,
-    $thetus-background-gradient-disabled: $uikit-background-gradient,
+    $thetus-background-gradient: $commit-background-gradient,
+    $thetus-background-gradient-over: $commit-background-gradient-hover,
+    $thetus-background-gradient-focus: $commit-background-gradient,
+    $thetus-background-gradient-pressed: $commit-background-gradient-active,
+    $thetus-background-gradient-disabled: $commit-background-gradient,
 
-    $thetus-color: $font-color,
-    $thetus-color-over: $font-color,
-    $thetus-color-focus: $font-color,
-    $thetus-color-pressed: $font-color,
-    $thetus-color-disabled: $font-color,
+    $thetus-color: $commit-font-color,
+    $thetus-color-over: $commit-font-color,
+    $thetus-color-focus: $commit-font-color,
+    $thetus-color-pressed: $commit-font-color,
+    $thetus-color-disabled: $commit-font-color,
 
     $thetus-font-size: 11px,
     $thetus-font-family: $Open-Sans-Normal,
@@ -63,6 +63,6 @@ $uikit-box-shadow-pressed: $uikit-box-shadow, inset 0px 2px 3px rgba(50, 50, 50,
     $thetus-icon-size: $font-size,
     $thetus-glyph-color: #ffffff,
 
-    $thetus-box-shadow: $uikit-box-shadow,
-    $thetus-box-shadow-pressed: $uikit-box-shadow-pressed
+    $thetus-box-shadow: $commit-box-shadow,
+    $thetus-box-shadow-pressed: $commit-box-shadow-pressed
 );
