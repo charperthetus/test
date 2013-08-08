@@ -10,7 +10,7 @@ Ext.define('Savanna.search.store.SearchHistory', {
     storeId: 'searchHistory',
 
     // does this need to be set?
-    pageSize: 10,
+    pageSize: Savanna.Config.searchHistoryPageSize,
 
     autoLoad: false,
 
@@ -64,9 +64,5 @@ Ext.define('Savanna.search.store.SearchHistory', {
                 type: 'json'
             }
         });
-    },
-    onCallback: function (records, operation, success) {
-        var toolbar = Savanna.getApplication().viewport.queryById("main").down("#searchtoolbar");
-        toolbar.ctrl.logHistory(this.searches, toolbar);
     }
 });
