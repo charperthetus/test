@@ -35,7 +35,10 @@ Ext.define('Savanna.proxy.Cors', {
 
     doRequest: function (operation, callback, scope) {
         var writer = this.getWriter(),
-            request = this.buildRequest(operation, callback, scope);
+            request = this.buildRequest(operation, callback, scope),
+            origAjaxUseDefaultXhrHeaderFlag = Ext.Ajax.useDefaultXhrHeader,
+            origAjaxCorsFlag = Ext.Ajax.cors,
+            origAjaxWithCredentialsFlag = Ext.Ajax.withCredentials;
 
         request = writer.write(request);
 
@@ -44,21 +47,19 @@ Ext.define('Savanna.proxy.Cors', {
             timeout: this.timeout,
             scope: this,
             callback: this.createRequestCallback(request, operation, callback, scope),
-            method: this.getMethod(request),
+            method: this.getMethod(request)
         });
 
         if (this.modifyRequest) {
             request = this.modifyRequest(request);
         }
 
-        var origAjaxUseDefaultXhrHeaderFlag = Ext.Ajax.useDefaultXhrHeader;
-        var origAjaxCorsFlag = Ext.Ajax.cors;
-        var origAjaxWithCredentialsFlag = Ext.Ajax.withCredentials;
         Ext.Ajax.UseDefaultXhrHeader = false;
         Ext.Ajax.cors = this.cors;
         Ext.Ajax.withCredentials = this.withCredentials;
-        console.log('request', request);
+
         Ext.Ajax.request(request);
+
         Ext.Ajax.cors = origAjaxCorsFlag;
         Ext.Ajax.useDefaultXhrHeader = origAjaxUseDefaultXhrHeaderFlag;
         Ext.Ajax.withCredentials = origAjaxWithCredentialsFlag;
