@@ -68,6 +68,7 @@ describe('Search Map', function() {
                 myPanel.add(map);
                 spyOn(map, 'fireEvent').andCallThrough();
                 spyOn(map.editableLayers, 'addLayer').andCallThrough();
+                spyOn(map.editableLayers, 'removeLayer').andCallThrough();
             });
 
             afterEach(function() {
@@ -79,7 +80,7 @@ describe('Search Map', function() {
                 //myPanel.add(map);
                 map.drawingAddedToMap(e);
                 expect(map.fireEvent).toHaveBeenCalled();
-                expect(map.editableLayers.addLayer).toHaveBeenCalled()
+                expect(map.editableLayers.addLayer).toHaveBeenCalled();
 
                 //clickOnLayer turns on editMode
                 expect(map.editMode).toBeFalsy();
@@ -97,8 +98,35 @@ describe('Search Map', function() {
                 //when map loses focus turn off edit mode
                 map.mapLostFocus();
                 expect(map.editMode._enabled).toBeFalsy();
-            });
 
+                // delete key in editmode should removeLayer
+                map.clickOnLayer();
+                expect(map.editMode._enabled).toBeTruthy();
+                var evt = {keyCode: 46};
+                map.keyPressedOnMap(evt);
+                expect(map.editableLayers.removeLayer).toHaveBeenCalled();
+                expect(map.editMode._enabled).toBeFalsy();
+
+                // deleteDrawing should removeLayer
+                map.clickOnLayer();
+                expect(map.editMode._enabled).toBeTruthy();
+                map.deleteDrawing();
+                expect(map.editableLayers.removeLayer.callCount).toBe(2);
+                expect(map.editMode._enabled).toBeFalsy();
+
+                // drawingContextMenu should create a context menu
+                var event = {
+                    originalEvent: {
+                        clientX: 10,
+                        clientY: 10
+                    }
+                };
+                map.drawingContextMenu(event);
+                var myMenu = myPanel.query('#leafletContextMenu');
+                expect(myMenu).toBeTruthy();
+                map.myContextMenu.hide();
+
+            });
         });
         describe('afterRender', function() {
             it('with no leaflet reference should call update', function() {
@@ -110,3 +138,4 @@ describe('Search Map', function() {
         });
     });
 });
+

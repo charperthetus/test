@@ -6,7 +6,9 @@ Ext.define('Savanna.leaflet.Leafletmap', {
     editMode: null,
     editableLayers: null,
     drawControl: null,
-
+    myLayer: null,
+    myContextMenu: null,
+    keydownEvent: null,
     config:{
         map: null,
         lat: 45.5236,
@@ -61,36 +63,79 @@ Ext.define('Savanna.leaflet.Leafletmap', {
         this.myMap.on('draw:created', this.drawingAddedToMap, this);
         this.myMap.on('click', this.clickOnMap, this);
         this.myMap.on('blur', this.mapLostFocus, this);
+        this.myMap.on('focus', this.mapGotFocus, this);
 
         this.editableLayers.on('click', this.clickOnLayer, this);
+        this.editableLayers.on('contextmenu', this.drawingContextMenu, this);
+        this.keydownEvent = Ext.bind(this.keyPressedOnMap, this);
+        this.getEl().dom.addEventListener('keydown', this.keydownEvent);
+        this.on('locationSearch:clear', this.deleteDrawing, this)
     },
 
-    drawingAddedToMap: function(e) {
-        var layer = e.layer;
-        this.fireEvent('draw:created', e); //update with new points
-        this.editableLayers.addLayer(layer);
-    },
-
-    mapLostFocus: function(e) {
-        if (this.editMode) {
+    keyPressedOnMap: function(e) {
+        if (e.keyCode === 46 && this.editMode && this.editMode._enabled){  // delete key press in edit mode
             this.editMode.save();
+            this.editableLayers.removeLayer(this.myLayer);
+            this.editMode.disable();
+
+        }
+    },
+
+    drawingContextMenu: function(e) {
+        this.myContextMenu = Ext.create('Ext.menu.Menu', {
+
+            itemId:'leafletContextMenu',
+            items:[{
+                text: 'Delete',
+                handler: this.deleteDrawing,
+                scope: this
+            },{
+                text: 'Cancel'
+            }]
+        });
+        this.myContextMenu.showAt(e.originalEvent.clientX, e.originalEvent.clientY);
+    },
+
+    deleteDrawing: function() {
+        this.editableLayers.removeLayer(this.myLayer);
+        if (this.editMode && this.editMode._enabled) {
             this.editMode.disable();
         }
     },
 
-    clickOnLayer: function(e) {
+    drawingAddedToMap: function(e) {
+        this.myLayer = e.layer;
+        this.fireEvent('draw:created', e); //update with new points
+        this.editableLayers.addLayer(this.myLayer);
+    },
+
+    mapGotFocus: function() {
+        this.getEl().dom.addEventListener('keydown', this.keydownEvent);
+    },
+
+    mapLostFocus: function() {
+        if (this.editMode) {
+            this.editMode.save();
+            this.editMode.disable();
+        }
+        this.getEl().dom.removeEventListener('keydown', this.keydownEvent, false)
+    },
+
+    clickOnLayer: function() {
         this.editMode = new L.EditToolbar.Edit(this.myMap,{
             featureGroup: this.editableLayers,
             selectedPathOptions: this.drawControl.options.edit.selectedPathOptions
-        })
+        });
         this.editMode.enable();
-        //this.myMap.removeLayer(this.editableLayers);
     },
 
-    clickOnMap: function(e) {
+    clickOnMap: function() {
         if (this.editMode && this.editMode._enabled) {
             this.editMode.save();
             this.editMode.disable();
+        }
+        if (this.myContextMenu) {
+            this.myContextMenu.hide();
         }
     },
 
