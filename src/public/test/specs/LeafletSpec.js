@@ -99,6 +99,7 @@ describe('Search Map', function() {
                 map.mapLostFocus();
                 expect(map.editMode._enabled).toBeFalsy();
 
+                // delete key in editmode should removeLayer
                 map.clickOnLayer();
                 expect(map.editMode._enabled).toBeTruthy();
                 var evt = {keyCode: 46};
@@ -106,11 +107,25 @@ describe('Search Map', function() {
                 expect(map.editableLayers.removeLayer).toHaveBeenCalled();
                 expect(map.editMode._enabled).toBeFalsy();
 
+                // deleteDrawing should removeLayer
                 map.clickOnLayer();
                 expect(map.editMode._enabled).toBeTruthy();
                 map.deleteDrawing();
                 expect(map.editableLayers.removeLayer.callCount).toBe(2);
                 expect(map.editMode._enabled).toBeFalsy();
+
+                // drawingContextMenu should create a context menu
+                var event = {
+                    originalEvent: {
+                        clientX: 10,
+                        clientY: 10
+                    }
+                };
+                map.drawingContextMenu(event);
+                var myMenu = myPanel.query('#leafletContextMenu');
+                expect(myMenu).toBeTruthy();
+                map.myContextMenu.hide();
+
             });
         });
         describe('afterRender', function() {
@@ -123,3 +138,4 @@ describe('Search Map', function() {
         });
     });
 });
+
