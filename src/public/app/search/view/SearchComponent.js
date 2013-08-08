@@ -14,7 +14,8 @@ Ext.define('Savanna.search.view.SearchComponent', {
         'Savanna.search.view.SearchBody',
         'Savanna.search.view.SearchBar',
         'Savanna.search.view.SearchToolbar',
-        'Savanna.controller.Factory'
+        'Savanna.controller.Factory',
+        'Savanna.search.controller.SearchDals'
     ],
 
     layout: 'border',
@@ -22,7 +23,10 @@ Ext.define('Savanna.search.view.SearchComponent', {
     title: 'Search',
     closable:false,
     border:false,
-
+    mixins: {
+        storeable: 'Savanna.mixin.Storeable'
+    },
+    store:"Savanna.search.store.SearchHistory",
     items: [
         {
             xtype: 'search_searchbar',
@@ -44,7 +48,22 @@ Ext.define('Savanna.search.view.SearchComponent', {
 
     initComponent: function () {
         this.callParent(arguments);
-        // this.ctrl used for unit tests
-        this.ctrl = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
+        Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
+        this.initStore();
+    },
+    onStoreLoad: function() {
+        // do any magic you need to your container when the store is reloaded
+        this.updateHistory(Ext.data.StoreManager.lookup('searchHistory').searches);
+    },
+    updateHistory: function (searches) {
+        //#searchtoolbar #historybutton #historymenu
+        var historyMenu = this.down("#historymenu");
+        historyMenu.removeAll();
+        //TODO: look for dupes and do not include them - or, remove at store level
+        Ext.each(searches, function (search, index) {
+            historyMenu.add({
+                text: search.query
+            })
+        })
     }
 });

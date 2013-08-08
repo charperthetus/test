@@ -1,3 +1,4 @@
+/* global Ext: false, console: false */
 Ext.Loader.setPath('Savanna', '../app');
 Ext.Loader.setConfig({
     enabled: true,
@@ -11,10 +12,18 @@ Ext.application({
 });
 
 // HELPER METHOD TO keep the DOM node for our test HTML empty...
+/* jshint unused: false */
 function cleanTestDom() {
-	var testDom = Ext.get('test-html');
+    var testDom = Ext.get('test-html'),
+        extJsTooltips = Ext.get('ext-quicktips-tip');
 
-	if (testDom && testDom.dom && testDom.dom.children ) testDom.dom.innerHTML = '';
+    if (testDom && testDom.dom && testDom.dom.children ) {
+        testDom.dom.innerHTML = '';
+    }
+
+    if (extJsTooltips) {
+        extJsTooltips.remove();
+    }
 }
 
 function createTestDom() {

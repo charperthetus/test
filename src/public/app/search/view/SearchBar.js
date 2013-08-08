@@ -11,6 +11,10 @@ Ext.define('Savanna.search.view.SearchBar', {
         'Savanna.controller.Factory',
         'Savanna.search.view.SearchBarTools'
     ],
+    mixins: {
+        storeable: 'Savanna.mixin.Storeable'
+    },
+    store:"Savanna.search.store.SearchResults",
     border: false,
     frame: false,
     layout: "ux.center",
@@ -43,16 +47,20 @@ Ext.define('Savanna.search.view.SearchBar', {
     initComponent: function () {
         this.callParent(arguments);
         // instantiate the controller for this view
-        // this.ctrl used for unit tests
-        this.ctrl = Savanna.controller.Factory.getController('Savanna.search.controller.SearchBar');
+        Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
+        this.initStore();
+    },
+    onStoreLoad: function() {
+        // do any magic you need to your container when the store is reloaded
     },
     buildSearchString: function () {
         var alls, exacts, anys, nones, final_string,
             from_bar = '',
             str_all = '',
             view = this,
-            toolbar = view.queryById("search_toolbar");
-        Ext.each(toolbar.queryById("form_container").items.items, function (field, index) {
+            toolbar = view.queryById("search_toolbar"),
+            form = toolbar.queryById("form_container");
+        form.items.each(function (field, index) {
             if (field.xtype == "searchadvanced_textfield" && toolbar.queryById(field.itemId).getValue() != "" && toolbar.queryById(field.itemId).getValue() != undefined) {
                 toolbar.queryById(field.itemId).setValue(toolbar.queryById(field.itemId).getValue().trim())
                 var join = field.configs.join;

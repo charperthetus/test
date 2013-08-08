@@ -21,7 +21,7 @@ Ext.define("Savanna.search.view.SearchResults", {
     initComponent: function () {
         this.callParent(arguments);
 
-        Savanna.controller.Factory.getController('Savanna.search.controller.SearchResults');
+        Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
     },
     items: [{
         title: 'Search Sources',
