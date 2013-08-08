@@ -5,7 +5,7 @@
  * Time: 10:48 AM
  * To change this template use File | Settings | File Templates.
  */
-
+/* global Ext: false, Savanna: false */
 Ext.define('Savanna.search.view.SearchDals', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.search_searchdals',
