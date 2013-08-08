@@ -7,15 +7,21 @@
             "templates": [
                 {
                     "label": "Concept label",
-                    "category": "Concept"
+                    "category": "Concept",
+                    "text": "Concept",
+                    "percent": 0
                 },
                 {
                     "label": "Hypothesis label",
-                    "category": "Hypothesis"
+                    "category": "Hypothesis",
+                    "text": "Hypothesis",
+                    "percent": 0
                 },
                 {
                     "label": "Question label",
-                    "category": "Question"
+                    "category": "Question",
+                    "text": "Question",
+                    "percent": 0
                 }
             ]
         },
@@ -25,19 +31,27 @@
             "templates": [
                 {
                     "label": "Problem label",
-                    "category": "Problem"
+                    "category": "Problem",
+                    "text": "Problem",
+                    "percent": 0
                 },
                 {
                     "label": "Conclusion label",
-                    "category": "Conclusion"
+                    "category": "Conclusion",
+                    "text": "Conclusion",
+                    "percent": 0
                 },
                 {
                     "label": "Assumption label",
-                    "category": "Assumption"
+                    "category": "Assumption",
+                    "text": "Assumption",
+                    "percent": 0
                 },
                 {
                     "label": "Fact label",
-                    "category": "Fact"
+                    "category": "Fact",
+                    "text": "Fact",
+                    "percent": 0
                 }
             ]
         }

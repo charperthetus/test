@@ -196,7 +196,7 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
             diagram.startTransaction('changeLinkStyle');
             while (iterator.next()) {
                 if (iterator.value instanceof go.Link) {
-                    iterator.value.category = item.type;
+                    diagram.model.setDataProperty(itereator.value, 'category', item.type);
                 }
             }
             // TODO: should this be rollbackTransaction if nothing is changed?
