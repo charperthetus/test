@@ -21,7 +21,7 @@
  *      },
  *      store: 'Savanna.some.Store',
  *      initComponent: function() {
- *          this.initStore();
+ *          this.mixins.storeable.initStore.call(this);
  *      }
  * });
  */
