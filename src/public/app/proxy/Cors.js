@@ -3,9 +3,26 @@
  * User: thille
  * Date: 8/8/13
  * Time: 8:26 AM
- * To change this template use File | Settings | File Templates.
  */
 /* global Ext: false */
+/**
+ * Savanna.proxy.Cors
+ *
+ * A proxy that enables CORS communication for JSON REST endpoints. Typical usage:
+ *
+ * var store = Ext.create('Ext.data.Store', {
+ *      proxy: {
+ *          type: 'savanna-cors',
+ *          url: 'http://some/url'
+ *      },
+ *      reader: {
+ *          type: 'json',
+ *          root: 'myRecordsRoot
+ *      }
+ * });
+ *
+ * // do all your store magic....
+ */
 Ext.define('Savanna.proxy.Cors', {
     extend: 'Ext.data.proxy.Ajax',
     alias: 'proxy.savanna-cors',
