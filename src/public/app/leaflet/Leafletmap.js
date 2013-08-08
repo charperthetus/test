@@ -7,6 +7,7 @@ Ext.define('Savanna.leaflet.Leafletmap', {
     editableLayers: null,
     drawControl: null,
     myLayer: null,
+    myContextMenu: null,
     keydownEvent: null,
     config:{
         map: null,
@@ -68,6 +69,7 @@ Ext.define('Savanna.leaflet.Leafletmap', {
         this.editableLayers.on('contextmenu', this.drawingContextMenu, this);
         this.keydownEvent = Ext.bind(this.keyPressedOnMap, this);
         this.getEl().dom.addEventListener('keydown', this.keydownEvent);
+        this.on('locationSearch:clear', this.deleteDrawing, this)
     },
 
     keyPressedOnMap: function(e) {
@@ -80,19 +82,25 @@ Ext.define('Savanna.leaflet.Leafletmap', {
     },
 
     drawingContextMenu: function(e) {
-        var contextMenu = new Ext.menu.Menu({
+        this.myContextMenu = Ext.create('Ext.menu.Menu', {
+
+            itemId:'leafletContextMenu',
             items:[{
                 text: 'Delete',
                 handler: this.deleteDrawing,
                 scope: this
+            },{
+                text: 'Cancel'
             }]
         });
-        contextMenu.showAt(e.originalEvent.clientX, e.originalEvent.clientY);
+        this.myContextMenu.showAt(e.originalEvent.clientX, e.originalEvent.clientY);
     },
 
     deleteDrawing: function() {
         this.editableLayers.removeLayer(this.myLayer);
-        this.editMode.disable();
+        if (this.editMode && this.editMode._enabled) {
+            this.editMode.disable();
+        }
     },
 
     drawingAddedToMap: function(e) {
@@ -100,9 +108,11 @@ Ext.define('Savanna.leaflet.Leafletmap', {
         this.fireEvent('draw:created', e); //update with new points
         this.editableLayers.addLayer(this.myLayer);
     },
+
     mapGotFocus: function() {
         this.getEl().dom.addEventListener('keydown', this.keydownEvent);
     },
+
     mapLostFocus: function() {
         if (this.editMode) {
             this.editMode.save();
@@ -123,6 +133,9 @@ Ext.define('Savanna.leaflet.Leafletmap', {
         if (this.editMode && this.editMode._enabled) {
             this.editMode.save();
             this.editMode.disable();
+        }
+        if (this.myContextMenu) {
+            this.myContextMenu.hide();
         }
     },
 
