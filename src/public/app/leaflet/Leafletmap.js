@@ -68,6 +68,7 @@ Ext.define('Savanna.leaflet.Leafletmap', {
         this.editableLayers.on('contextmenu', this.drawingContextMenu, this);
         this.keydownEvent = Ext.bind(this.keyPressedOnMap, this);
         this.getEl().dom.addEventListener('keydown', this.keydownEvent);
+        this.on('locationSearch:clear', this.deleteDrawing, this)
     },
 
     keyPressedOnMap: function(e) {
@@ -92,7 +93,9 @@ Ext.define('Savanna.leaflet.Leafletmap', {
 
     deleteDrawing: function() {
         this.editableLayers.removeLayer(this.myLayer);
-        this.editMode.disable();
+        if (this.editMode && this.editMode._enabled) {
+            this.editMode.disable();
+        }
     },
 
     drawingAddedToMap: function(e) {
