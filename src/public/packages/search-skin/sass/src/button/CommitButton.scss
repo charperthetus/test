@@ -13,50 +13,56 @@ $uikit-background-gradient: #389acc, #0b7bb4;
 $uikit-background-gradient-hover: #3897c8, #0b567e;
 $uikit-background-gradient-active: #448eb3, #17587c;
 
+$uikit-box-shadow: 0px 2px 3px rgba(50, 50, 50, 0.5);
+$uikit-box-shadow-pressed: $uikit-box-shadow, inset 0px 2px 3px rgba(50, 50, 50, 0.5);
+
 /*
  *	@runtime
  */
-@include extjs-button-ui(
-	$ui: 'commit-small',
+@include thetus-button-ui(
+	$thetus-label: 'commit-small',
 
-    $border-width: 0px,
+    $thetus-border-width: 0px,
 
-    $border-radius: 4px,
+    $thetus-border-radius: 4px,
 
-    $border-color: transparent,
-    $border-color-over: transparent,
-    $border-color-focus: transparent,
-    $border-color-pressed: transparent,
-    $border-color-disabled: transparent,
+    $thetus-border-color: transparent,
+    $thetus-border-color-over: transparent,
+    $thetus-border-color-focus: transparent,
+    $thetus-border-color-pressed: transparent,
+    $thetus-border-color-disabled: transparent,
 	
-	$padding: 7px 12px,
+	$thetus-padding: 6px 2px,
     
     // Must have a non-transparent BG in order for gradients to show up.
-	$background-color: #0073ae,
-    $background-color-over: #0073ae,
-    $background-color-focus: #0073ae,
-    $background-color-pressed: #0073ae,
-    $background-color-disabled: #0073ae,
+	$thetus-background-color: #0073ae,
+    $thetus-background-color-over: #0073ae,
+    $thetus-background-color-focus: #0073ae,
+    $thetus-background-color-pressed: #0073ae,
+    $thetus-background-color-disabled: #0073ae,
 
-    $background-gradient: $uikit-background-gradient,
-    $background-gradient-over: $uikit-background-gradient-hover,
-    $background-gradient-focus: $uikit-background-gradient,
-    $background-gradient-pressed: $uikit-background-gradient-active,
-    $background-gradient-disabled: $uikit-background-gradient,
+    $thetus-background-gradient: $uikit-background-gradient,
+    $thetus-background-gradient-over: $uikit-background-gradient-hover,
+    $thetus-background-gradient-focus: $uikit-background-gradient,
+    $thetus-background-gradient-pressed: $uikit-background-gradient-active,
+    $thetus-background-gradient-disabled: $uikit-background-gradient,
 
-    $color: $font-color,
-    $color-over: $font-color,
-    $color-focus: $font-color,
-    $color-pressed: $font-color,
-    $color-disabled: $font-color,
+    $thetus-color: $font-color,
+    $thetus-color-over: $font-color,
+    $thetus-color-focus: $font-color,
+    $thetus-color-pressed: $font-color,
+    $thetus-color-disabled: $font-color,
 
-    $font-size: 14px,
-    $font-family: $Open-Sans-Normal,
-    $font-family-over: $Open-Sans-Normal,
-    $font-family-focus: $Open-Sans-Normal,
-    $font-family-pressed: $Open-Sans-Normal,
-    $font-family-disabled: $Open-Sans-Normal,
+    $thetus-font-size: 11px,
+    $thetus-font-family: $Open-Sans-Normal,
+    $thetus-font-family-over: $Open-Sans-Normal,
+    $thetus-font-family-focus: $Open-Sans-Normal,
+    $thetus-font-family-pressed: $Open-Sans-Normal,
+    $thetus-font-family-disabled: $Open-Sans-Normal,
     
-    $icon-size: $font-size,
-    $glyph-color: #ffffff
+    $thetus-icon-size: $font-size,
+    $thetus-glyph-color: #ffffff,
+
+    $thetus-box-shadow: $uikit-box-shadow,
+    $thetus-box-shadow-pressed: $uikit-box-shadow-pressed
 );
