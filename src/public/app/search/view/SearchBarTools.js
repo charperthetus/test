@@ -45,7 +45,7 @@ Ext.define("Savanna.search.view.SearchBarTools", {
                         xtype: "button",
                         text: "Close",
                         itemId: 'close_panel',
-                        float: 'right'
+                        ui: 'link-button'
                     },
                     {
                         xtype: "box",
@@ -101,6 +101,7 @@ Ext.define("Savanna.search.view.SearchBarTools", {
                                         xtype: "button",
                                         itemId: "advancedsearch_submit",
                                         text: "Search",
+                                        ui: 'commit',
                                         width: 80,
                                         x: 300,
                                         tabIndex: 5
