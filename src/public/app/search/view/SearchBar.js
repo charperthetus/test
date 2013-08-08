@@ -58,8 +58,9 @@ Ext.define('Savanna.search.view.SearchBar', {
             from_bar = '',
             str_all = '',
             view = this,
-            toolbar = view.queryById("search_toolbar");
-        Ext.each(toolbar.queryById("form_container").items.items, function (field, index) {
+            toolbar = view.queryById("search_toolbar"),
+            form = toolbar.queryById("form_container");
+        form.items.each(function (field, index) {
             if (field.xtype == "searchadvanced_textfield" && toolbar.queryById(field.itemId).getValue() != "" && toolbar.queryById(field.itemId).getValue() != undefined) {
                 toolbar.queryById(field.itemId).setValue(toolbar.queryById(field.itemId).getValue().trim())
                 var join = field.configs.join;

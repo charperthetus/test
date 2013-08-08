@@ -112,11 +112,11 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             callback: this.onCallback,
             scope: this
         });
+        this.logHistory(this.getSearchBar().buildSearchString());
     },
     onCallback: function (records, operation, success) {
         if (success) {
             console.log(records);
-            this.logHistory(this.getSearchBar().buildSearchString());
             this.showResultsPage()
         } else {
             // server down..?
