@@ -1,7 +1,7 @@
 /* global Ext: false, ExtSpec: false,
           describe: false, beforeEach: false, afterEach: false, expect: false, it: false,
           sinon: false, spyOn: false,
-          ThetusTestHelpers: false, createTestDom: false, cleanTestDom: false,
+          ThetusTestHelpers: false, createTestDom: false, cleanTestDom: false, setupNoCacheNoPagingStore,
           Savanna: false
  */
 Ext.require('Savanna.Config');
@@ -14,7 +14,7 @@ Ext.require('Savanna.search.view.searchDals.CustomSearchGroupForm');
 Ext.require('Savanna.search.view.searchDals.SearchOptions');
 
 describe('Dal Search', function() {
-    var DAL_SOURCES_URL = '',
+    var DAL_SOURCES_URL = 'http://thedevsav1.thetuscorp.com:8080/SavannaX//rest/search/sources;jsessionid=undefined',
         fixtures = {};
 
     beforeEach(function() {
@@ -58,7 +58,7 @@ describe('Dal Search', function() {
 
         beforeEach(function() {
             // NOTE: this has to happen BEFORE your create a FakeServer,
-            store = Ext.create('Savanna.search.store.DalSources', { autoLoad: false });
+            store = setupNoCacheNoPagingStore('Savanna.search.store.DalSources');
 
             server = new ThetusTestHelpers.FakeServer(sinon);
         });
@@ -93,6 +93,7 @@ describe('Dal Search', function() {
         var view = null;
 
         beforeEach(function() {
+            //noinspection JSValidateTypes
             spyOn(Savanna.controller.Factory, 'getController');
             view = Ext.create('Savanna.search.view.SearchBody', { renderTo: 'test-html' });
         });
@@ -106,7 +107,7 @@ describe('Dal Search', function() {
         });
 
         it('initComponent should ask for a controller', function() {
-            expect(Savanna.controller.Factory.getController).toHaveBeenCalledWith('Savanna.search.controller.SearchBody');
+            expect(Savanna.controller.Factory.getController).toHaveBeenCalledWith('Savanna.search.controller.SearchComponent');
         });
     });
 
@@ -114,6 +115,7 @@ describe('Dal Search', function() {
         var view = null;
 
         beforeEach(function() {
+            //noinspection JSValidateTypes
             spyOn(Savanna.controller.Factory, 'getController');
             view = Ext.create('Savanna.search.view.SearchDals', { renderTo: 'test-html' });
         });
@@ -171,6 +173,7 @@ describe('Dal Search', function() {
         describe('createDalPanels', function() {
             it('should create a Paenl for every record in the store', function() {
                 var view = Ext.create('Savanna.search.view.SearchDals', { renderTo: 'test-html' });
+                //noinspection JSValidateTypes
                 spyOn(view, 'add');
 
                 controller.createDalPanels(view);
@@ -190,6 +193,7 @@ describe('Dal Search', function() {
                 testView = topView.down('search_searchDals_searchoptions:last');
                 button = testView.down('#searchOptionsToggle');
 
+                //noinspection JSValidateTypes
                 spyOn(testView, 'add').andCallThrough();
                 spyOn(testView, 'doLayout'); // don't necessarily need to redo the layout...
                 spyOn(button, 'setText').andCallThrough();
@@ -238,6 +242,7 @@ describe('Dal Search', function() {
                 checkbox = testView.queryById('includeDalCheckBox');
                 button = topView.queryById('selectAllDals');
 
+                //noinspection JSValidateTypes
                 spyOn(testView, 'doLayout'); // don't necessarily need to redo the layout...
                 spyOn(checkbox, 'getValue').andCallThrough();
                 spyOn(checkbox, 'up').andCallThrough();
@@ -312,6 +317,7 @@ describe('Dal Search', function() {
                 testView = topView.down('search_searchDals_searchoptions:last');
                 button = topView.queryById('selectAllDals');
 
+                //noinspection JSValidateTypes
                 spyOn(testView, 'doLayout'); // don't necessarily need to redo the layout...
                 spyOn(topView, 'query').andCallThrough();
             });
@@ -356,6 +362,7 @@ describe('Dal Search', function() {
                 testView = topView.down('search_searchDals_searchoptions:last');
                 button = topView.queryById('resetAllSearchOptions');
 
+                //noinspection JSValidateTypes
                 spyOn(testView, 'doLayout'); // don't necessarily need to redo the layout...
                 spyOn(topView, 'removeAll').andCallThrough();
                 spyOn(controller, 'createDalPanels').andCallThrough();
@@ -411,6 +418,7 @@ describe('Dal Search', function() {
 
                 button = testView.queryById('resetSingleDal');
 
+                //noinspection JSValidateTypes
                 spyOn(testView, 'doLayout'); // don't necessarily need to redo the layout...
                 spyOn(topView, 'remove').andCallThrough();
             });
