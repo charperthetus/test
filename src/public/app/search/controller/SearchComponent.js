@@ -117,6 +117,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
     onCallback: function (records, operation, success) {
         if (success) {
             console.log(records);
+            //console.log(Ext.data.StoreManager.lookup('searchResults'));
             this.showResultsPage()
         } else {
             // server down..?
