@@ -24,8 +24,7 @@ describe('Savanna.proxy.Cors', function() {
 
     describe('default usage', function() {
         var proxy = null,
-            proxyData = {},
-            testUrl = 'http://savanna.thetus.com/test/cors/url';
+            proxyData = {};
 
         beforeEach(function() {
             proxy = Ext.create('Savanna.proxy.Cors', {
