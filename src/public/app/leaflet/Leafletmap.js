@@ -92,13 +92,13 @@ Ext.define('Savanna.leaflet.Leafletmap', {
 
     deleteDrawing: function() {
         this.editableLayers.removeLayer(this.myLayer);
+        this.editMode.disable();
     },
 
     drawingAddedToMap: function(e) {
         this.myLayer = e.layer;
         this.fireEvent('draw:created', e); //update with new points
         this.editableLayers.addLayer(this.myLayer);
-        console.log('this.drawControl',this.drawControl);
     },
     mapGotFocus: function() {
         this.getEl().dom.addEventListener('keydown', this.keydownEvent);
