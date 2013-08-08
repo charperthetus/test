@@ -85,7 +85,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             "search_searchcomponent > #searchbar #main_panel #search_toolbar #searchadvanced_menu #submit_panel #advancedsearch_submit": {
                 click: this.doSearch
             },
-            "search_searchcomponent > #searchbar #main_panel #search_toolbar #searchadvanced_menu #close_panel button": {
+            "search_searchcomponent > #searchbar #main_panel #search_toolbar #searchadvanced_menu #close_panel": {
                 click: this.hideMenu
             },
             'search_searchcomponent > #searchtoolbar #historybutton #historymenu menuitem': {
