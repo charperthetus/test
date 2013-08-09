@@ -1,5 +1,5 @@
 /* global Ext: false, ExtSpec: false,
-          describe: false, beforeEach: false, afterEach: false, expect: false, it: false,
+          describe: false, beforeEach: false, afterEach: false, expect: false, it: false, waitsFor: false, runs: false,
           sinon: false, spyOn: false,
           ThetusTestHelpers: false, createTestDom: false, cleanTestDom: false, setupNoCacheNoPagingStore,
           Savanna: false
@@ -75,7 +75,7 @@ describe('Dal Search', function() {
             it('should load data', function() {
                 expect(store.getTotalCount()).toBe(0);
 
-                server.respondWith('GET', DAL_SOURCES_URL, fixtures.allDals);
+                server.respondWith('GET', store.getProxy().url, fixtures.allDals);
 
                 store.load();
 
@@ -131,31 +131,103 @@ describe('Dal Search', function() {
         it('initComponent should ask for a controller', function() {
             expect(Savanna.controller.Factory.getController).toHaveBeenCalledWith('Savanna.search.controller.SearchDals');
         });
-    });
-
-    describe('Savanna.search.controller.SearchDals', function() {
-        var controller = null;
-
-        beforeEach(function() {
-            controller = Ext.create('Savanna.search.controller.SearchDals');
-        });
-
-        afterEach(function() {
-            if (controller && controller.destroy) {
-                controller.destroy();
-            }
-
-            controller = null;
-        });
 
         describe('createPanel', function() {
             it('should create an instance of the SearchOptions panel', function() {
                 var model = new Savanna.search.model.DalSource(fixtures.legacyDal);
 
-                var view = controller.createPanel(model);
+                var panelView = view.createPanel(model);
 
-                expect(view instanceof Savanna.search.view.searchDals.SearchOptions).toBeTruthy();
+                expect(panelView instanceof Savanna.search.view.searchDals.SearchOptions).toBeTruthy();
             });
+        });
+
+        describe('createDalPanels', function() {
+            var server = null,
+                store = null;
+
+            beforeEach(function() {
+                // NOTE: this has to happen BEFORE your create a FakeServer,
+                store = setupNoCacheNoPagingStore('Savanna.search.store.DalSources');
+
+                server = new ThetusTestHelpers.FakeServer(sinon);
+
+                server.respondWith('GET', store.getProxy().url, fixtures.allDals);
+
+                store.load();
+
+                server.respond({
+                    errorOnInvalidRequest: true
+                });
+            });
+
+            afterEach(function() {
+                server.restore();
+
+                server = null;
+                store = null;
+            });
+
+            it('should create a Panel for every record in the store', function() {
+                var view = Ext.create('Savanna.search.view.SearchDals', { renderTo: 'test-html' });
+
+                //noinspection JSValidateTypes
+                spyOn(view, 'add');
+
+                view.createDalPanels();
+
+                expect(view.add.callCount).toBe(view.getStore().count());
+            });
+        });
+    });
+
+    describe('Savanna.search.controller.SearchDals', function() {
+        var controller = null,
+            server = null,
+            store = null,
+            topView = null;
+
+        beforeEach(function() {
+            // Set up the store first as it is autovivified by our main view
+            store = setupNoCacheNoPagingStore('Savanna.search.store.DalSources', { autoLoad: false });
+
+            // Store it in the store manager so when the view goes to create it, it's already there
+            Ext.data.StoreManager.add('Savanna.search.store.DalSources', store);
+
+            // now set up server to get store data
+            server = new ThetusTestHelpers.FakeServer(sinon);
+
+            server.respondWith('GET', store.getProxy().url, fixtures.allDals);
+
+            // set up the view (it should pull in the store we just created)
+            topView = Ext.create('Savanna.search.view.SearchDals', { renderTo: 'test-html' });
+
+            // load the store now (should trigger event to render the view)
+            store.load();
+
+            server.respond({
+                errorOnInvalidRequest: true
+            });
+
+            // finally, set up our controller to test against
+            controller = Ext.create('Savanna.search.controller.SearchDals');
+        });
+
+        afterEach(function() {
+            if (topView && topView.destroy) {
+                topView.destroy();
+                topView = null;
+            }
+
+            if (controller && controller.destroy) {
+                controller.destroy();
+                controller = null;
+            }
+
+            server.restore();
+
+            server = null;
+            store = null;
         });
 
         describe('createCustomSearchGroupPanel', function() {
@@ -170,26 +242,11 @@ describe('Dal Search', function() {
             });
         });
 
-        describe('createDalPanels', function() {
-            it('should create a Paenl for every record in the store', function() {
-                var view = Ext.create('Savanna.search.view.SearchDals', { renderTo: 'test-html' });
-                //noinspection JSValidateTypes
-                spyOn(view, 'add');
-
-                controller.createDalPanels(view);
-
-                expect(view.add.callCount).toBe(controller.getStore('Savanna.search.store.DalSources').count());
-            });
-        });
-
         describe('renderCustomOptions', function() {
-            var topView = null;
             var testView = null;
             var button = null;
 
             beforeEach(function() {
-                topView = Ext.create('Savanna.search.view.SearchDals', { renderTo: 'test-html' });
-
                 testView = topView.down('search_searchDals_searchoptions:last');
                 button = testView.down('#searchOptionsToggle');
 
@@ -200,11 +257,6 @@ describe('Dal Search', function() {
             });
 
             afterEach(function() {
-                if (topView && topView.destroy) {
-                    topView.destroy();
-                }
-
-                topView = null;
                 testView = null;
                 button = null;
             });
@@ -230,13 +282,11 @@ describe('Dal Search', function() {
         });
 
         describe('dalCheckBoxClicked', function() {
-            var topView = null;
             var testView = null;
             var checkbox = null;
             var button = null;
 
             beforeEach(function() {
-                topView = Ext.create('Savanna.search.view.SearchDals', { renderTo: 'test-html' });
                 testView = topView.down('search_searchDals_searchoptions:last');
 
                 checkbox = testView.queryById('includeDalCheckBox');
@@ -250,10 +300,6 @@ describe('Dal Search', function() {
             });
 
             afterEach(function() {
-                if (topView && topView.destroy) {
-                    topView.destroy();
-                }
-
                 topView = null;
                 testView = null;
                 checkbox = null;
@@ -308,12 +354,10 @@ describe('Dal Search', function() {
         });
 
         describe('setAllDalCheckboxValues', function() {
-            var topView = null;
             var testView = null;
             var button = null;
 
             beforeEach(function() {
-                topView = Ext.create('Savanna.search.view.SearchDals', { renderTo: 'test-html' });
                 testView = topView.down('search_searchDals_searchoptions:last');
                 button = topView.queryById('selectAllDals');
 
@@ -323,10 +367,6 @@ describe('Dal Search', function() {
             });
 
             afterEach(function() {
-                if (topView && topView.destroy) {
-                    topView.destroy();
-                }
-
                 topView = null;
                 testView = null;
                 button = null;
@@ -353,26 +393,20 @@ describe('Dal Search', function() {
         });
 
         describe('resetAllSearchOptions', function() {
-            var topView = null;
             var testView = null;
             var button = null;
 
             beforeEach(function() {
-                topView = Ext.create('Savanna.search.view.SearchDals', { renderTo: 'test-html' });
                 testView = topView.down('search_searchDals_searchoptions:last');
                 button = topView.queryById('resetAllSearchOptions');
 
                 //noinspection JSValidateTypes
                 spyOn(testView, 'doLayout'); // don't necessarily need to redo the layout...
                 spyOn(topView, 'removeAll').andCallThrough();
-                spyOn(controller, 'createDalPanels').andCallThrough();
+                spyOn(topView, 'createDalPanels').andCallThrough();
             });
 
             afterEach(function() {
-                if (topView && topView.destroy) {
-                    topView.destroy();
-                }
-
                 topView = null;
                 testView = null;
                 button = null;
@@ -403,17 +437,15 @@ describe('Dal Search', function() {
 
                 expect(allCheckBoxesChecked).toBeFalsy();
                 expect(topView.removeAll).toHaveBeenCalled();
-                expect(controller.createDalPanels).toHaveBeenCalled();
+                expect(topView.createDalPanels).toHaveBeenCalled();
             });
         });
 
         describe('resetSingleDal', function() {
-            var topView = null;
             var testView = null;
             var button = null;
 
             beforeEach(function() {
-                topView = Ext.create('Savanna.search.view.SearchDals', { renderTo: 'test-html' });
                 testView = topView.down('search_searchDals_searchoptions:last');
 
                 button = testView.queryById('resetSingleDal');
@@ -424,11 +456,6 @@ describe('Dal Search', function() {
             });
 
             afterEach(function() {
-                if (topView && topView.destroy) {
-                    topView.destroy();
-                }
-
-                topView = null;
                 testView = null;
                 button = null;
             });

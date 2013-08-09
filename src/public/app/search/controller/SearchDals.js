@@ -2,14 +2,6 @@
 Ext.define('Savanna.search.controller.SearchDals', {
     extend: 'Ext.app.Controller',
 
-    models: [
-        'Savanna.search.model.DalSource'
-    ],
-
-    stores: [
-        'Savanna.search.store.DalSources'
-    ],
-
     views: [
         'Savanna.search.view.SearchDals',
         'Savanna.search.view.searchDals.SearchOptions',
@@ -20,38 +12,16 @@ Ext.define('Savanna.search.controller.SearchDals', {
     addDalDetailText: 'Show Search Options',
     removeDalDetailText: 'Hide Search Options',
 
-    createPanel: function(myRecord) {
-        return Ext.create('Savanna.search.view.searchDals.SearchOptions', {
-            itemId: myRecord.data.id,
-            checkboxLabel: myRecord.data.displayName,
-            label: myRecord.data.textDescription,
-            showButton: myRecord.customSearchGroups().data.length
-        });
-    },
-
     createCustomSearchGroupPanel: function(store) {
         return Ext.create('Savanna.search.view.searchDals.CustomSearchGroupForm', {
             store: store
         });
     },
 
-    createDalPanels: function (body) {
-        var me = this;
-
-        console.log('creating dal panel with store', this.getStore('Savanna.search.store.DalSources').getCount());
-        body.removeAll();
-
-        this.getStore('Savanna.search.store.DalSources').each(function (record) {
-            var myPanel = me.createPanel(record);
-            console.log('adding panel...', record);
-            body.add(myPanel);
-        });
-    },
-
+    // TODO: HOW TO DO NOW THAT createDalPanels in in view.onStoreLoad???
     resetAllSearchOptions: function(button) {
         var parentView = button.up('search_searchdals');
-        parentView.removeAll();
-        this.createDalPanels(parentView);
+        parentView.createDalPanels(parentView);
         parentView.down('#selectAllDals').setText('Select All');
     },
 
@@ -122,15 +92,7 @@ Ext.define('Savanna.search.controller.SearchDals', {
     },
 
     init: function () {
-        var dalStore = this.getStore('Savanna.search.store.DalSources');
-
-        this.mon(dalStore, 'load', this.createDalPanels, this);
-        dalStore.load();
-
         this.control({
-            'search_searchdals': {
-                render: this.createDalPanels
-            },
             'search_searchdals > #searchDalDockedItems #resetAllSearchOptions': {
                 click: this.resetAllSearchOptions
             },
