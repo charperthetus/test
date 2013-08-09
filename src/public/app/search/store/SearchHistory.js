@@ -24,12 +24,9 @@ Ext.define('Savanna.search.store.SearchHistory', {
     constructor: function () {
         this.callParent(arguments);
 
-        var me = this;
-
         this.setProxy({
-            type: 'rest',
-            actionMethods: { create: 'POST', read: 'POST', update: 'POST', destroy: 'POST' },
-            //url: Savanna.Config.savannaUrlRoot + 'rest/search/history;jsessionid=' + Savanna.jsessionid,
+            type: 'savanna-cors',
+            //url: Savanna.Config.savannaUrlRoot + 'rest/search/history',
             // Use this if you don't have Savanna 3.4 running
             // NOTE: two tests in SpecRunner fail in this circumstance, but will work once the dev server is up and running
             url: 'app/assets/data/testSearchHistory.json',
@@ -37,32 +34,14 @@ Ext.define('Savanna.search.store.SearchHistory', {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },
-            doRequest: function (operation, callback, scope) {
-                var writer = this.getWriter(),
-                    request = this.buildRequest(operation, callback, scope);
-                request = writer.write(request);
-                Ext.apply(request, {
-                    headers: this.headers,
-                    timeout: this.timeout,
-                    scope: this,
-                    callback: this.createRequestCallback(request, operation, callback, scope),
-                    method: this.getMethod(request),
-                    disableCaching: false // explicitly set it to false, ServerProxy handles caching
-                });
-                if (me.restAction === 'POST') {
+            modifyRequest: function(request) {
+                if (this.restAction === 'POST') {
                     Ext.apply(request, {
-                        jsonData: Ext.JSON.encode(me.searches)
+                        jsonData: Ext.JSON.encode(this.searches)
                     });
                 }
-                Ext.Ajax.request(request);
+
                 return request;
-            },
-            reader: {
-                type: 'json',
-                root: 'results'
-            },
-            writer: {
-                type: 'json'
             }
         });
     }
