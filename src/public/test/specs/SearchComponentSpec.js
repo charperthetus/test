@@ -5,21 +5,21 @@
         Savanna: false
  */
 Ext.require('Savanna.Config');
-Ext.require("Savanna.search.controller.SearchComponent");
-Ext.require("Savanna.search.model.SearchHistory");
-Ext.require("Savanna.search.model.SearchRequest");
-Ext.require("Savanna.search.model.SearchResult");
-Ext.require("Savanna.search.store.SearchHistory");
-Ext.require("Savanna.search.store.SearchResults");
-Ext.require("Savanna.search.view.SearchAdvancedTextfield");
-Ext.require("Savanna.search.view.SearchBar");
-Ext.require("Savanna.search.view.SearchBarTools");
-Ext.require("Savanna.search.view.SearchBody");
-Ext.require("Savanna.search.view.SearchComponent");
-Ext.require("Savanna.search.view.SearchResults");
-Ext.require("Savanna.search.view.SearchToolbar");
+Ext.require('Savanna.search.controller.SearchComponent');
+Ext.require('Savanna.search.model.SearchHistory');
+Ext.require('Savanna.search.model.SearchRequest');
+Ext.require('Savanna.search.model.SearchResult');
+Ext.require('Savanna.search.store.SearchHistory');
+Ext.require('Savanna.search.store.SearchResults');
+Ext.require('Savanna.search.view.SearchAdvancedTextfield');
+Ext.require('Savanna.search.view.SearchBar');
+Ext.require('Savanna.search.view.SearchBarTools');
+Ext.require('Savanna.search.view.SearchBody');
+Ext.require('Savanna.search.view.SearchComponent');
+Ext.require('Savanna.search.view.SearchResults');
+Ext.require('Savanna.search.view.SearchToolbar');
 
-describe("Search Component", function () {
+describe('Search Component', function () {
 
     var fixtures;
     var SEARCH_RESULTS_URL = '';
@@ -45,7 +45,7 @@ describe("Search Component", function () {
         var component = null;
 
         beforeEach(function () {
-            component = Ext.create("Savanna.search.view.SearchComponent", { renderTo: "test-html" });
+            component = Ext.create('Savanna.search.view.SearchComponent', { renderTo: 'test-html' });
         });
 
         afterEach(function () {
@@ -57,8 +57,8 @@ describe("Search Component", function () {
 
         // toolbar view
         describe('Component Toolbar View', function () {
-            it("search component should have a toolbar instance", function () {
-                expect(component.queryById("searchtoolbar") instanceof Savanna.search.view.SearchToolbar).toBeTruthy();
+            it('search component should have a toolbar instance', function () {
+                expect(component.queryById('searchtoolbar') instanceof Savanna.search.view.SearchToolbar).toBeTruthy();
             });
         });
 
@@ -68,12 +68,12 @@ describe("Search Component", function () {
                 var searchbar = null;
 
                 beforeEach(function () {
-                    searchbar = component.queryById("searchbar");
-                    searchbar.queryById("search_terms").setValue("search bar terms");
-                    searchbar.queryById("all_words").setValue("some text");
-                    searchbar.queryById("exact_phrase").setValue("other text");
-                    searchbar.queryById("any_words").setValue("more and more text");
-                    searchbar.queryById("none_words").setValue("bad terms");
+                    searchbar = component.queryById('searchbar');
+                    searchbar.queryById('search_terms').setValue('search bar terms');
+                    searchbar.queryById('all_words').setValue('some text');
+                    searchbar.queryById('exact_phrase').setValue('other text');
+                    searchbar.queryById('any_words').setValue('more and more text');
+                    searchbar.queryById('none_words').setValue('bad terms');
                 });
 
                 it('should correctly assemble a search string from form fields', function () {
@@ -83,30 +83,30 @@ describe("Search Component", function () {
                     expect(result).toEqual(expected);
                 });
 
-                it("search component should have a searchbar instance", function () {
-                    expect(component.queryById("searchbar") instanceof Savanna.search.view.SearchBar).toBeTruthy();
+                it('search component should have a searchbar instance', function () {
+                    expect(component.queryById('searchbar') instanceof Savanna.search.view.SearchBar).toBeTruthy();
                 });
 
-                it("should call getBooleanValue on each field", function () {
-                    spyOn(searchbar.queryById("all_words"), 'getBooleanValue');
-                    spyOn(searchbar.queryById("exact_phrase"), 'getBooleanValue');
-                    spyOn(searchbar.queryById("any_words"), 'getBooleanValue');
-                    spyOn(searchbar.queryById("none_words"), 'getBooleanValue');
+                it('should call getBooleanValue on each field', function () {
+                    spyOn(searchbar.queryById('all_words'), 'getBooleanValue');
+                    spyOn(searchbar.queryById('exact_phrase'), 'getBooleanValue');
+                    spyOn(searchbar.queryById('any_words'), 'getBooleanValue');
+                    spyOn(searchbar.queryById('none_words'), 'getBooleanValue');
 
                     searchbar.buildSearchString();
 
-                    expect(searchbar.queryById("all_words").getBooleanValue).toHaveBeenCalled();
-                    expect(searchbar.queryById("exact_phrase").getBooleanValue).toHaveBeenCalled();
-                    expect(searchbar.queryById("any_words").getBooleanValue).toHaveBeenCalled();
-                    expect(searchbar.queryById("none_words").getBooleanValue).toHaveBeenCalled();
+                    expect(searchbar.queryById('all_words').getBooleanValue).toHaveBeenCalled();
+                    expect(searchbar.queryById('exact_phrase').getBooleanValue).toHaveBeenCalled();
+                    expect(searchbar.queryById('any_words').getBooleanValue).toHaveBeenCalled();
+                    expect(searchbar.queryById('none_words').getBooleanValue).toHaveBeenCalled();
                 });
             });
         });
 
         // searchbody view
         describe('Component Searchbody View', function () {
-            it("search component should have a searchbody instance", function () {
-                expect(component.queryById("searchbody") instanceof Savanna.search.view.SearchBody).toBeTruthy();
+            it('search component should have a searchbody instance', function () {
+                expect(component.queryById('searchbody') instanceof Savanna.search.view.SearchBody).toBeTruthy();
             });
         });
     });
@@ -117,9 +117,9 @@ describe("Search Component", function () {
         var controller = null;
 
         beforeEach(function () {
-            component = Ext.create("Savanna.search.view.SearchComponent", { renderTo: "test-html" });
-            controller = Ext.create("Savanna.search.controller.SearchComponent");
-            toolbar = component.queryById("searchtoolbar");
+            component = Ext.create('Savanna.search.view.SearchComponent', { renderTo: 'test-html' });
+            controller = Ext.create('Savanna.search.controller.SearchComponent');
+            toolbar = component.queryById('searchtoolbar');
             spyOn(controller, 'onHistoryItemClick');
             spyOn(controller, 'logHistory');
         });
@@ -136,33 +136,33 @@ describe("Search Component", function () {
             component = null;
         });
 
-        it("onHistoryItemClick takes a simple button/event", function () {
-            controller.onHistoryItemClick(Ext.create("Ext.button.Button", {
-                text: "Dogs"
+        it('onHistoryItemClick takes a simple button/event', function () {
+            controller.onHistoryItemClick(Ext.create('Ext.button.Button', {
+                text: 'Dogs'
             }), null);
             expect(controller.onHistoryItemClick).toHaveBeenCalled();
         });
 
-        it("logHistory takes an array of searches and the toolbar view", function () {
+        it('logHistory takes an array of searches and the toolbar view', function () {
             controller.logHistory([
-                {query: "Apples", date: 1375746974564},
-                {query: "Oranges", date: 1375746974565}
+                {query: 'Apples', date: 1375746974564},
+                {query: 'Oranges', date: 1375746974565}
             ], toolbar);
             expect(controller.logHistory).toHaveBeenCalled();
         });
 
-        describe("handleSearchTermKeyUp", function () {
+        describe('handleSearchTermKeyUp', function () {
             beforeEach(function () {
                 spyOn(controller, 'doSearch');
             });
 
-            it("should call do search on keypress 'Enter'", function () {
+            it('should call do search on keypress "Enter"', function () {
                 controller.handleSearchTermKeyUp(null, {keyCode: 13 });
 
                 expect(controller.doSearch).toHaveBeenCalled();
             });
 
-            it("should not do search if not 'Enter'", function () {
+            it('should not do search if not "Enter"', function () {
                 controller.handleSearchTermKeyUp(null, { keyCode: 0 });
 
                 expect(controller.doSearch).not.toHaveBeenCalled();
@@ -173,12 +173,12 @@ describe("Search Component", function () {
             var searchbar = null;
 
             beforeEach(function () {
-                searchbar = Ext.create("Savanna.search.view.SearchBar", { renderTo: "test-html" });
-                searchbar.queryById("search_terms").setValue("search bar terms");
-                searchbar.queryById("all_words").setValue("some text");
-                searchbar.queryById("exact_phrase").setValue("other text");
-                searchbar.queryById("any_words").setValue("more and more text");
-                searchbar.queryById("none_words").setValue("bad terms");
+                searchbar = Ext.create('Savanna.search.view.SearchBar', { renderTo: 'test-html' });
+                searchbar.queryById('search_terms').setValue('search bar terms');
+                searchbar.queryById('all_words').setValue('some text');
+                searchbar.queryById('exact_phrase').setValue('other text');
+                searchbar.queryById('any_words').setValue('more and more text');
+                searchbar.queryById('none_words').setValue('bad terms');
                 searchbar.doLayout();
             });
 
@@ -193,7 +193,7 @@ describe("Search Component", function () {
             it('it hides the menu', function () {
                 controller.hideMenu(searchbar.items.first());
 
-                expect(searchbar.queryById("searchadvanced_menu").isVisible()).toBeFalsy();
+                expect(searchbar.queryById('searchadvanced_menu').isVisible()).toBeFalsy();
             });
 
             it('should align the advanced menu below the simple search textfield', function () {
@@ -207,13 +207,13 @@ describe("Search Component", function () {
                 expect(menu.alignTo).toHaveBeenCalled();
             });
 
-            it("should build the search string", function () {
-                spyOn(component.queryById("searchbar"), 'buildSearchString').andCallThrough();
-                controller.doSearch(component.queryById("searchbar").items.first(), {});
-                expect(component.queryById("searchbar").buildSearchString).toHaveBeenCalled();
+            it('should build the search string', function () {
+                spyOn(component.queryById('searchbar'), 'buildSearchString').andCallThrough();
+                controller.doSearch(component.queryById('searchbar').items.first(), {});
+                expect(component.queryById('searchbar').buildSearchString).toHaveBeenCalled();
             });
 
-            it("should create the store", function () {
+            it('should create the store', function () {
                 controller.doSearch(searchbar.items.first(), {});
                 expect(searchbar.store instanceof Savanna.search.store.SearchResults).toBeTruthy();
             });
@@ -233,47 +233,59 @@ describe("Search Component", function () {
                 field = null;
             });
 
-            it( "getBooleanValue returns expected string for booleanType 'all'", function() {
-                field = Ext.create("Savanna.search.view.SearchAdvancedTextfield", {
-                    configs:{"join":"", booleanType:"all"},
-                    renderTo:"test-html"
+            it('getBooleanValue returns expected string for booleanType "all"', function() {
+                field = Ext.create('Savanna.search.view.SearchAdvancedTextfield', {
+                    configs: {join: '', booleanType: 'all'},
+                    renderTo: 'test-html'
                 });
-                field.setValue("some   text");
-                var expected = "some AND text";
+
+                field.setValue('some   text');
+
+                var expected = 'some AND text';
                 var result = field.getBooleanValue();
+
                 expect(result).toEqual(expected);
             });
 
-            it( "getBooleanValue returns expected string for booleanType 'exact'", function() {
-                field = Ext.create("Savanna.search.view.SearchAdvancedTextfield", {
-                    configs:{"join":"", booleanType:"exact"},
-                    renderTo:"test-html"
+            it('getBooleanValue returns expected string for booleanType "exact"', function() {
+                field = Ext.create('Savanna.search.view.SearchAdvancedTextfield', {
+                    configs: {join: '', booleanType: 'exact'},
+                    renderTo: 'test-html'
                 });
-                field.setValue("some   text");
+
+                field.setValue('some   text');
+
                 var expected = '"some   text"';
                 var result = field.getBooleanValue();
+
                 expect(result).toEqual(expected);
             });
 
-            it( "getBooleanValue returns expected string for booleanType 'any'", function() {
-                field = Ext.create("Savanna.search.view.SearchAdvancedTextfield", {
-                    configs:{"join":"", booleanType:"any"},
-                    renderTo:"test-html"
+            it('getBooleanValue returns expected string for booleanType "any"', function() {
+                field = Ext.create('Savanna.search.view.SearchAdvancedTextfield', {
+                    configs: {join:'', booleanType: 'any'},
+                    renderTo: 'test-html'
                 });
-                field.setValue("some   text");
-                var expected = "some OR text";
+
+                field.setValue('some   text');
+
+                var expected = 'some OR text';
                 var result = field.getBooleanValue();
+
                 expect(result).toEqual(expected);
             });
 
-            it( "getBooleanValue returns expected string for booleanType 'none'", function() {
-                field = Ext.create("Savanna.search.view.SearchAdvancedTextfield", {
-                    configs:{"join":"", booleanType:"none"},
-                    renderTo:"test-html"
+            it('getBooleanValue returns expected string for booleanType "none"', function() {
+                field = Ext.create('Savanna.search.view.SearchAdvancedTextfield', {
+                    configs: {join: '', booleanType: 'none'},
+                    renderTo: 'test-html'
                 });
-                field.setValue("some   text");
-                var expected = "some NOT text";
+
+                field.setValue('some   text');
+
+                var expected = 'some NOT text';
                 var result = field.getBooleanValue();
+
                 expect(result).toEqual(expected);
             });
         });
@@ -281,7 +293,7 @@ describe("Search Component", function () {
         describe('onCallback', function () {
 
             beforeEach(function () {
-                spyOn(controller, "showResultsPage");
+                spyOn(controller, 'showResultsPage');
                 fixtures = Ext.clone(ThetusTestHelpers.Fixtures.SearchResults);
             });
 
@@ -289,7 +301,7 @@ describe("Search Component", function () {
                 fixtures = null;
             });
 
-            it(" calls showResultsPage", function () {
+            it('calls showResultsPage', function () {
                 controller.onCallback(fixtures.searchResults, {}, true);
                 expect(controller.showResultsPage).toHaveBeenCalled();
             });
@@ -298,27 +310,28 @@ describe("Search Component", function () {
 
         describe('should call logHistory', function () {
 
-            it("logHistory called", function () {
-                controller.doSearch(component.queryById("searchbar").items.first(), {});
+            it('logHistory called', function () {
+                controller.doSearch(component.queryById('searchbar').items.first(), {});
                 expect(controller.logHistory).toHaveBeenCalled();
             });
         });
 
         describe('Component Toolbar Controller', function () {
 
-            describe("onBodyToolbarClick", function () {
-                it("should set currentPanel to 'results' when 'Results' is clicked", function () {
+            describe('onBodyToolbarClick', function () {
+                it('should set currentPanel to "results" when "Results" is clicked', function () {
                     var resbutton = controller.getResultsButton();
-                    component.queryById("searchbody").currentPanel = "searchoptions";
-                    spyOn(controller, "onBodyToolbarClick");
-                    resbutton.fireEvent("click", resbutton);
+
+                    component.queryById('searchbody').currentPanel = 'searchoptions';
+                    spyOn(controller, 'onBodyToolbarClick');
+                    resbutton.fireEvent('click', resbutton);
                 });
 
-                it("should set currentPanel to 'searchoptions' when 'Search Options' is clicked", function () {
+                it('should set currentPanel to "searchoptions" when "Search Options" is clicked', function () {
                     var optsbutton = controller.getOptionsButton();
-                    component.queryById("searchbody").currentPanel = "results";
-                    spyOn(controller, "onBodyToolbarClick");
-                    optsbutton.fireEvent("click", optsbutton);
+                    component.queryById('searchbody').currentPanel = 'results';
+                    spyOn(controller, 'onBodyToolbarClick');
+                    optsbutton.fireEvent('click', optsbutton);
                 });
             });
         });
@@ -350,9 +363,9 @@ describe("Search Component", function () {
             fixtures = Ext.clone(ThetusTestHelpers.Fixtures.SearchResults);
 
             // NOTE: this has to happen BEFORE your create a FakeServer,
-            searchObj = Ext.create("Savanna.search.model.SearchRequest", {
-                "textInputString": "dogs",
-                "displayLabel": "dogs"
+            searchObj = Ext.create('Savanna.search.model.SearchRequest', {
+                textInputString: 'dogs',
+                displayLabel: 'dogs'
             });
             store = setupNoCacheNoPagingStore('Savanna.search.store.SearchResults');
             server = new ThetusTestHelpers.FakeServer(sinon);
@@ -400,8 +413,8 @@ describe("Search Component", function () {
                 store = setupNoCacheNoPagingStore('Savanna.search.store.SearchHistory');
                 store.searches = fixtures.historyResults;
                 server = new ThetusTestHelpers.FakeServer(sinon);
-                mdl = Ext.create("Savanna.search.model.SearchHistory", {
-                    query: "cherries",
+                mdl = Ext.create('Savanna.search.model.SearchHistory', {
+                    query: 'cherries',
                     date: 1375825806864
                 });
             });
@@ -412,8 +425,27 @@ describe("Search Component", function () {
             });
 
             it('onHistory adds passed history models', function () {
-                var expected = [{"query": "apples","date": 1375825806861},{"query": "oranges","date": 1375825806862},{"query": "bananas","date": 1375825806863},{query:"cherries", date:1375825806864}];
+                var expected = [
+                    {
+                        query: 'apples',
+                        date: 1375825806861
+                    },
+                    {
+                        query: 'oranges',
+                        date: 1375825806862
+                    },
+                    {
+                        query: 'bananas',
+                        date: 1375825806863
+                    },
+                    {
+                        query: 'cherries',
+                        date: 1375825806864
+                    }
+                ];
+
                 store.searches.push(mdl.data);
+
                 expect(store.searches).toEqual(expected);
             });
 
