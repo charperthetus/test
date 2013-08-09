@@ -24,7 +24,6 @@ Ext.define('Savanna.search.view.SearchBarTools', {
             glyph: 61808
         },
         {
-
             text: 'Advanced',
             itemId: 'searchadvanced_btn',
             menu: {
@@ -55,7 +54,7 @@ Ext.define('Savanna.search.view.SearchBarTools', {
                                 name: 'all_words',
                                 itemId: 'all_words',
                                 tabIndex: 1,
-                                configs:{'join':'', booleanType:'all'}
+                                configs:{ join: '', booleanType: 'all' }
                             },
                             {
                                 xtype: 'searchadvanced_textfield',
@@ -63,7 +62,7 @@ Ext.define('Savanna.search.view.SearchBarTools', {
                                 name: 'exact_phrase',
                                 itemId: 'exact_phrase',
                                 tabIndex: 2,
-                                configs:{'join':' AND ', booleanType:'exact'}
+                                configs:{ join: ' AND ', booleanType: 'exact' }
                             },
                             {
                                 xtype: 'searchadvanced_textfield',
@@ -71,7 +70,7 @@ Ext.define('Savanna.search.view.SearchBarTools', {
                                 name: 'any_words',
                                 itemId: 'any_words',
                                 tabIndex: 3,
-                                configs:{'join':' AND ', booleanType:'any'}
+                                configs:{ join: ' AND ', booleanType: 'any' }
                             },
                             {
                                 xtype: 'searchadvanced_textfield',
@@ -79,7 +78,7 @@ Ext.define('Savanna.search.view.SearchBarTools', {
                                 name: 'none_words',
                                 itemId: 'none_words',
                                 tabIndex: 4,
-                                configs:{'join':' NOT ', booleanType:'none'}
+                                configs:{ join: ' NOT ', booleanType: 'none' }
                             },
                             {
                                 xtype: 'panel',
