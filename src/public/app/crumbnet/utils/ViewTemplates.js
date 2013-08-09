@@ -36,8 +36,6 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
         var nodeTemplate = gmake(go.Node, go.Panel.Auto,
             {
                 selectionAdorned: false,
-                fromSpot: go.Spot.None,
-                toSpot: go.Spot.AllSides,
                 toLinkable: true,
                 mouseEnter: this.nodeMouseEnter,
                 mouseLeave: this.nodeMouseLeave
@@ -187,8 +185,7 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
                     stroke: null })));
 
         linkTemplateMap.add('curvy', gmake(go.Link,
-            { curve: go.Link.Bezier,
-                fromShortLength: -2, toShortLength: -2 },
+            { routing: go.Link.Normal, fromEndSegmentLength: 0, toEndSegmentLength: 0 },
             gmake(go.Shape,
                 { strokeWidth: 3, stroke: 'skyblue' } ),
             gmake(go.TextBlock,  // the "from" label
@@ -198,13 +195,11 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
                     segmentOffset: new go.Point(NaN, NaN) },
                 new go.Binding('text', 'text'))));
 
-        var spreadLinks = false;
-
-        linkTemplateMap.add('tapered', gmake(TaperedLink,  // subclass of Link, defined below
+        linkTemplateMap.add('tapered', gmake(TaperedLink,
             go.Link.Bezier,
-            (spreadLinks ? go.Link.None : go.Link.Orthogonal),
-            { fromEndSegmentLength: (spreadLinks ? 50 : 1),
-                toEndSegmentLength: (spreadLinks ? 50 : 1),
+            go.Link.Orthogonal,
+            { fromEndSegmentLength: 1,
+                toEndSegmentLength: 1,
                 selectionObjectName: "Path",
                 relinkableFrom: true,
                 relinkableTo: true },
@@ -242,7 +237,7 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
 
         //TODO - Need to figure out which properties should be copied into the new node by default (ie category, percent)
         // create a new "State" data object, positioned off to the right of the adorned Node
-        var toData = { text: 'new', category: fromData.category, key: Ext.id(), percent: 0 };
+        var toData = { text: 'new', category: fromData.category, key: Ext.id(), percent: 10 };
         var fromLocation = fromNode.location;
         var siblingNodes = fromNode.findNodesOutOf();
         var x = 0;

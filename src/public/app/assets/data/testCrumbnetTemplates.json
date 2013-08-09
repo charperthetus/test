@@ -9,19 +9,19 @@
                     "label": "Concept label",
                     "category": "Concept",
                     "text": "Concept",
-                    "percent": 0
+                    "percent": 10
                 },
                 {
                     "label": "Hypothesis label",
                     "category": "Hypothesis",
                     "text": "Hypothesis",
-                    "percent": 0
+                    "percent": 10
                 },
                 {
                     "label": "Question label",
                     "category": "Question",
                     "text": "Question",
-                    "percent": 0
+                    "percent": 10
                 }
             ]
         },
@@ -33,25 +33,25 @@
                     "label": "Problem label",
                     "category": "Problem",
                     "text": "Problem",
-                    "percent": 0
+                    "percent": 10
                 },
                 {
                     "label": "Conclusion label",
                     "category": "Conclusion",
                     "text": "Conclusion",
-                    "percent": 0
+                    "percent": 10
                 },
                 {
                     "label": "Assumption label",
                     "category": "Assumption",
                     "text": "Assumption",
-                    "percent": 0
+                    "percent": 10
                 },
                 {
                     "label": "Fact label",
                     "category": "Fact",
                     "text": "Fact",
-                    "percent": 0
+                    "percent": 10
                 }
             ]
         }
