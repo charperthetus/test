@@ -1,3 +1,9 @@
+/* global
+        Ext: false, ExtSpec: false,
+        describe: false, beforeEach: false, afterEach: false, it: false, expect: false, spyOn: false,
+        createTestDom: false, cleanTestDom: false, ThetusTestHelpers: false, setupNoCacheNoPagingStore: false,
+        Savanna: false
+ */
 Ext.require('Savanna.Config');
 Ext.require("Savanna.search.controller.SearchComponent");
 Ext.require("Savanna.search.model.SearchHistory");
@@ -18,7 +24,6 @@ describe("Search Component", function () {
     var fixtures;
     var SEARCH_RESULTS_URL = '';
     var HISTORY_RESULTS_URL = '';
-    var TEST_SESSION_ID = 'TEST_SESSION_ID';
 
     beforeEach(function () {
         this.addMatchers(ExtSpec.Jasmine.Matchers);
@@ -44,14 +49,16 @@ describe("Search Component", function () {
         });
 
         afterEach(function () {
-            if (component) component.destroy();
+            if (component) {
+                component.destroy();
+            }
             component = null;
         });
 
         // toolbar view
         describe('Component Toolbar View', function () {
             it("search component should have a toolbar instance", function () {
-                expect(component.queryById("searchtoolbar") instanceof Savanna.search.view.SearchToolbar).toBeTruthy()
+                expect(component.queryById("searchtoolbar") instanceof Savanna.search.view.SearchToolbar).toBeTruthy();
             });
         });
 
@@ -73,11 +80,11 @@ describe("Search Component", function () {
                     var result = searchbar.buildSearchString();
                     var expected = 'search bar terms AND some AND text AND "other text" AND more OR and OR more OR text NOT bad NOT terms';
 
-                    expect(result).toEqual(expected)
+                    expect(result).toEqual(expected);
                 });
 
                 it("search component should have a searchbar instance", function () {
-                    expect(component.queryById("searchbar") instanceof Savanna.search.view.SearchBar).toBeTruthy()
+                    expect(component.queryById("searchbar") instanceof Savanna.search.view.SearchBar).toBeTruthy();
                 });
 
                 it("should call getBooleanValue on each field", function () {
@@ -99,7 +106,7 @@ describe("Search Component", function () {
         // searchbody view
         describe('Component Searchbody View', function () {
             it("search component should have a searchbody instance", function () {
-                expect(component.queryById("searchbody") instanceof Savanna.search.view.SearchBody).toBeTruthy()
+                expect(component.queryById("searchbody") instanceof Savanna.search.view.SearchBody).toBeTruthy();
             });
         });
     });
@@ -117,10 +124,14 @@ describe("Search Component", function () {
             spyOn(controller, 'logHistory');
         });
         afterEach(function () {
-            if (controller) controller.destroy();
+            if (controller) {
+                controller.destroy();
+            }
             controller = null;
 
-            if (component) component.destroy();
+            if (component) {
+                component.destroy();
+            }
             component = null;
         });
 
@@ -153,7 +164,7 @@ describe("Search Component", function () {
                 controller.handleSearchTermKeyUp(null, { keyCode: 0 });
 
                 expect(controller.doSearch).not.toHaveBeenCalled();
-            })
+            });
         });
 
         describe('searchbar', function () {
@@ -170,7 +181,9 @@ describe("Search Component", function () {
             });
 
             afterEach(function () {
-                if (searchbar) searchbar.destroy();
+                if (searchbar) {
+                    searchbar.destroy();
+                }
 
                 searchbar = null;
             });
@@ -178,7 +191,7 @@ describe("Search Component", function () {
             it('it hides the menu', function () {
                 controller.hideMenu(searchbar.items.first());
 
-                expect(searchbar.queryById("searchadvanced_menu").isVisible()).toBeFalsy()
+                expect(searchbar.queryById("searchadvanced_menu").isVisible()).toBeFalsy();
             });
 
             it('should align the advanced menu below the simple search textfield', function () {
@@ -189,7 +202,7 @@ describe("Search Component", function () {
 
                 controller.alignMenuWithTextfield(button);
 
-                expect(menu.alignTo).toHaveBeenCalled()
+                expect(menu.alignTo).toHaveBeenCalled();
             });
 
             it("should build the search string", function () {
@@ -210,7 +223,9 @@ describe("Search Component", function () {
 
             });
             afterEach(function () {
-                if (field) field.destroy();
+                if (field) {
+                    field.destroy();
+                }
                 field = null;
             });
             it( "getBooleanValue returns expected string for booleanType 'all'", function() {
@@ -256,7 +271,6 @@ describe("Search Component", function () {
         });
 
         describe('onCallback', function () {
-            var searchbar = null;
 
             beforeEach(function () {
                 spyOn(controller, "showResultsPage");
@@ -288,14 +302,14 @@ describe("Search Component", function () {
                     var resbutton = controller.getResultsButton();
                     component.queryById("searchbody").currentPanel = "searchoptions";
                     spyOn(controller, "onBodyToolbarClick");
-                    resbutton.fireEvent("click", resbutton)
+                    resbutton.fireEvent("click", resbutton);
                 });
 
                 it("should set currentPanel to 'searchoptions' when 'Search Options' is clicked", function () {
                     var optsbutton = controller.getOptionsButton();
                     component.queryById("searchbody").currentPanel = "results";
                     spyOn(controller, "onBodyToolbarClick");
-                    optsbutton.fireEvent("click", optsbutton)
+                    optsbutton.fireEvent("click", optsbutton);
                 });
             });
         });
