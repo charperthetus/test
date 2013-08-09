@@ -1,10 +1,4 @@
-/**
- * Created with IntelliJ IDEA.
- * User: thille
- * Date: 8/8/13
- * Time: 8:26 AM
- */
-/* global Ext: false */
+/* global Ext: false, Savanna: false */
 /**
  * Savanna.proxy.Cors
  *
@@ -50,6 +44,8 @@ Ext.define('Savanna.proxy.Cors', {
         type: 'json'
     },
 
+    addSessionId: true,
+
     doRequest: function (operation, callback, scope) {
         var writer = this.getWriter(),
             request = this.buildRequest(operation, callback, scope),
@@ -68,7 +64,6 @@ Ext.define('Savanna.proxy.Cors', {
             method: this.getMethod(request)
         });
 
-        console.log('request', request);
         if (this.modifyRequest) {
             request = this.modifyRequest(request);
         }
@@ -86,6 +81,16 @@ Ext.define('Savanna.proxy.Cors', {
         Ext.Ajax.disableCaching = origAjaxDisableCachingFlag;
 
         return request;
+    },
+
+    buildUrl: function(request) {
+        var url = this.getUrl(request);
+
+        if (this.addSessionId) {
+            url += ';jsessionid=' + Savanna.jsessionid;
+        }
+
+        return url;
     },
 
     // TODO: this is a custom function to be defined by the code using this proxy
