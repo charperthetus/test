@@ -439,10 +439,10 @@ describe('Search Component', function () {
             fixtures = null;
         });
 
-        describe('retrieving history data', function() {
+        describe('retrieving results data', function() {
 
             beforeEach(function() {
-                server.respondWith('POST', store.getProxy().url, fixtures.searchResults);
+                server.respondWith('POST', store.getProxy().url, fixtures.searchResults.results);
                 store.load();
                 server.respond({
                     errorOnInvalidRequest: true
@@ -450,7 +450,7 @@ describe('Search Component', function () {
             });
 
             it('should get same number of records as in our fixture', function() {
-                expect(store.getCount()).toBe(fixtures.searchResults.length);
+                expect(store.getCount()).toBe(fixtures.searchResults.results.length);
             });
         });
     });
