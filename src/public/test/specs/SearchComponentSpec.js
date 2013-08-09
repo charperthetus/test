@@ -41,7 +41,7 @@ describe('Search Component', function () {
         cleanTestDom();
     });
 
-    describe('Component View', function () {
+    describe('View', function () {
         var component = null;
 
         beforeEach(function () {
@@ -111,7 +111,7 @@ describe('Search Component', function () {
         });
     });
 
-    describe('Component Controller', function () {
+    describe('Controller', function () {
         var component = null;
         var toolbar = null;
         var controller = null;
@@ -316,7 +316,7 @@ describe('Search Component', function () {
             });
         });
 
-        describe('Component Toolbar Controller', function () {
+        describe('Toolbar', function () {
 
             describe('onBodyToolbarClick', function () {
                 it('should set currentPanel to "results" when "Results" is clicked', function () {
