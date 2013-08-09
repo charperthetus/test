@@ -18,12 +18,6 @@ Ext.define('Savanna.search.view.SearchComponent', {
         'Savanna.search.controller.SearchDals'
     ],
 
-    mixins: {
-        storeable: 'Savanna.mixin.Storeable'
-    },
-
-    store:'Savanna.search.store.SearchHistory',
-
     layout: 'border',
     flex:4,
     title: 'Search',
@@ -54,25 +48,5 @@ Ext.define('Savanna.search.view.SearchComponent', {
         this.callParent(arguments);
 
         Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
-
-        this.initStore();
-    },
-
-    onStoreLoad: function() {
-        // do any magic you need to your container when the store is reloaded
-        this.updateHistory(Ext.data.StoreManager.lookup('searchHistory').searches);
-    },
-
-    updateHistory: function (searches) {
-        var historyMenu = this.down('#historymenu');
-
-        historyMenu.removeAll();
-
-        //TODO: look for dupes and do not include them - or, remove at store level
-        Ext.each(searches, function (search) {
-            historyMenu.add({
-                text: search.query
-            });
-        });
     }
 });

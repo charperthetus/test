@@ -7,14 +7,16 @@ Ext.define('Savanna.search.view.SearchBar', {
         'Ext.ux.layout.Center',
         'Ext.form.field.Text',
         'Savanna.controller.Factory',
-        'Savanna.search.view.SearchForm'
+        'Savanna.search.view.SearchForm',
+        'Savanna.mixin.Storeable',
+        'Savanna.search.store.SearchResults'
     ],
 
     mixins: {
         storeable: 'Savanna.mixin.Storeable'
     },
 
-    store:'Savanna.search.store.SearchResults',
+    store: 'Savanna.search.store.SearchResults',
 
     border: false,
     frame: false,
@@ -50,8 +52,7 @@ Ext.define('Savanna.search.view.SearchBar', {
 
     initComponent: function () {
         this.callParent(arguments);
-
-        this.mixins.storeable.call.initStore(this);
+        this.mixins.storeable.initStore.call(this);
 
         Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
     },
@@ -67,7 +68,7 @@ Ext.define('Savanna.search.view.SearchBar', {
             form = this.queryById('search_form'),
             formField = form.queryById('form_container');
 
-        formField.items.each(function (field) {
+        Ext.Array.each(formField.query('searchadvanced_textfield'), function (field) {
             var value = field.getValue().trim();
 
             if (field.xtype === 'searchadvanced_textfield' && value !== '' && value !== undefined) {
