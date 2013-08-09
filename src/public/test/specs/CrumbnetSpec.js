@@ -5,7 +5,7 @@ Ext.require('Savanna.crumbnet.controller.CrumbnetController');
 Ext.require('Savanna.crumbnet.utils.ViewTemplates');
 
 describe('Savanna.crumbnet', function() {
-    var CRUMBNET_PALETTE_TEMPLATES_URL = 'app/assets/data/testCrumbnetTemplates.json';
+    var CRUMBNET_PALETTE_TEMPLATES_URL = 'resources/data/testCrumbnetTemplates.json';
     var fixtures = {};
     var server = null;
 
