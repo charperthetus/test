@@ -1,6 +1,6 @@
 /* global
         Ext: false, ExtSpec: false,
-        describe: false, beforeEach: false, afterEach: false, it: false, expect: false, spyOn: false,
+        describe: false, beforeEach: false, afterEach: false, it: false, expect: false, spyOn: false, sinon: false,
         createTestDom: false, cleanTestDom: false, ThetusTestHelpers: false, setupNoCacheNoPagingStore: false,
         Savanna: false
  */
@@ -123,6 +123,7 @@ describe("Search Component", function () {
             spyOn(controller, 'onHistoryItemClick');
             spyOn(controller, 'logHistory');
         });
+
         afterEach(function () {
             if (controller) {
                 controller.destroy();
@@ -141,6 +142,7 @@ describe("Search Component", function () {
             }), null);
             expect(controller.onHistoryItemClick).toHaveBeenCalled();
         });
+
         it("logHistory takes an array of searches and the toolbar view", function () {
             controller.logHistory([
                 {query: "Apples", date: 1375746974564},
@@ -219,15 +221,18 @@ describe("Search Component", function () {
 
         describe('SearchAdvancedTextfield', function()  {
             var field = null;
+
             beforeEach(function () {
 
             });
+
             afterEach(function () {
                 if (field) {
                     field.destroy();
                 }
                 field = null;
             });
+
             it( "getBooleanValue returns expected string for booleanType 'all'", function() {
                 field = Ext.create("Savanna.search.view.SearchAdvancedTextfield", {
                     configs:{"join":"", booleanType:"all"},
@@ -238,6 +243,7 @@ describe("Search Component", function () {
                 var result = field.getBooleanValue();
                 expect(result).toEqual(expected);
             });
+
             it( "getBooleanValue returns expected string for booleanType 'exact'", function() {
                 field = Ext.create("Savanna.search.view.SearchAdvancedTextfield", {
                     configs:{"join":"", booleanType:"exact"},
@@ -248,6 +254,7 @@ describe("Search Component", function () {
                 var result = field.getBooleanValue();
                 expect(result).toEqual(expected);
             });
+
             it( "getBooleanValue returns expected string for booleanType 'any'", function() {
                 field = Ext.create("Savanna.search.view.SearchAdvancedTextfield", {
                     configs:{"join":"", booleanType:"any"},
@@ -258,6 +265,7 @@ describe("Search Component", function () {
                 var result = field.getBooleanValue();
                 expect(result).toEqual(expected);
             });
+
             it( "getBooleanValue returns expected string for booleanType 'none'", function() {
                 field = Ext.create("Savanna.search.view.SearchAdvancedTextfield", {
                     configs:{"join":"", booleanType:"none"},
@@ -276,6 +284,7 @@ describe("Search Component", function () {
                 spyOn(controller, "showResultsPage");
                 fixtures = Ext.clone(ThetusTestHelpers.Fixtures.SearchResults);
             });
+
             afterEach(function () {
                 fixtures = null;
             });
@@ -319,9 +328,11 @@ describe("Search Component", function () {
         beforeEach(function () {
             fixtures = Ext.clone(ThetusTestHelpers.Fixtures.SearchResults);
         });
+
         afterEach(function () {
             fixtures = null;
         });
+
         describe('constructor', function () {
             it('should be able to create a model with canonical data', function () {
                 var result = Ext.create('Savanna.search.model.SearchResult', fixtures.searchResults);
@@ -331,7 +342,6 @@ describe("Search Component", function () {
     });
 
     describe('SearchResults Store', function () {
-
         var server = null,
             store = null,
             searchObj = null;
@@ -347,11 +357,13 @@ describe("Search Component", function () {
             store = setupNoCacheNoPagingStore('Savanna.search.store.SearchResults');
             server = new ThetusTestHelpers.FakeServer(sinon);
         });
+
         afterEach(function () {
             fixtures = null;
             store = null;
             searchObj = null;
         });
+
         describe('default data loading', function () {
 
             it('should load data', function () {
@@ -362,7 +374,8 @@ describe("Search Component", function () {
                 var me = this;
                 me.onCallback = function(success)  {
                     expect(success).toBeTruthy();
-                }
+                };
+
                 store.load({
                     callback: function(records, operation, success) {
                         me.onCallback(success);
@@ -377,12 +390,9 @@ describe("Search Component", function () {
     });
 
     describe('SearchHistory Store', function () {
-
         var server = null,
             store = null,
-            historyObj = null,
             mdl = null;
-
 
         describe('posting a history event', function () {
             beforeEach(function () {
@@ -395,25 +405,30 @@ describe("Search Component", function () {
                     date: 1375825806864
                 });
             });
+
             afterEach(function () {
                 store = null;
                 mdl = null;
             });
+
             it('onHistory adds passed history models', function () {
-                var expected = [{"query": "apples","date": 1375825806861},{"query": "oranges","date": 1375825806862},{"query": "bananas","date": 1375825806863},{query:"cherries", date:1375825806864}]
+                var expected = [{"query": "apples","date": 1375825806861},{"query": "oranges","date": 1375825806862},{"query": "bananas","date": 1375825806863},{query:"cherries", date:1375825806864}];
                 store.searches.push(mdl.data);
                 expect(store.searches).toEqual(expected);
             });
+
             it('onHistory posts data', function () {
-                var me = this;
-                me.onCallback = function(success)  {
+                this.onCallback = function(success)  {
                     expect(success).toBeTruthy();
-                }
+                };
+
                 server.respondWith('POST', HISTORY_RESULTS_URL, fixtures.historyResults);
+
                 store.searches.push(mdl.data);
                 store.load({
-                    callback:me.onCallback
+                    callback: this.onCallback
                 });
+
                 server.respond({
                     errorOnInvalidRequest: true
                 });
