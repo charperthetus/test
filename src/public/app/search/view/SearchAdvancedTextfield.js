@@ -17,18 +17,20 @@ Ext.define("Savanna.search.view.SearchAdvancedTextfield", {
     tabIndex: 1,
 
     getBooleanValue: function () {
+        var str = this.getValue();
+        str.trim();
         switch(this.configs.booleanType)    {
             case "all":
-                return this.getValue().replace(/\s+/g, ' AND ');
+                return str.replace(/\s+/g, ' AND ');
             break;
             case "exact":
-                return '"' + this.getValue() + '"';
+                return '"' + str + '"';
             break;
             case "any":
-                return this.getValue().replace(/\s+/g, ' OR ');
+                return str.replace(/\s+/g, ' OR ');
             break;
             case "none":
-                return this.getValue().replace(/\s+/g, ' NOT ');
+                return str.replace(/\s+/g, ' NOT ');
             break;
         }
     }

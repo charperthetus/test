@@ -14,10 +14,10 @@ Ext.application({
 // HELPER METHOD TO keep the DOM node for our test HTML empty...
 /* jshint unused: false */
 function cleanTestDom() {
-	var testDom = Ext.get('test-html'),
+    var testDom = Ext.get('test-html'),
         extJsTooltips = Ext.get('ext-quicktips-tip');
 
-	if (testDom && testDom.dom && testDom.dom.children ) {
+    if (testDom && testDom.dom && testDom.dom.children ) {
         testDom.dom.innerHTML = '';
     }
 
@@ -39,4 +39,17 @@ function createTestDom() {
         }
     }
 }
-/* jshint unused: true */
+
+function setupNoCacheNoPagingStore(storeClass, options) {
+    var storeOptions = Ext.merge({ autoLoad: false }, options);
+    var store = Ext.create(storeClass, storeOptions);
+
+    // NOTE: we have to disable caching or the URL gets a cache-busting query parameter which breaks the fake server
+    var proxy = store.getProxy();
+    proxy.noCache = false;
+    proxy.startParam = undefined;
+    proxy.limitParam = undefined;
+    proxy.pageParam = undefined;
+
+    return store;
+}

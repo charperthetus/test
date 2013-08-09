@@ -58,5 +58,19 @@ describe('Savanna.proxy.Cors', function() {
                 }
             }
         });
+
+        it('should add session id to url by default', function() {
+            spyOn(proxy, 'getUrl').andReturn('TEST_URL');
+
+            expect(proxy.buildUrl()).toBe('TEST_URL;jsessionid=undefined');
+        });
+
+        it('should NOT add session id to url if "addSessionId" is set to false', function() {
+            proxy.addSessionId = false;
+
+            spyOn(proxy, 'getUrl').andReturn('TEST_URL');
+
+            expect(proxy.buildUrl()).toBe('TEST_URL');
+        });
     });
 });

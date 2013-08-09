@@ -1,6 +1,4 @@
-/**
- * TODO: Document what events we may emit...
- */
+/* global Ext: false */
 Ext.define('Savanna.search.controller.SearchBody', {
     extend: 'Ext.app.Controller',
 
@@ -19,39 +17,20 @@ Ext.define('Savanna.search.controller.SearchBody', {
         'Savanna.search.view.SearchBody'
     ],
 
-    currentPanel: 'searchoptions',
-
-    init: function (app) {
+    init: function () {
         var me = this;
         /*
          These listeners toggle visibility between search options and search results
          */
         me.control({
-            'search_searchbody > #searchbodytoolbar #optionsbutton': {
-                click: function (button, event) {
-                    if (me.currentPanel != "searchoptions") {
-                        button.up("search_searchbody").queryById("mainsearchoptions").show();
-                        button.up("search_searchbody").queryById("mainresults").hide();
-                        me.currentPanel = "searchoptions";
-                    }
-                }
-            },
-            'search_searchbody > #searchbodytoolbar #resultsbutton': {
-                click: function (button, event) {
-                    if (me.currentPanel != "results") {
-                        button.up("search_searchbody").queryById("mainsearchoptions").hide();
-                        button.up("search_searchbody").queryById("mainresults").show();
-                        me.currentPanel = "results";
-                    }
-                }
-            },
             'search_searchbody > #mainsearchoptions #mainsearchtabpanel #searchMap #leafletMap': {
-                'draw:created': function (layerType){
+                'draw:created': function (layerType) {
+                    /* global console: false */
                     console.log('layerType',layerType);
                 }
             },
             'search_searchbody > #mainsearchoptions #mainsearchtabpanel #searchMap #searchLocationDockedItems #clearLocationSearch':{
-                click: function(button, event) {
+                click: function(button) {
                     button.up('search_searchmap').queryById('leafletMap').fireEvent('locationSearch:clear');
                 }
             }
