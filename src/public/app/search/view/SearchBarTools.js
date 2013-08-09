@@ -1,4 +1,3 @@
-
 Ext.define("Savanna.search.view.SearchBarTools", {
 
     extend: 'Ext.toolbar.Toolbar',
@@ -39,7 +38,7 @@ Ext.define("Savanna.search.view.SearchBarTools", {
                         xtype: "button",
                         text: "Close",
                         itemId: 'close_panel',
-                        float: 'right'
+                        'float': 'right'
                     },
                     {
                         xtype: "box",

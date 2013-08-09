@@ -33,7 +33,28 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
 
     init: function (app) {
         this.control({
-             "searchcomponent > "
+            "search_resultscomponent > #resultssources": {
+                render: function (elem, evt) {
+
+                }
+            },
+            "search_resultscomponent > #resultspanel": {
+                render: function (elem, evt) {
+
+                }
+            },
+            "search_resultscomponent > #resultspanel #resultspaneltoolbar": {
+                render: function (elem, evt) {
+
+                }
+            },
+            "search_resultscomponent > #resultspanel #resultspanelgrid": {
+                render: this.onPanelGridRender
+            }
         });
+    },
+
+    onPanelGridRender: function (elem, evt) {
+        console.log(elem.store)
     }
 });
