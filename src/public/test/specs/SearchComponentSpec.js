@@ -27,6 +27,7 @@ describe('Search Component', function () {
 
     beforeEach(function () {
         this.addMatchers(ExtSpec.Jasmine.Matchers);
+
         //SEARCH_RESULTS_URL = SEARCH_RESULTS_URL || (Savanna.Config.savannaUrlRoot + "rest/search;jsessionid=" + TEST_SESSION_ID);
         SEARCH_RESULTS_URL = SEARCH_RESULTS_URL || 'app/assets/data/testSearchResults.json';
 
@@ -38,6 +39,7 @@ describe('Search Component', function () {
 
     afterEach(function () {
         fixtures = null;
+
         cleanTestDom();
     });
 
@@ -51,24 +53,29 @@ describe('Search Component', function () {
         afterEach(function () {
             if (component) {
                 component.destroy();
+                component = null;
             }
-            component = null;
         });
 
-        // toolbar view
-        describe('Component Toolbar View', function () {
-            it('search component should have a toolbar instance', function () {
-                expect(component.queryById('searchtoolbar') instanceof Savanna.search.view.SearchToolbar).toBeTruthy();
-            });
+        it('should have a toolbar instance', function () {
+            expect(component.queryById('searchtoolbar') instanceof Savanna.search.view.SearchToolbar).toBeTruthy();
         });
 
-        // searchbar view
-        describe('Component Searchbar View', function () {
-            describe('buildSearchString', function () {
+        it('should have a searchbar instance', function () {
+            expect(component.queryById('searchbar') instanceof Savanna.search.view.SearchBar).toBeTruthy();
+        });
+
+        it('search component should have a searchbody instance', function () {
+            expect(component.queryById('searchbody') instanceof Savanna.search.view.SearchBody).toBeTruthy();
+        });
+
+        describe('SearchBar subview', function() {
+            describe('buildSearchString method', function () {
                 var searchbar = null;
 
                 beforeEach(function () {
                     searchbar = component.queryById('searchbar');
+
                     searchbar.queryById('search_terms').setValue('search bar terms');
                     searchbar.queryById('all_words').setValue('some text');
                     searchbar.queryById('exact_phrase').setValue('other text');
@@ -81,10 +88,6 @@ describe('Search Component', function () {
                     var expected = 'search bar terms AND some AND text AND "other text" AND more OR and OR more OR text NOT bad NOT terms';
 
                     expect(result).toEqual(expected);
-                });
-
-                it('search component should have a searchbar instance', function () {
-                    expect(component.queryById('searchbar') instanceof Savanna.search.view.SearchBar).toBeTruthy();
                 });
 
                 it('should call getBooleanValue on each field', function () {
@@ -102,13 +105,6 @@ describe('Search Component', function () {
                 });
             });
         });
-
-        // searchbody view
-        describe('Component Searchbody View', function () {
-            it('search component should have a searchbody instance', function () {
-                expect(component.queryById('searchbody') instanceof Savanna.search.view.SearchBody).toBeTruthy();
-            });
-        });
     });
 
     describe('Controller', function () {
@@ -118,8 +114,11 @@ describe('Search Component', function () {
 
         beforeEach(function () {
             component = Ext.create('Savanna.search.view.SearchComponent', { renderTo: 'test-html' });
+
             controller = Ext.create('Savanna.search.controller.SearchComponent');
+
             toolbar = component.queryById('searchtoolbar');
+
             spyOn(controller, 'onHistoryItemClick');
             spyOn(controller, 'logHistory');
         });
@@ -127,19 +126,20 @@ describe('Search Component', function () {
         afterEach(function () {
             if (controller) {
                 controller.destroy();
+                controller = null;
             }
-            controller = null;
 
             if (component) {
                 component.destroy();
+                component = null;
             }
-            component = null;
+
+            toolbar = null;
         });
 
         it('onHistoryItemClick takes a simple button/event', function () {
-            controller.onHistoryItemClick(Ext.create('Ext.button.Button', {
-                text: 'Dogs'
-            }), null);
+            controller.onHistoryItemClick(Ext.create('Ext.button.Button', { text: 'Dogs' }), null);
+
             expect(controller.onHistoryItemClick).toHaveBeenCalled();
         });
 
