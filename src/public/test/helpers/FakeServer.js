@@ -1,4 +1,4 @@
-/*global App: false */
+/* global _: false, console: true */
 var ThetusTestHelpers;
 (function(ThetusTestHelpers) {
     'use strict';
@@ -104,7 +104,7 @@ var ThetusTestHelpers;
     };
 
     // Sinon override filter the requests we can ignore (i.e. template requests)
-    FakeServer.prototype.filterRequest = function(method, url, async, username, password) {
+    FakeServer.prototype.filterRequest = function(method, url) { // also can be passed async, username, password
         var skipRequest = false;
 
         for (var i = 0; i < this.filters.length; i += 1) {
@@ -187,7 +187,8 @@ var ThetusTestHelpers;
      *  Trigger processing of incoming server requests
      *
      * @param options
-     *      testBody: function(requestBody) { return true|false; } (callback handed the body of the request and returns true|false validation)
+     *      testBody: function(requestBody) { return ''|'Error message of some sort'; } (callback handed the body of the request and returns validation message)
+     *      testRequest: function(request) { return ''|'Error message of some sort'; } (callback handed the xhr request and returns validation message)
      *      returnBody: true|false  (indicates whether the content passed in should used as the response)
      *      errorOnInvalidRequest: true|false  (cause an error to be set if a request is made that is not expected)
      *      reportBody: true|false     (cause the requestBody to be included in any error messaging)
@@ -210,7 +211,11 @@ var ThetusTestHelpers;
                 console.log('request.body', request.requestBody);
             }
 
-            if (respondOptions.testBody) {
+            if (respondOptions.testRequest) {
+                errMsg = respondOptions.testRequest(request);
+            }
+
+            if (!errMsg && respondOptions.testBody) {
                 errMsg = respondOptions.testBody(request.requestBody);
             }
 
@@ -221,8 +226,21 @@ var ThetusTestHelpers;
                     if (response) {
 
                         // this is so we can pass an array of arguments to respond()
-                        response = respondOptions.returnBody ? JSON.parse(request.requestBody) :
-                            _.isFunction(response)    ? response() : response;
+                        if (respondOptions.returnBody) {
+                            if (response.length === 3) {
+                                response.pop(); // remove the current body
+                            }
+
+                            if (typeof request.requestBody !== 'string') {
+                                response.push(JSON.parse(request.requestBody));
+                            }
+                            else if (_.isFunction(response)) {
+                                response.push(response());
+                            }
+                            else {
+                                response.push(request.requestBody);
+                            }
+                        }
 
                         this.responses[method] = this.responses[method] || {};
                         this.responses[method][url] = true;

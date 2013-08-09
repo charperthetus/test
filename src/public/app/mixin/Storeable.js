@@ -21,7 +21,8 @@
  *      },
  *      store: 'Savanna.some.Store',
  *      initComponent: function() {
- *          this.initStore();
+ *          this.callParent(arguments);
+ *          this.mixins.storeable.initStore.call(this);
  *      }
  * });
  */
@@ -31,7 +32,6 @@ Ext.define('Savanna.mixin.Storeable', {
      *
      * This should be called in initComponent()
      */
-    // TODO: Test that a store is instantiated only once...
     initStore: function () {
         if (!this.store) {
             Ext.Error.raise({ msg: 'No "store" defined' });

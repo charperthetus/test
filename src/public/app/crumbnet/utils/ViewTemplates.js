@@ -2,6 +2,10 @@
 Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
     singleton: true,
 
+    requires: [
+        'Savanna.crumbnet.utils.TaperedLink'
+    ],
+
     /**
      * Creates our default node template for use with GoJS
      *
@@ -32,7 +36,7 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
         var nodeTemplate = gmake(go.Node, go.Panel.Auto,
             {
                 selectionAdorned: false,
-                fromSpot: go.Spot.AllSides,
+                fromSpot: go.Spot.None,
                 toSpot: go.Spot.AllSides,
                 toLinkable: true,
                 mouseEnter: this.nodeMouseEnter,
@@ -45,6 +49,7 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
             gmake(go.Panel, go.Panel.Vertical,
                 gmake(go.Panel, go.Panel.Auto,
                     gmake(go.Shape, { figure: 'Rectangle', fill: 'transparent', stroke: null, width: 52, height: 52 }),
+                    gmake(go.Shape, { fill: 'blue', stroke: null, alignment: go.Spot.BottomLeft }, new go.Binding('geometry', 'percent', function(p){ return makeCircle(p,52) }  )),
                     icon,
                     gmake(go.Shape, { figure: 'circle', fill: null, strokeWidth: 3, width: 49 }, new go.Binding('stroke', 'isSelected', function (s) { return (s ? 'cornflowerblue' : null); }).ofObject('') ),
                     this.makePort('T', go.Spot.TopRight, 0),
@@ -56,6 +61,53 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
                             click: this.addNodeAndLink },  // this function is defined below
                         gmake(go.Shape, 'PlusLine', { desiredSize: new go.Size(6, 6) })
                     )),
+                textBlock)
+        );
+
+        function makeCircle(percent, size){
+            var angle = 360 * (percent / 100)
+            var newAngle = angle > 180 ? angle - 180 : angle + 180;
+            var radians = newAngle * Math.PI / 180; //radians = angle * PI / 180
+            var radius = size / 2;
+            var x = radius * Math.cos(radians) + radius;
+            var y = - radius * Math.sin(radians);
+            var semicircle = go.Geometry.parse("M" + radius + ",-" + radius + " h-" + radius + " a" + radius + "," + radius + " 0 " + (percent > 50 ? 1 : 0) + ",0 "+ x + "," + y + " z", true);
+            return semicircle;
+        }
+
+        return nodeTemplate;
+    },
+
+    generatePaletteNodeTemplate: function(){
+        var gmake = go.GraphObject.make;
+
+        var icon = go.GraphObject.make(go.Picture, {
+            name: 'icon',
+            toLinkable: true,
+            cursor: 'pointer',
+            height: 46,
+            width: 46
+        }, new go.Binding('source', 'category', this.convertCategoryToImage));
+
+        var textBlock = gmake(go.TextBlock, {
+            textAlign: 'center',
+            editable: true,
+            width: 80,
+            wrap: go.TextBlock.WrapDesiredSize,
+            font: '10pt Helvetitca, Arial, sans-serif',
+            name: 'label',
+            cursor: 'pointer'
+        }, new go.Binding('text', 'text').makeTwoWay());
+
+        var nodeTemplate = gmake(go.Node, go.Panel.Auto,
+            {
+                selectionAdorned: false
+            },
+            gmake(go.Panel, go.Panel.Vertical,
+                gmake(go.Panel, go.Panel.Auto,
+                    gmake(go.Shape, { figure: "Rectangle", fill: "transparent", stroke: null, width: 52, height: 52 }),
+                    icon
+                ),
                 textBlock)
         );
 
@@ -146,6 +198,23 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
                     segmentOffset: new go.Point(NaN, NaN) },
                 new go.Binding('text', 'text'))));
 
+        var spreadLinks = false;
+
+        linkTemplateMap.add('tapered', gmake(TaperedLink,  // subclass of Link, defined below
+            go.Link.Bezier,
+            (spreadLinks ? go.Link.None : go.Link.Orthogonal),
+            { fromEndSegmentLength: (spreadLinks ? 50 : 1),
+                toEndSegmentLength: (spreadLinks ? 50 : 1),
+                selectionObjectName: "Path",
+                relinkableFrom: true,
+                relinkableTo: true },
+            gmake(go.Shape,
+                { isPanelMain: true,
+                    name: "Path",
+                    stroke: null,
+                    fill: 'blue' }
+            )));
+
         return linkTemplateMap;
     },
 
@@ -171,8 +240,9 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
         // get the node data for which the user clicked the button
         var fromData = fromNode.data;
 
+        //TODO - Need to figure out which properties should be copied into the new node by default (ie category, percent)
         // create a new "State" data object, positioned off to the right of the adorned Node
-        var toData = { text: 'new', category: fromData.category, key: Ext.id() };
+        var toData = { text: 'new', category: fromData.category, key: Ext.id(), percent: 0 };
         var fromLocation = fromNode.location;
         var siblingNodes = fromNode.findNodesOutOf();
         var x = 0;
@@ -205,7 +275,7 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
         model.addNodeData(toData);
 
         // create a link data from the old node data to the new node data
-        var linkdata = { category: 'curvy' }; // New link with curvy category
+        var linkdata = { category: 'tapered' }; // New link with tapered category
         linkdata[model.linkFromKeyProperty] = model.getKeyForNodeData(fromData);
         linkdata[model.linkToKeyProperty] = model.getKeyForNodeData(toData);
 

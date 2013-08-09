@@ -640,6 +640,22 @@ describe('Savanna.crumbnet', function() {
                 expect(overview.overview.observed).toEqual(testDiagram);
             });
         });
+
+        describe('Crumbnet Toolbar', function() {
+            var toolbar = null;
+
+            beforeEach(function() {
+                toolbar = view.down('toolbar');
+            });
+
+            afterEach(function() {
+                toolbar = null;
+            });
+
+            it('should have a toolbar extracted from the main crumbnet view', function() {
+                expect(toolbar).not.toBeNull();
+            });
+        });
     });
 
     describe('Utils', function() {
@@ -849,7 +865,7 @@ describe('Savanna.crumbnet', function() {
 
                 expect(diagram.nodes.count).toBe(origNodeCount + 1);
                 expect(diagram.links.count).toBe(origLinkCount + 1);
-            })
+            });
         });
     });
 

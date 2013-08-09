@@ -40,8 +40,9 @@ function createTestDom() {
     }
 }
 
-function setupNoCacheNoPagingStore(storeClass) {
-    var store = Ext.create(storeClass, { autoLoad: false });
+function setupNoCacheNoPagingStore(storeClass, options) {
+    var storeOptions = Ext.merge({ autoLoad: false }, options);
+    var store = Ext.create(storeClass, storeOptions);
 
     // NOTE: we have to disable caching or the URL gets a cache-busting query parameter which breaks the fake server
     var proxy = store.getProxy();

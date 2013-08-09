@@ -1,3 +1,4 @@
+/* global Ext: false */
 /**
  * Created with IntelliJ IDEA.
  * User: ksonger
@@ -8,7 +9,7 @@
 Ext.define('Savanna.search.model.SearchHistory', {
     extend: 'Ext.data.Model',
     fields: [
-        {name: "query", type: "string"},
-        {name: "date", type: "int"}
+        {name: 'query', type: 'string'},
+        {name: 'date', type: 'int'}
     ]
 });

@@ -1,61 +1,36 @@
+/* global Ext: false */
 Ext.define('Savanna.search.store.SearchResults', {
     extend: 'Ext.data.JsonStore',
 
     requires: [
-        'Ext.data.proxy.Rest',
         'Savanna.Config',
-        "Savanna.search.model.SearchResult"
+        'Savanna.search.model.SearchResult',
+        'Savanna.proxy.Cors'
     ],
 
     storeId: 'searchResults',
+
+    model: 'Savanna.search.model.SearchResult',
 
     pageSize: 100,
 
     autoLoad: false,
 
-    model: "Savanna.search.model.SearchResult",
-
-
-    constructor: function (config) {
+    constructor: function () {
         this.callParent(arguments);
-        var me = this;
+
         this.setProxy({
-            type: 'rest',
-            actionMethods: { create: 'POST', read: 'POST', update: 'POST', destroy: 'POST' },
-            //url: Savanna.Config.savannaUrlRoot + "rest/search;jsessionid=" + Savanna.jsessionid,
-            // use this if you don't have Savanna 3.4 running
-            // NOTE: two tests in SpecRunner fail in this circumstance, but will work once the dev server is up and running
+            type: 'savanna-cors',
+            //url: Savanna.Config.savannaUrlRoot + 'rest/search',
+
+            // DEV SETTINGS (for when you don't have the endpoint working...)
             url: 'app/assets/data/testSearchResults.json',
-            headers: {
-                'Content-Type': "application/json",
-                'Accept': 'application/json'
-            },
-            doRequest: function (operation, callback, scope) {
-
-                var writer = this.getWriter(),
-                    request = this.buildRequest(operation, callback, scope);
-
-                request = writer.write(request);
-
-                Ext.apply(request, {
-                    headers: this.headers,
-                    timeout: this.timeout,
-                    scope: this,
-                    callback: this.createRequestCallback(request, operation, callback, scope),
-                    method: this.getMethod(request),
-                    jsonData: this.jsonData,
-                    disableCaching: false // explicitly set it to false, ServerProxy handles caching
-                });
-                Ext.Ajax.request(request);
-                return request;
-            },
-            reader: {
-                type: 'json',
-                root: "results"
-            },
-            writer: {
-                type: 'json'
-            }
+            addSessionId: false,
+            noCache: false,
+            startParam: undefined,
+            limitParam: undefined,
+            pageParam: undefined
+            // END DEV SETTINGS
         });
     }
 });

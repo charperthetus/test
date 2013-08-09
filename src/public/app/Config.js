@@ -10,12 +10,12 @@ Ext.define('Savanna.Config', {
     singleton: true,
 
     // Root for all REST calls
-    //savannaUrlRoot: 'http://thedevsav1.thetuscorp.com:8080/SavannaX/',
-    //savannaUrlRoot: 'http://qac2is2sav2',
+    savannaUrlRoot: 'http://thedevsav1.thetuscorp.com:8080/SavannaX/',
+    //savannaUrlRoot: 'http://qac2is2sav2/c2is2/',
     // use this if you have Savanna 3.4 running.
     // Launch chrome from terminal with security disabled: /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --disable-web-security
 
-    savannaUrlRoot: 'http://localhost:8080/SavannaX/',
+    //savannaUrlRoot: 'http://localhost:8080/SavannaX/',
 
     // Urls for all the searches we do
     loginUrl: '/authcheck/loggedIn.html',

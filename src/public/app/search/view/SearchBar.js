@@ -1,34 +1,39 @@
-/**
- * TODO: Document what events we may emit...
- */
+/* global Ext: false, Savanna: false */
 Ext.define('Savanna.search.view.SearchBar', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.search_searchbar',
-    cls: 'search-prime',
+
     requires: [
         'Ext.ux.layout.Center',
         'Ext.form.field.Text',
         'Savanna.controller.Factory',
-        'Savanna.search.view.SearchBarTools'
+        'Savanna.search.view.SearchForm',
+        'Savanna.mixin.Storeable',
+        'Savanna.search.store.SearchResults'
     ],
+
     mixins: {
         storeable: 'Savanna.mixin.Storeable'
     },
-    store:"Savanna.search.store.SearchResults",
+
+    store: 'Savanna.search.store.SearchResults',
+
     border: false,
     frame: false,
-    layout: "ux.center",
+    layout: 'ux.center',
+    cls: 'search-prime',
+
     items: [
         {
             xtype: 'panel',
             border: false,
             width: '30%',
             minWidth: 520,
-            itemId: "main_panel",
+            itemId: 'main_panel',
             items: [
                 {
-                    xtype: "searchbar_tools",
-                    itemId: "search_toolbar"
+                    xtype: 'searchbar_form',
+                    itemId: 'search_form'
                 },
                 {
                     xtype: 'panel',
@@ -44,44 +49,55 @@ Ext.define('Savanna.search.view.SearchBar', {
             ]
         }
     ],
+
     initComponent: function () {
         this.callParent(arguments);
-        // instantiate the controller for this view
+        this.mixins.storeable.initStore.call(this);
+
         Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
-        this.initStore();
     },
+
     onStoreLoad: function() {
-        // do any magic you need to your container when the store is reloaded
+        // TODO: load our results...
     },
+
     buildSearchString: function () {
-        var alls, exacts, anys, nones, final_string,
-            from_bar = '',
-            str_all = '',
-            view = this,
-            toolbar = view.queryById("search_toolbar"),
-            form = toolbar.queryById("form_container");
-        form.items.each(function (field, index) {
-            if (field.xtype == "searchadvanced_textfield" && toolbar.queryById(field.itemId).getValue() != "" && toolbar.queryById(field.itemId).getValue() != undefined) {
-                toolbar.queryById(field.itemId).setValue(toolbar.queryById(field.itemId).getValue().trim())
-                var join = field.configs.join;
-                if (str_all == '') {
-                    join = '';
+        var searchString = '',
+            advancedBooleanString = '',
+            formQueryString = '',
+            form = this.queryById('search_form'),
+            formField = form.queryById('form_container');
+
+        Ext.Array.each(formField.query('searchadvanced_textfield'), function (field) {
+            var value = field.getValue().trim();
+
+            if (field.xtype === 'searchadvanced_textfield' && value !== '' && value !== undefined) {
+                field.setValue(value);
+
+                var joinString = field.configs.join;
+
+                if (advancedBooleanString === '') {
+                    joinString = '';
                 }
-                str_all = str_all + join + toolbar.queryById(field.itemId).getBooleanValue();
+
+                advancedBooleanString += joinString + field.getBooleanValue();
             }
         });
-        from_bar = toolbar.queryById("search_terms").getValue().trim();
-        str_all = str_all.replace(/\s+/g, ' ');
-        final_string = from_bar;
-        if (final_string == "") {
-            final_string = str_all;
+
+        formQueryString = form.queryById('search_terms').getValue().trim();
+        advancedBooleanString = advancedBooleanString.replace(/\s+/g, ' ');
+        searchString = formQueryString;
+
+        if (searchString === '') {
+            searchString = advancedBooleanString;
         } else {
-            if (str_all.trim() != "") {
-                final_string = from_bar + " AND " + str_all;
+            if (advancedBooleanString.trim() !== '') {
+                searchString = formQueryString + ' AND ' + advancedBooleanString;
             } else {
-                final_string = from_bar;
+                searchString = formQueryString;
             }
-        };
-        return final_string;
+        }
+
+        return searchString;
     }
 });

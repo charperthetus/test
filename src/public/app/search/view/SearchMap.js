@@ -33,6 +33,7 @@ Ext.define('Savanna.search.view.SearchMap', {
     dockedItems: [
         {
             xtype: 'toolbar',
+            itemId: 'searchLocationDockedItems',
             border: false,
             width: '100%',
             dock: 'top',
@@ -71,6 +72,7 @@ Ext.define('Savanna.search.view.SearchMap', {
                         '->',
                         {
                             xtype: 'button',
+                            itemId: 'clearLocationSearch',
                             ui: 'link',
                             text: 'Clear Location Search'
                         }

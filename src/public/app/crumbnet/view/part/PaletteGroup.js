@@ -35,7 +35,7 @@ Ext.define('Savanna.crumbnet.view.part.PaletteGroup', {
         this.palette = new go.Palette(domElem);
         this.palette.initialAutoScale = go.Diagram.None;
 
-        this.palette.nodeTemplate = Savanna.crumbnet.utils.ViewTemplates.generateNodeTemplate({selectionAdorned: false});
+        this.palette.nodeTemplate = Savanna.crumbnet.utils.ViewTemplates.generatePaletteNodeTemplate();
 
         this.palette.model.nodeDataArray = this.model.templatesAsJson();
     },

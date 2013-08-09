@@ -5,14 +5,21 @@
  * Time: 10:48 AM
  * To change this template use File | Settings | File Templates.
  */
-
+/* global Ext: false, Savanna: false */
 Ext.define('Savanna.search.view.SearchDals', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.search_searchdals',
 
+    mixins: {
+        storeable: 'Savanna.mixin.Storeable'
+    },
+
+    store: 'Savanna.search.store.DalSources',
+
     requires: [
         'Ext.form.Label',
-        'Ext.toolbar.Spacer'
+        'Ext.toolbar.Spacer',
+        'Savanna.search.view.searchDals.SearchOptions'
     ],
 
     layout: 'vbox',
@@ -32,6 +39,7 @@ Ext.define('Savanna.search.view.SearchDals', {
     ],
 
     initComponent: function () {
+        this.mixins.storeable.initStore.call(this);
         this.dockedItems = this.setupDockedItems();
         this.callParent(arguments);
 
@@ -69,6 +77,27 @@ Ext.define('Savanna.search.view.SearchDals', {
                 ]
             }
         ];
-    }
+    },
 
+    onStoreLoad: function() {
+        this.createDalPanels();
+    },
+
+    createDalPanels: function() {
+        this.removeAll();
+
+        this.store.each(function (record) {
+            var myPanel = this.createPanel(record);
+            this.add(myPanel);
+        }, this);
+    },
+
+    createPanel: function(myRecord) {
+        return Ext.create('Savanna.search.view.searchDals.SearchOptions', {
+            itemId: myRecord.data.id,
+            checkboxLabel: myRecord.data.displayName,
+            label: myRecord.data.textDescription,
+            showButton: myRecord.customSearchGroups().data.length
+        });
+    }
 });

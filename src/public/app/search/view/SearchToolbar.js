@@ -1,10 +1,17 @@
-/**
- * TODO: Document what events we may emit...
- */
-
+/* global Ext: false, Savanna: false */
 Ext.define('Savanna.search.view.SearchToolbar', {
     extend: 'Ext.toolbar.Toolbar',
     alias: 'widget.search_searchtoolbar',
+
+    requires: [
+        'Savanna.mixin.Storeable'
+    ],
+
+    mixins: {
+        storeable: 'Savanna.mixin.Storeable'
+    },
+
+    store:'Savanna.search.store.SearchHistory',
 
     border: false,
     frame: false,
@@ -17,11 +24,12 @@ Ext.define('Savanna.search.view.SearchToolbar', {
             ui: 'flat-toolbar-button',
             menu: {
                 ui: 'flat-menu',
-                itemId:"historymenu",
+                itemId: 'historymenu',
                 items: [
-                    {text: 'Cats'},
-                    {text: 'Dogs'},
-                    {text: 'Evil-Doers'}
+                    // TODO: remove these in place of real data...
+                    { text: 'Cats' },
+                    { text: 'Dogs' },
+                    { text: 'Evil-Doers' }
                 ]
             }
         },
@@ -40,7 +48,21 @@ Ext.define('Savanna.search.view.SearchToolbar', {
 
     initComponent: function () {
         this.callParent(arguments);
-        // instantiate the controller for this view
+        this.mixins.storeable.initStore.call(this);
+
         Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
+    },
+
+    onStoreLoad: function() {
+        var historyMenu = this.down('#historymenu');
+
+        historyMenu.removeAll();
+
+        //TODO: look for dupes and do not include them - or, remove at store level
+        this.getStore().each(function (search) {
+            historyMenu.add({
+                text: search.get('query')
+            });
+        });
     }
 });

@@ -1,3 +1,4 @@
+/* global Ext: false, Savanna: false */
 /**
  * Created with IntelliJ IDEA.
  * User: ksonger
@@ -5,21 +6,18 @@
  * Time: 11:09 AM
  * To change this template use File | Settings | File Templates.
  */
-/**
- * TODO: Document what events we may emit...
- */
 Ext.define('Savanna.search.controller.SearchComponent', {
     extend: 'Ext.app.Controller',
 
     requires: [
-        "Savanna.search.model.SearchRequest",
-        "Savanna.search.model.SearchHistory",
+        'Savanna.search.model.SearchRequest',
+        'Savanna.search.model.SearchHistory',
         'Savanna.search.store.SearchResults',
         'Savanna.search.store.SearchHistory'
     ],
 
     models: [
-        "Savanna.search.model.SearchHistory"
+        'Savanna.search.model.SearchHistory'
     ],
     stores: [
         // coming soon...
@@ -30,62 +28,34 @@ Ext.define('Savanna.search.controller.SearchComponent', {
     ],
 
     refs: [
-        { ref: 'advancedButton', selector: 'search_searchcomponent > #searchbar #main_panel #search_toolbar #searchadvanced_btn' },
-        { ref: "advancedMenu", selector: "search_searchcomponent > #searchbar #main_panel #search_toolbar #searchadvanced_menu" },
-        { ref: "searchButton", selector: "search_searchcomponent > #searchbar #main_panel #search_toolbar #search_submit" },
-        { ref: "searchBar", selector: "search_searchcomponent > #searchbar" },
-        { ref: "historyMenu", selector: "search_searchcomponent > #searchtoolbar #historybutton #historymenu" },
-        { ref: "searchBody", selector: "search_searchcomponent > #searchbody" },
+        { ref: 'advancedButton', selector: 'search_searchcomponent > #searchbar #main_panel #search_form #searchadvanced_btn' },
+        { ref: 'advancedMenu', selector: 'search_searchcomponent > #searchbar #main_panel #search_form #searchadvanced_menu' },
+        { ref: 'searchButton', selector: 'search_searchcomponent > #searchbar #main_panel #search_form #search_submit' },
+        { ref: 'searchBar', selector: 'search_searchcomponent > #searchbar' },
+        { ref: 'historyMenu', selector: 'search_searchcomponent > #searchtoolbar #historybutton #historymenu' },
+        { ref: 'searchBody', selector: 'search_searchcomponent > #searchbody' },
         { ref: 'optionsButton', selector: 'search_searchcomponent > #searchbody #searchbodytoolbar #optionsbutton' },
-        { ref: "resultsButton", selector: "search_searchcomponent > #searchbody #searchbodytoolbar #resultsbutton" }
+        { ref: 'resultsButton', selector: 'search_searchcomponent > #searchbody #searchbodytoolbar #resultsbutton' }
     ],
 
-    handleSearchTermKeyUp: function (field, evt) {
-        if (evt.keyCode == 13) {
-            // user pressed enter
-            this.doSearch(this.getSearchButton());
-        }
-    },
-    hideMenu: function (el, evt) {
-        this.getAdvancedMenu().hide();
-    },
-    alignMenuWithTextfield: function (btn, evt) {
-        btn.menu.alignTo(btn.up("#search_toolbar").getEl());
-    },
-    onHistoryItemClick: function (btn, evt) {
-        this.doSearch(this.getSearchButton, evt);
-    },
-    onBodyToolbarClick: function (button, event) {
-        var body = this.getSearchBody();
-        if (body.currentPanel != "searchoptions" && button == this.getOptionsButton()) {
-            body.queryById("mainsearchoptions").show();
-            body.queryById("searchresults").hide();
-            body.currentPanel = "searchoptions";
-        }
-        if (body.currentPanel != "results" && button == this.getResultsButton()) {
-            body.queryById("mainsearchoptions").hide();
-            body.queryById("searchresults").show();
-            body.currentPanel = "results";
-        }
-    },
-    init: function (app) {
+    init: function () {
         this.control({
-            "search_searchcomponent > #searchbar #main_panel #search_toolbar #searchadvanced_btn": {
+            'search_searchcomponent > #searchbar #main_panel #search_form #searchadvanced_btn': {
                 click: this.alignMenuWithTextfield
             },
-            "search_searchcomponent > #searchbar #main_panel #search_toolbar #search_terms": {
+            'search_searchcomponent > #searchbar #main_panel #search_form #search_terms': {
                 keyup: this.handleSearchTermKeyUp
             },
-            "search_searchcomponent > #searchbar #main_panel #search_toolbar #searchadvanced_menu textfield": {
+            'search_searchcomponent > #searchbar #main_panel #search_form #searchadvanced_menu textfield': {
                 keyup: this.handleSearchTermKeyUp
             },
-            "search_searchcomponent > #searchbar #main_panel #search_toolbar #search_submit": {
+            'search_searchcomponent > #searchbar #main_panel #search_form #search_submit': {
                 click: this.doSearch
             },
-            "search_searchcomponent > #searchbar #main_panel #search_toolbar #searchadvanced_menu #submit_panel #advancedsearch_submit": {
+            'search_searchcomponent > #searchbar #main_panel #search_form #searchadvanced_menu #submit_panel #advancedsearch_submit': {
                 click: this.doSearch
             },
-            "search_searchcomponent > #searchbar #main_panel #search_toolbar #searchadvanced_menu #close_panel": {
+            'search_searchcomponent > #searchbar #main_panel #search_form #searchadvanced_menu #close_panel': {
                 click: this.hideMenu
             },
             'search_searchcomponent > #searchtoolbar #historybutton #historymenu menuitem': {
@@ -99,45 +69,94 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             }
         });
     },
-    doSearch: function (el, evt) {
-        this.hideMenu(el, evt);
+
+    // CUSTOM METHODS
+
+    handleSearchTermKeyUp: function (field, evt) {
+        if (evt.keyCode === 13) {
+            // user pressed enter
+            this.doSearch();
+        }
+    },
+
+    hideMenu: function () {
+        this.getAdvancedMenu().hide();
+    },
+
+    alignMenuWithTextfield: function (btn) {
+        btn.menu.alignTo(btn.up('#search_form').getEl());
+    },
+
+    onHistoryItemClick: function () {
+        this.doSearch();
+    },
+
+    onBodyToolbarClick: function (button) {
+        var body = this.getSearchBody();
+
+        if (body.currentPanel !== 'searchoptions' && button === this.getOptionsButton()) {
+            body.queryById('mainsearchoptions').show();
+            body.queryById('searchresults').hide();
+            body.currentPanel = 'searchoptions';
+        }
+
+        if (body.currentPanel !== 'results' && button === this.getResultsButton()) {
+            body.queryById('mainsearchoptions').hide();
+            body.queryById('searchresults').show();
+            body.currentPanel = 'results';
+        }
+    },
+
+    doSearch: function () {
+        this.hideMenu();
+
         var searchString = this.getSearchBar().buildSearchString();
-        var searchObj = Ext.create("Savanna.search.model.SearchRequest", {
-            "textInputString": searchString,
-            "displayLabel": searchString
+        var searchObj = Ext.create('Savanna.search.model.SearchRequest', {
+            'textInputString': searchString,
+            'displayLabel': searchString
         });
+
         this.getSearchBar().store.removeAll();
         this.getSearchBar().store.proxy.jsonData = Ext.JSON.encode(searchObj.data);
         this.getSearchBar().store.load({
-            callback: this.onCallback,
+            callback: this.searchCallback,
             scope: this
         });
+
         this.logHistory(this.getSearchBar().buildSearchString());
     },
-    onCallback: function (records, operation, success) {
+
+    searchCallback: function (records, operation, success) {
         if (success) {
-            console.log(records);
-            //console.log(Ext.data.StoreManager.lookup('searchResults'));
-            this.showResultsPage()
-        } else {
+            this.showResultsPage();
+        }
+        else {
             // server down..?
             Ext.Error.raise({
                 msg: 'The server could not complete the search request.'
             });
         }
     },
-    showResultsPage: function () {
-        var resultsBtn = Savanna.getApplication().viewport.queryById("main").down("#resultsbutton");
-        resultsBtn.fireEvent("click", resultsBtn);
-    },
-    logHistory: function (searchString) {
-        var historyObj = Ext.create("Savanna.search.model.SearchHistory", {
-            "query": searchString,
-            "date": Ext.Date.format(new Date(), 'time')
-        });
-        var store = Ext.data.StoreManager.lookup('searchHistory');
-        store.searches.push(historyObj.data);
-        store.load();
 
+    showResultsPage: function () {
+        var resultsBtn = Savanna.getApplication().viewport.queryById('main').down('#resultsbutton');
+
+        resultsBtn.fireEvent('click', resultsBtn);
+    },
+
+    logHistory: function (searchString) {
+        var store = Ext.data.StoreManager.lookup('searchHistory');
+
+        if (store) {
+            store.add({
+                'query': searchString,
+                'date': Ext.Date.format(new Date(), 'time')
+            });
+
+            store.sync();
+        }
+        else {
+            Ext.Error.raise('Unable to find "searchHistory" store');
+        }
     }
 });

@@ -1,9 +1,11 @@
+/* global Ext: false */
 Ext.define('Savanna.search.store.DalSources', {
     extend: 'Ext.data.JsonStore',
 
     requires: [
         'Ext.data.proxy.Rest',
-        'Savanna.Config'
+        'Savanna.Config',
+        'Savanna.proxy.Cors'
     ],
 
     model: 'Savanna.search.model.DalSource',
@@ -12,12 +14,13 @@ Ext.define('Savanna.search.store.DalSources', {
 
     pageSize: 50,
 
-    constructor: function(config) {
-        this.callParent(arguments);
+    autoLoad: true,
 
+    constructor: function() {
         var me = this,
-            restUrl = Savanna.Config.savannaUrlRoot + Savanna.Config.dalSourcesUrl,
             readerClass;
+
+        this.callParent(arguments);
 
         // NOTE: we have to create a custom instance of the Json Reader in order to be able
         //       to parse the defaultId from the returned data since it is outside of the root...
@@ -30,12 +33,17 @@ Ext.define('Savanna.search.store.DalSources', {
         });
 
         this.setProxy({
-            type: 'rest',// TODO: change back to "rest" when we have a service endpoint...
-            url: restUrl,
-            buildUrl: function(request) {
-                // TODO: WE REALLY NEED A Savanna.utils.UrlBuilder lib...
-                return this.getUrl(request) + ';jsessionid=' + Savanna.jsessionid;
+            type: 'savanna-cors',
+            url: 'app/assets/data/testSearchDalsWithFormData.json',//Savanna.Config.savannaUrlRoot + Savanna.Config.dalSourcesUrl,
+            actionMethods: {
+                read: 'GET'
             },
+            // Turn off the paging params...
+            startParam: undefined,
+            limitParam: undefined,
+            pageParam: undefined,
+            noCache: false, // TODO: take this out when we are using a real service...
+            addSessionId: false,
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
