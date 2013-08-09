@@ -21,6 +21,7 @@
  *      },
  *      store: 'Savanna.some.Store',
  *      initComponent: function() {
+ *          this.callParent(arguments);
  *          this.mixins.storeable.initStore.call(this);
  *      }
  * });
