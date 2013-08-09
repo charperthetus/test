@@ -1,15 +1,20 @@
 Ext.define('Savanna.leaflet.Leafletmap', {
     extend: 'Ext.Component',
     alias: 'widget.leafletmap',
-    // This appears to use the Leaflet.draw plugin 
-    // https://github.com/Leaflet/Leaflet.draw/blob/master/README.md
-    //polyPoints: [],
-    myMap: null,
+
+    myMap: null, // keep current map accessible for all methods
+    editMode: null,
+    editableLayers: null,
+    drawControl: null,
+    myLayer: null,
+    myContextMenu: null,
+    keydownEvent: null,
     config:{
         map: null,
         lat: 45.5236,
         lng: -122.6750
     },
+
     afterRender: function(t, eOpts){
         this.callParent(arguments);
         var leafletRef = window.L;
@@ -17,7 +22,7 @@ Ext.define('Savanna.leaflet.Leafletmap', {
             this.update('No leaflet library loaded');
         } else {
             this.myMap = L.map(this.getId(), {
-                zoomControl: false,
+                zoomControl: false, // turns off default +- control from zoom
                 doubleClickZoom: false
             });
             this.myMap.setView([this.lat, this.lng], 2);
@@ -26,17 +31,17 @@ Ext.define('Savanna.leaflet.Leafletmap', {
             this.addDrawControl();
         }
     },
+
     addDrawControl: function(){
-        var editableLayers = new L.FeatureGroup();
-        this.myMap.addLayer(editableLayers);
-        var self = this;
+        this.editableLayers = new L.FeatureGroup();
+        this.myMap.addLayer(this.editableLayers);
         var options = {
             position: 'topright',
             draw: {
                 polyline: false,
-                circle: false, // Turns off this drawing tool
+                circle: true,
                 marker: false,
-                rectangle: false,
+                rectangle: true,
                 polygon: {
                     zIndexOffset: 100000,
                     allowIntersection: false, // Restricts shapes to simple polygons
@@ -49,26 +54,91 @@ Ext.define('Savanna.leaflet.Leafletmap', {
                         weight: 2
                     }
                 }
-            },
-            edit: {
-                featureGroup: editableLayers, //REQUIRED!!
-                remove: false
             }
         };
-        var drawControl = new L.Control.Draw(options);
-        this.myMap.on('draw:created', function (e) {
-            var type = e.layerType,
-                layer = e.layer;
 
-            if (type === 'marker') {
-                // Do marker specific actions
-            }
+        this.drawControl = new L.Control.Draw(options);
+        this.myMap.addControl(this.drawControl);
 
-            // Do whatever else you need to. (save to db, add to map etc)
-            self.myMap.addLayer(layer);
-        });
-        this.myMap.addControl(drawControl);
+        this.myMap.on('draw:created', this.drawingAddedToMap, this);
+        this.myMap.on('click', this.clickOnMap, this);
+        this.myMap.on('blur', this.mapLostFocus, this);
+        this.myMap.on('focus', this.mapGotFocus, this);
+
+        this.editableLayers.on('click', this.clickOnLayer, this);
+        this.editableLayers.on('contextmenu', this.drawingContextMenu, this);
+        this.keydownEvent = Ext.bind(this.keyPressedOnMap, this);
+        this.getEl().dom.addEventListener('keydown', this.keydownEvent);
+        this.on('locationSearch:clear', this.deleteDrawing, this)
     },
+
+    keyPressedOnMap: function(e) {
+        if (e.keyCode === 46 && this.editMode && this.editMode._enabled){  // delete key press in edit mode
+            this.editMode.save();
+            this.editableLayers.removeLayer(this.myLayer);
+            this.editMode.disable();
+
+        }
+    },
+
+    drawingContextMenu: function(e) {
+        this.myContextMenu = Ext.create('Ext.menu.Menu', {
+
+            itemId:'leafletContextMenu',
+            items:[{
+                text: 'Delete',
+                handler: this.deleteDrawing,
+                scope: this
+            },{
+                text: 'Cancel'
+            }]
+        });
+        this.myContextMenu.showAt(e.originalEvent.clientX, e.originalEvent.clientY);
+    },
+
+    deleteDrawing: function() {
+        this.editableLayers.removeLayer(this.myLayer);
+        if (this.editMode && this.editMode._enabled) {
+            this.editMode.disable();
+        }
+    },
+
+    drawingAddedToMap: function(e) {
+        this.myLayer = e.layer;
+        this.fireEvent('draw:created', e); //update with new points
+        this.editableLayers.addLayer(this.myLayer);
+    },
+
+    mapGotFocus: function() {
+        this.getEl().dom.addEventListener('keydown', this.keydownEvent);
+    },
+
+    mapLostFocus: function() {
+        if (this.editMode) {
+            this.editMode.save();
+            this.editMode.disable();
+        }
+        this.getEl().dom.removeEventListener('keydown', this.keydownEvent, false)
+    },
+
+    clickOnLayer: function() {
+        this.editMode = new L.EditToolbar.Edit(this.myMap,{
+            featureGroup: this.editableLayers,
+            selectedPathOptions: this.drawControl.options.edit.selectedPathOptions
+        });
+        this.editMode.enable();
+    },
+
+    clickOnMap: function() {
+        if (this.editMode && this.editMode._enabled) {
+            this.editMode.save();
+            this.editMode.disable();
+        }
+        if (this.myContextMenu) {
+            this.myContextMenu.hide();
+        }
+    },
+
     onResize: function(w, h, oW, oH){
         this.callParent(arguments);
         var map = this.getMap();

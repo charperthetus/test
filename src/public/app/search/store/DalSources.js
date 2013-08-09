@@ -1,9 +1,11 @@
+/* global Ext: false, Savanna: false */
 Ext.define('Savanna.search.store.DalSources', {
     extend: 'Ext.data.JsonStore',
 
     requires: [
         'Ext.data.proxy.Rest',
-        'Savanna.Config'
+        'Savanna.Config',
+        'Savanna.proxy.Cors'
     ],
 
     model: 'Savanna.search.model.DalSource',
@@ -12,7 +14,7 @@ Ext.define('Savanna.search.store.DalSources', {
 
     pageSize: 50,
 
-    constructor: function(config) {
+    constructor: function() {
         this.callParent(arguments);
 
         var me = this,
@@ -24,13 +26,18 @@ Ext.define('Savanna.search.store.DalSources', {
         readerClass = Ext.extend(Ext.data.JsonReader, {
             root: 'sources',
             readRecords: function(data) {
+                console.log('data', data);
                 me.defaultId = data.defaultId || data.sources[0].id;
                 return this.callParent([data]);
             }
         });
 
+        console.log('url', restUrl);
         this.setProxy({
-            type: 'rest',// TODO: change back to "rest" when we have a service endpoint...
+            actionMethods: {
+                read: 'GET'
+            },
+            type: 'savanna-cors',
             url: restUrl,
             buildUrl: function(request) {
                 // TODO: WE REALLY NEED A Savanna.utils.UrlBuilder lib...

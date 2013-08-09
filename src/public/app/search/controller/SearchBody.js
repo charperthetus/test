@@ -44,6 +44,16 @@ Ext.define('Savanna.search.controller.SearchBody', {
                         me.currentPanel = "results";
                     }
                 }
+            },
+            'search_searchbody > #mainsearchoptions #mainsearchtabpanel #searchMap #leafletMap': {
+                'draw:created': function (layerType){
+                    console.log('layerType',layerType);
+                }
+            },
+            'search_searchbody > #mainsearchoptions #mainsearchtabpanel #searchMap #searchLocationDockedItems #clearLocationSearch':{
+                click: function(button, event) {
+                    button.up('search_searchmap').queryById('leafletMap').fireEvent('locationSearch:clear');
+                }
             }
         });
     }

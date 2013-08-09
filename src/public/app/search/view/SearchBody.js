@@ -31,6 +31,7 @@ Ext.define('Savanna.search.view.SearchBody', {
                     xtype: 'tabpanel',
                     cls: 'flat-tab',
                     border: false,
+                    itemId: 'mainsearchtabpanel',
                     activeTab: 0,
                     flex: 3,
                     anchor: '100% 100%',
@@ -45,6 +46,7 @@ Ext.define('Savanna.search.view.SearchBody', {
                         },
                         {
                             title: 'Location',
+                            itemId: 'searchMap',
                             cls: 'search-map',
                             xtype: 'search_searchmap'
                         }
