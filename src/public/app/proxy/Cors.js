@@ -7,7 +7,12 @@
  * var store = Ext.create('Ext.data.Store', {
  *      proxy: {
  *          type: 'savanna-cors',
- *          url: 'http://some/url'
+ *          url: 'http://some/url',
+ *          addSessionId: false, // if you want to suppress adding "jsessionid" to your url
+ *          modifyRequest: function(request) {
+ *              // do something to the request...
+ *              return request;
+ *          }
  *      },
  *      reader: {
  *          type: 'json',
@@ -91,16 +96,5 @@ Ext.define('Savanna.proxy.Cors', {
         }
 
         return url;
-    },
-
-    // TODO: this is a custom function to be defined by the code using this proxy
-    modifyRequest: function(request) {
-        if (this.restAction === 'POST') {
-            Ext.apply(request, {
-                jsonData: Ext.JSON.encode(this.searches)
-            });
-        }
-
-        return request;
     }
 });
