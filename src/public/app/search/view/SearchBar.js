@@ -30,8 +30,8 @@ Ext.define('Savanna.search.view.SearchBar', {
             itemId: 'main_panel',
             items: [
                 {
-                    xtype: 'searchbar_tools',
-                    itemId: 'search_toolbar'
+                    xtype: 'searchbar_form',
+                    itemId: 'search_form'
                 },
                 {
                     xtype: 'panel',
@@ -50,23 +50,24 @@ Ext.define('Savanna.search.view.SearchBar', {
 
     initComponent: function () {
         this.callParent(arguments);
-        // instantiate the controller for this view
+
+        this.mixins.storeable.call.initStore(this);
+
         Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
-        this.initStore();
     },
 
     onStoreLoad: function() {
-        // do any magic you need to your container when the store is reloaded
+        // TODO: load our results...
     },
 
     buildSearchString: function () {
         var searchString = '',
             advancedBooleanString = '',
             formQueryString = '',
-            toolbar = this.queryById('search_toolbar'),
-            form = toolbar.queryById('form_container');
+            form = this.queryById('search_form'),
+            formField = form.queryById('form_container');
 
-        form.items.each(function (field) {
+        formField.items.each(function (field) {
             var value = field.getValue().trim();
 
             if (field.xtype === 'searchadvanced_textfield' && value !== '' && value !== undefined) {
@@ -82,7 +83,7 @@ Ext.define('Savanna.search.view.SearchBar', {
             }
         });
 
-        formQueryString = toolbar.queryById('search_terms').getValue().trim();
+        formQueryString = form.queryById('search_terms').getValue().trim();
         advancedBooleanString = advancedBooleanString.replace(/\s+/g, ' ');
         searchString = formQueryString;
 
