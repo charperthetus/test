@@ -189,7 +189,7 @@ describe('Search Component', function () {
             });
         });
 
-        xdescribe('handleSearchTermKeyUp', function () {
+        describe('handleSearchTermKeyUp callback', function () {
             beforeEach(function () {
                 spyOn(controller, 'doSearch');
             });
@@ -207,7 +207,7 @@ describe('Search Component', function () {
             });
         });
 
-        xdescribe('searchbar', function () {
+        describe('managing SearchBar subview events', function () {
             var searchbar = null;
 
             beforeEach(function () {
@@ -217,18 +217,17 @@ describe('Search Component', function () {
                 searchbar.queryById('exact_phrase').setValue('other text');
                 searchbar.queryById('any_words').setValue('more and more text');
                 searchbar.queryById('none_words').setValue('bad terms');
-                searchbar.doLayout();
+                //searchbar.doLayout();
             });
 
             afterEach(function () {
                 if (searchbar) {
                     searchbar.destroy();
+                    searchbar = null;
                 }
-
-                searchbar = null;
             });
 
-            it('it hides the menu', function () {
+            it('should be able to hide the menu', function () {
                 controller.hideMenu(searchbar.items.first());
 
                 expect(searchbar.queryById('searchadvanced_menu').isVisible()).toBeFalsy();
@@ -247,33 +246,26 @@ describe('Search Component', function () {
 
             it('should build the search string', function () {
                 spyOn(component.queryById('searchbar'), 'buildSearchString').andCallThrough();
-                controller.doSearch(component.queryById('searchbar').items.first(), {});
-                expect(component.queryById('searchbar').buildSearchString).toHaveBeenCalled();
-            });
 
-            it('should create the store', function () {
-                controller.doSearch(searchbar.items.first(), {});
-                expect(searchbar.store instanceof Savanna.search.store.SearchResults).toBeTruthy();
+                controller.doSearch(component.queryById('searchbar').items.first(), {});
+
+                expect(component.queryById('searchbar').buildSearchString).toHaveBeenCalled();
             });
         });
 
-        xdescribe('SearchAdvancedTextfield', function()  {
-            var field = null;
-
-            beforeEach(function () {
-
-            });
+        describe('managing SearchAdvancedTextfield subview events', function()  {
+            var field = null; // set up in each test, but we want to be sure and destroy it, even if the test fails
 
             afterEach(function () {
                 if (field) {
                     field.destroy();
+                    field = null;
                 }
-                field = null;
             });
 
             it('getBooleanValue returns expected string for booleanType "all"', function() {
                 field = Ext.create('Savanna.search.view.SearchAdvancedTextfield', {
-                    configs: {join: '', booleanType: 'all'},
+                    configs: { join: '', booleanType: 'all' },
                     renderTo: 'test-html'
                 });
 
@@ -287,7 +279,7 @@ describe('Search Component', function () {
 
             it('getBooleanValue returns expected string for booleanType "exact"', function() {
                 field = Ext.create('Savanna.search.view.SearchAdvancedTextfield', {
-                    configs: {join: '', booleanType: 'exact'},
+                    configs: { join: '', booleanType: 'exact' },
                     renderTo: 'test-html'
                 });
 
@@ -301,7 +293,7 @@ describe('Search Component', function () {
 
             it('getBooleanValue returns expected string for booleanType "any"', function() {
                 field = Ext.create('Savanna.search.view.SearchAdvancedTextfield', {
-                    configs: {join:'', booleanType: 'any'},
+                    configs: { join: '', booleanType: 'any' },
                     renderTo: 'test-html'
                 });
 
@@ -315,7 +307,7 @@ describe('Search Component', function () {
 
             it('getBooleanValue returns expected string for booleanType "none"', function() {
                 field = Ext.create('Savanna.search.view.SearchAdvancedTextfield', {
-                    configs: {join: '', booleanType: 'none'},
+                    configs: { join: '', booleanType: 'none' },
                     renderTo: 'test-html'
                 });
 
@@ -328,115 +320,138 @@ describe('Search Component', function () {
             });
         });
 
-        xdescribe('onCallback', function () {
+        describe('searchCallback', function () {
+            var origErrorHandler,
+                errorRaised = false;
 
             beforeEach(function () {
                 spyOn(controller, 'showResultsPage');
+
                 fixtures = Ext.clone(ThetusTestHelpers.Fixtures.SearchResults);
+
+                origErrorHandler = Ext.Error.handle;
+
+                Ext.Error.handle = function() {
+                    errorRaised = true;
+
+                    return true;
+                };
             });
 
             afterEach(function () {
-                fixtures = null;
+                fixtures = {};
+
+                Ext.Error.handle = origErrorHandler;
+
+                origErrorHandler = null;
+                errorRaised = false;
             });
 
-            it('calls showResultsPage', function () {
-                controller.onCallback(fixtures.searchResults, {}, true);
+            it('should call showResultsPage', function () {
+                controller.searchCallback(fixtures.searchResults, {}, true);
+
                 expect(controller.showResultsPage).toHaveBeenCalled();
             });
 
+            it('should raise an error if success is false', function() {
+                controller.searchCallback(fixtures.searchResults, {}, false);
+
+                expect(errorRaised).toBeTruthy();
+            });
         });
 
-        xdescribe('should call logHistory', function () {
+        describe('doSearch method', function () {
 
-            it('logHistory called', function () {
+            it('should call logHistory', function () {
                 controller.doSearch(component.queryById('searchbar').items.first(), {});
+
                 expect(controller.logHistory).toHaveBeenCalled();
             });
         });
 
-        xdescribe('Toolbar', function () {
+        describe('managing Toolbar subview events', function () {
 
             describe('onBodyToolbarClick', function () {
                 it('should set currentPanel to "results" when "Results" is clicked', function () {
                     var resbutton = controller.getResultsButton();
 
                     component.queryById('searchbody').currentPanel = 'searchoptions';
+
                     spyOn(controller, 'onBodyToolbarClick');
+
                     resbutton.fireEvent('click', resbutton);
+
+                    expect(component.queryById('searchbody').currentPanel).not.toBe('searchoptions');
                 });
 
                 it('should set currentPanel to "searchoptions" when "Search Options" is clicked', function () {
                     var optsbutton = controller.getOptionsButton();
+
                     component.queryById('searchbody').currentPanel = 'results';
+
                     spyOn(controller, 'onBodyToolbarClick');
+
                     optsbutton.fireEvent('click', optsbutton);
+
+                    expect(component.queryById('searchbody').currentPanel).not.toBe('results');
                 });
             });
         });
     });
 
-    xdescribe('Models', function () {
+    describe('Models', function () {
         beforeEach(function () {
             fixtures = Ext.clone(ThetusTestHelpers.Fixtures.SearchResults);
         });
 
         afterEach(function () {
-            fixtures = null;
+            fixtures = {};
         });
 
         describe('constructor', function () {
             it('should be able to create a model with canonical data', function () {
                 var result = Ext.create('Savanna.search.model.SearchResult', fixtures.searchResults);
+
                 expect(result instanceof Savanna.search.model.SearchResult).toBeTruthy();
             });
         });
     });
 
-    xdescribe('SearchResults Store', function () {
+    describe('SearchResults Store', function () {
         var server = null,
             store = null,
-            searchObj = null;
+            fixtures = {};
 
-        beforeEach(function () {
+        beforeEach(function() {
             fixtures = Ext.clone(ThetusTestHelpers.Fixtures.SearchResults);
-
-            // NOTE: this has to happen BEFORE your create a FakeServer,
-            searchObj = Ext.create('Savanna.search.model.SearchRequest', {
-                textInputString: 'dogs',
-                displayLabel: 'dogs'
-            });
             store = setupNoCacheNoPagingStore('Savanna.search.store.SearchResults');
+            store.getProxy().addSessionId = false; // so our URL is clean
             server = new ThetusTestHelpers.FakeServer(sinon);
         });
 
-        afterEach(function () {
-            fixtures = null;
+        afterEach(function() {
+            if (server) {
+                server.restore();
+                server = null;
+            }
+
             store = null;
-            searchObj = null;
+            fixtures = null;
         });
 
-        describe('default data loading', function () {
+        describe('retrieving history data', function() {
 
-            it('should load data', function () {
-                expect(store.getTotalCount()).toBe(0);
-                server.respondWith('POST', SEARCH_RESULTS_URL, fixtures.searchResults);
-
-                store.proxy.jsonData = Ext.JSON.encode(searchObj.data);
-                var me = this;
-                me.onCallback = function(success)  {
-                    expect(success).toBeTruthy();
-                };
-
-                store.load({
-                    callback: function(records, operation, success) {
-                        me.onCallback(success);
-                    }
-                });
+            beforeEach(function() {
+                server.respondWith('POST', store.getProxy().url, fixtures.searchResults);
+                store.load();
                 server.respond({
                     errorOnInvalidRequest: true
-                });
+                })
             });
 
+            it('should get same number of records as in our fixture', function() {
+                expect(store.getCount()).toBe(fixtures.searchResults.length);
+            });
         });
     });
 

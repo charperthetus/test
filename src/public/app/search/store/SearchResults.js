@@ -10,11 +10,11 @@ Ext.define('Savanna.search.store.SearchResults', {
 
     storeId: 'searchResults',
 
+    model: 'Savanna.search.model.SearchResult',
+
     pageSize: 100,
 
     autoLoad: false,
-
-    model: 'Savanna.search.model.SearchResult',
 
     constructor: function () {
         this.callParent(arguments);
@@ -29,25 +29,8 @@ Ext.define('Savanna.search.store.SearchResults', {
             noCache: false,
             startParam: undefined,
             limitParam: undefined,
-            pageParam: undefined,
-            actionMethods: {
-                create: 'GET',
-                read: 'GET',
-                update: 'GET',
-                destroy: 'GET'
-            },
+            pageParam: undefined
             // END DEV SETTINGS
-
-            modifyRequest: function(request) {
-                if (this.restAction === 'POST') {
-                    console.log('data', this.data);
-                    Ext.apply(request, {
-                        jsonData: Ext.JSON.encode(this.searches)
-                    });
-                }
-
-                return request;
-            }
         });
     }
 });

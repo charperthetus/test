@@ -10,12 +10,13 @@ Ext.define('Savanna.search.store.SearchHistory', {
 
     storeId: 'searchHistory',
 
+    model: 'Savanna.search.model.SearchHistory',
+
     // does this need to be set?
     pageSize: Savanna.Config.searchHistoryPageSize,
 
     autoLoad: false,
 
-    model: 'Savanna.search.model.SearchHistory',
 
     searches: [],
 
