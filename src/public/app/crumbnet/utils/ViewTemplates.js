@@ -9,10 +9,9 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
     /**
      * Creates our default node template for use with GoJS
      *
-     * @param {Object} options - optional parameter that can contain a object properties to be applied to the node template
-     * @return {go.Node} - The node template for use with GoJS
+     * @return {go.Map} - The node template map for use with GoJS
      */
-    generateNodeTemplate: function() {
+    generateNodeTemplateMap: function() {
         var gmake = go.GraphObject.make;
 
         var icon = go.GraphObject.make(go.Picture, {
@@ -21,7 +20,7 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
             cursor: 'pointer',
             height: 46,
             width: 46
-        }, new go.Binding('source', 'category', this.convertCategoryToImage));
+        }, new go.Binding('source', 'type', this.convertTypeToImage));
 
         var textBlock = gmake(go.TextBlock, {
             textAlign: 'center',
@@ -73,7 +72,27 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
             return semicircle;
         }
 
-        return nodeTemplate;
+        var imageTemplate = gmake(go.Node, go.Panel.Auto,
+            {
+                toLinkable: true,
+                resizable: true,
+                height: 100,
+                width: 100
+            },
+            //Bind the location to the model text loc so when we add new nodes to the model with a location it will show correctly
+            new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
+            gmake(go.Picture, {
+                name: 'icon',
+                toLinkable: true,
+                cursor: 'pointer',
+                imageStretch: go.GraphObject.Uniform
+            }, new go.Binding('source', 'imageData', function(data){console.log(data);return data} )) );
+
+        var nodeTemplateMap = new go.Map();
+        nodeTemplateMap.add('standard', nodeTemplate);
+        nodeTemplateMap.add('image', imageTemplate)
+
+        return nodeTemplateMap;
     },
 
     generatePaletteNodeTemplate: function(){
@@ -85,7 +104,7 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
             cursor: 'pointer',
             height: 46,
             width: 46
-        }, new go.Binding('source', 'category', this.convertCategoryToImage));
+        }, new go.Binding('source', 'type', this.convertTypeToImage));
 
         var textBlock = gmake(go.TextBlock, {
             textAlign: 'center',
@@ -121,7 +140,7 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
                 {portId: name, fromLinkable: true }) );
     },
 
-    convertCategoryToImage: function(category) {
+    convertTypeToImage: function(category) {
         return 'resources/images/' + category + 'Icon.svg';
     },
 
@@ -237,7 +256,7 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
 
         //TODO - Need to figure out which properties should be copied into the new node by default (ie category, percent)
         // create a new "State" data object, positioned off to the right of the adorned Node
-        var toData = { text: 'new', category: fromData.category, key: Ext.id(), percent: 10 };
+        var toData = { text: 'new', type: fromData.type, category: fromData.category, key: Ext.id(), percent: 10 };
         var fromLocation = fromNode.location;
         var siblingNodes = fromNode.findNodesOutOf();
         var x = 0;

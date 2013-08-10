@@ -27,7 +27,7 @@ Ext.define('Savanna.crumbnet.view.part.Canvas', {
         domElem = Ext.DomHelper.insertHtml('afterBegin', this.getEl().dom, '<div class="go-graph" style="width: 100%; height: 100%; position: absolute;"></div>');
 
         this.diagram = new go.Diagram(domElem);
-        this.diagram.nodeTemplate = Savanna.crumbnet.utils.ViewTemplates.generateNodeTemplate();
+        this.diagram.nodeTemplateMap = Savanna.crumbnet.utils.ViewTemplates.generateNodeTemplateMap();
         this.diagram.linkTemplateMap = Savanna.crumbnet.utils.ViewTemplates.generateLinkTemplateMap();
 
         // have mouse wheel events zoom in and out instead of scroll up and down
@@ -48,6 +48,36 @@ Ext.define('Savanna.crumbnet.view.part.Canvas', {
         this.diagram.toolManager.linkingTool.portGravity = 10;
 
         this.diagram.model.undoManager.isEnabled = true;
+
+
+        if (typeof window.FileReader != 'undefined') {
+            var _diagram = this.diagram;
+            domElem.ondragover = function () { this.className = 'hover'; return false; };
+            domElem.ondragend = function () { this.className = ''; return false; };
+            domElem.ondrop = function (e) {
+                this.className = '';
+                e.preventDefault();
+                console.log(e);
+                var file = e.dataTransfer.files[0],
+                    reader = new FileReader();
+                reader.onload = function (event) {
+//                    domElem.style.background = 'url(' + event.target.result + ') no-repeat center';
+                    var screenPoint = new go.Point(e.layerX, e.layerY);
+                    var docPoint = _diagram.transformViewToDoc(screenPoint);
+                    var newNode = { text: 'new image', category: 'image',
+                        key: Ext.id(), percent: 10,
+                        loc: docPoint.x + ' ' + docPoint.y,
+                        imageData: event.target.result};
+                    var model = _diagram.model;
+                    console.log(newNode);
+                    model.addNodeData(newNode);
+                };
+                reader.readAsDataURL(file);
+
+                return false;
+            }
+        }
+
     },
 
     // CUSTOM METHODS
