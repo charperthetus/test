@@ -140,7 +140,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
     showResultsPage: function () {
         var resultsBtn = Savanna.getApplication().viewport.queryById('main').down('#resultsbutton');
-
+        console.log('grid', Savanna.getApplication().viewport.queryById('main').down('#resultspanelgrid'))
         resultsBtn.fireEvent('click', resultsBtn);
     },
 

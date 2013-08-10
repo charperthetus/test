@@ -11,20 +11,13 @@ Ext.define("Savanna.search.view.ResultsPanelGrid", {
     requires: [
         'Savanna.controller.Factory'
     ],
-    mixins: {
-        storeable: 'Savanna.mixin.Storeable'
-    },
     store:"Savanna.search.store.SearchResults",
     columns: [
-        { text: '',  dataIndex: 'data.title' }
+        { text: 'Document',  dataIndex: 'documentFileName' }
     ],
     header:false,
     initComponent: function () {
         this.callParent(arguments);
         Savanna.controller.Factory.getController('Savanna.search.controller.ResultsComponent');
-        this.initStore();
-    },
-    onStoreLoad:function()  {
-
     }
 })

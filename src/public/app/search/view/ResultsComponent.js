@@ -14,7 +14,7 @@ Ext.define("Savanna.search.view.ResultsComponent", {
         'Savanna.controller.Factory'
     ],
     stores: [
-        "Savanna.search.store.SearchResults"
+
     ],
     layout:'border',
     defaults: {

@@ -29,7 +29,13 @@ Ext.define('Savanna.search.store.SearchResults', {
             noCache: false,
             startParam: undefined,
             limitParam: undefined,
-            pageParam: undefined
+            pageParam: undefined,
+
+            reader: {
+                type: 'json',
+                root:"results"
+            }
+
             // END DEV SETTINGS
         });
     }

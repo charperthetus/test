@@ -19,9 +19,8 @@ Ext.define("Savanna.search.view.ResultsPanel", {
     region:'center',
     header:false,
     initComponent: function () {
-        this.callParent(arguments);
-
         Savanna.controller.Factory.getController('Savanna.search.controller.ResultsComponent');
+        this.callParent(arguments);
     },
     items:  [
         {

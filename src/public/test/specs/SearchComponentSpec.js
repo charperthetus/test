@@ -10,13 +10,11 @@ Ext.require('Savanna.search.model.SearchHistory');
 Ext.require('Savanna.search.model.SearchRequest');
 Ext.require('Savanna.search.model.SearchResult');
 Ext.require('Savanna.search.store.SearchHistory');
-Ext.require('Savanna.search.store.SearchResults');
 Ext.require('Savanna.search.view.SearchAdvancedTextfield');
 Ext.require('Savanna.search.view.SearchBar');
 Ext.require('Savanna.search.view.SearchForm');
 Ext.require('Savanna.search.view.SearchBody');
 Ext.require('Savanna.search.view.SearchComponent');
-Ext.require('Savanna.search.view.SearchResults');
 Ext.require('Savanna.search.view.SearchToolbar');
 
 describe('Search Component', function () {

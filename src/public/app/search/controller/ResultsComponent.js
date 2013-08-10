@@ -55,6 +55,6 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
     },
 
     onPanelGridRender: function (elem, evt) {
-        console.log(elem.store)
+
     }
 });
