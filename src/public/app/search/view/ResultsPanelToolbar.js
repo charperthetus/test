@@ -39,6 +39,7 @@ Ext.define("Savanna.search.view.ResultsPanelToolbar", {
         {
             xtype: 'tbfill'
         },
+        // PLACEHOLDER ICONS
         {
             glyph: 61786,
             ui: 'flat-toolbar-button'

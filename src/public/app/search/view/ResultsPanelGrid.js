@@ -16,8 +16,8 @@ Ext.define("Savanna.search.view.ResultsPanelGrid", {
     columns: [
         { text: ' ', xtype:"templatecolumn",  tpl: '<b>{documentFileName}</b><br />{documentSource}<br />{previewString}<br /><br />' }
     ],
-    bodyStyle: 'padding:10px',
     header:false,
+    forceFit: true,
     initComponent: function () {
         this.callParent(arguments);
         Savanna.controller.Factory.getController('Savanna.search.controller.ResultsComponent');

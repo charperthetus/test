@@ -118,6 +118,8 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
         this.getSearchBar().store.removeAll();
         this.getSearchBar().store.proxy.jsonData = Ext.JSON.encode(searchObj.data);
+
+        console.log(this.getSearchBar().store.proxy.jsonData);
         this.getSearchBar().store.load({
             callback: this.searchCallback,
             scope: this
@@ -140,7 +142,6 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
     showResultsPage: function () {
         var resultsBtn = Savanna.getApplication().viewport.queryById('main').down('#resultsbutton');
-        console.log('grid', Savanna.getApplication().viewport.queryById('main').down('#resultspanelgrid'))
         resultsBtn.fireEvent('click', resultsBtn);
     },
 

@@ -10,10 +10,11 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
     extend: 'Ext.app.Controller',
 
     requires: [
-        "Savanna.search.model.SearchRequest",
-        "Savanna.search.model.SearchHistory",
+        'Savanna.search.model.SearchRequest',
+        'Savanna.search.model.SearchHistory',
         'Savanna.search.store.SearchResults',
-        'Savanna.search.store.SearchHistory'
+        'Savanna.search.store.SearchHistory',
+        'Savanna.search.store.DalSources'
     ],
 
     models: [
@@ -33,28 +34,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
 
     init: function (app) {
         this.control({
-            "search_resultscomponent > #resultssources": {
-                render: function (elem, evt) {
 
-                }
-            },
-            "search_resultscomponent > #resultspanel": {
-                render: function (elem, evt) {
-
-                }
-            },
-            "search_resultscomponent > #resultspanel #resultspaneltoolbar": {
-                render: function (elem, evt) {
-
-                }
-            },
-            "search_resultscomponent > #resultspanel #resultspanelgrid": {
-                render: this.onPanelGridRender
-            }
         });
-    },
-
-    onPanelGridRender: function (elem, evt) {
-
     }
 });

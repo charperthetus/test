@@ -5,12 +5,12 @@
  * Time: 4:31 PM
  * To change this template use File | Settings | File Templates.
  */
-Ext.define("Savanna.search.view.ResultsComponent", {
-    extend: "Ext.panel.Panel",
-    alias: "widget.search_resultscomponent",
+Ext.define('Savanna.search.view.ResultsComponent', {
+    extend: 'Ext.panel.Panel',
+    alias: 'widget.search_resultscomponent',
     requires: [
-        "Savanna.search.view.ResultsSources",
-        "Savanna.search.view.ResultsPanel",
+        'Savanna.search.view.ResultsSources',
+        'Savanna.search.view.ResultsPanel',
         'Savanna.controller.Factory'
     ],
     stores: [
@@ -19,18 +19,17 @@ Ext.define("Savanna.search.view.ResultsComponent", {
     layout:'border',
     defaults: {
         collapsible: true,
-        split: true,
-        bodyStyle: 'padding:15px'
+        split: true
     },
     initComponent: function () {
         this.callParent(arguments);
         Savanna.controller.Factory.getController('Savanna.search.controller.ResultsComponent');
     },
     items: [{
-        xtype:"search_resultssources",
-        itemId:"resultssources"
+        xtype:'search_resultssources',
+        itemId:'resultssources'
     },{
-        xtype:"search_resultspanel",
-        itemId:"resultspanel"
+        xtype:'search_resultspanel',
+        itemId:'resultspanel'
     }]
 })
