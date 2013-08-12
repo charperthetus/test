@@ -180,7 +180,8 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
         var gmake = go.GraphObject.make,
             linkTemplateMap = new go.Map();
 
-        linkTemplateMap.add('standard', gmake(go.Link,  // the whole link panel
+        //TODO - Using extended link here is temporary until the gojs lib is fixed to allow changing link classes.
+        linkTemplateMap.add('Orthogonal', gmake(ExtendedLink,  // the whole link panel
             { selectionAdorned: true,
                 layerName: 'Foreground',
                 routing: go.Link.AvoidsNodes,
@@ -203,7 +204,7 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
                 { toArrow: 'standard',
                     stroke: null })));
 
-        linkTemplateMap.add('curvy', gmake(go.Link,
+        linkTemplateMap.add('Straight', gmake(ExtendedLink,
             { routing: go.Link.Normal, fromEndSegmentLength: 0, toEndSegmentLength: 0 },
             gmake(go.Shape,
                 { strokeWidth: 3, stroke: 'skyblue' } ),
@@ -214,7 +215,7 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
                     segmentOffset: new go.Point(NaN, NaN) },
                 new go.Binding('text', 'text'))));
 
-        linkTemplateMap.add('tapered', gmake(TaperedLink,
+        linkTemplateMap.add('Tapered', gmake(ExtendedLink,
             go.Link.Bezier,
             go.Link.Orthogonal,
             { fromEndSegmentLength: 1,
@@ -289,7 +290,7 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
         model.addNodeData(toData);
 
         // create a link data from the old node data to the new node data
-        var linkdata = { category: 'tapered' }; // New link with tapered category
+        var linkdata = { category: 'Tapered' }; // New link with tapered category
         linkdata[model.linkFromKeyProperty] = model.getKeyForNodeData(fromData);
         linkdata[model.linkToKeyProperty] = model.getKeyForNodeData(toData);
 

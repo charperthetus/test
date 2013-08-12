@@ -44,40 +44,13 @@ Ext.define('Savanna.crumbnet.view.part.Canvas', {
 
         this.diagram.layout = go.GraphObject.make(go.ForceDirectedLayout, { isOngoing: false });
 
+        this.diagram.toolManager.linkingTool.archetypeLinkData = {category: 'Orthogonal', text: 'New Link'};
         this.diagram.toolManager.linkingTool.direction = go.LinkingTool.ForwardsOnly;
         this.diagram.toolManager.linkingTool.portGravity = 10;
 
         this.diagram.model.undoManager.isEnabled = true;
 
-
-        if (typeof window.FileReader != 'undefined') {
-            var _diagram = this.diagram;
-            domElem.ondragover = function () { this.className = 'hover'; return false; };
-            domElem.ondragend = function () { this.className = ''; return false; };
-            domElem.ondrop = function (e) {
-                this.className = '';
-                e.preventDefault();
-                console.log(e);
-                var file = e.dataTransfer.files[0],
-                    reader = new FileReader();
-                reader.onload = function (event) {
-//                    domElem.style.background = 'url(' + event.target.result + ') no-repeat center';
-                    var screenPoint = new go.Point(e.layerX, e.layerY);
-                    var docPoint = _diagram.transformViewToDoc(screenPoint);
-                    var newNode = { text: 'new image', category: 'image',
-                        key: Ext.id(), percent: 10,
-                        loc: docPoint.x + ' ' + docPoint.y,
-                        imageData: event.target.result};
-                    var model = _diagram.model;
-                    console.log(newNode);
-                    model.addNodeData(newNode);
-                };
-                reader.readAsDataURL(file);
-
-                return false;
-            }
-        }
-
+        this.setupImageDrop(domElem);
     },
 
     // CUSTOM METHODS
@@ -91,6 +64,35 @@ Ext.define('Savanna.crumbnet.view.part.Canvas', {
                 nodeDataArray: graphRecord.get('nodeDataArray'),
                 linkDataArray: graphRecord.get('linkDataArray')
             });
+        }
+    },
+
+    setupImageDrop: function(dropArea){
+        if (typeof window.FileReader != 'undefined') {
+            var _diagram = this.diagram;
+            dropArea.ondragover = function () { return false; };
+            dropArea.ondragend = function () { return false; };
+            dropArea.ondrop = function (e) {
+                this.className = '';
+                e.preventDefault();
+                var file = e.dataTransfer.files[0],
+                    reader = new FileReader();
+                reader.onload = function (event) {
+                    var screenPoint = new go.Point(e.layerX, e.layerY);
+                    var docPoint = _diagram.transformViewToDoc(screenPoint);
+                    var newNode = { text: 'new image', category: 'image',
+                        key: Ext.id(), percent: 10,
+                        loc: docPoint.x + ' ' + docPoint.y,
+                        imageData: event.target.result};
+                    var model = _diagram.model;
+                    _diagram.startTransaction('addImage');
+                    model.addNodeData(newNode);
+                    _diagram.commitTransaction('addImage');
+                };
+                reader.readAsDataURL(file);
+
+                return false;
+            }
         }
     }
 });
