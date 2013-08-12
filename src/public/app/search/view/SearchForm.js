@@ -29,17 +29,20 @@ Ext.define('Savanna.search.view.SearchForm', {
             itemId: 'searchadvanced_btn',
             menu: {
                 xtype: 'panel',
+                cls: 'advanced-search-panel',
                 floating: true,
                 plain: true,
+                border: false,
                 itemId: 'searchadvanced_menu',
-                minWidth: 428,
+                minWidth: 400,
                 enableKeyNav:false,
                 items: [
                     {
                         xtype: 'button',
+                        border: false,
                         text: 'Close',
-                        itemId: 'close_panel',
-                        'float': 'right'
+                        ui: 'link-toolbar',
+                        itemId: 'close_panel'
                     },
                     {
                         xtype: 'box',
@@ -83,20 +86,19 @@ Ext.define('Savanna.search.view.SearchForm', {
                             },
                             {
                                 xtype: 'panel',
-                                width: 380,
+                                width: 355,
+                                height: 35,
                                 layout: 'absolute',
                                 itemId: 'submit_panel',
-                                bodyStyle: {
-                                    background: 'transparent',
-                                    border: 'none'
-                                },
+                                border: false,
                                 items: [
                                     {
                                         xtype: 'button',
+                                        ui: 'commit',
                                         itemId: 'advancedsearch_submit',
                                         text: 'Search',
                                         width: 80,
-                                        x: 300,
+                                        x: 275,
                                         tabIndex: 5
                                     }
                                 ]
