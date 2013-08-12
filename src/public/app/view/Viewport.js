@@ -23,7 +23,7 @@ Ext.define('Savanna.view.Viewport', {
             border: false,
             items:  [
                 {
-                    xtype:  'login',
+                    xtype:  'savannadesktop',
                     itemId: 'login'
                 }
             ]

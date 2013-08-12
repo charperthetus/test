@@ -1,3 +1,4 @@
+/* global Ext: false, Savanna: false */
 /**
  * Created with IntelliJ IDEA.
  * User: ksonger
@@ -5,7 +6,6 @@
  * Time: 11:08 AM
  * To change this template use File | Settings | File Templates.
  */
-
 Ext.define('Savanna.search.view.SearchComponent', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.search_searchcomponent',
@@ -14,7 +14,8 @@ Ext.define('Savanna.search.view.SearchComponent', {
         'Savanna.search.view.SearchBody',
         'Savanna.search.view.SearchBar',
         'Savanna.search.view.SearchToolbar',
-        'Savanna.controller.Factory'
+        'Savanna.controller.Factory',
+        'Savanna.search.controller.SearchDals'
     ],
 
     layout: 'border',
@@ -35,6 +36,7 @@ Ext.define('Savanna.search.view.SearchComponent', {
             region: 'center'
         }
     ],
+
     dockedItems: [
         {
             xtype: 'search_searchtoolbar',
@@ -44,6 +46,7 @@ Ext.define('Savanna.search.view.SearchComponent', {
 
     initComponent: function () {
         this.callParent(arguments);
+
         Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
     }
 });
