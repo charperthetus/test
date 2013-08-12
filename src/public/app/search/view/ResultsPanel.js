@@ -18,6 +18,7 @@ Ext.define("Savanna.search.view.ResultsPanel", {
     ],
     region:'center',
     header:false,
+    layout:"fit",
     initComponent: function () {
         Savanna.controller.Factory.getController('Savanna.search.controller.ResultsComponent');
         this.callParent(arguments);

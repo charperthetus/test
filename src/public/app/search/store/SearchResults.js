@@ -33,7 +33,8 @@ Ext.define('Savanna.search.store.SearchResults', {
 
             reader: {
                 type: 'json',
-                root:"results"
+                root:"results",
+                totalProperty:"totalResults"
             }
 
             // END DEV SETTINGS

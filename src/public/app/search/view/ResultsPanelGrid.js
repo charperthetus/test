@@ -9,15 +9,25 @@ Ext.define("Savanna.search.view.ResultsPanelGrid", {
     extend: "Ext.grid.Panel",
     alias: "widget.search_resultspanelgrid",
     requires: [
-        'Savanna.controller.Factory'
+        'Savanna.controller.Factory',
+        'Ext.grid.column.Template'
     ],
     store:"Savanna.search.store.SearchResults",
     columns: [
-        { text: 'Document',  dataIndex: 'documentFileName' }
+        { text: ' ', xtype:"templatecolumn",  tpl: '<b>{documentFileName}</b><br />{documentSource}<br />{previewString}<br /><br />' }
     ],
+    bodyStyle: 'padding:10px',
     header:false,
     initComponent: function () {
         this.callParent(arguments);
         Savanna.controller.Factory.getController('Savanna.search.controller.ResultsComponent');
-    }
+    },
+    dockedItems:[
+        {
+            xtype:'pagingtoolbar',
+            dock:'top',
+            store:this.store,
+            displayInfo:true
+        }
+    ]
 })
