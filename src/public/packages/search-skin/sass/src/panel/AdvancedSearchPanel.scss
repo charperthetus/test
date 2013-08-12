@@ -14,6 +14,7 @@
 	background-color: #fff;
 	border: none;
 
+	// Since we've set the gradient on the parent, overwrite the child bg color.
 	.#{$prefix}panel-body-default {
 		background: transparent;
 	}
@@ -34,7 +35,8 @@
 		padding-bottom: 10px;
 	}
 
-	.instructions:first-child {
+	// Textual instruction that appear at the top
+	.instructions {
 		margin-top: 0;
 	}
 	.instructions.italic {

@@ -88,7 +88,7 @@ Ext.define('Savanna.search.view.SearchForm', {
                             {
                                 xtype: 'panel',
                                 width: 355,
-                                height: 35,
+                                height: 30,
                                 layout: 'absolute',
                                 itemId: 'submit_panel',
                                 border: false,
