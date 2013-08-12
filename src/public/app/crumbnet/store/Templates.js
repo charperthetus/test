@@ -18,7 +18,7 @@ Ext.define('Savanna.crumbnet.store.Templates', {
     proxy: {
         type: 'rest',
         // TODO: replace this test URL with real endpoint once we have one...
-        url: 'app/assets/data/testCrumbnetTemplates.json',
+        url: 'resources/data/testCrumbnetTemplates.json',
         reader: {
             type: 'json',
             root: 'groups'
