@@ -46,7 +46,8 @@ Ext.define('Savanna.search.view.SearchForm', {
                     },
                     {
                         xtype: 'box',
-                        html: 'Enter advanced keyword searches.<br /><i>Note: Not all search sources may support all advanced options.</i><br />&nbsp;'
+                        html: '<p class="instructions">Enter advanced keyword searches.</p>' +
+                              '<p class="instructions italic"> Note: Not all search sources may support all advanced options.</p>'
                     },
                     {
                         xtype: 'container',

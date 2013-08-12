@@ -26,5 +26,19 @@
 	// Float the 'close' button to the righ
 	.#{$prefix}btn.#{$prefix}btn-link-toolbar-small {
 		float: right;
+		font-size: 12px;
+	}
+
+	// Minor element-based layout tweaks
+	td {
+		padding-bottom: 10px;
+	}
+
+	.instructions:first-child {
+		margin-top: 0;
+	}
+	.instructions.italic {
+		font-style: italic;
+		margin: 0 0 15px;
 	}
 }
