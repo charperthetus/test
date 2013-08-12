@@ -7,13 +7,13 @@
 /*
  *	@private variables
  */
-$background: rgba(0, 0, 0, 0.5);
-$radius: 0;
-$color: white;
-$slider-color: #f2f2f2;
-$track-color: $slider-color;
-$track-width: 1px;
-$button-margin: 1px;
+$zoom-slider-background: rgba(0, 0, 0, 0.5);
+$zoom-slider-radius: 0;
+$zoom-slider-color: white;
+$zoom-slider-slider-color: #f2f2f2;
+$zoom-slider-track-color: $zoom-slider-slider-color;
+$zoom-slider-track-width: 1px;
+$zoom-slider-button-margin: 1px;
 
 /*
  *	@runtime
@@ -28,37 +28,37 @@ $button-margin: 1px;
 
 		// Plus and Minus Buttons
 		a:first-child, a:last-child {
-			border-top-left-radius: $radius;
-			border-top-right-radius: $radius;
-			border-bottom-left-radius: $radius;
-			border-bottom-right-radius: $radius;
-			background: $background;
-			color: $color;			
+			border-top-left-radius: $zoom-slider-radius;
+			border-top-right-radius: $zoom-slider-radius;
+			border-bottom-left-radius: $zoom-slider-radius;
+			border-bottom-right-radius: $zoom-slider-radius;
+			background: $zoom-slider-background;
+			color: $zoom-slider-color;			
 		}
 		a:first-child {
-			margin-bottom: $button-margin;
+			margin-bottom: $zoom-slider-button-margin;
 		}
 		a:last-child {
-			margin-top: $button-margin;
+			margin-top: $zoom-slider-button-margin;
 		}
 
 		// The sliding "pipe"
 		.leaflet-control-zoomslider-wrap,
 		.leaflet-control-zoomslider-body {
-			background: $background;
-			color: $color;	
+			background: $zoom-slider-background;
+			color: $zoom-slider-color;	
 		}
 
 		// The knob "track"
 		.leaflet-control-zoomslider-body {
-			background-color: $track-color;
-			width: $track-width;
+			background-color: $zoom-slider-track-color;
+			width: $zoom-slider-track-width;
 			border: none;
 		}
 
 		// The knob
 		.leaflet-control-zoomslider-knob {
-			background-color: $slider-color;
+			background-color: $zoom-slider-slider-color;
 			left: -1px;
 			width: 17px;
 			height: 8px;
