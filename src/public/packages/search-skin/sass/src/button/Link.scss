@@ -50,9 +50,9 @@
     }
 
     // The Hover state of button
-    .#{$prefix}btn-link-toolbar-small-over {
+    &-over {
         
-        .#{$prefix}btn-inner-center.#{$prefix}btn-inner {
+        .#{$prefix}btn-inner {
             text-decoration: underline;
         }
     }
