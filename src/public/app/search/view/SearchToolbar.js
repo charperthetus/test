@@ -53,9 +53,7 @@ Ext.define('Savanna.search.view.SearchToolbar', {
 
     onStoreLoad: function() {
         var historyMenu = this.down('#historymenu');
-
         historyMenu.removeAll();
-
         //TODO: look for dupes and do not include them - or, remove at store level
         this.getStore().each(function (search) {
             historyMenu.add({

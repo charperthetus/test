@@ -40,6 +40,8 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
     init: function () {
         this.control({
+
+
             'search_searchcomponent > #searchbar #main_panel #search_form #searchadvanced_btn': {
                 click: this.alignMenuWithTextfield
             },
@@ -145,7 +147,6 @@ Ext.define('Savanna.search.controller.SearchComponent', {
     },
 
     logHistory: function (searchString) {
-
         var store = Ext.data.StoreManager.lookup('searchHistory');
 
         if (store) {
@@ -153,7 +154,10 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                 'query': searchString,
                 'date': Ext.Date.format(new Date(), 'time')
             });
-            store.sync();
+
+            store.load();
+
+            console.log(JSON.encode(store.data.items))
         }
         else {
             Ext.Error.raise('Unable to find "searchHistory" store');
