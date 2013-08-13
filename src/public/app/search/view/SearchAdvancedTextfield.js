@@ -8,12 +8,12 @@
 Ext.define("Savanna.search.view.SearchAdvancedTextfield", {
     extend: "Ext.form.field.Text",
     alias: "widget.searchadvanced_textfield",
-    width: 380,
+    width: 355,
     fieldLabel: 'All of these words:',
     name: 'all_words',
     enableKeyEvents: true,
     itemId: "all_words",
-    labelWidth: 120,
+    labelWidth: 125,
     tabIndex: 1,
 
     getBooleanValue: function () {
