@@ -11,9 +11,5 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
 
     views: [
         'Savanna.search.view.ResultsComponent'
-    ],
-
-    init: function (app) {
-
-    }
+    ]
 });

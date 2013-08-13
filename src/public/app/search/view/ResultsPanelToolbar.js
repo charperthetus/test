@@ -15,10 +15,6 @@ Ext.define('Savanna.search.view.ResultsPanelToolbar', {
         'Ext.data.Store'
     ],
 
-    models: [],
-
-    stores: [],
-
     initComponent: function () {
         Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
         this.callParent(arguments);

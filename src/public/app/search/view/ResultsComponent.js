@@ -14,9 +14,6 @@ Ext.define('Savanna.search.view.ResultsComponent', {
         'Savanna.controller.Factory',
         'Savanna.search.store.DalSources'
     ],
-    stores: [
-
-    ],
     layout:'border',
     defaults: {
         // is collapsible good?  seemed handy.

@@ -19,8 +19,7 @@ Ext.require('Savanna.search.view.ResultsDals');
 describe("Search Results", function () {
 
     var fixtures;
-    var SEARCH_RESULTS_URL = '';
-    var HISTORY_RESULTS_URL = '';
+
     var TEST_SESSION_ID = 'TEST_SESSION_ID';
 
     beforeEach(function () {
@@ -35,10 +34,13 @@ describe("Search Results", function () {
 
     describe('View', function () {
 
+        var search_component = null;
         var component = null;
 
         beforeEach(function () {
-            Ext.create('Savanna.search.view.SearchComponent', { renderTo: 'test-html' });
+            // create a SearchResults store for results tests
+            search_component = Ext.create('Savanna.search.view.SearchComponent', { renderTo: 'test-html' });
+
             component = Ext.create('Savanna.search.view.ResultsComponent', { renderTo: 'test-html' });
         });
 
@@ -46,6 +48,10 @@ describe("Search Results", function () {
             if (component) {
                 component.destroy();
                 component = null;
+            }
+            if (search_component) {
+                search_component.destroy();
+                search_component = null;
             }
         });
 
@@ -102,6 +108,16 @@ describe("Search Results", function () {
             panel = component.queryById('resultspanel');
             grid = panel.queryById("resultspanelgrid");
             sources = component.queryById("resultsdals");
+        });
+
+        afterEach(function()    {
+            var teardown = [component, controller, panel, grid, sources];
+            for (var i=0;i<teardown;i++)   {
+                if (teardown[i]) {
+                    teardown[i].destroy();
+                    teardown[i] = null;
+                }
+            }
         });
 
         it('should have a store behind the grid panel', function () {

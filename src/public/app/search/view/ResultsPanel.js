@@ -15,10 +15,6 @@ Ext.define('Savanna.search.view.ResultsPanel', {
         'Savanna.controller.Factory'
     ],
 
-    stores: [
-        'Savanna.search.store.SearchResults'
-    ],
-
     region:'center',
     header:false,
     layout:'fit',

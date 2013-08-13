@@ -17,7 +17,15 @@ Ext.define('Savanna.search.view.ResultsPanelGrid', {
     store:'Savanna.search.store.SearchResults',
 
     columns: [
-        { text: ' ', xtype:'templatecolumn',  tpl: '<b>{documentFileName}</b><br />{documentSource}<br />{previewString}<br /><br />' }
+        {
+            text: ' ',
+            xtype:'templatecolumn',
+            tpl:    [
+                '<b>{documentFileName}</b><br />',
+                '{documentSource}<br />',
+                '{previewString}<br /><br />'
+            ]
+        }
     ],
 
     header:false,
