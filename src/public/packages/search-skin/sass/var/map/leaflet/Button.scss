@@ -3,15 +3,18 @@
 */ 
 $leaflet-toolbar-font-size: 14px;
 $leaflet-toolbar-font-family: "SickFont";
-$leaflet-toolbar-font-color: #000;
+$leaflet-toolbar-font-color: #464746;
 $leaflet-toolbar-font-color-hover: #0073ae;
 $leaflet-toolbar-font-color-pressed: #0073ae;
 
-$leaflet-toolbar-button-background: #fff;
+$leaflet-toolbar-button-background-position: 0 0;
+$leaflet-toolbar-button-background: #F5F5F5;
 $leaflet-toolbar-button-background-hover: #ccc;
 $leaflet-toolbar-button-background-pressed: #ccc;
+$leaflet-toolbar-background-gradient: #F5F5F5, #ccc;
 
-$leaflet-toolbar-button-border: 1px solid #333;
+$leaflet-toolbar-button-border: 1px solid #999;
+
 
  /*
  *	@runtime CSS
@@ -21,15 +24,19 @@ $leaflet-toolbar-button-border: 1px solid #333;
 	font-size: $leaflet-toolbar-font-size;
 	color: $leaflet-toolbar-font-color;
 
-	/* all Toolbar Buttons */
-	a{
+	/* all Toolbar Buttons. Uses a SASS Wildcard selector to target all draw-draw buttons.*/
+	a[class*='leaflet-draw-draw-'] {
 		background-image: none;
 		background-color: $leaflet-toolbar-button-background;
+		@include background(linear-gradient($leaflet-toolbar-background-gradient));
+		color: $leaflet-toolbar-font-color;
+		background-position: $leaflet-toolbar-button-background-position;
 		&:hover{
 			background-color: $leaflet-toolbar-button-background-hover;
 			color: $leaflet-toolbar-font-color-hover;
 			
 		}
+		
 	}
 	.leaflet-draw-toolbar-button-enabled{
 		background-color: $leaflet-toolbar-button-background-pressed;
