@@ -65,6 +65,7 @@ describe('Search Map', function() {
             beforeEach(function() {
                 e.layer = layer;
                 e.type = 'polyline';
+                e.stopPropagation = function(){};
                 myPanel.add(map);
                 spyOn(map, 'fireEvent').andCallThrough();
                 spyOn(map.editableLayers, 'addLayer').andCallThrough();
@@ -77,11 +78,11 @@ describe('Search Map', function() {
 
             // events need to be run one after another to follow state correctly
             it('should call the right functions', function() {
-                //myPanel.add(map);
+                expect(map.clickOnToolbar(e)).toBeTruthy();
                 map.drawingAddedToMap(e);
                 expect(map.fireEvent).toHaveBeenCalled();
                 expect(map.editableLayers.addLayer).toHaveBeenCalled();
-
+                expect(map.clickOnToolbar(e)).toBeFalsy();
                 //clickOnLayer turns on editMode
                 expect(map.editMode).toBeFalsy();
                 map.clickOnLayer();

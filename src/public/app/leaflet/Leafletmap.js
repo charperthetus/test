@@ -9,6 +9,9 @@ Ext.define('Savanna.leaflet.Leafletmap', {
     myLayer: null,
     myContextMenu: null,
     keydownEvent: null,
+    toolBarElement: null,
+    toolbarDomElement: null,
+    toolbarEnableClass: 'leaflet-draw-toolbar-enabled',
     config:{
         map: null,
         lat: 45.5236,
@@ -69,15 +72,26 @@ Ext.define('Savanna.leaflet.Leafletmap', {
         this.editableLayers.on('contextmenu', this.drawingContextMenu, this);
         this.keydownEvent = Ext.bind(this.keyPressedOnMap, this);
         this.getEl().dom.addEventListener('keydown', this.keydownEvent);
-        this.on('locationSearch:clear', this.deleteDrawing, this)
-    },
 
+        this.toolbarDomElement = Ext.dom.Query.select('.leaflet-draw-toolbar');
+        this.toolBarElement = Ext.get(this.toolbarDomElement[0]);
+        this.toolBarElement.addCls(this.toolbarEnableClass);
+
+        this.clickToolbar = Ext.bind(this.clickOnToolbar, this);
+        Ext.getDom(this.toolBarElement).addEventListener('click', this.clickToolbar, true);
+        this.on('locationSearch:clear', this.deleteDrawing, this);
+    },
+    clickOnToolbar: function(e) {
+        if (!this.toolBarElement.hasCls(this.toolbarEnableClass)){
+            e.stopPropagation();
+            return false;
+        }
+        return true;
+    },
     keyPressedOnMap: function(e) {
         if (e.keyCode === 46 && this.editMode && this.editMode._enabled){  // delete key press in edit mode
             this.editMode.save();
-            this.editableLayers.removeLayer(this.myLayer);
-            this.editMode.disable();
-
+            this.deleteDrawing();
         }
     },
 
@@ -101,12 +115,14 @@ Ext.define('Savanna.leaflet.Leafletmap', {
         if (this.editMode && this.editMode._enabled) {
             this.editMode.disable();
         }
+        this.toolBarElement.addCls(this.toolbarEnableClass);
     },
 
     drawingAddedToMap: function(e) {
         this.myLayer = e.layer;
         this.fireEvent('draw:created', e); //update with new points
         this.editableLayers.addLayer(this.myLayer);
+        this.toolBarElement.removeCls(this.toolbarEnableClass);
     },
 
     mapGotFocus: function() {
