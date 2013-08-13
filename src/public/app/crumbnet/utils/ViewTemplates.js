@@ -35,9 +35,11 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
         var nodeTemplate = gmake(go.Node, go.Panel.Auto,
             {
                 selectionAdorned: false,
+                locationSpot: go.Spot.Center, //Makes it so when you create a node it is centered on your cursor
                 toLinkable: true,
                 mouseEnter: this.nodeMouseEnter,
-                mouseLeave: this.nodeMouseLeave
+                mouseLeave: this.nodeMouseLeave,
+                mouseDragEnter: this.nodeDragEnter
             },
             //Bind the location to the model text loc so when we add new nodes to the model with a location it will show correctly
             new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
@@ -86,7 +88,7 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
                 toLinkable: true,
                 cursor: 'pointer',
                 imageStretch: go.GraphObject.Uniform
-            }, new go.Binding('source', 'imageData', function(data){console.log(data);return data} )) );
+            }, new go.Binding('source', 'imageData' )) );
 
         var nodeTemplateMap = new go.Map();
         nodeTemplateMap.add('standard', nodeTemplate);
@@ -142,6 +144,10 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
 
     convertTypeToImage: function(category) {
         return 'resources/images/' + category + 'Icon.svg';
+    },
+
+    nodeDragEnter: function(e, obj) {
+        console.log('nodeDragEnter')
     },
 
     nodeMouseEnter: function(e, obj) {

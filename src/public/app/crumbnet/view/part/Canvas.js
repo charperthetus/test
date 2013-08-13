@@ -44,6 +44,8 @@ Ext.define('Savanna.crumbnet.view.part.Canvas', {
 
         this.diagram.layout = go.GraphObject.make(go.ForceDirectedLayout, { isOngoing: false });
 
+        this.diagram.toolManager.clickCreatingTool.archetypeNodeData = { text:"Fact", type:"Fact", category:"standard", percent: 10 };
+
         this.diagram.toolManager.linkingTool.archetypeLinkData = {category: 'Orthogonal', text: 'New Link'};
         this.diagram.toolManager.linkingTool.direction = go.LinkingTool.ForwardsOnly;
         this.diagram.toolManager.linkingTool.portGravity = 10;
