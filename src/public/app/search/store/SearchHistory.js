@@ -28,8 +28,6 @@ Ext.define('Savanna.search.store.SearchHistory', {
         this.setProxy({
             type: 'savanna-cors',
             //url: Savanna.Config.savannaUrlRoot + 'rest/search/history',
-            // Use this if you don't have Savanna 3.4 running
-            // NOTE: two tests in SpecRunner fail in this circumstance, but will work once the dev server is up and running
             url: 'app/assets/data/testSearchHistory.json',
             addSessionId: false,
             noCache: false,
@@ -39,7 +37,7 @@ Ext.define('Savanna.search.store.SearchHistory', {
 
             writer: {
                 type: 'json',
-                allowSingle: false
+                allowSingle: true
             }
         });
     }

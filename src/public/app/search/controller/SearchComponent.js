@@ -157,7 +157,6 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
             store.load();
 
-            console.log(JSON.encode(store.data.items))
         }
         else {
             Ext.Error.raise('Unable to find "searchHistory" store');
