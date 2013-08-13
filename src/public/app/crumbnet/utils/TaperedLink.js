@@ -1,3 +1,4 @@
+/* global Ext: false, go: false */
 //TODO - Can we include a class here without doing a Ext.define
 Ext.define('Savanna.crumbnet.utils.TaperedLink', {});
 
@@ -41,14 +42,12 @@ TaperedLink.prototype.makeGeometry = function () {
     p1y = p1.y + (fromHoriz ? 3 : 0);
     p2x = p2.x + (toHoriz ? 0 : 2);
     p2y = p2.y + (toHoriz ? 2 : 0);
-    p3x = p3.x + (toHoriz ? 0 : 1);
-    p3y = p3.y + (toHoriz ? 1 : 0);
 
     var seg2 = new go.PathSegment(go.PathSegment.Bezier, p0x, p0y, p2x, p2y, p1x, p1y).close();
     fig.segments.add(seg2);
 
     var geo = new go.Geometry();
     geo.figures.add(fig);
-    var offset = geo.normalize();
+
     return geo;
 };

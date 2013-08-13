@@ -1,10 +1,12 @@
 /*
  *  IMPORTS
  */
-@import 'FlatTab.scss';
-@import 'Link.scss';
-@import '../mixin-spacing-classes.scss';
-@import 'SearchButton.scss';
+@import '_thetus-button';
+@import 'FlatTab';
+@import 'Link';
+@import '../mixin-spacing-classes';
+@import 'SearchButton';
+@import 'CommitButton';
 
 /*
  *  Runtime

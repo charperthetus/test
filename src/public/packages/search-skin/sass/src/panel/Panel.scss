@@ -1,10 +1,11 @@
 /*
  *	Imports
  */
-@import 'DALFilters.scss';
-@import 'DALGroups.scss';
-@import 'FlatMenu.scss';
-@import 'MapSearchPanel.scss';
+@import 'DALFilters';
+@import 'DALGroups';
+@import 'FlatMenu';
+@import 'MapSearchPanel';
+@import 'AdvancedSearchPanel';
 
 // A.S. - This is to style the Top Search Bar background
 @import '../mixin-search-prime.scss';

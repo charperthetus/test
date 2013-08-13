@@ -29,21 +29,25 @@ Ext.define('Savanna.search.view.SearchForm', {
             itemId: 'searchadvanced_btn',
             menu: {
                 xtype: 'panel',
+                cls: 'advanced-search-panel',
                 floating: true,
                 plain: true,
+                border: false,
                 itemId: 'searchadvanced_menu',
-                minWidth: 428,
+                minWidth: 400,
                 enableKeyNav:false,
                 items: [
                     {
                         xtype: 'button',
+                        border: false,
                         text: 'Close',
-                        itemId: 'close_panel',
-                        'float': 'right'
+                        ui: 'link-toolbar',
+                        itemId: 'close_panel'
                     },
                     {
                         xtype: 'box',
-                        html: 'Enter advanced keyword searches.<br /><i>Note: Not all search sources may support all advanced options.</i><br />&nbsp;'
+                        html: '<p class="instructions">Enter advanced keyword searches.</p>' +
+                              '<p class="instructions italic"> Note: Not all search sources may support all advanced options.</p>'
                     },
                     {
                         xtype: 'container',
@@ -83,20 +87,19 @@ Ext.define('Savanna.search.view.SearchForm', {
                             },
                             {
                                 xtype: 'panel',
-                                width: 380,
+                                width: 355,
+                                height: 30,
                                 layout: 'absolute',
                                 itemId: 'submit_panel',
-                                bodyStyle: {
-                                    background: 'transparent',
-                                    border: 'none'
-                                },
+                                border: false,
                                 items: [
                                     {
                                         xtype: 'button',
+                                        ui: 'commit',
                                         itemId: 'advancedsearch_submit',
                                         text: 'Search',
                                         width: 80,
-                                        x: 300,
+                                        x: 275,
                                         tabIndex: 5
                                     }
                                 ]
