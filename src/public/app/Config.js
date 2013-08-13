@@ -5,6 +5,8 @@
  *
  * Right now this file is static, but in future it may be dynamically generated (if we create an "admin" interface to
  * manage these sorts of settings)
+ *
+ * @tag config
  */
 Ext.define('Savanna.Config', {
     singleton: true,
