@@ -145,6 +145,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
     },
 
     logHistory: function (searchString) {
+
         var store = Ext.data.StoreManager.lookup('searchHistory');
 
         if (store) {
@@ -152,7 +153,6 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                 'query': searchString,
                 'date': Ext.Date.format(new Date(), 'time')
             });
-
             store.sync();
         }
         else {

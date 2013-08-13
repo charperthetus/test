@@ -492,7 +492,7 @@ describe('Search Component', function () {
 
         describe('sending history data', function() {
             beforeEach(function() {
-                server.respondWith('POST', store.getProxy().url, {});
+                server.respondWith('POST', store.getProxy().url, fixtures.historyResults);
             });
 
             it('should send our history records and get them back from the server', function() {
@@ -503,17 +503,7 @@ describe('Search Component', function () {
                 store.sync();
 
                 server.respond({
-                    errorOnInvalidRequest: true,
-                    returnBody: true, // since the service basically gives us back our searches...
-                    reportBody: false, // enable if you want to see the request body in the console
-                    testBody: function(body) {
-                        var json = JSON.parse(body);
-                        if (json.length !== fixtures.historyResults.length) {
-                            return 'Expected request body to have ' + fixtures.historyResults.length + ' records, but had ' + json.length;
-                        }
-
-                        return '';
-                    }
+                    errorOnInvalidRequest: true
                 });
 
                 expect(store.getCount()).toBe(3);
@@ -525,17 +515,7 @@ describe('Search Component', function () {
                 store.sync();
 
                 server.respond({
-                    errorOnInvalidRequest: true,
-                    returnBody: true, // since the service basically gives us back our searches...
-                    reportBody: false, // enable if you want to see the request body in the console
-                    testBody: function(body) {
-                        var json = JSON.parse(body);
-                        if (!Array.isArray(json)) {
-                            return 'Expected an array but got: ' + body;
-                        }
-
-                        return '';
-                    }
+                    errorOnInvalidRequest: true
                 });
 
                 expect(store.getCount()).toBe(1);

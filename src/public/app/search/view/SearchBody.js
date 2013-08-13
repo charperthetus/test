@@ -90,7 +90,6 @@ Ext.define('Savanna.search.view.SearchBody', {
         }
     ],
     initComponent: function () {
-        Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
         this.callParent(arguments);
     }
 });
