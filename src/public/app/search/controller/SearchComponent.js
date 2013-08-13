@@ -119,7 +119,6 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         this.getSearchBar().store.removeAll();
         this.getSearchBar().store.proxy.jsonData = Ext.JSON.encode(searchObj.data);
 
-        console.log(this.getSearchBar().store.proxy.jsonData);
         this.getSearchBar().store.load({
             callback: this.searchCallback,
             scope: this

@@ -9,6 +9,7 @@ Ext.define('Savanna.search.view.SearchBody', {
         'Savanna.search.view.SearchDals',
         'Savanna.search.view.SearchMap',
         'Savanna.search.view.ResultsComponent',
+        'Savanna.search.controller.ResultsComponent',
         'Savanna.controller.Factory'
     ],
 

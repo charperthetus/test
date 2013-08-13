@@ -1,3 +1,4 @@
+//noinspection JSValidateTypes
 /**
  * Created with IntelliJ IDEA.
  * User: ksonger
@@ -5,52 +6,86 @@
  * Time: 12:31 PM
  * To change this template use File | Settings | File Templates.
  */
-Ext.define("Savanna.search.view.ResultsPanelToolbar", {
-    extend: "Ext.toolbar.Toolbar",
-    alias: "widget.search_resultspaneltoolbar",
-    requires:[
-        'Savanna.controller.Factory'
+Ext.define('Savanna.search.view.ResultsPanelToolbar', {
+    extend: 'Ext.toolbar.Toolbar',
+    alias: 'widget.search_resultspaneltoolbar',
+
+    requires: [
+        'Savanna.controller.Factory',
+        'Ext.data.Store'
     ],
-    models:[],
-    stores:[],
-    initComponent:function()    {
+
+    models: [],
+
+    stores: [],
+
+    initComponent: function () {
         Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
         this.callParent(arguments);
     },
-    items:  [
+
+    items: [
         {
-            xtype:"tbtext",
-            text:"Sort by:",
-            itemId:"sortby_combobox_label"
+            xtype: 'tbtext',
+            text: 'Sort by:',
+            itemId: 'sortby_combobox_label'
         },
         {
-            xtype: "combobox",
-            itemId:"resultsSortByCombobox"
+            xtype: 'combobox',
+            itemId: 'resultsSortByCombobox'
+            /* Breaks jasmine tests, not sure why yet.  Probably move it to the controller
+             store: Ext.create('Ext.data.Store', {
+             fields: ['sortby', 'name'],
+             data : [
+             {'sortby':'relevance', 'name':'Relevance'}
+             ]
+             }),
+             displayField: 'name',
+             valueField: 'sortby',
+             value:'relevance'
+             */
         },
         {
-            xtype:"tbtext",
-            text:"Results Per Page:",
-            itemId:"pagesize_combobox_label"
+            xtype: 'tbtext',
+            text: 'Results Per Page:',
+            itemId: 'pagesize_combobox_label'
         },
         {
-            xtype: "combobox",
-            itemId:"resultsPageSizeCombobox"
+            xtype: 'combobox',
+            itemId: 'resultsPageSizeCombobox'
+            /* Breaks jasmine tests, not sure why yet.  Probably move it to the controller
+             store: Ext.create('Ext.data.Store', {
+             fields: ['count', 'name'],
+             data : [
+             {'count':'20', 'name':'20'},
+             {'count':'50', 'name':'50'},
+             {'count':'100', 'name':'100'}
+             ]
+             }),
+             displayField: 'name',
+             valueField: 'count',
+             value:'20'
+             */
         },
         {
             xtype: 'tbfill'
-        },
-        // PLACEHOLDER ICONS
+        }
+        ,
+// JUST PLACEHOLDER ICONS
         {
             glyph: 61786,
             ui: 'flat-toolbar-button'
-        },
+        }
+        ,
         {
             glyph: 61746,
             ui: 'flat-toolbar-button'
-        },
+        }
+        ,
         {
             glyph: 61786,
             ui: 'flat-toolbar-button'
         }
     ]
 })
+;

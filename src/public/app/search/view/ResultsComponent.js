@@ -9,15 +9,17 @@ Ext.define('Savanna.search.view.ResultsComponent', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.search_resultscomponent',
     requires: [
-        'Savanna.search.view.ResultsSources',
+        'Savanna.search.view.ResultsDals',
         'Savanna.search.view.ResultsPanel',
-        'Savanna.controller.Factory'
+        'Savanna.controller.Factory',
+        'Savanna.search.store.DalSources'
     ],
     stores: [
 
     ],
     layout:'border',
     defaults: {
+        // is collapsible good?  seemed handy.
         collapsible: true,
         split: true
     },
@@ -26,10 +28,10 @@ Ext.define('Savanna.search.view.ResultsComponent', {
         Savanna.controller.Factory.getController('Savanna.search.controller.ResultsComponent');
     },
     items: [{
-        xtype:'search_resultssources',
-        itemId:'resultssources'
+        xtype:'search_resultsdals',
+        itemId:'resultsdals'
     },{
         xtype:'search_resultspanel',
         itemId:'resultspanel'
     }]
-})
+});
