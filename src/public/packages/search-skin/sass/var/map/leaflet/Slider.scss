@@ -2,18 +2,24 @@
  *	Styles the sliders inside of Leaflet.js
  *
  *	@author jgriffith
+ *	@edits astump 8/13/2013
  */
 
 /*
  *	@private variables
  */
-$zoom-slider-background: rgba(0, 0, 0, 0.5);
-$zoom-slider-radius: 0;
-$zoom-slider-color: white;
-$zoom-slider-slider-color: #f2f2f2;
+$zoom-slider-background: rgba(122,122,122, 0.6);
+$zoom-slider-radius: 12px;
+$zoom-slider-color: #fff;
+$zoom-slider-slider-color: #333;
 $zoom-slider-track-color: $zoom-slider-slider-color;
 $zoom-slider-track-width: 1px;
 $zoom-slider-button-margin: 1px;
+$zoom-slider-button-border-width: 0 1px;
+$zoom-slider-button-border-color: #333;
+$zoom-slider-button-border-style: solid;
+$zoom-slider-width: 22px;
+$zoom-slider-font-size: 20px;
 
 /*
  *	@runtime
@@ -25,21 +31,37 @@ $zoom-slider-button-margin: 1px;
 
 	.leaflet-control-zoomslider {
 		box-shadow: none;
+		
+		.leaflet-control-zoomslider-in, .leaflet-control-zoomslider-out{
+			font-family: $Open-Sans-Bold;
+			font-size: $zoom-slider-font-size;
+			font-weight: normal;
+		}
 
+		a{ width: $zoom-slider-width;}
 		// Plus and Minus Buttons
 		a:first-child, a:last-child {
-			border-top-left-radius: $zoom-slider-radius;
-			border-top-right-radius: $zoom-slider-radius;
-			border-bottom-left-radius: $zoom-slider-radius;
-			border-bottom-right-radius: $zoom-slider-radius;
 			background: $zoom-slider-background;
-			color: $zoom-slider-color;			
+			color: $zoom-slider-color;
+			&:hover{
+				color: darken($zoom-slider-color, 90%);
+			}		
 		}
 		a:first-child {
-			margin-bottom: $zoom-slider-button-margin;
+			border-top-left-radius: $zoom-slider-radius;
+			border-top-right-radius: $zoom-slider-radius;
+			border-width: 1px 1px 0px 1px;
+			border-style: $zoom-slider-button-border-style;
+			border-color: $zoom-slider-button-border-color;
+			border-bottom-width: 0;
+
 		}
 		a:last-child {
-			margin-top: $zoom-slider-button-margin;
+			border-bottom-left-radius: $zoom-slider-radius;
+			border-bottom-right-radius: $zoom-slider-radius;
+			border-width: 0 1px 1.5px 1px;
+			border-style: $zoom-slider-button-border-style;
+			border-color: $zoom-slider-button-border-color;
 		}
 
 		// The sliding "pipe"
@@ -47,6 +69,9 @@ $zoom-slider-button-margin: 1px;
 		.leaflet-control-zoomslider-body {
 			background: $zoom-slider-background;
 			color: $zoom-slider-color;	
+			border-width: $zoom-slider-button-border-width;
+			border-style: $zoom-slider-button-border-style;
+			border-color: $zoom-slider-button-border-color;
 		}
 
 		// The knob "track"
@@ -58,15 +83,18 @@ $zoom-slider-button-margin: 1px;
 
 		// The knob
 		.leaflet-control-zoomslider-knob {
-			background-color: $zoom-slider-slider-color;
-			left: -1px;
-			width: 17px;
-			height: 8px;
-			border-radius: none;
-			border-bottom-color: #333333;
-			border-right-color: #333333;
-			border-top-color: #999999;
-			border-left-color: #999999;
+			background-color: $zoom-slider-color;
+			width: 12px;
+			height: 12px;
+			border-radius: 10px;
+			border-color: #999999;
+			border-size: 1px;
+		}
+	}
+	.leaflet-bar{
+
+		a, a:hover{
+			border-bottom: none;
 		}
 	}
 }
