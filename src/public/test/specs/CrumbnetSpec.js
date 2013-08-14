@@ -292,7 +292,7 @@ describe('Savanna.crumbnet', function() {
                 diagram = null;
 
             beforeEach(function() {
-                menuButton = view.down('menuitem[type="standard"]');
+                menuButton = view.down('menuitem[type="Orthogonal"]'); //TODO - figure out how to get the first menu item from the menu instead of explicitly by name.
                 menu = view.down('#linkStyleMenu');
                 diagram = controller.getDiagramForMenu(menu);
             });
@@ -514,12 +514,15 @@ describe('Savanna.crumbnet', function() {
             it('should set up a canvas node template', function() {
                 var canvas = view.down('go-graph_canvas');
 
-                expect(canvas.diagram.nodeTemplate).not.toBeUndefined();
+                expect(canvas.diagram.nodeTemplateMap).not.toBeUndefined();
 
-                var nodeTemplate = canvas.diagram.nodeTemplate;
+                var nodeTemplateMap = canvas.diagram.nodeTemplateMap;
 
-                expect(nodeTemplate.findObject('icon')).not.toBeNull();
-                expect(nodeTemplate.findObject('label')).not.toBeNull();
+                var iter = nodeTemplateMap.iterator;
+                iter.next();
+                var firstItem = iter.value;
+                expect(firstItem.findObject('icon')).not.toBeNull();
+                expect(firstItem.findObject('label')).not.toBeNull();
             });
 
             it('should NOT set up an overview panel by default', function() {
