@@ -16,8 +16,6 @@ Ext.define('Savanna.search.store.SearchHistory', {
 
     autoLoad: false,
 
-    restAction: 'POST',
-
     constructor: function () {
         this.callParent(arguments);
 
@@ -25,7 +23,7 @@ Ext.define('Savanna.search.store.SearchHistory', {
             type: 'savanna-cors',
             url: Savanna.Config.savannaUrlRoot + 'rest/search/history',
             //url: 'app/assets/data/testSearchHistory.json',
-            jsonData:null,
+
             addSessionId: false,
             noCache: false,
             startParam: undefined,
