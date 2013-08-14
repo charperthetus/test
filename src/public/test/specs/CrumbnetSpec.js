@@ -585,6 +585,10 @@ describe('Savanna.crumbnet', function() {
                 });
             });
 
+            it('should be shown initially', function() {
+                expect(paletteMenu.getCollapsed()).toBeFalsy();
+            });
+
             describe('When there are no templates', function() {
 
                 beforeEach(function() {
