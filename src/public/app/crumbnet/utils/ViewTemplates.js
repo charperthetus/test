@@ -1,8 +1,9 @@
-/* global Ext: false, go: false */
+/* global Ext: false, go: false, Savanna: true, TaperedLink: false */
 Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
     singleton: true,
 
     requires: [
+        'Savanna.Config',
         'Savanna.crumbnet.utils.TaperedLink'
     ],
 
@@ -47,7 +48,7 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
             gmake(go.Panel, go.Panel.Vertical,
                 gmake(go.Panel, go.Panel.Auto,
                     gmake(go.Shape, { figure: 'Rectangle', fill: 'transparent', stroke: null, width: 52, height: 52 }),
-                    gmake(go.Shape, { fill: 'blue', stroke: null, alignment: go.Spot.BottomLeft }, new go.Binding('geometry', 'percent', function(p){ return makeCircle(p,52) }  )),
+                    gmake(go.Shape, { fill: 'blue', stroke: null, alignment: go.Spot.BottomLeft }, new go.Binding('geometry', 'percent', function(p){ return makeCircle(p,52); }  )),
                     icon,
                     gmake(go.Shape, { figure: 'circle', fill: null, strokeWidth: 3, width: 49 }, new go.Binding('stroke', 'isSelected', function (s) { return (s ? 'cornflowerblue' : null); }).ofObject('') ),
                     this.makePort('T', go.Spot.TopRight, 0),
@@ -63,13 +64,13 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
         );
 
         function makeCircle(percent, size){
-            var angle = 360 * (percent / 100)
+            var angle = 360 * (percent / 100);
             var newAngle = angle > 180 ? angle - 180 : angle + 180;
             var radians = newAngle * Math.PI / 180; //radians = angle * PI / 180
             var radius = size / 2;
             var x = radius * Math.cos(radians) + radius;
             var y = - radius * Math.sin(radians);
-            var semicircle = go.Geometry.parse("M" + radius + ",-" + radius + " h-" + radius + " a" + radius + "," + radius + " 0 " + (percent > 50 ? 1 : 0) + ",0 "+ x + "," + y + " z", true);
+            var semicircle = go.Geometry.parse('M' + radius + ',-' + radius + ' h-' + radius + ' a' + radius + ',' + radius + ' 0 ' + (percent > 50 ? 1 : 0) + ',0 '+ x + ',' + y + ' z', true);
             return semicircle;
         }
 
@@ -103,7 +104,7 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
             },
             gmake(go.Panel, go.Panel.Vertical,
                 gmake(go.Panel, go.Panel.Auto,
-                    gmake(go.Shape, { figure: "Rectangle", fill: "transparent", stroke: null, width: 52, height: 52 }),
+                    gmake(go.Shape, { figure: 'Rectangle', fill: 'transparent', stroke: null, width: 52, height: 52 }),
                     icon
                 ),
                 textBlock)
@@ -122,7 +123,7 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
     },
 
     convertCategoryToImage: function(category) {
-        return 'resources/images/' + category + 'Icon.svg';
+        return  Savanna.Config.resourcesPathPrefix + 'resources/images/' + category + 'Icon.svg';
     },
 
     nodeMouseEnter: function(e, obj) {
@@ -172,7 +173,7 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
                 { isPanelMain: true,
                     stroke: '#303B45',
                     strokeWidth: 2.5}),
-            gmake(go.TextBlock,  // the "from" label
+            gmake(go.TextBlock,  // the 'from' label
                 { textAlign: 'center',
                     font: 'bold 14px sans-serif',
                     stroke: '#1967B3',
@@ -188,7 +189,7 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
             { routing: go.Link.Normal, fromEndSegmentLength: 0, toEndSegmentLength: 0 },
             gmake(go.Shape,
                 { strokeWidth: 3, stroke: 'skyblue' } ),
-            gmake(go.TextBlock,  // the "from" label
+            gmake(go.TextBlock,  // the 'from' label
                 { textAlign: 'center',
                     font: 'bold 14px sans-serif',
                     stroke: '#1967B3',
@@ -200,12 +201,12 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
             go.Link.Orthogonal,
             { fromEndSegmentLength: 1,
                 toEndSegmentLength: 1,
-                selectionObjectName: "Path",
+                selectionObjectName: 'Path',
                 relinkableFrom: true,
                 relinkableTo: true },
             gmake(go.Shape,
                 { isPanelMain: true,
-                    name: "Path",
+                    name: 'Path',
                     stroke: null,
                     fill: 'blue' }
             )));
@@ -236,7 +237,7 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
         var fromData = fromNode.data;
 
         //TODO - Need to figure out which properties should be copied into the new node by default (ie category, percent)
-        // create a new "State" data object, positioned off to the right of the adorned Node
+        // create a new 'State' data object, positioned off to the right of the adorned Node
         var toData = { text: 'new', category: fromData.category, key: Ext.id(), percent: 10 };
         var fromLocation = fromNode.location;
         var siblingNodes = fromNode.findNodesOutOf();
@@ -262,7 +263,7 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
             toData.loc = x + ' ' + (y + 70);
         }
         else {
-            toData.loc = (fromLocation.x + 200) + ' ' + (fromLocation.y + 50);  // the "loc" property is a string, not a Point object
+            toData.loc = (fromLocation.x + 200) + ' ' + (fromLocation.y + 50);  // the 'loc' property is a string, not a Point object
         }
 
         // add the new node data to the model
