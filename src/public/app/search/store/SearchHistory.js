@@ -37,7 +37,7 @@ Ext.define('Savanna.search.store.SearchHistory', {
 
             writer: {
                 type: 'json',
-                allowSingle: true
+                allowSingle: false
             }
         });
     }

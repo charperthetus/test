@@ -66,7 +66,6 @@ Ext.define('Savanna.proxy.Cors', {
             timeout: this.timeout,
             scope: this,
             callback: this.createRequestCallback(request, operation, callback, scope),
-            jsonData:this.jsonData,
             method: this.getMethod(request)
         });
 

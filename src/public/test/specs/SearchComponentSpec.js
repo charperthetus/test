@@ -482,7 +482,7 @@ describe('Search Component', function () {
                 store.load();
                 server.respond({
                     errorOnInvalidRequest: true
-                })
+                });
             });
 
             it('should get same number of records as in our fixture', function() {
@@ -491,8 +491,9 @@ describe('Search Component', function () {
         });
 
         describe('sending history data', function() {
+
             beforeEach(function() {
-                server.respondWith('POST', store.getProxy().url, fixtures.historyResults);
+                server.respondWith('POST', store.getProxy().url, {});
             });
 
             it('should send our history records and get them back from the server', function() {
@@ -503,6 +504,16 @@ describe('Search Component', function () {
                 store.sync();
 
                 server.respond({
+                    returnBody: true, // since the service basically gives us back our searches...
+                    reportBody: true, // enable if you want to see the request body in the console
+                    testBody: function(body) {
+                        var json = JSON.parse(body);
+                        if (json.length !== fixtures.historyResults.length) {
+                            return 'Expected request body to have ' + fixtures.historyResults.length + ', but got ' + json.length;
+                        }
+
+                        return '';
+                    },
                     errorOnInvalidRequest: true
                 });
 
@@ -515,6 +526,16 @@ describe('Search Component', function () {
                 store.sync();
 
                 server.respond({
+                    returnBody: true, // since the service basically gives us back our searches...
+                    reportBody: false, // enable if you want to see the request body in the console
+                    testBody: function(body) {
+                        var json = JSON.parse(body);
+                        if (!Array.isArray(json)) {
+                            return 'Expected an array but got ' + body;
+                        }
+
+                        return '';
+                    },
                     errorOnInvalidRequest: true
                 });
 

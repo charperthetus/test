@@ -155,8 +155,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                 'date': Ext.Date.format(new Date(), 'time')
             });
 
-            store.load();
-
+            store.sync();
         }
         else {
             Ext.Error.raise('Unable to find "searchHistory" store');
