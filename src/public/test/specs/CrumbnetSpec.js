@@ -1,6 +1,7 @@
-/* global Ext: false, describe: false, beforeEach: false, afterEach: false, createTestDom: false, cleanTestDom: false,
-          it: false, expect: false, Savanna: false, spyOn: false, go: false, ThetusTestHelpers: false, waitsFor: false,
-          runs: false, sinon: false */
+/* global Ext: false, describe: false, ExtSpec: false,
+          beforeEach: false, afterEach: false, it: false, expect: false, spyOn: false, runs: false, sinon: false, waitsFor: false,
+          ThetusTestHelpers: false, setupNoCacheNoPagingStore: false, createTestDom: false, cleanTestDom: false, Savanna: false,
+          go: false */
 Ext.require('Savanna.crumbnet.controller.CrumbnetController');
 Ext.require('Savanna.crumbnet.utils.ViewTemplates');
 
@@ -14,6 +15,8 @@ describe('Savanna.crumbnet', function() {
 
         fixtures = Ext.clone(ThetusTestHelpers.Fixtures.Crumbnet);
         server = new ThetusTestHelpers.FakeServer(sinon);
+
+        Savanna.Config.resourcesPathPrefix = '/';
     });
 
     afterEach(function() {
@@ -500,9 +503,8 @@ describe('Savanna.crumbnet', function() {
         afterEach(function() {
             if (view && view.destroy) {
                 view.destroy();
+                view = null;
             }
-
-            view = null;
 
             Ext.data.StoreManager.remove(store);
 
@@ -569,11 +571,15 @@ describe('Savanna.crumbnet', function() {
                 expect(paletteMenu instanceof Savanna.crumbnet.view.part.PaletteMenu).toBeTruthy();
             });
 
+            it('should be a subclass of a panel so it can be made collapsible', function() {
+                expect(paletteMenu instanceof Ext.panel.Panel).toBeTruthy();
+            });
+
             it('should update the palette canvas when we expand a panel in the Accordion', function() {
                 var lastPalettePanel = paletteMenu.down('crumbnet_part_palette-group:last');
-                var requestUpdateSpy = spyOn(lastPalettePanel, 'requestPaletteUpdate').andCallThrough();
+                var requestUpdateSpy = spyOn(lastPalettePanel, 'requestPaletteUpdate');
 
-                lastPalettePanel.expand();
+                lastPalettePanel.fireEvent('expand');
 
                 // NOTE: since expand() is asychronous, we have to wait for our spy to be called
                 waitsFor(function() {
@@ -583,6 +589,10 @@ describe('Savanna.crumbnet', function() {
                 runs(function() {
                     expect(requestUpdateSpy).toHaveBeenCalled();
                 });
+            });
+
+            it('should be shown initially', function() {
+                expect(paletteMenu.getCollapsed()).toBeFalsy();
             });
 
             describe('When there are no templates', function() {

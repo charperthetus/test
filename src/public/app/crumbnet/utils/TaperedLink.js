@@ -48,6 +48,7 @@ TaperedLink.prototype.makeGeometry = function () {
 
     var geo = new go.Geometry();
     geo.figures.add(fig);
+    geo.normalize();
 
     return geo;
 };
