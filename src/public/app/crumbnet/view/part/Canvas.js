@@ -3,20 +3,21 @@ Ext.define('Savanna.crumbnet.view.part.Canvas', {
     extend: 'Ext.Component',
     alias: 'widget.go-graph_canvas',
 
+    mixins: {
+        storeable: 'Savanna.mixin.Storeable'
+    },
+
     store: 'Savanna.crumbnet.store.Graph',
 
     diagram: null,
 
     initComponent: function() {
+        this.callParent(arguments);
+
         Savanna.controller.Factory.getController('Savanna.crumbnet.controller.CrumbnetController');
 
         // NOTE: borrowed from Ext.panel.Table (abbreviated version of how it uses a store for it's data backend)
-        this.store = Ext.data.StoreManager.lookup(this.store || 'ext-empty-store');
-
-        this.mon(this.store, {
-            load: this.onStoreLoad,
-            scope: this
-        });
+        this.mixins.storeable.initStore.call(this);
     },
 
     onRender: function() {
