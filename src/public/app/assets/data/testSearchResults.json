@@ -556,6 +556,7 @@
     "results": [
         {
             "ingestionDate": 1370025360568,
+            "totalResults": 848,
             "previewString": "guide dogs, utility dogs, assistance dogs, hearing dogs, and psychological therapy dogs provide assistance",
             "documentFileName": "Dog",
             "producer": "Unknown",

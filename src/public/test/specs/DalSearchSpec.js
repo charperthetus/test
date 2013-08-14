@@ -13,6 +13,7 @@ Ext.require('Savanna.search.view.searchDals.CustomGroup');
 Ext.require('Savanna.search.view.searchDals.CustomSearchGroupForm');
 Ext.require('Savanna.search.view.searchDals.SearchOptions');
 
+
 describe('Dal Search', function() {
     var DAL_SOURCES_URL = 'http://thedevsav1.thetuscorp.com:8080/SavannaX//rest/search/sources;jsessionid=undefined',
         fixtures = {};
@@ -104,10 +105,6 @@ describe('Dal Search', function() {
             }
 
             view = null;
-        });
-
-        it('initComponent should ask for a controller', function() {
-            expect(Savanna.controller.Factory.getController).toHaveBeenCalledWith('Savanna.search.controller.SearchComponent');
         });
     });
 

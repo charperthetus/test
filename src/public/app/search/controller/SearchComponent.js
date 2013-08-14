@@ -40,6 +40,8 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
     init: function () {
         this.control({
+
+
             'search_searchcomponent > #searchbar #main_panel #search_form #searchadvanced_btn': {
                 click: this.alignMenuWithTextfield
             },
@@ -118,6 +120,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
         this.getSearchBar().store.removeAll();
         this.getSearchBar().store.proxy.jsonData = Ext.JSON.encode(searchObj.data);
+
         this.getSearchBar().store.load({
             callback: this.searchCallback,
             scope: this
@@ -140,7 +143,6 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
     showResultsPage: function () {
         var resultsBtn = Savanna.getApplication().viewport.queryById('main').down('#resultsbutton');
-
         resultsBtn.fireEvent('click', resultsBtn);
     },
 

@@ -29,7 +29,15 @@ Ext.define('Savanna.search.store.SearchResults', {
             noCache: false,
             startParam: undefined,
             limitParam: undefined,
-            pageParam: undefined
+            pageParam: undefined,
+
+            reader: {
+                type: 'json',
+                root:"results",
+                // why this no worky?  I'll figure it out...
+                totalProperty:"totalResults"
+            }
+
             // END DEV SETTINGS
         });
     }
