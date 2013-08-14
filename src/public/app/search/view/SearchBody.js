@@ -42,7 +42,7 @@ Ext.define('Savanna.search.view.SearchBody', {
                         },
                         {
                             title: 'Location',
-
+                            itemId: 'searchMap',
                             xtype: 'search_searchmap'
                         }
                     ]
@@ -89,7 +89,7 @@ Ext.define('Savanna.search.view.SearchBody', {
         }
     ],
     initComponent: function () {
-        Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
+        //Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
         this.callParent(arguments);
     }
 });
