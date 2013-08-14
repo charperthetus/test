@@ -26,5 +26,5 @@ Ext.define('Savanna.Config', {
     // number of past search terms to store in recent history
     searchHistoryPageSize: 10,
 
-    resourcesPathPrefix: '/'
+    resourcesPathPrefix: ''
 });
