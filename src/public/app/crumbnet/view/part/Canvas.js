@@ -10,7 +10,6 @@ Ext.define('Savanna.crumbnet.view.part.Canvas', {
     initComponent: function() {
         Savanna.controller.Factory.getController('Savanna.crumbnet.controller.CrumbnetController');
 
-        // NOTE: borrowed from Ext.panel.Table (abbreviated version of how it uses a store for it's data backend)
         this.store = Ext.data.StoreManager.lookup(this.store || 'ext-empty-store');
 
         this.mon(this.store, {
