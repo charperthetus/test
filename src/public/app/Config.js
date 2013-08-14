@@ -24,5 +24,7 @@ Ext.define('Savanna.Config', {
     dalSourcesUrl: '/rest/search/sources',
 
     // number of past search terms to store in recent history
-    searchHistoryPageSize: 10
+    searchHistoryPageSize: 10,
+
+    resourcesPathPrefix: '/'
 });

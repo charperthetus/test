@@ -10,6 +10,10 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
     extend: 'Ext.toolbar.Toolbar',
     alias: 'widget.crumbnet_part_toolbar',
 
+    requires: [
+        'Savanna.Config'
+    ],
+
     width: '100%',
 
     items: [],
@@ -30,13 +34,13 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
             },
             { xtype: 'tbfill' },
             // TODO: this needs to be converted to use glyphs instead of icons...
-            { type: 'zoomIn', icon:'resources/images/zoom_in.png', tooltip: 'Zoom In' },
-            { type: 'zoomOut', icon:'resources/images/zoom_out.png', tooltip: 'Zoom Out' },
-            { type: 'zoomToFit', icon:'resources/images/show_all.png', tooltip: 'Zoom To Fit' },
-            { type: 'undo', icon:'resources/images/undo.png', tooltip: 'Undo' },
-            { type: 'redo', icon:'resources/images/redo.png', tooltip: 'Redo' },
-            { type: 'grid', icon:'resources/images/gridview.png', tooltip: 'Toggle Grid' },
-            { type: 'overview', icon:'resources/images/globe.png', tooltip: 'Toggle Overview' }
+            { type: 'zoomIn', icon: Savanna.Config.resourcesPathPrefix + 'resources/images/zoom_in.png', tooltip: 'Zoom In' },
+            { type: 'zoomOut', icon: Savanna.Config.resourcesPathPrefix + 'resources/images/zoom_out.png', tooltip: 'Zoom Out' },
+            { type: 'zoomToFit', icon: Savanna.Config.resourcesPathPrefix + 'resources/images/show_all.png', tooltip: 'Zoom To Fit' },
+            { type: 'undo', icon: Savanna.Config.resourcesPathPrefix + 'resources/images/undo.png', tooltip: 'Undo' },
+            { type: 'redo', icon: Savanna.Config.resourcesPathPrefix + 'resources/images/redo.png', tooltip: 'Redo' },
+            { type: 'grid', icon: Savanna.Config.resourcesPathPrefix + 'resources/images/gridview.png', tooltip: 'Toggle Grid' },
+            { type: 'overview', icon: Savanna.Config.resourcesPathPrefix + 'resources/images/globe.png', tooltip: 'Toggle Overview' }
         ];
     },
 
