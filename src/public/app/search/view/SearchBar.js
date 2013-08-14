@@ -39,9 +39,11 @@ Ext.define('Savanna.search.view.SearchBar', {
                     xtype: 'panel',
                     border: false,
                     bodyPadding: 0,
+                    itemId:'search_reset',
                     items: [
                         {
                             xtype: 'button',
+                            itemId:'search_reset_button',
                             text: 'Start New Search'
                         }
                     ]

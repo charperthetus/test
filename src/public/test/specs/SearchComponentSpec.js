@@ -210,6 +210,8 @@ describe('Search Component', function () {
         describe('managing SearchBar subview events', function () {
             var searchbar = null;
 
+            var form = null;
+
             beforeEach(function () {
                 searchbar = Ext.create('Savanna.search.view.SearchBar', { renderTo: 'test-html' });
                 searchbar.queryById('search_terms').setValue('search bar terms');
@@ -217,7 +219,9 @@ describe('Search Component', function () {
                 searchbar.queryById('exact_phrase').setValue('other text');
                 searchbar.queryById('any_words').setValue('more and more text');
                 searchbar.queryById('none_words').setValue('bad terms');
-                //searchbar.doLayout();
+
+
+                form = component.queryById('searchbar').queryById("search_form");
             });
 
             afterEach(function () {
@@ -225,6 +229,7 @@ describe('Search Component', function () {
                     searchbar.destroy();
                     searchbar = null;
                 }
+                form = null;
             });
 
             it('should be able to hide the menu', function () {
@@ -250,6 +255,16 @@ describe('Search Component', function () {
                 controller.doSearch(component.queryById('searchbar').items.first(), {});
 
                 expect(component.queryById('searchbar').buildSearchString).toHaveBeenCalled();
+            });
+
+            it('should remove search field values when "Start New Search" is selected', function () {
+                controller.handleNewSearch();
+
+                expect(form.queryById('search_terms').getValue()).toEqual('');
+                expect(form.queryById('all_words').getValue()).toEqual('');
+                expect(form.queryById('exact_phrase').getValue()).toEqual('');
+                expect(form.queryById('any_words').getValue()).toEqual('');
+                expect(form.queryById('none_words').getValue()).toEqual('');
             });
         });
 

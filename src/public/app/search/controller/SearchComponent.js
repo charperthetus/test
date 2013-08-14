@@ -35,11 +35,15 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         { ref: 'historyMenu', selector: 'search_searchcomponent > #searchtoolbar #historybutton #historymenu' },
         { ref: 'searchBody', selector: 'search_searchcomponent > #searchbody' },
         { ref: 'optionsButton', selector: 'search_searchcomponent > #searchbody #searchbodytoolbar #optionsbutton' },
-        { ref: 'resultsButton', selector: 'search_searchcomponent > #searchbody #searchbodytoolbar #resultsbutton' }
+        { ref: 'resultsButton', selector: 'search_searchcomponent > #searchbody #searchbodytoolbar #resultsbutton' } ,
+        { ref: 'searchForm', selector: 'search_searchcomponent > #searchbar #main_panel #search_form' }
     ],
 
     init: function () {
         this.control({
+            'search_searchcomponent > #searchbar #main_panel #search_reset #search_reset_button': {
+                click: this.handleNewSearch
+            },
             'search_searchcomponent > #searchbar #main_panel #search_form #searchadvanced_btn': {
                 click: this.alignMenuWithTextfield
             },
@@ -71,6 +75,19 @@ Ext.define('Savanna.search.controller.SearchComponent', {
     },
 
     // CUSTOM METHODS
+
+    handleNewSearch:function()  {
+
+        this.getSearchForm().queryById('search_terms').setValue('')
+
+        var formField = this.getSearchForm().queryById('form_container');
+
+        Ext.Array.each(formField.query('searchadvanced_textfield'), function (field) {
+            if (field.xtype === 'searchadvanced_textfield') {
+                field.setValue('');
+            }
+        });
+    },
 
     handleSearchTermKeyUp: function (field, evt) {
         if (evt.keyCode === 13) {
