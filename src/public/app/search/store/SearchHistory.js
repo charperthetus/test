@@ -12,13 +12,9 @@ Ext.define('Savanna.search.store.SearchHistory', {
 
     model: 'Savanna.search.model.SearchHistory',
 
-    // does this need to be set?
     pageSize: Savanna.Config.searchHistoryPageSize,
 
     autoLoad: false,
-
-
-    searches: [],
 
     restAction: 'POST',
 
@@ -27,8 +23,9 @@ Ext.define('Savanna.search.store.SearchHistory', {
 
         this.setProxy({
             type: 'savanna-cors',
-            //url: Savanna.Config.savannaUrlRoot + 'rest/search/history',
-            url: 'app/assets/data/testSearchHistory.json',
+            url: Savanna.Config.savannaUrlRoot + 'rest/search/history',
+            //url: 'app/assets/data/testSearchHistory.json',
+            jsonData:null,
             addSessionId: false,
             noCache: false,
             startParam: undefined,
