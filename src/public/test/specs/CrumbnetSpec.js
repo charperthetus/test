@@ -569,6 +569,10 @@ describe('Savanna.crumbnet', function() {
                 expect(paletteMenu instanceof Savanna.crumbnet.view.part.PaletteMenu).toBeTruthy();
             });
 
+            it('should be a subclass of a panel so it can be made collapsible', function() {
+                expect(paletteMenu instanceof Ext.panel.Panel).toBeTruthy();
+            });
+
             it('should update the palette canvas when we expand a panel in the Accordion', function() {
                 var lastPalettePanel = paletteMenu.down('crumbnet_part_palette-group:last');
                 var requestUpdateSpy = spyOn(lastPalettePanel, 'requestPaletteUpdate');
