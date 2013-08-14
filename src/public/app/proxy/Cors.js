@@ -73,6 +73,13 @@ Ext.define('Savanna.proxy.Cors', {
             request = this.modifyRequest(request);
         }
 
+        // Is this request sending json data to the server?
+        if (this.jsonData) {
+            Ext.apply(request, {
+                jsonData: this.jsonData
+            });
+        }
+
         Ext.Ajax.UseDefaultXhrHeader = false;
         Ext.Ajax.cors = this.cors;
         Ext.Ajax.withCredentials = this.withCredentials;

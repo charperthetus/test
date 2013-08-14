@@ -57,6 +57,12 @@ Ext.define('Savanna.search.view.SearchBar', {
 
     onStoreLoad: function() {
         // TODO: load our results...
+        console.log("loaded");
+    },
+
+    onStoreChanged: function() {
+        // TODO: load our results...
+        console.log("changed");
     },
 
     buildSearchString: function () {
