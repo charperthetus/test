@@ -40,8 +40,6 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
     init: function () {
         this.control({
-
-
             'search_searchcomponent > #searchbar #main_panel #search_form #searchadvanced_btn': {
                 click: this.alignMenuWithTextfield
             },
@@ -73,6 +71,19 @@ Ext.define('Savanna.search.controller.SearchComponent', {
     },
 
     // CUSTOM METHODS
+
+    handleNewSearch:function()  {
+
+        this.getSearchForm().queryById('search_terms').setValue('');
+
+        var formField = this.getSearchForm().queryById('form_container');
+
+        Ext.Array.each(formField.query('searchadvanced_textfield'), function (field) {
+            if (field.xtype === 'searchadvanced_textfield') {
+                field.setValue('');
+            }
+        });
+    },
 
     handleSearchTermKeyUp: function (field, evt) {
         if (evt.keyCode === 13) {
@@ -119,8 +130,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         });
 
         this.getSearchBar().store.removeAll();
-        this.getSearchBar().store.getProxy().jsonData = Ext.JSON.encode(searchObj.data);
-
+        this.getSearchBar().store.proxy.jsonData = Ext.JSON.encode(searchObj.data);
         this.getSearchBar().store.load({
             callback: this.searchCallback,
             scope: this
@@ -143,6 +153,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
     showResultsPage: function () {
         var resultsBtn = Savanna.getApplication().viewport.queryById('main').down('#resultsbutton');
+
         resultsBtn.fireEvent('click', resultsBtn);
     },
 
