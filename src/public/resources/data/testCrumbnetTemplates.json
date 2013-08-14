@@ -6,20 +6,20 @@
             "title": "TEST PALETTE GROUP ONE",
             "templates": [
                 {
-                    "label": "Concept label",
-                    "category": "Concept",
+                    "type": "Concept",
+                    "category": "standard",
                     "text": "Concept",
                     "percent": 10
                 },
                 {
-                    "label": "Hypothesis label",
-                    "category": "Hypothesis",
+                    "type": "Hypothesis",
+                    "category": "standard",
                     "text": "Hypothesis",
                     "percent": 10
                 },
                 {
-                    "label": "Question label",
-                    "category": "Question",
+                    "type": "Question",
+                    "category": "standard",
                     "text": "Question",
                     "percent": 10
                 }
@@ -30,26 +30,26 @@
             "title": "TEST PALETTE GROUP TWO",
             "templates": [
                 {
-                    "label": "Problem label",
-                    "category": "Problem",
+                    "type": "Problem",
+                    "category": "standard",
                     "text": "Problem",
                     "percent": 10
                 },
                 {
-                    "label": "Conclusion label",
-                    "category": "Conclusion",
+                    "type": "Conclusion",
+                    "category": "standard",
                     "text": "Conclusion",
                     "percent": 10
                 },
                 {
-                    "label": "Assumption label",
-                    "category": "Assumption",
+                    "type": "Assumption",
+                    "category": "standard",
                     "text": "Assumption",
                     "percent": 10
                 },
                 {
-                    "label": "Fact label",
-                    "category": "Fact",
+                    "type": "Fact",
+                    "category": "standard",
                     "text": "Fact",
                     "percent": 10
                 }

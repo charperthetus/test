@@ -2,14 +2,24 @@
 //TODO - Can we include a class here without doing a Ext.define
 Ext.define('Savanna.crumbnet.utils.TaperedLink', {});
 
-function TaperedLink() {
+function ExtendedLink() {
     go.Link.call(this);
 }
 
-go.Diagram.inherit(TaperedLink, go.Link);
+go.Diagram.inherit(ExtendedLink, go.Link);
 
 // produce a Geometry from the Link's route
-TaperedLink.prototype.makeGeometry = function () {
+ExtendedLink.prototype.makeGeometry = function () {
+    // First we need to check if the category in the link data is 'tapered'
+    // Optionally if multiple categories were tapered we could test
+    // a different value in the link data instead
+    //TODO - this is temporary until the gojs lib is fixed to allow changing link classes
+    if (this.data.category !== 'Tapered') {
+        // Regular link! Call the base method and return:
+        return go.Link.prototype.makeGeometry.call(this);
+    }
+
+
     // maybe use the standard geometry for this route, instead?
     var numpts = this.pointsCount;
     if (numpts < 4 || this.computeCurve() !== go.Link.Bezier) {

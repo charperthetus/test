@@ -28,7 +28,7 @@ Ext.define('Savanna.crumbnet.view.part.Canvas', {
         domElem = Ext.DomHelper.insertHtml('afterBegin', this.getEl().dom, '<div class="go-graph" style="width: 100%; height: 100%; position: absolute;"></div>');
 
         this.diagram = new go.Diagram(domElem);
-        this.diagram.nodeTemplate = Savanna.crumbnet.utils.ViewTemplates.generateNodeTemplate();
+        this.diagram.nodeTemplateMap = Savanna.crumbnet.utils.ViewTemplates.generateNodeTemplateMap();
         this.diagram.linkTemplateMap = Savanna.crumbnet.utils.ViewTemplates.generateLinkTemplateMap();
 
         // have mouse wheel events zoom in and out instead of scroll up and down
@@ -45,10 +45,15 @@ Ext.define('Savanna.crumbnet.view.part.Canvas', {
 
         this.diagram.layout = go.GraphObject.make(go.ForceDirectedLayout, { isOngoing: false });
 
+        this.diagram.toolManager.clickCreatingTool.archetypeNodeData = { text:"Fact", type:"Fact", category:"standard", percent: 10 };
+
+        this.diagram.toolManager.linkingTool.archetypeLinkData = {category: 'Orthogonal', text: 'New Link'};
         this.diagram.toolManager.linkingTool.direction = go.LinkingTool.ForwardsOnly;
         this.diagram.toolManager.linkingTool.portGravity = 10;
 
         this.diagram.model.undoManager.isEnabled = true;
+
+        this.setupImageDrop(domElem);
     },
 
     // CUSTOM METHODS
@@ -62,6 +67,35 @@ Ext.define('Savanna.crumbnet.view.part.Canvas', {
                 nodeDataArray: graphRecord.get('nodeDataArray'),
                 linkDataArray: graphRecord.get('linkDataArray')
             });
+        }
+    },
+
+    setupImageDrop: function(dropArea){
+        if (typeof window.FileReader != 'undefined') {
+            var _diagram = this.diagram;
+            dropArea.ondragover = function () { return false; };
+            dropArea.ondragend = function () { return false; };
+            dropArea.ondrop = function (e) {
+                this.className = '';
+                e.preventDefault();
+                var file = e.dataTransfer.files[0],
+                    reader = new FileReader();
+                reader.onload = function (event) {
+                    var screenPoint = new go.Point(e.layerX, e.layerY);
+                    var docPoint = _diagram.transformViewToDoc(screenPoint);
+                    var newNode = { text: 'new image', category: 'image',
+                        key: Ext.id(), percent: 10,
+                        loc: docPoint.x + ' ' + docPoint.y,
+                        imageData: event.target.result};
+                    var model = _diagram.model;
+                    _diagram.startTransaction('addImage');
+                    model.addNodeData(newNode);
+                    _diagram.commitTransaction('addImage');
+                };
+                reader.readAsDataURL(file);
+
+                return false;
+            }
         }
     }
 });

@@ -10,10 +10,9 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
     /**
      * Creates our default node template for use with GoJS
      *
-     * @param {Object} options - optional parameter that can contain a object properties to be applied to the node template
-     * @return {go.Node} - The node template for use with GoJS
+     * @return {go.Map} - The node template map for use with GoJS
      */
-    generateNodeTemplate: function() {
+    generateNodeTemplateMap: function() {
         var gmake = go.GraphObject.make;
 
         var icon = go.GraphObject.make(go.Picture, {
@@ -22,7 +21,7 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
             cursor: 'pointer',
             height: 46,
             width: 46
-        }, new go.Binding('source', 'category', this.convertCategoryToImage));
+        }, new go.Binding('source', 'type', this.convertTypeToImage));
 
         var textBlock = gmake(go.TextBlock, {
             textAlign: 'center',
@@ -37,9 +36,11 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
         var nodeTemplate = gmake(go.Node, go.Panel.Auto,
             {
                 selectionAdorned: false,
+                locationSpot: go.Spot.Center, //Makes it so when you create a node it is centered on your cursor
                 toLinkable: true,
                 mouseEnter: this.nodeMouseEnter,
-                mouseLeave: this.nodeMouseLeave
+                mouseLeave: this.nodeMouseLeave,
+                mouseDragEnter: this.nodeDragEnter
             },
             //Bind the location to the model text loc so when we add new nodes to the model with a location it will show correctly
             new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
@@ -74,7 +75,27 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
             return semicircle;
         }
 
-        return nodeTemplate;
+        var imageTemplate = gmake(go.Node, go.Panel.Auto,
+            {
+                toLinkable: true,
+                resizable: true,
+                height: 100,
+                width: 100
+            },
+            //Bind the location to the model text loc so when we add new nodes to the model with a location it will show correctly
+            new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
+            gmake(go.Picture, {
+                name: 'icon',
+                toLinkable: true,
+                cursor: 'pointer',
+                imageStretch: go.GraphObject.Uniform
+            }, new go.Binding('source', 'imageData' )) );
+
+        var nodeTemplateMap = new go.Map();
+        nodeTemplateMap.add('standard', nodeTemplate);
+        nodeTemplateMap.add('image', imageTemplate)
+
+        return nodeTemplateMap;
     },
 
     generatePaletteNodeTemplate: function(){
@@ -86,7 +107,7 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
             cursor: 'pointer',
             height: 46,
             width: 46
-        }, new go.Binding('source', 'category', this.convertCategoryToImage));
+        }, new go.Binding('source', 'type', this.convertTypeToImage));
 
         var textBlock = gmake(go.TextBlock, {
             textAlign: 'center',
@@ -122,8 +143,12 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
                 {portId: name, fromLinkable: true }) );
     },
 
-    convertCategoryToImage: function(category) {
+    convertTypeToImage: function(category) {
         return  Savanna.Config.resourcesPathPrefix + 'resources/images/' + category + 'Icon.svg';
+    },
+
+    nodeDragEnter: function(e, obj) {
+        console.log('nodeDragEnter')
     },
 
     nodeMouseEnter: function(e, obj) {
@@ -162,7 +187,8 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
         var gmake = go.GraphObject.make,
             linkTemplateMap = new go.Map();
 
-        linkTemplateMap.add('standard', gmake(go.Link,  // the whole link panel
+        //TODO - Using extended link here is temporary until the gojs lib is fixed to allow changing link classes.
+        linkTemplateMap.add('Orthogonal', gmake(ExtendedLink,  // the whole link panel
             { selectionAdorned: true,
                 layerName: 'Foreground',
                 routing: go.Link.AvoidsNodes,
@@ -185,7 +211,7 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
                 { toArrow: 'standard',
                     stroke: null })));
 
-        linkTemplateMap.add('curvy', gmake(go.Link,
+        linkTemplateMap.add('Straight', gmake(ExtendedLink,
             { routing: go.Link.Normal, fromEndSegmentLength: 0, toEndSegmentLength: 0 },
             gmake(go.Shape,
                 { strokeWidth: 3, stroke: 'skyblue' } ),
@@ -196,7 +222,7 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
                     segmentOffset: new go.Point(NaN, NaN) },
                 new go.Binding('text', 'text'))));
 
-        linkTemplateMap.add('tapered', gmake(TaperedLink,
+        linkTemplateMap.add('Tapered', gmake(ExtendedLink,
             go.Link.Bezier,
             go.Link.Orthogonal,
             { fromEndSegmentLength: 1,
@@ -237,8 +263,8 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
         var fromData = fromNode.data;
 
         //TODO - Need to figure out which properties should be copied into the new node by default (ie category, percent)
-        // create a new 'State' data object, positioned off to the right of the adorned Node
-        var toData = { text: 'new', category: fromData.category, key: Ext.id(), percent: 10 };
+        // create a new "State" data object, positioned off to the right of the adorned Node
+        var toData = { text: 'new', type: fromData.type, category: fromData.category, key: Ext.id(), percent: 10 };
         var fromLocation = fromNode.location;
         var siblingNodes = fromNode.findNodesOutOf();
         var x = 0;
@@ -271,7 +297,7 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
         model.addNodeData(toData);
 
         // create a link data from the old node data to the new node data
-        var linkdata = { category: 'tapered' }; // New link with tapered category
+        var linkdata = { category: 'Tapered' }; // New link with tapered category
         linkdata[model.linkFromKeyProperty] = model.getKeyForNodeData(fromData);
         linkdata[model.linkToKeyProperty] = model.getKeyForNodeData(toData);
 
