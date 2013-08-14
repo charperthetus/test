@@ -78,7 +78,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
     handleNewSearch:function()  {
 
-        this.getSearchForm().queryById('search_terms').setValue('')
+        this.getSearchForm().queryById('search_terms').setValue('');
 
         var formField = this.getSearchForm().queryById('form_container');
 
