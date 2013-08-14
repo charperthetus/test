@@ -1,11 +1,12 @@
-/* global Ext: false, describe: false, beforeEach: false, afterEach: false, createTestDom: false, cleanTestDom: false,
-          it: false, expect: false, Savanna: false, spyOn: false, go: false, ThetusTestHelpers: false, waitsFor: false,
+/* global Ext: false,
+          describe: false, beforeEach: false, afterEach: false,
+          it: false, expect: false, spyOn: false, go: false, waitsFor: false,
+          ThetusTestHelpers: false, Savanna: false, setupNoCacheNoPagingStore: false, createTestDom: false, cleanTestDom: false,
           runs: false, sinon: false */
 Ext.require('Savanna.crumbnet.controller.CrumbnetController');
 Ext.require('Savanna.crumbnet.utils.ViewTemplates');
 
 describe('Savanna.crumbnet', function() {
-    var CRUMBNET_PALETTE_TEMPLATES_URL = 'resources/data/testCrumbnetTemplates.json';
     var fixtures = {};
     var server = null;
 
@@ -870,9 +871,9 @@ describe('Savanna.crumbnet', function() {
     });
 
     function setupPaletteTemplateStore(server, fixture) {
-        server.respondWith('GET', CRUMBNET_PALETTE_TEMPLATES_URL, fixture);
-
         var store = setupNoCacheNoPagingStore('Savanna.crumbnet.store.Templates');
+
+        server.respondWith('GET', store.getProxy().url, fixture);
 
         store.load();
 
