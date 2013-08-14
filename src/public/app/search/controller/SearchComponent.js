@@ -20,7 +20,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         'Savanna.search.model.SearchHistory'
     ],
     stores: [
-        // coming soon...
+        'Savanna.search.store.DalSources'
     ],
 
     views: [
