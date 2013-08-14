@@ -15,6 +15,8 @@ describe('Savanna.crumbnet', function() {
 
         fixtures = Ext.clone(ThetusTestHelpers.Fixtures.Crumbnet);
         server = new ThetusTestHelpers.FakeServer(sinon);
+
+        Savanna.Config.resourcesPathPrefix = '/';
     });
 
     afterEach(function() {
