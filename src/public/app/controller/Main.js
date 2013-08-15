@@ -59,7 +59,7 @@ Ext.define('Savanna.controller.Main', {
         var modal = button.findParentByType('print-modal');
 
         if (modal) {
-
+            console.log('TODO...actually print....');
         }
         else {
             Ext.Error.raise('Unable to find print-modal');
