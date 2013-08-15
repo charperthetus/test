@@ -68,7 +68,9 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
                 this.toggleOverview(mainCrumbnetViewport, diagram);
                 break;
             case 'print':
-                Ext.create('Savanna.view.PrintModal').show();
+                Ext.create('Savanna.view.PrintModal', {
+                    html: 'TEST CONTENT FOR DIAGRAM'
+                }).show();
                 break;
             default:
                 // NOTE: there is no "default" because we get clicks for other "buttons" (such as the dropdown menus)

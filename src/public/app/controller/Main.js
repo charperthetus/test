@@ -58,22 +58,15 @@ Ext.define('Savanna.controller.Main', {
     printContent: function(button) {
         var modal = button.findParentByType('print-modal');
 
-        if (modal) {
-            console.log('TODO...actually print....');
-        }
-        else {
-            Ext.Error.raise('Unable to find print-modal');
-        }
+        // NOTE: we assume we will always get the modal window, since the button is it's child
+        console.log('TODO...actually print....');
+        modal.getIframeWindow().print();
     },
 
     closePrintModal: function(button) {
         var modal = button.findParentByType('print-modal');
 
-        if (modal) {
-            modal.close();
-        }
-        else {
-            Ext.Error.raise('Unable to find print-modal');
-        }
+        // NOTE: we assume we will always get the modal window, since the button is it's child
+        modal.close();
     }
 });

@@ -29,7 +29,14 @@ Ext.define('Savanna.view.PrintModal', {
         this.callParent(arguments);
 
         this.on('render', function() {
-            this.setIframeContent(this.initialConfig.html || '');
+            try {
+                this.setIframeContent(this.initialConfig.html || '');
+            }
+            catch(e) {
+                console.log('ERROR', e);
+                this.close();
+            }
+
         }, this);
     },
 
@@ -43,7 +50,7 @@ Ext.define('Savanna.view.PrintModal', {
         ];
     },
 
-    getIframeDocument: function() {
+    getIframeWindow: function() {
         var dom = this.getEl().dom,
             iframe = Ext.dom.Query.selectNode('iframe', dom);
 
@@ -51,7 +58,7 @@ Ext.define('Savanna.view.PrintModal', {
             var iframeId = iframe.getAttribute('name');
 
             if (iframeId) {
-                return window.frames[iframeId].document;
+                return window.frames[iframeId];
             }
             else {
                 Ext.Error.raise('Unable to find id for iframe');
@@ -64,15 +71,34 @@ Ext.define('Savanna.view.PrintModal', {
         return null;
     },
 
+    getIframeDocument: function() {
+        var iframe = this.getIframeWindow();
+
+        if (iframe) {
+            return iframe.document;
+        }
+
+        return null;
+    },
+
     getIframeContent: function() {
         var iframeDoc = this.getIframeDocument();
 
-        return iframeDoc.innerHTML;
+        if (iframeDoc) {
+            return iframeDoc.body.innerHTML;
+        }
+
+        return '';
     },
 
     setIframeContent: function(content) {
         var iframeDoc = this.getIframeDocument();
 
-        iframeDoc.innerHTML = content;
+        if (iframeDoc && iframeDoc.body) {
+            iframeDoc.body.innerHTML = content;
+        }
+        else {
+            Ext.Error.raise('Unable to set content on iframe');
+        }
     }
 });
