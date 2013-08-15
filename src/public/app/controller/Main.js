@@ -6,7 +6,8 @@ Ext.define('Savanna.controller.Main', {
     extend: 'Ext.app.Controller',
 
     views: [
-        'Login'
+        'Login',
+        'PrintModal'
     ],
 
     controllers: [
@@ -25,6 +26,12 @@ Ext.define('Savanna.controller.Main', {
                         me.swapLogin(e.browserEvent.data);
                     });
                 }
+            },
+            'print-modal button[type="print"]': {
+                click: this.printContent
+            },
+            'print-modal button[type="cancel"]': {
+                click: this.closePrintModal
             }
         });
     },
@@ -45,6 +52,28 @@ Ext.define('Savanna.controller.Main', {
         }
         else {
             Ext.Error.raise('no viewport defined');
+        }
+    },
+
+    printContent: function(button) {
+        var modal = button.findParentByType('print-modal');
+
+        if (modal) {
+
+        }
+        else {
+            Ext.Error.raise('Unable to find print-modal');
+        }
+    },
+
+    closePrintModal: function(button) {
+        var modal = button.findParentByType('print-modal');
+
+        if (modal) {
+            modal.close();
+        }
+        else {
+            Ext.Error.raise('Unable to find print-modal');
         }
     }
 });
