@@ -1,7 +1,8 @@
 /* global Ext: false */
 Ext.define('Savanna.crumbnet.view.part.PaletteMenu', {
-    extend: 'Ext.container.Container',
+    extend: 'Ext.panel.Panel',
     alias: 'widget.crumbnet_part_palette-menu',
+
     mixins: {
         storeable: 'Savanna.mixin.Storeable'
     },

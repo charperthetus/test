@@ -39,9 +39,11 @@ Ext.define('Savanna.search.view.SearchBar', {
                     xtype: 'panel',
                     border: false,
                     bodyPadding: 0,
+                    itemId:'search_reset',
                     items: [
                         {
                             xtype: 'button',
+                            itemId:'search_reset_button',
                             text: 'Start New Search'
                         }
                     ]
@@ -53,8 +55,6 @@ Ext.define('Savanna.search.view.SearchBar', {
     initComponent: function () {
         this.callParent(arguments);
         this.mixins.storeable.initStore.call(this);
-
-        Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
     },
 
     onStoreLoad: function() {

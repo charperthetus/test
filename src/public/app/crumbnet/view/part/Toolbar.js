@@ -10,6 +10,10 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
     extend: 'Ext.toolbar.Toolbar',
     alias: 'widget.crumbnet_part_toolbar',
 
+    requires: [
+        'Savanna.Config'
+    ],
+
     width: '100%',
 
     items: [],

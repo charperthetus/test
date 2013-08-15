@@ -8,14 +8,15 @@ Ext.define('Savanna.search.view.SearchBody', {
     requires: [
         'Savanna.search.view.SearchDals',
         'Savanna.search.view.SearchMap',
-        'Savanna.search.view.SearchResults',
+        'Savanna.search.view.ResultsComponent',
+        'Savanna.search.controller.ResultsComponent',
         'Savanna.controller.Factory'
     ],
 
     layout: 'fit',
     border: false,
     currentPanel: 'searchoptions',
-    
+
     items: [
         {
             xtype: 'panel',
@@ -42,7 +43,7 @@ Ext.define('Savanna.search.view.SearchBody', {
                         },
                         {
                             title: 'Location',
-
+                            itemId: 'searchMap',
                             xtype: 'search_searchmap'
                         }
                     ]
@@ -51,7 +52,7 @@ Ext.define('Savanna.search.view.SearchBody', {
 
         },
         {
-            xtype: 'search_searchresults',
+            xtype: 'search_resultscomponent',
             layout: 'border',
             itemId: 'searchresults'
         }
@@ -89,7 +90,6 @@ Ext.define('Savanna.search.view.SearchBody', {
         }
     ],
     initComponent: function () {
-        Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
         this.callParent(arguments);
     }
 });

@@ -18,11 +18,13 @@ Ext.define('Savanna.Config', {
     //savannaUrlRoot: 'http://localhost:8080/SavannaX/',
 
     // Urls for all the searches we do
-    loginUrl: '/authcheck/loggedIn.html',
-    searchUrl: '/rest/c2is2/model/search',
-    itemViewUrl: '/rest/c2is2/model/item/',
-    dalSourcesUrl: '/rest/search/sources',
+    loginUrl: 'authcheck/loggedIn.html',
+    searchUrl: 'rest/c2is2/model/search',
+    itemViewUrl: 'rest/c2is2/model/item/',
+    dalSourcesUrl: 'rest/search/sources',
 
     // number of past search terms to store in recent history
-    searchHistoryPageSize: 10
+    searchHistoryPageSize: 10,
+
+    resourcesPathPrefix: ''
 });
