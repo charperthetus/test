@@ -5,7 +5,8 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
     views: [
         'Savanna.crumbnet.view.CrumbnetComponent',
         'Savanna.crumbnet.view.part.PaletteMenu',
-        'Savanna.crumbnet.view.part.Canvas'
+        'Savanna.crumbnet.view.part.Canvas',
+        'Savanna.view.PrintModal'
     ],
 
     stores: [
@@ -65,6 +66,9 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
             case 'overview':
                 var mainCrumbnetViewport = crumbnet.down('#mainCrumbnetViewport');
                 this.toggleOverview(mainCrumbnetViewport, diagram);
+                break;
+            case 'print':
+                Ext.create('Savanna.view.PrintModal').show();
                 break;
             default:
                 // NOTE: there is no "default" because we get clicks for other "buttons" (such as the dropdown menus)

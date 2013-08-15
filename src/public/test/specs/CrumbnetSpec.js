@@ -82,6 +82,17 @@ describe('Savanna.crumbnet', function() {
 
         describe('handleGraphToolbarButtonClick', function() {
 
+            afterEach(function() {
+                var modals = Ext.ComponentQuery.query('print-modal');
+
+                if (modals) {
+                    for (var i = 0; i < modals.length; ++i) {
+                        modals[i].close();
+                        modals[i].destroy();
+                    }
+                }
+            });
+
             it('should zoom the diagram when we click "zoomToFit"', function() {
                 var button = view.down('button[type="zoomToFit"]');
 
@@ -165,6 +176,16 @@ describe('Savanna.crumbnet', function() {
                 var zoomToArg = controller.zoomTo.mostRecentCall.args[1];
 
                 expect(zoomToArg).toBeGreaterThan(0.9);
+            });
+
+            it('should spawn the PrintModal window when we click "print"', function() {
+                var button = view.down('button[type="print"]');
+
+                expect(button).not.toBeNull();
+
+                controller.handleGraphToolbarButtonClick(button);
+
+                expect(Ext.ComponentQuery.query('print-modal')).not.toBeNull();
             });
 
             it('should do nothing if we click a button it does not understand', function() {
