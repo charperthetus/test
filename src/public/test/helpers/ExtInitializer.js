@@ -15,8 +15,7 @@ Ext.application({
 /* jshint unused: false */
 function cleanTestDom() {
     var testDom = Ext.get('test-html'),
-        extJsTooltips = Ext.get('ext-quicktips-tip'),
-        extJsModalMask = Ext.get('x-mask');
+        extJsTooltips = Ext.get('ext-quicktips-tip');
 
     if (testDom && testDom.dom && testDom.dom.children ) {
         testDom.dom.innerHTML = '';
@@ -24,10 +23,6 @@ function cleanTestDom() {
 
     if (extJsTooltips) {
         extJsTooltips.remove();
-    }
-
-    if (extJsModalMask) {
-        extJsModalMask.remove();
     }
 }
 
