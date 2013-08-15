@@ -60,6 +60,7 @@ Ext.define('Savanna.search.view.SearchMap', {
                         },
                         {
                             xtype: 'button',
+                            itemId: 'findLocation',
                             ui: 'small-search-button',
                             glyph: 61808
 
