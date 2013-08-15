@@ -33,6 +33,9 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
             },
             'go-graph #linkStyleMenu menu': {
                 click: this.handleLinkStyleMenuClick
+            },
+            'go-graph #nodeColorPicker': {
+                select: this.handleNodeColorSelect
             }
         });
     },
@@ -207,7 +210,22 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
         }
     },
 
+    handleNodeColorSelect: function(picker, selColor){
+        var diagram = this.getDiagramForMenu(picker);
+        var selectedNodeSet = diagram.selection;
+        var iterator = selectedNodeSet.iterator;
+
+        diagram.startTransaction('changeNodeColor');
+        while (iterator.next()) {
+            if (iterator.value instanceof go.Node) {
+                diagram.model.setDataProperty(iterator.value.data, 'color', '#' + selColor);
+            }
+        }
+        diagram.commitTransaction('changeNodeColor');
+    },
+
     getDiagramForMenu: function(menu) {
         return menu.up('go-graph').down('go-graph_canvas').diagram;
     }
+
 });

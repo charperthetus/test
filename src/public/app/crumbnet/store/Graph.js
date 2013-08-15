@@ -22,7 +22,13 @@ Ext.define('Savanna.crumbnet.store.Graph', {
             }
         ];
 
-        var categories = ['Concept', 'Question', 'Problem', 'Fact', 'Hypothesis', 'Conclusion', 'Assumption'];
+        var categories = [{type: 'Concept', color: '#00FFFF'},
+            {type: 'Question', color: '#00FFFF'},
+            {type: 'Problem', color: '#00FFFF'},
+            {type: 'Fact', color: '#00FFFF'},
+            {type: 'Hypothesis', color: '#00FFFF'},
+            {type: 'Conclusion', color: '#00FFFF'},
+            {type: 'Assumption', color: '#FFFF00'}];
         var TOT_NODE_COUNT = 50; // NOTE: change this to 1000 and performance will degrade...
         var generatedLink = {};
 
@@ -32,10 +38,10 @@ Ext.define('Savanna.crumbnet.store.Graph', {
 
 
         for (var i = 0; i < TOT_NODE_COUNT; ++i) {
-            var type = categories[i % categories.length];
+            var cat = categories[i % categories.length];
 
-            this.data[0].nodeDataArray.push({ key: i, text: type, type: type, category: 'standard', percent: Math.random() * 100,
-            });
+            this.data[0].nodeDataArray.push({ key: i, text: cat.type, type: cat.type, category: 'standard',
+                percent: Math.random() * 100, color: cat.color });
 
             var to = randomInt(0, TOT_NODE_COUNT-1);
             var from = randomInt(0, TOT_NODE_COUNT-1);
