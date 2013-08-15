@@ -40,8 +40,20 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
     init: function () {
         this.control({
-
-
+            'search_searchcomponent > #searchbody #mainsearchoptions #mainsearchtabpanel #searchMap #searchLocationDockedItems #clearLocationSearch':{
+                click: function(button) {
+                    button.up('search_searchmap').queryById('leafletMap').fireEvent('locationSearch:clear');
+                }
+            },
+            'search_searchcomponent > #searchbody #mainsearchoptions #mainsearchtabpanel #searchMap #searchLocationDockedItems #mapZoomTo':{
+                click: function(button) {
+                    button.up('search_searchmap').queryById('leafletMap').fireEvent('locationSearch:zoomto', button);
+                }
+            },
+            'search_searchcomponent > #searchbody #mainsearchoptions #mainsearchtabpanel #searchMap #leafletMap': {
+                'draw:created': function (layerType) {
+                }
+            },
             'search_searchcomponent > #searchbar #main_panel #search_form #searchadvanced_btn': {
                 click: this.alignMenuWithTextfield
             },
