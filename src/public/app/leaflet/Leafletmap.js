@@ -11,6 +11,7 @@ Ext.define('Savanna.leaflet.Leafletmap', {
     keydownEvent: null,
     toolBarElement: null,
     toolbarDomElement: null,
+    hasCurrentDrawing: false,
     toolbarEnableClass: 'leaflet-draw-toolbar-enabled',
     config:{
         map: null,
@@ -80,7 +81,37 @@ Ext.define('Savanna.leaflet.Leafletmap', {
         this.clickToolbar = Ext.bind(this.clickOnToolbar, this);
         Ext.getDom(this.toolBarElement).addEventListener('click', this.clickToolbar, true);
         this.on('locationSearch:clear', this.deleteDrawing, this);
+        this.on('locationSearch:zoomto', this.mapZoomToMenu, this)
     },
+
+    mapZoomToMenu: function(button) {
+        var self = this;
+
+        var zoomMenu = button.menu;
+        zoomMenu.remove('selectedAreaMenuItem');
+        switch(button.menu.items.length) {
+
+            case 1:
+                zoomMenu.insert(0,{
+                    text: 'Whole World',
+                    handler: function() {self.myMap.fitWorld();},
+                    scope: this
+                });
+                //intentional fall through
+            case 2:
+
+                if (this.hasCurrentDrawing){
+                    zoomMenu.insert(1, {
+                        text: 'Selected Area',
+                        itemId: 'selectedAreaMenuItem',
+                        handler: function() {self.myMap.fitBounds(self.myLayer.getBounds());},
+                        scope: this
+                    });
+                }
+        }
+        zoomMenu.show();
+    },
+
     clickOnToolbar: function(e) {
         if (!this.toolBarElement.hasCls(this.toolbarEnableClass)){
             e.stopPropagation();
@@ -88,6 +119,7 @@ Ext.define('Savanna.leaflet.Leafletmap', {
         }
         return true;
     },
+
     keyPressedOnMap: function(e) {
         if (e.keyCode === 46 && this.editMode && this.editMode._enabled){  // delete key press in edit mode
             this.editMode.save();
@@ -116,6 +148,7 @@ Ext.define('Savanna.leaflet.Leafletmap', {
             this.editMode.disable();
         }
         this.toolBarElement.addCls(this.toolbarEnableClass);
+        this.hasCurrentDrawing = false;
     },
 
     drawingAddedToMap: function(e) {
@@ -123,6 +156,7 @@ Ext.define('Savanna.leaflet.Leafletmap', {
         this.fireEvent('draw:created', e); //update with new points
         this.editableLayers.addLayer(this.myLayer);
         this.toolBarElement.removeCls(this.toolbarEnableClass);
+        this.hasCurrentDrawing = true;
     },
 
     mapGotFocus: function() {

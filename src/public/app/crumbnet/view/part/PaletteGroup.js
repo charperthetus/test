@@ -30,6 +30,11 @@ Ext.define('Savanna.crumbnet.view.part.PaletteGroup', {
         this.palette.nodeTemplate = Savanna.crumbnet.utils.ViewTemplates.generatePaletteNodeTemplate();
 
         this.palette.model.nodeDataArray = this.model.templatesAsJson();
+
+        //palette extends diagram so it has many of the same tools enabled by default.
+        //We don't want users to be able to pan or select multiple nodes in the palette.
+        this.palette.toolManager.dragSelectingTool.isEnabled = false;
+        this.palette.toolManager.panningTool.isEnabled = false;
     },
 
     requestPaletteUpdate: function() {

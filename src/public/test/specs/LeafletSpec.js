@@ -59,7 +59,38 @@ describe('Search Map', function() {
             expect(map.addDrawControl).toHaveBeenCalled();
             expect(map.myMap).toBeTruthy();
         });
+        describe('mapZoomToMenu', function() {
+            var myButton = null;
+            beforeEach(function() {
+                myButton = Ext.create(Ext.Button, {
+                    text: 'click me',
+                    renderTo: 'test-html',
+                    menu:  [{
+                        text: 'Cancel'
+                    }]
+                })
+            });
+            afterEach(function() {
+                myButton = null;
+            });
 
+            it('should have 2 items if hasCurrentDrawing is false', function() {
+                map.hasCurrentDrawing = false;
+                map.mapZoomToMenu(myButton);
+                expect(myButton.menu.items.length).toBe(2);
+            });
+            it('should have 3 items if hasCurrentDrawing is true', function() {
+                map.hasCurrentDrawing = true;
+                map.mapZoomToMenu(myButton);
+                expect(myButton.menu.items.length).toBe(3);
+            });
+            it('should go back to having 2 items after having 3 items when hasCurrentDrawing is set back to false', function() {
+                map.hasCurrentDrawing = false;
+                map.mapZoomToMenu(myButton);
+                expect(myButton.menu.items.length).toBe(2);
+            });
+
+        });
         describe('events:', function() {
             var e = {};
             beforeEach(function() {

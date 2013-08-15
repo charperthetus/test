@@ -65,9 +65,12 @@ Ext.define('Savanna.search.view.SearchMap', {
 
                         },
                         {
-                            xtype: 'button',
+                            itemId: 'mapZoomTo',
                             text: 'Zoom To',
-                            ui: 'flat-toolbar-button'
+                            ui: 'flat-toolbar-button',
+                            menu: [{
+                                text: 'Cancel'
+                            }]
                         },
                         '->',
                         {
