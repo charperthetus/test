@@ -43,7 +43,7 @@ Ext.define('Savanna.view.PrintModal', {
         ];
     },
 
-    getIframe: function() {
+    getIframeDocument: function() {
         var dom = this.getEl().dom,
             iframe = Ext.dom.Query.selectNode('iframe', dom);
 
@@ -65,14 +65,14 @@ Ext.define('Savanna.view.PrintModal', {
     },
 
     getIframeContent: function() {
-        var iframe = this.getIframe();
+        var iframeDoc = this.getIframeDocument();
 
-        return iframe.innerHTML;
+        return iframeDoc.innerHTML;
     },
 
     setIframeContent: function(content) {
-        var iframe = this.getIframe();
+        var iframeDoc = this.getIframeDocument();
 
-        iframe.innerHTML = content;
+        iframeDoc.innerHTML = content;
     }
 });

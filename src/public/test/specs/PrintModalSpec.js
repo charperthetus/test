@@ -93,7 +93,7 @@ describe('Savanna.view.PrintModal', function() {
         });
 
         it('should be able to retrieve the iframe document', function() {
-            var iframeDocument = modal.getIframe();
+            var iframeDocument = modal.getIframeDocument();
 
             expect(iframeDocument).not.toBeNull();
         });
@@ -122,7 +122,7 @@ describe('Savanna.view.PrintModal', function() {
 
                 iframe.setAttribute('name', '');
 
-                modal.getIframe();
+                modal.getIframeDocument();
 
                 expect(raisedError).toBeTruthy();
             });
@@ -130,7 +130,7 @@ describe('Savanna.view.PrintModal', function() {
             it('should raise an error if there is no iframe', function() {
                 modal.removeAll();
 
-                modal.getIframe();
+                modal.getIframeDocument();
 
                 expect(raisedError).toBeTruthy();
             });
