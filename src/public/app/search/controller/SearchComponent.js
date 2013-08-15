@@ -27,6 +27,8 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         'Savanna.search.view.SearchComponent'
     ],
 
+    firstResultsReturned:false,
+
     refs: [
         { ref: 'advancedButton', selector: 'search_searchcomponent > #searchbar #main_panel #search_form #searchadvanced_btn' },
         { ref: 'advancedMenu', selector: 'search_searchcomponent > #searchbar #main_panel #search_form #searchadvanced_menu' },
@@ -36,6 +38,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         { ref: 'searchBody', selector: 'search_searchcomponent > #searchbody' },
         { ref: 'optionsButton', selector: 'search_searchcomponent > #searchbody #searchbodytoolbar #optionsbutton' },
         { ref: 'resultsButton', selector: 'search_searchcomponent > #searchbody #searchbodytoolbar #resultsbutton' },
+        { ref: 'searchForm', selector: 'search_searchcomponent > #searchbar #main_panel #search_form' },
         { ref: 'dals', selector: 'search_searchcomponent > #searchbody #mainsearchtabpanel #searchdals' }
     ],
 
@@ -74,6 +77,11 @@ Ext.define('Savanna.search.controller.SearchComponent', {
     // CUSTOM METHODS
 
     handleNewSearch:function()  {
+
+        /*
+        Do we want this to return the user to the search options screen, if
+        they are currently in the results screen?
+        */
 
         this.getSearchForm().queryById('search_terms').setValue('');
 
@@ -124,51 +132,75 @@ Ext.define('Savanna.search.controller.SearchComponent', {
     doSearch: function () {
         this.hideMenu();
 
-        var store = this.getSearchBar().store;
+        var store = this.getSearchBar().store,
+            searchString = this.getSearchBar().buildSearchString()
 
         store.removeAll();
 
-        var searchString = this.getSearchBar().buildSearchString();
+        this.firstResultsReturned = false;
 
         // populate with search string and set to default dal
         var searchObj = Ext.create('Savanna.search.model.SearchRequest', {
             'textInputString': searchString,
             'displayLabel': searchString,
-            'searchPreferencesVOs': Savanna.Config.defaultSearchDal
+            'searchPreferencesVOs': [
+                {
+                    'dalId': Savanna.Config.defaultSearchDal,
+                    'resultPerPage': 100,
+                    'sortOrder': 'Default'
+                }
+            ]
         });
 
+        /*
+        Set the search request json payload that is sent to the server,
+        and do the search on the default Dal
+         */
         store.proxy.jsonData = Ext.JSON.encode(searchObj.data);
         store.load({
             callback: this.searchCallback,
             scope: this
         });
 
+
+        /*
+        Check for selected additional Dals, and do a search on each of them
+        */
         var dalStore = Ext.data.StoreManager.lookup('dalSources');
         dalStore.each(function(source){
-             if(this.getDals().queryById(source.data.id).query("checkbox")[0].getValue())   {
+
+             if(this.getDals().queryById(source.data.id).query('checkbox')[0].getValue())   {
+
                  // Dal has been selected, apply to the request model and do search
-                 searchObj.set("searchPreferencesVOs", [
+                 searchObj.set('searchPreferencesVOs', [
                      {
-                         "dalId": source.data.id,
-                         "resultPerPage": 100,
-                         "sortOrder": "Default"
+                         'dalId': source.data.id,
+                         'resultPerPage': 100,
+                         'sortOrder': 'Default'
                      }
                  ]);
+
                  store.proxy.jsonData = Ext.JSON.encode(searchObj.data);
                  store.load({
                      callback: this.searchCallback,
                      scope: this
                  });
              }
+
         }, this);
 
+        /*
+        track in recent searches
+        */
         this.logHistory(this.getSearchBar().buildSearchString());
     },
 
     searchCallback: function (records, operation, success) {
-        console.log(success);
         if (success) {
-            this.showResultsPage();
+            if(!this.firstResultsReturned)  {
+                this.showResultsPage(); // only need to do this once per search
+                this.firstResultsReturned = true;
+            }
         }
         else {
             // server down..?

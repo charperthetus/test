@@ -11,11 +11,11 @@ Ext.define('Savanna.Config', {
 
     // Root for all REST calls
     //savannaUrlRoot: 'http://thedevsav1.thetuscorp.com:8080/SavannaX/',
-    //savannaUrlRoot: 'http://qac2is2sav2/c2is2/',
+    savannaUrlRoot: 'http://qac2is2sav2/c2is2/',
     // use this if you have Savanna 3.4 running.
     // Launch chrome from terminal with security disabled: /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --disable-web-security
 
-    savannaUrlRoot: 'http://localhost:8080/SavannaX/',
+    //savannaUrlRoot: 'http://localhost:8080/SavannaX/',
 
     // Urls for all the searches we do
     loginUrl: 'authcheck/loggedIn.html',
@@ -26,13 +26,8 @@ Ext.define('Savanna.Config', {
     // number of past search terms to store in recent history
     searchHistoryPageSize: 10,
 
-    defaultSearchDal: [
-        {
-            "dalId": 'SolrJdbc',
-            "resultPerPage": 100,
-            "sortOrder": "Default"
-        }
-    ],
+    // the dal id used if no others are selected
+    defaultSearchDal: 'SolrJdbc',
 
     resourcesPathPrefix: ''
 });
