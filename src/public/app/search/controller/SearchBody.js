@@ -15,25 +15,7 @@ Ext.define('Savanna.search.controller.SearchBody', {
 
     views: [
         'Savanna.search.view.SearchBody'
-    ],
+    ]
 
-    init: function () {
-        var me = this;
-        /*
-         These listeners toggle visibility between search options and search results
-         */
-        me.control({
-            'search_searchbody > #mainsearchoptions #mainsearchtabpanel #searchMap #leafletMap': {
-                'draw:created': function (layerType) {
-                    /* global console: false */
-                    console.log('layerType',layerType);
-                }
-            },
-            'search_searchbody > #mainsearchoptions #mainsearchtabpanel #searchMap #searchLocationDockedItems #clearLocationSearch':{
-                click: function(button) {
-                    button.up('search_searchmap').queryById('leafletMap').fireEvent('locationSearch:clear');
-                }
-            }
-        });
-    }
+
 });
