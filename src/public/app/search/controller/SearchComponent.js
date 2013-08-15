@@ -35,7 +35,8 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         { ref: 'historyMenu', selector: 'search_searchcomponent > #searchtoolbar #historybutton #historymenu' },
         { ref: 'searchBody', selector: 'search_searchcomponent > #searchbody' },
         { ref: 'optionsButton', selector: 'search_searchcomponent > #searchbody #searchbodytoolbar #optionsbutton' },
-        { ref: 'resultsButton', selector: 'search_searchcomponent > #searchbody #searchbodytoolbar #resultsbutton' }
+        { ref: 'resultsButton', selector: 'search_searchcomponent > #searchbody #searchbodytoolbar #resultsbutton' },
+        { ref: 'dals', selector: 'search_searchcomponent > #searchbody #mainsearchtabpanel #searchdals' }
     ],
 
     init: function () {
@@ -123,23 +124,49 @@ Ext.define('Savanna.search.controller.SearchComponent', {
     doSearch: function () {
         this.hideMenu();
 
+        var store = this.getSearchBar().store;
+
+        store.removeAll();
+
         var searchString = this.getSearchBar().buildSearchString();
+
+        // populate with search string and set to default dal
         var searchObj = Ext.create('Savanna.search.model.SearchRequest', {
             'textInputString': searchString,
-            'displayLabel': searchString
+            'displayLabel': searchString,
+            'searchPreferencesVOs': Savanna.Config.defaultSearchDal
         });
 
-        this.getSearchBar().store.removeAll();
-        this.getSearchBar().store.proxy.jsonData = Ext.JSON.encode(searchObj.data);
-        this.getSearchBar().store.load({
+        store.proxy.jsonData = Ext.JSON.encode(searchObj.data);
+        store.load({
             callback: this.searchCallback,
             scope: this
         });
+
+        var dalStore = Ext.data.StoreManager.lookup('dalSources');
+        dalStore.each(function(source){
+             if(this.getDals().queryById(source.data.id).query("checkbox")[0].getValue())   {
+                 // Dal has been selected, apply to the request model and do search
+                 searchObj.set("searchPreferencesVOs", [
+                     {
+                         "dalId": source.data.id,
+                         "resultPerPage": 100,
+                         "sortOrder": "Default"
+                     }
+                 ]);
+                 store.proxy.jsonData = Ext.JSON.encode(searchObj.data);
+                 store.load({
+                     callback: this.searchCallback,
+                     scope: this
+                 });
+             }
+        }, this);
 
         this.logHistory(this.getSearchBar().buildSearchString());
     },
 
     searchCallback: function (records, operation, success) {
+        console.log(success);
         if (success) {
             this.showResultsPage();
         }

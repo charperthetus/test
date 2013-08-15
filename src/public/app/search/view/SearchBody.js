@@ -39,6 +39,7 @@ Ext.define('Savanna.search.view.SearchBody', {
                             title: 'Search Sources',
                             autoScroll: true,
                             cls: 'search-dal',
+                            itemId:"searchdals",
                             xtype: 'search_searchdals'
                         },
                         {
