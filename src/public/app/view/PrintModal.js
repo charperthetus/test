@@ -94,8 +94,9 @@ Ext.define('Savanna.view.PrintModal', {
     setIframeContent: function(content) {
         var iframeDoc = this.getIframeDocument();
 
-        if (iframeDoc && iframeDoc.body) {
-            iframeDoc.body.innerHTML = content;
+        // TODO: need remove/replace iframe when writing content (since IE10 only lets us doc.write() and that is additive)
+        if (iframeDoc) {
+            iframeDoc.write('<body>' + content + '</body>');
         }
         else {
             Ext.Error.raise('Unable to set content on iframe');
