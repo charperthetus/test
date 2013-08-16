@@ -2,7 +2,7 @@
     "defaultId": "mockDAL",
     "sources": [
         {
-            "id": "Ted DAL",
+            "id": "Ted_DAL",
             "inputTypes": [
                 {
                     "type": "sav_searchInputType_Text"
@@ -107,7 +107,7 @@
 
         },
         {
-            id: 'Steve DAL',
+            "id": "Steve_DAL",
             "inputTypes": [
                 {
                     "type": "sav_searchInputType_Text"

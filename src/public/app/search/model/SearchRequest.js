@@ -8,6 +8,10 @@
 Ext.define('Savanna.search.model.SearchRequest', {
     extend: 'Ext.data.Model',
 
+    requires:[
+        'Savanna.Config'
+    ],
+
     fields: [
         {name: "_type", type: "string", defaultValue: "com.thetus.platforms.savanna.mdks.search.objects.SearchParamVO"},
         {name: "contentDataSource", type: "string", defaultValue: "SolrJdbc"},
@@ -26,13 +30,7 @@ Ext.define('Savanna.search.model.SearchRequest', {
         {name: "returnLatLonPairs", type: "boolean", defaultValue: true},
         {name: "returnResults", type: "boolean", defaultValue: true},
         {name: "returnTagCloud", type: "boolean", defaultValue: false},
-        {name: "searchPreferencesVOs", type: "array", defaultValue: [
-            {
-                "dalId": "SolrJdbc",
-                "resultPerPage": 100,
-                "sortOrder": "Default"
-            }
-        ]},
+        {name: "searchPreferencesVOs", type: "array", defaultValue: Savanna.Config.defaultSearchDal},
         {name: "searchTargets", type: "array", defaultValue: [
             {
                 "targetName": "Document",
