@@ -250,13 +250,13 @@ describe('Search Component', function () {
             it('should build the search string', function () {
                 spyOn(component.queryById('searchbar'), 'buildSearchString').andCallThrough();
 
-                controller.doSearch(component.queryById('searchbar').items.first(), {});
+                controller.doSearch(component.queryById('searchbar'), {});
 
                 expect(component.queryById('searchbar').buildSearchString).toHaveBeenCalled();
             });
 
             it('should remove search field values when "Start New Search" is selected', function () {
-                controller.handleNewSearch();
+                controller.handleNewSearch(component.queryById('searchbar'));
 
                 expect(form.queryById('search_terms').getValue()).toEqual('');
                 expect(form.queryById('all_words').getValue()).toEqual('');

@@ -116,7 +116,8 @@ describe('Savanna.mixin.Storeable', function() {
         });
 
         describe('Definition of a handler for store loading', function() {
-            var onStoreLoadCalled = false;
+            var onStoreLoadCalled = false,
+                onStoreChangedCalled = false;
 
             beforeEach(function() {
                 Ext.define('Savanna.mixin.test.ContainerWithHandler', {
@@ -131,12 +132,16 @@ describe('Savanna.mixin.Storeable', function() {
                     },
                     onStoreLoad: function() {
                         onStoreLoadCalled = true;
+                    },
+                    onStoreChanged: function() {
+                        onStoreChangedCalled = true;
                     }
                 });
             });
 
             afterEach(function() {
                 onStoreLoadCalled = false;
+                onStoreChangedCalled = false;
             });
 
             it('should call the handler when data is loaded in the store', function() {
@@ -145,6 +150,14 @@ describe('Savanna.mixin.Storeable', function() {
                 testMixer.store.fireEvent('load');
 
                 expect(onStoreLoadCalled).toBeTruthy();
+            });
+
+            it('should call the handler when data is changed in the store', function() {
+                testMixer = Ext.create('Savanna.mixin.test.ContainerWithHandler');
+
+                testMixer.store.fireEvent('datachanged');
+
+                expect(onStoreChangedCalled).toBeTruthy();
             });
         });
 
