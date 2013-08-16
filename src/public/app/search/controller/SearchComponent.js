@@ -27,6 +27,8 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         'Savanna.search.view.SearchComponent'
     ],
 
+    searchComponentInstance:null,
+
     init: function () {
         this.control({
             'search_searchcomponent > #searchbar #main_panel #search_reset #search_reset_button': {
@@ -96,6 +98,29 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                 field.setValue('');
             }
         });
+        /*
+        return to the options screen if we're not already there
+         */
+        var component = elem.findParentByType("search_searchcomponent");
+        if(component.down('#searchbody').currentPanel != "searchoptions") {
+            var optionsBtn = component.queryById('optionsbutton');
+            optionsBtn.fireEvent("click", optionsBtn);
+        }
+
+        /*
+        clear the selected dals
+         */
+        var dalStore = Ext.data.StoreManager.lookup('dalSources');
+
+        dalStore.each(function (source) {
+            var dals = component.down('#searchdals');
+            var results_dals = component.down('#resultsdals');
+            if (dals.queryById(source.data.id).query('checkbox')[0].getValue()) {
+                dals.queryById(source.data.id).query('checkbox')[0].setValue(false);
+                results_dals.queryById(source.data.id).query('checkbox')[0].setValue(false);
+                results_dals.queryById(source.data.id).down('#dalStatusIcon').getEl().setStyle(results_dals.queryById(source.data.id).dalLoadNone);
+            }
+        });
     },
 
     handleSearchTermKeyUp: function (field, evt) {
@@ -148,6 +173,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         } else {
             component = elem.findParentByType('search_searchcomponent');
         }
+        this.currentComponentInstance = component;
 
         this.hideMenu(component);
 
@@ -219,10 +245,11 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
     searchCallback: function (records, operation, success) {
         if (success) {
-            if (!this.getView('Savanna.search.view.SearchComponent').firstResultsReturned) {
+            if (!this.currentComponentInstance.firstResultsReturned) {
                 this.showResultsPage(); // only need to do this once per search
-                this.getView('Savanna.search.view.SearchComponent').firstResultsReturned = true;
+                this.currentComponentInstance.firstResultsReturned = true;
             }
+            this.currentComponentInstance.down("#resultsdals").setDalStatus(operation, success);
         }
         else {
             // server down..?
@@ -233,8 +260,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
     },
 
     showResultsPage: function () {
-        // TODO: find a better way - guessing this will not always work
-        var resultsBtn = Savanna.getApplication().viewport.queryById('main').down('#resultsbutton');
+        var resultsBtn = this.currentComponentInstance.down('#resultsbutton');
 
         resultsBtn.fireEvent('click', resultsBtn);
     },

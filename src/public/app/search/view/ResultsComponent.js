@@ -14,7 +14,7 @@ Ext.define('Savanna.search.view.ResultsComponent', {
         'Savanna.controller.Factory',
         'Savanna.search.store.DalSources'
     ],
-    layout:'border',
+    layout: 'border',
     defaults: {
         // is collapsible good?  seemed handy.
         collapsible: true,
@@ -24,11 +24,15 @@ Ext.define('Savanna.search.view.ResultsComponent', {
         this.callParent(arguments);
         Savanna.controller.Factory.getController('Savanna.search.controller.ResultsComponent');
     },
-    items: [{
-        xtype:'search_resultsdals',
-        itemId:'resultsdals'
-    },{
-        xtype:'search_resultspanel',
-        itemId:'resultspanel'
-    }]
+
+    items: [
+        {
+            xtype: 'search_resultsdals',
+            itemId: 'resultsdals'
+        },
+        {
+            xtype: 'search_resultspanel',
+            itemId: 'resultspanel'
+        }
+    ]
 });

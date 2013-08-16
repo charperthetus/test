@@ -52,5 +52,33 @@ Ext.define('Savanna.search.view.ResultsDals', {
             itemId: myRecord.data.id,
             checkboxLabel: myRecord.data.displayName
         });
+    },
+
+    setDalStatus: function (operation, success) {
+        var json = Ext.JSON.decode(operation.request.jsonData),
+            component = this.up("search_searchcomponent"),
+            dalStore = Ext.data.StoreManager.lookup('dalSources'),
+            me = this;
+
+        dalStore.each(function (source) {
+            var dals = component.down('#searchdals');
+            var myDal = me.queryById(source.data.id);
+            myDal.down('#dalStatusIcon').getEl().setStyle(myDal.dalLoadPending);
+            if (dals.queryById(source.data.id).query('checkbox')[0].getValue()) {
+                if(myDal != undefined) {
+                    myDal.query('checkbox')[0].setValue(true);
+                    if(success) {
+                        //myDal.down('#dalStatusIcon').style = myDal.dalLoadSuccess;
+                        myDal.down('#dalStatusIcon').getEl().setStyle(myDal.dalLoadSuccess);
+                    }   else    {
+                        myDal.down('#dalStatusIcon').getEl().setStyle(myDal.dalLoadFail);
+                    }
+                }
+            }   else    {
+                // not selected
+                myDal.query('checkbox')[0].setValue(false);
+                myDal.down('#dalStatusIcon').getEl().setStyle(myDal.dalLoadNone);
+            }
+        });
     }
 });

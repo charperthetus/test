@@ -34,7 +34,7 @@ Ext.define('Savanna.search.store.SearchResults', {
             reader: {
                 type: 'json',
                 root:"results",
-                // why this no worky?  I'll figure it out...
+                // why this no work?  I'll figure it out...
                 totalProperty:"totalResults"
             },
             modifyRequest:function(request) {
