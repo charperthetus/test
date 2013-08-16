@@ -69,7 +69,7 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
                 break;
             case 'print':
                 Ext.create('Savanna.view.PrintModal', {
-                    html: 'TEST CONTENT FOR DIAGRAM'
+                    html: diagram.makeImage({ scale: 0.5 })
                 }).show();
                 break;
             default:
