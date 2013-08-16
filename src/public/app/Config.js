@@ -26,8 +26,5 @@ Ext.define('Savanna.Config', {
     // number of past search terms to store in recent history
     searchHistoryPageSize: 10,
 
-    // the dal id used if no others are selected
-    defaultSearchDal: 'SolrJdbc',
-
     resourcesPathPrefix: ''
 });

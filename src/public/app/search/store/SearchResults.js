@@ -36,6 +36,12 @@ Ext.define('Savanna.search.store.SearchResults', {
                 root:"results",
                 // why this no worky?  I'll figure it out...
                 totalProperty:"totalResults"
+            },
+            modifyRequest:function(request) {
+                Ext.apply(request, {
+                    jsonData: this.jsonData
+                });
+                return request;
             }
 
             // END DEV SETTINGS
