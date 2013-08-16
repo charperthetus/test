@@ -3,10 +3,11 @@ Ext.define('Savanna.view.PrintModal', {
     extend: 'Ext.window.Window',
     alias: 'widget.print-modal',
 
-    height: 200,
-    width: 400,
+    height: '90%',
+    width: '90%',
     layout: 'fit',
     modal: true,
+        cls: 'print-modal',
 
     title: 'Print',
 
@@ -28,15 +29,10 @@ Ext.define('Savanna.view.PrintModal', {
 
         this.callParent(arguments);
 
-        this.on('render', function() {
-            try {
-                this.setIframeContent(this.initialConfig.html || '');
+        this.on('afterrender', function() {
+            if (this.initialConfig.html) {
+                this.setPrintContent(this.initialConfig.html);
             }
-            catch(e) {
-                console.log('ERROR', e);
-                this.close();
-            }
-
         }, this);
     },
 
@@ -45,61 +41,29 @@ Ext.define('Savanna.view.PrintModal', {
     setupItems: function() {
         return [
             {
-                xtype: 'uxiframe'
+                xtype: 'component',
+                itemId: 'printContent'
             }
         ];
     },
 
-    getIframeWindow: function() {
-        var dom = this.getEl().dom,
-            iframe = Ext.dom.Query.selectNode('iframe', dom);
+    setPrintContent: function(html) {
+        var printContent = this.down('#printContent');
 
-        if (iframe) {
-            var iframeId = iframe.getAttribute('name');
-
-            if (iframeId) {
-                return window.frames[iframeId];
-            }
-            else {
-                Ext.Error.raise('Unable to find id for iframe');
-            }
+        if (html.hasOwnProperty('outerHTML')) {
+            console.log('outerHTML....');
+            html = html.outerHTML;
         }
-        else {
-            Ext.Error.raise('Unable to find iframe');
+        else if (html.getHTML) {
+            console.log('getHTML....', html);
+            html = html.getHTML();
         }
 
-        return null;
+        console.log('and the html is...', html);
+        printContent.getEl().setHTML(html);
     },
 
-    getIframeDocument: function() {
-        var iframe = this.getIframeWindow();
-
-        if (iframe) {
-            return iframe.document;
-        }
-
-        return null;
-    },
-
-    getIframeContent: function() {
-        var iframeDoc = this.getIframeDocument();
-
-        if (iframeDoc) {
-            return iframeDoc.body.innerHTML;
-        }
-
-        return '';
-    },
-
-    setIframeContent: function(content) {
-        var iframeDoc = this.getIframeDocument();
-
-        // TODO: need remove/replace iframe when writing content (since IE10 only lets us doc.write() and that is additive)
-        if (iframeDoc) {
-            iframeDoc.write('<body>' + content + '</body>');
-        }
-        else {
-            Ext.Error.raise('Unable to set content on iframe');
-        }
+    getPrintContent: function() {
+        return this.down('#printContent').getEl().getHTML();
     }
 });

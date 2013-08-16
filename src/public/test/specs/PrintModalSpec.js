@@ -47,13 +47,9 @@ describe('Savanna.view.PrintModal', function() {
 
             expect(printButton).not.toBeNull();
         });
-
-        it('should have no content in the iframe', function() {
-            expect(modal.getIframeContent()).toBe('');
-        });
     });
 
-    describe('setting content in the iframe', function() {
+    describe('setting content', function() {
 
         describe('setting via configuration', function() {
 
@@ -65,80 +61,22 @@ describe('Savanna.view.PrintModal', function() {
             });
 
             it('should get the content we configured', function() {
-                expect(modal.getIframeContent()).toBe('TEST CONTENT');
+                expect(modal.getPrintContent()).toBe('TEST CONTENT');
             });
         });
 
-        describe('setting via setIframeContent', function() {
+        describe('setting via setPrintContent', function() {
 
             beforeEach(function() {
                 modal = Ext.create('Savanna.view.PrintModal', { renderTo: 'test-html' });
             });
 
             it('should allow us to set the content via the method', function() {
-                expect(modal.getIframeContent()).toBe('');
+                expect(modal.getPrintContent()).toBe('');
 
-                modal.setIframeContent('SOME CONTENT');
+                modal.setPrintContent('SOME CONTENT');
 
-                expect(modal.getIframeContent()).toBe('SOME CONTENT');
-            });
-        });
-    });
-
-    describe('accessing the iframe', function() {
-
-        beforeEach(function() {
-            modal = Ext.create('Savanna.view.PrintModal');
-            modal.show();
-        });
-
-        it('should be able to retrieve the iframe window', function() {
-            var iframeWindow = modal.getIframeWindow();
-
-            expect(iframeWindow).not.toBeNull();
-        });
-
-        it('should be able to retrieve the iframe document', function() {
-            var iframeDocument = modal.getIframeDocument();
-
-            expect(iframeDocument).not.toBeNull();
-        });
-
-        describe('error conditions', function() {
-            var origErrorHandler,
-                raisedError = false;
-
-            beforeEach(function() {
-                origErrorHandler = Ext.Error.handle;
-
-                Ext.Error.handle = function() {
-                    raisedError = true;
-                    return true;
-                };
-            });
-
-            afterEach(function() {
-                Ext.Error.handle = origErrorHandler;
-
-                raisedError = false;
-            });
-
-            it('should raise an error if the iframe has no id', function() {
-                var iframe = Ext.dom.Query.selectNode('iframe', modal.getEl().dom);
-
-                iframe.setAttribute('name', '');
-
-                modal.getIframeWindow();
-
-                expect(raisedError).toBeTruthy();
-            });
-
-            it('should raise an error if there is no iframe', function() {
-                modal.removeAll();
-
-                modal.getIframeWindow();
-
-                expect(raisedError).toBeTruthy();
+                expect(modal.getPrintContent()).toBe('SOME CONTENT');
             });
         });
     });
