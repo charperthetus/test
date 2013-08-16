@@ -35,6 +35,15 @@ Ext.define('Savanna.crumbnet.view.part.PaletteGroup', {
         //We don't want users to be able to pan or select multiple nodes in the palette.
         this.palette.toolManager.dragSelectingTool.isEnabled = false;
         this.palette.toolManager.panningTool.isEnabled = false;
+
+        this.palette.addDiagramListener('ChangedSelection', Ext.bind(this.selectionChanged, this));
+    },
+
+    selectionChanged: function(e) {
+        var iterator = e.diagram.selection.iterator;
+        iterator.next();
+        var diagram = this.up('go-graph').down('go-graph_canvas').diagram;
+        diagram.toolManager.clickCreatingTool.archetypeNodeData = iterator.value.data;
     },
 
     requestPaletteUpdate: function() {
