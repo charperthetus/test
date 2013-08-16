@@ -32,6 +32,7 @@
     .x-body,
     .print-modal,
     .print-modal .x-window-body {
+        width: 670px; /* borrowed from http://stackoverflow.com/questions/320357/safe-width-in-pixel-for-printing-web-pages */
         border: none !important;
         display: block !important;
         overflow: visible !important;
