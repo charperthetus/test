@@ -56,11 +56,7 @@ Ext.define('Savanna.controller.Main', {
     },
 
     printContent: function(button) {
-        var modal = button.findParentByType('print-modal');
-
-        // NOTE: we assume we will always get the modal window, since the button is it's child
-        console.log('TODO...actually print....');
-        modal.getIframeWindow().print();
+        window.print();
     },
 
     closePrintModal: function(button) {
