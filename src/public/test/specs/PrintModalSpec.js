@@ -71,12 +71,37 @@ describe('Savanna.view.PrintModal', function() {
                 modal = Ext.create('Savanna.view.PrintModal', { renderTo: 'test-html' });
             });
 
-            it('should allow us to set the content via the method', function() {
+            it('should allow us to set the content via the method with a string', function() {
                 expect(modal.getPrintContent()).toBe('');
 
                 modal.setPrintContent('SOME CONTENT');
 
                 expect(modal.getPrintContent()).toBe('SOME CONTENT');
+            });
+
+            it('should allow us to set the content via the method with a HTMLElement', function() {
+                expect(modal.getPrintContent()).toBe('');
+
+                var domElem = document.createElement('div');
+                domElem.appendChild(document.createTextNode('outerHTML CONTENT'));
+                domElem.outerHTML = 'FUCK';
+
+                modal.setPrintContent(domElem);
+
+                expect(modal.getPrintContent()).toBe('<div>outerHTML CONTENT</div>');
+            });
+
+            it('should allow us to set the content via the method with an Ext.Element', function() {
+                expect(modal.getPrintContent()).toBe('');
+
+                var domElem = document.createElement('div');
+                domElem.appendChild(document.createTextNode('getHTML CONTENT'));
+
+                var extElem = new Ext.dom.Element(domElem);
+
+                modal.setPrintContent(extElem);
+
+                expect(modal.getPrintContent()).toBe('getHTML CONTENT');
             });
         });
     });

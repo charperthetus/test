@@ -50,13 +50,13 @@ Ext.define('Savanna.view.PrintModal', {
     setPrintContent: function(html) {
         var printContent = this.down('#printContent');
 
-        if (html.hasOwnProperty('outerHTML')) {
+        if (html.outerHTML) {
             html = html.outerHTML;
         }
         else if (html.getHTML) {
             html = html.getHTML();
         }
-
+console.log('html', html);
         printContent.getEl().setHTML(html);
     },
 
