@@ -17,7 +17,9 @@ Ext.define('Savanna.search.view.searchDals.ResultsOptions', {
     items: [],
 
 
-    // temporary styles, to be replaced by design team
+    /*
+    temporary styles, to be replaced by design team
+     */
     dalLoadNone: {
         backgroundColor:"white",
         width:"20px",

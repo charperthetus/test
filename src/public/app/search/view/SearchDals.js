@@ -93,12 +93,11 @@ Ext.define('Savanna.search.view.SearchDals', {
     },
 
     createPanel: function(myRecord) {
-        console.log(myRecord.customSearchGroups());
         return Ext.create('Savanna.search.view.searchDals.SearchOptions', {
             itemId: myRecord.data.id,
             checkboxLabel: myRecord.data.displayName,
             label: myRecord.data.textDescription,
-            showButton: myRecord.customSearchGroups().data.length
+            showButton: (myRecord.get("customSearchDescription").customSearchGroups != null)
         });
     }
 });
