@@ -1,14 +1,14 @@
 /* global
         Ext: false,
         jasmine: false, describe: false, beforeEach: false, afterEach: false, it: false, expect: false, sinon: false, waitsFor: false, runs: false, spyOn: false,
-        Savanna: false, ThetusTestHelpers: false */
+        Savanna: false, ThetusTestHelpers: false, createTestDom: false, cleanTestDom: false */
 Ext.require('Savanna.Config');
 Ext.require('Savanna.controller.Main');
 Ext.require('Savanna.view.Login');
+Ext.require('Savanna.view.PrintModal');
 
 describe('Savanna Main', function() {
     var TEST_SESSION_ID = 'TEST_SESSION_ID',
-        fixtures = {},
         controller = null,
         LOGIN_URL = '';
 
@@ -16,20 +16,21 @@ describe('Savanna Main', function() {
         LOGIN_URL = LOGIN_URL || Savanna.Config.savannaUrlRoot + Savanna.Config.loginUrl;
 
         // NOTE: you need to set up the controller even before view tests, otherwise the view will not be able to be instantiated
-
         controller = Ext.create('Savanna.controller.Main');
+
+        createTestDom();
     });
 
     afterEach(function() {
-        fixtures = null;
-
         if (controller) {
             controller.destroy();
+            controller = null;
         }
-        controller = null;
 
         // Make sure Savanna is not keeping our session ID between tests...
         delete Savanna.jsessionid;
+
+        cleanTestDom();
     });
 
     describe('Controller', function() {
@@ -42,9 +43,8 @@ describe('Savanna Main', function() {
         afterEach(function() {
             if (server) {
                 server.restore();
+                server = null;
             }
-
-            server = null;
         });
 
         it('should have a controller of the correct type instantiated', function() {
@@ -54,16 +54,6 @@ describe('Savanna Main', function() {
         });
 
         describe('Login', function() {
-            // TODO: create login fixtures...
-            var loginFixtures = {};
-
-            beforeEach(function() {
-                loginFixtures = {};
-            });
-
-            afterEach(function() {
-                loginFixtures = null;
-            });
 
             describe('listens to Login view for events', function() {
                 var view = null,
@@ -84,9 +74,9 @@ describe('Savanna Main', function() {
                 afterEach(function() {
                     if (view) {
                         view.destroy();
+                        view = null;
                     }
 
-                    view = null;
                     mockApplication = null;
 
                     if (controller.swapLogin.restore) {
@@ -146,6 +136,43 @@ describe('Savanna Main', function() {
 
                     expect(mock.remove).toHaveBeenCalledWith('login');
                     expect(mock.add).toHaveBeenCalledWith('WOULD BE A VIEW');
+                });
+            });
+        });
+
+        describe('PrintModal', function() {
+            var modal = null;
+
+            beforeEach(function() {
+                modal = Ext.create('Savanna.view.PrintModal', { renderTo: 'test-html' });
+                modal.show();
+            });
+
+            afterEach(function() {
+                if (modal) {
+                    modal.close();
+                    modal.destroy();
+                    modal = null;
+                }
+            });
+
+            describe('"print" button handler', function() {
+                it('should call "handlePrint" when the print button is clicked', function() {
+                    console.log('TODO...test printContent()');
+                });
+            });
+
+            describe('"cancel" button handler', function() {
+                it('should close the modal window when called', function() {
+                    var button = modal.down('button[type="cancel"]');
+
+                    expect(button).not.toBeNull();
+
+                    spyOn(modal, 'close');
+
+                    controller.closePrintModal(button);
+
+                    expect(modal.close).toHaveBeenCalled();
                 });
             });
         });
