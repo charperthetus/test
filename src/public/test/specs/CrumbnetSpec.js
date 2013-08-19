@@ -437,6 +437,22 @@ describe('Savanna.crumbnet', function() {
                 });
             });
         });
+
+        describe('handleNodeColorSelect', function() {
+            var picker;
+
+            beforeEach(function() {
+                // TODO: picker = view.down('???');
+            });
+
+            afterEach(function() {
+                picker = null;
+            });
+
+            it('should update the color of all the selected nodes', function() {
+                // TODO: select some nodes, set a color that we know they will not have, call our handler and validate that their color was changed...
+            });
+        });
     });
 
     describe('Model', function() {
@@ -674,6 +690,42 @@ describe('Savanna.crumbnet', function() {
                     expect(accordionPanels[0].title).toBe('NO PALETTE');
                 });
             });
+
+            describe('PaletteGroup', function() {
+                var paletteGroup = null;
+
+                beforeEach(function() {
+                    paletteGroup = paletteMenu.items.first();
+                });
+
+                afterEach(function() {
+                    paletteGroup = null;
+                });
+
+                it('should get the underlying palette to update when needed', function () {
+                    spyOn(paletteGroup.palette, 'requestUpdate');
+
+                    paletteGroup.requestPaletteUpdate();
+
+                    expect(paletteGroup.palette.requestUpdate).toHaveBeenCalled();
+                });
+
+                it('should update the archetype used for creating a node when the selectionChanged handler is invoked', function() {
+                    var eventObject = new go.DiagramEvent(),
+                        diagram = view.down('go-graph_canvas').diagram,
+                        firstNode = diagram.nodes.first(),
+                        firstNodeData = firstNode.data;
+
+                    firstNode.isSelected = true;
+                    eventObject.diagram = diagram;
+
+                    expect(diagram.toolManager.clickCreatingTool.archetypeNodeData).not.toBe(firstNodeData);
+
+                    paletteGroup.selectionChanged(eventObject);
+
+                    expect(diagram.toolManager.clickCreatingTool.archetypeNodeData).toBe(firstNodeData);
+                });
+            });
         });
 
         describe('Crumbnet Overview', function() {
@@ -766,7 +818,7 @@ describe('Savanna.crumbnet', function() {
 
                 expect(it.count).toBeGreaterThan(0);
 
-                var port = it.next() ?it.value : null;
+                var port = it.next() ? it.value : null;
 
                 expect(port).not.toBeNull();
                 expect(port.visible).toBeTruthy();
