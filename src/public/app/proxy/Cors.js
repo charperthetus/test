@@ -8,8 +8,6 @@
  *      proxy: {
  *          type: 'savanna-cors',
  *          url: 'http://some/url',
- *          devUrl: 'http://some.development/url.json', // useful if you have a hard-coded asset data file that you want to use in development
- *          devMode: true, // setting this to true along with defining a devUrl, will ensure you get unit-test safe URLs (ie. ones that can be used with the ThetusTestHelpers.FakeServer)
  *          addSessionId: false, // if you want to suppress adding "jsessionid" to your url
  *          modifyRequest: function(request) {
  *              // do something to the request...
@@ -31,13 +29,6 @@ Ext.define('Savanna.proxy.Cors', {
     cors: true,
     withCredentials: true,
 
-    actionMethods: {
-        create: 'POST',
-        read: 'POST',
-        update: 'POST',
-        destroy: 'POST'
-    },
-
     headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
@@ -52,19 +43,6 @@ Ext.define('Savanna.proxy.Cors', {
     },
 
     addSessionId: true,
-
-    devMode: false,
-
-    constructor: function(config) {
-        if (config && config.devMode) {
-            this.noCache = false;
-            this.startParam = undefined;
-            this.limitParam = undefined;
-            this.pageParam = undefined;
-        }
-
-        this.callParent(arguments);
-    },
 
     doRequest: function (operation, callback, scope) {
         var writer = this.getWriter(),
@@ -104,22 +82,11 @@ Ext.define('Savanna.proxy.Cors', {
     },
 
     buildUrl: function(request) {
-        var url = '',
-            origAddSessionId = this.addSessionId;
-
-        if (this.devMode && this.devUrl) {
-            url = this.devUrl;
-            this.addSessionId = false;
-        }
-        else {
-            url = this.getUrl(request);
-        }
+        var url = this.getUrl(request);
 
         if (this.addSessionId) {
             url += ';jsessionid=' + Savanna.jsessionid;
         }
-
-        this.addSessionId = origAddSessionId;
 
         return url;
     }
