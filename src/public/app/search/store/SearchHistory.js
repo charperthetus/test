@@ -23,6 +23,14 @@ Ext.define('Savanna.search.store.SearchHistory', {
             type: 'savanna-cors',
             url: Savanna.Config.buildSavannaUrl('searchHistoryUrl'),
 
+            // 8/19/2013 (thille) should reads really be a "POST"? What about updates?
+            actionMethods: {
+                read: 'POST',
+                create: 'POST',
+                update: 'POST',
+                destroy: 'POST'
+            },
+
             // TODO: these params are disabled right now, but we may need them...
             startParam: undefined,
             limitParam: undefined,

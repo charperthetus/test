@@ -487,7 +487,7 @@ describe('Search Component', function () {
         describe('retrieving history data', function() {
 
             beforeEach(function() {
-                var readMethod = 'GET',
+                var readMethod = 'POST',
                     testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(store.getProxy(), 'read', readMethod);
 
                 server.respondWith(readMethod, testUrl, fixtures.historyResults);
