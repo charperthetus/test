@@ -1,5 +1,5 @@
 /* global
-        Ext: false, ExtSpec: false,
+        Ext: false,
         jasmine: false, describe: false, beforeEach: false, afterEach: false, it: false, expect: false, sinon: false, waitsFor: false, runs: false, spyOn: false,
         Savanna: false, ThetusTestHelpers: false */
 Ext.require('Savanna.Config');
@@ -14,8 +14,6 @@ describe('Savanna Main', function() {
 
     beforeEach(function() {
         LOGIN_URL = LOGIN_URL || Savanna.Config.savannaUrlRoot + Savanna.Config.loginUrl;
-
-        this.addMatchers(ExtSpec.Jasmine.Matchers);
 
         // NOTE: you need to set up the controller even before view tests, otherwise the view will not be able to be instantiated
 
