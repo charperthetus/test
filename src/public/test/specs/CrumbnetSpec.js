@@ -1,11 +1,12 @@
-/* global Ext: false, describe: false, beforeEach: false, afterEach: false, createTestDom: false, cleanTestDom: false,
-          it: false, expect: false, Savanna: false, spyOn: false, go: false, ThetusTestHelpers: false, waitsFor: false,
+/* global Ext: false,
+          describe: false, beforeEach: false, afterEach: false,
+          it: false, expect: false, spyOn: false, go: false, waitsFor: false,
+          ThetusTestHelpers: false, Savanna: false, setupNoCacheNoPagingStore: false, createTestDom: false, cleanTestDom: false,
           runs: false, sinon: false */
 Ext.require('Savanna.crumbnet.controller.CrumbnetController');
 Ext.require('Savanna.crumbnet.utils.ViewTemplates');
 
 describe('Savanna.crumbnet', function() {
-    var CRUMBNET_PALETTE_TEMPLATES_URL = 'resources/data/testCrumbnetTemplates.json';
     var fixtures = {};
     var server = null;
 
@@ -14,6 +15,8 @@ describe('Savanna.crumbnet', function() {
 
         fixtures = Ext.clone(ThetusTestHelpers.Fixtures.Crumbnet);
         server = new ThetusTestHelpers.FakeServer(sinon);
+
+        Savanna.Config.resourcesPathPrefix = '/';
     });
 
     afterEach(function() {
@@ -80,6 +83,17 @@ describe('Savanna.crumbnet', function() {
         });
 
         describe('handleGraphToolbarButtonClick', function() {
+
+            afterEach(function() {
+                var modals = Ext.ComponentQuery.query('print-modal');
+
+                if (modals) {
+                    for (var i = 0; i < modals.length; ++i) {
+                        modals[i].close();
+                        modals[i].destroy();
+                    }
+                }
+            });
 
             it('should zoom the diagram when we click "zoomToFit"', function() {
                 var button = view.down('button[type="zoomToFit"]');
@@ -164,6 +178,16 @@ describe('Savanna.crumbnet', function() {
                 var zoomToArg = controller.zoomTo.mostRecentCall.args[1];
 
                 expect(zoomToArg).toBeGreaterThan(0.9);
+            });
+
+            it('should spawn the PrintModal window when we click "print"', function() {
+                var button = view.down('button[type="print"]');
+
+                expect(button).not.toBeNull();
+
+                controller.handleGraphToolbarButtonClick(button);
+
+                expect(Ext.ComponentQuery.query('print-modal')).not.toBeNull();
             });
 
             it('should do nothing if we click a button it does not understand', function() {
@@ -292,7 +316,7 @@ describe('Savanna.crumbnet', function() {
                 diagram = null;
 
             beforeEach(function() {
-                menuButton = view.down('menuitem[type="standard"]');
+                menuButton = view.down('menuitem[type="Orthogonal"]'); //TODO - figure out how to get the first menu item from the menu instead of explicitly by name.
                 menu = view.down('#linkStyleMenu');
                 diagram = controller.getDiagramForMenu(menu);
             });
@@ -500,9 +524,8 @@ describe('Savanna.crumbnet', function() {
         afterEach(function() {
             if (view && view.destroy) {
                 view.destroy();
+                view = null;
             }
-
-            view = null;
 
             Ext.data.StoreManager.remove(store);
 
@@ -514,12 +537,15 @@ describe('Savanna.crumbnet', function() {
             it('should set up a canvas node template', function() {
                 var canvas = view.down('go-graph_canvas');
 
-                expect(canvas.diagram.nodeTemplate).not.toBeUndefined();
+                expect(canvas.diagram.nodeTemplateMap).not.toBeUndefined();
 
-                var nodeTemplate = canvas.diagram.nodeTemplate;
+                var nodeTemplateMap = canvas.diagram.nodeTemplateMap;
 
-                expect(nodeTemplate.findObject('icon')).not.toBeNull();
-                expect(nodeTemplate.findObject('label')).not.toBeNull();
+                var iter = nodeTemplateMap.iterator;
+                iter.next();
+                var firstItem = iter.value;
+                expect(firstItem.findObject('icon')).not.toBeNull();
+                expect(firstItem.findObject('label')).not.toBeNull();
             });
 
             it('should NOT set up an overview panel by default', function() {
@@ -569,11 +595,15 @@ describe('Savanna.crumbnet', function() {
                 expect(paletteMenu instanceof Savanna.crumbnet.view.part.PaletteMenu).toBeTruthy();
             });
 
+            it('should be a subclass of a panel so it can be made collapsible', function() {
+                expect(paletteMenu instanceof Ext.panel.Panel).toBeTruthy();
+            });
+
             it('should update the palette canvas when we expand a panel in the Accordion', function() {
                 var lastPalettePanel = paletteMenu.down('crumbnet_part_palette-group:last');
-                var requestUpdateSpy = spyOn(lastPalettePanel, 'requestPaletteUpdate').andCallThrough();
+                var requestUpdateSpy = spyOn(lastPalettePanel, 'requestPaletteUpdate');
 
-                lastPalettePanel.expand();
+                lastPalettePanel.fireEvent('expand');
 
                 // NOTE: since expand() is asychronous, we have to wait for our spy to be called
                 waitsFor(function() {
@@ -583,6 +613,10 @@ describe('Savanna.crumbnet', function() {
                 runs(function() {
                     expect(requestUpdateSpy).toHaveBeenCalled();
                 });
+            });
+
+            it('should be shown initially', function() {
+                expect(paletteMenu.getCollapsed()).toBeFalsy();
             });
 
             describe('When there are no templates', function() {
@@ -870,9 +904,9 @@ describe('Savanna.crumbnet', function() {
     });
 
     function setupPaletteTemplateStore(server, fixture) {
-        server.respondWith('GET', CRUMBNET_PALETTE_TEMPLATES_URL, fixture);
-
         var store = setupNoCacheNoPagingStore('Savanna.crumbnet.store.Templates');
+
+        server.respondWith('GET', store.getProxy().url, fixture);
 
         store.load();
 

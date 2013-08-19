@@ -12,25 +12,24 @@ Ext.define('Savanna.search.store.SearchHistory', {
 
     model: 'Savanna.search.model.SearchHistory',
 
-    // does this need to be set?
     pageSize: Savanna.Config.searchHistoryPageSize,
 
     autoLoad: false,
-
-
-    searches: [],
-
-    restAction: 'POST',
 
     constructor: function () {
         this.callParent(arguments);
 
         this.setProxy({
             type: 'savanna-cors',
-            url: Savanna.Config.savannaUrlRoot + 'rest/search/history',
-            // Use this if you don't have Savanna 3.4 running
-            // NOTE: two tests in SpecRunner fail in this circumstance, but will work once the dev server is up and running
-            //url: 'app/assets/data/testSearchHistory.json',
+            //url: Savanna.Config.savannaUrlRoot + 'rest/search/history',
+            url: 'app/assets/data/testSearchHistory.json',
+
+            addSessionId: false,
+            noCache: false,
+            startParam: undefined,
+            limitParam: undefined,
+            pageParam: undefined,
+
             writer: {
                 type: 'json',
                 allowSingle: false

@@ -52,6 +52,11 @@ Ext.define('Savanna.mixin.Storeable', {
         if (this.onStoreLoad) {
             this.mon(this.store, 'load', this.onStoreLoad, this);
         }
+
+        // Method added to handle a store sync action
+        if (this.onStoreChanged) {
+            this.mon(this.store, 'datachanged', this.onStoreChanged, this);
+        }
     },
 
     /**

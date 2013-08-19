@@ -10,13 +10,11 @@ Ext.require('Savanna.search.model.SearchHistory');
 Ext.require('Savanna.search.model.SearchRequest');
 Ext.require('Savanna.search.model.SearchResult');
 Ext.require('Savanna.search.store.SearchHistory');
-Ext.require('Savanna.search.store.SearchResults');
 Ext.require('Savanna.search.view.SearchAdvancedTextfield');
 Ext.require('Savanna.search.view.SearchBar');
 Ext.require('Savanna.search.view.SearchForm');
 Ext.require('Savanna.search.view.SearchBody');
 Ext.require('Savanna.search.view.SearchComponent');
-Ext.require('Savanna.search.view.SearchResults');
 Ext.require('Savanna.search.view.SearchToolbar');
 
 describe('Search Component', function () {
@@ -210,6 +208,8 @@ describe('Search Component', function () {
         describe('managing SearchBar subview events', function () {
             var searchbar = null;
 
+            var form = null;
+
             beforeEach(function () {
                 searchbar = Ext.create('Savanna.search.view.SearchBar', { renderTo: 'test-html' });
                 searchbar.queryById('search_terms').setValue('search bar terms');
@@ -217,7 +217,9 @@ describe('Search Component', function () {
                 searchbar.queryById('exact_phrase').setValue('other text');
                 searchbar.queryById('any_words').setValue('more and more text');
                 searchbar.queryById('none_words').setValue('bad terms');
-                //searchbar.doLayout();
+
+
+                form = component.queryById('searchbar').queryById("search_form");
             });
 
             afterEach(function () {
@@ -225,6 +227,7 @@ describe('Search Component', function () {
                     searchbar.destroy();
                     searchbar = null;
                 }
+                form = null;
             });
 
             it('should be able to hide the menu', function () {
@@ -234,7 +237,7 @@ describe('Search Component', function () {
             });
 
             it('should align the advanced menu below the simple search textfield', function () {
-                var button = controller.getAdvancedButton();
+                var button = component.queryById('searchadvanced_btn');
                 var menu = button.menu;
 
                 spyOn(menu, 'alignTo');
@@ -247,9 +250,19 @@ describe('Search Component', function () {
             it('should build the search string', function () {
                 spyOn(component.queryById('searchbar'), 'buildSearchString').andCallThrough();
 
-                controller.doSearch(component.queryById('searchbar').items.first(), {});
+                controller.doSearch(component.queryById('searchbar'), {});
 
                 expect(component.queryById('searchbar').buildSearchString).toHaveBeenCalled();
+            });
+
+            it('should remove search field values when "Start New Search" is selected', function () {
+                controller.handleNewSearch(component.queryById('searchbar'));
+
+                expect(form.queryById('search_terms').getValue()).toEqual('');
+                expect(form.queryById('all_words').getValue()).toEqual('');
+                expect(form.queryById('exact_phrase').getValue()).toEqual('');
+                expect(form.queryById('any_words').getValue()).toEqual('');
+                expect(form.queryById('none_words').getValue()).toEqual('');
             });
         });
 
@@ -373,7 +386,7 @@ describe('Search Component', function () {
 
             describe('onBodyToolbarClick', function () {
                 it('should set currentPanel to "results" when "Results" is clicked', function () {
-                    var resbutton = controller.getResultsButton();
+                    var resbutton = component.queryById('resultsbutton');
 
                     component.queryById('searchbody').currentPanel = 'searchoptions';
 
@@ -385,7 +398,7 @@ describe('Search Component', function () {
                 });
 
                 it('should set currentPanel to "searchoptions" when "Search Options" is clicked', function () {
-                    var optsbutton = controller.getOptionsButton();
+                    var optsbutton = component.queryById('optionsbutton');
 
                     component.queryById('searchbody').currentPanel = 'results';
 
@@ -484,7 +497,7 @@ describe('Search Component', function () {
                 store.load();
                 server.respond({
                     errorOnInvalidRequest: true
-                })
+                });
             });
 
             it('should get same number of records as in our fixture', function() {
@@ -493,6 +506,7 @@ describe('Search Component', function () {
         });
 
         describe('sending history data', function() {
+
             beforeEach(function() {
                 server.respondWith('POST', store.getProxy().url, {});
             });
@@ -505,17 +519,17 @@ describe('Search Component', function () {
                 store.sync();
 
                 server.respond({
-                    errorOnInvalidRequest: true,
                     returnBody: true, // since the service basically gives us back our searches...
-                    reportBody: false, // enable if you want to see the request body in the console
+                    reportBody: true, // enable if you want to see the request body in the console
                     testBody: function(body) {
                         var json = JSON.parse(body);
                         if (json.length !== fixtures.historyResults.length) {
-                            return 'Expected request body to have ' + fixtures.historyResults.length + ' records, but had ' + json.length;
+                            return 'Expected request body to have ' + fixtures.historyResults.length + ', but got ' + json.length;
                         }
 
                         return '';
-                    }
+                    },
+                    errorOnInvalidRequest: true
                 });
 
                 expect(store.getCount()).toBe(3);
@@ -527,17 +541,17 @@ describe('Search Component', function () {
                 store.sync();
 
                 server.respond({
-                    errorOnInvalidRequest: true,
                     returnBody: true, // since the service basically gives us back our searches...
                     reportBody: false, // enable if you want to see the request body in the console
                     testBody: function(body) {
                         var json = JSON.parse(body);
                         if (!Array.isArray(json)) {
-                            return 'Expected an array but got: ' + body;
+                            return 'Expected an array but got ' + body;
                         }
 
                         return '';
-                    }
+                    },
+                    errorOnInvalidRequest: true
                 });
 
                 expect(store.getCount()).toBe(1);

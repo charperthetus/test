@@ -34,7 +34,8 @@ Ext.define('Savanna.search.store.DalSources', {
 
         this.setProxy({
             type: 'savanna-cors',
-            url: 'resources/data/testSearchDalsWithFormData.json',//Savanna.Config.savannaUrlRoot + Savanna.Config.dalSourcesUrl,
+            url: 'resources/data/testSearchDalsWithFormData.json',
+            //url: Savanna.Config.savannaUrlRoot + Savanna.Config.dalSourcesUrl,
             actionMethods: {
                 read: 'GET'
             },
