@@ -29,13 +29,14 @@ Ext.define('Savanna.search.view.ResultsPanelToolbar', {
         {
             xtype: 'combobox',
             itemId: 'resultsSortByCombobox',
-            /* Breaks jasmine tests, not sure why yet.  Probably move it to the controller */
+            /* Breaks jasmine tests, not sure why yet.  Probably move it to the controller
              store: Ext.create('Ext.data.Store', {
              fields: ['sortby', 'name'],
              data : [
              {'sortby':'relevance', 'name':'Relevance'}
              ]
              }),
+             */
              displayField: 'name',
              valueField: 'sortby',
              value:'relevance'
@@ -49,7 +50,7 @@ Ext.define('Savanna.search.view.ResultsPanelToolbar', {
         {
             xtype: 'combobox',
             itemId: 'resultsPageSizeCombobox',
-            /* Breaks jasmine tests, not sure why yet.  Probably move it to the controller */
+            /* Breaks jasmine tests, not sure why yet.  Probably move it to the controller
              store: Ext.create('Ext.data.Store', {
              fields: ['count', 'name'],
              data : [
@@ -58,6 +59,7 @@ Ext.define('Savanna.search.view.ResultsPanelToolbar', {
              {'count':'100', 'name':'100'}
              ]
              }),
+             */
              displayField: 'name',
              valueField: 'count',
              value:'20'

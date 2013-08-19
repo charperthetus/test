@@ -48,7 +48,7 @@ describe('Dal Search', function() {
             it('should correctly create an empty store for "CustomSearchGroup" when null passed for that value', function() {
                 var dal = Ext.create('Savanna.search.model.DalSource', fixtures.legacyDal);
 
-                expect(dal.customSearchGroups().count()).toBe(0);
+                expect(dal.getCustomSearchDescription().customSearchGroups().count()).toBe(0);
             });
         });
     });
