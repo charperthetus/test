@@ -8,7 +8,6 @@ Ext.define('Savanna.search.model.DalSource', {
 
     fields: [
         { name: 'id', type: 'string' },
-        { name: 'customSearchDescription'},
         { name: 'displayName', type: 'string' },
         { name: 'textDescription', type: 'string' },
 
@@ -23,6 +22,14 @@ Ext.define('Savanna.search.model.DalSource', {
 
     // NOTE: the model class must be fully qualififed in your relationship definition
     associations: [
-        { type: 'hasOne', model: 'Savanna.search.model.dalSource.CustomSearchDescription', associationKey: 'customSearchDescription'  }
+        {
+            type: 'hasOne',
+            name: 'customsearchdescription',
+            model: 'Savanna.search.model.dalSource.CustomSearchDescription',
+            associationKey: 'customSearchDescription',
+            instanceName: 'searchDescription',
+            getterName: 'getCustomSearchDescription',
+            setterName: 'setCustomSearchDescription'
+        }
     ]
 });

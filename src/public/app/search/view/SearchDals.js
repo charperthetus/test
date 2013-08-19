@@ -87,6 +87,7 @@ Ext.define('Savanna.search.view.SearchDals', {
         this.removeAll();
 
         this.store.each(function (record) {
+            console.log(record.getCustomSearchDescription().customSearchGroups());
             var myPanel = this.createPanel(record);
             this.add(myPanel);
         }, this);
@@ -97,7 +98,7 @@ Ext.define('Savanna.search.view.SearchDals', {
             itemId: myRecord.data.id,
             checkboxLabel: myRecord.data.displayName,
             label: myRecord.data.textDescription,
-            showButton: (myRecord.get("customSearchDescription").customSearchGroups != null)
+            showButton: (myRecord.getCustomSearchDescription().customSearchGroups().data.length)
         });
     }
 });
