@@ -105,5 +105,52 @@ describe('Savanna.proxy.Cors', function() {
                 expect(proxy.modifyRequest).toHaveBeenCalled();
             });
         });
+
+        describe('development mode', function() {
+            var proxy = null,
+                PRODUCTION_URL = 'http://production.url/',
+                DEVELOPMENT_URL = 'http://development.url/';
+
+            beforeEach(function() {
+                proxy = Ext.create('Savanna.proxy.Cors', {
+                    url: PRODUCTION_URL,
+                    devUrl: DEVELOPMENT_URL,
+                    devMode: true
+                });
+            });
+
+            afterEach(function() {
+                proxy = null;
+            });
+
+            it('should automatically disable cache-busting', function() {
+                expect(proxy.noCache).toBeFalsy();
+            });
+
+            it('should give us the production URL if we disable devMode', function() {
+                proxy.devMode = false;
+
+                var request = Ext.create('Ext.data.Request', { action: 'read', method: 'GET', url: proxy.url }),
+                    url = proxy.buildUrl(request);
+
+                expect(url).toBe(PRODUCTION_URL + ';jsessionid=undefined');
+            });
+
+            it('should give us the development URL if we turn on devMode', function() {
+                var request = Ext.create('Ext.data.Request', { action: 'read', method: 'GET', url: proxy.url }),
+                    url = proxy.buildUrl(request);
+
+                expect(url).toBe(DEVELOPMENT_URL);
+            });
+
+            it('should give us the development URL even if we turn on devMode, but do not have a devUrl', function() {
+                proxy.devUrl = null;
+
+                var request = Ext.create('Ext.data.Request', { action: 'read', method: 'GET', url: proxy.url }),
+                    url = proxy.buildUrl(request);
+
+                expect(url).toBe(PRODUCTION_URL + ';jsessionid=undefined');
+            });
+        });
     });
 });
