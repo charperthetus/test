@@ -87,7 +87,6 @@ Ext.define('Savanna.search.view.SearchDals', {
         this.removeAll();
 
         this.store.each(function (record) {
-            console.log(record.getCustomSearchDescription().customSearchGroups());
             var myPanel = this.createPanel(record);
             this.add(myPanel);
         }, this);

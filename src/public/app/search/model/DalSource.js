@@ -21,6 +21,13 @@ Ext.define('Savanna.search.model.DalSource', {
     ],
 
     // NOTE: the model class must be fully qualififed in your relationship definition
+
+    /*
+     hasOne will only work if it includes the undocumented configs
+     'getterName', 'setterName' and 'instanceName'.  See the thread here:
+
+     http://www.sencha.com/forum/showthread.php?180111-4.1-B2-HasOne-constructor-does-not-work/page2
+     */
     associations: [
         {
             type: 'hasOne',
