@@ -7,7 +7,9 @@ Ext.define('Savanna.view.PrintModal', {
     width: '90%',
     layout: 'fit',
     modal: true,
-        cls: 'print-modal',
+
+    // NOTE: this is used in the stylesheet to control the printing display
+    cls: 'print-modal',
 
     title: 'Print',
 
@@ -22,14 +24,21 @@ Ext.define('Savanna.view.PrintModal', {
         }
     ],
 
-    items: [],
+    items: [
+        {
+            xtype: 'component',
+            itemId: 'printContent'
+        }
+    ],
 
     initComponent: function() {
-        this.items = this.setupItems();
-
         this.callParent(arguments);
 
         this.on('afterrender', function() {
+            // NOTE: you specify the content to put in the modal by doing a:
+            //         Ext.create('Savanna.view.PrintModal' {
+            //            html: (htmlString | Ext.element reference | HTMLELement reference)
+            //         });
             if (this.initialConfig.html) {
                 this.setPrintContent(this.initialConfig.html);
             }
@@ -38,15 +47,13 @@ Ext.define('Savanna.view.PrintModal', {
 
     // CUSTOM METHODS
 
-    setupItems: function() {
-        return [
-            {
-                xtype: 'component',
-                itemId: 'printContent'
-            }
-        ];
-    },
-
+    /**
+     * Sets up the printable content for this instance
+     * @param html (String|Ext.dom.Element|HTMLElement)
+     *
+     * Essentially, you can pass in either a stirng of HTML, an object that has an "outerHTML" property which contains
+     * the string of HTML to use, or an object which implements the getHTML() method which returns a string of HTML.
+     */
     setPrintContent: function(html) {
         var printContent = this.down('#printContent');
 
@@ -56,10 +63,14 @@ Ext.define('Savanna.view.PrintModal', {
         else if (html.getHTML) {
             html = html.getHTML();
         }
-console.log('html', html);
+
         printContent.getEl().setHTML(html);
     },
 
+    /**
+     * accessor to the HTML content current set within the printable portion of this modal instance
+     * @returns {String}
+     */
     getPrintContent: function() {
         return this.down('#printContent').getEl().getHTML();
     }
