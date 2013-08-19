@@ -36,7 +36,7 @@ Ext.define('Savanna.crumbnet.view.part.Canvas', {
         this.diagram.allowDrop = true;
         this.diagram.initialContentAlignment = go.Spot.Center;
 
-        if (0 < this.store.getCount()) {
+        if (this.store.getCount() > 0) {
             this.onStoreLoad(this.store);
         }
 
@@ -45,7 +45,7 @@ Ext.define('Savanna.crumbnet.view.part.Canvas', {
 
         this.diagram.layout = go.GraphObject.make(go.ForceDirectedLayout, { isOngoing: false });
 
-        this.diagram.toolManager.clickCreatingTool.archetypeNodeData = { text:"Fact", type:"Fact", category:"standard", percent: 10 };
+        this.diagram.toolManager.clickCreatingTool.archetypeNodeData = { text: 'Fact', type: 'Fact', category: 'standard', percent: 10 };
 
         this.diagram.toolManager.linkingTool.archetypeLinkData = {category: 'Orthogonal', text: 'New Link'};
         this.diagram.toolManager.linkingTool.direction = go.LinkingTool.ForwardsOnly;
@@ -71,7 +71,7 @@ Ext.define('Savanna.crumbnet.view.part.Canvas', {
     },
 
     setupImageDrop: function(dropArea){
-        if (typeof window.FileReader != 'undefined') {
+        if (typeof window.FileReader !== 'undefined') {
             var _diagram = this.diagram;
             dropArea.ondragover = function () { return false; };
             dropArea.ondragend = function () { return false; };
@@ -95,7 +95,7 @@ Ext.define('Savanna.crumbnet.view.part.Canvas', {
                 reader.readAsDataURL(file);
 
                 return false;
-            }
+            };
         }
     }
 });
