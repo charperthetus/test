@@ -34,14 +34,14 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
                 menu: this.buildDropdownMenu()
             },
             { xtype: 'tbfill' },
-            // TODO: this needs to be converted to use glyphs instead of icons...
-            { type: 'zoomIn', icon: Savanna.Config.resourcesPathPrefix + 'resources/images/zoom_in.png', tooltip: 'Zoom In' },
-            { type: 'zoomOut', icon: Savanna.Config.resourcesPathPrefix + 'resources/images/zoom_out.png', tooltip: 'Zoom Out' },
-            { type: 'zoomToFit', icon: Savanna.Config.resourcesPathPrefix + 'resources/images/show_all.png', tooltip: 'Zoom To Fit' },
-            { type: 'undo', icon: Savanna.Config.resourcesPathPrefix + 'resources/images/undo.png', tooltip: 'Undo' },
-            { type: 'redo', icon: Savanna.Config.resourcesPathPrefix + 'resources/images/redo.png', tooltip: 'Redo' },
-            { type: 'grid', icon: Savanna.Config.resourcesPathPrefix + 'resources/images/gridview.png', tooltip: 'Toggle Grid' },
-            { type: 'overview', icon: Savanna.Config.resourcesPathPrefix + 'resources/images/globe.png', tooltip: 'Toggle Overview' }
+            { type: 'zoomIn', glyph: 61806, tooltip: 'Zoom In', ui: 'flat-toolbar-button' },
+            { type: 'zoomOut', glyph: 61807, tooltip: 'Zoom Out', ui: 'flat-toolbar-button' },
+            { type: 'zoomToFit', glyph: 61789, tooltip: 'Zoom To Fit', ui: 'flat-toolbar-button' },
+            { type: 'undo', glyph: 61800, tooltip: 'Undo', ui: 'flat-toolbar-button' },
+            { type: 'redo', glyph: 61777, tooltip: 'Redo', ui: 'flat-toolbar-button' },
+            { type: 'grid', glyph: 61739, tooltip: 'Toggle Grid', ui: 'flat-toolbar-button' },
+            { type: 'overview', glyph: 61736, tooltip: 'Toggle Overview', ui: 'flat-toolbar-button' },
+            { type: 'print', glyph: 61773, tooltip: 'Print', ui: 'flat-toolbar-button' }
         ];
     },
 
