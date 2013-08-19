@@ -570,12 +570,54 @@ describe('Savanna.crumbnet', function() {
             });
         });
 
-        describe('Crumbnet Canvas View', function(){
+        describe('Crumbnet Canvas View', function() {
+            var canvas;
+
+            beforeEach(function() {
+                canvas = view.down('go-graph_canvas');
+            });
+
+            afterEach(function() {
+                canvas = null;
+            });
+
             it('should have a store and a diagram', function() {
-                var canvas = view.down('go-graph_canvas');
                 expect(canvas.store instanceof Savanna.crumbnet.store.Graph).toBeTruthy();
+
                 //This could be brittle because the diagram is created in the onRender function which is async
                 expect(canvas.diagram).not.toBeNull();
+            });
+
+            it('should not attempt to load data into a diagram if it does not exist', function() {
+                var store = canvas.getStore();
+
+                canvas.diagram = null;
+
+                spyOn(go.GraphObject, 'make');
+
+                canvas.onStoreLoad(store);
+
+                expect(go.GraphObject.make).not.toHaveBeenCalled();
+            });
+
+            describe('setupImageDrop', function() {
+                var dropArea;
+
+                beforeEach(function() {
+                    dropArea = {}; // TODO: does this need to be mocked out any further?
+                });
+
+                afterEach(function() {
+                    dropArea = null;
+                });
+
+                it('should handlers to the drop area passed in if we have a FileReader', function() {
+                    // TODO: write the test...
+                });
+
+                it('should do nothing if we do NOT have a FileReader', function() {
+                    // TODO: write the test...
+                });
             });
         });
 
