@@ -21,13 +21,7 @@ Ext.define('Savanna.search.store.SearchResults', {
 
         this.setProxy({
             type: 'savanna-cors',
-            url: Savanna.Config.savannaUrlRoot + 'rest/search',
-            devUrl: 'app/assets/data/testSearchResults.json',
-
-            // DEV SETTINGS (for when you don't have the endpoint working...)
-            //startParam: undefined,
-            //limitParam: undefined,
-            //pageParam: undefined,
+            url: Savanna.Config.buildSavannaUrl('searchUrl'),
 
             reader: {
                 type: 'json',

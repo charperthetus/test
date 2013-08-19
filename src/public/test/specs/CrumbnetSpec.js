@@ -1,17 +1,16 @@
-/* global Ext: false, describe: false, ExtSpec: false,
+/* global Ext: false, describe: false,
           beforeEach: false, afterEach: false, it: false, expect: false, spyOn: false, runs: false, sinon: false, waitsFor: false,
-          ThetusTestHelpers: false, setupNoCacheNoPagingStore: false, createTestDom: false, cleanTestDom: false, Savanna: false,
+          ThetusTestHelpers: false, Savanna: false,
           go: false */
 Ext.require('Savanna.crumbnet.controller.CrumbnetController');
 Ext.require('Savanna.crumbnet.utils.ViewTemplates');
 
 describe('Savanna.crumbnet', function() {
-    var CRUMBNET_PALETTE_TEMPLATES_URL = 'resources/data/testCrumbnetTemplates.json';
-    var fixtures = {};
-    var server = null;
+    var fixtures = {},
+        server = null;
 
     beforeEach(function() {
-        createTestDom();
+        ThetusTestHelpers.ExtHelpers.createTestDom();
 
         fixtures = Ext.clone(ThetusTestHelpers.Fixtures.Crumbnet);
         server = new ThetusTestHelpers.FakeServer(sinon);
@@ -20,7 +19,7 @@ describe('Savanna.crumbnet', function() {
     });
 
     afterEach(function() {
-        cleanTestDom();
+        ThetusTestHelpers.ExtHelpers.cleanTestDom();
 
         fixtures = {};
         server.restore();
@@ -37,7 +36,7 @@ describe('Savanna.crumbnet', function() {
 
         beforeEach(function() {
             controller = Ext.create('Savanna.crumbnet.controller.CrumbnetController');
-            view = Ext.create('Savanna.crumbnet.view.CrumbnetComponent', { renderTo: 'test-html', width: 500, height: 500 });
+            view = Ext.create('Savanna.crumbnet.view.CrumbnetComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID, width: 500, height: 500 });
             diagram = view.down('go-graph_canvas').diagram;
 
             origErrorHandleFn = Ext.Error.handle;
@@ -495,7 +494,7 @@ describe('Savanna.crumbnet', function() {
 
         beforeEach(function() {
             store = setupPaletteTemplateStore(server, fixtures.defaultPaletteTemplateResponse);
-            view = Ext.create('Savanna.crumbnet.view.CrumbnetComponent', { renderTo: 'test-html' });
+            view = Ext.create('Savanna.crumbnet.view.CrumbnetComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
 
             store.fireEvent('load'); // NOTE: we have to trigger the event to get the PaletteMenu to load
         });
@@ -623,7 +622,7 @@ describe('Savanna.crumbnet', function() {
             });
 
             it('should NOT attempt to set the overview.observed property', function() {
-                var overview = Ext.create('Savanna.crumbnet.view.part.Overview', { renderTo: 'test-html' });
+                var overview = Ext.create('Savanna.crumbnet.view.part.Overview', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
 
                 expect(overview.diagram).toBeNull();
 
@@ -676,7 +675,7 @@ describe('Savanna.crumbnet', function() {
             diagram = null;
 
         beforeEach(function() {
-            view = Ext.create('Savanna.crumbnet.view.CrumbnetComponent', { renderTo: 'test-html', width: 500, height: 500 });
+            view = Ext.create('Savanna.crumbnet.view.CrumbnetComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID, width: 500, height: 500 });
             diagram = view.down('go-graph_canvas').diagram;
         });
 
@@ -883,9 +882,11 @@ describe('Savanna.crumbnet', function() {
     });
 
     function setupPaletteTemplateStore(server, fixture) {
-        server.respondWith('GET', CRUMBNET_PALETTE_TEMPLATES_URL, fixture);
+        var readMethod = 'GET',
+            store = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.crumbnet.store.Templates'),
+            testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(store.getProxy(), 'read', readMethod);
 
-        var store = setupNoCacheNoPagingStore('Savanna.crumbnet.store.Templates');
+        server.respondWith(readMethod, testUrl, fixture);
 
         store.load();
 

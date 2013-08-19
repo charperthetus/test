@@ -1,7 +1,7 @@
-/* global Ext: false, ExtSpec: false,
+/* global Ext: false,
           describe: false, beforeEach: false, afterEach: false, expect: false, it: false,
           sinon: false, spyOn: false,
-          ThetusTestHelpers: false, createTestDom: false, cleanTestDom: false, setupNoCacheNoPagingStore,
+          ThetusTestHelpers: false,
           Savanna: false
  */
 Ext.require('Savanna.Config');
@@ -18,16 +18,14 @@ describe('Dal Search', function() {
     var fixtures = {};
 
     beforeEach(function() {
-        this.addMatchers(ExtSpec.Jasmine.Matchers);
-
         fixtures = Ext.clone(ThetusTestHelpers.Fixtures.DalSources);
 
-        createTestDom();
+        ThetusTestHelpers.ExtHelpers.createTestDom();
     });
 
     afterEach(function() {
         fixtures = null;
-		cleanTestDom();
+        ThetusTestHelpers.ExtHelpers.cleanTestDom();
     });
 
     describe('Savanna.search.model.DalSource', function() {
@@ -56,7 +54,7 @@ describe('Dal Search', function() {
 
         beforeEach(function() {
             // NOTE: this has to happen BEFORE your create a FakeServer,
-            store = setupNoCacheNoPagingStore('Savanna.search.store.DalSources');
+            store = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.DalSources');
 
             server = new ThetusTestHelpers.FakeServer(sinon);
         });
@@ -71,11 +69,13 @@ describe('Dal Search', function() {
         describe('default data loading', function() {
 
             it('should load data', function() {
+                var readMethod = 'GET';
+
                 expect(store.getTotalCount()).toBe(0);
 
-                var testUrl = store.getProxy().buildUrl(Ext.create('Ext.data.Request', { action: 'read', method: 'GET', url: 'NOT USED' }));
+                var testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(store.getProxy(), 'read', readMethod);
 
-                server.respondWith('GET', testUrl, fixtures.allDals);
+                server.respondWith(readMethod, testUrl, fixtures.allDals);
 
                 store.load();
 
@@ -95,7 +95,7 @@ describe('Dal Search', function() {
         beforeEach(function() {
             //noinspection JSValidateTypes
             spyOn(Savanna.controller.Factory, 'getController');
-            view = Ext.create('Savanna.search.view.SearchBody', { renderTo: 'test-html' });
+            view = Ext.create('Savanna.search.view.SearchBody', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
         });
 
         afterEach(function() {
@@ -113,7 +113,7 @@ describe('Dal Search', function() {
         beforeEach(function() {
             //noinspection JSValidateTypes
             spyOn(Savanna.controller.Factory, 'getController');
-            view = Ext.create('Savanna.search.view.SearchDals', { renderTo: 'test-html' });
+            view = Ext.create('Savanna.search.view.SearchDals', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
         });
 
         afterEach(function() {
@@ -144,13 +144,14 @@ describe('Dal Search', function() {
 
             beforeEach(function() {
                 // NOTE: this has to happen BEFORE your create a FakeServer,
-                store = setupNoCacheNoPagingStore('Savanna.search.store.DalSources');
+                store = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.DalSources');
 
                 server = new ThetusTestHelpers.FakeServer(sinon);
 
-                var testUrl = store.getProxy().buildUrl(Ext.create('Ext.data.Request', { action: 'read', method: 'GET', url: 'NOT USED' }));
+                var readMethod = 'GET',
+                    testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(store.getProxy(), 'read', readMethod);
 
-                server.respondWith('GET', testUrl, fixtures.allDals);
+                server.respondWith(readMethod, testUrl, fixtures.allDals);
 
                 store.load();
 
@@ -167,7 +168,7 @@ describe('Dal Search', function() {
             });
 
             it('should create a Panel for every record in the store', function() {
-                var view = Ext.create('Savanna.search.view.SearchDals', { renderTo: 'test-html' });
+                var view = Ext.create('Savanna.search.view.SearchDals', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
 
                 //noinspection JSValidateTypes
                 spyOn(view, 'add');
@@ -187,7 +188,7 @@ describe('Dal Search', function() {
 
         beforeEach(function() {
             // Set up the store first as it is autovivified by our main view
-            store = setupNoCacheNoPagingStore('Savanna.search.store.DalSources', { autoLoad: false });
+            store = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.DalSources', { autoLoad: false });
 
             // Store it in the store manager so when the view goes to create it, it's already there
             Ext.data.StoreManager.add('Savanna.search.store.DalSources', store);
@@ -195,12 +196,13 @@ describe('Dal Search', function() {
             // now set up server to get store data
             server = new ThetusTestHelpers.FakeServer(sinon);
 
-            var testUrl = store.getProxy().buildUrl(Ext.create('Ext.data.Request', { action: 'read', method: 'GET', url: 'NOT USED' }));
+            var readMethod = 'GET',
+                testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(store.getProxy(), 'read', readMethod);
 
-            server.respondWith('GET', testUrl, fixtures.allDals);
+            server.respondWith(readMethod, testUrl, fixtures.allDals);
 
             // set up the view (it should pull in the store we just created)
-            topView = Ext.create('Savanna.search.view.SearchDals', { renderTo: 'test-html' });
+            topView = Ext.create('Savanna.search.view.SearchDals', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
 
             // load the store now (should trigger event to render the view)
             store.load();
