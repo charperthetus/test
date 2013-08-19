@@ -50,6 +50,7 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
                 gmake(go.Panel, go.Panel.Auto,
                     gmake(go.Shape, { figure: 'Rectangle', fill: 'transparent', stroke: null, width: 52, height: 52 }),
                     gmake(go.Shape, { fill: 'blue', stroke: null, alignment: go.Spot.BottomLeft }, new go.Binding('geometry', 'percent', function(p){ return makeCircle(p,52); }  )),
+                    gmake(go.Shape, { figure: 'circle', stroke: null, width: 46 }, new go.Binding('fill', 'color')),
                     icon,
                     gmake(go.Shape, { figure: 'circle', fill: null, strokeWidth: 3, width: 49 }, new go.Binding('stroke', 'isSelected', function (s) { return (s ? 'cornflowerblue' : null); }).ofObject('') ),
                     this.makePort('T', go.Spot.TopRight, 0),
@@ -126,6 +127,7 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
             gmake(go.Panel, go.Panel.Vertical,
                 gmake(go.Panel, go.Panel.Auto,
                     gmake(go.Shape, { figure: 'Rectangle', fill: 'transparent', stroke: null, width: 52, height: 52 }),
+                    gmake(go.Shape, { figure: 'circle', stroke: null, width: 46 }, new go.Binding('fill', 'color')),
                     icon
                 ),
                 textBlock)

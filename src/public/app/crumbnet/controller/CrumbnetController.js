@@ -5,7 +5,8 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
     views: [
         'Savanna.crumbnet.view.CrumbnetComponent',
         'Savanna.crumbnet.view.part.PaletteMenu',
-        'Savanna.crumbnet.view.part.Canvas'
+        'Savanna.crumbnet.view.part.Canvas',
+        'Savanna.view.PrintModal'
     ],
 
     stores: [
@@ -33,6 +34,9 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
             },
             'go-graph #linkStyleMenu menu': {
                 click: this.handleLinkStyleMenuClick
+            },
+            'go-graph #nodeColorPicker': {
+                select: this.handleNodeColorSelect
             }
         });
     },
@@ -65,6 +69,11 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
             case 'overview':
                 var mainCrumbnetViewport = crumbnet.down('#mainCrumbnetViewport');
                 this.toggleOverview(mainCrumbnetViewport, diagram);
+                break;
+            case 'print':
+                Ext.create('Savanna.view.PrintModal', {
+                    html: diagram.makeImage({ scale: 0.5 })
+                }).show();
                 break;
             default:
                 // NOTE: there is no "default" because we get clicks for other "buttons" (such as the dropdown menus)
@@ -207,7 +216,22 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
         }
     },
 
+    handleNodeColorSelect: function(picker, selColor){
+        var diagram = this.getDiagramForMenu(picker);
+        var selectedNodeSet = diagram.selection;
+        var iterator = selectedNodeSet.iterator;
+
+        diagram.startTransaction('changeNodeColor');
+        while (iterator.next()) {
+            if (iterator.value instanceof go.Node) {
+                diagram.model.setDataProperty(iterator.value.data, 'color', '#' + selColor);
+            }
+        }
+        diagram.commitTransaction('changeNodeColor');
+    },
+
     getDiagramForMenu: function(menu) {
         return menu.up('go-graph').down('go-graph_canvas').diagram;
     }
+
 });

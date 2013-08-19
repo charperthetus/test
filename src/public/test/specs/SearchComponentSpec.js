@@ -237,7 +237,7 @@ describe('Search Component', function () {
             });
 
             it('should align the advanced menu below the simple search textfield', function () {
-                var button = controller.getAdvancedButton();
+                var button = component.queryById('searchadvanced_btn');
                 var menu = button.menu;
 
                 spyOn(menu, 'alignTo');
@@ -386,7 +386,7 @@ describe('Search Component', function () {
 
             describe('onBodyToolbarClick', function () {
                 it('should set currentPanel to "results" when "Results" is clicked', function () {
-                    var resbutton = controller.getResultsButton();
+                    var resbutton = component.queryById('resultsbutton');
 
                     component.queryById('searchbody').currentPanel = 'searchoptions';
 
@@ -398,7 +398,7 @@ describe('Search Component', function () {
                 });
 
                 it('should set currentPanel to "searchoptions" when "Search Options" is clicked', function () {
-                    var optsbutton = controller.getOptionsButton();
+                    var optsbutton = component.queryById('optionsbutton');
 
                     component.queryById('searchbody').currentPanel = 'results';
 
