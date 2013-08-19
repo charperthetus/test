@@ -20,17 +20,9 @@ Ext.require('Savanna.search.view.SearchToolbar');
 describe('Search Component', function () {
 
     var fixtures;
-    var SEARCH_RESULTS_URL = '';
-    var HISTORY_RESULTS_URL = '';
 
     beforeEach(function () {
         this.addMatchers(ExtSpec.Jasmine.Matchers);
-
-        //SEARCH_RESULTS_URL = SEARCH_RESULTS_URL || (Savanna.Config.savannaUrlRoot + "rest/search;jsessionid=" + TEST_SESSION_ID);
-        SEARCH_RESULTS_URL = SEARCH_RESULTS_URL || 'app/assets/data/testSearchResults.json';
-
-        //HISTORY_RESULTS_URL = HISTORY_RESULTS_URL || (Savanna.Config.savannaUrlRoot + "rest/search/history;jsessionid=" + TEST_SESSION_ID);
-        HISTORY_RESULTS_URL = 'app/assets/data/testSearchHistory.json';
 
         createTestDom();
     });
@@ -219,7 +211,7 @@ describe('Search Component', function () {
                 searchbar.queryById('none_words').setValue('bad terms');
 
 
-                form = component.queryById('searchbar').queryById("search_form");
+                form = component.queryById('searchbar').queryById('search_form');
             });
 
             afterEach(function () {
@@ -455,11 +447,13 @@ describe('Search Component', function () {
         describe('retrieving results data', function() {
 
             beforeEach(function() {
-                server.respondWith('POST', store.getProxy().url, fixtures.searchResults.results);
+                var testUrl = store.getProxy().buildUrl(Ext.create('Ext.data.Request', { action: 'read', method: 'POST', url: 'NOT USED' }));
+
+                server.respondWith('POST', testUrl, fixtures.searchResults.results);
                 store.load();
                 server.respond({
                     errorOnInvalidRequest: true
-                })
+                });
             });
 
             it('should get same number of records as in our fixture', function() {
@@ -493,7 +487,9 @@ describe('Search Component', function () {
         describe('retrieving history data', function() {
 
             beforeEach(function() {
-                server.respondWith('POST', store.getProxy().url, fixtures.historyResults);
+                var testUrl = store.getProxy().buildUrl(Ext.create('Ext.data.Request', { action: 'read', method: 'POST', url: 'NOT USED' }));
+
+                server.respondWith('POST', testUrl, fixtures.historyResults);
                 store.load();
                 server.respond({
                     errorOnInvalidRequest: true
@@ -508,7 +504,9 @@ describe('Search Component', function () {
         describe('sending history data', function() {
 
             beforeEach(function() {
-                server.respondWith('POST', store.getProxy().url, {});
+                var testUrl = store.getProxy().buildUrl(Ext.create('Ext.data.Request', { action: 'write', method: 'POST', url: 'NOT USED' }));
+
+                server.respondWith('POST', testUrl, fixtures.historyResults);
             });
 
             it('should send our history records and get them back from the server', function() {

@@ -1,5 +1,5 @@
 /* global Ext: false, ExtSpec: false,
-          describe: false, beforeEach: false, afterEach: false, expect: false, it: false, waitsFor: false, runs: false,
+          describe: false, beforeEach: false, afterEach: false, expect: false, it: false,
           sinon: false, spyOn: false,
           ThetusTestHelpers: false, createTestDom: false, cleanTestDom: false, setupNoCacheNoPagingStore,
           Savanna: false
@@ -15,13 +15,10 @@ Ext.require('Savanna.search.view.searchDals.SearchOptions');
 
 
 describe('Dal Search', function() {
-    var DAL_SOURCES_URL = 'http://thedevsav1.thetuscorp.com:8080/SavannaX//rest/search/sources;jsessionid=undefined',
-        fixtures = {};
+    var fixtures = {};
 
     beforeEach(function() {
         this.addMatchers(ExtSpec.Jasmine.Matchers);
-
-        DAL_SOURCES_URL = DAL_SOURCES_URL || (Savanna.Config.savannaUrlRoot + Savanna.Config.dalSourcesUrl + ';jsessionid=undefined?page=1&start=0&limit=50');
 
         fixtures = Ext.clone(ThetusTestHelpers.Fixtures.DalSources);
 
@@ -76,7 +73,9 @@ describe('Dal Search', function() {
             it('should load data', function() {
                 expect(store.getTotalCount()).toBe(0);
 
-                server.respondWith('GET', store.getProxy().url, fixtures.allDals);
+                var testUrl = store.getProxy().buildUrl(Ext.create('Ext.data.Request', { action: 'read', method: 'GET', url: 'NOT USED' }));
+
+                server.respondWith('GET', testUrl, fixtures.allDals);
 
                 store.load();
 
@@ -149,7 +148,9 @@ describe('Dal Search', function() {
 
                 server = new ThetusTestHelpers.FakeServer(sinon);
 
-                server.respondWith('GET', store.getProxy().url, fixtures.allDals);
+                var testUrl = store.getProxy().buildUrl(Ext.create('Ext.data.Request', { action: 'read', method: 'GET', url: 'NOT USED' }));
+
+                server.respondWith('GET', testUrl, fixtures.allDals);
 
                 store.load();
 
@@ -194,7 +195,9 @@ describe('Dal Search', function() {
             // now set up server to get store data
             server = new ThetusTestHelpers.FakeServer(sinon);
 
-            server.respondWith('GET', store.getProxy().url, fixtures.allDals);
+            var testUrl = store.getProxy().buildUrl(Ext.create('Ext.data.Request', { action: 'read', method: 'GET', url: 'NOT USED' }));
+
+            server.respondWith('GET', testUrl, fixtures.allDals);
 
             // set up the view (it should pull in the store we just created)
             topView = Ext.create('Savanna.search.view.SearchDals', { renderTo: 'test-html' });
