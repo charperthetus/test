@@ -57,28 +57,32 @@ Ext.define('Savanna.search.view.ResultsDals', {
     /*
      this method manages showing a loading, success or fail indication for each DAL
      */
-    setDalStatus: function (operation, success) {
-        var component = this.up("search_searchcomponent"),
-            dalStore = Ext.data.StoreManager.lookup('dalSources'),
-            me = this;
-
+    setDalStatus: function (operation, success, component) {
+        var dalStore = Ext.data.StoreManager.lookup('dalSources'),
+            me = this,
+            status = 'none';
         dalStore.each(function (source) {
-            var dals = component.down('#searchdals');
+            var dals = component.queryById('searchdals');
             var myDal = me.queryById(source.data.id);
-            myDal.down('#dalStatusIcon').getEl().setStyle(myDal.dalLoadPending);    // show pending if no success/fail yet
-            if (dals.queryById(source.data.id).query('checkbox')[0].getValue()) {
-                if (myDal != undefined) {  // if the DAL is selected, check the box and set success/fail
-                    myDal.query('checkbox')[0].setValue(true);
-                    if (success) {
-                        myDal.down('#dalStatusIcon').getEl().setStyle(myDal.dalLoadSuccess);
-                    } else {
-                        myDal.down('#dalStatusIcon').getEl().setStyle(myDal.dalLoadFail);
+            if (myDal != null) {
+                myDal.queryById('dalStatusIcon').getEl().setStyle(myDal.dalLoadPending);    // show pending if no success/fail yet
+                if (dals.queryById(source.data.id).query('checkbox')[0].getValue()) {
+                    if (myDal != undefined) {  // if the DAL is selected, check the box and set success/fail
+                        myDal.query('checkbox')[0].setValue(true);
+                        if (success) {
+                            myDal.down('#dalStatusIcon').getEl().setStyle(myDal.dalLoadSuccess);
+                            status = 'success'
+                        } else {
+                            myDal.down('#dalStatusIcon').getEl().setStyle(myDal.dalLoadFail);
+                            status = 'fail'
+                        }
                     }
+                } else {    // not selected, no indicator and unchecked
+                    myDal.query('checkbox')[0].setValue(false);
+                    myDal.down('#dalStatusIcon').getEl().setStyle(myDal.dalLoadNone);
                 }
-            } else {    // not selected, no indicator and unchecked
-                myDal.query('checkbox')[0].setValue(false);
-                myDal.down('#dalStatusIcon').getEl().setStyle(myDal.dalLoadNone);
             }
         });
+        return status;
     }
 });

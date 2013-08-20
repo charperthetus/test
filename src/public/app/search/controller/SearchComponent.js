@@ -87,7 +87,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
          they are currently in the results screen?
          */
 
-        var form = elem.findParentByType('search_searchcomponent').down('#search_form')
+        var form = elem.findParentByType('search_searchcomponent').down('#search_form');
 
         form.queryById('search_terms').setValue('');
 
@@ -249,7 +249,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                 this.showResultsPage(); // only need to do this once per search
                 this.currentComponentInstance.firstResultsReturned = true;
             }
-            this.currentComponentInstance.down("#resultsdals").setDalStatus(operation, success);
+            this.currentComponentInstance.down("#resultsdals").setDalStatus(operation, success, this.currentComponentInstance);
         }
         else {
             // server down..?

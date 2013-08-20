@@ -21,36 +21,36 @@ Ext.define('Savanna.search.view.searchDals.ResultsOptions', {
     temporary styles, to be replaced by design team
      */
     dalLoadNone: {
-        backgroundColor:"white",
-        width:"20px",
-        height:"20px",
+        backgroundColor:'white',
+        width:'20px',
+        height:'20px',
         'float':'right',
-        'margin-right':"10px",
-        'margin-top':"-45px"
+        'margin-right':'10px',
+        'margin-top':'-45px'
     },
     dalLoadPending: {
-        backgroundColor:"yellow",
-        width:"20px",
-        height:"20px",
+        backgroundColor:'yellow',
+        width:'20px',
+        height:'20px',
         'float':'right',
-        'margin-right':"10px",
-        'margin-top':"-45px"
+        'margin-right':'10px',
+        'margin-top':'-45px'
     },
     dalLoadFail: {
-        backgroundColor:"red",
-        width:"20px",
-        height:"20px",
+        backgroundColor:'red',
+        width:'20px',
+        height:'20px',
         'float':'right',
-        'margin-right':"10px",
-        'margin-top':"-45px"
+        'margin-right':'10px',
+        'margin-top':'-45px'
     },
     dalLoadSuccess: {
-        backgroundColor:"green",
-        width:"20px",
-        height:"20px",
+        backgroundColor:'green',
+        width:'20px',
+        height:'20px',
         'float':'right',
-        'margin-right':"10px",
-        'margin-top':"-45px"
+        'margin-right':'10px',
+        'margin-top':'-45px'
     },
 
     initComponent: function () {
@@ -71,11 +71,10 @@ Ext.define('Savanna.search.view.searchDals.ResultsOptions', {
                 cls: 'dal-checkbox'
             },
             {
-                xtype: "box",
-                itemId: "dalStatusIcon",
+                xtype: 'box',
+                itemId: 'dalStatusIcon',
                 style:  this.dalLoadNone
             }
         ]
     }
-})
-;
+});

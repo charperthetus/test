@@ -46,7 +46,7 @@ Ext.define('Savanna.search.view.SearchBody', {
                             title: 'Search Sources',
                             autoScroll: true,
                             cls: 'search-dal',
-                            itemId:"searchdals",
+                            itemId:'searchdals',
                             xtype: 'search_searchdals'
                         },
                         {
@@ -71,20 +71,20 @@ Ext.define('Savanna.search.view.SearchBody', {
             xtype: 'toolbar',
             ui: 'link-toolbar',
             width: '100%',
-            itemId: "searchbodytoolbar",
+            itemId: 'searchbodytoolbar',
             border: false,
             items: [
                 {
                     xtype: 'button',
                     ui: 'link-button',
                     text: 'Search Options',
-                    itemId: "optionsbutton"
+                    itemId: 'optionsbutton'
                 },
                 {
                     xtype: 'button',
                     ui: 'link-button',
                     text: 'Results',
-                    itemId: "resultsbutton"
+                    itemId: 'resultsbutton'
                 }
             ]
         }
@@ -94,7 +94,7 @@ Ext.define('Savanna.search.view.SearchBody', {
         {
             xtype: 'button',
             text: 'Search',
-            itemId: "toolbarsearchbutton"
+            itemId: 'toolbarsearchbutton'
         }
     ],
     initComponent: function () {
