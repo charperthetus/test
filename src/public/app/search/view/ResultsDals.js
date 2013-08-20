@@ -16,7 +16,7 @@ Ext.define('Savanna.search.view.ResultsDals', {
     ],
 
     title: 'Search Sources',
-    region:'west',
+    region: 'west',
     width: 175,
     minSize: 100,
     maxSize: 250,
@@ -35,11 +35,11 @@ Ext.define('Savanna.search.view.ResultsDals', {
         Savanna.controller.Factory.getController('Savanna.search.controller.ResultsComponent');
     },
 
-    onStoreLoad: function() {
+    onStoreLoad: function () {
         this.createDalPanels();
     },
 
-    createDalPanels: function() {
+    createDalPanels: function () {
         this.removeAll();
         this.store.each(function (record) {
             var myPanel = this.createPanel(record);
@@ -47,35 +47,35 @@ Ext.define('Savanna.search.view.ResultsDals', {
         }, this);
     },
 
-    createPanel: function(myRecord) {
+    createPanel: function (myRecord) {
         return Ext.create('Savanna.search.view.searchDals.ResultsOptions', {
             itemId: myRecord.data.id,
             checkboxLabel: myRecord.data.displayName
         });
     },
 
+    /*
+     this method manages showing a loading, success or fail indication for each DAL
+     */
     setDalStatus: function (operation, success) {
-        var json = Ext.JSON.decode(operation.request.jsonData),
-            component = this.up("search_searchcomponent"),
+        var component = this.up("search_searchcomponent"),
             dalStore = Ext.data.StoreManager.lookup('dalSources'),
             me = this;
 
         dalStore.each(function (source) {
             var dals = component.down('#searchdals');
             var myDal = me.queryById(source.data.id);
-            myDal.down('#dalStatusIcon').getEl().setStyle(myDal.dalLoadPending);
+            myDal.down('#dalStatusIcon').getEl().setStyle(myDal.dalLoadPending);    // show pending if no success/fail yet
             if (dals.queryById(source.data.id).query('checkbox')[0].getValue()) {
-                if(myDal != undefined) {
+                if (myDal != undefined) {  // if the DAL is selected, check the box and set success/fail
                     myDal.query('checkbox')[0].setValue(true);
-                    if(success) {
-                        //myDal.down('#dalStatusIcon').style = myDal.dalLoadSuccess;
+                    if (success) {
                         myDal.down('#dalStatusIcon').getEl().setStyle(myDal.dalLoadSuccess);
-                    }   else    {
+                    } else {
                         myDal.down('#dalStatusIcon').getEl().setStyle(myDal.dalLoadFail);
                     }
                 }
-            }   else    {
-                // not selected
+            } else {    // not selected, no indicator and unchecked
                 myDal.query('checkbox')[0].setValue(false);
                 myDal.down('#dalStatusIcon').getEl().setStyle(myDal.dalLoadNone);
             }

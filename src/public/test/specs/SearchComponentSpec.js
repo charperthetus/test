@@ -361,6 +361,7 @@ describe('Search Component', function () {
             });
 
             it('should call showResultsPage', function () {
+                controller.currentComponentInstance = component;
                 controller.searchCallback(fixtures.searchResults, {}, true);
 
                 expect(controller.showResultsPage).toHaveBeenCalled();
