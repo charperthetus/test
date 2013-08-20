@@ -42,7 +42,7 @@
             var body = document.querySelector('body');
             if (body) {
                 var div = document.createElement('div');
-                div.id = 'test-html';
+                div.id = ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID;
                 body.appendChild(div);
             }
             else {

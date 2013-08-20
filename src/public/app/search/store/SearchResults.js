@@ -30,7 +30,7 @@ Ext.define('Savanna.search.store.SearchResults', {
                 totalProperty: 'totalResults'
             },
 
-            // TODO: remove this when we have things working correctly...
+            // TODO: we should take one last stab at not having to monkey with the jsonData...
             modifyRequest:function(request) {
                 Ext.apply(request, {
                     jsonData: this.jsonData

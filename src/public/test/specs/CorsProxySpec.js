@@ -97,29 +97,5 @@ describe('Savanna.proxy.Cors', function() {
                 expect(proxy.modifyRequest).toHaveBeenCalled();
             });
         });
-
-        describe('development mode', function() {
-            var proxy = null;
-
-            beforeEach(function() {
-                proxy = Ext.create('Savanna.proxy.Cors', {
-                    addSessionId: false,
-                    url: Savanna.Config.CorsTestUrl
-                });
-
-                proxy.noCache = false;
-            });
-
-            afterEach(function() {
-                proxy = null;
-            });
-
-            it('should give us a "dev-friendly" URL', function() {
-                var request = Ext.create('Ext.data.Request', { action: 'read', method: 'GET', url: proxy.url }),
-                    url = proxy.buildUrl(request);
-
-                expect(url).toBe(Savanna.Config.CorsTestUrl);
-            });
-        });
     });
 });
