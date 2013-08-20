@@ -6,6 +6,7 @@
  */
 Ext.require('Savanna.Config');
 Ext.require('Savanna.search.model.DalSource');
+Ext.require('Savanna.search.model.dalSource.CustomSearchDescription');
 Ext.require('Savanna.search.store.DalSources');
 Ext.require('Savanna.search.view.SearchBody');
 Ext.require('Savanna.search.view.SearchComponent');
@@ -34,6 +35,17 @@ describe('Dal Search', function() {
     });
 
     describe('Savanna.search.model.DalSource', function() {
+        var store = null;
+
+        beforeEach(function() {
+            // NOTE: this has to happen BEFORE your create a FakeServer,
+            store = setupNoCacheNoPagingStore('Savanna.search.store.DalSources');
+            store.add(Ext.create('Savanna.search.model.DalSource', fixtures.groupedDal));
+        });
+
+        afterEach(function() {
+            store = null;
+        });
 
         describe('constructor', function() {
 
@@ -41,14 +53,7 @@ describe('Dal Search', function() {
                 var dal = Ext.create('Savanna.search.model.DalSource', fixtures.groupedDal);
 
                 expect(dal instanceof Savanna.search.model.DalSource).toBeTruthy();
-
                 expect(dal.get('inputTypes').length).toBeGreaterThan(0);
-            });
-
-            it('should correctly create an empty store for "CustomSearchGroup" when null passed for that value', function() {
-                var dal = Ext.create('Savanna.search.model.DalSource', fixtures.legacyDal);
-
-                expect(dal.getCustomSearchDescription().customSearchGroups().count()).toBe(0);
             });
         });
     });
@@ -72,6 +77,20 @@ describe('Dal Search', function() {
         });
 
         describe('default data loading', function() {
+            /*
+             This test broke above due to the data restructure and use of 'hasOne'.  Creating a store and adding allDals - which
+             includes the legacyDal model - fixes the test since the associations stuff executes and creates the customSearchDescription
+             */
+            it('should correctly create an empty store for "CustomSearchGroup" when null passed for that value', function() {
+                server.respondWith('GET', store.getProxy().url, fixtures.allDals);
+
+                store.load();
+
+                server.respond({
+                    errorOnInvalidRequest: true
+                });
+                expect(store.getAt(0).getCustomSearchDescription().customSearchGroups().count()).toBe(0);
+            });
 
             it('should load data', function() {
                 expect(store.getTotalCount()).toBe(0);
@@ -109,10 +128,16 @@ describe('Dal Search', function() {
     });
 
     describe('Savanna.search.view.SearchDals', function() {
-        var view = null;
+        var view = null,
+            store = null;;
 
         beforeEach(function() {
             //noinspection JSValidateTypes
+
+            store = setupNoCacheNoPagingStore('Savanna.search.store.DalSources');
+
+            server = new ThetusTestHelpers.FakeServer(sinon);
+
             spyOn(Savanna.controller.Factory, 'getController');
             view = Ext.create('Savanna.search.view.SearchDals', { renderTo: 'test-html' });
         });
@@ -123,6 +148,10 @@ describe('Dal Search', function() {
             }
 
             view = null;
+            server.restore();
+
+            server = null;
+            store = null;
         });
 
         it('initComponent should ask for a controller', function() {
@@ -131,9 +160,19 @@ describe('Dal Search', function() {
 
         describe('createPanel', function() {
             it('should create an instance of the SearchOptions panel', function() {
-                var model = new Savanna.search.model.DalSource(fixtures.legacyDal);
+                /*
+                 This test broke due to the data restructure and use of 'hasOne'.  Creating a store and adding allDals - which
+                 includes the legacyDal model - fixes the test since the associations stuff executes and creates the customSearchDescription
+                 */
+                server.respondWith('GET', store.getProxy().url, fixtures.allDals);
 
-                var panelView = view.createPanel(model);
+                store.load();
+
+                server.respond({
+                    errorOnInvalidRequest: true
+                });
+
+                var panelView = view.createPanel(store.getAt(0));
 
                 expect(panelView instanceof Savanna.search.view.searchDals.SearchOptions).toBeTruthy();
             });
@@ -144,6 +183,8 @@ describe('Dal Search', function() {
                 store = null;
 
             beforeEach(function() {
+                view = Ext.create('Savanna.search.view.SearchDals', { renderTo: 'test-html' });
+
                 // NOTE: this has to happen BEFORE your create a FakeServer,
                 store = setupNoCacheNoPagingStore('Savanna.search.store.DalSources');
 
@@ -159,21 +200,23 @@ describe('Dal Search', function() {
             });
 
             afterEach(function() {
-                server.restore();
 
                 server = null;
                 store = null;
+
+                if (view && view.destroy) {
+                    view.destroy();
+                }
+
+                view = null;
             });
 
             it('should create a Panel for every record in the store', function() {
-                var view = Ext.create('Savanna.search.view.SearchDals', { renderTo: 'test-html' });
-
                 //noinspection JSValidateTypes
                 spyOn(view, 'add');
-
+                view.store = store;
                 view.createDalPanels();
-
-                expect(view.add.callCount).toBe(view.getStore().count());
+                expect(view.add.callCount).toBe(store.count());
             });
         });
     });
