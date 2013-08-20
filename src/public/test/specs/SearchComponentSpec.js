@@ -1,8 +1,7 @@
 /* global
         Ext: false, ExtSpec: false,
         describe: false, beforeEach: false, afterEach: false, it: false, expect: false, spyOn: false, sinon: false,
-        createTestDom: false, cleanTestDom: false, ThetusTestHelpers: false, setupNoCacheNoPagingStore: false,
-        Savanna: false
+        ThetusTestHelpers: false, Savanna: false
  */
 Ext.require('Savanna.Config');
 Ext.require('Savanna.search.controller.SearchComponent');
@@ -20,32 +19,24 @@ Ext.require('Savanna.search.view.SearchToolbar');
 describe('Search Component', function () {
 
     var fixtures;
-    var SEARCH_RESULTS_URL = '';
-    var HISTORY_RESULTS_URL = '';
 
     beforeEach(function () {
         this.addMatchers(ExtSpec.Jasmine.Matchers);
 
-        //SEARCH_RESULTS_URL = SEARCH_RESULTS_URL || (Savanna.Config.savannaUrlRoot + "rest/search;jsessionid=" + TEST_SESSION_ID);
-        SEARCH_RESULTS_URL = SEARCH_RESULTS_URL || 'app/assets/data/testSearchResults.json';
-
-        //HISTORY_RESULTS_URL = HISTORY_RESULTS_URL || (Savanna.Config.savannaUrlRoot + "rest/search/history;jsessionid=" + TEST_SESSION_ID);
-        HISTORY_RESULTS_URL = 'app/assets/data/testSearchHistory.json';
-
-        createTestDom();
+        ThetusTestHelpers.ExtHelpers.createTestDom();
     });
 
     afterEach(function () {
         fixtures = null;
 
-        cleanTestDom();
+        ThetusTestHelpers.ExtHelpers.cleanTestDom();
     });
 
     describe('View', function () {
         var component = null;
 
         beforeEach(function () {
-            component = Ext.create('Savanna.search.view.SearchComponent', { renderTo: 'test-html' });
+            component = Ext.create('Savanna.search.view.SearchComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
         });
 
         afterEach(function () {
@@ -111,7 +102,7 @@ describe('Search Component', function () {
             controller = null;
 
         beforeEach(function () {
-            component = Ext.create('Savanna.search.view.SearchComponent', { renderTo: 'test-html' });
+            component = Ext.create('Savanna.search.view.SearchComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
             toolbar = component.queryById('searchtoolbar');
             controller = Ext.create('Savanna.search.controller.SearchComponent');
 
@@ -211,7 +202,7 @@ describe('Search Component', function () {
             var form = null;
 
             beforeEach(function () {
-                searchbar = Ext.create('Savanna.search.view.SearchBar', { renderTo: 'test-html' });
+                searchbar = Ext.create('Savanna.search.view.SearchBar', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
                 searchbar.queryById('search_terms').setValue('search bar terms');
                 searchbar.queryById('all_words').setValue('some text');
                 searchbar.queryById('exact_phrase').setValue('other text');
@@ -219,7 +210,7 @@ describe('Search Component', function () {
                 searchbar.queryById('none_words').setValue('bad terms');
 
 
-                form = component.queryById('searchbar').queryById("search_form");
+                form = component.queryById('searchbar').queryById('search_form');
             });
 
             afterEach(function () {
@@ -237,7 +228,7 @@ describe('Search Component', function () {
             });
 
             it('should align the advanced menu below the simple search textfield', function () {
-                var button = controller.getAdvancedButton();
+                var button = component.queryById('searchadvanced_btn');
                 var menu = button.menu;
 
                 spyOn(menu, 'alignTo');
@@ -250,13 +241,13 @@ describe('Search Component', function () {
             it('should build the search string', function () {
                 spyOn(component.queryById('searchbar'), 'buildSearchString').andCallThrough();
 
-                controller.doSearch(component.queryById('searchbar').items.first(), {});
+                controller.doSearch(component.queryById('searchbar'), {});
 
                 expect(component.queryById('searchbar').buildSearchString).toHaveBeenCalled();
             });
 
             it('should remove search field values when "Start New Search" is selected', function () {
-                controller.handleNewSearch();
+                controller.handleNewSearch(component.queryById('searchbar'));
 
                 expect(form.queryById('search_terms').getValue()).toEqual('');
                 expect(form.queryById('all_words').getValue()).toEqual('');
@@ -279,7 +270,7 @@ describe('Search Component', function () {
             it('getBooleanValue returns expected string for booleanType "all"', function() {
                 field = Ext.create('Savanna.search.view.SearchAdvancedTextfield', {
                     configs: { join: '', booleanType: 'all' },
-                    renderTo: 'test-html'
+                    renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID
                 });
 
                 field.setValue('some   text');
@@ -293,7 +284,7 @@ describe('Search Component', function () {
             it('getBooleanValue returns expected string for booleanType "exact"', function() {
                 field = Ext.create('Savanna.search.view.SearchAdvancedTextfield', {
                     configs: { join: '', booleanType: 'exact' },
-                    renderTo: 'test-html'
+                    renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID
                 });
 
                 field.setValue('some   text');
@@ -307,7 +298,7 @@ describe('Search Component', function () {
             it('getBooleanValue returns expected string for booleanType "any"', function() {
                 field = Ext.create('Savanna.search.view.SearchAdvancedTextfield', {
                     configs: { join: '', booleanType: 'any' },
-                    renderTo: 'test-html'
+                    renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID
                 });
 
                 field.setValue('some   text');
@@ -321,7 +312,7 @@ describe('Search Component', function () {
             it('getBooleanValue returns expected string for booleanType "none"', function() {
                 field = Ext.create('Savanna.search.view.SearchAdvancedTextfield', {
                     configs: { join: '', booleanType: 'none' },
-                    renderTo: 'test-html'
+                    renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID
                 });
 
                 field.setValue('some   text');
@@ -386,7 +377,7 @@ describe('Search Component', function () {
 
             describe('onBodyToolbarClick', function () {
                 it('should set currentPanel to "results" when "Results" is clicked', function () {
-                    var resbutton = controller.getResultsButton();
+                    var resbutton = component.queryById('resultsbutton');
 
                     component.queryById('searchbody').currentPanel = 'searchoptions';
 
@@ -398,7 +389,7 @@ describe('Search Component', function () {
                 });
 
                 it('should set currentPanel to "searchoptions" when "Search Options" is clicked', function () {
-                    var optsbutton = controller.getOptionsButton();
+                    var optsbutton = component.queryById('optionsbutton');
 
                     component.queryById('searchbody').currentPanel = 'results';
 
@@ -437,7 +428,7 @@ describe('Search Component', function () {
 
         beforeEach(function() {
             fixtures = Ext.clone(ThetusTestHelpers.Fixtures.SearchResults);
-            store = setupNoCacheNoPagingStore('Savanna.search.store.SearchResults');
+            store = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.SearchResults');
             store.getProxy().addSessionId = false; // so our URL is clean
             server = new ThetusTestHelpers.FakeServer(sinon);
         });
@@ -455,11 +446,14 @@ describe('Search Component', function () {
         describe('retrieving results data', function() {
 
             beforeEach(function() {
-                server.respondWith('POST', store.getProxy().url, fixtures.searchResults.results);
+                var readMethod = 'GET',
+                    testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(store.getProxy(), 'read', readMethod);
+
+                server.respondWith(readMethod, testUrl, fixtures.searchResults.results);
                 store.load();
                 server.respond({
                     errorOnInvalidRequest: true
-                })
+                });
             });
 
             it('should get same number of records as in our fixture', function() {
@@ -475,7 +469,7 @@ describe('Search Component', function () {
 
         beforeEach(function() {
             fixtures = Ext.clone(ThetusTestHelpers.Fixtures.HistoryResults);
-            store = setupNoCacheNoPagingStore('Savanna.search.store.SearchHistory');
+            store = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.SearchHistory');
             store.getProxy().addSessionId = false; // so our URL is clean
             server = new ThetusTestHelpers.FakeServer(sinon);
         });
@@ -493,7 +487,10 @@ describe('Search Component', function () {
         describe('retrieving history data', function() {
 
             beforeEach(function() {
-                server.respondWith('POST', store.getProxy().url, fixtures.historyResults);
+                var readMethod = 'POST',
+                    testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(store.getProxy(), 'read', readMethod);
+
+                server.respondWith(readMethod, testUrl, fixtures.historyResults);
                 store.load();
                 server.respond({
                     errorOnInvalidRequest: true
@@ -508,7 +505,10 @@ describe('Search Component', function () {
         describe('sending history data', function() {
 
             beforeEach(function() {
-                server.respondWith('POST', store.getProxy().url, {});
+                var createMethod = 'POST',
+                    testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(store.getProxy(), 'create', createMethod);
+
+                server.respondWith(createMethod, testUrl, fixtures.historyResults);
             });
 
             it('should send our history records and get them back from the server', function() {

@@ -1,7 +1,7 @@
-/* global
-    Ext: false,
-    describe: false, beforeEach: false, afterEach: false, it: false, expect: false,
-    go: false, TaperedLink: false */
+/* global Ext: false,
+          describe: false, beforeEach: false, afterEach: false, it: false, expect: false,
+          go: false, ExtendedLink: false
+*/
 Ext.require('Savanna.crumbnet.utils.TaperedLink');
 
 describe('Savanna.crumbnet.utils.TaperedLink', function() {
@@ -10,7 +10,7 @@ describe('Savanna.crumbnet.utils.TaperedLink', function() {
         var link = null;
 
         beforeEach(function() {
-            link = new TaperedLink();
+            link = new ExtendedLink();
         });
 
         afterEach(function() {
@@ -18,7 +18,7 @@ describe('Savanna.crumbnet.utils.TaperedLink', function() {
         });
 
         it('should be able to create a simple link', function() {
-            expect(link instanceof TaperedLink).toBeTruthy();
+            expect(link instanceof ExtendedLink).toBeTruthy();
         });
 
         it('should have no points', function() {
@@ -37,6 +37,7 @@ describe('Savanna.crumbnet.utils.TaperedLink', function() {
                     newPointsList.add(new go.Point(20, 20));
 
                     link.points = newPointsList;
+                    link.data = { category: 'Tapered'};
 
                     geometry = link.makeGeometry();
                 });
@@ -65,6 +66,7 @@ describe('Savanna.crumbnet.utils.TaperedLink', function() {
                     newPointsList.add(new go.Point(10, -10));
 
                     link.points = newPointsList;
+                    link.data = { category: 'Tapered'};
 
                     geometry = link.makeGeometry();
                 });

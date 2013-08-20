@@ -1,13 +1,7 @@
-/**
- * Created with IntelliJ IDEA.
- * User: thille
- * Date: 8/8/13
- * Time: 9:52 AM
- * To change this template use File | Settings | File Templates.
- */
 /* global Ext: false,
           describe: false, beforeEach: false, afterEach: false, it: false, expect: false, sinon: false, spyOn: false,
-           ThetusTestHelpers: false */
+          ThetusTestHelpers: false, Savanna: false */
+Ext.require('Savanna.Config');
 Ext.require('Savanna.proxy.Cors');
 
 describe('Savanna.proxy.Cors', function() {
@@ -51,16 +45,6 @@ describe('Savanna.proxy.Cors', function() {
             expect(proxy.withCredentials).toBeTruthy();
         });
 
-        it('should be configured to use "POST" for all methods', function() {
-            var actionMethods = proxy.actionMethods;
-
-            for (var key in actionMethods) {
-                if (actionMethods.hasOwnProperty(key)) {
-                    expect(actionMethods[key]).toBe('POST');
-                }
-            }
-        });
-
         it('should add session id to url by default', function() {
             spyOn(proxy, 'getUrl').andReturn('TEST_URL');
 
@@ -78,12 +62,20 @@ describe('Savanna.proxy.Cors', function() {
 
     describe('customization', function() {
 
+        beforeEach(function() {
+            Savanna.Config.CorsTestUrl = 'http://testCors.url/';
+        });
+
+        afterEach(function() {
+            delete Savanna.ConfigCorsTestUrl;
+        });
+
         describe('modifying the request', function() {
             var proxy = null;
 
             beforeEach(function() {
                 proxy = Ext.create('Savanna.proxy.Cors', {
-                    url: 'http://test.url/',
+                    url: Savanna.Config.CorsTestUrl,
                     modifyRequest: function(request) {
                         // do nothing (since we will spy on ourselves...
                         return request;

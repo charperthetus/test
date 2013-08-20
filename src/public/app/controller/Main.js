@@ -6,7 +6,8 @@ Ext.define('Savanna.controller.Main', {
     extend: 'Ext.app.Controller',
 
     views: [
-        'Login'
+        'Login',
+        'PrintModal'
     ],
 
     controllers: [
@@ -25,6 +26,12 @@ Ext.define('Savanna.controller.Main', {
                         me.swapLogin(e.browserEvent.data);
                     });
                 }
+            },
+            'print-modal button[type="print"]': {
+                click: this.printContent
+            },
+            'print-modal button[type="cancel"]': {
+                click: this.closePrintModal
             }
         });
     },
@@ -46,5 +53,16 @@ Ext.define('Savanna.controller.Main', {
         else {
             Ext.Error.raise('no viewport defined');
         }
+    },
+
+    printContent: function() {
+        window.print();
+    },
+
+    closePrintModal: function(button) {
+        var modal = button.findParentByType('print-modal');
+
+        // NOTE: we assume we will always get the modal window, since the button is it's child
+        modal.close();
     }
 });

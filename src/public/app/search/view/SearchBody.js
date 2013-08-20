@@ -9,7 +9,14 @@ Ext.define('Savanna.search.view.SearchBody', {
         'Savanna.search.view.SearchDals',
         'Savanna.search.view.SearchMap',
         'Savanna.search.view.ResultsComponent',
+        /*
+         Why is this needed?  If the controller is listed in the requires for the view,
+         the whole app blows up with no error messages.  If this is removed from these
+         requires, the console complains that the controller has had to be loaded
+         asynchronously.  Maybe because results is in a tab that has not been rendered..?
+          */
         'Savanna.search.controller.ResultsComponent',
+
         'Savanna.controller.Factory'
     ],
 
@@ -39,6 +46,7 @@ Ext.define('Savanna.search.view.SearchBody', {
                             title: 'Search Sources',
                             autoScroll: true,
                             cls: 'search-dal',
+                            itemId:"searchdals",
                             xtype: 'search_searchdals'
                         },
                         {

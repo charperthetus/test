@@ -12,25 +12,26 @@ Ext.define('Savanna.search.store.SearchHistory', {
 
     model: 'Savanna.search.model.SearchHistory',
 
-    // does this need to be set?
     pageSize: Savanna.Config.searchHistoryPageSize,
 
     autoLoad: false,
-
-
-    searches: [],
-
-    restAction: 'POST',
 
     constructor: function () {
         this.callParent(arguments);
 
         this.setProxy({
             type: 'savanna-cors',
-            //url: Savanna.Config.savannaUrlRoot + 'rest/search/history',
-            url: 'app/assets/data/testSearchHistory.json',
-            addSessionId: false,
-            noCache: false,
+            url: Savanna.Config.buildSavannaUrl('searchHistoryUrl'),
+
+            // 8/19/2013 (thille) should reads really be a "POST"? What about updates?
+            actionMethods: {
+                read: 'POST',
+                create: 'POST',
+                update: 'POST',
+                destroy: 'POST'
+            },
+
+            // TODO: these params are disabled right now, but we may need them...
             startParam: undefined,
             limitParam: undefined,
             pageParam: undefined,

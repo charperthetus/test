@@ -1,8 +1,6 @@
-/* global
- Ext: false, ExtSpec: false,
- describe: false, beforeEach: false, afterEach: false, it: false, expect: false, spyOn: false, sinon: false,
- createTestDom: false, cleanTestDom: false, ThetusTestHelpers: false, setupNoCacheNoPagingStore: false,
- Savanna: false
+/* global Ext: false,
+          describe: false, beforeEach: false, afterEach: false, it: false, expect: false,
+          ThetusTestHelpers: false, Savanna: false
  */
 Ext.require('Savanna.Config');
 Ext.require('Savanna.search.controller.SearchComponent');
@@ -16,32 +14,30 @@ Ext.require('Savanna.search.view.ResultsPanelGrid');
 Ext.require('Savanna.search.view.ResultsPanelToolbar');
 Ext.require('Savanna.search.view.ResultsDals');
 
-describe("Search Results", function () {
+describe('Search Results', function () {
 
-    var fixtures;
-
-    var TEST_SESSION_ID = 'TEST_SESSION_ID';
+    var fixtures = {};
 
     beforeEach(function () {
-        this.addMatchers(ExtSpec.Jasmine.Matchers);
-        createTestDom();
+        ThetusTestHelpers.ExtHelpers.createTestDom();
     });
 
     afterEach(function () {
         fixtures = null;
-        cleanTestDom();
+
+        ThetusTestHelpers.ExtHelpers.cleanTestDom();
     });
 
     describe('View', function () {
 
-        var search_component = null;
+        var searchComponent = null;
         var component = null;
 
         beforeEach(function () {
             // create a SearchResults store for results tests
-            search_component = Ext.create('Savanna.search.view.SearchComponent', { renderTo: 'test-html' });
+            searchComponent = Ext.create('Savanna.search.view.SearchComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
 
-            component = Ext.create('Savanna.search.view.ResultsComponent', { renderTo: 'test-html' });
+            component = Ext.create('Savanna.search.view.ResultsComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
         });
 
         afterEach(function () {
@@ -49,9 +45,9 @@ describe("Search Results", function () {
                 component.destroy();
                 component = null;
             }
-            if (search_component) {
-                search_component.destroy();
-                search_component = null;
+            if (searchComponent) {
+                searchComponent.destroy();
+                searchComponent = null;
             }
         });
 
@@ -88,7 +84,7 @@ describe("Search Results", function () {
             });
 
             it('should have a paging toolbar', function () {
-                expect(grid.queryById("gridtoolbar") instanceof Ext.toolbar.Paging).toBeTruthy();
+                expect(grid.queryById('gridtoolbar') instanceof Ext.toolbar.Paging).toBeTruthy();
             });
 
         });
@@ -103,16 +99,17 @@ describe("Search Results", function () {
             sources = null;
 
         beforeEach(function () {
-            component = Ext.create('Savanna.search.view.ResultsComponent', { renderTo: 'test-html' });
+            component = Ext.create('Savanna.search.view.ResultsComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
             controller = Ext.create('Savanna.search.controller.ResultsComponent');
             panel = component.queryById('resultspanel');
-            grid = panel.queryById("resultspanelgrid");
-            sources = component.queryById("resultsdals");
+            grid = panel.queryById('resultspanelgrid');
+            sources = component.queryById('resultsdals');
         });
 
         afterEach(function()    {
             var teardown = [component, controller, panel, grid, sources];
-            for (var i=0;i<teardown;i++)   {
+
+            for (var i = 0; i < teardown; i++)   {
                 if (teardown[i]) {
                     teardown[i].destroy();
                     teardown[i] = null;
@@ -127,5 +124,5 @@ describe("Search Results", function () {
         it('should have a store behind the sources panel', function () {
             expect(sources.store).toBeTruthy();
         });
-    })
+    });
 });

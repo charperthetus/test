@@ -57,10 +57,6 @@ Ext.define('Savanna.search.view.SearchBar', {
         this.mixins.storeable.initStore.call(this);
     },
 
-    onStoreLoad: function() {
-        // TODO: load our results...
-    },
-
     buildSearchString: function () {
         var searchString = '',
             advancedBooleanString = '',

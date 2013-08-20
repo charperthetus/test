@@ -1,4 +1,4 @@
-/* global Ext: false */
+/* global Ext: false, Savanna: false */
 Ext.define('Savanna.search.store.SearchResults', {
     extend: 'Ext.data.JsonStore',
 
@@ -21,24 +21,23 @@ Ext.define('Savanna.search.store.SearchResults', {
 
         this.setProxy({
             type: 'savanna-cors',
-            //url: Savanna.Config.savannaUrlRoot + 'rest/search',
-
-            // DEV SETTINGS (for when you don't have the endpoint working...)
-            url: 'app/assets/data/testSearchResults.json',
-            addSessionId: false,
-            noCache: false,
-            startParam: undefined,
-            limitParam: undefined,
-            pageParam: undefined,
+            url: Savanna.Config.buildSavannaUrl('searchUrl'),
 
             reader: {
                 type: 'json',
-                root:"results",
-                // why this no worky?  I'll figure it out...
-                totalProperty:"totalResults"
-            }
+                root: 'results',
+                // TODO: this does not appear to be working yet...
+                totalProperty: 'totalResults'
+            },
 
-            // END DEV SETTINGS
+            // TODO: we should take one last stab at not having to monkey with the jsonData...
+            modifyRequest:function(request) {
+                Ext.apply(request, {
+                    jsonData: this.jsonData
+                });
+
+                return request;
+            }
         });
     }
 });

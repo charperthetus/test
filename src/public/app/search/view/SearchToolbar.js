@@ -51,7 +51,7 @@ Ext.define('Savanna.search.view.SearchToolbar', {
         this.mixins.storeable.initStore.call(this);
     },
 
-    onStoreLoad: function() {
+    onStoreChanged: function() {
         var historyMenu = this.down('#historymenu');
         historyMenu.removeAll();
         //TODO: look for dupes and do not include them - or, remove at store level

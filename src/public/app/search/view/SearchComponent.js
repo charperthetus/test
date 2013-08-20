@@ -24,6 +24,8 @@ Ext.define('Savanna.search.view.SearchComponent', {
     closable:false,
     border:false,
 
+    firstResultsReturned:false,
+
     items: [
         {
             xtype: 'search_searchbar',
