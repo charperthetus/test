@@ -5,13 +5,13 @@ HTML client interface for Savanna 4
 
 ## Installation
 
-Once you have cloned this repos, you will need to go into `src/` and run `npm install` which will get everything set up for you to be able to use [Node.js](http://nodejs.org/) as your server (of course this assumes you have Node.js](http://nodejs.org/) installed).
+Once you have cloned this repos, you will need to go into `src/` and run `npm install` which will get everything set up for you to be able to use [Node.js](http://nodejs.org/) as your server (of course this assumes you have Node.js](http://nodejs.org/) installed).  If you are using Idea12 you should have the Node.js plug-in already available.  If not, it is a standard IntelliJ plugin.
 
 From there, if you are using IntelliJ Idea, you need to go to `Run -> Edit Configurations` and create a "Node" configuration that has `Working Directory` set to the path to `src/` and `Path to Node App js File` set to `server.js`.  Then it's as simple as starting the server from the toolbar.
 
 If you like CLI, you can `cd /path/to/repos/src` and then `node server.js` which will do the same thing.
 
-Next, you will need to navigate (via command line) to `src/public` and run `sencha app build` to build out the theme resources for thie project (NOTE: requires [Sencha Cmd](http://www.sencha.com/products/sencha-cmd/download))
+Next, you will need to navigate (via command line) to `src/public` and run `sencha app build` to build out the theme resources for thie project (NOTE: requires [Sencha Cmd](http://www.sencha.com/products/sencha-cmd/download) which in turn requires [Ruby 1.9.3](http://www.ruby-lang.org/en/downloads/))
 
 Also, if this is your first time pulling up this app since you last started your browser, you will need to navigate to the certificate server to allow the browser to use the certificate.
 
@@ -26,3 +26,6 @@ Do this by:
 NOTE: you should only have to do this after quitting your browser, so even if your session times out, if the browser is still open you should be able to see the login page show up correctly.
 
 
+## Theme updates
+
+In order to pull in any changes made to the theme, you will need to run the `sencha app build` command again to pull in said changes (see above for information about Sencha Cmd).
