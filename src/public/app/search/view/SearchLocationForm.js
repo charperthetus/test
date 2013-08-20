@@ -45,6 +45,7 @@ Ext.define('Savanna.search.view.SearchLocationForm', {
             ]
         }
     ],
+
     initComponent: function () {
         this.mixins.storeable.initStore.call(this);
         this.mixins.floating.constructor.call(this);
