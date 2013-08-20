@@ -53,6 +53,7 @@ Ext.define('Savanna.search.view.SearchMap', {
                             xtype: 'textfield',
                             width: 200,
                             fieldLabel: '',
+                            itemId: 'findLocationSearchText',
                             name: 'search_location',
                             enableKeyEvents: true,
                             emptyText: 'Find Location'

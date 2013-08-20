@@ -13,7 +13,8 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         'Savanna.search.model.SearchRequest',
         'Savanna.search.model.SearchHistory',
         'Savanna.search.store.SearchResults',
-        'Savanna.search.store.SearchHistory'
+        'Savanna.search.store.SearchHistory',
+        'Savanna.search.view.SearchLocationForm'
     ],
 
     models: [
@@ -54,9 +55,11 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                     button.up('search_searchmap').queryById('leafletMap').fireEvent('locationSearch:zoomto', button);
                 }
             },
-            'search_searchcomponent > #searchbody #mainsearchoptions #mainsearchtabpanel #searchMap #leafletMap': {
-                'draw:created': function (layerType) {
-                }
+            'search_searchcomponent > #searchbody #mainsearchoptions #mainsearchtabpanel #searchMap #searchLocationDockedItems #findLocation': {
+                click: this.onFindLocation
+            },
+            'search_searchcomponent > #searchbar #main_panel #search_reset #search_reset_button': {
+                click: this.handleNewSearch
             },
             'search_searchcomponent > #searchbar #main_panel #search_form #searchadvanced_btn': {
                 click: this.alignMenuWithTextfield
@@ -89,7 +92,14 @@ Ext.define('Savanna.search.controller.SearchComponent', {
     },
 
     // CUSTOM METHODS
-
+    onFindLocation: function(button) {
+        var locationSearchInput =  button.up('#searchLocationDockedItems').down('#findLocationSearchText');
+        var locationSearchText = locationSearchInput.value;
+        if (locationSearchText) {
+            myForm =  Ext.create('Savanna.search.view.SearchLocationForm');
+            myForm.show();
+        }
+    },
     handleNewSearch:function()  {
 
         this.getSearchForm().queryById('search_terms').setValue('');
