@@ -1,7 +1,7 @@
-/* global
- Ext: false,
- describe: false, beforeEach: false, afterEach: false, it: false, expect: false,
- go: false, ExtendedLink: false */
+/* global Ext: false,
+          describe: false, beforeEach: false, afterEach: false, it: false, expect: false,
+          go: false, ExtendedLink: false
+*/
 Ext.require('Savanna.crumbnet.utils.TaperedLink');
 
 describe('Savanna.crumbnet.utils.TaperedLink', function() {

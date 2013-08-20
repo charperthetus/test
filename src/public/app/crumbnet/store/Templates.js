@@ -1,11 +1,4 @@
-/**
- * Created with IntelliJ IDEA.
- * User: thille
- * Date: 7/25/13
- * Time: 5:17 PM
- * To change this template use File | Settings | File Templates.
- */
-/* global Ext: false */
+/* global Ext: false, Savanna: false */
 Ext.define('Savanna.crumbnet.store.Templates', {
     extend: 'Ext.data.Store',
 
@@ -17,8 +10,7 @@ Ext.define('Savanna.crumbnet.store.Templates', {
 
     proxy: {
         type: 'rest',
-        // TODO: replace this test URL with real endpoint once we have one...
-        url: 'resources/data/testCrumbnetTemplates.json',
+        url: Savanna.Config.buildSavannaUrl('crumbnetTemplatesUrl'),
         reader: {
             type: 'json',
             root: 'groups'

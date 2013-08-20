@@ -29,13 +29,6 @@ Ext.define('Savanna.proxy.Cors', {
     cors: true,
     withCredentials: true,
 
-    actionMethods: {
-        create: 'POST',
-        read: 'POST',
-        update: 'POST',
-        destroy: 'POST'
-    },
-
     headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'

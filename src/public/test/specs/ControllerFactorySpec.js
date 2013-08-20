@@ -1,10 +1,8 @@
+/* global Ext: false, Savanna: false,
+         describe: false, it: false, expect: false */
 Ext.require('Savanna.controller.Factory');
 
 describe('Savanna.controller.Factory', function() {
-
-    beforeEach(function() {
-        this.addMatchers(ExtSpec.Jasmine.Matchers);
-    });
 
     it('should be a globally available singleton', function() {
         expect(Savanna.controller.Factory).not.toBeNull();

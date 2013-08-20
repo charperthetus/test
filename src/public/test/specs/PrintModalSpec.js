@@ -1,14 +1,14 @@
 /* global
     Ext: false,
     describe: false, beforeEach: false, afterEach: false, it: false, expect: false,
-    createTestDom: false, cleanTestDom: false, Savanna: false */
+    ThetusTestHelpers, Savanna: false */
 Ext.require('Savanna.view.PrintModal');
 
 describe('Savanna.view.PrintModal', function() {
     var modal = null;
 
     beforeEach(function() {
-        createTestDom();
+        ThetusTestHelpers.ExtHelpers.createTestDom();
     });
 
     afterEach(function() {
@@ -17,7 +17,7 @@ describe('Savanna.view.PrintModal', function() {
             modal = null;
         }
 
-        cleanTestDom();
+        ThetusTestHelpers.ExtHelpers.cleanTestDom();
     });
 
     describe('default initialization', function() {
@@ -84,7 +84,6 @@ describe('Savanna.view.PrintModal', function() {
 
                 var domElem = document.createElement('div');
                 domElem.appendChild(document.createTextNode('outerHTML CONTENT'));
-                domElem.outerHTML = 'FUCK';
 
                 modal.setPrintContent(domElem);
 
