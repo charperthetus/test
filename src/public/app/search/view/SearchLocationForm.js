@@ -39,7 +39,8 @@ Ext.define('Savanna.search.view.SearchLocationForm', {
             items: [
                 {
                     xtype: 'label',
-                    html: '53 Results'
+                    itemId: 'numResults',
+                    text: '0 Results'
                 }
             ]
         }
@@ -56,6 +57,7 @@ Ext.define('Savanna.search.view.SearchLocationForm', {
 
     createSearchLocationItems: function() {
         this.removeAll();
+        this.query('#numResults')[0].setText(this.store.totalCount + ' Results');
         this.store.each(function (record) {
             var myPanel = this.createSearchLocationItemPanel(record);
             this.add(myPanel);

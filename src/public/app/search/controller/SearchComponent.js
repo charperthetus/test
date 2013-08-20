@@ -82,13 +82,13 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
     // CUSTOM METHODS    
     onFindLocation: function(button) {
-    var locationSearchInput =  button.up('#searchLocationDockedItems').down('#findLocationSearchText');
-var locationSearchText = locationSearchInput.value;
-if (locationSearchText) {
-    myForm =  Ext.create('Savanna.search.view.SearchLocationForm');
-    myForm.show();
-}
-},
+        var locationSearchInput =  button.up('#searchLocationDockedItems').down('#findLocationSearchText');
+        var locationSearchText = locationSearchInput.value;
+        if (locationSearchText) {
+            myForm =  Ext.create('Savanna.search.view.SearchLocationForm');
+            myForm.show();
+        }
+    },
 
     handleNewSearch:function(elem)  {
 
