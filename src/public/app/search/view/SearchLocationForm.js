@@ -40,7 +40,7 @@ Ext.define('Savanna.search.view.SearchLocationForm', {
                 {
                     xtype: 'label',
                     itemId: 'numResults',
-                    text: '0 Results'
+                    text: ''
                 }
             ]
         }

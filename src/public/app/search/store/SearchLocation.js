@@ -18,6 +18,8 @@ Ext.define('Savanna.search.store.SearchLocation', {
 
     model: 'Savanna.search.model.SearchLocation',
 
+    //THIS NEED TO BE TAKEN OUT WHEN WE START HITTING REAL SERVICES AND THE PLACE WE ARE SEARCHING FOR
+    //NEEDS TO BE SENT AS A PARAMETER
     autoLoad: true,
 
     constructor: function () {
@@ -25,21 +27,11 @@ Ext.define('Savanna.search.store.SearchLocation', {
 
         this.setProxy({
             type: 'savanna-cors',
-            //url: Savanna.Config.savannaUrlRoot + '/rest/map/search',
-            // Use this if you don't have Savanna 3.4 running
-            // NOTE: two tests in SpecRunner fail in this circumstance, but will work once the dev server is up and running
+
+            // the follow url will replace the url in use once we have a service running
+            //url: Savanna.Config.buildSavannaUrl('locationSearch'),
             url: 'app/assets/data/testSearchLocationSearch.json',
-            actionMethods: {
-                create: 'POST',
-                read: 'GET',
-                update: 'POST',
-                destroy: 'POST'
-            },
-            addSessionId: false,
-            noCache: false,
-            startParam: undefined,
-            limitParam: undefined,
-            pageParam: undefined,
+            addSessionId: false, // this needs to be left in until using correct url or Ted adds node fix
 
             reader: {
                 type: 'json',
