@@ -18,14 +18,12 @@ Ext.require('Savanna.search.view.ResultsDals');
 
 describe("Search Results", function () {
 
-    var dal_fixtures;
-
-    var TEST_SESSION_ID = 'TEST_SESSION_ID';
+    var dalFixtures;
 
     beforeEach(function () {
         this.addMatchers(ExtSpec.Jasmine.Matchers);
 
-        dal_fixtures = Ext.clone(ThetusTestHelpers.Fixtures.DalSources);
+        dalFixtures = Ext.clone(ThetusTestHelpers.Fixtures.DalSources);
 
         createTestDom();
     });
@@ -37,12 +35,12 @@ describe("Search Results", function () {
 
     describe('View', function () {
 
-        var search_component = null;
+        var searchComponent = null;
         var component = null;
 
         beforeEach(function () {
             // create a SearchResults store for results tests
-            search_component = Ext.create('Savanna.search.view.SearchComponent', { renderTo: 'test-html' });
+            searchComponent = Ext.create('Savanna.search.view.SearchComponent', { renderTo: 'test-html' });
 
             component = Ext.create('Savanna.search.view.ResultsComponent', { renderTo: 'test-html' });
         });
@@ -52,9 +50,9 @@ describe("Search Results", function () {
                 component.destroy();
                 component = null;
             }
-            if (search_component) {
-                search_component.destroy();
-                search_component = null;
+            if (searchComponent) {
+                searchComponent.destroy();
+                searchComponent = null;
             }
         });
 
@@ -70,7 +68,6 @@ describe("Search Results", function () {
 
             var view = null,
                 store = null;
-            ;
 
             beforeEach(function () {
                 //noinspection JSValidateTypes
@@ -98,7 +95,7 @@ describe("Search Results", function () {
                      This test broke due to the data restructure and use of 'hasOne'.  Creating a store and adding allDals - which
                      includes the legacyDal model - fixes the test since the associations stuff executes and creates the customSearchDescription
                      */
-                    server.respondWith('GET', store.getProxy().url, dal_fixtures.allDals);
+                    server.respondWith('GET', store.getProxy().url, dalFixtures.allDals);
 
                     store.load();
 
@@ -124,7 +121,7 @@ describe("Search Results", function () {
 
                     server = new ThetusTestHelpers.FakeServer(sinon);
 
-                    server.respondWith('GET', store.getProxy().url, dal_fixtures.allDals);
+                    server.respondWith('GET', store.getProxy().url, dalFixtures.allDals);
 
                     store.load();
 
@@ -151,13 +148,13 @@ describe("Search Results", function () {
             describe('setDalStatus', function () {
                 var server = null,
                     store = null,
-                    dals_view = null;
+                    dalsView = null;
 
                 beforeEach(function () {
 
-                    search_component = Ext.create('Savanna.search.view.SearchComponent', { renderTo: 'test-html' });
+                    searchComponent = Ext.create('Savanna.search.view.SearchComponent', { renderTo: 'test-html' });
 
-                    dals_view = search_component.queryById('searchdals');
+                    dalsView = searchComponent.queryById('searchdals');
 
                     view = component.queryById('resultsdals');
 
@@ -165,11 +162,11 @@ describe("Search Results", function () {
 
                     view.store = store;
 
-                    dals_view.store = store;
+                    dalsView.store = store;
 
                     server = new ThetusTestHelpers.FakeServer(sinon);
 
-                    server.respondWith('GET', store.getProxy().url, dal_fixtures.allDals);
+                    server.respondWith('GET', store.getProxy().url, dalFixtures.allDals);
 
                     store.load();
 
@@ -182,32 +179,32 @@ describe("Search Results", function () {
                     server = null;
                     store = null;
                     view = null;
-                    if (search_component) {
-                        search_component.destroy();
-                        search_component = null;
+                    if (searchComponent) {
+                        searchComponent.destroy();
+                        searchComponent = null;
                     }
                 });
 
                 it('should select a success indicator if passed a "true" value', function () {
 
-                    dals_view.createDalPanels();
+                    dalsView.createDalPanels();
 
-                    dals_view.queryById('MediaWiki').query('checkbox')[0].setValue(true);
+                    dalsView.queryById('MediaWiki').query('checkbox')[0].setValue(true);
 
                     view.createDalPanels();
 
-                    expect(view.setDalStatus({}, true, search_component)).toEqual("success");
+                    expect(view.setDalStatus({}, true, searchComponent)).toEqual("success");
                 });
 
                 it('should select a fail indicator if passed a "false" value', function () {
 
-                    dals_view.createDalPanels();
+                    dalsView.createDalPanels();
 
-                    dals_view.queryById('MediaWiki').query('checkbox')[0].setValue(true);
+                    dalsView.queryById('MediaWiki').query('checkbox')[0].setValue(true);
 
                     view.createDalPanels();
 
-                    expect(view.setDalStatus({}, false, search_component)).toEqual("fail");
+                    expect(view.setDalStatus({}, false, searchComponent)).toEqual("fail");
                 });
             });
         });

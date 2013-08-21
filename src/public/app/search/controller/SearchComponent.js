@@ -27,7 +27,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         'Savanna.search.view.SearchComponent'
     ],
 
-    searchComponentInstance:null,
+    searchComponentInstance: null,
 
     init: function () {
         this.control({
@@ -99,16 +99,16 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             }
         });
         /*
-        return to the options screen if we're not already there
+         return to the options screen if we're not already there
          */
         var component = elem.findParentByType("search_searchcomponent");
-        if(component.down('#searchbody').currentPanel != "searchoptions") {
+        if (component.down('#searchbody').currentPanel != "searchoptions") {
             var optionsBtn = component.queryById('optionsbutton');
             optionsBtn.fireEvent("click", optionsBtn);
         }
 
         /*
-        clear the selected dals
+         clear the selected dals
          */
         var dalStore = Ext.data.StoreManager.lookup('dalSources');
 
@@ -130,7 +130,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         }
     },
 
-    handleClose:function(btn)   {
+    handleClose: function (btn) {
         btn.up('#searchadvanced_menu').ownerButton.up('#searchcomponent').down('#searchadvanced_menu').hide();
     },
 
@@ -173,85 +173,63 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         } else {
             component = elem.findParentByType('search_searchcomponent');
         }
-        this.currentComponentInstance = component;
 
         this.hideMenu(component);
 
         var bar = component.queryById('searchbar'),
-            store = bar.store,
+            resultsStore = bar.store,
             searchString = bar.buildSearchString(),
             dalStore = Ext.data.StoreManager.lookup('dalSources');
 
-        store.removeAll();
+        resultsStore.removeAll();
 
-        component.firstResultsReturned = false;
-
-        // populate with search string and set to default dal
         var searchObj = Ext.create('Savanna.search.model.SearchRequest', {
             'textInputString': searchString,
-            'displayLabel': searchString,
-            'searchPreferencesVOs': [
-                {
-                    'dalId': dalStore.defaultId,
-                    'resultPerPage': 100,
-                    'sortOrder': 'Default'
-                }
-            ]
+            'displayLabel': searchString
         });
-
-        /*
-         Set the search request json payload that is sent to the server,
-         and do the search on the default Dal
-         */
-        store.proxy.jsonData = Ext.JSON.encode(searchObj.data);
-        store.load({
-            callback: this.searchCallback,
-            scope: this
-        });
-
 
         /*
          Check for selected additional Dals, and do a search on each of them
          */
+        var dals = component.down('#searchdals');
+        var results_dal = component.down("#resultsdals");
 
         dalStore.each(function (source) {
-            var dals = component.down('#searchdals');
 
-            if (dals.queryById(source.data.id).query('checkbox')[0].getValue()) {
+            var dal_id = source.data.id;
+
+            if (dals.queryById(dal_id).query('checkbox')[0].getValue() || dal_id == dalStore.defaultId) {
 
                 // Dal has been selected, apply to the request model and do search
                 searchObj.set('searchPreferencesVOs', [
                     {
-                        'dalId': source.data.id,
+                        'dalId': dal_id,
                         'resultPerPage': 100,
                         'sortOrder': 'Default'
                     }
                 ]);
 
-                store.proxy.jsonData = Ext.JSON.encode(searchObj.data);
-                store.load({
-                    callback: this.searchCallback,
-                    scope: this
+                resultsStore.proxy.jsonData = Ext.JSON.encode(searchObj.data);
+                resultsStore.load({
+                    callback: Ext.bind(this.searchCallback, this, [results_dal, dal_id], true)
                 });
+                results_dal.updateDalStatus(dal_id, 'pending');
+            } else {
+                results_dal.updateDalStatus(dal_id, 'none');
             }
 
         }, this);
-
+        this.showResultsPage(component);
         /*
          track in recent searches
          */
         this.logHistory(bar.buildSearchString());
     },
 
-    searchCallback: function (records, operation, success) {
-        if (success) {
-            if (!this.currentComponentInstance.firstResultsReturned) {
-                this.showResultsPage(); // only need to do this once per search
-                this.currentComponentInstance.firstResultsReturned = true;
-            }
-            this.currentComponentInstance.down("#resultsdals").setDalStatus(operation, success, this.currentComponentInstance);
-        }
-        else {
+    searchCallback: function (records, operation, success, results_dal, dal_id) {
+        var statusString = success ? "success" : "fail";
+        results_dal.updateDalStatus(dal_id, statusString);
+        if (!success) {
             // server down..?
             Ext.Error.raise({
                 msg: 'The server could not complete the search request.'
@@ -259,8 +237,8 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         }
     },
 
-    showResultsPage: function () {
-        var resultsBtn = this.currentComponentInstance.down('#resultsbutton');
+    showResultsPage: function (component) {
+        var resultsBtn = component.down('#resultsbutton');
 
         resultsBtn.fireEvent('click', resultsBtn);
     },

@@ -54,35 +54,14 @@ Ext.define('Savanna.search.view.ResultsDals', {
         });
     },
 
-    /*
-     this method manages showing a loading, success or fail indication for each DAL
-     */
-    setDalStatus: function (operation, success, component) {
-        var dalStore = Ext.data.StoreManager.lookup('dalSources'),
-            me = this,
-            status = 'none';
-        dalStore.each(function (source) {
-            var dals = component.queryById('searchdals');
-            var myDal = me.queryById(source.data.id);
-            if (myDal != null) {
-                myDal.queryById('dalStatusIcon').getEl().setStyle(myDal.dalLoadPending);    // show pending if no success/fail yet
-                if (dals.queryById(source.data.id).query('checkbox')[0].getValue()) {
-                    if (myDal != undefined) {  // if the DAL is selected, check the box and set success/fail
-                        myDal.query('checkbox')[0].setValue(true);
-                        if (success) {
-                            myDal.down('#dalStatusIcon').getEl().setStyle(myDal.dalLoadSuccess);
-                            status = 'success'
-                        } else {
-                            myDal.down('#dalStatusIcon').getEl().setStyle(myDal.dalLoadFail);
-                            status = 'fail'
-                        }
-                    }
-                } else {    // not selected, no indicator and unchecked
-                    myDal.query('checkbox')[0].setValue(false);
-                    myDal.down('#dalStatusIcon').getEl().setStyle(myDal.dalLoadNone);
-                }
-            }
-        });
-        return status;
+    updateDalStatus: function (dalId, status) {
+        var myDal = this.queryById(dalId);
+        var styleStatus = {
+            'success': myDal.dalLoadSuccess,
+            'fail': myDal.dalLoadFail,
+            'pending': myDal.dalLoadPending,
+            'none': myDal.dalLoadNone
+        }
+        myDal.down('#dalStatusIcon').getEl().setStyle(styleStatus[status]);
     }
 });

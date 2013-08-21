@@ -96,8 +96,5 @@ Ext.define('Savanna.search.view.SearchBody', {
             text: 'Search',
             itemId: 'toolbarsearchbutton'
         }
-    ],
-    initComponent: function () {
-        this.callParent(arguments);
-    }
+    ]
 });

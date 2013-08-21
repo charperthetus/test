@@ -19,24 +19,38 @@ Ext.require('Savanna.search.view.SearchToolbar');
 
 describe('Search Component', function () {
 
-    var fixtures;
-    var SEARCH_RESULTS_URL = '';
-    var HISTORY_RESULTS_URL = '';
+    var dalFixtures;
+    var dalStore;
+    var server;
 
     beforeEach(function () {
-        this.addMatchers(ExtSpec.Jasmine.Matchers);
 
-        //SEARCH_RESULTS_URL = SEARCH_RESULTS_URL || (Savanna.Config.savannaUrlRoot + "rest/search;jsessionid=" + TEST_SESSION_ID);
-        SEARCH_RESULTS_URL = SEARCH_RESULTS_URL || 'app/assets/data/testSearchResults.json';
+        /*
+            NOTE: because the search component is comprised of the SearchDals component which autoLoads the dalSources,
+                  we need to set up our mockServer so that it will respond to that request when it happens...
+         */
+        dalFixtures = Ext.clone(ThetusTestHelpers.Fixtures.DalSources);
+        server = new ThetusTestHelpers.FakeServer(sinon);
+        dalStore = setupNoCacheNoPagingStore('Savanna.search.store.DalSources');
+        server.respondWith('GET', dalStore.getProxy().url, dalFixtures.allDals);
 
-        //HISTORY_RESULTS_URL = HISTORY_RESULTS_URL || (Savanna.Config.savannaUrlRoot + "rest/search/history;jsessionid=" + TEST_SESSION_ID);
-        HISTORY_RESULTS_URL = 'app/assets/data/testSearchHistory.json';
+        // Even though the request will happen later (at some point when the component is instantiated), we set the
+        // server to respond now so that it's ready for that future call
+        server.respond({
+            errorOnInvalidRequest: true
+        });
 
         createTestDom();
     });
 
     afterEach(function () {
-        fixtures = null;
+        if (server) {
+            server.restore();
+            server = null;
+        }
+
+        dalFixtures = null;
+        dalStore = null;
 
         cleanTestDom();
     });
@@ -113,7 +127,7 @@ describe('Search Component', function () {
         beforeEach(function () {
             component = Ext.create('Savanna.search.view.SearchComponent', { renderTo: 'test-html' });
             toolbar = component.queryById('searchtoolbar');
-            controller = Ext.create('Savanna.search.controller.SearchComponent');
+            controller = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
 
             spyOn(controller, 'logHistory').andCallThrough();
         });
@@ -188,6 +202,7 @@ describe('Search Component', function () {
         });
 
         describe('handleSearchTermKeyUp callback', function () {
+
             beforeEach(function () {
                 spyOn(controller, 'doSearch');
             });
@@ -208,26 +223,17 @@ describe('Search Component', function () {
         describe('managing SearchBar subview events', function () {
             var searchbar = null;
 
-            var form = null;
-
             beforeEach(function () {
-                searchbar = Ext.create('Savanna.search.view.SearchBar', { renderTo: 'test-html' });
+                searchbar = component.queryById('searchbar');
                 searchbar.queryById('search_terms').setValue('search bar terms');
                 searchbar.queryById('all_words').setValue('some text');
                 searchbar.queryById('exact_phrase').setValue('other text');
                 searchbar.queryById('any_words').setValue('more and more text');
                 searchbar.queryById('none_words').setValue('bad terms');
-
-
-                form = component.queryById('searchbar').queryById("search_form");
             });
 
             afterEach(function () {
-                if (searchbar) {
-                    searchbar.destroy();
-                    searchbar = null;
-                }
-                form = null;
+                searchbar = null;
             });
 
             it('should be able to hide the menu', function () {
@@ -248,14 +254,15 @@ describe('Search Component', function () {
             });
 
             it('should build the search string', function () {
-                spyOn(component.queryById('searchbar'), 'buildSearchString').andCallThrough();
+                spyOn(searchbar, 'buildSearchString').andCallThrough();
 
-                controller.doSearch(component.queryById('searchbar'), {});
+                controller.doSearch(searchbar);
 
-                expect(component.queryById('searchbar').buildSearchString).toHaveBeenCalled();
+                expect(searchbar.buildSearchString).toHaveBeenCalled();
             });
 
             it('should remove search field values when "Start New Search" is selected', function () {
+                var form = searchbar.queryById("search_form");
                 controller.handleNewSearch(component.queryById('searchbar'));
 
                 expect(form.queryById('search_terms').getValue()).toEqual('');
@@ -432,22 +439,16 @@ describe('Search Component', function () {
     });
 
     describe('SearchResults Store', function () {
-        var server = null,
-            store = null,
+        var store = null,
             fixtures = {};
 
         beforeEach(function() {
             fixtures = Ext.clone(ThetusTestHelpers.Fixtures.SearchResults);
             store = setupNoCacheNoPagingStore('Savanna.search.store.SearchResults');
             store.getProxy().addSessionId = false; // so our URL is clean
-            server = new ThetusTestHelpers.FakeServer(sinon);
         });
 
         afterEach(function() {
-            if (server) {
-                server.restore();
-                server = null;
-            }
 
             store = null;
             fixtures = null;
@@ -521,7 +522,7 @@ describe('Search Component', function () {
 
                 server.respond({
                     returnBody: true, // since the service basically gives us back our searches...
-                    reportBody: true, // enable if you want to see the request body in the console
+                    //reportBody: true, // enable if you want to see the request body in the console
                     testBody: function(body) {
                         var json = JSON.parse(body);
                         if (json.length !== fixtures.historyResults.length) {
@@ -543,7 +544,7 @@ describe('Search Component', function () {
 
                 server.respond({
                     returnBody: true, // since the service basically gives us back our searches...
-                    reportBody: false, // enable if you want to see the request body in the console
+                    //reportBody: false, // enable if you want to see the request body in the console
                     testBody: function(body) {
                         var json = JSON.parse(body);
                         if (!Array.isArray(json)) {

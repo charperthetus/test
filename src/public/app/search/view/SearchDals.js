@@ -97,7 +97,7 @@ Ext.define('Savanna.search.view.SearchDals', {
             itemId: myRecord.data.id,
             checkboxLabel: myRecord.data.displayName,
             label: myRecord.data.textDescription,
-            showButton: (myRecord.getCustomSearchDescription().customSearchGroups().data.length)
+            showButton: myRecord.getCustomSearchDescription().customSearchGroups().data.length
         });
     }
 });
