@@ -5,7 +5,8 @@
 
 var express = require('express')
     , http = require('http')
-    , path = require('path');
+    , path = require('path')
+    , modRewrite = require('connect-modrewrite');
 
 var app = express();
 
@@ -17,6 +18,9 @@ app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(addCorsHeaders);
 app.use(app.router);
+app.use(modRewrite([
+    '(.*);jsessionid=(.*)$ $1 [L]'
+]));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // development only
