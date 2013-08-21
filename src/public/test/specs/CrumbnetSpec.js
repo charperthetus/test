@@ -439,18 +439,72 @@ describe('Savanna.crumbnet', function() {
         });
 
         describe('handleNodeColorSelect', function() {
-            var picker;
+            var menu;
 
             beforeEach(function() {
-                // TODO: picker = view.down('???');
+                // NOTE: we are drilling down to a menu because there is voodoo afoot where we can go "down" to our
+                //       picker, but cannot get back "up" to the canvas...
+                menu = view.down('crumbnet_part_toolbar');
             });
 
             afterEach(function() {
-                picker = null;
+                menu = null;
             });
 
             it('should update the color of all the selected nodes', function() {
-                // TODO: select some nodes, set a color that we know they will not have, call our handler and validate that their color was changed...
+                //Select the first node
+                var firstNode = diagram.nodes.first();
+                firstNode.isSelected = true;
+                expect(firstNode.data.color).not.toBe('#badddd');
+                controller.handleNodeColorSelect(menu, 'badddd');
+                expect(firstNode.data.color).toBe('#badddd');
+            });
+        });
+
+        describe('DropImage', function(){
+            var canvasView,
+                origFileReader;
+
+            beforeEach(function() {
+                canvasView = view.down('go-graph_canvas');
+
+                origFileReader = window && window.FileReader ? window.FileReader : null;
+            });
+
+            afterEach(function() {
+                canvasView = null;
+
+                window.FileReader = origFileReader;
+            });
+
+            it('should add the ondrop and ondragover properties to the view', function() {
+                controller.setupImageDrop(canvasView);
+                expect(canvasView.ondragover).not.toBeNull();
+                expect(canvasView.ondrop).not.toBeNull();
+            });
+
+            it ('should add a new node on a file drop', function () {
+                var testReader;
+
+                window.FileReader = function() {
+                    this.readAsDataURL = function() {};
+                    testReader = this;
+                }
+
+                controller.imageDropHandler({
+                    preventDefault: function() {},
+                    dataTransfer: { files: ['DOES NOT MATTER'] },
+                    layerX: 10,
+                    layerY: 20
+                }, diagram);
+
+                expect(testReader.onload).not.toBeNull();
+
+                spyOn(diagram.model, 'addNodeData');
+
+                testReader.onload({ target: { result: 'DOES NOT MATTER'} });
+
+                expect(diagram.model.addNodeData).toHaveBeenCalled();
             });
         });
     });
@@ -560,7 +614,7 @@ describe('Savanna.crumbnet', function() {
                 iter.next();
                 var firstItem = iter.value;
                 expect(firstItem.findObject('icon')).not.toBeNull();
-                expect(firstItem.findObject('label')).not.toBeNull();
+                expect(firstItem.findObject('descText')).not.toBeNull();
             });
 
             it('should NOT set up an overview panel by default', function() {

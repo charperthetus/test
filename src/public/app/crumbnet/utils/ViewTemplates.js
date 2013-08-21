@@ -15,7 +15,7 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
     generateNodeTemplateMap: function() {
         var gmake = go.GraphObject.make;
 
-        var icon = go.GraphObject.make(go.Picture, {
+        var icon = gmake(go.Picture, {
             name: 'icon',
             toLinkable: true,
             cursor: 'pointer',
@@ -23,21 +23,34 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
             width: 46
         }, new go.Binding('source', 'type', this.convertTypeToImage));
 
-        var textBlock = gmake(go.TextBlock, {
-            textAlign: 'center',
+        var titleText = gmake(go.TextBlock, {
+            textAlign: 'left',
             editable: true,
             width: 80,
             wrap: go.TextBlock.WrapDesiredSize,
-            font: '10pt Helvetitca, Arial, sans-serif',
-            name: 'label',
+            font: 'bold 10pt Helvetitca, Arial, sans-serif',
             cursor: 'pointer'
-        }, new go.Binding('text', 'text').makeTwoWay());
+        }, new go.Binding('text', 'title').makeTwoWay());
+
+        var descText = gmake(go.TextBlock, {
+            textAlign: 'left',
+            editable: true,
+            width: 80,
+            name: 'descText',
+            wrap: go.TextBlock.WrapDesiredSize,
+            font: '10pt Helvetitca, Arial, sans-serif',
+            cursor: 'pointer',
+            text: 'Description'
+        }, new go.Binding('text', 'description').makeTwoWay(),
+        new go.Binding('width', 'width').makeTwoWay());
 
         var nodeTemplate = gmake(go.Node, go.Panel.Auto,
             {
                 selectionAdorned: false,
                 locationSpot: go.Spot.Center, //Makes it so when you create a node it is centered on your cursor
                 toLinkable: true,
+                resizable: true,
+                resizeObjectName: 'descText',
                 mouseEnter: this.nodeMouseEnter,
                 mouseLeave: this.nodeMouseLeave,
                 mouseDragEnter: this.nodeDragEnter
@@ -46,7 +59,7 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
             new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
             //Make a transparent rectangle in the background so our hover always works
             gmake(go.Shape, { figure: 'Rectangle', fill: 'transparent', stroke: null }),
-            gmake(go.Panel, go.Panel.Vertical,
+            gmake(go.Panel, go.Panel.Horizontal,
                 gmake(go.Panel, go.Panel.Auto,
                     gmake(go.Shape, { figure: 'Rectangle', fill: 'transparent', stroke: null, width: 52, height: 52 }),
                     gmake(go.Shape, { fill: 'blue', stroke: null, alignment: go.Spot.BottomLeft }, new go.Binding('geometry', 'percent', function(p){ return makeCircle(p,52); }  )),
@@ -62,7 +75,9 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
                             click: this.addNodeAndLink },  // this function is defined below
                         gmake(go.Shape, 'PlusLine', { desiredSize: new go.Size(6, 6) })
                     )),
-                textBlock)
+                gmake(go.Panel, go.Panel.Vertical,
+                    titleText,
+                    descText))
         );
 
         function makeCircle(percent, size){
@@ -94,7 +109,16 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
 
         var nodeTemplateMap = new go.Map();
         nodeTemplateMap.add('standard', nodeTemplate);
-        nodeTemplateMap.add('image', imageTemplate)
+        nodeTemplateMap.add('image', imageTemplate);
+
+        nodeTemplate.resizeAdornmentTemplate =
+            gmake(go.Adornment, "Spot",
+                gmake(go.Placeholder),
+                gmake(go.Shape,  // just a single resize adornment!
+                    { alignment: go.Spot.BottomRight,
+                        desiredSize: new go.Size(8, 8),
+                        fill: "cyan",
+                        cursor: "col-resize" }));
 
         return nodeTemplateMap;
     },
@@ -102,7 +126,7 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
     generatePaletteNodeTemplate: function(){
         var gmake = go.GraphObject.make;
 
-        var icon = go.GraphObject.make(go.Picture, {
+        var icon = gmake(go.Picture, {
             name: 'icon',
             toLinkable: true,
             cursor: 'pointer',
@@ -118,12 +142,9 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
             font: '10pt Helvetitca, Arial, sans-serif',
             name: 'label',
             cursor: 'pointer'
-        }, new go.Binding('text', 'text').makeTwoWay());
+        }, new go.Binding('text', 'title').makeTwoWay());
 
         var nodeTemplate = gmake(go.Node, go.Panel.Auto,
-            {
-                selectionAdorned: false
-            },
             gmake(go.Panel, go.Panel.Vertical,
                 gmake(go.Panel, go.Panel.Auto,
                     gmake(go.Shape, { figure: 'Rectangle', fill: 'transparent', stroke: null, width: 52, height: 52 }),
@@ -265,8 +286,7 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
         var fromData = fromNode.data;
 
         //TODO - Need to figure out which properties should be copied into the new node by default (ie category, percent)
-        // create a new "State" data object, positioned off to the right of the adorned Node
-        var toData = { text: 'new', type: fromData.type, category: fromData.category, key: Ext.id(), percent: 10 };
+        var toData = { title: 'new', type: fromData.type, category: fromData.category, key: Ext.id(), percent: 10 };
         var fromLocation = fromNode.location;
         var siblingNodes = fromNode.findNodesOutOf();
         var x = 0;
