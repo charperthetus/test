@@ -8,21 +8,21 @@
                 {
                     "type": "Concept",
                     "category": "standard",
-                    "text": "Concept",
+                    "title": "Concept",
                     "color": "#FFA500",
                     "percent": 10
                 },
                 {
                     "type": "Hypothesis",
                     "category": "standard",
-                    "text": "Hypothesis",
+                    "title": "Hypothesis",
                     "color": "#00FF00",
                     "percent": 10
                 },
                 {
                     "type": "Question",
                     "category": "standard",
-                    "text": "Question",
+                    "title": "Question",
                     "color": "#00CED1",
                     "percent": 10
                 }
@@ -35,28 +35,28 @@
                 {
                     "type": "Problem",
                     "category": "standard",
-                    "text": "Problem",
+                    "title": "Problem",
                     "color": "#FF0000",
                     "percent": 10
                 },
                 {
                     "type": "Conclusion",
                     "category": "standard",
-                    "text": "Conclusion",
+                    "title": "Conclusion",
                     "color": "#800080",
                     "percent": 10
                 },
                 {
                     "type": "Assumption",
                     "category": "standard",
-                    "text": "Assumption",
+                    "title": "Assumption",
                     "color": "#FFFF00",
                     "percent": 10
                 },
                 {
                     "type": "Fact",
                     "category": "standard",
-                    "text": "Fact",
+                    "title": "Fact",
                     "color": "#008000",
                     "percent": 10
                 }

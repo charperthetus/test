@@ -40,8 +40,8 @@ Ext.define('Savanna.crumbnet.store.Graph', {
         for (var i = 0; i < TOT_NODE_COUNT; ++i) {
             var cat = categories[i % categories.length];
 
-            this.data[0].nodeDataArray.push({ key: i, text: cat.type, type: cat.type, category: 'standard',
-                percent: Math.random() * 100, color: cat.color });
+            this.data[0].nodeDataArray.push({ key: i, title: cat.type, type: cat.type, category: 'standard',
+                percent: Math.random() * 100, color: cat.color, description: 'Description' });
 
             var to = randomInt(0, TOT_NODE_COUNT-1);
             var from = randomInt(0, TOT_NODE_COUNT-1);
