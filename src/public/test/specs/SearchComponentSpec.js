@@ -486,9 +486,6 @@ describe('Search Component', function () {
                     resultsStore = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.SearchResults'),
                     testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(resultsStore.getProxy(), 'read', readMethod);
 
-
-                resultsStore.getProxy().addSessionId = false; // so our URL is clean
-
                 server.respondWith(readMethod, testUrl, resultsFixture.searchResults.results);
 
                 resultsStore.load();
@@ -521,8 +518,6 @@ describe('Search Component', function () {
                 historyStore = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.SearchHistory');
 
                 testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(historyStore.getProxy(), 'read', readMethod);
-
-                historyStore.getProxy().addSessionId = false; // so our URL is clean
 
                 server.respondWith(readMethod, testUrl, historyFixture.historyResults);
 
@@ -562,7 +557,6 @@ describe('Search Component', function () {
                 historyStore = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.SearchHistory');
                 testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(historyStore.getProxy(), 'read', readMethod);
 
-                historyStore.getProxy().addSessionId = false; // so our URL is clean
                 server.respondWith(readMethod, testUrl, historyFixture.historyResults);
 
             });
@@ -583,7 +577,6 @@ describe('Search Component', function () {
                     historyStore.add(search);
                 });
 
-                historyStore.getProxy().addSessionId = false; // so our URL is clean
                 historyStore.sync();
 
                 server.respond({
