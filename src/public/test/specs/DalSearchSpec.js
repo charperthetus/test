@@ -78,10 +78,13 @@ describe('Dal Search', function() {
              includes the legacyDal model - fixes the test since the associations stuff executes and creates the customSearchDescription
              */
             it('should correctly create an empty store for "CustomSearchGroup" when null passed for that value', function() {
-                server.respondWith('GET', store.getProxy().url, fixtures.allDals);
+                var readMethod = 'GET';
+
+                var testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(store.getProxy(), 'read', readMethod);
+
+                server.respondWith(readMethod, testUrl, fixtures.allDals);
 
                 store.load();
-
                 server.respond({
                     errorOnInvalidRequest: true
                 });
@@ -164,7 +167,12 @@ describe('Dal Search', function() {
                  This test broke due to the data restructure and use of 'hasOne'.  Creating a store and adding allDals - which
                  includes the legacyDal model - fixes the test since the associations stuff executes and creates the customSearchDescription
                  */
-                server.respondWith('GET', store.getProxy().url, fixtures.allDals);
+
+                var readMethod = 'GET';
+
+                var testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(store.getProxy(), 'read', readMethod);
+
+                server.respondWith(readMethod, testUrl, fixtures.allDals);
 
                 store.load();
 
@@ -203,7 +211,7 @@ describe('Dal Search', function() {
             });
 
             afterEach(function() {
-                server.restore();
+
 
                 server = null;
                 store = null;

@@ -6,6 +6,7 @@ Ext.define('Savanna.search.view.SearchBody', {
     alias: 'widget.search_searchbody',
 
     requires: [
+        'Ext.tab.Panel',
         'Savanna.search.view.SearchDals',
         'Savanna.search.view.SearchMap',
         'Savanna.search.view.ResultsComponent',

@@ -1,8 +1,8 @@
 /* global
-        Ext: false, ExtSpec: false,
-        describe: false, beforeEach: false, afterEach: false, it: false, expect: false, spyOn: false, sinon: false,
-        createTestDom: false, cleanTestDom: false, ThetusTestHelpers: false, setupNoCacheNoPagingStore: false,
-        Savanna: false
+ Ext: false, ExtSpec: false,
+ describe: false, beforeEach: false, afterEach: false, it: false, expect: false, spyOn: false, sinon: false,
+ createTestDom: false, cleanTestDom: false, ThetusTestHelpers: false, setupNoCacheNoPagingStore: false,
+ Savanna: false
  */
 Ext.require('Savanna.Config');
 Ext.require('Savanna.search.controller.SearchComponent');
@@ -26,12 +26,12 @@ describe('Search Component', function () {
     beforeEach(function () {
 
         /*
-            NOTE: because the search component is comprised of the SearchDals component which autoLoads the dalSources,
-                  we need to set up our mockServer so that it will respond to that request when it happens...
+         NOTE: because the search component is comprised of the SearchDals component which autoLoads the dalSources,
+         we need to set up our mockServer so that it will respond to that request when it happens...
          */
         dalFixtures = Ext.clone(ThetusTestHelpers.Fixtures.DalSources);
         server = new ThetusTestHelpers.FakeServer(sinon);
-        dalStore = setupNoCacheNoPagingStore('Savanna.search.store.DalSources');
+        dalStore = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.DalSources');
         server.respondWith('GET', dalStore.getProxy().url, dalFixtures.allDals);
 
         // Even though the request will happen later (at some point when the component is instantiated), we set the
@@ -39,7 +39,7 @@ describe('Search Component', function () {
         server.respond({
             errorOnInvalidRequest: true
         });
-        
+
         ThetusTestHelpers.ExtHelpers.createTestDom();
     });
 
@@ -48,7 +48,7 @@ describe('Search Component', function () {
             server.restore();
             server = null;
         }
-        
+
         dalFixtures = null;
         dalStore = null;
 
@@ -81,7 +81,7 @@ describe('Search Component', function () {
             expect(component.queryById('searchbody') instanceof Savanna.search.view.SearchBody).toBeTruthy();
         });
 
-        describe('SearchBar subview', function() {
+        describe('SearchBar subview', function () {
             describe('buildSearchString method', function () {
                 var searchbar = null;
 
@@ -155,7 +155,7 @@ describe('Search Component', function () {
             expect(controller.doSearch).toHaveBeenCalled();
         });
 
-        describe('logHistory method', function() {
+        describe('logHistory method', function () {
             var origErrorHandler,
                 errorRaised = false,
                 fixture = [
@@ -163,17 +163,17 @@ describe('Search Component', function () {
                     {query: 'Oranges', date: 1375746974565}
                 ];
 
-            beforeEach(function() {
+            beforeEach(function () {
                 origErrorHandler = Ext.Error.handle;
 
-                Ext.Error.handle = function() {
+                Ext.Error.handle = function () {
                     errorRaised = true;
 
                     return true;
                 };
             });
 
-            afterEach(function() {
+            afterEach(function () {
                 Ext.Error.handle = origErrorHandler;
 
                 origErrorHandler = null;
@@ -192,7 +192,7 @@ describe('Search Component', function () {
                 expect(store.sync).toHaveBeenCalled();
             });
 
-            it('should raise an error if we have no store', function() {
+            it('should raise an error if we have no store', function () {
                 spyOn(Ext.data.StoreManager, 'lookup').andReturn(null);
 
                 controller.logHistory(fixture, toolbar);
@@ -273,7 +273,7 @@ describe('Search Component', function () {
             });
         });
 
-        describe('managing SearchAdvancedTextfield subview events', function()  {
+        describe('managing SearchAdvancedTextfield subview events', function () {
             var field = null; // set up in each test, but we want to be sure and destroy it, even if the test fails
 
             afterEach(function () {
@@ -283,7 +283,7 @@ describe('Search Component', function () {
                 }
             });
 
-            it('getBooleanValue returns expected string for booleanType "all"', function() {
+            it('getBooleanValue returns expected string for booleanType "all"', function () {
                 field = Ext.create('Savanna.search.view.SearchAdvancedTextfield', {
                     configs: { join: '', booleanType: 'all' },
                     renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID
@@ -291,13 +291,13 @@ describe('Search Component', function () {
 
                 field.setValue('some   text');
 
-                var expected = 'some AND text';
-                var result = field.getBooleanValue();
+                var expected = 'some AND text',
+                    result = field.getBooleanValue();
 
                 expect(result).toEqual(expected);
             });
 
-            it('getBooleanValue returns expected string for booleanType "exact"', function() {
+            it('getBooleanValue returns expected string for booleanType "exact"', function () {
                 field = Ext.create('Savanna.search.view.SearchAdvancedTextfield', {
                     configs: { join: '', booleanType: 'exact' },
                     renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID
@@ -305,13 +305,13 @@ describe('Search Component', function () {
 
                 field.setValue('some   text');
 
-                var expected = '"some   text"';
-                var result = field.getBooleanValue();
+                var expected = '"some   text"',
+                    result = field.getBooleanValue();
 
                 expect(result).toEqual(expected);
             });
 
-            it('getBooleanValue returns expected string for booleanType "any"', function() {
+            it('getBooleanValue returns expected string for booleanType "any"', function () {
                 field = Ext.create('Savanna.search.view.SearchAdvancedTextfield', {
                     configs: { join: '', booleanType: 'any' },
                     renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID
@@ -319,13 +319,13 @@ describe('Search Component', function () {
 
                 field.setValue('some   text');
 
-                var expected = 'some OR text';
-                var result = field.getBooleanValue();
+                var expected = 'some OR text',
+                    result = field.getBooleanValue();
 
                 expect(result).toEqual(expected);
             });
 
-            it('getBooleanValue returns expected string for booleanType "none"', function() {
+            it('getBooleanValue returns expected string for booleanType "none"', function () {
                 field = Ext.create('Savanna.search.view.SearchAdvancedTextfield', {
                     configs: { join: '', booleanType: 'none' },
                     renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID
@@ -333,8 +333,8 @@ describe('Search Component', function () {
 
                 field.setValue('some   text');
 
-                var expected = 'some NOT text';
-                var result = field.getBooleanValue();
+                var expected = 'some NOT text',
+                    result = field.getBooleanValue();
 
                 expect(result).toEqual(expected);
             });
@@ -351,11 +351,23 @@ describe('Search Component', function () {
 
                 origErrorHandler = Ext.Error.handle;
 
-                Ext.Error.handle = function() {
+                Ext.Error.handle = function () {
                     errorRaised = true;
 
                     return true;
                 };
+
+                var readMethod = 'GET',
+                    testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(dalStore.getProxy(), 'read', readMethod);
+
+                server.respondWith(readMethod, testUrl, dalFixtures.allDals);
+
+                dalStore.getProxy().addSessionId = false; // so our URL is clean
+                dalStore.load();
+
+                server.respond({
+                    errorOnInvalidRequest: true
+                });
             });
 
             afterEach(function () {
@@ -365,16 +377,29 @@ describe('Search Component', function () {
 
                 origErrorHandler = null;
                 errorRaised = false;
+
+                if (server) {
+                    server.restore();
+                    server = null;
+                }
+                dalStore = null;
+                dalFixtures = null;
             });
 
-            it('should call showResultsPage', function () {
-                controller.searchCallback(fixtures.searchResults, {}, true);
+            it('should raise an error if success is false', function () {
 
-                expect(controller.showResultsPage).toHaveBeenCalled();
-            });
+                server = new ThetusTestHelpers.FakeServer(sinon);
 
-            it('should raise an error if success is false', function() {
-                controller.searchCallback(fixtures.searchResults, {}, false);
+                // Even though the request will happen later (at some point when the component is instantiated), we set the
+                // server to respond now so that it's ready for that future call
+                server.respond({
+                    errorOnInvalidRequest: true
+                });
+
+                component.down("#resultsdals").store = dalStore;
+                component.down("#resultsdals").createDalPanels();
+
+                controller.searchCallback(fixtures.searchResults, {}, false, component.down("#resultsdals"), 'mockDAL');
 
                 expect(errorRaised).toBeTruthy();
             });
@@ -438,103 +463,136 @@ describe('Search Component', function () {
     });
 
     describe('SearchResults Store', function () {
-        var store = null,
-            fixtures = {};
 
-        beforeEach(function() {
-            fixtures = Ext.clone(ThetusTestHelpers.Fixtures.SearchResults);
-            store = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.SearchResults');
-            store.getProxy().addSessionId = false; // so our URL is clean
-        });
 
-        afterEach(function() {
+        describe('retrieving results data', function () {
 
-            store = null;
-            fixtures = null;
-        });
+            beforeEach(function () {
 
-        describe('retrieving results data', function() {
+            });
 
-            beforeEach(function() {
-                var readMethod = 'GET',
-                    testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(store.getProxy(), 'read', readMethod);
+            afterEach(function () {
+                if (server) {
+                    server.restore();
+                    server = null;
+                }
+            });
 
-                server.respondWith(readMethod, testUrl, fixtures.searchResults.results);
-                store.load();
+
+            it('should get same number of records as in our fixture', function () {
+
+                var resultsFixture = Ext.clone(ThetusTestHelpers.Fixtures.SearchResults),
+                    readMethod = 'POST',
+                    resultsStore = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.SearchResults'),
+                    testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(resultsStore.getProxy(), 'read', readMethod);
+
+
+                resultsStore.getProxy().addSessionId = false; // so our URL is clean
+
+                server.respondWith(readMethod, testUrl, resultsFixture.searchResults.results);
+
+                resultsStore.load();
+
                 server.respond({
                     errorOnInvalidRequest: true
                 });
-            });
 
-            it('should get same number of records as in our fixture', function() {
-                expect(store.getCount()).toBe(fixtures.searchResults.results.length);
+                expect(resultsStore.getCount()).toBe(resultsFixture.searchResults.results.length);
             });
         });
     });
 
     describe('SearchHistory Store', function () {
-        var server = null,
-            store = null,
-            fixtures = {};
 
-        beforeEach(function() {
-            fixtures = Ext.clone(ThetusTestHelpers.Fixtures.HistoryResults);
-            store = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.SearchHistory');
-            store.getProxy().addSessionId = false; // so our URL is clean
-            server = new ThetusTestHelpers.FakeServer(sinon);
-        });
 
-        afterEach(function() {
-            if (server) {
-                server.restore();
-                server = null;
-            }
+        describe('retrieving history data', function () {
 
-            store = null;
-            fixtures = null;
-        });
+            var historyFixture,
+                readMethod,
+                historyStore,
+                testUrl;
 
-        describe('retrieving history data', function() {
+            beforeEach(function () {
 
-            beforeEach(function() {
-                var readMethod = 'POST',
-                    testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(store.getProxy(), 'read', readMethod);
+                historyFixture = Ext.clone(ThetusTestHelpers.Fixtures.HistoryResults);
 
-                server.respondWith(readMethod, testUrl, fixtures.historyResults);
-                store.load();
+                readMethod = 'GET';
+
+                historyStore = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.SearchHistory');
+
+                testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(historyStore.getProxy(), 'read', readMethod);
+
+                historyStore.getProxy().addSessionId = false; // so our URL is clean
+
+                server.respondWith(readMethod, testUrl, historyFixture.historyResults);
+
+                historyStore.load();
+
                 server.respond({
                     errorOnInvalidRequest: true
                 });
             });
 
-            it('should get same number of records as in our fixture', function() {
-                expect(store.getCount()).toBe(fixtures.historyResults.length);
+            afterEach(function () {
+
+                if (server) {
+                    server.restore();
+                    server = null;
+                }
+
+                historyFixture = null;
+                historyStore = null;
+            });
+
+            it('should get same number of records as in our fixture', function () {
+                expect(historyStore.getCount()).toBe(historyFixture.historyResults.length);
             });
         });
 
-        describe('sending history data', function() {
+        describe('sending history data', function () {
 
-            beforeEach(function() {
-                var createMethod = 'POST',
-                    testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(store.getProxy(), 'create', createMethod);
+            var historyFixture,
+                readMethod,
+                historyStore,
+                testUrl;
 
-                server.respondWith(createMethod, testUrl, fixtures.historyResults);
+            beforeEach(function () {
+                historyFixture = Ext.clone(ThetusTestHelpers.Fixtures.HistoryResults);
+                readMethod = 'POST';
+                historyStore = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.SearchHistory');
+                testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(historyStore.getProxy(), 'read', readMethod);
+
+                historyStore.getProxy().addSessionId = false; // so our URL is clean
+                server.respondWith(readMethod, testUrl, historyFixture.historyResults);
+
             });
 
-            it('should send our history records and get them back from the server', function() {
-                Ext.Array.each(fixtures.historyResults, function(search) {
-                    store.add(search);
+            afterEach(function () {
+                if (server) {
+                    server.restore();
+                    server = null;
+                }
+
+                historyFixture = null;
+                historyStore = null;
+            });
+
+            it('should send our history records and get them back from the server', function () {
+
+                Ext.Array.each(historyFixture.historyResults, function (search) {
+                    historyStore.add(search);
                 });
 
-                store.sync();
+                historyStore.getProxy().addSessionId = false; // so our URL is clean
+                historyStore.sync();
 
                 server.respond({
                     returnBody: true, // since the service basically gives us back our searches...
                     //reportBody: true, // enable if you want to see the request body in the console
-                    testBody: function(body) {
+                    testBody: function (body) {
                         var json = JSON.parse(body);
-                        if (json.length !== fixtures.historyResults.length) {
-                            return 'Expected request body to have ' + fixtures.historyResults.length + ', but got ' + json.length;
+                        if (json.length !== historyFixture.historyResults.length) {
+                            return 'Expected request body to have ' + historyFixture.historyResults.length + ', but got ' + json.length;
                         }
 
                         return '';
@@ -542,18 +600,18 @@ describe('Search Component', function () {
                     errorOnInvalidRequest: true
                 });
 
-                expect(store.getCount()).toBe(3);
+                expect(historyStore.getCount()).toBe(3);
             });
 
-            it('should make sure data sent is sent as an array of records, even when sending one record', function() {
-                store.add(fixtures.historyResults[0]);
+            it('should make sure data sent is sent as an array of records, even when sending one record', function () {
+                historyStore.add(historyFixture.historyResults[0]);
 
-                store.sync();
+                historyStore.sync();
 
                 server.respond({
                     returnBody: true, // since the service basically gives us back our searches...
                     //reportBody: false, // enable if you want to see the request body in the console
-                    testBody: function(body) {
+                    testBody: function (body) {
                         var json = JSON.parse(body);
                         if (!Array.isArray(json)) {
                             return 'Expected an array but got ' + body;
@@ -564,7 +622,7 @@ describe('Search Component', function () {
                     errorOnInvalidRequest: true
                 });
 
-                expect(store.getCount()).toBe(1);
+                expect(historyStore.getCount()).toBe(1);
             });
         });
     });

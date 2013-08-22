@@ -74,9 +74,24 @@ describe("Search Results", function () {
             beforeEach(function () {
                 //noinspection JSValidateTypes
 
-                store = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.DalSources');
+                // Set up the store first as it is autovivified by our main view
+                store = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.DalSources', { autoLoad: false });
 
+                // now set up server to get store data
                 server = new ThetusTestHelpers.FakeServer(sinon);
+
+                var readMethod = 'GET',
+                    testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(store.getProxy(), 'read', readMethod);
+
+                server.respondWith(readMethod, testUrl, dalFixtures.allDals);
+
+                // load the store now (should trigger event to render the view)
+                store.load();
+
+                server.respond({
+                    errorOnInvalidRequest: true
+                });
+
 
                 spyOn(Savanna.controller.Factory, 'getController');
                 view = component.queryById('resultsdals');
@@ -97,13 +112,6 @@ describe("Search Results", function () {
                      This test broke due to the data restructure and use of 'hasOne'.  Creating a store and adding allDals - which
                      includes the legacyDal model - fixes the test since the associations stuff executes and creates the customSearchDescription
                      */
-                    server.respondWith('GET', store.getProxy().url, dalFixtures.allDals);
-
-                    store.load();
-
-                    server.respond({
-                        errorOnInvalidRequest: true
-                    });
 
                     var panelView = view.createPanel(store.getAt(0));
 
@@ -112,31 +120,11 @@ describe("Search Results", function () {
             });
 
             describe('createDalPanels', function () {
-                var server = null,
-                    store = null;
 
                 beforeEach(function () {
                     view = component.queryById('resultsdals');
-
-                    // NOTE: this has to happen BEFORE your create a FakeServer,
-                    store = setupNoCacheNoPagingStore('Savanna.search.store.DalSources');
-
-                    server = new ThetusTestHelpers.FakeServer(sinon);
-
-                    server.respondWith('GET', store.getProxy().url, dalFixtures.allDals);
-
-                    store.load();
-
-                    server.respond({
-                        errorOnInvalidRequest: true
-                    });
                 });
 
-                afterEach(function () {
-                    server = null;
-                    store = null;
-                    view = null;
-                });
 
                 it('should create a Panel for every record in the store', function () {
                     //noinspection JSValidateTypes
@@ -148,9 +136,7 @@ describe("Search Results", function () {
             });
 
             describe('setDalStatus', function () {
-                var server = null,
-                    store = null,
-                    dalsView = null;
+                var dalsView = null;
 
                 beforeEach(function () {
 
@@ -160,27 +146,15 @@ describe("Search Results", function () {
 
                     view = component.queryById('resultsdals');
 
-                    store = setupNoCacheNoPagingStore('Savanna.search.store.DalSources');
-
                     view.store = store;
 
                     dalsView.store = store;
 
-                    server = new ThetusTestHelpers.FakeServer(sinon);
-
-                    server.respondWith('GET', store.getProxy().url, dalFixtures.allDals);
-
-                    store.load();
-
-                    server.respond({
-                        errorOnInvalidRequest: true
-                    });
                 });
 
                 afterEach(function () {
-                    server = null;
-                    store = null;
                     view = null;
+
                     if (searchComponent) {
                         searchComponent.destroy();
                         searchComponent = null;
@@ -195,10 +169,16 @@ describe("Search Results", function () {
 
                     view.createDalPanels();
 
-                    expect(view.setDalStatus({}, true, searchComponent)).toEqual("success");
+                    view.updateDalStatus('mockDAL', 'success');
+
+                    var myDal = view.queryById('mockDAL'),
+                        green = 'rgb(0, 128, 0)';
+
+                    expect(myDal.down('#dalStatusIcon').getEl().getStyle('backgroundColor')).toEqual(green);
+
                 });
 
-                it('should select a fail indicator if passed a "false" value', function () {
+                it('should select a success indicator if passed a "true" value', function () {
 
                     dalsView.createDalPanels();
 
@@ -206,7 +186,12 @@ describe("Search Results", function () {
 
                     view.createDalPanels();
 
-                    expect(view.setDalStatus({}, false, searchComponent)).toEqual("fail");
+                    view.updateDalStatus('mockDAL', 'fail');
+
+                    var myDal = view.queryById('mockDAL'),
+                        red = 'rgb(255, 0, 0)';
+
+                    expect(myDal.down('#dalStatusIcon').getEl().getStyle('backgroundColor')).toEqual(red);
                 });
             });
         });
