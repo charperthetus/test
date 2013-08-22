@@ -22,9 +22,6 @@ Ext.define('Savanna.search.store.SearchHistory', {
         this.setProxy({
             type: 'savanna-cors',
             url: Savanna.Config.buildSavannaUrl('searchHistoryUrl'),
-
-            addSessionId: false,
-            noCache: false,
             startParam: undefined,
             limitParam: undefined,
             pageParam: undefined,

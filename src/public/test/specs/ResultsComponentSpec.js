@@ -140,7 +140,7 @@ describe("Search Results", function () {
 
                 beforeEach(function () {
 
-                    searchComponent = Ext.create('Savanna.search.view.SearchComponent', { renderTo: 'test-html' });
+                    searchComponent = Ext.create('Savanna.search.view.SearchComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
 
                     dalsView = searchComponent.queryById('searchdals');
 

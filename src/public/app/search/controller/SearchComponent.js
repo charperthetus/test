@@ -27,8 +27,6 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         'Savanna.search.view.SearchComponent'
     ],
 
-    searchComponentInstance: null,
-
     init: function () {
         this.control({
             'search_searchcomponent > #searchbar #main_panel #search_reset #search_reset_button': {
@@ -113,12 +111,13 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         var dalStore = Ext.data.StoreManager.lookup('dalSources');
 
         dalStore.each(function (source) {
-            var dals = component.down('#searchdals');
-            var results_dals = component.down('#resultsdals');
-            if (dals.queryById(source.data.id).query('checkbox')[0].getValue()) {
-                dals.queryById(source.data.id).query('checkbox')[0].setValue(false);
-                results_dals.queryById(source.data.id).query('checkbox')[0].setValue(false);
-                results_dals.queryById(source.data.id).down('#dalStatusIcon').getEl().setStyle(results_dals.queryById(source.data.id).dalLoadNone);
+            var dals = component.down('#searchdals'),
+                resultsDals = component.down('#resultsdals'),
+                checkbox = dals.queryById(dalId).query('checkbox')[0].getValue();
+            if (checkbox.getValue()) {
+                checkbox.setValue(false);
+                resultsDals.queryById(source.data.id).query('checkbox')[0].setValue(false);
+                resultsDals.queryById(source.data.id).down('#dalStatusIcon').getEl().setStyle(resultsDals.queryById(source.data.id).dalLoadNone);
             }
         });
     },
@@ -191,19 +190,20 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         /*
          Check for selected additional Dals, and do a search on each of them
          */
-        var dals = component.down('#searchdals');
-        var results_dal = component.down("#resultsdals");
+        var dals = component.down('#searchdals'),
+            resultsDal = component.down("#resultsdals");
 
         dalStore.each(function (source) {
 
-            var dal_id = source.data.id;
+            var dalId = source.data.id,
+                checked = dals.queryById(dalId).query('checkbox')[0].getValue();
 
-            if (dals.queryById(dal_id).query('checkbox')[0].getValue() || dal_id == dalStore.defaultId) {
+            if (checked || dalId == dalStore.defaultId) {
 
                 // Dal has been selected, apply to the request model and do search
                 searchObj.set('searchPreferencesVOs', [
                     {
-                        'dalId': dal_id,
+                        'dalId': dalId,
                         'resultPerPage': 100,
                         'sortOrder': 'Default'
                     }
@@ -211,11 +211,11 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
                 resultsStore.proxy.jsonData = Ext.JSON.encode(searchObj.data);
                 resultsStore.load({
-                    callback: Ext.bind(this.searchCallback, this, [results_dal, dal_id], true)
+                    callback: Ext.bind(this.searchCallback, this, [resultsDal, dalId], true)
                 });
-                results_dal.updateDalStatus(dal_id, 'pending');
+                resultsDal.updateDalStatus(dalId, 'pending');
             } else {
-                results_dal.updateDalStatus(dal_id, 'none');
+                resultsDal.updateDalStatus(dalId, 'none');
             }
 
         }, this);
@@ -226,9 +226,9 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         this.logHistory(bar.buildSearchString());
     },
 
-    searchCallback: function (records, operation, success, results_dal, dal_id) {
+    searchCallback: function (records, operation, success, resultsDal, dalId) {
         var statusString = success ? "success" : "fail";
-        results_dal.updateDalStatus(dal_id, statusString);
+        resultsDal.updateDalStatus(dalId, statusString);
         if (!success) {
             // server down..?
             Ext.Error.raise({
