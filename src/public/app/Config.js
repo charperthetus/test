@@ -1,3 +1,4 @@
+/* global: Ext: false */
 /**
  * Configuration object for Savanna client application
  *
@@ -19,12 +20,28 @@ Ext.define('Savanna.Config', {
 
     // Urls for all the searches we do
     loginUrl: 'authcheck/loggedIn.html',
-    searchUrl: 'rest/c2is2/model/search',
+    searchUrl: 'rest/search', // local dev version: 'app/assets/data/testSearchResults.json',
+    searchHistoryUrl: 'rest/search/history',// local dev version: 'app/assets/data/testSearchHistory.json',
     itemViewUrl: 'rest/c2is2/model/item/',
-    dalSourcesUrl: 'rest/search/sources',
+    dalSourcesUrl: 'rest/search/sources', // local dev version: 'resources/data/testSearchDalsWithFormData.json',
+    // TODO: replace this test URL with real endpoint once we have one...
+    crumbnetTemplatesUrl: 'resources/data/testCrumbnetTemplates.json',
 
     // number of past search terms to store in recent history
     searchHistoryPageSize: 10,
 
-    resourcesPathPrefix: ''
+    resourcesPathPrefix: '',
+
+    buildSavannaUrl: function(key) {
+        var url
+
+        if (typeof this[key] !== 'undefined') {
+            url = this[key];
+        }
+        else {
+            Ext.Error.raise({ msg: 'No url found for "' + key + '"' });
+        }
+
+        return this.savannaUrlRoot + url;
+    }
 });

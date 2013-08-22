@@ -55,7 +55,7 @@ Ext.define('Savanna.controller.Main', {
         }
     },
 
-    printContent: function(button) {
+    printContent: function() {
         window.print();
     },
 

@@ -25,24 +25,26 @@ describe("Search Results", function () {
 
         dalFixtures = Ext.clone(ThetusTestHelpers.Fixtures.DalSources);
 
-        createTestDom();
+        ThetusTestHelpers.ExtHelpers.createTestDom();
     });
 
     afterEach(function () {
         fixtures = null;
-        cleanTestDom();
+
+        ThetusTestHelpers.ExtHelpers.cleanTestDom();
     });
 
     describe('View', function () {
 
         var searchComponent = null;
+
         var component = null;
 
         beforeEach(function () {
             // create a SearchResults store for results tests
-            searchComponent = Ext.create('Savanna.search.view.SearchComponent', { renderTo: 'test-html' });
+            searchComponent = Ext.create('Savanna.search.view.SearchComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
 
-            component = Ext.create('Savanna.search.view.ResultsComponent', { renderTo: 'test-html' });
+            component = Ext.create('Savanna.search.view.ResultsComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
         });
 
         afterEach(function () {
@@ -72,7 +74,7 @@ describe("Search Results", function () {
             beforeEach(function () {
                 //noinspection JSValidateTypes
 
-                store = setupNoCacheNoPagingStore('Savanna.search.store.DalSources');
+                store = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.DalSources');
 
                 server = new ThetusTestHelpers.FakeServer(sinon);
 
@@ -243,16 +245,17 @@ describe("Search Results", function () {
             sources = null;
 
         beforeEach(function () {
-            component = Ext.create('Savanna.search.view.ResultsComponent', { renderTo: 'test-html' });
+            component = Ext.create('Savanna.search.view.ResultsComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
             controller = Ext.create('Savanna.search.controller.ResultsComponent');
             panel = component.queryById('resultspanel');
             grid = panel.queryById("resultspanelgrid");
             sources = component.queryById("resultsdals");
         });
 
-        afterEach(function () {
+        afterEach(function()    {
             var teardown = [component, controller, panel, grid, sources];
-            for (var i = 0; i < teardown; i++) {
+
+            for (var i = 0; i < teardown; i++)   {
                 if (teardown[i]) {
                     teardown[i].destroy();
                     teardown[i] = null;
@@ -267,5 +270,5 @@ describe("Search Results", function () {
         it('should have a store behind the sources panel', function () {
             expect(sources.store).toBeTruthy();
         });
-    })
+    });
 });

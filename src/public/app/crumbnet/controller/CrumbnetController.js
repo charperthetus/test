@@ -23,6 +23,9 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
 
     init: function() {
         this.control({
+            'go-graph_canvas': {
+                afterrender: this.setupImageDrop
+            },
             'go-graph button': {
                 click: this.handleGraphToolbarButtonClick
             },
@@ -37,11 +40,32 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
             },
             'go-graph #nodeColorPicker': {
                 select: this.handleNodeColorSelect
+            },
+            'crumbnet_part_palette-group': {
+                'nodePaletteSelectionChanged': this.handlePaletteSelectionChange
             }
         });
     },
 
     // CUSTOM METHODS/CONFIGURATION
+
+    handlePaletteSelectionChange: function(e, selPalette){
+        var iterator = e.diagram.selection.iterator;
+        //There should only ever be one selected node in the palette
+        iterator.next();
+        if (iterator.value){
+            var mainView = selPalette.up('go-graph')
+            var diagram = mainView.down('go-graph_canvas').diagram;
+            diagram.toolManager.clickCreatingTool.archetypeNodeData = iterator.value.data;
+
+            var palettes = mainView.query('crumbnet_part_palette-group');
+            palettes.forEach(function(paletteView){
+                if (selPalette != paletteView){
+                    paletteView.palette.clearSelection();
+                }
+            });
+        }
+    },
 
     handleGraphToolbarButtonClick: function(button) {
         var crumbnet = button.up('go-graph');
@@ -228,6 +252,46 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
             }
         }
         diagram.commitTransaction('changeNodeColor');
+    },
+
+    setupImageDrop: function(canvasView) {
+        if (typeof window.FileReader !== 'undefined') {
+            var dropArea = canvasView.getEl().dom;
+            var _diagram = canvasView.diagram;
+            dropArea.ondragover = function () {
+                //TODO - check the type of thing dragged in to determine if it can be dropped
+                //Note that false means it can be dropped
+                return false;
+            };
+            dropArea.ondrop = Ext.bind(this.imageDropHandler, null, [canvasView.diagram], true);
+        }
+    },
+
+    imageDropHandler: function(e, diagram) {
+        e.preventDefault();
+        //this context is the canvasView as defined in the listener above
+        var file = e.dataTransfer.files[0],
+            reader = new FileReader();
+
+        reader.onload = function (event) {
+            var screenPoint = new go.Point(e.layerX, e.layerY);
+            var docPoint = diagram.transformViewToDoc(screenPoint);
+            var newNode = {
+                text: 'new image',
+                category: 'image',
+                key: Ext.id(), percent: 10,
+                loc: docPoint.x + ' ' + docPoint.y,
+                imageData: event.target.result
+            };
+
+            var model = diagram.model;
+            diagram.startTransaction('addImage');
+            model.addNodeData(newNode);
+            diagram.commitTransaction('addImage');
+        };
+        reader.readAsDataURL(file);
+
+        return false;
     },
 
     getDiagramForMenu: function(menu) {

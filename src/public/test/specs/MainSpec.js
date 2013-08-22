@@ -1,7 +1,7 @@
 /* global
         Ext: false,
         jasmine: false, describe: false, beforeEach: false, afterEach: false, it: false, expect: false, sinon: false, waitsFor: false, runs: false, spyOn: false,
-        Savanna: false, ThetusTestHelpers: false, createTestDom: false, cleanTestDom: false */
+        Savanna: false, ThetusTestHelpers: false */
 Ext.require('Savanna.Config');
 Ext.require('Savanna.controller.Main');
 Ext.require('Savanna.view.Login');
@@ -18,7 +18,7 @@ describe('Savanna Main', function() {
         // NOTE: you need to set up the controller even before view tests, otherwise the view will not be able to be instantiated
         controller = Ext.create('Savanna.controller.Main');
 
-        createTestDom();
+        ThetusTestHelpers.ExtHelpers.createTestDom();
     });
 
     afterEach(function() {
@@ -30,7 +30,7 @@ describe('Savanna Main', function() {
         // Make sure Savanna is not keeping our session ID between tests...
         delete Savanna.jsessionid;
 
-        cleanTestDom();
+        ThetusTestHelpers.ExtHelpers.cleanTestDom();
     });
 
     describe('Controller', function() {
@@ -158,7 +158,13 @@ describe('Savanna Main', function() {
 
             describe('"print" button handler', function() {
                 it('should call "handlePrint" when the print button is clicked', function() {
-                    console.log('TODO...test printContent()');
+                    window.print = window.print || function() {};
+
+                    spyOn(window, 'print');
+
+                    controller.printContent();
+
+                    expect(window.print).toHaveBeenCalled();
                 });
             });
 
