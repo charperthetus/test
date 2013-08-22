@@ -16,7 +16,7 @@ Ext.define('Savanna.search.view.ResultsDals', {
     ],
 
     title: 'Search Sources',
-    region:'west',
+    region: 'west',
     width: 175,
     minSize: 100,
     maxSize: 250,
@@ -35,11 +35,11 @@ Ext.define('Savanna.search.view.ResultsDals', {
         Savanna.controller.Factory.getController('Savanna.search.controller.ResultsComponent');
     },
 
-    onStoreLoad: function() {
+    onStoreLoad: function () {
         this.createDalPanels();
     },
 
-    createDalPanels: function() {
+    createDalPanels: function () {
         this.removeAll();
         this.store.each(function (record) {
             var myPanel = this.createPanel(record);
@@ -47,10 +47,21 @@ Ext.define('Savanna.search.view.ResultsDals', {
         }, this);
     },
 
-    createPanel: function(myRecord) {
+    createPanel: function (myRecord) {
         return Ext.create('Savanna.search.view.searchDals.ResultsOptions', {
             itemId: myRecord.data.id,
             checkboxLabel: myRecord.data.displayName
         });
+    },
+
+    updateDalStatus: function (dalId, status) {
+        var myDal = this.queryById(dalId);
+        var styleStatus = {
+            'success': myDal.dalLoadSuccess,
+            'fail': myDal.dalLoadFail,
+            'pending': myDal.dalLoadPending,
+            'none': myDal.dalLoadNone
+        }
+        myDal.down('#dalStatusIcon').getEl().setStyle(styleStatus[status]);
     }
 });

@@ -58,9 +58,9 @@ Ext.define('Savanna.search.view.SearchBar', {
     },
 
     buildSearchString: function () {
-        var searchString = '',
+        var searchString,
             advancedBooleanString = '',
-            formQueryString = '',
+            formQueryString,
             form = this.queryById('search_form'),
             formField = form.queryById('form_container');
 
@@ -82,7 +82,7 @@ Ext.define('Savanna.search.view.SearchBar', {
 
         formQueryString = form.queryById('search_terms').getValue().trim();
         advancedBooleanString = advancedBooleanString.replace(/\s+/g, ' ');
-        searchString = formQueryString;
+        searchString = '' + formQueryString;
 
         if (searchString === '') {
             searchString = advancedBooleanString;

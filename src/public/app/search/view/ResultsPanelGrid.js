@@ -39,7 +39,7 @@ Ext.define('Savanna.search.view.ResultsPanelGrid', {
     dockedItems:[
         {
             xtype:'pagingtoolbar',
-            itemId:"gridtoolbar",
+            itemId:'gridtoolbar',
             dock:'top',
             store:this.store,
             displayInfo:true

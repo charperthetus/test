@@ -97,7 +97,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
          they are currently in the results screen?
          */
 
-        var form = elem.findParentByType('search_searchcomponent').down('#search_form')
+        var form = elem.findParentByType('search_searchcomponent').down('#search_form');
 
         form.queryById('search_terms').setValue('');
 
@@ -106,6 +106,30 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         Ext.Array.each(formField.query('searchadvanced_textfield'), function (field) {
             if (field.xtype === 'searchadvanced_textfield') {
                 field.setValue('');
+            }
+        });
+        /*
+         return to the options screen if we're not already there
+         */
+        var component = elem.findParentByType("search_searchcomponent");
+        if (component.down('#searchbody').currentPanel != "searchoptions") {
+            var optionsBtn = component.queryById('optionsbutton');
+            optionsBtn.fireEvent("click", optionsBtn);
+        }
+
+        /*
+         clear the selected dals
+         */
+        var dalStore = Ext.data.StoreManager.lookup('dalSources');
+
+        dalStore.each(function (source) {
+            var dals = component.down('#searchdals'),
+                resultsDals = component.down('#resultsdals'),
+                checkbox = dals.queryById(dalId).query('checkbox')[0].getValue();
+            if (checkbox.getValue()) {
+                checkbox.setValue(false);
+                resultsDals.queryById(source.data.id).query('checkbox')[0].setValue(false);
+                resultsDals.queryById(source.data.id).down('#dalStatusIcon').getEl().setStyle(resultsDals.queryById(source.data.id).dalLoadNone);
             }
         });
     },
@@ -117,7 +141,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         }
     },
 
-    handleClose:function(btn)   {
+    handleClose: function (btn) {
         btn.up('#searchadvanced_menu').ownerButton.up('#searchcomponent').down('#searchadvanced_menu').hide();
     },
 
@@ -164,79 +188,60 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         this.hideMenu(component);
 
         var bar = component.queryById('searchbar'),
-            store = bar.store,
+            resultsStore = bar.store,
             searchString = bar.buildSearchString(),
             dalStore = Ext.data.StoreManager.lookup('dalSources');
 
-        store.removeAll();
+        resultsStore.removeAll();
 
-        component.firstResultsReturned = false;
-
-        // populate with search string and set to default dal
         var searchObj = Ext.create('Savanna.search.model.SearchRequest', {
             'textInputString': searchString,
-            'displayLabel': searchString,
-            'searchPreferencesVOs': [
-                {
-                    'dalId': dalStore.defaultId,
-                    'resultPerPage': 100,
-                    'sortOrder': 'Default'
-                }
-            ]
+            'displayLabel': searchString
         });
-
-        /*
-         Set the search request json payload that is sent to the server,
-         and do the search on the default Dal
-         */
-        store.proxy.jsonData = Ext.JSON.encode(searchObj.data);
-        store.load({
-            callback: this.searchCallback,
-            scope: this
-        });
-
 
         /*
          Check for selected additional Dals, and do a search on each of them
          */
+        var dals = component.down('#searchdals'),
+            resultsDal = component.down("#resultsdals");
 
         dalStore.each(function (source) {
-            var dals = component.down('#searchdals');
 
-            if (dals.queryById(source.data.id).query('checkbox')[0].getValue()) {
+            var dalId = source.data.id,
+                checked = dals.queryById(dalId).query('checkbox')[0].getValue();
+
+            if (checked || dalId == dalStore.defaultId) {
 
                 // Dal has been selected, apply to the request model and do search
                 searchObj.set('searchPreferencesVOs', [
                     {
-                        'dalId': source.data.id,
+                        'dalId': dalId,
                         'resultPerPage': 100,
                         'sortOrder': 'Default'
                     }
                 ]);
 
-                store.proxy.jsonData = Ext.JSON.encode(searchObj.data);
-                store.load({
-                    callback: this.searchCallback,
-                    scope: this
+                resultsStore.proxy.jsonData = Ext.JSON.encode(searchObj.data);
+                resultsStore.load({
+                    callback: Ext.bind(this.searchCallback, this, [resultsDal, dalId], true)
                 });
+                resultsDal.updateDalStatus(dalId, 'pending');
+            } else {
+                resultsDal.updateDalStatus(dalId, 'none');
             }
 
         }, this);
-
+        this.showResultsPage(component);
         /*
          track in recent searches
          */
         this.logHistory(bar.buildSearchString());
     },
 
-    searchCallback: function (records, operation, success) {
-        if (success) {
-            if (!this.getView('Savanna.search.view.SearchComponent').firstResultsReturned) {
-                this.showResultsPage(); // only need to do this once per search
-                this.getView('Savanna.search.view.SearchComponent').firstResultsReturned = true;
-            }
-        }
-        else {
+    searchCallback: function (records, operation, success, resultsDal, dalId) {
+        var statusString = success ? "success" : "fail";
+        resultsDal.updateDalStatus(dalId, statusString);
+        if (!success) {
             // server down..?
             Ext.Error.raise({
                 msg: 'The server could not complete the search request.'
@@ -244,9 +249,8 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         }
     },
 
-    showResultsPage: function () {
-        // TODO: find a better way - guessing this will not always work
-        var resultsBtn = Savanna.getApplication().viewport.queryById('main').down('#resultsbutton');
+    showResultsPage: function (component) {
+        var resultsBtn = component.down('#resultsbutton');
 
         resultsBtn.fireEvent('click', resultsBtn);
     },
