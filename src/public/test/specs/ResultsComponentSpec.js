@@ -184,7 +184,7 @@ describe("Search Results", function () {
 
                 });
 
-                it('should select a success indicator if passed a "true" value', function () {
+                it('should select a fail indicator if passed a "false" value', function () {
 
                     dalsView.createDalPanels();
 
@@ -266,10 +266,6 @@ describe("Search Results", function () {
 
             beforeEach(function () {
                spyOn(controller, 'displayDalFacets')
-            });
-
-            afterEach(function () {
-
             });
 
             it('should add a click handler which calls "displayDalFacets"', function () {
