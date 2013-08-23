@@ -233,25 +233,49 @@ describe("Search Results", function () {
             controller = null,
             panel = null,
             grid = null,
-            sources = null;
+            sources = null,
+            store = null;
 
         beforeEach(function () {
+
             component = Ext.create('Savanna.search.view.ResultsComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
             controller = Savanna.controller.Factory.getController('Savanna.search.controller.ResultsComponent');
             panel = component.queryById('resultspanel');
             grid = panel.queryById("resultspanelgrid");
             sources = component.queryById("resultsdals");
+
+            // Set up the store first as it is autovivified by our main view
+            store = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.DalSources', { autoLoad: false });
+
+            // now set up server to get store data
+            server = new ThetusTestHelpers.FakeServer(sinon);
+
+            var readMethod = 'GET',
+                testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(store.getProxy(), 'read', readMethod);
+
+            server.respondWith(readMethod, testUrl, dalFixtures.allDals);
+
+            // load the store now (should trigger event to render the view)
+            store.load();
+
+            server.respond({
+                errorOnInvalidRequest: true
+            });
         });
 
-        afterEach(function()    {
+        afterEach(function () {
             var teardown = [component, controller, panel, grid, sources];
 
-            for (var i = 0; i < teardown; i++)   {
+            for (var i = 0; i < teardown; i++) {
                 if (teardown[i]) {
                     teardown[i].destroy();
                     teardown[i] = null;
                 }
             }
+
+            server.restore();
+            server = null;
+            store = null;
         });
 
         it('should have a store behind the grid panel', function () {
@@ -264,21 +288,73 @@ describe("Search Results", function () {
 
         describe('onDalRender', function () {
 
+            var dalItem;
+
             beforeEach(function () {
-               spyOn(controller, 'displayDalFacets')
+
+                spyOn(controller, 'displayDalFacets');
+
+                sources.createDalPanels();
+
+                dalItem = sources.query('panel[cls=search-dal]')[1];
+            });
+
+            afterEach(function () {
+
+                dalItem = null;
+
             });
 
             it('should add a click handler which calls "displayDalFacets"', function () {
 
-                var view = component.queryById('resultsdals');
-                view.createDalPanels();
-
-                var dalItem = view.query('panel[cls=search-dal]')[1];
                 controller.onDalRender(dalItem, {});
 
                 dalItem.body.dom.click();
 
                 expect(controller.displayDalFacets).toHaveBeenCalled();
+            });
+
+        });
+
+        describe('displayDalFacets', function () {
+
+            var dalItem, facets;
+
+            beforeEach(function () {
+                //noinspection JSValidateTypes
+
+                sources.store = store;
+                sources.createDalPanels();
+
+                facets = sources.queryById("resultsfacets");
+                dalItem = sources.query('panel[cls=search-dal]')[1];
+
+                spyOn(facets, 'add');
+            });
+
+            afterEach(function () {
+                dalItem = null;
+                facets = null;
+            });
+
+            it('should add a facet for each DAL facetDescription', function () {
+
+                controller.displayDalFacets({}, {}, dalItem);
+
+                var expected = store.getById(dalItem.itemId).data.facetDescriptions.length;
+
+                expect(facets.add.callCount).toBe(expected);
+            });
+
+        });
+
+        describe('createFacet', function () {
+
+            it('should return a component of the correct type', function () {
+
+                var facet = controller.createFacet(store.getById('SolrJdbc').data.facetDescriptions[0]);
+
+                expect(facet instanceof Savanna.search.view.resultsDals.ResultsFacet).toBeTruthy()
             });
 
         });
