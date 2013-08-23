@@ -108,14 +108,19 @@ describe("Search Results", function () {
 
             describe('createPanel', function () {
                 it('should create an instance of the ResultsOptions panel', function () {
-                    /*
-                     This test broke due to the data restructure and use of 'hasOne'.  Creating a store and adding allDals - which
-                     includes the legacyDal model - fixes the test since the associations stuff executes and creates the customSearchDescription
-                     */
 
                     var panelView = view.createPanel(store.getAt(0));
 
-                    expect(panelView instanceof Savanna.search.view.searchDals.ResultsOptions).toBeTruthy();
+                    expect(panelView instanceof Savanna.search.view.resultsDals.ResultsOptions).toBeTruthy();
+                });
+            });
+
+            describe('createFacetsPanel', function () {
+                it('should create an instance of the ResultsFacets panel', function () {
+
+                    var panelView = view.createFacetsPanel();
+
+                    expect(panelView instanceof Savanna.search.view.resultsDals.ResultsFacets).toBeTruthy();
                 });
             });
 
@@ -131,7 +136,8 @@ describe("Search Results", function () {
                     spyOn(view, 'add');
                     view.store = store;
                     view.createDalPanels();
-                    expect(view.add.callCount).toBe(store.count());
+                    // checking against (view.add.callCount - 1) because of the facets panel, which also triggers an 'add' event
+                    expect(view.add.callCount - 1).toBe(store.count());
                 });
             });
 
@@ -231,7 +237,7 @@ describe("Search Results", function () {
 
         beforeEach(function () {
             component = Ext.create('Savanna.search.view.ResultsComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
-            controller = Ext.create('Savanna.search.controller.ResultsComponent');
+            controller = Savanna.controller.Factory.getController('Savanna.search.controller.ResultsComponent');
             panel = component.queryById('resultspanel');
             grid = panel.queryById("resultspanelgrid");
             sources = component.queryById("resultsdals");
@@ -254,6 +260,31 @@ describe("Search Results", function () {
 
         it('should have a store behind the sources panel', function () {
             expect(sources.store).toBeTruthy();
+        });
+
+        describe('onDalRender', function () {
+
+            beforeEach(function () {
+               spyOn(controller, 'displayDalFacets')
+            });
+
+            afterEach(function () {
+
+            });
+
+            it('should add a click handler which calls "displayDalFacets"', function () {
+
+                var view = component.queryById('resultsdals');
+                view.createDalPanels();
+
+                var dalItem = view.query('panel[cls=search-dal]')[1];
+                controller.onDalRender(dalItem, {});
+
+                dalItem.body.dom.click();
+
+                expect(controller.displayDalFacets).toHaveBeenCalled();
+            });
+
         });
     });
 });
