@@ -7,5 +7,5 @@ Ext.Loader.setConfig({
 Ext.application({
     name: 'Savanna',
     autoCreateViewport: false,
-    paths: { Savanna: '../app' }
+    paths: { Savanna: 'src/public/app' }
 });
