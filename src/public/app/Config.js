@@ -6,6 +6,8 @@
  *
  * Right now this file is static, but in future it may be dynamically generated (if we create an "admin" interface to
  * manage these sorts of settings)
+ *
+ * @tag config
  */
 Ext.define('Savanna.Config', {
     singleton: true,
@@ -24,6 +26,7 @@ Ext.define('Savanna.Config', {
     searchHistoryUrl: 'rest/search/history',// local dev version: 'app/assets/data/testSearchHistory.json',
     itemViewUrl: 'rest/c2is2/model/item/',
     dalSourcesUrl: 'rest/search/sources', // local dev version: 'resources/data/testSearchDalsWithFormData.json',
+    locationSearch: '/rest/map/search',   // local dev version: 'resources/data/testSearchLocationSearch.json',
     // TODO: replace this test URL with real endpoint once we have one...
     crumbnetTemplatesUrl: 'resources/data/testCrumbnetTemplates.json',
 

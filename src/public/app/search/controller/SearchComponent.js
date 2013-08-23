@@ -13,7 +13,8 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         'Savanna.search.model.SearchRequest',
         'Savanna.search.model.SearchHistory',
         'Savanna.search.store.SearchResults',
-        'Savanna.search.store.SearchHistory'
+        'Savanna.search.store.SearchHistory',
+        'Savanna.search.view.SearchLocationForm'
     ],
 
     models: [
@@ -46,6 +47,9 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                 'draw:created': function (layerType) {
                 }
             },
+            'search_searchcomponent > #searchbody #mainsearchoptions #mainsearchtabpanel #searchMap #searchLocationDockedItems #findLocation': {
+                click: this.onFindLocation
+            },
             'search_searchcomponent > #searchbar #main_panel #search_form #searchadvanced_btn': {
                 click: this.alignMenuWithTextfield
             },
@@ -76,9 +80,17 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         });
     },
 
-    // CUSTOM METHODS
+    // CUSTOM METHODS    
+    onFindLocation: function(button) {
+        var locationSearchInput =  button.up('#searchLocationDockedItems').down('#findLocationSearchText');
+        var locationSearchText = locationSearchInput.value;
+        if (locationSearchText) {
+            myForm =  Ext.create('Savanna.search.view.SearchLocationForm');
+            myForm.show();
+        }
+    },
 
-    handleNewSearch: function (elem) {
+    handleNewSearch:function(elem)  {
 
         /*
          Do we want this to return the user to the search options screen, if
