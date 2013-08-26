@@ -23,10 +23,8 @@
                 </executions>
                 <configuration>
                     <executable>phantomjs</executable>
-                    <!--<executable>/Users/thille/bin/slimerjs-0.8.2/slimerjs</executable>-->
                     <workingDirectory>${project.basedir}/src/public/test</workingDirectory>
                     <arguments>
-                        <argument>--remote-debugger-autorun=yes</argument>
                         <argument>--web-security=no</argument>
                         <argument>slimerjs_jasminexml_runner.js</argument>
                         <argument>${project.basedir}/src/public/test/slimerRunner.html</argument>

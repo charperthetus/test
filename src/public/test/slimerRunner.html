@@ -56,7 +56,7 @@
     <script type="text/javascript" src="specs/DalSearchSpec.js"></script>
     <script type="text/javascript" src="specs/TaperedLinkSpec.js"></script>
     <script type="text/javascript" src="specs/CrumbnetSpec.js"></script>
-    <!--<script type="text/javascript" src="specs/SearchComponentSpec.js"></script>-->
+    <script type="text/javascript" src="specs/SearchComponentSpec.js"></script>
     <script type="text/javascript" src="specs/ResultsComponentSpec.js"></script>
     <script type="text/javascript" src="specs/LeafletSpec.js"></script>
     <script type="text/javascript" src="specs/LocationSearchSpec.js"></script>
@@ -72,7 +72,7 @@
         var reporter = new jasmine.HtmlReporter();
 
         if (jasmine.PhantomJSReporter) {
-            var reporter = new jasmine.PhantomJSReporter();
+            reporter = new jasmine.PhantomJSReporter();
         }
         else {
             console.error('Unable to add PhantomJSReporter...');
@@ -100,7 +100,12 @@
             };
 
             Ext.onReady(function() {
-                jasmineEnv.execute();
+                try {
+                    jasmineEnv.execute();
+                }
+                catch(e) {
+                    console.log('PROBLEM!!!' + e);
+                }
             });
         };
     })();

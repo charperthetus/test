@@ -65,11 +65,11 @@
         reportSpecResults: function(spec) {
             var results = spec.results();
             spec.didFail = !results.passed();
-            spec.status = spec.didFail ? '\033[31mFailed.' : '\033[32mPassed.';
+            spec.status = spec.didFail ? '\033[1;4;31mFailed.' : '\033[1;4;32mPassed.';
             if (results.skipped) {
-                spec.status = '\033[93mSkipped.';
+                spec.status = '\033[1;4;93mSkipped.';
             }
-            this.log(spec.status + '\033[39m');
+            this.log(spec.status + '\033[0;39m');
 
             spec.duration = elapsed(spec.startTime, new Date());
             spec.output = '<testcase classname="' + this.getFullName(spec.suite) +
