@@ -59,16 +59,16 @@ Ext.define('Savanna.search.view.resultsDals.ResultsOptions', {
 
         this.on('beforerender', Ext.bind(function () {
             var config = this.initialConfig || {};
-            this.down('checkbox').boxLabel = config.checkboxLabel || 'NO LABEL';
+            console.log(this.down('#dalName'));
+            this.down('#dalName').html = config.dalName || 'NO LABEL';
         }, this));
     },
     setupItems: function () {
         return [
             {
-                xtype: 'checkbox',
-                itemId: 'includeDalCheckBox',
-                boxLabel: 'NO LABEL',
-                cls: 'dal-checkbox'
+                xtype: 'box',
+                itemId: 'dalName',
+                html:""
             },
             {
                 xtype: 'box',
