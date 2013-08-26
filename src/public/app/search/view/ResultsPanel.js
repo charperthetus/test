@@ -15,24 +15,48 @@ Ext.define('Savanna.search.view.ResultsPanel', {
         'Savanna.controller.Factory'
     ],
 
-    region:'center',
-    header:false,
-    layout:'fit',
+    region: 'center',
+    header: false,
+
 
     initComponent: function () {
         Savanna.controller.Factory.getController('Savanna.search.controller.ResultsComponent');
+
+
+        this.items = this.setupItems();
         this.callParent(arguments);
     },
-    items:  [
+
+    setupItems: function () {
+        var store = Ext.create('Savanna.search.store.SearchResults');
+        return  [
+            {
+                xtype:'pagingtoolbar',
+                itemId:'gridtoolbar',
+                dock:'top',
+                store:store,
+                displayInfo:true
+            },
+            {
+                xtype: 'search_resultspanelgrid',
+                itemId: 'resultspanelgrid',
+                store:store,
+                height:'100%'
+            }
+        ]
+    },
+    /*
+    items: [
         {
-            xtype:'search_resultspanelgrid',
-            itemId:'resultspanelgrid'
+            xtype: 'search_resultspanelgrid',
+            itemId: 'resultspanelgrid'
         }
     ],
-    dockedItems:    [
+    */
+    dockedItems: [
         {
-            xtype:'search_resultspaneltoolbar',
-            itemId:'resultspaneltoolbar'
+            xtype: 'search_resultspaneltoolbar',
+            itemId: 'resultspaneltoolbar'
         }
     ]
 });

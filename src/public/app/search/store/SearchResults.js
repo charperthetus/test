@@ -12,11 +12,9 @@ Ext.define('Savanna.search.store.SearchResults', {
 
     model: 'Savanna.search.model.SearchResult',
 
-
-
     autoLoad: false,
 
-    totalResultCount: 500,
+    pageSize:20,
 
     constructor: function () {
 
@@ -33,12 +31,8 @@ Ext.define('Savanna.search.store.SearchResults', {
          */
         ReaderClass = Ext.extend(Ext.data.JsonReader, {
             type:'json',
-            root: 'data.results',
-            totalProperty:'data.totalResults',
-            readRecords: function(data) {
-                return this.callParent([{"data": data}]);
-            }
-
+            root: 'results',
+            totalProperty:'totalResults'
         });
 
         this.setProxy({

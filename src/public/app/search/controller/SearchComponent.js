@@ -188,10 +188,12 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         this.hideMenu(component);
 
         var bar = component.queryById('searchbar'),
-            resultsStore = bar.store,
+            grid = component.queryById('resultspanelgrid'),
+            resultsStore = grid.store,
             searchString = bar.buildSearchString(),
             dalStore = Ext.data.StoreManager.lookup('dalSources');
 
+        //TODO: is this needed?
         resultsStore.removeAll();
 
         var searchObj = Ext.create('Savanna.search.model.SearchRequest', {
