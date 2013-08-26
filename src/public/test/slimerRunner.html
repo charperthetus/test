@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-  <title>Jasmine Test Runner</title>
+  <title>PhantomJS Jasmine Test Runner</title>
 
     <link rel="stylesheet" type="text/css" href="lib/jasmine-1.3.1/jasmine.css">
 
@@ -100,12 +100,7 @@
             };
 
             Ext.onReady(function() {
-                try {
-                    jasmineEnv.execute();
-                }
-                catch(e) {
-                    console.log('PROBLEM!!!' + e);
-                }
+                jasmineEnv.execute();
             });
         };
     })();

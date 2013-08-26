@@ -1,9 +1,11 @@
+/* global phantom: false, require: false, utils: false, jasmine: false, console: false */
 var htmlrunner,
     resultdir,
     page,
-    fs;
+    fs,
+    TIMEOUT = 30000000; // give us a very long time to run tests...
 
-phantom.injectJs("lib/utils/core.js")
+phantom.injectJs("lib/utils/core.js");
 
 if ( phantom.args.length !== 2 ) {
     console.log("Usage: phantom_test_runner.js HTML_RUNNER RESULT_DIR");
@@ -15,7 +17,7 @@ if ( phantom.args.length !== 2 ) {
     fs = require("fs");
 
     // Echo the output of the tests to the Standard Output
-    page.onConsoleMessage = function(msg, source, linenumber) {
+    page.onConsoleMessage = function(msg) {
         console.log(msg);
     };
 
@@ -27,7 +29,7 @@ if ( phantom.args.length !== 2 ) {
                 });
             }, function() { // once done...
                 // Retrieve the result of the tests
-                var f = null, i, len, filepath;
+                var f = null, i, len, filepath,
                     suitesResults = page.evaluate(function(){
                     return jasmine.phantomjsXMLReporterResults;
                 });
@@ -39,13 +41,13 @@ if ( phantom.args.length !== 2 ) {
 
                 for ( i = 0, len = suitesResults.length; i < len; ++i ) {
                     try {
-						filepath = resultdir + '/' + suitesResults[i]["xmlfilename"];
+						filepath = resultdir + "/" + suitesResults[i].xmlfilename;
                         f = fs.open(filepath, "w");
-                        f.write(suitesResults[i]["xmlbody"]);
+                        f.write(suitesResults[i].xmlbody);
                         f.close();
                     } catch (e) {
                         console.log(e);
-                        console.log("phantomjs> Unable to save result of Suite '"+ suitesResults[i]["xmlfilename"] +"'");
+                        console.log("phantomjs> Unable to save result of Suite '"+ suitesResults[i].xmlfilename +"'");
                     }
                 }
                 
@@ -54,9 +56,9 @@ if ( phantom.args.length !== 2 ) {
                     return jasmine.phantomjsXMLReporterPassed ? 0 : 1; //< exit(0) is success, exit(1) is failure
                 }));
             }, function() { // or, once it timesout...
-                console.log('timeout running tests...');
+                console.log("timeout running tests...");
                 phantom.exit(1);
-            }, 300000);
+            }, TIMEOUT);
         } else {
             console.log("phantomjs> Could not load '" + htmlrunner + "'.");
             phantom.exit(1);
