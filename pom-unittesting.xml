@@ -56,167 +56,31 @@
 
     <build>
         <plugins>
-<!--            <plugin>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>2.6</version>
-                <executions>
-                    <execution>
-                        <id>copy-ext-resources</id>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${project.basedir}/target/jasmine/ext</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>${project.basedir}/src/public/ext</directory>
-                                    <filtering>true</filtering>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>copy-app-resources</id>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${project.basedir}/target/jasmine/app</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>${project.basedir}/src/public/app</directory>
-                                    <filtering>true</filtering>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>copy-test-resources</id>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${project.basedir}/target/jasmine/test</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>${project.basedir}/src/public/test</directory>
-                                    <filtering>true</filtering>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>-->
-
-
             <plugin>
-                <groupId>com.github.searls</groupId>
-                <artifactId>jasmine-maven-plugin</artifactId>
-                <version>1.1.0</version>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.1</version>
                 <executions>
                     <execution>
+                        <id>PhantomJS Unit Testing</id>
+                        <phase>test</phase>
                         <goals>
-                            <goal>test</goal>
+                            <goal>exec</goal>
                         </goals>
                     </execution>
                 </executions>
                 <configuration>
-                    <jsSrcDir>${project.basedir}/src/public/</jsSrcDir>
-                    <jsTestSrcDir>${project.basedir}/src/public/test/specs</jsTestSrcDir>
-                    <preloadSources>
-                        <source>ext/ext-all-debug.js</source>
-                        <source>test/helpers/ExtInitializerMaven.js</source>
-                        <!--<source>resources/GoJS/release/go-debug.js</source>-->
-                        <source>resources/Leaflet/leaflet-src.js</source>
-                        <source>resources/Leaflet/L.Control.Zoomslider.js</source>
-                        <source>resources/Leaflet/leaflet.draw-src.js</source>
-                        <!--<source>resources/underscore.js</source>
-                        <source>resources/jquery/jquery.min.js</source>
-                        <source>resources/jquery/jquery.extensions.min.js</source>
-                        <source>resources/flexpaper/js/pdf.min.js</source>
-                        <source>resources/flexpaper/js/flexpaper.js</source>
-                        <source>resources/flexpaper/js/FlexPaperViewer.js</source>
-                        <source>resources/flexpaper/js/flexpaper_flashhandlers_htmlui.js</source>
-                        <source>resources/flexpaper/js/flexpaper_handlers.js</source>
-                        <source>resources/flexpaper/js/flexpaper_handlers_debug.js</source>
-                        <source>resources/flexpaper/images/textshifted_fixed.pdf.js</source>-->
-                    </preloadSources>
-                    <sourceExcludes>
-                        <exclude>app/app.js</exclude>
-                        <exclude>bootstrap.js</exclude>
-                        <exclude>build/**/*.js</exclude>
-                        <exclude>ext/builds/*.js</exclude>
-                        <exclude>ext/bootstrap.js</exclude>
-                        <exclude>ext/ext-all-debug-w-comments.js</exclude>
-                        <!--<exlucde>ext/ext-all-debug.js</exclude>-->
-                        <exclude>ext/ext-all-dev.js</exclude>
-                        <exclude>ext/ext-all-rtl-debug-w-comments.js</exclude>
-                        <exclude>ext/ext-all-rtl-debug.js</exclude>
-                        <exclude>ext/ext-all-rtl-dev.js</exclude>
-                        <exclude>ext/ext-all-rtl.js</exclude>
-                        <exclude>ext/ext-all.js</exclude>
-                        <exclude>ext/ext-debug-w-comments.js</exclude>
-                        <exclude>ext/ext-debug.js</exclude>
-                        <exclude>ext/ext-dev.js</exclude>
-                        <exclude>ext/ext-theme-access.js</exclude>
-                        <exclude>ext/ext-theme-classic-sandbox.js</exclude>
-                        <exclude>ext/ext-theme-classic.js</exclude>
-                        <exclude>ext/ext-theme-gray.js</exclude>
-                        <exclude>ext/ext-theme-neptune.js</exclude>
-                        <exclude>ext/ext.js</exclude>
-                        <exclude>resources/GoJS/release/go.js</exclude>
-                        <exclude>resources/GoJS/release/go-debug.js</exclude>
-                        <exclude>resources/GoJS/release/include.js</exclude>
-                        <exclude>resources/Leaflet/leaflet.js</exclude>
-                        <exclude>resources/Leaflet/leaflet.draw.js</exclude>
-                        <exclude>ext/file-header.js</exclude>
-                        <exclude>ext/locale/**/*.js</exclude>
-                        <exclude>ext/src/**/*.js</exclude>
-                        <exclude>packages/**/*.js</exclude>
-                        <exclude>sass/**/*.js</exclude>
-                        <exclude>test/reports/**/*.js</exclude>
-                        <exclude>test/specs/**/*.js</exclude>
-                        <exclude>test/lib/ExtSpec-1.2.0/ExtSpec.js</exclude>
-                        <exclude>test/helpers/ExtInitializer.js</exclude>
-                        <exclude>test/helpers/ExtInitializerMaven.js</exclude>
-                        <exclude>test/lib/Leaflet/**/*.js</exclude>
-                        <exclude>test/lib/flexpaper/**/*.js</exclude>
-                        <exclude>test/lib/jasmine-1.3.1/**/*.js</exclude>
-                        <exclude>test/lib/jquery/**/*.js</exclude>
-                        <exclude>test/lib/phantomjs-jstd-bridge.js</exclude>
-                        <exclude>test/lib/run-jscover-jasmine.js</exclude>
-                        <exclude>test/lib/underscore.js</exclude>
-                        <exclude>app/crumbnet/**/*.js</exclude>
-                    </sourceExcludes>
-<!--                    <specIncludes>
-                        <source>../lib/sinon-1.7.1.js</source>
-                        <source>../lib/underscore.js</source>
-                        <source>../helpers/FakeServer.js</source>
-                        <source>../helpers/ExtHelpers.js</source>
-                        <source>../resources/GoJS/release/go-debug.js</source>
-                        <source>../lib/jquery/jquery.min.js</source>
-                        <source>../lib/jquery/jquery.extensions.min.js</source>
-                        <source>../lib/flexpaper/js/flexpaper.js</source>
-                        <source>../lib/flexpaper/js/flexpaper_handlers.js</source>
-                        <source>../lib/Leaflet/leaflet.js</source>
-                        <source>../lib/Leaflet/leaflet.draw-src.js</source>
-                        <source>../lib/Leaflet/L.Control.Zoomslider.js</source>
-                        <source>../fixtures/DalSources.js</source>
-                        <source>../fixtures/Crumbnet.js</source>
-                        <source>../fixtures/SearchResults.js</source>
-                        <source>../fixtures/HistoryResults.js</source>
-                        <source>../fixtures/LocationSources.js</source>
-                        <include>**/*.js</include>
-                    </specIncludes>-->
-                    <!-- need to override default dir for surefire: -->
-                    <junitXmlReportFileName>
-                        surefire-reports/TEST-jasmine.xml
-                    </junitXmlReportFileName>
+                    <executable>phantomjs</executable>
+                    <workingDirectory>${project.basedir}/src/public/test</workingDirectory>
+                    <arguments>
+                        <argument>--web-security=no</argument>
+                        <argument>phantomjs_jasminexml_runner.js</argument>
+                        <argument>${project.basedir}/src/public/test/PhantomJsRunner.html</argument>
+                        <argument>${project.build.directory}/surefire-reports</argument>
+                    </arguments>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -231,10 +95,6 @@
                     </execution>
                 </executions>
             </plugin>
-
-
-
-
 
             <!-- NOTE: I moved the tasks to build the JavaScript code from "build" to "package" as it is not needed for
                        testing and actually should not happen if testing fails
