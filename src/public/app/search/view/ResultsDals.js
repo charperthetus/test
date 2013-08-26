@@ -76,5 +76,10 @@ Ext.define('Savanna.search.view.ResultsDals', {
         if(status != 'none')    {
             myDal.query('checkbox')[0].setValue(true);  // a DAL selected in search options
         }
+
+        console.log('totalCount in Search results set to:', Ext.data.StoreManager.lookup('searchResults').getTotalCount())
+
+        // what the hell is the right method here?
+        this.findParentByType('search_resultscomponent').down('#gridtoolbar').update();
     }
 });
