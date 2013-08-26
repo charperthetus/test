@@ -1,34 +1,33 @@
+/* global jasmine: false, Exception: false */
 (function() {
 
     if (! jasmine) {
-        throw new Exception("jasmine library does not exist in global namespace!");
+        throw new Exception('jasmine library does not exist in global namespace!');
     }
 
     function elapsed(startTime, endTime) {
         return (endTime - startTime)/1000;
     }
 
+    /**
+     * @return {string}
+     */
     function ISODateString(d) {
-        function pad(n) { return n < 10 ? '0'+n : n; }
+        function pad(n) { return n < 10 ? '0' + n : n; }
 
-        return d.getFullYear() + '-'
-            + pad(d.getMonth()+1) +'-'
-            + pad(d.getDate()) + 'T'
-            + pad(d.getHours()) + ':'
-            + pad(d.getMinutes()) + ':'
-            + pad(d.getSeconds());
+        return d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate()) + 'T' + pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds());
     }
 
     function trim(str) {
-        return str.replace(/^\s+/, "" ).replace(/\s+$/, "" );
+        return str.replace(/^\s+/, '').replace(/\s+$/, '');
     }
 
     function escapeInvalidXmlChars(str) {
-        return str.replace(/\&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/\>/g, "&gt;")
-            .replace(/\"/g, "&quot;")
-            .replace(/\'/g, "&apos;");
+        return str.replace(/\&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/\>/g, '&gt;')
+            .replace(/\"/g, '&quot;')
+            .replace(/\'/g, '&apos;');
     }
 
     /**
@@ -48,8 +47,8 @@
     };  
 
     PhantomJSReporter.prototype = {
-        reportRunnerStarting: function(runner) {
-            this.log("Runner Started.");
+        reportRunnerStarting: function() {
+            this.log('Runner Started.');
         },
 
         reportSpecStarting: function(spec) {
@@ -75,27 +74,27 @@
             spec.output = '<testcase classname="' + this.getFullName(spec.suite) +
                 '" name="' + escapeInvalidXmlChars(spec.description) + '" time="' + spec.duration + '">';
 
-            var failure = "";
+            var failure = '';
             var failures = 0;
             var resultItems = results.getItems();
             for (var i = 0; i < resultItems.length; i++) {
                 var result = resultItems[i];
 
-                if (result.type == 'expect' && result.passed && !result.passed()) {
+                if (result.type === 'expect' && result.passed && !result.passed()) {
                     failures += 1;
-                    failure += (failures + ": " + escapeInvalidXmlChars(result.message) + " ");
+                    failure += (failures + ':' + escapeInvalidXmlChars(result.message) + ' ');
                 }
             }
             if (failure) {
-                spec.output += "<failure>" + trim(failure) + "</failure>";
+                spec.output += '<failure>' + trim(failure) + '</failure>';
             }
-            spec.output += "</testcase>";
+            spec.output += '</testcase>';
         },
 
         reportSuiteResults: function(suite) {
             var results = suite.results();
             var specs = suite.specs();
-            var specOutput = "";
+            var specOutput = '';
             // for JUnit results, let's only include directly failed tests (not nested suites')
             var failedCount = 0;
 
@@ -119,11 +118,11 @@
                 '" time="' + suite.duration + '" timestamp="' + ISODateString(suite.startTime) + '">';
             suite.output += specOutput;
             suite.output += "\n</testsuite>";
-            this.log(suite.description + ": " + results.passedCount + " of " + results.totalCount + " expectations passed.");
+            this.log(suite.description + ': ' + results.passedCount + ' of ' + results.totalCount + ' expectations passed.');
         },
 
         reportRunnerResults: function(runner) {
-            this.log("Runner Finished.");
+            this.log('Runner Finished.');
             var suites = runner.suites(),
                 passed = true;
             for (var i = 0; i < suites.length; i++) {
@@ -162,13 +161,13 @@
         createSuiteResultContainer: function(filename, xmloutput) {
             jasmine.phantomjsXMLReporterResults = jasmine.phantomjsXMLReporterResults || [];
             jasmine.phantomjsXMLReporterResults.push({
-                "xmlfilename" : filename,
-                "xmlbody" : xmloutput
+                xmlfilename : filename,
+                xmlbody : xmloutput
             });
         },
         
         createTestFinishedContainer: function(passed) {
-            jasmine.phantomjsXMLReporterPassed = passed
+            jasmine.phantomjsXMLReporterPassed = passed;
         },
 
         getFullName: function(suite, isFilename) {
@@ -185,7 +184,7 @@
 
             // Either remove or escape invalid XML characters
             if (isFilename) {
-                return fullName.replace(/[^\w]/g, "");
+                return fullName.replace(/[^\w]/g, '');
             }
             return escapeInvalidXmlChars(fullName);
         },
