@@ -1,5 +1,5 @@
 /* global
- Ext: false, ExtSpec: false,
+ Ext: false,
  describe: false, beforeEach: false, afterEach: false, it: false, expect: false, spyOn: false, sinon: false,
  createTestDom: false, cleanTestDom: false, ThetusTestHelpers: false, setupNoCacheNoPagingStore: false,
  Savanna: false
@@ -21,7 +21,6 @@ describe("Search Results", function () {
     var dalFixtures;
 
     beforeEach(function () {
-        this.addMatchers(ExtSpec.Jasmine.Matchers);
 
         dalFixtures = Ext.clone(ThetusTestHelpers.Fixtures.DalSources);
 
