@@ -5,14 +5,14 @@
  * Time: 4:42 PM
  * To change this template use File | Settings | File Templates.
  */
-Ext.define("Savanna.search.view.SearchAdvancedTextfield", {
-    extend: "Ext.form.field.Text",
-    alias: "widget.searchadvanced_textfield",
+Ext.define('Savanna.search.view.SearchAdvancedTextfield', {
+    extend: 'Ext.form.field.Text',
+    alias: 'widget.searchadvanced_textfield',
     width: 355,
     fieldLabel: 'All of these words:',
     name: 'all_words',
     enableKeyEvents: true,
-    itemId: "all_words",
+    itemId: 'all_words',
     labelWidth: 125,
     tabIndex: 1,
 
@@ -20,18 +20,18 @@ Ext.define("Savanna.search.view.SearchAdvancedTextfield", {
         var str = this.getValue();
         str.trim();
         switch(this.configs.booleanType)    {
-            case "all":
+            case 'all':
                 return str.replace(/\s+/g, ' AND ');
             break;
-            case "exact":
+            case 'exact':
                 return '"' + str + '"';
             break;
-            case "any":
+            case 'any':
                 return str.replace(/\s+/g, ' OR ');
             break;
-            case "none":
+            case 'none':
                 return str.replace(/\s+/g, ' NOT ');
             break;
         }
     }
-})
+});

@@ -1,6 +1,8 @@
-/* global Ext: false,
-          describe: false, beforeEach: false, afterEach: false, it: false, expect: false,
-          ThetusTestHelpers: false, Savanna: false
+/* global
+ Ext: false, ExtSpec: false,
+ describe: false, beforeEach: false, afterEach: false, it: false, expect: false, spyOn: false, sinon: false,
+ createTestDom: false, cleanTestDom: false, ThetusTestHelpers: false, setupNoCacheNoPagingStore: false,
+ Savanna: false
  */
 Ext.require('Savanna.Config');
 Ext.require('Savanna.search.controller.SearchComponent');
@@ -14,11 +16,15 @@ Ext.require('Savanna.search.view.ResultsPanelGrid');
 Ext.require('Savanna.search.view.ResultsPanelToolbar');
 Ext.require('Savanna.search.view.ResultsDals');
 
-describe('Search Results', function () {
+describe("Search Results", function () {
 
-    var fixtures = {};
+    var dalFixtures;
 
     beforeEach(function () {
+        this.addMatchers(ExtSpec.Jasmine.Matchers);
+
+        dalFixtures = Ext.clone(ThetusTestHelpers.Fixtures.DalSources);
+
         ThetusTestHelpers.ExtHelpers.createTestDom();
     });
 
@@ -31,6 +37,7 @@ describe('Search Results', function () {
     describe('View', function () {
 
         var searchComponent = null;
+
         var component = null;
 
         beforeEach(function () {
@@ -61,8 +68,132 @@ describe('Search Results', function () {
 
         describe('Search Sources subview', function () {
 
-            // test panels here, etc
+            var view = null,
+                store = null;
 
+            beforeEach(function () {
+                //noinspection JSValidateTypes
+
+                // Set up the store first as it is autovivified by our main view
+                store = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.DalSources', { autoLoad: false });
+
+                // now set up server to get store data
+                server = new ThetusTestHelpers.FakeServer(sinon);
+
+                var readMethod = 'GET',
+                    testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(store.getProxy(), 'read', readMethod);
+
+                server.respondWith(readMethod, testUrl, dalFixtures.allDals);
+
+                // load the store now (should trigger event to render the view)
+                store.load();
+
+                server.respond({
+                    errorOnInvalidRequest: true
+                });
+
+
+                spyOn(Savanna.controller.Factory, 'getController');
+                view = component.queryById('resultsdals');
+            });
+
+            afterEach(function () {
+
+                view = null;
+                server.restore();
+
+                server = null;
+                store = null;
+            });
+
+            describe('createPanel', function () {
+                it('should create an instance of the ResultsOptions panel', function () {
+                    /*
+                     This test broke due to the data restructure and use of 'hasOne'.  Creating a store and adding allDals - which
+                     includes the legacyDal model - fixes the test since the associations stuff executes and creates the customSearchDescription
+                     */
+
+                    var panelView = view.createPanel(store.getAt(0));
+
+                    expect(panelView instanceof Savanna.search.view.searchDals.ResultsOptions).toBeTruthy();
+                });
+            });
+
+            describe('createDalPanels', function () {
+
+                beforeEach(function () {
+                    view = component.queryById('resultsdals');
+                });
+
+
+                it('should create a Panel for every record in the store', function () {
+                    //noinspection JSValidateTypes
+                    spyOn(view, 'add');
+                    view.store = store;
+                    view.createDalPanels();
+                    expect(view.add.callCount).toBe(store.count());
+                });
+            });
+
+            describe('setDalStatus', function () {
+                var dalsView = null;
+
+                beforeEach(function () {
+
+                    searchComponent = Ext.create('Savanna.search.view.SearchComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
+
+                    dalsView = searchComponent.queryById('searchdals');
+
+                    view = component.queryById('resultsdals');
+
+                    view.store = store;
+
+                    dalsView.store = store;
+
+                });
+
+                afterEach(function () {
+                    view = null;
+
+                    if (searchComponent) {
+                        searchComponent.destroy();
+                        searchComponent = null;
+                    }
+                });
+
+                it('should select a success indicator if passed a "true" value', function () {
+
+                    dalsView.createDalPanels();
+
+                    dalsView.queryById('MediaWiki').query('checkbox')[0].setValue(true);
+
+                    view.createDalPanels();
+
+                    view.updateDalStatus('mockDAL', 'success');
+
+                    var myDal = view.queryById('mockDAL'),
+                        green = 'rgb(0, 128, 0)';
+
+                    expect(myDal.down('#dalStatusIcon').getEl().getStyle('backgroundColor')).toEqual(green);
+
+                });
+
+                it('should select a success indicator if passed a "true" value', function () {
+
+                    dalsView.createDalPanels();
+
+                    dalsView.queryById('MediaWiki').query('checkbox')[0].setValue(true);
+
+                    view.createDalPanels();
+
+                    view.updateDalStatus('mockDAL', 'fail');
+
+                    var myDal = view.queryById('mockDAL'),
+                        red = 'rgb(255, 0, 0)';
+
+                    expect(myDal.down('#dalStatusIcon').getEl().getStyle('backgroundColor')).toEqual(red);
+                });
+            });
         });
 
         describe('Grid subview', function () {
@@ -84,7 +215,7 @@ describe('Search Results', function () {
             });
 
             it('should have a paging toolbar', function () {
-                expect(grid.queryById('gridtoolbar') instanceof Ext.toolbar.Paging).toBeTruthy();
+                expect(grid.queryById("gridtoolbar") instanceof Ext.toolbar.Paging).toBeTruthy();
             });
 
         });
@@ -102,8 +233,8 @@ describe('Search Results', function () {
             component = Ext.create('Savanna.search.view.ResultsComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
             controller = Ext.create('Savanna.search.controller.ResultsComponent');
             panel = component.queryById('resultspanel');
-            grid = panel.queryById('resultspanelgrid');
-            sources = component.queryById('resultsdals');
+            grid = panel.queryById("resultspanelgrid");
+            sources = component.queryById("resultsdals");
         });
 
         afterEach(function()    {
