@@ -62,6 +62,7 @@ describe('Savanna Main', function() {
                 beforeEach(function() {
                     var mock = jasmine.createSpyObj('mainViewport', ['add', 'remove']);
                     view = Ext.create('Savanna.view.Login');
+                    view.clearListeners();
                     mockApplication = {
                         viewport: {
                             queryById: function() {

@@ -4,5 +4,4 @@
 #
 # Usage: run-coverage.sh
 
-mvn -f pom-unittesting.xml clean
-mvn -f pom-unittesting.xml test
+mvn -f pom-unittesting.xml clean test

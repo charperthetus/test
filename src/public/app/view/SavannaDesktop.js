@@ -6,7 +6,11 @@ Ext.define('Savanna.view.SavannaDesktop', {
     alias: 'widget.savannadesktop',
     requires:[
         'Ext.form.RadioGroup',
-        'Ext.dd.DragZone'
+        'Ext.dd.DragZone',
+        'Ext.panel.Panel',
+        'Ext.tab.Panel',
+        'Ext.draw.Component',
+        'Savanna.crumbnet.view.CrumbnetComponent'
     ],
     layout: {
         type: 'vbox'
