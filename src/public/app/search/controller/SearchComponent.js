@@ -40,7 +40,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             },
             'search_searchcomponent > #searchbody #mainsearchoptions #mainsearchtabpanel #searchMap #searchLocationDockedItems #mapZoomTo': {
                 click: function (button) {
-                    button.up('search_searchmap').queryById('leafletMap').fireEvent('locationSearch:zoomto', button);
+                    button.up('search_searchmap').queryById('leafletMap').fireEvent('locationSearch:zoomto', button);                          git commit -a -m 'at a stopping point'
                 }
             },
             'search_searchcomponent > #searchbody #mainsearchoptions #mainsearchtabpanel #searchMap #leafletMap': {
@@ -187,13 +187,15 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         this.hideMenu(component);
 
         var bar = component.queryById('searchbar'),
-            grid = component.queryById('resultspanelgrid'),
-            resultsStore = grid.store,
             searchString = bar.buildSearchString(),
-            dalStore = Ext.data.StoreManager.lookup('dalSources');
+            dalStore = Ext.data.StoreManager.lookup('dalSources'),
+            resultsComponent = component.queryById('searchresults');
 
-        //TODO: is this needed?
-        resultsStore.removeAll();
+        while(resultsComponent.allResultSets.length > 0)    {
+            resultsComponent.allResultSets.pop();
+        }
+
+
 
         var searchObj = Ext.create('Savanna.search.model.SearchRequest', {
             'textInputString': searchString,
@@ -204,7 +206,8 @@ Ext.define('Savanna.search.controller.SearchComponent', {
          Check for selected additional Dals, and do a search on each of them
          */
         var dals = component.down('#searchdals'),
-            resultsDal = component.down("#resultsdals");
+            resultsDal = component.down("#resultsdals"),
+            resultsPanel = component.down("#resultspanel");
 
         dalStore.each(function (source) {
 
@@ -221,10 +224,12 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                         'sortOrder': 'Default'
                     }
                 ]);
-
+                var resultsStore = Ext.create('Savanna.search.store.SearchResults', {
+                    storeId:'searchResults_' + dalId
+                });
                 resultsStore.proxy.jsonData = Ext.JSON.encode(searchObj.data);
                 resultsStore.load({
-                    callback: Ext.bind(this.searchCallback, this, [resultsDal, dalId], true)
+                    callback: Ext.bind(this.searchCallback, this, [resultsDal, resultsPanel, dalId, resultsStore], true)
                 });
                 resultsDal.updateDalStatus(dalId, 'pending');
             } else {
@@ -239,7 +244,14 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         this.logHistory(bar.buildSearchString());
     },
 
-    searchCallback: function (records, operation, success, resultsDal, dalId) {
+    searchCallback: function (records, operation, success, resultsDal, resultsPanel, dalId, store) {
+        var resultsObj = {id:dalId, store:store};
+        resultsPanel.up("#searchresults").allResultSets.push(resultsObj);
+
+        if(dalId == Ext.data.StoreManager.lookup('dalSources').defaultId)    {
+            resultsPanel.updateItems(resultsObj);
+        }
+
         var statusString = success ? "success" : "fail";
         resultsDal.updateDalStatus(dalId, statusString);
         if (!success) {

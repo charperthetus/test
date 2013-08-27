@@ -12,7 +12,8 @@ Ext.define('Savanna.search.view.resultsDals.ResultsOptions', {
 
     itemId: 'dalResultOptions',
 
-    cls: 'search-dal',
+    cls:'results-dal',
+    bodyPadding:5,
 
     items: [],
 
@@ -26,7 +27,7 @@ Ext.define('Savanna.search.view.resultsDals.ResultsOptions', {
         height:'20px',
         'float':'right',
         'margin-right':'10px',
-        'margin-top':'-45px'
+        'margin-top':'-20px'
     },
     dalLoadPending: {
         backgroundColor:'yellow',
@@ -34,7 +35,7 @@ Ext.define('Savanna.search.view.resultsDals.ResultsOptions', {
         height:'20px',
         'float':'right',
         'margin-right':'10px',
-        'margin-top':'-45px'
+        'margin-top':'-20px'
     },
     dalLoadFail: {
         backgroundColor:'red',
@@ -42,7 +43,7 @@ Ext.define('Savanna.search.view.resultsDals.ResultsOptions', {
         height:'20px',
         'float':'right',
         'margin-right':'10px',
-        'margin-top':'-45px'
+        'margin-top':'-20px'
     },
     dalLoadSuccess: {
         backgroundColor:'green',
@@ -50,25 +51,34 @@ Ext.define('Savanna.search.view.resultsDals.ResultsOptions', {
         height:'20px',
         'float':'right',
         'margin-right':'10px',
-        'margin-top':'-45px'
+        'margin-top':'-20px'
     },
 
     initComponent: function () {
         this.items = this.setupItems();
         this.callParent(arguments);
-
         this.on('beforerender', Ext.bind(function () {
             var config = this.initialConfig || {};
-            console.log(this.down('#dalName'));
             this.down('#dalName').html = config.dalName || 'NO LABEL';
         }, this));
+    },
+
+    updateDalNameCount:function(id)    {
+        var me = this;
+        Ext.each(this.up('#searchresults').allResultSets, function(set)  {
+            if(set.id == id)    {
+                me.down('#dalName').update(me.dalName + ' ' + '(' + set.store.totalCount + ')');
+            }
+        })
+
     },
     setupItems: function () {
         return [
             {
-                xtype: 'box',
                 itemId: 'dalName',
-                html:""
+                border:false,
+                height:20,
+                width:'65%'
             },
             {
                 xtype: 'box',

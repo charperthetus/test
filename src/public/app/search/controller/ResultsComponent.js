@@ -15,17 +15,28 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
     init: function (app) {
 
         this.control({
-            "search_resultscomponent panel[cls=search-dal]": {
+            "search_resultscomponent panel[cls=results-dal]": {
                 "render": this.onDalRender
             }
         })
     },
 
     onDalRender: function (dal, evt) {
-        dal.body.on('click', this.displayDalFacets, this, dal);
+        dal.body.on('click', this.updateGrid, this, dal);
     },
 
-    displayDalFacets: function (evt, body, dal) {
+    updateGrid:function(evt, body, dal) {
+        var component = dal.up("#searchresults");
+        var me = this;
+        Ext.each(component.allResultSets, function(set) {
+            if(set.id == dal.itemId)    {
+                component.queryById('resultspanel').updateItems(set);
+                me.displayDalFacets(dal);
+            }
+        })
+    },
+
+    displayDalFacets: function (dal) {
         var record = Ext.data.StoreManager.lookup('dalSources').getById(dal.itemId),
             descriptions = record.data.facetDescriptions,
             facets = dal.up('#resultsdals').queryById('resultsfacets'),

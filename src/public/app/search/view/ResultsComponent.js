@@ -20,6 +20,7 @@ Ext.define('Savanna.search.view.ResultsComponent', {
         collapsible: true,
         split: true
     },
+    allResultSets:[],
     initComponent: function () {
         this.callParent(arguments);
         Savanna.controller.Factory.getController('Savanna.search.controller.ResultsComponent');

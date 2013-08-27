@@ -17,42 +17,41 @@ Ext.define('Savanna.search.view.ResultsPanel', {
 
     region: 'center',
     header: false,
+    layout:'fit',
 
 
     initComponent: function () {
         Savanna.controller.Factory.getController('Savanna.search.controller.ResultsComponent');
-
-
         this.items = this.setupItems();
         this.callParent(arguments);
     },
 
     setupItems: function () {
-        var store = Ext.create('Savanna.search.store.SearchResults');
-        return  [
-            {
-                xtype:'pagingtoolbar',
-                itemId:'gridtoolbar',
-                dock:'top',
-                store:store,
-                displayInfo:true
-            },
+        return [
             {
                 xtype: 'search_resultspanelgrid',
                 itemId: 'resultspanelgrid',
-                store:store,
-                height:'100%'
+                store: Ext.create('Savanna.search.store.SearchResults'),
+                dockedItems:[
+                    {
+                        xtype: 'pagingtoolbar',
+                        itemId: 'gridtoolbar',
+                        dock: 'top',
+                        store: Ext.create('Savanna.search.store.SearchResults'),
+                        displayInfo: true
+                    }
+                ]
             }
-        ]
+        ];
     },
-    /*
-    items: [
-        {
-            xtype: 'search_resultspanelgrid',
-            itemId: 'resultspanelgrid'
-        }
-    ],
-    */
+
+    updateItems: function (obj) {
+        var grid = this.queryById('resultspanelgrid');
+        grid.reconfigure(obj.store);
+        grid.queryById('gridtoolbar').bindStore(obj.store);
+        obj.store.loadPage(1);
+    },
+
     dockedItems: [
         {
             xtype: 'search_resultspaneltoolbar',

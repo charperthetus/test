@@ -66,6 +66,7 @@ Ext.define('Savanna.search.view.ResultsDals', {
 
     updateDalStatus: function (dalId, status) {
         var myDal = this.queryById(dalId);
+        myDal.updateDalNameCount(dalId);
         var styleStatus = {
             'success': myDal.dalLoadSuccess,
             'fail': myDal.dalLoadFail,

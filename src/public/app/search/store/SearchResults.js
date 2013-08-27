@@ -14,7 +14,7 @@ Ext.define('Savanna.search.store.SearchResults', {
 
     autoLoad: false,
 
-    pageSize:20,
+    pageSize: 20,
 
     constructor: function () {
 
