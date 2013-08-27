@@ -12,28 +12,28 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
     views: [
         'Savanna.search.view.ResultsComponent'
     ],
-    init: function (app) {
+    init: function () {
 
         this.control({
-            "search_resultscomponent panel[cls=results-dal]": {
-                "render": this.onDalRender
+            'search_resultscomponent panel[cls=results-dal]': {
+                'render': this.onDalRender
             }
-        })
+        });
     },
 
-    onDalRender: function (dal, evt) {
+    onDalRender: function (dal) {
         dal.body.on('click', this.updateGrid, this, dal);
     },
 
     updateGrid:function(evt, body, dal) {
-        var component = dal.up("#searchresults");
+        var component = dal.up('#searchresults');
         var me = this;
         Ext.each(component.allResultSets, function(set) {
-            if(set.id == dal.itemId)    {
+            if(set.id === dal.itemId)    {
                 component.queryById('resultspanel').updateItems(set);
                 me.displayDalFacets(dal);
             }
-        })
+        });
     },
 
     displayDalFacets: function (dal) {
@@ -49,8 +49,6 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
                 var facetElement = me.createFacet(facet);
                 facets.add(facetElement);
             });
-        } else {
-            // indicate that there are no facets in UI...
         }
     },
 

@@ -204,43 +204,48 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             resultsComponent.allResultSets.pop();
         }
 
+        /*
+        Create the search request payload
+         */
         var searchObj = Ext.create('Savanna.search.model.SearchRequest', {
             'textInputString': searchString,
             'displayLabel': searchString
         });
 
-        /*
-         Check for selected additional Dals, and do a search on each of them
-         */
+
         var dals = component.down('#searchdals'),
             resultsDal = component.down('#resultsdals'),
             resultsPanel = component.down('#resultspanel');
-
+        /*
+         Check for selected additional Dals, and do a search on each of them
+         */
         dalStore.each(function (source) {
 
             var dalId = source.data.id,
-                checked = dals.queryById(dalId).query('checkbox')[0].getValue();
+                checked = dals.queryById(dalId).query('checkbox')[0].getValue();    // has this checkbox been selected in search options?
 
-            if (checked || dalId === dalStore.defaultId) {
+            if (checked || dalId === dalStore.defaultId) {  // checked, or always search the default dal
 
                 // Dal has been selected, apply to the request model and do search
                 searchObj.set('searchPreferencesVOs', [
                     {
                         'dalId': dalId,
-                        'resultPerPage': 20,
                         'sortOrder': 'Default'
                     }
                 ]);
+                /*
+                Create a new store for each DAL
+                 */
                 var resultsStore = Ext.create('Savanna.search.store.SearchResults', {
                     storeId:'searchResults_' + dalId
                 });
-                resultsStore.proxy.jsonData = Ext.JSON.encode(searchObj.data);
+                resultsStore.proxy.jsonData = Ext.JSON.encode(searchObj.data);  // attach the search request object
                 resultsStore.load({
                     callback: Ext.bind(this.searchCallback, this, [resultsDal, resultsPanel, dalId, resultsStore], true)
                 });
-                resultsDal.updateDalStatus(dalId, 'pending');
+                resultsDal.updateDalStatus(dalId, 'pending');   // begin in a pending state
             } else {
-                resultsDal.updateDalStatus(dalId, 'none');
+                resultsDal.updateDalStatus(dalId, 'none');  // ...or, if not selected, style accordingly as well
             }
 
         }, this);
@@ -253,7 +258,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
     searchCallback: function (records, operation, success, resultsDal, resultsPanel, dalId, store) {
         var resultsObj = {id:dalId, store:store};
-        resultsPanel.up('#searchresults').allResultSets.push(resultsObj);
+        resultsPanel.up('#searchresults').allResultSets.push(resultsObj);   // add an object tying the dal and store together for referencing
 
         if(dalId === Ext.data.StoreManager.lookup('dalSources').defaultId)    {
             resultsPanel.updateItems(resultsObj);
