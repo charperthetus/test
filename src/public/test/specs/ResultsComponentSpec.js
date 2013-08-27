@@ -1,5 +1,8 @@
 /* global
- Ext: false, ExtSpec: false, describe: false, beforeEach: false, afterEach: false, it: false, expect: false, spyOn: false, sinon: false, ThetusTestHelpers: false, Savanna: false
+ Ext: false,
+ describe: false, beforeEach: false, afterEach: false, it: false, expect: false, spyOn: false, sinon: false,
+ ThetusTestHelpers: false,
+ Savanna: false
  */
 Ext.require('Savanna.Config');
 Ext.require('Savanna.search.controller.SearchComponent');
@@ -18,7 +21,6 @@ describe('Search Results', function () {
     var dalFixtures;
 
     beforeEach(function () {
-        this.addMatchers(ExtSpec.Jasmine.Matchers);
 
         dalFixtures = Ext.clone(ThetusTestHelpers.Fixtures.DalSources);
 
@@ -67,7 +69,7 @@ describe('Search Results', function () {
 
             var view = null,
                 store = null,
-                server;
+                server = null;
 
             beforeEach(function () {
                 //noinspection JSValidateTypes
@@ -233,7 +235,7 @@ describe('Search Results', function () {
             grid = null,
             sources = null,
             store = null,
-            server;
+            server = null;
 
         beforeEach(function () {
 
@@ -306,11 +308,11 @@ describe('Search Results', function () {
 
             it('should add a click handler which calls "displayDalFacets"', function () {
 
+                dalItem.removeListener('click');
+
                 controller.onDalRender(dalItem, {});
 
-                dalItem.body.dom.click();
-
-                expect(controller.displayDalFacets).toHaveBeenCalled();
+                expect(dalItem.hasListener('click')).toBeTruthy();
             });
 
         });

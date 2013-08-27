@@ -1,5 +1,4 @@
 /* global Ext: false, console: false */
-Ext.Loader.setPath('Savanna', '../app');
 Ext.Loader.setConfig({
     enabled: true,
     syncModeEnabled: true,

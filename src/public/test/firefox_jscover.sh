@@ -79,7 +79,7 @@ firefox_opts=$*
 rm -rf $reportdir
 
 # Start running the tests in the background with firefox
-$firefox $firefox_opts http://localhost:8080/test/SpecRunner.html &
+$firefox $firefox_opts $url &
 firefox_pid=$!
 
 # kill firefox on exit

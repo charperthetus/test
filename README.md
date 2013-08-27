@@ -13,6 +13,13 @@ If you like CLI, you can `cd /path/to/repos/src` and then `node server.js` which
 
 Next, you will need to navigate (via command line) to `src/public` and run `sencha app build` to build out the theme resources for thie project (NOTE: requires [Sencha Cmd](http://www.sencha.com/products/sencha-cmd/download) which in turn requires [Ruby 1.9.3](http://www.ruby-lang.org/en/downloads/))
 
+### Sencha Cmd installation
+
+1) validate that you have ruby 1.9.3 installed
+2) if you do not, either install [rvm](https://rvm.io/rvm/install) and install 1.9.3 (setting it to be your default version) or directly install it from [ruby-lang.org](http://www.ruby-lang.org/en/downloads/).
+1) Dowload [Sencha Cmd](http://www.sencha.com/products/sencha-cmd/download)
+2)
+
 Also, if this is your first time pulling up this app since you last started your browser, you will need to navigate to the certificate server to allow the browser to use the certificate.
 
 Do this by:
