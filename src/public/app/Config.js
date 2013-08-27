@@ -1,4 +1,4 @@
-/* global: Ext: false */
+/* global Ext: false */
 /**
  * Configuration object for Savanna client application
  *
@@ -36,7 +36,8 @@ Ext.define('Savanna.Config', {
     resourcesPathPrefix: '',
 
     buildSavannaUrl: function(key) {
-        var url
+        var url,
+            re = /\.json$/i;
 
         if (typeof this[key] !== 'undefined') {
             url = this[key];
@@ -45,6 +46,10 @@ Ext.define('Savanna.Config', {
             Ext.Error.raise({ msg: 'No url found for "' + key + '"' });
         }
 
-        return this.savannaUrlRoot + url;
+        if (!re.test(url)) {
+            url = this.savannaUrlRoot + url;
+        }
+
+        return url;
     }
 });

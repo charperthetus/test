@@ -1,8 +1,7 @@
 /* global
- Ext: false, ExtSpec: false,
- describe: false, beforeEach: false, afterEach: false, it: false, expect: false, spyOn: false, sinon: false,
- createTestDom: false, cleanTestDom: false, ThetusTestHelpers: false, setupNoCacheNoPagingStore: false,
- Savanna: false
+        Ext: false,
+        describe: false, beforeEach: false, afterEach: false, it: false, expect: false, spyOn: false, sinon: false,
+        ThetusTestHelpers: false, Savanna: false
  */
 Ext.require('Savanna.Config');
 Ext.require('Savanna.search.controller.SearchComponent');
@@ -581,8 +580,8 @@ describe('Search Component', function () {
 
                 server.respond({
                     returnBody: true, // since the service basically gives us back our searches...
-                    //reportBody: true, // enable if you want to see the request body in the console
-                    testBody: function (body) {
+                    reportBody: false, // enable if you want to see the request body in the console
+                    testBody: function(body) {
                         var json = JSON.parse(body);
                         if (json.length !== historyFixture.historyResults.length) {
                             return 'Expected request body to have ' + historyFixture.historyResults.length + ', but got ' + json.length;
