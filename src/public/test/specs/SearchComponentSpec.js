@@ -261,7 +261,7 @@ describe('Search Component', function () {
             });
 
             it('should remove search field values when "Start New Search" is selected', function () {
-                var form = searchbar.queryById("search_form");
+                var form = searchbar.queryById('search_form');
                 controller.handleNewSearch(component.queryById('searchbar'));
 
                 expect(form.queryById('search_terms').getValue()).toEqual('');
@@ -341,7 +341,8 @@ describe('Search Component', function () {
 
         describe('searchCallback', function () {
             var origErrorHandler,
-                errorRaised = false;
+                errorRaised = false,
+                fixtures;
 
             beforeEach(function () {
                 spyOn(controller, 'showResultsPage');
@@ -395,10 +396,10 @@ describe('Search Component', function () {
                     errorOnInvalidRequest: true
                 });
 
-                component.down("#resultsdals").store = dalStore;
-                component.down("#resultsdals").createDalPanels();
+                component.down('#resultsdals').store = dalStore;
+                component.down('#resultsdals').createDalPanels();
 
-                controller.searchCallback(fixtures.searchResults, {}, false, component.down("#resultsdals"), 'mockDAL');
+                controller.searchCallback(fixtures.searchResults, {}, false, component.down('#resultsdals'), 'mockDAL');
 
                 expect(errorRaised).toBeTruthy();
             });
@@ -444,6 +445,7 @@ describe('Search Component', function () {
     });
 
     describe('Models', function () {
+        var fixtures;
         beforeEach(function () {
             fixtures = Ext.clone(ThetusTestHelpers.Fixtures.SearchResults);
         });

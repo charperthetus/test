@@ -243,7 +243,7 @@ describe('Search Results', function () {
             controller = Savanna.controller.Factory.getController('Savanna.search.controller.ResultsComponent');
             panel = component.queryById('resultspanel');
             grid = panel.queryById('resultspanelgrid');
-            sources = component.queryById('resultsdals');
+            sources = component.queryById('resultsdals'),
 
             // Set up the store first as it is autovivified by our main view
             store = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.DalSources', { autoLoad: false });

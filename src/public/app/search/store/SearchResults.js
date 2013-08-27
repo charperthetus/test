@@ -12,25 +12,36 @@ Ext.define('Savanna.search.store.SearchResults', {
 
     model: 'Savanna.search.model.SearchResult',
 
-    pageSize: 100,
+
 
     autoLoad: false,
 
+    totalResultCount: 500,
+
     constructor: function () {
+
+        var ReaderClass;
+
         this.callParent(arguments);
+
+
+        /*
+        Must set totalProperty on the reader for our paging toolbar to work.  Because
+        base elements are all on the same level in a json object with no key, the only way
+        appears to be to modify the json object in readRecords to have a key value,
+        which is set to 'data' in this case.  Allows then for 'data.totalResults', etc...
+         */
+        ReaderClass = Ext.extend(Ext.data.JsonReader, {
+            type:'json',
+            root: 'results',
+            totalProperty:'totalResults'
+
+        });
 
         this.setProxy({
             type: 'savanna-cors',
             url: Savanna.Config.buildSavannaUrl('searchUrl'),
-            startParam: undefined,
-            limitParam: undefined,
-            pageParam: undefined,
-            reader: {
-                type: 'json',
-                root: 'results',
-                // TODO: this does not appear to be working yet...
-                totalProperty: 'totalResults'
-            },
+            reader: new ReaderClass(),
 
             // TODO: we should take one last stab at not having to monkey with the jsonData...
             modifyRequest:function(request) {

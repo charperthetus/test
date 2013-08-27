@@ -216,7 +216,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                 searchObj.set('searchPreferencesVOs', [
                     {
                         'dalId': dalId,
-                        'resultPerPage': 100,
+                        'resultPerPage': 20,
                         'sortOrder': 'Default'
                     }
                 ]);
@@ -251,7 +251,6 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
     showResultsPage: function (component) {
         var resultsBtn = component.down('#resultsbutton');
-
         resultsBtn.fireEvent('click', resultsBtn);
     },
 
@@ -266,6 +265,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
             store.sync();
         }
+
         else {
             Ext.Error.raise('Unable to find "searchHistory" store');
         }
