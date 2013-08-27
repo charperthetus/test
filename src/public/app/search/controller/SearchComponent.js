@@ -178,8 +178,13 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         var component;
 
         if (elem.xtype === 'searchadvanced_textfield' || elem.itemId === 'advancedsearch_submit') {
-            // dig your way out of the menu via 'ownerButton'
+            /*
+            dig your way out of the menu via 'ownerButton'.  not sure why this is necessary,
+            but I spent half an hour trying a conventional 'up' or 'findParentByType' with no
+            luck before trying the 'ownerButton' property
+            */
             component = elem.up('#searchadvanced_menu').ownerButton.up('#searchcomponent');
+
         } else {
             component = elem.findParentByType('search_searchcomponent');
         }
@@ -190,11 +195,14 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             dalStore = Ext.data.StoreManager.lookup('dalSources'),
             resultsComponent = component.queryById('searchresults');
 
+
+        /*
+        this is an array of objects - they store the dal id and the store instance for that dal's results.
+        For each selected DAL, a new store is generated and this array is used to keep track
+         */
         while(resultsComponent.allResultSets.length > 0)    {
             resultsComponent.allResultSets.pop();
         }
-
-
 
         var searchObj = Ext.create('Savanna.search.model.SearchRequest', {
             'textInputString': searchString,
