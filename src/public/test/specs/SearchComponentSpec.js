@@ -399,7 +399,7 @@ describe('Search Component', function () {
                 component.down('#resultsdals').store = dalStore;
                 component.down('#resultsdals').createDalPanels();
 
-                controller.searchCallback(fixtures.searchResults, {}, false, component.down('#resultsdals'), 'mockDAL');
+                controller.searchCallback(fixtures.searchResults, {}, false, component.down('#resultsdals'), component.down('#resultspanel'), 'mockDAL');
 
                 expect(errorRaised).toBeTruthy();
             });

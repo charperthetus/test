@@ -260,10 +260,6 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         var resultsObj = {id:dalId, store:store};
         resultsPanel.up('#searchresults').allResultSets.push(resultsObj);   // add an object tying the dal and store together for referencing
 
-        if(dalId === Ext.data.StoreManager.lookup('dalSources').defaultId)    {
-            resultsPanel.updateItems(resultsObj);
-        }
-
         var statusString = success ? 'success' : 'fail';
         resultsDal.updateDalStatus(dalId, statusString);
         if (!success) {
@@ -271,6 +267,10 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             Ext.Error.raise({
                 msg: 'The server could not complete the search request.'
             });
+        }   else    {
+            if(dalId === Ext.data.StoreManager.lookup('dalSources').defaultId)    {
+                resultsPanel.updateItems(resultsObj);
+            }
         }
     },
 

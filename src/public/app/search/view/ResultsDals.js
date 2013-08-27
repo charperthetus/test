@@ -60,13 +60,13 @@ Ext.define('Savanna.search.view.ResultsDals', {
 
     createFacetsPanel:function() {
         return Ext.create('Savanna.search.view.resultsDals.ResultsFacets', {
-            itemId:"resultsfacets"
+            itemId:'resultsfacets'
         });
     },
 
     updateDalStatus: function (dalId, status) {
         var myDal = this.queryById(dalId);
-        myDal.updateDalNameCount(dalId);
+        myDal.updateDalNameCount(dalId, status);
         var styleStatus = {
             'success': myDal.dalLoadSuccess,
             'fail': myDal.dalLoadFail,

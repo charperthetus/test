@@ -26,8 +26,9 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
     },
 
     updateGrid:function(evt, body, dal) {
-        var component = dal.up('#searchresults');
+        var component = dal.findParentByType('search_resultscomponent');
         var me = this;
+
         Ext.each(component.allResultSets, function(set) {
             if(set.id === dal.itemId)    {
                 component.queryById('resultspanel').updateItems(set);

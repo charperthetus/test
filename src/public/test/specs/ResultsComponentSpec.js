@@ -259,6 +259,8 @@ describe('Search Results', function () {
             // load the store now (should trigger event to render the view)
             store.load();
 
+            sources.store = store;
+
             server.respond({
                 errorOnInvalidRequest: true
             });
@@ -295,9 +297,10 @@ describe('Search Results', function () {
 
                 spyOn(controller, 'displayDalFacets');
 
+
                 sources.createDalPanels();
 
-                dalItem = sources.query('panel[cls=search-dal]')[1];
+                dalItem = sources.query('panel[cls=results-dal]')[1];
             });
 
             afterEach(function () {
@@ -317,6 +320,36 @@ describe('Search Results', function () {
 
         });
 
+        describe('updateGrid', function () {
+
+            var dalItem, resultsPanel;
+
+            beforeEach(function () {
+
+                sources.createDalPanels();
+
+                dalItem = sources.query('panel[cls=results-dal]')[1];
+
+                resultsPanel = component.queryById('resultspanel');
+                spyOn(resultsPanel, 'updateItems');
+            });
+
+            afterEach(function () {
+
+                dalItem = null;
+
+            });
+
+            it('should update the results grid with the passed dal store', function () {
+
+                component.allResultSets.push({id:dalItem.itemId, store:store});
+                 controller.updateGrid({}, {}, dalItem);
+
+                expect(resultsPanel.updateItems).toHaveBeenCalled();
+            });
+
+        });
+
         describe('displayDalFacets', function () {
 
             var dalItem, facets;
@@ -328,7 +361,7 @@ describe('Search Results', function () {
                 sources.createDalPanels();
 
                 facets = sources.queryById('resultsfacets');
-                dalItem = sources.query('panel[cls=search-dal]')[1];
+                dalItem = sources.query('panel[cls=results-dal]')[1];
 
                 spyOn(facets, 'add');
             });
@@ -340,7 +373,7 @@ describe('Search Results', function () {
 
             it('should add a facet for each DAL facetDescription', function () {
 
-                controller.displayDalFacets({}, {}, dalItem);
+                controller.displayDalFacets(dalItem);
 
                 var expected = store.getById(dalItem.itemId).data.facetDescriptions.length;
 

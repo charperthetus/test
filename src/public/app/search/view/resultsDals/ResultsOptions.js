@@ -63,13 +63,18 @@ Ext.define('Savanna.search.view.resultsDals.ResultsOptions', {
         }, this));
     },
 
-    updateDalNameCount:function(id)    {
-        var me = this;
-        Ext.each(this.up('#searchresults').allResultSets, function(set)  {
-            if(set.id == id)    {
-                me.down('#dalName').update(me.dalName + ' ' + '(' + set.store.totalCount + ')');
+    updateDalNameCount:function(id, status)    {
+        var me = this,
+            count = 0;
+
+        Ext.each(this.findParentByType('search_resultscomponent').allResultSets, function(set)  {
+            if(set.id === id)    {
+                if(status !== 'fail')   {
+                    count = set.store.totalCount;
+                }
+                me.down('#dalName').update(me.dalName + ' ' + '(' + count + ')');
             }
-        })
+        });
 
     },
     setupItems: function () {
@@ -85,6 +90,6 @@ Ext.define('Savanna.search.view.resultsDals.ResultsOptions', {
                 itemId: 'dalStatusIcon',
                 style:  this.dalLoadNone
             }
-        ]
+        ];
     }
 });
