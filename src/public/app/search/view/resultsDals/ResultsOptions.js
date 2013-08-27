@@ -1,6 +1,6 @@
-Ext.define('Savanna.search.view.searchDals.ResultsOptions', {
+Ext.define('Savanna.search.view.resultsDals.ResultsOptions', {
     extend: 'Ext.panel.Panel',
-    alias: 'widget.search_searchDals_resultsoptions',
+    alias: 'widget.search_resultsDals_resultsoptions',
 
     requires: [
         'Ext.form.field.Checkbox'
@@ -10,7 +10,7 @@ Ext.define('Savanna.search.view.searchDals.ResultsOptions', {
 
     width: '100%',
 
-    itemId: 'dalSearchOptions',
+    itemId: 'dalResultOptions',
 
     cls: 'search-dal',
 

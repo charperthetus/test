@@ -12,16 +12,18 @@ Ext.define('Savanna.search.view.ResultsDals', {
         'Savanna.controller.Factory',
         'Ext.form.Label',
         'Ext.toolbar.Spacer',
-        'Savanna.search.view.searchDals.ResultsOptions'
+        'Savanna.search.view.resultsDals.ResultsOptions',
+        'Savanna.search.view.resultsDals.ResultsFacets'
     ],
 
     title: 'Search Sources',
     region: 'west',
     width: 175,
-    minSize: 100,
-    maxSize: 250,
+    minWidth: 100,
+    maxWidth: 250,
     layout: 'vbox',
     border: false,
+    autoScroll:true,
 
     mixins: {
         storeable: 'Savanna.mixin.Storeable'
@@ -45,12 +47,20 @@ Ext.define('Savanna.search.view.ResultsDals', {
             var myPanel = this.createPanel(record);
             this.add(myPanel);
         }, this);
+        var facetPanel = this.createFacetsPanel();
+        this.add(facetPanel);
     },
 
     createPanel: function (myRecord) {
-        return Ext.create('Savanna.search.view.searchDals.ResultsOptions', {
+        return Ext.create('Savanna.search.view.resultsDals.ResultsOptions', {
             itemId: myRecord.data.id,
             checkboxLabel: myRecord.data.displayName
+        });
+    },
+
+    createFacetsPanel:function() {
+        return Ext.create('Savanna.search.view.resultsDals.ResultsFacets', {
+            itemId:"resultsfacets"
         });
     },
 
@@ -63,5 +73,8 @@ Ext.define('Savanna.search.view.ResultsDals', {
             'none': myDal.dalLoadNone
         }
         myDal.down('#dalStatusIcon').getEl().setStyle(styleStatus[status]);
+        if(status != 'none')    {
+            myDal.query('checkbox')[0].setValue(true);  // a DAL selected in search options
+        }
     }
 });

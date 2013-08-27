@@ -11,5 +11,41 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
 
     views: [
         'Savanna.search.view.ResultsComponent'
-    ]
+    ],
+    init: function (app) {
+
+        this.control({
+            "search_resultscomponent panel[cls=search-dal]": {
+                "render": this.onDalRender
+            }
+        })
+    },
+
+    onDalRender: function (dal, evt) {
+        dal.body.on('click', this.displayDalFacets, this, dal);
+    },
+
+    displayDalFacets: function (evt, body, dal) {
+        var record = Ext.data.StoreManager.lookup('dalSources').getById(dal.itemId),
+            descriptions = record.data.facetDescriptions,
+            facets = dal.up('#resultsdals').queryById('resultsfacets'),
+            me = this;
+
+        facets.removeAll();
+
+        if (descriptions.length > 0) {
+            Ext.each(descriptions, function (facet) {
+                var facetElement = me.createFacet(facet);
+                facets.add(facetElement);
+            });
+        } else {
+            // indicate that there are no facets in UI...
+        }
+    },
+
+    createFacet: function (facet) {
+        return Ext.create('Savanna.search.view.resultsDals.ResultsFacet', {
+            model: facet
+        });
+    }
 });

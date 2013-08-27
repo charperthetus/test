@@ -108,14 +108,19 @@ describe("Search Results", function () {
 
             describe('createPanel', function () {
                 it('should create an instance of the ResultsOptions panel', function () {
-                    /*
-                     This test broke due to the data restructure and use of 'hasOne'.  Creating a store and adding allDals - which
-                     includes the legacyDal model - fixes the test since the associations stuff executes and creates the customSearchDescription
-                     */
 
                     var panelView = view.createPanel(store.getAt(0));
 
-                    expect(panelView instanceof Savanna.search.view.searchDals.ResultsOptions).toBeTruthy();
+                    expect(panelView instanceof Savanna.search.view.resultsDals.ResultsOptions).toBeTruthy();
+                });
+            });
+
+            describe('createFacetsPanel', function () {
+                it('should create an instance of the ResultsFacets panel', function () {
+
+                    var panelView = view.createFacetsPanel();
+
+                    expect(panelView instanceof Savanna.search.view.resultsDals.ResultsFacets).toBeTruthy();
                 });
             });
 
@@ -131,7 +136,8 @@ describe("Search Results", function () {
                     spyOn(view, 'add');
                     view.store = store;
                     view.createDalPanels();
-                    expect(view.add.callCount).toBe(store.count());
+                    // checking against (view.add.callCount - 1) because of the facets panel, which also triggers an 'add' event
+                    expect(view.add.callCount - 1).toBe(store.count());
                 });
             });
 
@@ -178,7 +184,7 @@ describe("Search Results", function () {
 
                 });
 
-                it('should select a success indicator if passed a "true" value', function () {
+                it('should select a fail indicator if passed a "false" value', function () {
 
                     dalsView.createDalPanels();
 
@@ -227,25 +233,49 @@ describe("Search Results", function () {
             controller = null,
             panel = null,
             grid = null,
-            sources = null;
+            sources = null,
+            store = null;
 
         beforeEach(function () {
+
             component = Ext.create('Savanna.search.view.ResultsComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
-            controller = Ext.create('Savanna.search.controller.ResultsComponent');
+            controller = Savanna.controller.Factory.getController('Savanna.search.controller.ResultsComponent');
             panel = component.queryById('resultspanel');
             grid = panel.queryById("resultspanelgrid");
             sources = component.queryById("resultsdals");
+
+            // Set up the store first as it is autovivified by our main view
+            store = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.DalSources', { autoLoad: false });
+
+            // now set up server to get store data
+            server = new ThetusTestHelpers.FakeServer(sinon);
+
+            var readMethod = 'GET',
+                testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(store.getProxy(), 'read', readMethod);
+
+            server.respondWith(readMethod, testUrl, dalFixtures.allDals);
+
+            // load the store now (should trigger event to render the view)
+            store.load();
+
+            server.respond({
+                errorOnInvalidRequest: true
+            });
         });
 
-        afterEach(function()    {
+        afterEach(function () {
             var teardown = [component, controller, panel, grid, sources];
 
-            for (var i = 0; i < teardown; i++)   {
+            for (var i = 0; i < teardown; i++) {
                 if (teardown[i]) {
                     teardown[i].destroy();
                     teardown[i] = null;
                 }
             }
+
+            server.restore();
+            server = null;
+            store = null;
         });
 
         it('should have a store behind the grid panel', function () {
@@ -254,6 +284,79 @@ describe("Search Results", function () {
 
         it('should have a store behind the sources panel', function () {
             expect(sources.store).toBeTruthy();
+        });
+
+        describe('onDalRender', function () {
+
+            var dalItem;
+
+            beforeEach(function () {
+
+                spyOn(controller, 'displayDalFacets');
+
+                sources.createDalPanels();
+
+                dalItem = sources.query('panel[cls=search-dal]')[1];
+            });
+
+            afterEach(function () {
+
+                dalItem = null;
+
+            });
+
+            it('should add a click handler which calls "displayDalFacets"', function () {
+
+                controller.onDalRender(dalItem, {});
+
+                dalItem.body.dom.click();
+
+                expect(controller.displayDalFacets).toHaveBeenCalled();
+            });
+
+        });
+
+        describe('displayDalFacets', function () {
+
+            var dalItem, facets;
+
+            beforeEach(function () {
+                //noinspection JSValidateTypes
+
+                sources.store = store;
+                sources.createDalPanels();
+
+                facets = sources.queryById("resultsfacets");
+                dalItem = sources.query('panel[cls=search-dal]')[1];
+
+                spyOn(facets, 'add');
+            });
+
+            afterEach(function () {
+                dalItem = null;
+                facets = null;
+            });
+
+            it('should add a facet for each DAL facetDescription', function () {
+
+                controller.displayDalFacets({}, {}, dalItem);
+
+                var expected = store.getById(dalItem.itemId).data.facetDescriptions.length;
+
+                expect(facets.add.callCount).toBe(expected);
+            });
+
+        });
+
+        describe('createFacet', function () {
+
+            it('should return a component of the correct type', function () {
+
+                var facet = controller.createFacet(store.getById('SolrJdbc').data.facetDescriptions[0]);
+
+                expect(facet instanceof Savanna.search.view.resultsDals.ResultsFacet).toBeTruthy()
+            });
+
         });
     });
 });
