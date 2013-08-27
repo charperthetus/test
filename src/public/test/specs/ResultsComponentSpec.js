@@ -1,7 +1,7 @@
 /* global
  Ext: false,
  describe: false, beforeEach: false, afterEach: false, it: false, expect: false, spyOn: false, sinon: false,
- createTestDom: false, cleanTestDom: false, ThetusTestHelpers: false, setupNoCacheNoPagingStore: false,
+ ThetusTestHelpers: false,
  Savanna: false
  */
 Ext.require('Savanna.Config');
@@ -16,7 +16,7 @@ Ext.require('Savanna.search.view.ResultsPanelGrid');
 Ext.require('Savanna.search.view.ResultsPanelToolbar');
 Ext.require('Savanna.search.view.ResultsDals');
 
-describe("Search Results", function () {
+describe('Search Results', function () {
 
     var dalFixtures;
 
@@ -28,7 +28,7 @@ describe("Search Results", function () {
     });
 
     afterEach(function () {
-        fixtures = null;
+        dalFixtures = null;
 
         ThetusTestHelpers.ExtHelpers.cleanTestDom();
     });
@@ -68,7 +68,8 @@ describe("Search Results", function () {
         describe('Search Sources subview', function () {
 
             var view = null,
-                store = null;
+                store = null,
+                server = null;
 
             beforeEach(function () {
                 //noinspection JSValidateTypes
@@ -220,7 +221,7 @@ describe("Search Results", function () {
             });
 
             it('should have a paging toolbar', function () {
-                expect(grid.queryById("gridtoolbar") instanceof Ext.toolbar.Paging).toBeTruthy();
+                expect(grid.queryById('gridtoolbar') instanceof Ext.toolbar.Paging).toBeTruthy();
             });
 
         });
@@ -233,15 +234,16 @@ describe("Search Results", function () {
             panel = null,
             grid = null,
             sources = null,
-            store = null;
+            store = null,
+            server = null;
 
         beforeEach(function () {
 
             component = Ext.create('Savanna.search.view.ResultsComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
             controller = Savanna.controller.Factory.getController('Savanna.search.controller.ResultsComponent');
             panel = component.queryById('resultspanel');
-            grid = panel.queryById("resultspanelgrid");
-            sources = component.queryById("resultsdals");
+            grid = panel.queryById('resultspanelgrid');
+            sources = component.queryById('resultsdals');
 
             // Set up the store first as it is autovivified by our main view
             store = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.DalSources', { autoLoad: false });
@@ -306,11 +308,11 @@ describe("Search Results", function () {
 
             it('should add a click handler which calls "displayDalFacets"', function () {
 
+                dalItem.removeListener('click');
+
                 controller.onDalRender(dalItem, {});
 
-                dalItem.body.dom.click();
-
-                expect(controller.displayDalFacets).toHaveBeenCalled();
+                expect(dalItem.hasListener('click')).toBeTruthy();
             });
 
         });
@@ -325,7 +327,7 @@ describe("Search Results", function () {
                 sources.store = store;
                 sources.createDalPanels();
 
-                facets = sources.queryById("resultsfacets");
+                facets = sources.queryById('resultsfacets');
                 dalItem = sources.query('panel[cls=search-dal]')[1];
 
                 spyOn(facets, 'add');
@@ -353,7 +355,7 @@ describe("Search Results", function () {
 
                 var facet = controller.createFacet(store.getById('SolrJdbc').data.facetDescriptions[0]);
 
-                expect(facet instanceof Savanna.search.view.resultsDals.ResultsFacet).toBeTruthy()
+                expect(facet instanceof Savanna.search.view.resultsDals.ResultsFacet).toBeTruthy();
             });
 
         });
