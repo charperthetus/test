@@ -40,7 +40,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             },
             'search_searchcomponent > #searchbody #mainsearchoptions #mainsearchtabpanel #searchMap #searchLocationDockedItems #mapZoomTo': {
                 click: function (button) {
-                    button.up('search_searchmap').queryById('leafletMap').fireEvent('locationSearch:zoomto', button);                          git commit -a -m 'at a stopping point'
+                    button.up('search_searchmap').queryById('leafletMap').fireEvent('locationSearch:zoomto', button);
                 }
             },
             'search_searchcomponent > #searchbody #mainsearchoptions #mainsearchtabpanel #searchMap #leafletMap': {
@@ -186,8 +186,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
         this.hideMenu(component);
 
-        var bar = component.queryById('searchbar'),
-            searchString = bar.buildSearchString(),
+        var searchString = component.queryById('searchbar').buildSearchString(),
             dalStore = Ext.data.StoreManager.lookup('dalSources'),
             resultsComponent = component.queryById('searchresults');
 
@@ -241,7 +240,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         /*
          track in recent searches
          */
-        this.logHistory(bar.buildSearchString());
+        this.logHistory(searchString);
     },
 
     searchCallback: function (records, operation, success, resultsDal, resultsPanel, dalId, store) {
