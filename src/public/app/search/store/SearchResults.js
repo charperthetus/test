@@ -18,7 +18,7 @@ Ext.define('Savanna.search.store.SearchResults', {
 
     constructor: function () {
 
-        var me = this, ReaderClass;
+        var ReaderClass;
 
         this.callParent(arguments);
 
@@ -33,14 +33,12 @@ Ext.define('Savanna.search.store.SearchResults', {
             type:'json',
             root: 'results',
             totalProperty:'totalResults'
+
         });
 
         this.setProxy({
             type: 'savanna-cors',
             url: Savanna.Config.buildSavannaUrl('searchUrl'),
-            startParam: undefined,
-            limitParam: undefined,
-            pageParam: undefined,
             reader: new ReaderClass(),
 
             // TODO: we should take one last stab at not having to monkey with the jsonData...
