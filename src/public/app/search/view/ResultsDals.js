@@ -54,7 +54,7 @@ Ext.define('Savanna.search.view.ResultsDals', {
     createPanel: function (myRecord) {
         return Ext.create('Savanna.search.view.resultsDals.ResultsOptions', {
             itemId: myRecord.data.id,
-            checkboxLabel: myRecord.data.displayName
+            dalName: myRecord.data.displayName
         });
     },
 
@@ -66,6 +66,7 @@ Ext.define('Savanna.search.view.ResultsDals', {
 
     updateDalStatus: function (dalId, status) {
         var myDal = this.queryById(dalId);
+        myDal.updateDalNameCount(dalId, status);
         var styleStatus = {
             'success': myDal.dalLoadSuccess,
             'fail': myDal.dalLoadFail,
@@ -73,8 +74,5 @@ Ext.define('Savanna.search.view.ResultsDals', {
             'none': myDal.dalLoadNone
         };
         myDal.down('#dalStatusIcon').getEl().setStyle(styleStatus[status]);
-        if(status !== 'none')    {
-            myDal.query('checkbox')[0].setValue(true);  // a DAL selected in search options
-        }
     }
 });

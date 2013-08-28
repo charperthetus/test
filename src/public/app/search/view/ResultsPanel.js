@@ -15,24 +15,50 @@ Ext.define('Savanna.search.view.ResultsPanel', {
         'Savanna.controller.Factory'
     ],
 
-    region:'center',
-    header:false,
+    region: 'center',
+    header: false,
     layout:'fit',
+
 
     initComponent: function () {
         Savanna.controller.Factory.getController('Savanna.search.controller.ResultsComponent');
+        this.items = this.setupItems();
         this.callParent(arguments);
     },
-    items:  [
+
+    setupItems: function () {
+        return [
+            {
+                xtype: 'search_resultspanelgrid',
+                itemId: 'resultspanelgrid',
+                dockedItems:[
+                    {
+                        xtype: 'pagingtoolbar',
+                        itemId: 'gridtoolbar',
+                        dock: 'top',
+                        displayInfo: true
+                    }
+                ]
+            }
+        ];
+    },
+    /*
+     tried to give this a more intuitive name - it swaps the store assigned to our grid
+     based on whichever DAL the user selects from the left-hand panel, pages to the current
+     page, and re-binds the paging toolbar.
+     */
+    updateGridStore: function (obj) {
+        var grid = this.queryById('resultspanelgrid');
+        grid.reconfigure(obj.store);
+        grid.queryById('gridtoolbar').bindStore(obj.store);
+
+        obj.store.loadPage(obj.store.currentPage);
+    },
+
+    dockedItems: [
         {
-            xtype:'search_resultspanelgrid',
-            itemId:'resultspanelgrid'
-        }
-    ],
-    dockedItems:    [
-        {
-            xtype:'search_resultspaneltoolbar',
-            itemId:'resultspaneltoolbar'
+            xtype: 'search_resultspaneltoolbar',
+            itemId: 'resultspaneltoolbar'
         }
     ]
 });

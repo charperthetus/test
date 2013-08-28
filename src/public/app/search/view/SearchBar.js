@@ -7,16 +7,8 @@ Ext.define('Savanna.search.view.SearchBar', {
         'Ext.ux.layout.Center',
         'Ext.form.field.Text',
         'Savanna.controller.Factory',
-        'Savanna.search.view.SearchForm',
-        'Savanna.mixin.Storeable',
-        'Savanna.search.store.SearchResults'
+        'Savanna.search.view.SearchForm'
     ],
-
-    mixins: {
-        storeable: 'Savanna.mixin.Storeable'
-    },
-
-    store: 'Savanna.search.store.SearchResults',
 
     border: false,
     frame: false,
@@ -54,7 +46,6 @@ Ext.define('Savanna.search.view.SearchBar', {
 
     initComponent: function () {
         this.callParent(arguments);
-        this.mixins.storeable.initStore.call(this);
     },
 
     buildSearchString: function () {

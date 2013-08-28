@@ -10,11 +10,8 @@ Ext.define('Savanna.search.view.ResultsPanelGrid', {
     alias: 'widget.search_resultspanelgrid',
 
     requires: [
-        'Savanna.controller.Factory',
         'Ext.grid.column.Template'
     ],
-
-    store:'Savanna.search.store.SearchResults',
 
     columns: [
         {
@@ -33,16 +30,5 @@ Ext.define('Savanna.search.view.ResultsPanelGrid', {
 
     initComponent: function () {
         this.callParent(arguments);
-        Savanna.controller.Factory.getController('Savanna.search.controller.ResultsComponent');
-    },
-
-    dockedItems:[
-        {
-            xtype:'pagingtoolbar',
-            itemId:'gridtoolbar',
-            dock:'top',
-            store:this.store,
-            displayInfo:true
-        }
-    ]
+    }
 });
