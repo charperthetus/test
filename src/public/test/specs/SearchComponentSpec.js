@@ -273,13 +273,29 @@ describe('Search Component', function () {
         });
 
         describe('managing SearchAdvancedTextfield subview events', function () {
+
             var field = null; // set up in each test, but we want to be sure and destroy it, even if the test fails
+            var originalErrorHandler = null;
+            var errorRaised = false;
+
+            beforeEach(function()   {
+                 originalErrorHandler = Ext.Error.handle;
+                Ext.Error.handle = function()   {
+                    errorRaised = true;
+                    return true;
+                };
+            });
 
             afterEach(function () {
                 if (field) {
                     field.destroy();
                     field = null;
                 }
+                if(originalErrorHandler)    {
+                    Ext.Error.handle = originalErrorHandler;
+                    originalErrorHandler = null;
+                }
+                errorRaised = false;
             });
 
             it('getBooleanValue returns expected string for booleanType "all"', function () {
@@ -336,6 +352,21 @@ describe('Search Component', function () {
                     result = field.getBooleanValue();
 
                 expect(result).toEqual(expected);
+            });
+
+            it('getBooleanValue returns original string and raises an error on unexpected booleanType', function () {
+                field = Ext.create('Savanna.search.view.SearchAdvancedTextfield', {
+                    configs: { join: '', booleanType: 'unexpected' },
+                    renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID
+                });
+
+                field.setValue('some   text');
+
+                var expected = 'some   text',
+                    result = field.getBooleanValue();
+
+                expect(result).toEqual(expected);
+                expect(errorRaised).toBeTruthy();
             });
         });
 

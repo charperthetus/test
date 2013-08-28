@@ -37,19 +37,19 @@ describe('Search Results', function () {
 
         var searchComponent = null;
 
-        var component = null;
+        var resultsComponent = null;
 
         beforeEach(function () {
             // create a SearchResults store for results tests
             searchComponent = Ext.create('Savanna.search.view.SearchComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
 
-            component = Ext.create('Savanna.search.view.ResultsComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
+            resultsComponent = Ext.create('Savanna.search.view.ResultsComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
         });
 
         afterEach(function () {
-            if (component) {
-                component.destroy();
-                component = null;
+            if (resultsComponent) {
+                resultsComponent.destroy();
+                resultsComponent = null;
             }
             if (searchComponent) {
                 searchComponent.destroy();
@@ -58,11 +58,11 @@ describe('Search Results', function () {
         });
 
         it('should have a sources panel instance', function () {
-            expect(component.queryById('resultsdals') instanceof Savanna.search.view.ResultsDals).toBeTruthy();
+            expect(resultsComponent.queryById('resultsdals') instanceof Savanna.search.view.ResultsDals).toBeTruthy();
         });
 
         it('should have a main results panel instance', function () {
-            expect(component.queryById('resultspanel') instanceof Savanna.search.view.ResultsPanel).toBeTruthy();
+            expect(resultsComponent.queryById('resultspanel') instanceof Savanna.search.view.ResultsPanel).toBeTruthy();
         });
 
         describe('Search Sources subview', function () {
@@ -94,7 +94,7 @@ describe('Search Results', function () {
 
 
                 spyOn(Savanna.controller.Factory, 'getController');
-                view = component.queryById('resultsdals');
+                view = resultsComponent.queryById('resultsdals');
             });
 
             afterEach(function () {
@@ -127,7 +127,7 @@ describe('Search Results', function () {
             describe('createDalPanels', function () {
 
                 beforeEach(function () {
-                    view = component.queryById('resultsdals');
+                    view = resultsComponent.queryById('resultsdals');
                 });
 
 
@@ -150,7 +150,7 @@ describe('Search Results', function () {
 
                     dalsView = searchComponent.queryById('searchdals');
 
-                    view = component.queryById('resultsdals');
+                    view = resultsComponent.queryById('resultsdals');
 
                     view.store = store;
 
@@ -171,7 +171,7 @@ describe('Search Results', function () {
 
                     dalsView.createDalPanels();
 
-                    dalsView.queryById('MediaWiki').query('checkbox')[0].setValue(true);
+                    //dalsView.queryById('mockDAL').query('checkbox')[0].setValue(true);
 
                     view.createDalPanels();
 
@@ -188,7 +188,7 @@ describe('Search Results', function () {
 
                     dalsView.createDalPanels();
 
-                    dalsView.queryById('MediaWiki').query('checkbox')[0].setValue(true);
+                    //dalsView.queryById('MediaWiki').query('checkbox')[0].setValue(true);
 
                     view.createDalPanels();
 
@@ -200,6 +200,24 @@ describe('Search Results', function () {
                     expect(myDal.down('#dalStatusIcon').getEl().getStyle('backgroundColor')).toEqual(red);
                 });
             });
+
+            describe('updateDalNameCount', function () {
+                beforeEach(function () {
+                    view = resultsComponent.queryById('resultsdals');
+                });
+                it('should set the DAL item label based on a DAL id and status', function () {
+                    view.createDalPanels();
+
+                    var dalItem = view.query('panel[cls=results-dal]')[1],
+                        expected = 'Savanna (8)';
+
+                    resultsComponent.allResultSets = [{id:'SolrJdbc', store:store}];
+
+                    dalItem.updateDalNameCount('SolrJdbc', 'success');
+
+                    expect(dalItem.queryById('dalName').html).toEqual(expected);
+                });
+            });
         });
 
         describe('Grid subview', function () {
@@ -208,8 +226,8 @@ describe('Search Results', function () {
             var tools = null;
 
             beforeEach(function () {
-                grid = component.queryById('resultspanel').queryById('resultspanelgrid');
-                tools = component.queryById('resultspanel').queryById('resultspaneltoolbar');
+                grid = resultsComponent.queryById('resultspanel').queryById('resultspanelgrid');
+                tools = resultsComponent.queryById('resultspanel').queryById('resultspaneltoolbar');
             });
 
             it('should have a grid of the correct component type', function () {
@@ -320,7 +338,7 @@ describe('Search Results', function () {
 
         });
 
-        describe('updateGrid', function () {
+        describe('changeSelectedStore', function () {
 
             var dalItem, resultsPanel;
 
@@ -331,7 +349,7 @@ describe('Search Results', function () {
                 dalItem = sources.query('panel[cls=results-dal]')[1];
 
                 resultsPanel = component.queryById('resultspanel');
-                spyOn(resultsPanel, 'updateItems');
+                spyOn(resultsPanel, 'updateGridStore');
             });
 
             afterEach(function () {
@@ -343,9 +361,12 @@ describe('Search Results', function () {
             it('should update the results grid with the passed dal store', function () {
 
                 component.allResultSets.push({id:dalItem.itemId, store:store});
-                 controller.updateGrid({}, {}, dalItem);
+                /*
+                This call swaps the store behind the grid
+                 */
+                 controller.changeSelectedStore({}, {}, dalItem);
 
-                expect(resultsPanel.updateItems).toHaveBeenCalled();
+                expect(resultsPanel.updateGridStore).toHaveBeenCalled();
             });
 
         });

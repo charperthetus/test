@@ -31,25 +31,28 @@ Ext.define('Savanna.search.view.ResultsPanel', {
             {
                 xtype: 'search_resultspanelgrid',
                 itemId: 'resultspanelgrid',
-                store: Ext.create('Savanna.search.store.SearchResults'),
                 dockedItems:[
                     {
                         xtype: 'pagingtoolbar',
                         itemId: 'gridtoolbar',
                         dock: 'top',
-                        store: Ext.create('Savanna.search.store.SearchResults'),
                         displayInfo: true
                     }
                 ]
             }
         ];
     },
-
-    updateItems: function (obj) {
+    /*
+     tried to give this a more intuitive name - it swaps the store assigned to our grid
+     based on whichever DAL the user selects from the left-hand panel, pages to the current
+     page, and re-binds the paging toolbar.
+     */
+    updateGridStore: function (obj) {
         var grid = this.queryById('resultspanelgrid');
         grid.reconfigure(obj.store);
         grid.queryById('gridtoolbar').bindStore(obj.store);
-        obj.store.loadPage(1);
+
+        obj.store.loadPage(obj.store.currentPage);
     },
 
     dockedItems: [

@@ -22,16 +22,20 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
     },
 
     onDalRender: function (dal) {
-        dal.body.on('click', this.updateGrid, this, dal);
+        dal.body.on('click', this.changeSelectedStore, this, dal);
     },
-
-    updateGrid:function(evt, body, dal) {
+    /*
+    tried to give this a more intuitive name - it swaps the store assigned to our grid
+    based on whichever DAL the user selects from the left-hand panel, and triggers an update
+    of the facets for the newly selected store.
+     */
+    changeSelectedStore:function(evt, body, dal) {
         var component = dal.findParentByType('search_resultscomponent');
         var me = this;
 
         Ext.each(component.allResultSets, function(set) {
             if(set.id === dal.itemId)    {
-                component.queryById('resultspanel').updateItems(set);
+                component.queryById('resultspanel').updateGridStore(set);
                 me.displayDalFacets(dal);
             }
         });

@@ -1,4 +1,4 @@
-
+/* global Ext: false, Savanna: false */
 /**
  * Created with IntelliJ IDEA.
  * User: ksonger
@@ -201,9 +201,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         this is an array of objects - they store the dal id and the store instance for that dal's results.
         For each selected DAL, a new store is generated and this array is used to keep track
          */
-        while(resultsComponent.allResultSets.length > 0)    {
-            resultsComponent.allResultSets.pop();
-        }
+        resultsComponent.allResultSets = [];
 
         /*
         Create the search request payload
@@ -258,6 +256,9 @@ Ext.define('Savanna.search.controller.SearchComponent', {
     },
 
     searchCallback: function (records, operation, success, resultsDal, resultsPanel, dalId, store) {
+        if(store == null)   {
+            console.trace();
+        }
         var resultsObj = {id:dalId, store:store};
         resultsPanel.up('#searchresults').allResultSets.push(resultsObj);   // add an object tying the dal and store together for referencing
 
@@ -272,7 +273,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         }   else    {
             if(dalId === Ext.data.StoreManager.lookup('dalSources').defaultId)    {
                 var controller = Savanna.controller.Factory.getController('Savanna.search.controller.ResultsComponent');
-                controller.updateGrid({}, {}, resultsDal.queryById(dalId));
+                controller.changeSelectedStore({}, {}, resultsDal.queryById(dalId));
             }
         }
     },

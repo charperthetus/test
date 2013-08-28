@@ -19,8 +19,11 @@ Ext.define('Savanna.search.view.resultsDals.ResultsOptions', {
 
 
     /*
-    temporary styles, to be replaced by design team
+    temporary, to be replaced by design team.  This approach was requested by Joel
+    as the easiest path for them to update with final styles.  Values are just utility,
+    to line up text and icons, and leave room for the facets panel below the DALs.
      */
+
     dalLoadNone: {
         backgroundColor:'white',
         width:'20px',
@@ -72,6 +75,7 @@ Ext.define('Savanna.search.view.resultsDals.ResultsOptions', {
                 if(status !== 'fail')   {
                     count = set.store.totalCount;
                 }
+
                 me.down('#dalName').update(me.dalName + ' ' + '(' + count + ')');
             }
         });
