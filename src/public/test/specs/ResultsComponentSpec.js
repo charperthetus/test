@@ -171,8 +171,6 @@ describe('Search Results', function () {
 
                     dalsView.createDalPanels();
 
-                    //dalsView.queryById('mockDAL').query('checkbox')[0].setValue(true);
-
                     view.createDalPanels();
 
                     view.updateDalStatus('mockDAL', 'success');
@@ -187,8 +185,6 @@ describe('Search Results', function () {
                 it('should select a fail indicator if passed a "false" value', function () {
 
                     dalsView.createDalPanels();
-
-                    //dalsView.queryById('MediaWiki').query('checkbox')[0].setValue(true);
 
                     view.createDalPanels();
 

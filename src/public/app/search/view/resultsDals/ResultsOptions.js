@@ -75,8 +75,8 @@ Ext.define('Savanna.search.view.resultsDals.ResultsOptions', {
                 if(status !== 'fail')   {
                     count = set.store.totalCount;
                 }
-
                 me.down('#dalName').update(me.dalName + ' ' + '(' + count + ')');
+                return false;
             }
         });
 

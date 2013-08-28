@@ -37,6 +37,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
             if(set.id === dal.itemId)    {
                 component.queryById('resultspanel').updateGridStore(set);
                 me.displayDalFacets(dal);
+                return false;
             }
         });
     },
