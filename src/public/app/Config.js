@@ -36,7 +36,7 @@ Ext.define('Savanna.Config', {
     resourcesPathPrefix: '',
 
     buildSavannaUrl: function(key) {
-        var url;
+
         var url,
             re = /\.json$/i;
 
