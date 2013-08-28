@@ -256,9 +256,6 @@ Ext.define('Savanna.search.controller.SearchComponent', {
     },
 
     searchCallback: function (records, operation, success, resultsDal, resultsPanel, dalId, store) {
-        if(store == null)   {
-            console.trace();
-        }
         var resultsObj = {id:dalId, store:store};
         resultsPanel.up('#searchresults').allResultSets.push(resultsObj);   // add an object tying the dal and store together for referencing
 

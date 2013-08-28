@@ -208,12 +208,12 @@ describe('Search Results', function () {
                 it('should set the DAL item label based on a DAL id and status', function () {
                     view.createDalPanels();
 
-                    var dalItem = view.query('panel[cls=results-dal]')[1],
-                        expected = 'Savanna (8)';
+                    var dalItem = view.query('panel[cls=results-dal]')[0],
+                        expected = store.getById(dalItem.itemId).data.displayName + ' (8)';
 
-                    resultsComponent.allResultSets = [{id:'SolrJdbc', store:store}];
+                    resultsComponent.allResultSets.push({id:dalItem.itemId, store:store})
 
-                    dalItem.updateDalNameCount('SolrJdbc', 'success');
+                    dalItem.updateDalNameCount(dalItem.itemId, 'success');
 
                     expect(dalItem.queryById('dalName').html).toEqual(expected);
                 });
