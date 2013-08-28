@@ -10,14 +10,16 @@
 
     <link rel="stylesheet" type="text/css" href="lib/jasmine-1.3.1/jasmine.css">
 
-    <!-- ExtJS -->
-    <script type="text/javascript" src="../ext/ext-all-debug.js"></script>
-
     <!-- Jasmine libs -->
     <script type="text/javascript" src="lib/jasmine-1.3.1/jasmine.js"></script>
     <script type="text/javascript" src="lib/jasmine-1.3.1/jasmine-html.js"></script>
     <script type="text/javascript" src="lib/jasmine-reporters/jasmine.phantomjs-reporter.js"></script>
     <script type="text/javascript" src="lib/sinon-1.7.1.js"></script>
+
+    <!-- START TEST INCLUDES (should be same for all files) -->
+
+    <!-- ExtJS -->
+    <script type="text/javascript" src="../ext/ext-all-debug.js"></script>
 
     <!-- Thetus test helpers (and dependencies) -->
     <script type="text/javascript" src="lib/underscore.js"></script>
@@ -29,18 +31,18 @@
     <script type="text/javascript" src="../resources/GoJS/release/go-debug.js"></script>
 
     <!-- Flexpaper -->
-    <!-- <script src='lib/jquery/jquery.min.js'></script>
-     <script src='lib/jquery/jquery.extensions.min.js'></script>
-     <link rel='stylesheet' href='lib/flexpaper/css/flexpaper.css'/>
-     <script type='text/javascript' src='lib/flexpaper/js/flexpaper.js'></script>
-     <script type='text/javascript' src='lib/flexpaper/js/flexpaper_handlers.js'></script>-->
+    <script type="text/javascript" src="../resources/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../resources/jquery/jquery.extensions.min.js"></script>
+    <link rel="stylesheet" href="../resources/flexpaper/css/flexpaper.css"/>
+    <script type="text/javascript" src="../resources/flexpaper/js/flexpaper.js"></script>
+    <script type="text/javascript" src="../resources/flexpaper/js/flexpaper_handlers.js"></script>
 
     <!-- Leaflet -->
-    <script type='text/javascript' src='../resources/Leaflet/leaflet.js'></script>
+    <script type="text/javascript" src="../resources/Leaflet/leaflet.js"></script>
     <link rel="stylesheet" href="../resources/Leaflet/leaflet.draw.css" />
-    <script type='text/javascript' src='../resources/Leaflet/leaflet.draw-src.js'></script>
+    <script type="text/javascript" src="../resources/Leaflet/leaflet.draw-src.js"></script>
     <link rel="stylesheet" href="../resources/Leaflet/L.Control.Zoomslider.css" />
-    <script type='text/javascript' src='../resources/Leaflet/L.Control.Zoomslider.js'></script>
+    <script type="text/javascript" src="../resources/Leaflet/L.Control.Zoomslider.js"></script>
 
     <!-- include fixture files here... -->
     <!--<script type="text/javascript" src="fixtures/SOME_FIXTURE_FILE.js"></script>-->
@@ -65,6 +67,8 @@
     <script type="text/javascript" src="specs/ResultsComponentSpec.js"></script>
     <script type="text/javascript" src="specs/LeafletSpec.js"></script>
     <script type="text/javascript" src="specs/LocationSearchSpec.js"></script>
+
+    <!-- END TEST INCLUDES (should be same for all files) -->
 
 </head>
 <body>

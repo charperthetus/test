@@ -1,4 +1,10 @@
-//Sample modified from PhantomJS 1.8.2 examples
+/**
+ * run-jscover-jasmine.js
+ *
+ * PhantomJS runner script to run JsCover coverage testing tool
+ *
+ * This is copied from http://tntim96.github.io/JSCover/manual/manual.xml
+ */
 var system = require('system');
 
 /**

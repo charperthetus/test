@@ -1,4 +1,9 @@
 /* global jasmine: false, Exception: false */
+/**
+ * Jasmine test reporter for PhantomJS to generate surefire-compliant XML
+ *
+ * Adapted from: https://github.com/detro/phantomjs-jasminexml-example
+ */
 (function() {
 
     if (! jasmine) {
@@ -122,7 +127,7 @@
         },
 
         reportRunnerResults: function(runner) {
-            this.log('Runner Finished.');
+            this.log('================== RUNNER FINISHED. ====================');
             var suites = runner.suites(),
                 passed = true;
             for (var i = 0; i < suites.length; i++) {

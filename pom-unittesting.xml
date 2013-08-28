@@ -159,7 +159,7 @@
                             <goal>exec</goal>
                         </goals>
                         <configuration>
-                            <executable>${project.basedir}/src/public/test/test.sh</executable>
+                            <executable>${project.basedir}/src/public/test/jscover.sh</executable>
                             <workingDirectory>${project.basedir}/src</workingDirectory>
                             <arguments>
                                 <argument>start</argument>
@@ -187,7 +187,7 @@
                             <goal>exec</goal>
                         </goals>
                         <configuration>
-                            <executable>${project.basedir}/src/public/test/test.sh</executable>
+                            <executable>${project.basedir}/src/public/test/jscover.sh</executable>
                             <workingDirectory>${project.basedir}/src</workingDirectory>
                             <arguments>
                                 <argument>stop</argument>

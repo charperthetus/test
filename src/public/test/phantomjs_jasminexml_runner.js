@@ -1,4 +1,11 @@
 /* global phantom: false, require: false, utils: false, jasmine: false, console: false */
+/**
+ * phantomjs_jasminexml_runner.js
+ *
+ * Test runner file to load given HTML page (typically phantomjsRunner.html) that is configured to run Jasmine specs
+ *
+ * This is adapted from https://github.com/detro/phantomjs-jasminexml-example
+ */
 var htmlrunner,
     resultdir,
     page,
