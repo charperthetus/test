@@ -25,22 +25,23 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
 
         var titleText = gmake(go.TextBlock, {
             textAlign: 'left',
-            editable: true,
             width: 80,
+            editable: true,
             wrap: go.TextBlock.WrapDesiredSize,
             font: 'bold 10pt Helvetitca, Arial, sans-serif',
-            cursor: 'pointer'
+            cursor: 'pointer',
+            alignment: go.Spot.TopLeft
         }, new go.Binding('text', 'title').makeTwoWay());
 
         var descText = gmake(go.TextBlock, {
             textAlign: 'left',
-            editable: true,
             width: 80,
+            editable: true,
             name: 'descText',
             wrap: go.TextBlock.WrapDesiredSize,
             font: '10pt Helvetitca, Arial, sans-serif',
             cursor: 'pointer',
-            text: 'Description'
+            alignment: go.Spot.TopLeft
         }, new go.Binding('text', 'description').makeTwoWay(),
         new go.Binding('width', 'width').makeTwoWay());
 
@@ -53,25 +54,25 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
                 resizeObjectName: 'descText',
                 mouseEnter: this.nodeMouseEnter,
                 mouseLeave: this.nodeMouseLeave,
-                mouseDragEnter: this.nodeDragEnter
+                mouseDragEnter: this.nodeDragEnter,
+                areaBackground: 'transparent', //This allows the hover to always work
+                fromLinkable: true // This is needed to allow the whole node to be the only port
             },
             //Bind the location to the model text loc so when we add new nodes to the model with a location it will show correctly
             new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
-            //Make a transparent rectangle in the background so our hover always works
-            gmake(go.Shape, { figure: 'Rectangle', fill: 'transparent', stroke: null }),
             gmake(go.Panel, go.Panel.Horizontal,
                 gmake(go.Panel, go.Panel.Auto,
                     gmake(go.Shape, { figure: 'Rectangle', fill: 'transparent', stroke: null, width: 52, height: 52 }),
-                    gmake(go.Shape, { fill: 'blue', stroke: null, alignment: go.Spot.BottomLeft }, new go.Binding('geometry', 'percent', function(p){ return makeCircle(p,52); }  )),
+                    gmake(go.Shape, { fill: 'blue', stroke: null, alignment: go.Spot.TopLeft, visible: false }, new go.Binding('geometry', 'percent', function(p){ return makeCircle(p,52); }  )),
                     gmake(go.Shape, { figure: 'circle', stroke: null, width: 46 }, new go.Binding('fill', 'color')),
                     icon,
                     gmake(go.Shape, { figure: 'circle', fill: null, strokeWidth: 3, width: 49 }, new go.Binding('stroke', 'isSelected', function (s) { return (s ? 'cornflowerblue' : null); }).ofObject('') ),
-                    this.makePort('T', go.Spot.TopRight, 0),
-                    this.makePort('L', go.Spot.TopLeft, 270),
-                    this.makePort('B', go.Spot.BottomLeft, 180),
+                    this.makePort('TR', go.Spot.TopRight, 0),
+                    this.makePort('TL', go.Spot.TopLeft, 270),
+                    this.makePort('BL', go.Spot.BottomLeft, 180),
                     //The button to make a new child node and link it
                     gmake('Button',
-                        { alignment: go.Spot.BottomRight, visible: false, portId: 'R', fromLinkable: true,
+                        { alignment: go.Spot.BottomRight, opacity: 0, name: 'BR', fromLinkable: true,
                             click: this.addNodeAndLink },  // this function is defined below
                         gmake(go.Shape, 'PlusLine', { desiredSize: new go.Size(6, 6) })
                     )),
@@ -80,14 +81,21 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
                     descText))
         );
 
+        nodeTemplate.resizeAdornmentTemplate =
+            gmake(go.Adornment, "Spot",
+                gmake(go.Placeholder),
+                gmake(go.Shape,
+                    { alignment: go.Spot.BottomRight,
+                        desiredSize: new go.Size(8, 8),
+                        fill: "cyan",
+                        cursor: "col-resize" }));
+
         function makeCircle(percent, size){
             var angle = 360 * (percent / 100);
             var newAngle = angle > 180 ? angle - 180 : angle + 180;
-            var radians = newAngle * Math.PI / 180; //radians = angle * PI / 180
             var radius = size / 2;
-            var x = radius * Math.cos(radians) + radius;
-            var y = - radius * Math.sin(radians);
-            var semicircle = go.Geometry.parse('M' + radius + ',-' + radius + ' h-' + radius + ' a' + radius + ',' + radius + ' 0 ' + (percent > 50 ? 1 : 0) + ',0 '+ x + ',' + y + ' z', true);
+            var semicircle = go.Geometry.parse('M' + radius + ',' + radius +
+                'B' + 180 + ' ' + -angle+ ' ' + radius + ' ' + radius + ' ' + radius + ' ' + radius + ' z', true);
             return semicircle;
         }
 
@@ -110,15 +118,6 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
         var nodeTemplateMap = new go.Map();
         nodeTemplateMap.add('standard', nodeTemplate);
         nodeTemplateMap.add('image', imageTemplate);
-
-        nodeTemplate.resizeAdornmentTemplate =
-            gmake(go.Adornment, "Spot",
-                gmake(go.Placeholder),
-                gmake(go.Shape,  // just a single resize adornment!
-                    { alignment: go.Spot.BottomRight,
-                        desiredSize: new go.Size(8, 8),
-                        fill: "cyan",
-                        cursor: "col-resize" }));
 
         return nodeTemplateMap;
     },
@@ -161,9 +160,9 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
         var gmake = go.GraphObject.make;
         var triangle = go.Geometry.parse('M 0,0 L 12,0 12,12 0,0 12,0', true);
         return gmake(go.Panel,
-            { alignment: spot },
-            gmake(go.Shape, { geometry: triangle, stroke: 'black', fill: 'red', angle: angle, visible: false},
-                {portId: name, fromLinkable: true }) );
+            { alignment: spot, alignmentFocus: spot },
+            gmake(go.Shape, { geometry: triangle, stroke: null, fill: null, angle: angle},
+                { name: name, fromLinkable: true }) );
     },
 
     convertTypeToImage: function(category) {
@@ -181,12 +180,16 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
         if (!diagram || diagram.isReadOnly || !diagram.allowLink) {
             return;
         }
-
-        var it = node.ports;
-
-        while (it.next()) {
-            var port = it.value;
-            port.visible = true;
+        // Change T,L,B,R
+        var names = ['TR','TL','BR','BL'];
+        for (var i = 0; i < names.length; i++) {
+            var port = node.findObject(names[i]);
+            if (port instanceof go.Panel) {
+                port.opacity = 1;
+            } else { // it's a shape
+                port.stroke = 'black';
+                port.fill = 'red';
+            }
         }
     },
 
@@ -198,11 +201,16 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
             return;
         }
 
-        var it = node.ports;
-
-        while (it.next()) {
-            var port = it.value;
-            port.visible = false;
+        // Change T,L,B,R
+        var names = ['TR','TL','BR','BL'];
+        for (var i = 0; i < names.length; i++) {
+            var port = node.findObject(names[i]);
+            if (port instanceof go.Panel) {
+                port.opacity = 0;
+            } else { // it's a shape
+                port.stroke = null;
+                port.fill = null;
+            }
         }
     },
 
@@ -286,7 +294,7 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
         var fromData = fromNode.data;
 
         //TODO - Need to figure out which properties should be copied into the new node by default (ie category, percent)
-        var toData = { title: 'new', type: fromData.type, category: fromData.category, key: Ext.id(), percent: 10 };
+        var toData = { title: 'New Node', type: fromData.type, color: fromData.color, category: fromData.category, key: Ext.id() };
         var fromLocation = fromNode.location;
         var siblingNodes = fromNode.findNodesOutOf();
         var x = 0;
