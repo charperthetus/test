@@ -1,8 +1,8 @@
 #! /bin/sh
 
-# test.sh - shell script used by maven to star/stop JSCover server
+# jscover.sh - shell script used by maven to star/stop JSCover server
 #
-# Usage: test.sh [start|stop]
+# Usage: jscover.sh [start|stop]
 
 ROOTDIR="$( cd "$( dirname "$0")" && pwd )"
 COMMAND=$1
