@@ -14,7 +14,8 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         'Savanna.search.model.SearchHistory',
         'Savanna.search.store.SearchResults',
         'Savanna.search.store.SearchHistory',
-        'Savanna.search.view.SearchLocationForm'
+        'Savanna.search.view.SearchLocationForm',
+        'Savanna.controller.Factory'
     ],
 
     models: [
@@ -262,6 +263,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
         var statusString = success ? 'success' : 'fail';
         resultsDal.updateDalStatus(dalId, statusString);
+
         if (!success) {
             // server down..?
             Ext.Error.raise({
@@ -269,7 +271,8 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             });
         }   else    {
             if(dalId === Ext.data.StoreManager.lookup('dalSources').defaultId)    {
-                resultsPanel.updateItems(resultsObj);
+                var controller = Savanna.controller.Factory.getController('Savanna.search.controller.ResultsComponent');
+                controller.updateGrid({}, {}, resultsDal.queryById(dalId));
             }
         }
     },

@@ -72,7 +72,7 @@ Ext.define('Savanna.search.view.ResultsDals', {
             'fail': myDal.dalLoadFail,
             'pending': myDal.dalLoadPending,
             'none': myDal.dalLoadNone
-        }
+        };
         myDal.down('#dalStatusIcon').getEl().setStyle(styleStatus[status]);
     }
 });

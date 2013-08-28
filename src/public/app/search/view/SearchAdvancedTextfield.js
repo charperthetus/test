@@ -22,16 +22,12 @@ Ext.define('Savanna.search.view.SearchAdvancedTextfield', {
         switch(this.configs.booleanType)    {
             case 'all':
                 return str.replace(/\s+/g, ' AND ');
-            break;
             case 'exact':
                 return '"' + str + '"';
-            break;
             case 'any':
                 return str.replace(/\s+/g, ' OR ');
-            break;
             case 'none':
                 return str.replace(/\s+/g, ' NOT ');
-            break;
         }
     }
 });
