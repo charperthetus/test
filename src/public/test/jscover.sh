@@ -28,4 +28,13 @@ if [[ $COMMAND == "stop" ]]; then
     echo 'Cleaning up JSCover files...'
 
 	rm -f $ROOTDIR/jscover.out $ROOTDIR/jscover.err $ROOTDIR/jscover.pid
+
+    echo 'Creating Cobertura reports...'
+
+    # TODO: the path to tests and results are hard-coded...
+  	java -cp ~/.m2/repository/com/github/tntim96/JSCover/0.3.0/JSCover-0.3.0.jar jscover.report.Main --format=COBERTURAXML public/test/reports/jasmine public/app > $ROOTDIR/jscover-report.out 2> $ROOTDIR/jscover-report.err < /dev/null &
+
+    echo 'Cleaning up JSCover report files...'
+
+    rm -f  $ROOTDIR/jscover-report.out $ROOTDIR/jscover-report.err
 fi
