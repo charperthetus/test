@@ -20,6 +20,7 @@ Ext.define('Savanna.search.view.ResultsComponent', {
         collapsible: true,
         split: true
     },
+    currentResultSet:null,
     initComponent: function () {
         this.allResultSets = [];
         this.callParent(arguments);

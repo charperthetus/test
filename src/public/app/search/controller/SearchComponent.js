@@ -215,6 +215,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         var dals = component.down('#searchdals'),
             resultsDal = component.down('#resultsdals'),
             resultsPanel = component.down('#resultspanel');
+
         /*
          Check for selected additional Dals, and do a search on each of them
          */
@@ -233,10 +234,15 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                     }
                 ]);
                 /*
+                Determine the pageSize for the stores.
+                 */
+                var resultsPerPage = component.down('#resultsPageSizeCombobox').value;
+                /*
                 Create a new store for each DAL
                  */
                 var resultsStore = Ext.create('Savanna.search.store.SearchResults', {
-                    storeId:'searchResults_' + dalId
+                    storeId:'searchResults_' + dalId,
+                    pageSize: resultsPerPage
                 });
                 resultsStore.proxy.jsonData = Ext.JSON.encode(searchObj.data);  // attach the search request object
                 resultsStore.load({
