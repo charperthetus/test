@@ -20,7 +20,7 @@ Ext.define('Savanna.Config', {
 
     //savannaUrlRoot: 'http://localhost:8080/SavannaX/',
 
-    // Urls for all the searches we do
+    // Urls for all the rest endpoints
     loginUrl: 'authcheck/loggedIn.html',
     searchUrl: 'rest/search', // local dev version: 'app/assets/data/testSearchResults.json',
     searchHistoryUrl: 'rest/search/history',// local dev version: 'app/assets/data/testSearchHistory.json',
