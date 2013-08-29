@@ -12,11 +12,9 @@ Ext.define('Savanna.search.store.SearchResults', {
 
     model: 'Savanna.search.model.SearchResult',
 
-
-
     autoLoad: false,
 
-    totalResultCount: 500,
+    pageSize: 20,
 
     constructor: function () {
 

@@ -21,6 +21,7 @@ Ext.define('Savanna.search.view.ResultsComponent', {
         split: true
     },
     initComponent: function () {
+        this.allResultSets = [];
         this.callParent(arguments);
         Savanna.controller.Factory.getController('Savanna.search.controller.ResultsComponent');
     },

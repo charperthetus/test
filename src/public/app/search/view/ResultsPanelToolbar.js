@@ -67,19 +67,16 @@ Ext.define('Savanna.search.view.ResultsPanelToolbar', {
         },
         {
             xtype: 'tbfill'
-        }
-        ,
+        },
 // JUST PLACEHOLDER ICONS
         {
             glyph: 61786,
             ui: 'flat-toolbar-button'
-        }
-        ,
+        },
         {
             glyph: 61746,
             ui: 'flat-toolbar-button'
-        }
-        ,
+        },
         {
             glyph: 61786,
             ui: 'flat-toolbar-button'
