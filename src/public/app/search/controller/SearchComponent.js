@@ -14,7 +14,8 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         'Savanna.search.model.SearchHistory',
         'Savanna.search.store.SearchResults',
         'Savanna.search.store.SearchHistory',
-        'Savanna.search.view.SearchLocationForm'
+        'Savanna.search.view.SearchLocationForm',
+        'Savanna.controller.Factory'
     ],
 
     models: [
@@ -30,51 +31,51 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
     init: function () {
         this.control({
-            'search_searchcomponent > #searchbar #main_panel #search_reset #search_reset_button': {
+            'search_searchcomponent #search_reset_button': {
                 click: this.handleNewSearch
             },
-            'search_searchcomponent > #searchbody #mainsearchoptions #mainsearchtabpanel #searchMap #searchLocationDockedItems #clearLocationSearch': {
+            'search_searchcomponent #clearLocationSearch': {
                 click: function (button) {
                     button.up('search_searchmap').queryById('leafletMap').fireEvent('locationSearch:clear');
                 }
             },
-            'search_searchcomponent > #searchbody #mainsearchoptions #mainsearchtabpanel #searchMap #searchLocationDockedItems #mapZoomTo': {
+            'search_searchcomponent #mapZoomTo': {
                 click: function (button) {
                     button.up('search_searchmap').queryById('leafletMap').fireEvent('locationSearch:zoomto', button);
                 }
             },
-            'search_searchcomponent > #searchbody #mainsearchoptions #mainsearchtabpanel #searchMap #leafletMap': {
-                'draw:created': function (layerType) {
+            'search_searchcomponent #leafletMap': {
+                'draw:created': function () {
                 }
             },
-            'search_searchcomponent > #searchbody #mainsearchoptions #mainsearchtabpanel #searchMap #searchLocationDockedItems #findLocation': {
+            'search_searchcomponent #findLocation': {
                 click: this.onFindLocation
             },
-            'search_searchcomponent > #searchbar #main_panel #search_form #searchadvanced_btn': {
+            'search_searchcomponent #searchadvanced_btn': {
                 click: this.alignMenuWithTextfield
             },
-            'search_searchcomponent > #searchbar #main_panel #search_form #search_terms': {
+            'search_searchcomponent #search_terms': {
                 keyup: this.handleSearchTermKeyUp
             },
-            'search_searchcomponent > #searchbar #main_panel #search_form #searchadvanced_menu textfield': {
+            'search_searchcomponent #searchadvanced_menu textfield': {
                 keyup: this.handleSearchTermKeyUp
             },
-            'search_searchcomponent > #searchbar #main_panel #search_form #search_submit': {
+            'search_searchcomponent #search_submit': {
                 click: this.doSearch
             },
-            'search_searchcomponent > #searchbar #main_panel #search_form #searchadvanced_menu #submit_panel #advancedsearch_submit': {
+            'search_searchcomponent #advancedsearch_submit': {
                 click: this.doSearch
             },
-            'search_searchcomponent > #searchbar #main_panel #search_form #searchadvanced_menu #close_panel': {
+            'search_searchcomponent #close_panel': {
                 click: this.handleClose
             },
-            'search_searchcomponent > #searchtoolbar #historybutton #historymenu menuitem': {
+            'search_searchcomponent #historymenu menuitem': {
                 click: this.onHistoryItemClick
             },
-            'search_searchcomponent > #searchbody #searchbodytoolbar #optionsbutton': {
+            'search_searchcomponent #optionsbutton': {
                 click: this.onBodyToolbarClick
             },
-            'search_searchcomponent > #searchbody #searchbodytoolbar #resultsbutton': {
+            'search_searchcomponent #resultsbutton': {
                 click: this.onBodyToolbarClick
             }
         });
@@ -85,7 +86,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         var locationSearchInput =  button.up('#searchLocationDockedItems').down('#findLocationSearchText');
         var locationSearchText = locationSearchInput.value;
         if (locationSearchText) {
-            myForm =  Ext.create('Savanna.search.view.SearchLocationForm');
+            var myForm =  Ext.create('Savanna.search.view.SearchLocationForm');
             myForm.show();
         }
     },
@@ -111,10 +112,10 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         /*
          return to the options screen if we're not already there
          */
-        var component = elem.findParentByType("search_searchcomponent");
-        if (component.down('#searchbody').currentPanel != "searchoptions") {
+        var component = elem.findParentByType('search_searchcomponent');
+        if (component.down('#searchbody').currentPanel !== 'searchoptions') {
             var optionsBtn = component.queryById('optionsbutton');
-            optionsBtn.fireEvent("click", optionsBtn);
+            optionsBtn.fireEvent('click', optionsBtn);
         }
 
         /*
@@ -125,10 +126,9 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         dalStore.each(function (source) {
             var dals = component.down('#searchdals'),
                 resultsDals = component.down('#resultsdals'),
-                checkbox = dals.queryById(dalId).query('checkbox')[0].getValue();
+                checkbox = dals.queryById(source.data.id).query('checkbox')[0].getValue();
             if (checkbox.getValue()) {
                 checkbox.setValue(false);
-                resultsDals.queryById(source.data.id).query('checkbox')[0].setValue(false);
                 resultsDals.queryById(source.data.id).down('#dalStatusIcon').getEl().setStyle(resultsDals.queryById(source.data.id).dalLoadNone);
             }
         });
@@ -178,56 +178,73 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
         var component;
 
-        if (elem.xtype == 'searchadvanced_textfield' || elem.itemId === 'advancedsearch_submit') {
-            // dig your way out of the menu via 'ownerButton'
+        if (elem.xtype === 'searchadvanced_textfield' || elem.itemId === 'advancedsearch_submit') {
+            /*
+            dig your way out of the menu via 'ownerButton'.  not sure why this is necessary,
+            but I spent half an hour trying a conventional 'up' or 'findParentByType' with no
+            luck before trying the 'ownerButton' property
+            */
             component = elem.up('#searchadvanced_menu').ownerButton.up('#searchcomponent');
+
         } else {
             component = elem.findParentByType('search_searchcomponent');
         }
 
         this.hideMenu(component);
 
-        var bar = component.queryById('searchbar'),
-            resultsStore = bar.store,
-            searchString = bar.buildSearchString(),
-            dalStore = Ext.data.StoreManager.lookup('dalSources');
+        var searchString = component.queryById('searchbar').buildSearchString(),
+            dalStore = Ext.data.StoreManager.lookup('dalSources'),
+            resultsComponent = component.queryById('searchresults');
 
-        resultsStore.removeAll();
 
+        /*
+        this is an array of objects - they store the dal id and the store instance for that dal's results.
+        For each selected DAL, a new store is generated and this array is used to keep track
+         */
+        resultsComponent.allResultSets = [];
+
+        /*
+        Create the search request payload
+         */
         var searchObj = Ext.create('Savanna.search.model.SearchRequest', {
             'textInputString': searchString,
             'displayLabel': searchString
         });
 
+
+        var dals = component.down('#searchdals'),
+            resultsDal = component.down('#resultsdals'),
+            resultsPanel = component.down('#resultspanel');
         /*
          Check for selected additional Dals, and do a search on each of them
          */
-        var dals = component.down('#searchdals'),
-            resultsDal = component.down("#resultsdals");
-
         dalStore.each(function (source) {
 
             var dalId = source.data.id,
-                checked = dals.queryById(dalId).query('checkbox')[0].getValue();
+                checked = dals.queryById(dalId).query('checkbox')[0].getValue();    // has this checkbox been selected in search options?
 
-            if (checked || dalId == dalStore.defaultId) {
+            if (checked || dalId === dalStore.defaultId) {  // checked, or always search the default dal
 
                 // Dal has been selected, apply to the request model and do search
                 searchObj.set('searchPreferencesVOs', [
                     {
                         'dalId': dalId,
-                        'resultPerPage': 100,
                         'sortOrder': 'Default'
                     }
                 ]);
-
-                resultsStore.proxy.jsonData = Ext.JSON.encode(searchObj.data);
-                resultsStore.load({
-                    callback: Ext.bind(this.searchCallback, this, [resultsDal, dalId], true)
+                /*
+                Create a new store for each DAL
+                 */
+                var resultsStore = Ext.create('Savanna.search.store.SearchResults', {
+                    storeId:'searchResults_' + dalId
                 });
-                resultsDal.updateDalStatus(dalId, 'pending');
+                resultsStore.proxy.jsonData = Ext.JSON.encode(searchObj.data);  // attach the search request object
+                resultsStore.load({
+                    callback: Ext.bind(this.searchCallback, this, [resultsDal, resultsPanel, dalId, resultsStore], true)
+                });
+                resultsDal.updateDalStatus(dalId, 'pending');   // begin in a pending state
             } else {
-                resultsDal.updateDalStatus(dalId, 'none');
+                resultsDal.updateDalStatus(dalId, 'none');  // ...or, if not selected, style accordingly as well
             }
 
         }, this);
@@ -235,23 +252,31 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         /*
          track in recent searches
          */
-        this.logHistory(bar.buildSearchString());
+        this.logHistory(searchString);
     },
 
-    searchCallback: function (records, operation, success, resultsDal, dalId) {
-        var statusString = success ? "success" : "fail";
+    searchCallback: function (records, operation, success, resultsDal, resultsPanel, dalId, store) {
+        var resultsObj = {id:dalId, store:store};
+        resultsPanel.up('#searchresults').allResultSets.push(resultsObj);   // add an object tying the dal and store together for referencing
+
+        var statusString = success ? 'success' : 'fail';
         resultsDal.updateDalStatus(dalId, statusString);
+
         if (!success) {
             // server down..?
             Ext.Error.raise({
                 msg: 'The server could not complete the search request.'
             });
+        }   else    {
+            if(dalId === Ext.data.StoreManager.lookup('dalSources').defaultId)    {
+                var controller = Savanna.controller.Factory.getController('Savanna.search.controller.ResultsComponent');
+                controller.changeSelectedStore({}, {}, resultsDal.queryById(dalId));
+            }
         }
     },
 
     showResultsPage: function (component) {
         var resultsBtn = component.down('#resultsbutton');
-
         resultsBtn.fireEvent('click', resultsBtn);
     },
 
@@ -266,6 +291,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
             store.sync();
         }
+
         else {
             Ext.Error.raise('Unable to find "searchHistory" store');
         }

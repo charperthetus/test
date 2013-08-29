@@ -6,13 +6,12 @@ Ext.define('Savanna.controller.Main', {
     extend: 'Ext.app.Controller',
 
     views: [
-        'Login',
-        'PrintModal'
+        'Savanna.view.Login',
+        'Savanna.view.SavannaDesktop',
+        'Savanna.view.PrintModal'
     ],
 
-    controllers: [
-        'Savanna.flexpaper.controller.FlexpaperComponent'
-    ],
+    controllers: [],
 
     init: function(app) {
         var me = this;

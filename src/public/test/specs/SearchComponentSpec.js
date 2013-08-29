@@ -1,8 +1,7 @@
 /* global
- Ext: false, ExtSpec: false,
- describe: false, beforeEach: false, afterEach: false, it: false, expect: false, spyOn: false, sinon: false,
- createTestDom: false, cleanTestDom: false, ThetusTestHelpers: false, setupNoCacheNoPagingStore: false,
- Savanna: false
+        Ext: false,
+        describe: false, beforeEach: false, afterEach: false, it: false, expect: false, spyOn: false, sinon: false,
+        ThetusTestHelpers: false, Savanna: false
  */
 Ext.require('Savanna.Config');
 Ext.require('Savanna.search.controller.SearchComponent');
@@ -262,7 +261,7 @@ describe('Search Component', function () {
             });
 
             it('should remove search field values when "Start New Search" is selected', function () {
-                var form = searchbar.queryById("search_form");
+                var form = searchbar.queryById('search_form');
                 controller.handleNewSearch(component.queryById('searchbar'));
 
                 expect(form.queryById('search_terms').getValue()).toEqual('');
@@ -274,13 +273,29 @@ describe('Search Component', function () {
         });
 
         describe('managing SearchAdvancedTextfield subview events', function () {
+
             var field = null; // set up in each test, but we want to be sure and destroy it, even if the test fails
+            var originalErrorHandler = null;
+            var errorRaised = false;
+
+            beforeEach(function()   {
+                 originalErrorHandler = Ext.Error.handle;
+                Ext.Error.handle = function()   {
+                    errorRaised = true;
+                    return true;
+                };
+            });
 
             afterEach(function () {
                 if (field) {
                     field.destroy();
                     field = null;
                 }
+                if(originalErrorHandler)    {
+                    Ext.Error.handle = originalErrorHandler;
+                    originalErrorHandler = null;
+                }
+                errorRaised = false;
             });
 
             it('getBooleanValue returns expected string for booleanType "all"', function () {
@@ -338,11 +353,27 @@ describe('Search Component', function () {
 
                 expect(result).toEqual(expected);
             });
+
+            it('getBooleanValue returns original string and raises an error on unexpected booleanType', function () {
+                field = Ext.create('Savanna.search.view.SearchAdvancedTextfield', {
+                    configs: { join: '', booleanType: 'unexpected' },
+                    renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID
+                });
+
+                field.setValue('some   text');
+
+                var expected = 'some   text',
+                    result = field.getBooleanValue();
+
+                expect(result).toEqual(expected);
+                expect(errorRaised).toBeTruthy();
+            });
         });
 
         describe('searchCallback', function () {
             var origErrorHandler,
-                errorRaised = false;
+                errorRaised = false,
+                fixtures;
 
             beforeEach(function () {
                 spyOn(controller, 'showResultsPage');
@@ -396,10 +427,10 @@ describe('Search Component', function () {
                     errorOnInvalidRequest: true
                 });
 
-                component.down("#resultsdals").store = dalStore;
-                component.down("#resultsdals").createDalPanels();
+                component.down('#resultsdals').store = dalStore;
+                component.down('#resultsdals').createDalPanels();
 
-                controller.searchCallback(fixtures.searchResults, {}, false, component.down("#resultsdals"), 'mockDAL');
+                controller.searchCallback(fixtures.searchResults, {}, false, component.down('#resultsdals'), component.down('#resultspanel'), 'mockDAL');
 
                 expect(errorRaised).toBeTruthy();
             });
@@ -445,6 +476,7 @@ describe('Search Component', function () {
     });
 
     describe('Models', function () {
+        var fixtures;
         beforeEach(function () {
             fixtures = Ext.clone(ThetusTestHelpers.Fixtures.SearchResults);
         });
@@ -581,8 +613,8 @@ describe('Search Component', function () {
 
                 server.respond({
                     returnBody: true, // since the service basically gives us back our searches...
-                    //reportBody: true, // enable if you want to see the request body in the console
-                    testBody: function (body) {
+                    reportBody: false, // enable if you want to see the request body in the console
+                    testBody: function(body) {
                         var json = JSON.parse(body);
                         if (json.length !== historyFixture.historyResults.length) {
                             return 'Expected request body to have ' + historyFixture.historyResults.length + ', but got ' + json.length;

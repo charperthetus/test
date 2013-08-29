@@ -25,7 +25,7 @@ Ext.define('Savanna.search.model.SearchRequest', {
             "isf-source-type"
         ]},
         {name: "displayLabel", type: "string", defaultValue: ""},
-        {name: "resultsPerPage", type: "int", defaultValue: 100},
+        {name: "resultsPerPage", type: "int", defaultValue: 20},
         {name: "resultsStartIndex", type: "int", defaultValue: 0},
         {name: "returnLatLonPairs", type: "boolean", defaultValue: true},
         {name: "returnResults", type: "boolean", defaultValue: true},
