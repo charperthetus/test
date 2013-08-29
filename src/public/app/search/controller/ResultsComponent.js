@@ -18,11 +18,8 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
             'search_resultscomponent panel[cls=results-dal]': {
                 'render': this.onDalRender
             },
-            'search_resultscomponent #resultsPageSizeCombobox':   {
-                select: this.onPageComboChange
-            },
-            'search_resultscomponent #resultsSortByCombobox':   {
-                select: this.onSortByChange
+            'search_resultscomponent #resultspaneltoolbar':   {
+                render: this.onToolbarRender
             }
         });
     },
@@ -31,16 +28,11 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
         dal.body.on('click', this.changeSelectedStore, this, dal);
     },
 
-    onSortByChange:function(combo){
-        /*
-        this is a placeholder at the moment - not sure what the available sort options
-        will be, and only 'relevance' appears in the comps and flex client version.
-         */
-        var searchController = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
-        searchController.doSearch(combo);
+    onToolbarRender:function(bar)  {
+       bar.queryById('resultsPageSizeCombobox').on('select', this.onPageComboChange);
     },
 
-    onPageComboChange:function(combo){
+    onPageComboChange:function(combo, records, eOpts){
         // just need to trigger a new search
         var searchController = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
         searchController.doSearch(combo);
