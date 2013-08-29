@@ -13,7 +13,7 @@ Run firefox against the JSCover URL and wait for the report to be generated.
 OPTIONS:
    -h      Help
    -f      Specify which firefox binary to use (default: $DEFAULT_FIREFOX)
-   -r      Report directory (default: $DEFAULT_REPORTDIR)
+   -r      Report directory
    -t      Timeout in seconds (0 for no timeout, default: $DEFAULT_TIMEOUT)
    -v      Verbose
 EOF
@@ -32,8 +32,6 @@ DEFAULT_TIMEOUT=300
 timeout=$DEFAULT_TIMEOUT
 
 basedir=$(cd $(dirname $0) && pwd)
-DEFAULT_REPORTDIR=${basedir}/reports/jasmine
-reportdir=$DEFAULT_REPORTDIR
 
 DEFAULT_FIREFOX=firefox
 firefox=$DEFAULT_FIREFOX
@@ -72,6 +70,13 @@ then
     exit 1
 fi
 
+if [ -z $reportdir ]
+then
+    echo "reportdir is required"
+    usage
+    exit 1
+fi
+
 shift
 firefox_opts=$*
 
@@ -98,7 +103,7 @@ do
         exit 1
     fi
 
-    if [ -d src/public/test/reports/jasmine/ ]
+    if [ -d $reportdir ]
     then
         v "Report created!"
         exit
