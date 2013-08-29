@@ -215,6 +215,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         var dals = component.down('#searchdals'),
             resultsDal = component.down('#resultsdals'),
             resultsPanel = component.down('#resultspanel');
+
         /*
          Check for selected additional Dals, and do a search on each of them
          */
@@ -233,7 +234,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                     }
                 ]);
                 /*
-                Determine the pageSize
+                Determine the pageSize for the stores.
                  */
                 var resultsPerPage = component.down('#resultsPageSizeCombobox').value;
                 /*
