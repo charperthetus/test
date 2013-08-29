@@ -65,17 +65,17 @@ Ext.define('Savanna.search.view.ResultsPanelToolbar', {
         {
             xtype: 'tbfill'
         },
-// JUST PLACEHOLDER ICONS
+
         {
-            glyph: 61786,
+            text:'Imgs',
             ui: 'flat-toolbar-button'
         },
         {
-            glyph: 61746,
+            text:'List',
             ui: 'flat-toolbar-button'
         },
         {
-            glyph: 61786,
+            text:'Map',
             ui: 'flat-toolbar-button'
         }
     ]

@@ -10,6 +10,7 @@ Ext.require('Savanna.search.model.SearchHistory');
 Ext.require('Savanna.search.model.SearchRequest');
 Ext.require('Savanna.search.model.SearchResult');
 Ext.require('Savanna.search.store.SearchHistory');
+Ext.require('Savanna.search.view.SearchComponent');
 Ext.require('Savanna.search.view.ResultsComponent');
 Ext.require('Savanna.search.view.ResultsPanel');
 Ext.require('Savanna.search.view.ResultsPanelGrid');
@@ -39,11 +40,19 @@ describe('Search Results', function () {
 
         var resultsComponent = null;
 
+        var resultsController = null;
+
+        var searchController = null;
+
         beforeEach(function () {
             // create a SearchResults store for results tests
             searchComponent = Ext.create('Savanna.search.view.SearchComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
 
             resultsComponent = Ext.create('Savanna.search.view.ResultsComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
+
+            resultsController = Savanna.controller.Factory.getController('Savanna.search.controller.ResultsComponent');
+
+            searchController = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
         });
 
         afterEach(function () {
@@ -55,6 +64,9 @@ describe('Search Results', function () {
                 searchComponent.destroy();
                 searchComponent = null;
             }
+
+            resultsController = null;
+            searchController = null;
         });
 
         it('should have a sources panel instance', function () {
@@ -65,7 +77,29 @@ describe('Search Results', function () {
             expect(resultsComponent.queryById('resultspanel') instanceof Savanna.search.view.ResultsPanel).toBeTruthy();
         });
 
-        describe('Search Sources subview', function () {
+        describe('Results Toolbar subview', function () {
+              it('should apply a select handler to the "Sort By" combobox', function()  {
+                  var combo = resultsComponent.down('#resultsSortByCombobox');
+
+                  combo.removeListener('select');
+
+                  resultsController.init();
+
+                  expect(combo.hasListener('select')).toBeTruthy();
+              });
+
+            it('should apply a select handler to the "Results Per Page" combobox', function()  {
+                var combo = resultsComponent.down('#resultsPageSizeCombobox');
+
+                combo.removeListener('select');
+
+                resultsController.init();
+
+                expect(combo.hasListener('select')).toBeTruthy();
+            });
+        });
+
+        describe('Results Sources subview', function () {
 
             var view = null,
                 store = null,
@@ -105,6 +139,7 @@ describe('Search Results', function () {
                 server = null;
                 store = null;
             });
+
 
             describe('createPanel', function () {
                 it('should create an instance of the ResultsOptions panel', function () {
@@ -207,7 +242,7 @@ describe('Search Results', function () {
                     var dalItem = view.query('panel[cls=results-dal]')[0],
                         expected = store.getById(dalItem.itemId).data.displayName + ' (8)';
 
-                    resultsComponent.allResultSets.push({id:dalItem.itemId, store:store})
+                    resultsComponent.allResultSets.push({id:dalItem.itemId, store:store});
 
                     dalItem.updateDalNameCount(dalItem.itemId, 'success');
 
@@ -243,8 +278,10 @@ describe('Search Results', function () {
 
     describe('Controller', function () {
 
-        var component = null,
-            controller = null,
+        var resultsComponent = null,
+            resultsController = null,
+            searchComponent = null,
+            searchController = null,
             panel = null,
             grid = null,
             sources = null,
@@ -253,11 +290,19 @@ describe('Search Results', function () {
 
         beforeEach(function () {
 
-            component = Ext.create('Savanna.search.view.ResultsComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
-            controller = Savanna.controller.Factory.getController('Savanna.search.controller.ResultsComponent');
-            panel = component.queryById('resultspanel');
+            resultsComponent = Ext.create('Savanna.search.view.ResultsComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
+
+            resultsController = Savanna.controller.Factory.getController('Savanna.search.controller.ResultsComponent');
+
+            searchComponent = Ext.create('Savanna.search.view.SearchComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
+
+            searchController = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
+
+            panel = resultsComponent.queryById('resultspanel');
+
             grid = panel.queryById('resultspanelgrid');
-            sources = component.queryById('resultsdals'),
+
+            sources = resultsComponent.queryById('resultsdals'),
 
             // Set up the store first as it is autovivified by our main view
             store = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.DalSources', { autoLoad: false });
@@ -281,7 +326,7 @@ describe('Search Results', function () {
         });
 
         afterEach(function () {
-            var teardown = [component, controller, panel, grid, sources];
+            var teardown = [resultsComponent, resultsController, searchComponent, searchController, panel, grid, sources];
 
             for (var i = 0; i < teardown; i++) {
                 if (teardown[i]) {
@@ -309,8 +354,7 @@ describe('Search Results', function () {
 
             beforeEach(function () {
 
-                spyOn(controller, 'displayDalFacets');
-
+                spyOn(resultsController, 'displayDalFacets');
 
                 sources.createDalPanels();
 
@@ -327,9 +371,41 @@ describe('Search Results', function () {
 
                 dalItem.removeListener('click');
 
-                controller.onDalRender(dalItem, {});
+                resultsController.onDalRender(dalItem, {});
 
                 expect(dalItem.hasListener('click')).toBeTruthy();
+            });
+
+        });
+
+        describe('onSortByChange', function () {
+
+            beforeEach(function () {
+
+                spyOn(searchController, 'doSearch');
+            });
+
+            it('should call doSearch"', function () {
+
+                resultsController.onSortByChange(resultsComponent.down('#resultsSortByCombobox'));
+
+                expect(searchController.doSearch).toHaveBeenCalled();
+            });
+
+        });
+
+        describe('onPageComboChange', function () {
+
+            beforeEach(function () {
+
+                spyOn(searchController, 'doSearch');
+            });
+
+            it('should call doSearch"', function () {
+
+                resultsController.onSortByChange(resultsComponent.down('#resultsPageSizeCombobox'));
+
+                expect(searchController.doSearch).toHaveBeenCalled();
             });
 
         });
@@ -344,7 +420,8 @@ describe('Search Results', function () {
 
                 dalItem = sources.query('panel[cls=results-dal]')[1];
 
-                resultsPanel = component.queryById('resultspanel');
+                resultsPanel = resultsComponent.queryById('resultspanel');
+
                 spyOn(resultsPanel, 'updateGridStore');
             });
 
@@ -356,11 +433,11 @@ describe('Search Results', function () {
 
             it('should update the results grid with the passed dal store', function () {
 
-                component.allResultSets.push({id:dalItem.itemId, store:store});
+                resultsComponent.allResultSets.push({id:dalItem.itemId, store:store});
                 /*
                 This call swaps the store behind the grid
                  */
-                 controller.changeSelectedStore({}, {}, dalItem);
+                resultsController.changeSelectedStore({}, {}, dalItem);
 
                 expect(resultsPanel.updateGridStore).toHaveBeenCalled();
             });
@@ -390,7 +467,7 @@ describe('Search Results', function () {
 
             it('should add a facet for each DAL facetDescription', function () {
 
-                controller.displayDalFacets(dalItem);
+                resultsController.displayDalFacets(dalItem);
 
                 var expected = store.getById(dalItem.itemId).data.facetDescriptions.length;
 
@@ -403,7 +480,7 @@ describe('Search Results', function () {
 
             it('should return a component of the correct type', function () {
 
-                var facet = controller.createFacet(store.getById('SolrJdbc').data.facetDescriptions[0]);
+                var facet = resultsController.createFacet(store.getById('SolrJdbc').data.facetDescriptions[0]);
 
                 expect(facet instanceof Savanna.search.view.resultsDals.ResultsFacet).toBeTruthy();
             });
