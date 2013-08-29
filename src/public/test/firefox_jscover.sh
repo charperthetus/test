@@ -103,8 +103,6 @@ do
         exit 1
     fi
 
-    v "testing ${reportdir}..."
-
     if [ -d $reportdir ]
     then
         v "Report created!"
