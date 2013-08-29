@@ -233,10 +233,15 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                     }
                 ]);
                 /*
+                Determine the pageSize
+                 */
+                var resultsPerPage = component.down('#resultsPageSizeCombobox').value;
+                /*
                 Create a new store for each DAL
                  */
                 var resultsStore = Ext.create('Savanna.search.store.SearchResults', {
-                    storeId:'searchResults_' + dalId
+                    storeId:'searchResults_' + dalId,
+                    pageSize: resultsPerPage
                 });
                 resultsStore.proxy.jsonData = Ext.JSON.encode(searchObj.data);  // attach the search request object
                 resultsStore.load({
