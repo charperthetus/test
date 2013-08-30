@@ -10,27 +10,26 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
     alias: 'widget.search_resultspanelgrid',
 
     requires: [
-        'Ext.grid.column.Template'
+        'Ext.grid.column.Template',
+        'Ext.XTemplate'
     ],
 
     columns: [
         {
             text: ' ',
             xtype: 'templatecolumn',
-            tpl: [
+            tpl: new Ext.XTemplate(
                 '<table>',
                 '<tr><td colspan="2"><b>{title}</b></td></tr>',
                 '<td><img src="{documentSource}" width="80px" height="60px" /></td>',
-                '<td>({composite}) - {publishedDate} - {documentFileName}<br />{previewString}</td>',
+                '<td>({composite}) - {[this.parseDate(new Date(values.publishedDate))]} - {documentFileName}<br />{previewString}</td>',
                 '</table>',
                 {
                     parseDate: function (v) {
-                        console.log(v); //epoch
-                        console.log(Ext.Date.format(new Date(v), 'Y-m-d')); //show 2012-09-13
-                        return Ext.Date.format(new Date(v), 'Y-m-d');
+                        return Ext.Date.format(new Date(v), 'F d, Y');
                     }
                 }
-            ]
+            )
         }
     ],
 
