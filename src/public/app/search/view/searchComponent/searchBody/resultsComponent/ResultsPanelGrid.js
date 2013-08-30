@@ -18,8 +18,13 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
             text: ' ',
             xtype:'templatecolumn',
             tpl:    [
-                '<b>{documentFileName}</b><br />',
-                '{documentSource}<br />',
+                '<b>{title}</b><br />',
+                '<tpl if="this.isEmpty(documentSource)">',
+                '<br />',
+                '<tpl else>',
+                '<img src="{documentSource}" width="80px" height="60px" /><br />',
+                '</tpl>',
+                '{documnentFileName}<br />',
                 '{previewString}<br /><br />'
             ]
         }
