@@ -61,6 +61,6 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.searchDals.SearchOpti
                 text: 'Reset',
                 tooltip: 'Reset search options'
             }
-        ]
+        ];
     }
 });

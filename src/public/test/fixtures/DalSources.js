@@ -195,79 +195,127 @@ var ThetusTestHelpers;
             "customSearchGroups": [
                 {
                     "id": "group1",
+                    "displayLabel": "Group 1",
                     "customSearchParameters": [
                         {
-                            "list": [ "a good option", "a bad option", "a so-so option" ],
+                            "list": [
+                                "a good option",
+                                "a bad option",
+                                "a so-so option"
+                            ],
                             "id": "dropdown1",
+                            "parameterType": "drop-down",
                             "displayLabel": "It's a dropdown"
                         },
                         {
                             "defaultValue": "",
                             "id": "field1",
+                            "parameterType": "text",
                             "displayLabel": "How are you feeling today?"
                         },
                         {
-                            "date": 1340895610082,
+                            "radioOptions": [
+                                {
+                                    "id": "chicken",
+                                    "parameterType": null,
+                                    "displayLabel": "Chicken"
+                                },
+                                {
+                                    "id": "turkey",
+                                    "parameterType": null,
+                                    "displayLabel": "Turkey"
+                                },
+                                {
+                                    "id": "roastbeef",
+                                    "parameterType": null,
+                                    "displayLabel": "Roast Beef"
+                                }
+                            ],
+                            "id": "radio1",
+                            "parameterType": "radio",
+                            "displayLabel": "Which do you prefer?"
+                        },
+                        {
+                            "date": 1346104423747,
                             "id": "date1",
+                            "parameterType": "date",
                             "displayLabel": "When it started"
                         },
                         {
-                            "date": 1372431610082,
+                            "date": 1377640423747,
                             "id": "date2",
+                            "parameterType": "date",
                             "displayLabel": "When it ended"
                         }
-                    ],
-                    "displayLabel": "Group 1"
+                    ]
                 },
                 {
                     "id": "group2",
+                    "displayLabel": "Group 2",
                     "customSearchParameters": [
                         {
                             "defaultValue": true,
                             "id": "check1",
+                            "parameterType": "checkbox",
                             "displayLabel": "Make it good"
                         },
                         {
                             "defaultValue": false,
                             "id": "check2",
+                            "parameterType": "checkbox",
                             "displayLabel": "Make it better than that"
                         },
                         {
                             "radioOptions": [
                                 {
                                     "id": "chicken",
+                                    "parameterType": null,
                                     "displayLabel": "Chicken"
                                 },
                                 {
                                     "id": "turkey",
+                                    "parameterType": null,
                                     "displayLabel": "Turkey"
                                 },
                                 {
                                     "id": "roastbeef",
+                                    "parameterType": null,
                                     "displayLabel": "Roast Beef"
                                 }
                             ],
                             "id": "radio1",
+                            "parameterType": "radio",
                             "displayLabel": "Which do you prefer?"
                         },
                         {
-                            "list": [ "score", "coolness", "price", "length" ],
+                            "list": [
+                                "score",
+                                "coolness",
+                                "price",
+                                "length"
+                            ],
                             "id": "savannaSortOrder",
+                            "parameterType": "drop-down",
                             "displayLabel": "How do you want to sort it?"
                         }
-                    ],
-                    "displayLabel": "Group 2"
+                    ]
                 },
                 {
                     "id": "group3",
+                    "displayLabel": "Group 3",
                     "customSearchParameters": [
                         {
-                            "list": [ "name", "country", "company", "type" ],
+                            "list": [
+                                "name",
+                                "country",
+                                "company",
+                                "type"
+                            ],
                             "id": "keyvalues1",
+                            "parameterType": "key-value",
                             "displayLabel": "Set some filters"
                         }
-                    ],
-                    "displayLabel": "Group 3"
+                    ]
                 }
             ]
         }
@@ -688,79 +736,105 @@ var ThetusTestHelpers;
                     "customSearchGroups": [
                         {
                             "id": "group1",
+                            "displayLabel": "Group 1",
                             "customSearchParameters": [
                                 {
-                                    "list": [ "a good option", "a bad option", "a so-so option" ],
+                                    "list": [
+                                        "a good option",
+                                        "a bad option",
+                                        "a so-so option"
+                                    ],
                                     "id": "dropdown1",
+                                    "parameterType": "drop-down",
                                     "displayLabel": "It's a dropdown"
                                 },
                                 {
                                     "defaultValue": "",
                                     "id": "field1",
+                                    "parameterType": "text",
                                     "displayLabel": "How are you feeling today?"
                                 },
                                 {
-                                    "date": 1340895610082,
+                                    "date": 1346104423747,
                                     "id": "date1",
+                                    "parameterType": "date",
                                     "displayLabel": "When it started"
                                 },
                                 {
-                                    "date": 1372431610082,
+                                    "date": 1377640423747,
                                     "id": "date2",
+                                    "parameterType": "date",
                                     "displayLabel": "When it ended"
                                 }
-                            ],
-                            "displayLabel": "Group 1"
+                            ]
                         },
                         {
                             "id": "group2",
+                            "displayLabel": "Group 2",
                             "customSearchParameters": [
                                 {
                                     "defaultValue": true,
                                     "id": "check1",
+                                    "parameterType": "checkbox",
                                     "displayLabel": "Make it good"
                                 },
                                 {
                                     "defaultValue": false,
                                     "id": "check2",
+                                    "parameterType": "checkbox",
                                     "displayLabel": "Make it better than that"
                                 },
                                 {
                                     "radioOptions": [
                                         {
                                             "id": "chicken",
+                                            "parameterType": null,
                                             "displayLabel": "Chicken"
                                         },
                                         {
                                             "id": "turkey",
+                                            "parameterType": null,
                                             "displayLabel": "Turkey"
                                         },
                                         {
                                             "id": "roastbeef",
+                                            "parameterType": null,
                                             "displayLabel": "Roast Beef"
                                         }
                                     ],
                                     "id": "radio1",
+                                    "parameterType": "radio",
                                     "displayLabel": "Which do you prefer?"
                                 },
                                 {
-                                    "list": [ "score", "coolness", "price", "length" ],
+                                    "list": [
+                                        "score",
+                                        "coolness",
+                                        "price",
+                                        "length"
+                                    ],
                                     "id": "savannaSortOrder",
+                                    "parameterType": "drop-down",
                                     "displayLabel": "How do you want to sort it?"
                                 }
-                            ],
-                            "displayLabel": "Group 2"
+                            ]
                         },
                         {
                             "id": "group3",
+                            "displayLabel": "Group 3",
                             "customSearchParameters": [
                                 {
-                                    "list": [ "name", "country", "company", "type" ],
+                                    "list": [
+                                        "name",
+                                        "country",
+                                        "company",
+                                        "type"
+                                    ],
                                     "id": "keyvalues1",
+                                    "parameterType": "key-value",
                                     "displayLabel": "Set some filters"
                                 }
-                            ],
-                            "displayLabel": "Group 3"
+                            ]
                         }
                     ]
                 }
