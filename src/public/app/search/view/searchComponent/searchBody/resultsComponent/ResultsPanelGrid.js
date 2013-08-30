@@ -14,6 +14,8 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
         'Ext.XTemplate'
     ],
 
+    sortableColumns:false,
+
     columns: [
         {
             text: ' ',
