@@ -34,3 +34,4 @@ src/public/test/reports/phantom
 src/public/test/reports/jasmine
 target/
 src/public/test/reports/errors.log
+src/public/test/stop-jscover.txt

@@ -54,7 +54,7 @@
             <!--
                 Run the unit tests via PhantomJS
             -->
-            <plugin>
+<!--            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>1.1</version>
@@ -71,13 +71,13 @@
                     <executable>phantomjs</executable>
                     <workingDirectory>${project.basedir}/src/public/test</workingDirectory>
                     <arguments>
-                        <argument>--web-security=no</argument>
+                        <argument>!-web-security=no</argument>
                         <argument>phantomjs_jasminexml_runner.js</argument>
                         <argument>${project.basedir}/src/public/test/PhantomJsRunner.html</argument>
                         <argument>${project.build.directory}/surefire-reports</argument>
                     </arguments>
                 </configuration>
-            </plugin>
+            </plugin>-->
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -159,7 +159,7 @@
                 Run the coverage reports
             -->
 
-<!--            <plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>
                 <version>1.7</version>
@@ -169,9 +169,9 @@
                         <configuration>
                             <workingDirectory>${project.basedir}/src</workingDirectory>
                             <tasks>
-                                <ant dir="src/public" antfile="build.xml" target="JSCover-start"/>
-                                <ant dir="src/public" antfile="build.xml" target="JSCover-test"/>
-                                <ant dir="src/public" antfile="build.xml" target="JSCover-stop"/>
+                                <ant dir="src/public" antfile="savanna-ant-tasks.xml" target="jscover-start"/>
+                                <ant dir="src/public" antfile="savanna-ant-tasks.xml" target="jscover-test"/>
+                                <ant dir="src/public" antfile="savanna-ant-tasks.xml" target="jscover-stop"/>
                             </tasks>
                         </configuration>
                         <goals>
@@ -179,8 +179,8 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>-->
-            <plugin>
+            </plugin>
+<!--            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>1.1</version>
@@ -231,7 +231,7 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin>-->
 
             <!--
                 Copy over the coverage reports to a place where Node can serve them locally

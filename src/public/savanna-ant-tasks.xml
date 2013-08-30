@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="savanna-ant-tasks" default="savanna-rebase">
+    <target name="jscover-start">
+        <java jar="${user.home}/.m2/repository/com/github/tntim96/JSCover/0.3.0/JSCover-0.3.0.jar" fork="true" spawn="true">
+            <arg value="-ws"/>
+            <arg value="--document-root=./"/>
+            <arg value="--report-dir=../../target"/>
+            <arg value="--no-instrument=ext"/>
+            <arg value="--no-instrument=resources"/>
+            <arg value="--no-instrument=test"/>
+            <arg value="--no-instrument=app/flexpaper"/>
+        </java>
+        <waitfor maxwait="5" maxwaitunit="second" checkevery="250" checkeveryunit="millisecond" timeoutproperty="failed">
+            <http url="http://localhost:8080/jscoverage.html"/>
+        </waitfor>
+        <fail if="failed"/>
+    </target>
+
+    <target name="jscover-test">
+        <exec executable="phantomjs">
+            <arg value="test/lib/run-jscover-jasmine.js"/>
+            <arg value="http://localhost:8080/test/phantomjsRunner.html"/>
+        </exec>
+    </target>
+
+    <target name="jscover-stop">
+        <get src="http://localhost:8080/stop" dest="test/stop-jscover.txt" />
+    </target>
+
+    <target name="savanna-rebase">
+        <exec executable="git">
+            <arg value="fetch"/>
+            <arg value="--progress"/>
+            <arg value="--prune"/>
+            <arg value="upstream"/>
+        </exec>
+        <exec executable="git">
+            <arg value="rebase"/>
+            <arg value="-v"/>
+            <arg value="-m"/>
+            <arg value="refs/remotes/upstream/master"/>
+        </exec>
+        <exec executable="git">
+            <arg value="rebase"/>
+            <arg value="-v"/>
+            <arg value="-m"/>
+            <arg value="refs/remotes/upstream/MapPrototype"/>
+        </exec>
+    </target>
+</project>

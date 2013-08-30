@@ -6,6 +6,7 @@
  * This is copied from http://tntim96.github.io/JSCover/manual/manual.xml
  */
 var system = require('system');
+var MAX_TIMEOUT = 12 * 60 * 1000; // hopefully our tests don't take longer than 12 minutes to run
 
 /**
  * Wait until the test condition is true or a timeout occurs. Useful for waiting
@@ -66,24 +67,24 @@ page.open(system.args[1], function(status){
             });
         }, function(){
             var exitCode = page.evaluate(function(){
-                console.log('');
-                console.log(document.body.querySelector('.description').innerText);
+                //console.log('');
+                //console.log(document.body.querySelector('.description').innerText);
                 var list = document.body.querySelectorAll('.results > #details > .specDetail.failed');
                 if (list && list.length > 0) {
-                  console.log('');
-                  console.log(list.length + ' test(s) FAILED:');
+                  //console.log('');
+                  //console.log(list.length + ' test(s) FAILED:');
                   for (i = 0; i < list.length; ++i) {
                       var el = list[i],
                           desc = el.querySelector('.description'),
                           msg = el.querySelector('.resultMessage.fail');
-                      console.log('');
-                      console.log(desc.innerText);
-                      console.log(msg.innerText);
-                      console.log('');
+                      //console.log('');
+                      //console.log(desc.innerText);
+                      //console.log(msg.innerText);
+                      //console.log('');
                   }
                   return 1;
                 } else {
-                  console.log(document.body.querySelector('.alert > .passingAlert.bar').innerText);
+                  //console.log(document.body.querySelector('.alert > .passingAlert.bar').innerText);
                   return 0;
                 }
             });
@@ -91,6 +92,6 @@ page.open(system.args[1], function(status){
                 jscoverage_report('phantom');
             });
             phantom.exit(exitCode);
-        });
+        }, MAX_TIMEOUT);
     }
 });
