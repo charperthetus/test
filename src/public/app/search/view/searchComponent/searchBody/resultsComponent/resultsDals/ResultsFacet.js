@@ -5,7 +5,7 @@
  * Time: 3:14 PM
  * To change this template use File | Settings | File Templates.
  */
-Ext.define('Savanna.search.view.resultsDals.ResultsFacet', {
+Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacet', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.search_resultsDals_resultsfacet',
 

@@ -5,7 +5,7 @@
  * Time: 4:42 PM
  * To change this template use File | Settings | File Templates.
  */
-Ext.define('Savanna.search.view.SearchAdvancedTextfield', {
+Ext.define('Savanna.search.view.searchComponent.searchBar.SearchAdvancedTextfield', {
     extend: 'Ext.form.field.Text',
     alias: 'widget.searchadvanced_textfield',
     width: 355,

@@ -6,10 +6,10 @@
 Ext.require('Savanna.Config');
 Ext.require('Savanna.search.model.SearchLocation');
 Ext.require('Savanna.search.store.SearchLocation');
-Ext.require('Savanna.search.view.SearchBody');
-Ext.require('Savanna.search.view.SearchComponent');
-Ext.require('Savanna.search.view.SearchLocationForm');
-Ext.require('Savanna.search.view.SearchLocationItem');
+Ext.require('Savanna.search.view.searchComponent.SearchBody');
+Ext.require('Savanna.search.view.searchComponent.SearchComponent');
+Ext.require('Savanna.search.view.searchComponent.searchBody.searchMap.SearchLocationForm');
+Ext.require('Savanna.search.view.searchComponent.searchBody.searchMap.SearchLocationItem');
 
 
 describe('Search Location', function() {
@@ -79,12 +79,12 @@ describe('Search Location', function() {
         });
     });
 
-    describe('Savanna.search.view.SearchDals', function() {
+    describe('Savanna.search.view.searchComponent.searchBody.SearchDals', function() {
         var view = null;
 
         beforeEach(function() {
             //noinspection JSValidateTypes
-            view = Ext.create('Savanna.search.view.SearchLocationForm', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
+            view = Ext.create('Savanna.search.view.searchComponent.searchBody.searchMap.SearchLocationForm', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
         });
 
         afterEach(function() {
@@ -101,7 +101,7 @@ describe('Search Location', function() {
 
                 var panelView = view.createSearchLocationItemPanel(model);
 
-                expect(panelView instanceof Savanna.search.view.SearchLocationItem).toBeTruthy();
+                expect(panelView instanceof Savanna.search.view.searchComponent.searchBody.searchMap.SearchLocationItem).toBeTruthy();
             });
         });
 
@@ -135,7 +135,7 @@ describe('Search Location', function() {
             });
 
             it('should create a Panel for every record in the store', function() {
-                var view = Ext.create('Savanna.search.view.SearchLocationForm', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
+                var view = Ext.create('Savanna.search.view.searchComponent.searchBody.searchMap.SearchLocationForm', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
 
                 //noinspection JSValidateTypes
                 spyOn(view, 'add');

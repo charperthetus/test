@@ -1,4 +1,4 @@
-Ext.define('Savanna.search.view.searchDals.CustomGroup', {
+Ext.define('Savanna.search.view.searchComponent.searchBody.searchDals.CustomGroup', {
     extend: 'Ext.form.Panel',
     alias: 'widget.searchDals_custom-group',
     cls: 'search-dal-group',

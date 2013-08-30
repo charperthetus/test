@@ -5,13 +5,13 @@
  * Time: 10:37 AM
  * To change this template use File | Settings | File Templates.
  */
-Ext.define('Savanna.search.view.SearchLocationForm', {
+Ext.define('Savanna.search.view.searchComponent.searchBody.searchMap.SearchLocationForm', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.search_searchLocationForm',
 
     requires: [
         'Savanna.controller.Factory',
-        'Savanna.search.view.SearchLocationItem',
+        'Savanna.search.view.searchComponent.searchBody.searchMap.SearchLocationItem',
         'Savanna.search.store.SearchLocation'
     ],
 
@@ -67,7 +67,7 @@ Ext.define('Savanna.search.view.SearchLocationForm', {
     },
 
     createSearchLocationItemPanel: function(myRecord) {
-        return Ext.create('Savanna.search.view.SearchLocationItem', {
+        return Ext.create('Savanna.search.view.searchComponent.searchBody.searchMap.SearchLocationItem', {
             name: myRecord.data.name,
             location: myRecord.data.administrativeNames,
             locationType: myRecord.data.locType,

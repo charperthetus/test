@@ -10,12 +10,12 @@ Ext.require('Savanna.search.model.SearchHistory');
 Ext.require('Savanna.search.model.SearchRequest');
 Ext.require('Savanna.search.model.SearchResult');
 Ext.require('Savanna.search.store.SearchHistory');
-Ext.require('Savanna.search.view.SearchComponent');
-Ext.require('Savanna.search.view.ResultsComponent');
-Ext.require('Savanna.search.view.ResultsPanel');
-Ext.require('Savanna.search.view.ResultsPanelGrid');
-Ext.require('Savanna.search.view.ResultsPanelToolbar');
-Ext.require('Savanna.search.view.ResultsDals');
+Ext.require('Savanna.search.view.searchComponent.SearchComponent');
+Ext.require('Savanna.search.view.searchComponent.searchBody.ResultsComponent');
+Ext.require('Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsPanel');
+Ext.require('Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsPanelGrid');
+Ext.require('Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsPanelToolbar');
+Ext.require('Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsDals');
 
 describe('Search Results', function () {
 
@@ -46,9 +46,9 @@ describe('Search Results', function () {
 
         beforeEach(function () {
             // create a SearchResults store for results tests
-            searchComponent = Ext.create('Savanna.search.view.SearchComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
+            searchComponent = Ext.create('Savanna.search.view.searchComponent.SearchComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
 
-            resultsComponent = Ext.create('Savanna.search.view.ResultsComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
+            resultsComponent = Ext.create('Savanna.search.view.searchComponent.searchBody.ResultsComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
 
             resultsController = Savanna.controller.Factory.getController('Savanna.search.controller.ResultsComponent');
 
@@ -70,11 +70,11 @@ describe('Search Results', function () {
         });
 
         it('should have a sources panel instance', function () {
-            expect(resultsComponent.queryById('resultsdals') instanceof Savanna.search.view.ResultsDals).toBeTruthy();
+            expect(resultsComponent.queryById('resultsdals') instanceof Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsDals).toBeTruthy();
         });
 
         it('should have a main results panel instance', function () {
-            expect(resultsComponent.queryById('resultspanel') instanceof Savanna.search.view.ResultsPanel).toBeTruthy();
+            expect(resultsComponent.queryById('resultspanel') instanceof Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsPanel).toBeTruthy();
         });
 
         describe('Results Toolbar subview', function () {
@@ -146,7 +146,7 @@ describe('Search Results', function () {
 
                     var panelView = view.createPanel(store.getAt(0));
 
-                    expect(panelView instanceof Savanna.search.view.resultsDals.ResultsOptions).toBeTruthy();
+                    expect(panelView instanceof Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsOptions).toBeTruthy();
                 });
             });
 
@@ -155,7 +155,7 @@ describe('Search Results', function () {
 
                     var panelView = view.createFacetsPanel();
 
-                    expect(panelView instanceof Savanna.search.view.resultsDals.ResultsFacets).toBeTruthy();
+                    expect(panelView instanceof Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacets).toBeTruthy();
                 });
             });
 
@@ -181,7 +181,7 @@ describe('Search Results', function () {
 
                 beforeEach(function () {
 
-                    searchComponent = Ext.create('Savanna.search.view.SearchComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
+                    searchComponent = Ext.create('Savanna.search.view.searchComponent.SearchComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
 
                     dalsView = searchComponent.queryById('searchdals');
 
@@ -262,11 +262,11 @@ describe('Search Results', function () {
             });
 
             it('should have a grid of the correct component type', function () {
-                expect(grid instanceof Savanna.search.view.ResultsPanelGrid).toBeTruthy();
+                expect(grid instanceof Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsPanelGrid).toBeTruthy();
             });
 
             it('should have a toolbar of the correct component type', function () {
-                expect(tools instanceof Savanna.search.view.ResultsPanelToolbar).toBeTruthy();
+                expect(tools instanceof Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsPanelToolbar).toBeTruthy();
             });
 
             it('should have a paging toolbar', function () {
@@ -290,11 +290,11 @@ describe('Search Results', function () {
 
         beforeEach(function () {
 
-            resultsComponent = Ext.create('Savanna.search.view.ResultsComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
+            resultsComponent = Ext.create('Savanna.search.view.searchComponent.searchBody.ResultsComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
 
             resultsController = Savanna.controller.Factory.getController('Savanna.search.controller.ResultsComponent');
 
-            searchComponent = Ext.create('Savanna.search.view.SearchComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
+            searchComponent = Ext.create('Savanna.search.view.searchComponent.SearchComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
 
             searchController = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
 
@@ -482,7 +482,7 @@ describe('Search Results', function () {
 
                 var facet = resultsController.createFacet(store.getById('SolrJdbc').data.facetDescriptions[0]);
 
-                expect(facet instanceof Savanna.search.view.resultsDals.ResultsFacet).toBeTruthy();
+                expect(facet instanceof Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacet).toBeTruthy();
             });
 
         });

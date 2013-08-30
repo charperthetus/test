@@ -1,10 +1,10 @@
 /* global Ext: false */
-Ext.define('Savanna.search.view.SearchForm', {
+Ext.define('Savanna.search.view.searchComponent.searchBar.SearchForm', {
     extend: 'Ext.toolbar.Toolbar',
     alias:'widget.searchbar_form',
 
     requires:   [
-        'Savanna.search.view.SearchAdvancedTextfield'
+        'Savanna.search.view.searchComponent.searchBar.SearchAdvancedTextfield'
     ],
 
     border: false,

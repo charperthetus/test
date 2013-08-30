@@ -1,5 +1,5 @@
 /* global Ext: false, Savanna: false */
-Ext.define('Savanna.search.view.SearchToolbar', {
+Ext.define('Savanna.search.view.searchComponent.SearchToolbar', {
     extend: 'Ext.toolbar.Toolbar',
     alias: 'widget.search_searchtoolbar',
 

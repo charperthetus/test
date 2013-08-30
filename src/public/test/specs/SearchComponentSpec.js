@@ -9,12 +9,12 @@ Ext.require('Savanna.search.model.SearchHistory');
 Ext.require('Savanna.search.model.SearchRequest');
 Ext.require('Savanna.search.model.SearchResult');
 Ext.require('Savanna.search.store.SearchHistory');
-Ext.require('Savanna.search.view.SearchAdvancedTextfield');
-Ext.require('Savanna.search.view.SearchBar');
-Ext.require('Savanna.search.view.SearchForm');
-Ext.require('Savanna.search.view.SearchBody');
-Ext.require('Savanna.search.view.SearchComponent');
-Ext.require('Savanna.search.view.SearchToolbar');
+Ext.require('Savanna.search.view.searchComponent.searchBar.SearchAdvancedTextfield');
+Ext.require('Savanna.search.view.searchComponent.SearchBar');
+Ext.require('Savanna.search.view.searchComponent.searchBar.SearchForm');
+Ext.require('Savanna.search.view.searchComponent.SearchBody');
+Ext.require('Savanna.search.view.searchComponent.SearchComponent');
+Ext.require('Savanna.search.view.searchComponent.SearchToolbar');
 
 describe('Search Component', function () {
 
@@ -58,7 +58,7 @@ describe('Search Component', function () {
         var component = null;
 
         beforeEach(function () {
-            component = Ext.create('Savanna.search.view.SearchComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
+            component = Ext.create('Savanna.search.view.searchComponent.SearchComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
         });
 
         afterEach(function () {
@@ -69,15 +69,15 @@ describe('Search Component', function () {
         });
 
         it('should have a toolbar instance', function () {
-            expect(component.queryById('searchtoolbar') instanceof Savanna.search.view.SearchToolbar).toBeTruthy();
+            expect(component.queryById('searchtoolbar') instanceof Savanna.search.view.searchComponent.SearchToolbar).toBeTruthy();
         });
 
         it('should have a searchbar instance', function () {
-            expect(component.queryById('searchbar') instanceof Savanna.search.view.SearchBar).toBeTruthy();
+            expect(component.queryById('searchbar') instanceof Savanna.search.view.searchComponent.SearchBar).toBeTruthy();
         });
 
         it('search component should have a searchbody instance', function () {
-            expect(component.queryById('searchbody') instanceof Savanna.search.view.SearchBody).toBeTruthy();
+            expect(component.queryById('searchbody') instanceof Savanna.search.view.searchComponent.SearchBody).toBeTruthy();
         });
 
         describe('SearchBar subview', function () {
@@ -124,7 +124,7 @@ describe('Search Component', function () {
             controller = null;
 
         beforeEach(function () {
-            component = Ext.create('Savanna.search.view.SearchComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
+            component = Ext.create('Savanna.search.view.searchComponent.SearchComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
             toolbar = component.queryById('searchtoolbar');
             controller = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
 
@@ -299,7 +299,7 @@ describe('Search Component', function () {
             });
 
             it('getBooleanValue returns expected string for booleanType "all"', function () {
-                field = Ext.create('Savanna.search.view.SearchAdvancedTextfield', {
+                field = Ext.create('Savanna.search.view.searchComponent.searchBar.SearchAdvancedTextfield', {
                     configs: { join: '', booleanType: 'all' },
                     renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID
                 });
@@ -313,7 +313,7 @@ describe('Search Component', function () {
             });
 
             it('getBooleanValue returns expected string for booleanType "exact"', function () {
-                field = Ext.create('Savanna.search.view.SearchAdvancedTextfield', {
+                field = Ext.create('Savanna.search.view.searchComponent.searchBar.SearchAdvancedTextfield', {
                     configs: { join: '', booleanType: 'exact' },
                     renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID
                 });
@@ -327,7 +327,7 @@ describe('Search Component', function () {
             });
 
             it('getBooleanValue returns expected string for booleanType "any"', function () {
-                field = Ext.create('Savanna.search.view.SearchAdvancedTextfield', {
+                field = Ext.create('Savanna.search.view.searchComponent.searchBar.SearchAdvancedTextfield', {
                     configs: { join: '', booleanType: 'any' },
                     renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID
                 });
@@ -341,7 +341,7 @@ describe('Search Component', function () {
             });
 
             it('getBooleanValue returns expected string for booleanType "none"', function () {
-                field = Ext.create('Savanna.search.view.SearchAdvancedTextfield', {
+                field = Ext.create('Savanna.search.view.searchComponent.searchBar.SearchAdvancedTextfield', {
                     configs: { join: '', booleanType: 'none' },
                     renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID
                 });
@@ -355,7 +355,7 @@ describe('Search Component', function () {
             });
 
             it('getBooleanValue returns original string and raises an error on unexpected booleanType', function () {
-                field = Ext.create('Savanna.search.view.SearchAdvancedTextfield', {
+                field = Ext.create('Savanna.search.view.searchComponent.searchBar.SearchAdvancedTextfield', {
                     configs: { join: '', booleanType: 'unexpected' },
                     renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID
                 });

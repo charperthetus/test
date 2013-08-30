@@ -5,15 +5,15 @@
  * Time: 4:31 PM
  * To change this template use File | Settings | File Templates.
  */
-Ext.define('Savanna.search.view.ResultsDals', {
+Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsDals', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.search_resultsdals',
     requires: [
         'Savanna.controller.Factory',
         'Ext.form.Label',
         'Ext.toolbar.Spacer',
-        'Savanna.search.view.resultsDals.ResultsOptions',
-        'Savanna.search.view.resultsDals.ResultsFacets'
+        'Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsOptions',
+        'Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacets'
     ],
 
     title: 'Search Sources',
@@ -52,14 +52,14 @@ Ext.define('Savanna.search.view.ResultsDals', {
     },
 
     createPanel: function (myRecord) {
-        return Ext.create('Savanna.search.view.resultsDals.ResultsOptions', {
+        return Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsOptions', {
             itemId: myRecord.data.id,
             dalName: myRecord.data.displayName
         });
     },
 
     createFacetsPanel:function() {
-        return Ext.create('Savanna.search.view.resultsDals.ResultsFacets', {
+        return Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacets', {
             itemId:'resultsfacets'
         });
     },

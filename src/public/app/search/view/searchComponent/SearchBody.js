@@ -1,15 +1,15 @@
 /**
  * TODO: Document what events we may emit...
  */
-Ext.define('Savanna.search.view.SearchBody', {
+Ext.define('Savanna.search.view.searchComponent.SearchBody', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.search_searchbody',
 
     requires: [
         'Ext.tab.Panel',
-        'Savanna.search.view.SearchDals',
-        'Savanna.search.view.SearchMap',
-        'Savanna.search.view.ResultsComponent',
+        'Savanna.search.view.searchComponent.searchBody.SearchDals',
+        'Savanna.search.view.searchComponent.searchBody.SearchMap',
+        'Savanna.search.view.searchComponent.searchBody.ResultsComponent',
         /*
          Why is this needed?  If the controller is listed in the requires for the view,
          the whole app blows up with no error messages.  If this is removed from these

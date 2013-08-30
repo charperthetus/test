@@ -5,7 +5,7 @@
  * Time: 12:59 PM
  * To change this template use File | Settings | File Templates.
  */
-Ext.define('Savanna.search.view.SearchLocationItem', {
+Ext.define('Savanna.search.view.searchComponent.searchBody.searchMap.SearchLocationItem', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.search_searchLocationItem',
 
