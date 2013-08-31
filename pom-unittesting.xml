@@ -172,6 +172,7 @@
                                 <ant dir="src/public" antfile="savanna-ant-tasks.xml" target="jscover-start"/>
                                 <ant dir="src/public" antfile="savanna-ant-tasks.xml" target="jscover-test"/>
                                 <ant dir="src/public" antfile="savanna-ant-tasks.xml" target="jscover-stop"/>
+                                <!--<ant dir="src/public" antfile="savanna-ant-tasks.xml" target="jscover-generate-cobertura"/>-->
                             </tasks>
                         </configuration>
                         <goals>

@@ -16,15 +16,24 @@
         <fail if="failed"/>
     </target>
 
-    <target name="jscover-test">
-        <exec executable="phantomjs">
-            <arg value="test/lib/run-jscover-jasmine.js"/>
+    <target name="jscover-test" depends="jscover-start">
+        <exec executable="phantomjs" dir="test">
+            <arg value="lib/run-jscover-jasmine.js"/>
             <arg value="http://localhost:8080/test/phantomjsRunner.html"/>
         </exec>
     </target>
 
     <target name="jscover-stop">
         <get src="http://localhost:8080/stop" dest="test/stop-jscover.txt" />
+    </target>
+
+    <target name="jscover-generate-cobertura">
+        <java classpath="${user.home}/.m2/repository/com/github/tntim96/JSCover/0.3.0/JSCover-0.3.0.jar">
+            <arg value="jscover.report.Main"/>
+            <arg value="--format=COBERTURAXML"/>
+            <arg value="../../target"/>
+            <arg value="../../target/original-src/app"/>
+        </java>
     </target>
 
     <target name="savanna-rebase">
