@@ -22,5 +22,19 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
         {
 
         }
+    ],
+    tbar:   [
+        {
+            xtype: 'tbtext',
+            text: 'Refine Search'
+        },
+        {
+            xtype: 'tbfill'
+        },
+        {
+            text:'Reset',
+            itemId:'resultsFacetsReset'
+        }
+
     ]
 });
