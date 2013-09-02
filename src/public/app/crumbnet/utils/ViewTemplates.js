@@ -180,16 +180,20 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
         if (!diagram || diagram.isReadOnly || !diagram.allowLink) {
             return;
         }
-        // Change T,L,B,R
-        var names = ['TR','TL','BR','BL'];
-        for (var i = 0; i < names.length; i++) {
-            var port = node.findObject(names[i]);
-            if (port instanceof go.Panel) {
-                port.opacity = 1;
-            } else { // it's a shape
-                port.stroke = 'black';
-                port.fill = 'red';
-            }
+
+        var iterator = Savanna.crumbnet.utils.ViewTemplates.getPorts(node);
+
+        while (iterator.next()) {
+            Savanna.crumbnet.utils.ViewTemplates.showPort(iterator.value);
+        }
+    },
+
+    showPort: function(port) {
+        if (port instanceof go.Panel) {
+            port.opacity = 1;
+        } else { // it's a shape
+            port.stroke = 'black';
+            port.fill = 'red';
         }
     },
 
@@ -201,16 +205,41 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
             return;
         }
 
-        // Change T,L,B,R
+        var iterator = Savanna.crumbnet.utils.ViewTemplates.getPorts(node);
+
+        while (iterator.next()) {
+            Savanna.crumbnet.utils.ViewTemplates.hidePort(iterator.value);
+        }
+    },
+
+    hidePort: function(port) {
+        if (port instanceof go.Panel) {
+            port.opacity = 0;
+        } else { // it's a shape
+            port.stroke = null;
+            port.fill = null;
+        }
+    },
+
+    getPorts: function(node) {
+        var ports = new go.List();
+
         var names = ['TR','TL','BR','BL'];
         for (var i = 0; i < names.length; i++) {
             var port = node.findObject(names[i]);
-            if (port instanceof go.Panel) {
-                port.opacity = 0;
-            } else { // it's a shape
-                port.stroke = null;
-                port.fill = null;
+            if (port) {
+                ports.add(port);
             }
+        }
+
+        return ports.iterator;
+    },
+
+    portVisible: function(port) {
+        if (port instanceof go.Panel) {
+            return port.opacity !== 0;
+        } else { // it's a shape
+            return port.stroke !== null || port.fill !== null;
         }
     },
 
