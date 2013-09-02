@@ -49,11 +49,13 @@
     var PhantomJSReporter =  function(consolidate, useDotNotation) {
         this.consolidate = consolidate === jasmine.undefined ? true : consolidate;
         this.useDotNotation = useDotNotation === jasmine.undefined ? true : useDotNotation;
-    };  
+        this.testCount = 0;
+    };
+    var BIG_MSG_DELIMITER = '============================';
 
     PhantomJSReporter.prototype = {
         reportRunnerStarting: function() {
-            this.log('Runner Started.');
+            this.log(BIG_MSG_DELIMITER + ' Runner Started. ' + BIG_MSG_DELIMITER);
         },
 
         reportSpecStarting: function(spec) {
@@ -68,11 +70,14 @@
 
         reportSpecResults: function(spec) {
             var results = spec.results();
+
             spec.didFail = !results.passed();
             spec.status = spec.didFail ? '\033[1;4;31mFailed.' : '\033[1;4;32mPassed.';
+
             if (results.skipped) {
                 spec.status = '\033[1;4;93mSkipped.';
             }
+
             this.log(spec.status + '\033[0;39m');
 
             spec.duration = elapsed(spec.startTime, new Date());
@@ -82,6 +87,7 @@
             var failure = '';
             var failures = 0;
             var resultItems = results.getItems();
+
             for (var i = 0; i < resultItems.length; i++) {
                 var result = resultItems[i];
 
@@ -90,10 +96,14 @@
                     failure += (failures + ':' + escapeInvalidXmlChars(result.message) + ' ');
                 }
             }
+
             if (failure) {
                 spec.output += '<failure>' + trim(failure) + '</failure>';
             }
+
             spec.output += '</testcase>';
+
+            ++this.testCount;
         },
 
         reportSuiteResults: function(suite) {
@@ -105,6 +115,7 @@
 
             suite.status = results.passed() ? 'Passed.' : 'Failed.';
             suite.statusPassed = results.passed();
+
             if (results.totalCount === 0) { // todo: change this to check results.skipped
                 suite.status = 'Skipped.';
             }
@@ -118,18 +129,22 @@
                 failedCount += specs[i].didFail ? 1 : 0;
                 specOutput += "\n  " + specs[i].output;
             }
+
             suite.output = '\n<testsuite name="' + this.getFullName(suite) +
                 '" errors="0" tests="' + specs.length + '" failures="' + failedCount +
                 '" time="' + suite.duration + '" timestamp="' + ISODateString(suite.startTime) + '">';
             suite.output += specOutput;
             suite.output += "\n</testsuite>";
+
             this.log(suite.description + ': ' + results.passedCount + ' of ' + results.totalCount + ' expectations passed.');
         },
 
         reportRunnerResults: function(runner) {
-            this.log('================== RUNNER FINISHED. ====================');
+            this.log(BIG_MSG_DELIMITER + ' RUNNER FINISHED (' + this.testCount + ' tests run). ' + BIG_MSG_DELIMITER);
+
             var suites = runner.suites(),
                 passed = true;
+
             for (var i = 0; i < suites.length; i++) {
                 var suite = suites[i],
                     filename = 'TEST-' + this.getFullName(suite, true) + '.xml',
@@ -152,14 +167,17 @@
                     this.createSuiteResultContainer(filename, output);
                 }
             }
+
             this.createTestFinishedContainer(passed);
         },
 
         getNestedOutput: function(suite) {
             var output = suite.output;
+
             for (var i = 0; i < suite.suites().length; i++) {
                 output += this.getNestedOutput(suite.suites()[i]);
             }
+
             return output;
         },
 
@@ -177,8 +195,10 @@
 
         getFullName: function(suite, isFilename) {
             var fullName;
+
             if (this.useDotNotation) {
                 fullName = suite.description;
+
                 for (var parentSuite = suite.parentSuite; parentSuite; parentSuite = parentSuite.parentSuite) {
                     fullName = parentSuite.description + '.' + fullName;
                 }
@@ -191,6 +211,7 @@
             if (isFilename) {
                 return fullName.replace(/[^\w]/g, '');
             }
+
             return escapeInvalidXmlChars(fullName);
         },
 

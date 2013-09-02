@@ -80,6 +80,8 @@
 
         var reporter = new jasmine.HtmlReporter();
 
+        jasmineEnv.addReporter(reporter);
+
         if (jasmine.PhantomJSReporter) {
             reporter = new jasmine.PhantomJSReporter();
         }
