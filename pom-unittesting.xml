@@ -52,32 +52,26 @@
     <build>
         <plugins>
             <!--
-                Run the unit tests via PhantomJS
+                Set up our properties
             -->
-<!--            <plugin>
+            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>1.1</version>
+                <artifactId>properties-maven-plugin</artifactId>
+                <version>1.0-alpha-2</version>
                 <executions>
                     <execution>
-                        <id>PhantomJS Unit Testing</id>
-                        <phase>test</phase>
+                        <phase>initialize</phase>
                         <goals>
-                            <goal>exec</goal>
+                            <goal>read-project-properties</goal>
                         </goals>
+                        <configuration>
+                            <files>
+                                <file>src/savanna-client.properties</file>
+                            </files>
+                        </configuration>
                     </execution>
                 </executions>
-                <configuration>
-                    <executable>phantomjs</executable>
-                    <workingDirectory>${project.basedir}/src/public/test</workingDirectory>
-                    <arguments>
-                        <argument>!-web-security=no</argument>
-                        <argument>phantomjs_jasminexml_runner.js</argument>
-                        <argument>${project.basedir}/src/public/test/PhantomJsRunner.html</argument>
-                        <argument>${project.build.directory}/surefire-reports</argument>
-                    </arguments>
-                </configuration>
-            </plugin>-->
+            </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -106,8 +100,8 @@
                         <phase>package</phase>
                         <configuration>
                             <tasks>
-                                <ant dir="src/public" antfile="build.xml" target="clean"/>
-                                <ant dir="src/public" antfile="build.xml" target="build"/>
+                                <ant dir="${anttasks.dir}" antfile="build.xml" target="clean"/>
+                                <ant dir="${anttasks.dir}" antfile="build.xml" target="build"/>
                             </tasks>
                         </configuration>
                         <goals>
@@ -145,7 +139,7 @@
                 <configuration>
                     <filesets>
                         <fileset>
-                            <directory>src/public/test/reports/jasmine</directory>
+                            <directory>${project.basedir}${jscover.inputdir}</directory>
                             <includes>
                                 <include>**/*</include>
                             </includes>
@@ -157,6 +151,8 @@
 
             <!--
                 Run the coverage reports
+                NOTE: this only runs the jscover-generate-cobertura ant task, but that depends upon the jscover-test
+                      task which also generates the surefire reports...so we kill two tasks with one call here...
             -->
 
             <plugin>
@@ -167,12 +163,9 @@
                     <execution>
                         <phase>test</phase>
                         <configuration>
-                            <workingDirectory>${project.basedir}/src</workingDirectory>
+                            <workingDirectory>${anttasks.dir}</workingDirectory>
                             <tasks>
-                                <ant dir="src/public" antfile="savanna-ant-tasks.xml" target="jscover-start"/>
-                                <ant dir="src/public" antfile="savanna-ant-tasks.xml" target="jscover-test"/>
-                                <ant dir="src/public" antfile="savanna-ant-tasks.xml" target="jscover-stop"/>
-                                <!--<ant dir="src/public" antfile="savanna-ant-tasks.xml" target="jscover-generate-cobertura"/>-->
+                                <ant dir="${anttasks.dir}" antfile="savanna-ant-tasks.xml" target="jscover-generate-cobertura"/>
                             </tasks>
                         </configuration>
                         <goals>
@@ -181,58 +174,6 @@
                     </execution>
                 </executions>
             </plugin>
-<!--            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>1.1</version>
-                <executions>
-                    <execution>
-                        <id>JsCover Coverage Report Startup</id>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <configuration>
-                            <executable>${project.basedir}/src/public/test/jscover.sh</executable>
-                            <workingDirectory>${project.basedir}/src</workingDirectory>
-                            <arguments>
-                                <argument>start</argument>
-                                <argument>${project.build.directory}</argument>
-                            </arguments>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>PhantomJS Coverage Report Build</id>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <configuration>
-                            <executable>${project.basedir}/src/public/test/firefox_jscover.sh</executable>
-                            <workingDirectory>${project.basedir}</workingDirectory>
-                            <arguments>
-                                <argument>-r ${project.build.directory}/jasmine</argument>
-                                <argument>http://localhost:8080/test/SpecRunner.html</argument>
-                            </arguments>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>JsCover Coverage Report Teardown</id>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <configuration>
-                            <executable>${project.basedir}/src/public/test/jscover.sh</executable>
-                            <workingDirectory>${project.basedir}/src</workingDirectory>
-                            <arguments>
-                                <argument>stop</argument>
-                                <argument>${project.build.directory}/jasmine</argument>
-                            </arguments>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>-->
 
             <!--
                 Copy over the coverage reports to a place where Node can serve them locally
@@ -249,10 +190,10 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${project.basedir}/src/public/test/reports/jasmine</outputDirectory>
+                            <outputDirectory>${project.basedir}${jscover.inputdir}</outputDirectory>
                             <resources>
                                 <resource>
-                                    <directory>${project.build.directory}/jasmine</directory>
+                                    <directory>${project.build.directory}/${jscover.outputdir}</directory>
                                     <filtering>true</filtering>
                                 </resource>
                             </resources>
