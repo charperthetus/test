@@ -1,10 +1,10 @@
-/* global Ext: false, go: false, Savanna: true, TaperedLink: false */
+/* global Ext: false, go: false, Savanna: true, ExtendedLink: false */
 Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
     singleton: true,
 
     requires: [
         'Savanna.Config',
-        'Savanna.crumbnet.utils.TaperedLink'
+        'Savanna.crumbnet.utils.ExtendedLink'
     ],
 
     /**
@@ -82,17 +82,16 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
         );
 
         nodeTemplate.resizeAdornmentTemplate =
-            gmake(go.Adornment, "Spot",
+            gmake(go.Adornment, 'Spot',
                 gmake(go.Placeholder),
                 gmake(go.Shape,
                     { alignment: go.Spot.BottomRight,
                         desiredSize: new go.Size(8, 8),
-                        fill: "cyan",
-                        cursor: "col-resize" }));
+                        fill: 'cyan',
+                        cursor: 'col-resize' }));
 
         function makeCircle(percent, size){
             var angle = 360 * (percent / 100);
-            var newAngle = angle > 180 ? angle - 180 : angle + 180;
             var radius = size / 2;
             var semicircle = go.Geometry.parse('M' + radius + ',' + radius +
                 'B' + 180 + ' ' + -angle+ ' ' + radius + ' ' + radius + ' ' + radius + ' ' + radius + ' z', true);
@@ -169,9 +168,13 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
         return  Savanna.Config.resourcesPathPrefix + 'resources/images/' + category + 'Icon.svg';
     },
 
+    /* temporarily disable jshint complaints until we get this sorted out... */
+    /*jshint unused: false */
+    /* global console: false */
     nodeDragEnter: function(e, obj) {
-        console.log('nodeDragEnter')
+        console.log('nodeDragEnter');
     },
+    /*jshint unused: true */
 
     nodeMouseEnter: function(e, obj) {
         var node = obj.part;
