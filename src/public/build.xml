@@ -5,7 +5,7 @@
     <target name="-before-init">
        <property name="build.operations">
           exclude
-            -tag=config
+            -file=app/Config.js
        </property>
     </target>
 
