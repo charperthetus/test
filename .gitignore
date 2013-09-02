@@ -28,6 +28,7 @@ src/public/packages/savanna/sass/var/Component.css
 src/public/sass/example/bootstrap.js
 src/public/sass/example/example.css
 src/public/packages/search-skin/build
+src/public/bootstrap.css
 
 # ignore test report files
 src/public/test/reports/phantom
