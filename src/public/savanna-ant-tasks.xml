@@ -9,8 +9,8 @@
     <target name="jscover-start">
         <java jar="${user.home}/.m2/repository/com/github/tntim96/JSCover/0.3.0/JSCover-0.3.0.jar" fork="true" spawn="true">
             <arg value="-ws"/>
-            <arg value="--document-root=${basedir}${maven.jscover.docroot}"/>
-            <arg value="--report-dir=${basedir}${maven.jscover.reportdir}"/>
+            <arg value="--document-root=${basedir}"/>
+            <arg value="--report-dir=${basedir}/${maven.jscover.reportdir}"/>
             <!-- NOTE: add any directories of JavaScript that should NOT get coverage reporting below -->
             <arg value="--no-instrument=ext"/>
             <arg value="--no-instrument=resources"/>
@@ -44,7 +44,6 @@
         Generates the cobertura format reports
     -->
     <target name="jscover-generate-cobertura" depends="jscover-test,jscover-stop">
-        <echo>$${basedir}=${basedir}</echo>
         <java classpath="${user.home}/.m2/repository/com/github/tntim96/JSCover/0.3.0/JSCover-0.3.0.jar" classname="jscover.report.Main">
             <arg value="--format=COBERTURAXML"/>
             <arg value="${basedir}/${maven.jscover.reportdir}${maven.jscover.outputdir}"/>
