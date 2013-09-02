@@ -489,7 +489,7 @@ describe('Savanna.crumbnet', function() {
                 window.FileReader = function() {
                     this.readAsDataURL = function() {};
                     testReader = this;
-                }
+                };
 
                 controller.imageDropHandler({
                     preventDefault: function() {},
