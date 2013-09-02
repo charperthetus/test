@@ -6,6 +6,7 @@ Ext.define('Savanna.search.model.dalSource.CustomSearchParameter', {
         { name: 'displayLabel', type: 'string' },
         { name: 'defaultValue' },
         { name: 'date' },
+        { name: 'parameterType', type: 'string' },
 
         // NOTE: could possibly be hasMany relationships...
         { name: 'list' },

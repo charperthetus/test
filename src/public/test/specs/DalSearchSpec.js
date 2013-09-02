@@ -296,6 +296,59 @@ describe('Dal Search', function() {
                 expect(view instanceof Savanna.search.view.searchDals.CustomSearchGroupForm).toBeTruthy();
             });
         });
+        describe('CustomGroup', function() {
+            var myStore;
+            var myRecord;
+            var myView;
+            beforeEach(function(){
+
+                myStore = store.getAt(1).getCustomSearchDescription().customSearchGroups();
+                myRecord = myStore.getAt(0);
+                myView = Ext.create('Savanna.search.view.searchDals.CustomGroup', { model: myRecord });
+            });
+            afterEach(function(){
+                myStore = null;
+                myRecord = null;
+                myView = null;
+            });
+           it('should create view Group 1 with 4 items', function() {
+               expect(myView.title).toBe('Group 1');
+               expect(myView.items.length).toBe(5);
+           });
+           describe('key value input', function() {
+               var keyList = [];
+               var myConfig = {};
+               beforeEach(function() {
+                   keyList = ['test1','test2','test3','test4'];
+                   myConfig.xtype = 'panel';
+                   myConfig.width = 400;
+                   myConfig.itemId = 'keyValuePanel';
+                   myConfig.layout = 'vbox';
+                   myConfig.keyList = keyList;
+                   myConfig.items = [];
+                   myConfig.bbar = {
+                       xtype: 'button',
+                       text: 'Add Key Value Pair Option',
+                       ui: 'link'
+                   };
+
+               });
+               afterEach(function() {
+                   keyList = [];
+                   myConfig = {};
+               });
+               it('addKeyValueInput should add a key value input, deleteKeyValueInput should delete key value input', function() {
+                    myView.add(myConfig);
+                    var myButton = myView.down('button');
+                    var keyValuePanel = myView.down('#keyValuePanel');
+                    expect(keyValuePanel.items.length).toBe(0);
+                    myView.addKeyValueInput(myButton);
+                    expect(keyValuePanel.items.length).toBe(1);
+                    myView.deleteKeyValueInput(keyValuePanel.down('fieldcontainer').down('button'));
+                    expect(keyValuePanel.items.length).toBe(0);
+               });
+           });
+        });
 
         describe('renderCustomOptions', function() {
             var testView = null;
