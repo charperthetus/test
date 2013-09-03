@@ -1,3 +1,4 @@
+/* global Ext: false, Savanna: false */
 Ext.define('Savanna.crumbnet.store.Graph', {
     extend: 'Ext.data.Store',
 
