@@ -2,9 +2,9 @@
           describe: false, beforeEach: false, afterEach: false, it: false, expect: false,
           go: false, ExtendedLink: false
 */
-Ext.require('Savanna.crumbnet.utils.TaperedLink');
+Ext.require('Savanna.crumbnet.utils.ExtendedLink');
 
-describe('Savanna.crumbnet.utils.TaperedLink', function() {
+describe('Savanna.crumbnet.utils.ExtendedLink', function() {
 
     describe('default behavior', function() {
         var link = null;

@@ -1,6 +1,6 @@
 /* global Ext: false, go: false */
 //TODO - Can we include a class here without doing a Ext.define
-Ext.define('Savanna.crumbnet.utils.TaperedLink', {});
+Ext.define('Savanna.crumbnet.utils.ExtendedLink', {});
 
 function ExtendedLink() {
     go.Link.call(this);
