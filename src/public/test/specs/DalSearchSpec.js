@@ -132,7 +132,8 @@ describe('Dal Search', function() {
 
     describe('Savanna.search.view.SearchDals', function() {
         var view = null,
-            store = null;;
+            store = null,
+            server = null;
 
         beforeEach(function() {
             //noinspection JSValidateTypes
@@ -141,7 +142,9 @@ describe('Dal Search', function() {
 
             server = new ThetusTestHelpers.FakeServer(sinon);
 
+            //noinspection JSValidateTypes
             spyOn(Savanna.controller.Factory, 'getController');
+
             view = Ext.create('Savanna.search.view.SearchDals', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
         });
 
@@ -360,7 +363,11 @@ describe('Dal Search', function() {
 
                 //noinspection JSValidateTypes
                 spyOn(testView, 'add').andCallThrough();
+
+                //noinspection JSValidateTypes
                 spyOn(testView, 'doLayout'); // don't necessarily need to redo the layout...
+
+                //noinspection JSValidateTypes
                 spyOn(button, 'setText').andCallThrough();
             });
 
@@ -402,8 +409,14 @@ describe('Dal Search', function() {
 
                 //noinspection JSValidateTypes
                 spyOn(testView, 'doLayout'); // don't necessarily need to redo the layout...
+
+                //noinspection JSValidateTypes
                 spyOn(checkbox, 'getValue').andCallThrough();
+
+                //noinspection JSValidateTypes
                 spyOn(checkbox, 'up').andCallThrough();
+
+                //noinspection JSValidateTypes
                 spyOn(button, 'setText').andCallThrough();
             });
 
@@ -471,6 +484,8 @@ describe('Dal Search', function() {
 
                 //noinspection JSValidateTypes
                 spyOn(testView, 'doLayout'); // don't necessarily need to redo the layout...
+
+                //noinspection JSValidateTypes
                 spyOn(topView, 'query').andCallThrough();
             });
 
@@ -510,7 +525,11 @@ describe('Dal Search', function() {
 
                 //noinspection JSValidateTypes
                 spyOn(testView, 'doLayout'); // don't necessarily need to redo the layout...
+
+                //noinspection JSValidateTypes
                 spyOn(topView, 'removeAll').andCallThrough();
+
+                //noinspection JSValidateTypes
                 spyOn(topView, 'createDalPanels').andCallThrough();
             });
 
@@ -560,6 +579,8 @@ describe('Dal Search', function() {
 
                 //noinspection JSValidateTypes
                 spyOn(testView, 'doLayout'); // don't necessarily need to redo the layout...
+
+                //noinspection JSValidateTypes
                 spyOn(topView, 'remove').andCallThrough();
             });
 
