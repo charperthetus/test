@@ -1,10 +1,3 @@
-/**
- * Created with IntelliJ IDEA.
- * User: thille
- * Date: 8/7/13
- * Time: 10:08 AM
- * To change this template use File | Settings | File Templates.
- */
 /* global Ext: false, Savanna: false */
 Ext.define('Savanna.crumbnet.view.part.Toolbar', {
     extend: 'Ext.toolbar.Toolbar',
@@ -12,6 +5,7 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
 
     requires: [
         'Savanna.Config',
+        'Savanna.crumbnet.utils.ViewTemplates',
         'Ext.menu.ColorPicker'
     ],
 
@@ -50,6 +44,10 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
         var linkStyleMenuChoices = Ext.Array.map(linkTemplateNames, function maplLinkTemplateNames(item) {
             return { type: item, text: item };
         });
+        var linkRelationshipTypes = Savanna.crumbnet.utils.ViewTemplates.linkRelationshipTypes;
+        var linkTypeMenuChoices = Ext.Array.map(linkRelationshipTypes, function mapLinkRelationshipTypes(item) {
+            return { type: item, text: item }
+        });
 
         return [
             {
@@ -79,6 +77,13 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
                 text: 'Link Style',
                 menu: {
                     items: linkStyleMenuChoices
+                }
+            },
+            {
+                itemId: 'linkTypeMenu',
+                text: 'Link Relationship Type',
+                menu: {
+                    items: linkTypeMenuChoices
                 }
             },
             {
