@@ -8,7 +8,7 @@ Ext.define('Savanna.crumbnet.view.part.Canvas', {
     ],
 
     mixins: {
-        storeable: 'Savanna.mixin.Storeable',
+        storeable: 'Savanna.mixin.Storeable'
     },
 
     store: 'Savanna.crumbnet.store.Graph',
@@ -71,14 +71,30 @@ Ext.define('Savanna.crumbnet.view.part.Canvas', {
     },
 
     findPort: function() {
-        var diagram = this.diagram;
-        if (diagram === null) return null;
+        var diagram = this.diagram,
+            obj = null;
+
+        if (diagram === null) {
+            return null;
+        }
+
         obj = diagram.findObjectAt(diagram.firstInput.documentPoint, null, null);
-        if (obj === null) return null;
+
+        if (obj === null) {
+            return null;
+        }
+
         var node = obj.part;
-        if (!(node instanceof go.Node)) return null;
+
+        if (!(node instanceof go.Node)) {
+            return null;
+        }
+
         // return the node, not the obj
-        if (obj.fromLinkable === true) return node;
+        if (obj.fromLinkable === true) {
+            return node;
+        }
+
         return null;
     },
 
