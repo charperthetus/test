@@ -3,8 +3,12 @@ Ext.define('Savanna.crumbnet.view.part.Canvas', {
     extend: 'Ext.Component',
     alias: 'widget.go-graph_canvas',
 
+    requires: [
+        'Savanna.crumbnet.utils.ViewTemplates'
+    ],
+
     mixins: {
-        storeable: 'Savanna.mixin.Storeable'
+        storeable: 'Savanna.mixin.Storeable',
     },
 
     store: 'Savanna.crumbnet.store.Graph',
@@ -45,7 +49,7 @@ Ext.define('Savanna.crumbnet.view.part.Canvas', {
 
         this.diagram.layout = go.GraphObject.make(go.ForceDirectedLayout, { isOngoing: false });
 
-        this.diagram.toolManager.linkingTool.archetypeLinkData = {category: 'Orthogonal', text: 'New Link'};
+        this.diagram.toolManager.linkingTool.archetypeLinkData = { category: 'Orthogonal', text: Savanna.crumbnet.utils.ViewTemplates.linkRelationshipTypes[0] };
         this.diagram.toolManager.linkingTool.direction = go.LinkingTool.ForwardsOnly;
         this.diagram.toolManager.linkingTool.portGravity = 10;
 
