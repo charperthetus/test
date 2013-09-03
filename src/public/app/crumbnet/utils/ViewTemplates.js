@@ -7,6 +7,15 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
         'Savanna.crumbnet.utils.ExtendedLink'
     ],
 
+    linkRelationshipTypes: [
+        'Connects to',
+        'Supports',
+        'Contradicts',
+        'Proves',
+        'Disproves',
+        'Unknown'
+    ],
+
     /**
      * Creates our default node template for use with GoJS
      *
@@ -236,7 +245,7 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
     makeOrthogonalLink: function() {
         var gmake = go.GraphObject.make,
             linkShape = gmake(go.Shape, { isPanelMain: true, stroke: '#303B45', strokeWidth: 2.5 }),
-            fromLabel = this.makeLinkTextBlock({ segmentIndex: 0, segmentOrientation: go.Link.OrientUpright }),
+            fromLabel = this.makeLinkTextBlock(),
             arrowhead = gmake(go.Shape, { toArrow: 'standard', stroke: null });
 
         return gmake(ExtendedLink, {
@@ -268,7 +277,8 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
     },
 
     makeTaperedLink: function() {
-        var gmake = go.GraphObject.make;
+        var gmake = go.GraphObject.make,
+            fromLabel = this.makeLinkTextBlock();
 
         return gmake(ExtendedLink,
             go.Link.Bezier,
@@ -285,7 +295,8 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
                 name: 'Path',
                 stroke: null,
                 fill: 'blue'
-            })
+            }),
+            fromLabel
         );
     },
 
@@ -298,6 +309,7 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
             textAlign: 'center',
             font: 'bold 14px sans-serif',
             stroke: '#1967B3',
+            segmentOrientation: go.Link.OrientUpright45,
             segmentOffset: new go.Point(NaN, NaN)
         });
 
