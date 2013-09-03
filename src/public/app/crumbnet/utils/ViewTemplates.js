@@ -459,13 +459,5 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
         }
 
         return ports.iterator;
-    },
-
-    portVisible: function(port) {
-        if (port instanceof go.Panel) {
-            return port.opacity !== 0;
-        } else { // it's a shape
-            return port.stroke !== null || port.fill !== null;
-        }
     }
 });

@@ -861,6 +861,14 @@ describe('Savanna.crumbnet', function() {
 
         });
 
+        var portVisible = function(port) {
+            if (port instanceof go.Panel) {
+                return port.opacity !== 0;
+            } else { // it's a shape
+                return port.stroke !== null || port.fill !== null;
+            }
+        };
+
         describe('nodeMouseEnter', function() {
 
             it('should set ports to be visible if we are part of a diagram that is not readOnly and is linkable', function() {
@@ -878,7 +886,7 @@ describe('Savanna.crumbnet', function() {
                 var port = it.next() ? it.value : null;
 
                 expect(port).not.toBeNull();
-                expect(Savanna.crumbnet.utils.ViewTemplates.portVisible(port)).toBeTruthy();
+                expect(portVisible(port)).toBeTruthy();
             });
 
             it('should NOT set ports to be visible if we are part of a diagram that is readOnly', function() {
@@ -895,7 +903,7 @@ describe('Savanna.crumbnet', function() {
                 var port = it.next() ?it.value : null;
 
                 expect(port).not.toBeNull();
-                expect(Savanna.crumbnet.utils.ViewTemplates.portVisible(port)).toBeFalsy();
+                expect(portVisible(port)).toBeFalsy();
             });
 
             it('should NOT set ports to be visible if we are part of a diagram that does not allowLink', function() {
@@ -912,7 +920,7 @@ describe('Savanna.crumbnet', function() {
                 var port = it.next() ?it.value : null;
 
                 expect(port).not.toBeNull();
-                expect(Savanna.crumbnet.utils.ViewTemplates.portVisible(port)).toBeFalsy();
+                expect(portVisible(port)).toBeFalsy();
             });
         });
 
@@ -938,7 +946,7 @@ describe('Savanna.crumbnet', function() {
                 var port = it.next() ?it.value : null;
 
                 expect(port).not.toBeNull();
-                expect(Savanna.crumbnet.utils.ViewTemplates.portVisible(port)).toBeFalsy();
+                expect(portVisible(port)).toBeFalsy();
             });
 
             it('should NOT set ports to be visible if we are part of a diagram that is readOnly', function() {
@@ -955,7 +963,7 @@ describe('Savanna.crumbnet', function() {
                 var port = it.next() ?it.value : null;
 
                 expect(port).not.toBeNull();
-                expect(Savanna.crumbnet.utils.ViewTemplates.portVisible(port)).toBeTruthy();
+                expect(portVisible(port)).toBeTruthy();
             });
 
             it('should NOT set ports to be visible if we are part of a diagram that does not allowLink', function() {
@@ -972,7 +980,7 @@ describe('Savanna.crumbnet', function() {
                 var port = it.next() ?it.value : null;
 
                 expect(port).not.toBeNull();
-                expect(Savanna.crumbnet.utils.ViewTemplates.portVisible(port)).toBeTruthy();
+                expect(portVisible(port)).toBeTruthy();
             });
         });
 
