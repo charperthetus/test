@@ -613,6 +613,7 @@ describe('Savanna.crumbnet', function() {
                 var iter = nodeTemplateMap.iterator;
                 iter.next();
                 var firstItem = iter.value;
+
                 expect(firstItem.findObject('icon')).not.toBeNull();
                 expect(firstItem.findObject('descText')).not.toBeNull();
             });
@@ -1056,6 +1057,21 @@ describe('Savanna.crumbnet', function() {
 
                 expect(diagram.nodes.count).toBe(origNodeCount + 1);
                 expect(diagram.links.count).toBe(origLinkCount + 1);
+            });
+        });
+
+        describe('makeTextBlock', function() {
+
+            it('should not set the default font treatment to bold', function() {
+                var textBlock = Savanna.crumbnet.utils.ViewTemplates.makeTextBlock();
+
+                expect(textBlock.font).not.toMatch(/^bold/);
+            });
+
+            it('should allow us to bold the font', function() {
+                var textBlock = Savanna.crumbnet.utils.ViewTemplates.makeTextBlock({ bold: true });
+
+                expect(textBlock.font).toMatch(/^bold/);
             });
         });
     });
