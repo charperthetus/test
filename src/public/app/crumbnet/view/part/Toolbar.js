@@ -46,7 +46,7 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
         });
         var linkRelationshipTypes = Savanna.crumbnet.utils.ViewTemplates.linkRelationshipTypes;
         var linkTypeMenuChoices = Ext.Array.map(linkRelationshipTypes, function mapLinkRelationshipTypes(item) {
-            return { type: item, text: item }
+            return { type: item, text: item };
         });
 
         return [
