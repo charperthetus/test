@@ -286,7 +286,7 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
                 stroke: null,
                 fill: 'blue'
             })
-        )
+        );
     },
 
     makeLinkTextBlock: function(options) {
