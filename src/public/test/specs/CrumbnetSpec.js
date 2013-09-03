@@ -489,7 +489,7 @@ describe('Savanna.crumbnet', function() {
                 window.FileReader = function() {
                     this.readAsDataURL = function() {};
                     testReader = this;
-                }
+                };
 
                 controller.imageDropHandler({
                     preventDefault: function() {},
@@ -613,6 +613,7 @@ describe('Savanna.crumbnet', function() {
                 var iter = nodeTemplateMap.iterator;
                 iter.next();
                 var firstItem = iter.value;
+
                 expect(firstItem.findObject('icon')).not.toBeNull();
                 expect(firstItem.findObject('descText')).not.toBeNull();
             });
@@ -849,13 +850,15 @@ describe('Savanna.crumbnet', function() {
         });
 
         afterEach(function() {
-            diagram = null;
+            if (diagram) {
+                diagram = null;
+            }
 
             if (view) {
                 view.destroy();
+                view = null;
             }
 
-            view = null;
         });
 
         describe('nodeMouseEnter', function() {
@@ -868,14 +871,14 @@ describe('Savanna.crumbnet', function() {
 
                 Savanna.crumbnet.utils.ViewTemplates.nodeMouseEnter(null, node);
 
-                var it = node.ports;
+                var it = Savanna.crumbnet.utils.ViewTemplates.getPorts(node);
 
                 expect(it.count).toBeGreaterThan(0);
 
                 var port = it.next() ? it.value : null;
 
                 expect(port).not.toBeNull();
-                expect(port.visible).toBeTruthy();
+                expect(Savanna.crumbnet.utils.ViewTemplates.portVisible(port)).toBeTruthy();
             });
 
             it('should NOT set ports to be visible if we are part of a diagram that is readOnly', function() {
@@ -885,14 +888,14 @@ describe('Savanna.crumbnet', function() {
 
                 Savanna.crumbnet.utils.ViewTemplates.nodeMouseEnter(null, node);
 
-                var it = node.ports;
+                var it = Savanna.crumbnet.utils.ViewTemplates.getPorts(node);
 
                 expect(it.count).toBeGreaterThan(0);
 
                 var port = it.next() ?it.value : null;
 
                 expect(port).not.toBeNull();
-                expect(port.visible).toBeFalsy();
+                expect(Savanna.crumbnet.utils.ViewTemplates.portVisible(port)).toBeFalsy();
             });
 
             it('should NOT set ports to be visible if we are part of a diagram that does not allowLink', function() {
@@ -902,14 +905,14 @@ describe('Savanna.crumbnet', function() {
 
                 Savanna.crumbnet.utils.ViewTemplates.nodeMouseEnter(null, node);
 
-                var it = node.ports;
+                var it = Savanna.crumbnet.utils.ViewTemplates.getPorts(node);
 
                 expect(it.count).toBeGreaterThan(0);
 
                 var port = it.next() ?it.value : null;
 
                 expect(port).not.toBeNull();
-                expect(port.visible).toBeFalsy();
+                expect(Savanna.crumbnet.utils.ViewTemplates.portVisible(port)).toBeFalsy();
             });
         });
 
@@ -928,14 +931,14 @@ describe('Savanna.crumbnet', function() {
 
                 Savanna.crumbnet.utils.ViewTemplates.nodeMouseLeave(null, node);
 
-                var it = node.ports;
+                var it = Savanna.crumbnet.utils.ViewTemplates.getPorts(node);
 
                 expect(it.count).toBeGreaterThan(0);
 
                 var port = it.next() ?it.value : null;
 
                 expect(port).not.toBeNull();
-                expect(port.visible).toBeFalsy();
+                expect(Savanna.crumbnet.utils.ViewTemplates.portVisible(port)).toBeFalsy();
             });
 
             it('should NOT set ports to be visible if we are part of a diagram that is readOnly', function() {
@@ -945,14 +948,14 @@ describe('Savanna.crumbnet', function() {
 
                 Savanna.crumbnet.utils.ViewTemplates.nodeMouseLeave(null, node);
 
-                var it = node.ports;
+                var it = Savanna.crumbnet.utils.ViewTemplates.getPorts(node);
 
                 expect(it.count).toBeGreaterThan(0);
 
                 var port = it.next() ?it.value : null;
 
                 expect(port).not.toBeNull();
-                expect(port.visible).toBeTruthy();
+                expect(Savanna.crumbnet.utils.ViewTemplates.portVisible(port)).toBeTruthy();
             });
 
             it('should NOT set ports to be visible if we are part of a diagram that does not allowLink', function() {
@@ -962,14 +965,14 @@ describe('Savanna.crumbnet', function() {
 
                 Savanna.crumbnet.utils.ViewTemplates.nodeMouseLeave(null, node);
 
-                var it = node.ports;
+                var it = Savanna.crumbnet.utils.ViewTemplates.getPorts(node);
 
                 expect(it.count).toBeGreaterThan(0);
 
                 var port = it.next() ?it.value : null;
 
                 expect(port).not.toBeNull();
-                expect(port.visible).toBeTruthy();
+                expect(Savanna.crumbnet.utils.ViewTemplates.portVisible(port)).toBeTruthy();
             });
         });
 
@@ -999,7 +1002,9 @@ describe('Savanna.crumbnet', function() {
             });
 
             it('should add a node with a link between the new node and the given node in the case the node has no siblings', function() {
+
                 diagram.clear();
+                diagram.startTransaction('setupTest'); // because we are manipulating the diagram to get to a testable state (without user input)
 
                 var model = diagram.model;
                 model.addNodeData({ text: 'TEST NODE' });
@@ -1008,6 +1013,8 @@ describe('Savanna.crumbnet', function() {
                     origNodeCount = diagram.nodes.count,
                     origLinkCount = diagram.links.count,
                     inputEvent = new go.InputEvent();
+
+                diagram.commitTransaction('setupTest');
 
                 Savanna.crumbnet.utils.ViewTemplates.addNodeAndLink(inputEvent, node);
 
@@ -1018,6 +1025,8 @@ describe('Savanna.crumbnet', function() {
             it('should offset the new node from lowest/most-right sibling node, accounting for node who is off the canvas', function() {
                 var node = diagram.nodes.first(),
                     inputEvent = new go.InputEvent();
+
+                diagram.startTransaction('setupTest'); // because we are manipulating the diagram to get to a testable state (without user input)
 
                 // Make sure we have at least two siblings...
                 Savanna.crumbnet.utils.ViewTemplates.addNodeAndLink(inputEvent, node);
@@ -1042,10 +1051,27 @@ describe('Savanna.crumbnet', function() {
 
                 expect(node.findNodesOutOf().count).toBeGreaterThan(2);
 
+                diagram.commitTransaction('setupTest');
+
                 Savanna.crumbnet.utils.ViewTemplates.addNodeAndLink(inputEvent, node);
 
                 expect(diagram.nodes.count).toBe(origNodeCount + 1);
                 expect(diagram.links.count).toBe(origLinkCount + 1);
+            });
+        });
+
+        describe('makeTextBlock', function() {
+
+            it('should not set the default font treatment to bold', function() {
+                var textBlock = Savanna.crumbnet.utils.ViewTemplates.makeTextBlock();
+
+                expect(textBlock.font).not.toMatch(/^bold/);
+            });
+
+            it('should allow us to bold the font', function() {
+                var textBlock = Savanna.crumbnet.utils.ViewTemplates.makeTextBlock({ bold: true });
+
+                expect(textBlock.font).toMatch(/^bold/);
             });
         });
     });
