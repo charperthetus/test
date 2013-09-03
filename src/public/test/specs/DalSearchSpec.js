@@ -304,7 +304,7 @@ describe('Dal Search', function() {
 
                 myStore = store.getAt(1).getCustomSearchDescription().customSearchGroups();
                 myRecord = myStore.getAt(0);
-                myView = Ext.create('Savanna.search.view.searchDals.CustomGroup', { model: myRecord });
+                myView = Ext.create('Savanna.search.view.searchComponent.searchBody.searchDals.CustomGroup', { model: myRecord });
             });
             afterEach(function(){
                 myStore = null;
