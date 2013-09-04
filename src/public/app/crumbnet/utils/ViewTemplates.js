@@ -250,8 +250,8 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
             arrowhead = gmake(go.Shape, { toArrow: 'standard', stroke: null });
 
         return gmake(ExtendedLink, {
-                layerName: 'Foreground', // kholman: why does this type of link get a layerName?
                 routing: go.Link.AvoidsNodes,
+                layerName: 'Foreground', // kholman: why does this type of link get a layerName?
                 corner: 5,
                 toShortLength: 5, // give it breathing room for the arrowhead
                 selectionAdornmentTemplate: this.makeLinkSelectionAdornment(true)
@@ -260,18 +260,6 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
             fromLabel,
             arrowhead
         );
-    },
-
-    makeLinkSelectionAdornment: function(addArrow) {
-        var gmake = go.GraphObject.make,
-            adornment = gmake(go.Adornment,
-                            gmake(go.Shape,
-                                { isPanelMain: true, stroke: 'red', fill: 'red', strokeWidth: 3 }));
-        if (addArrow) {
-            adornment.add(gmake(go.Shape, { toArrow: 'Standard', fill: 'red', stroke: null }));
-        }
-
-        return adornment;
     },
 
     makeStraightLink: function() {
@@ -299,13 +287,11 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
 
         return gmake(ExtendedLink,
             go.Link.Bezier,
-            go.Link.Orthogonal,
             {
+                routing: go.Link.Orthogonal,
                 fromEndSegmentLength: 1,
                 toEndSegmentLength: 1,
                 selectionObjectName: 'Path',
-                relinkableFrom: true,
-                relinkableTo: true,
                 selectionAdornmentTemplate: this.makeLinkSelectionAdornment()
             },
             gmake(go.Shape, {
@@ -316,6 +302,21 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
             }),
             fromLabel
         );
+    },
+
+    makeLinkSelectionAdornment: function(addArrow) {
+        var gmake = go.GraphObject.make,
+            adornment = gmake(go.Adornment,
+                gmake(go.Shape,
+                    { isPanelMain: true, stroke: 'red', fill: 'red', strokeWidth: 3 }
+                )
+            );
+
+        if (addArrow) {
+            adornment.add(gmake(go.Shape, { toArrow: 'Standard', fill: 'red', stroke: null }));
+        }
+
+        return adornment;
     },
 
     makeLinkTextBlock: function(options) {
