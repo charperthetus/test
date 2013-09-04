@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<project name="savanna-ant-tasks" default="savanna-rebase">
+<project name="savanna-ant-tasks" default="savanna-rebase-master">
 
     <property file="../savanna-client.properties" prefix="maven"/>
 
@@ -29,7 +29,8 @@
     <target name="jscover-test" depends="jscover-start">
         <exec executable="phantomjs" dir="test">
             <arg value="lib/run-jscover-jasmine.js"/>
-            <arg value="http://localhost:8080/test/phantomjsRunner.html"/>
+            <arg value="${basedir}/${maven.jscover.reportdir}${maven.jscover.outputdir}/${maven.surefire.outputdir}"/>
+            <arg value="http://localhost:8080/test/SpecRunner.html"/>
         </exec>
     </target>
 
@@ -43,7 +44,7 @@
     <!--
         Generates the cobertura format reports
     -->
-    <target name="jscover-generate-cobertura" depends="jscover-test,jscover-stop">
+    <target name="jscover-generate-cobertura" depends="jscover-test,jscover-stop" description="runs unit tests, generating surefire unit-test and cobertura coverage reports">
         <java classpath="${user.home}/.m2/repository/com/github/tntim96/JSCover/0.3.0/JSCover-0.3.0.jar" classname="jscover.report.Main">
             <arg value="--format=COBERTURAXML"/>
             <arg value="${basedir}/${maven.jscover.reportdir}${maven.jscover.outputdir}"/>
@@ -56,19 +57,39 @@
         NOTE:
             Expects that you have run "git remote add upstream htttps://github.com/path/to/thetus/repos.git"
     -->
-    <target name="savanna-rebase">
+    <target name="savanna-checkout-master" description="checks out the 'master' git branch">
+        <exec executable="git">
+            <arg value="checkout"/>
+            <arg value="master"/>
+        </exec>
+    </target>
+
+    <target name="savanna-checkout-map" description="checks out the 'MapPrototype' git branch">
+        <exec executable="git">
+            <arg value="checkout"/>
+            <arg value="MapPrototype"/>
+        </exec>
+    </target>
+
+    <target name="savanna-fetch" description="fetches upstream (i.e. ThetusCorportation repos) changes">
         <exec executable="git">
             <arg value="fetch"/>
             <arg value="--progress"/>
             <arg value="--prune"/>
             <arg value="upstream"/>
         </exec>
+    </target>
+
+    <target name="savanna-rebase-master" depends="savanna-checkout-map,savanna-fetch" description="fetches/rebases the master branch from the upstream repos">
         <exec executable="git">
             <arg value="rebase"/>
             <arg value="-v"/>
             <arg value="-m"/>
             <arg value="refs/remotes/upstream/master"/>
         </exec>
+    </target>
+
+    <target name="savanna-rebase-map" depends="savanna-checkout-map,savanna-fetch" description="fetches/rebases the MapPrototype branch from the upstream repos">
         <exec executable="git">
             <arg value="rebase"/>
             <arg value="-v"/>

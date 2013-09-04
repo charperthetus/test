@@ -26,7 +26,7 @@ Ext.define("Savanna.flexpaper.view.FlexpaperToolbar", {
                     itemId:"handtool"
                 },
                 {
-                    text: "select",
+                    text: "highlight",
                     itemId:"selecttool"
                 },
                 {

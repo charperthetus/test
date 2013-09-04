@@ -3,7 +3,7 @@
           Savanna: false, ThetusTestHelpers: false,
           L: false
  */
-Ext.require('Savanna.search.view.SearchBody');
+Ext.require('Savanna.search.view.searchComponent.SearchBody');
 
 describe('Search Map', function() {
 
@@ -15,14 +15,14 @@ describe('Search Map', function() {
         ThetusTestHelpers.ExtHelpers.cleanTestDom();
     });
 
-    describe('Savanna.search.view.SearchMap', function() {
+    describe('Savanna.search.view.searchComponent.searchBody.SearchMap', function() {
 
         describe('constructor', function() {
 
             it('should be able to create a search map', function() {
-                var map = Ext.create('Savanna.search.view.SearchMap',  { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
+                var map = Ext.create('Savanna.search.view.searchComponent.searchBody.SearchMap',  { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
 
-                expect(map instanceof Savanna.search.view.SearchMap).toBeTruthy();
+                expect(map instanceof Savanna.search.view.searchComponent.searchBody.SearchMap).toBeTruthy();
 
             });
 

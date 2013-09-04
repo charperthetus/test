@@ -1,4 +1,4 @@
-/* global require: false, console: false, phantom: false, jscoverage_report: false */
+/* global require: false, console: false, phantom: false, jasmine: false, jscoverage_report: false, utils: false */
 /**
  * run-jscover-jasmine.js
  *
@@ -6,51 +6,21 @@
  *
  * This is copied from http://tntim96.github.io/JSCover/manual/manual.xml
  */
-var system = require('system');
-var MAX_TIMEOUT = 12 * 60 * 1000; // hopefully our tests don't take longer than 12 minutes to run
+var system = require('system'),
+    fs = require('fs'),
+    page,
+    resultsDir = system.args[1],
+    pageUrl = system.args[2],
+    MAX_TIMEOUT = 12 * 60 * 1000; // hopefully our tests don't take longer than 12 minutes to run
 
-/**
- * Wait until the test condition is true or a timeout occurs. Useful for waiting
- * on a server response or for a ui change (fadeIn, etc.) to occur.
- *
- * @param testFx javascript condition that evaluates to a boolean,
- * it can be passed in as a string (e.g.: '1 == 1' or '$('#bar').is(':visible')' or
- * as a callback function.
- * @param onReady what to do when testFx condition is fulfilled,
- * it can be passed in as a string (e.g.: '1 == 1' or '$('#bar').is(':visible')' or
- * as a callback function.
- * @param timeOutMillis the max amount of time to wait. If not specified, 3 sec is used.
- */
-function waitFor(testFx, onReady, timeOutMillis) {
-    var maxtimeOutMillis = timeOutMillis ? timeOutMillis : 3001, //< Default Max Timeout is 3s
-        start = new Date().getTime(),
-        condition = false,
-        interval = setInterval(function () {
-            if ((new Date().getTime() - start < maxtimeOutMillis) && !condition) {
-                // If not time-out yet and condition not yet fulfilled
-                condition = (typeof(testFx) === 'string' ? eval(testFx) : testFx()); //< defensive code
-            } else {
-                if (!condition) {
-                    // If condition still not fulfilled (timeout but condition is 'false')
-                    console.log('waitFor() timeout');
-                    phantom.exit(1);
-                } else {
-                    // Condition fulfilled (timeout and/or condition is 'true')
-                    console.log('waitFor() finished in ' + (new Date().getTime() - start) + 'ms.');
-                    typeof(onReady) === 'string' ? eval(onReady) : onReady(); //< Do what it's supposed to do once the condition is fulfilled
-                    clearInterval(interval); //< Stop this interval
-                }
-            }
-        }, 100); //< repeat check every 100ms
-}
+phantom.injectJs('lib/utils/core.js');
 
-if (system.args.length !== 2) {
-    console.log('Usage: run-jasmine.js URL');
+if (system.args.length !== 3) {
+    console.log('Usage: run-jasmine.js reportsDir URL');
     phantom.exit(1);
 }
 
-var page = require('webpage').create(),
-    pageUrl = system.args[1];
+page = require('webpage').create();
 
 // Route 'console.log()' calls from within the Page context to the main Phantom context (i.e. current 'this')
 page.onConsoleMessage = function (msg) {
@@ -63,13 +33,14 @@ page.open(pageUrl, function (status) {
         phantom.exit();
     }
     else {
-        console.log('loaded ' + pageUrl);
+        console.log('Loaded ' + pageUrl);
 
-        waitFor(function () {
+        utils.core.waitfor(function () {
             return page.evaluate(function () {
                 return document.body.querySelector('.symbolSummary .pending') === null;
             });
-        }, function () {
+        },
+        function () {
             var exitCode = page.evaluate(function () {
                 var bodyDesc = document.body.querySelector('.description');
 
@@ -117,12 +88,50 @@ page.open(pageUrl, function (status) {
                 }
             });
 
+            console.log('Going to do jscoverage reporting....');
             page.evaluate(function () {
-                jscoverage_report('phantom');
+                if (typeof jscoverage_report === 'function') {
+                    jscoverage_report('phantom');
+                }
             });
+
+            console.log('Going to do surefire report generation....');
+            // Retrieve the result of the tests
+            var f = null, i, len, filepath,
+                suitesResults = page.evaluate(function(){
+                    return jasmine.phantomjsXMLReporterResults;
+                });
+
+            // Save the result of the tests in files
+            if (!fs.exists(resultsDir)) {
+                fs.makeDirectory(resultsDir);
+            }
+
+            for ( i = 0, len = suitesResults.length; i < len; ++i ) {
+                try {
+                    filepath = resultsDir + '/' + suitesResults[i].xmlfilename;
+                    f = fs.open(filepath, 'w');
+                    f.write(suitesResults[i].xmlbody);
+                    f.close();
+                } catch (e) {
+                    console.log(e);
+                    console.log('ERROR: Unable to save result of Suite "' + suitesResults[i].xmlfilename + '"');
+                }
+            }
+
+            if (!exitCode) {
+                exitCode = page.evaluate(function() {
+                    return jasmine.phantomjsXMLReporterPassed ? 0 : 1; //< exit(0) is success, exit(1) is failure
+                });
+            }
 
             phantom.exit(exitCode);
 
-        }, MAX_TIMEOUT);
+        },
+        function () {
+            console.log('timed out....');
+            phantom.exit(1);
+        },
+        MAX_TIMEOUT);
     }
 });

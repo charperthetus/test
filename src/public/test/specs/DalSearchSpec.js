@@ -8,11 +8,11 @@ Ext.require('Savanna.Config');
 Ext.require('Savanna.search.model.DalSource');
 Ext.require('Savanna.search.model.dalSource.CustomSearchDescription');
 Ext.require('Savanna.search.store.DalSources');
-Ext.require('Savanna.search.view.SearchBody');
 Ext.require('Savanna.search.view.SearchComponent');
-Ext.require('Savanna.search.view.searchDals.CustomGroup');
-Ext.require('Savanna.search.view.searchDals.CustomSearchGroupForm');
-Ext.require('Savanna.search.view.searchDals.SearchOptions');
+Ext.require('Savanna.search.view.searchComponent.SearchBody');
+Ext.require('Savanna.search.view.searchComponent.searchBody.searchDals.CustomGroup');
+Ext.require('Savanna.search.view.searchComponent.searchBody.searchDals.CustomSearchGroupForm');
+Ext.require('Savanna.search.view.searchComponent.searchBody.searchDals.SearchOptions');
 
 
 describe('Dal Search', function() {
@@ -112,13 +112,13 @@ describe('Dal Search', function() {
         });
     });
 
-    describe('Savanna.search.view.SearchBody', function() {
+    describe('Savanna.search.view.searchComponent.SearchBody', function() {
         var view = null;
 
         beforeEach(function() {
             //noinspection JSValidateTypes
             spyOn(Savanna.controller.Factory, 'getController');
-            view = Ext.create('Savanna.search.view.SearchBody', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
+            view = Ext.create('Savanna.search.view.searchComponent.SearchBody', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
         });
 
         afterEach(function() {
@@ -130,7 +130,7 @@ describe('Dal Search', function() {
         });
     });
 
-    describe('Savanna.search.view.SearchDals', function() {
+    describe('Savanna.search.view.searchComponent.searchBody.SearchDals', function() {
         var view = null,
             store = null,
             server = null;
@@ -144,8 +144,7 @@ describe('Dal Search', function() {
 
             //noinspection JSValidateTypes
             spyOn(Savanna.controller.Factory, 'getController');
-
-            view = Ext.create('Savanna.search.view.SearchDals', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
+            view = Ext.create('Savanna.search.view.searchComponent.searchBody.SearchDals', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
         });
 
         afterEach(function() {
@@ -185,7 +184,7 @@ describe('Dal Search', function() {
 
                 var panelView = view.createPanel(store.getAt(0));
 
-                expect(panelView instanceof Savanna.search.view.searchDals.SearchOptions).toBeTruthy();
+                expect(panelView instanceof Savanna.search.view.searchComponent.searchBody.searchDals.SearchOptions).toBeTruthy();
             });
         });
 
@@ -194,7 +193,7 @@ describe('Dal Search', function() {
                 store = null;
 
             beforeEach(function() {
-                view = Ext.create('Savanna.search.view.SearchDals', { renderTo: 'test-html' });
+                view = Ext.create('Savanna.search.view.searchComponent.searchBody.SearchDals', { renderTo: 'test-html' });
 
                 // NOTE: this has to happen BEFORE your create a FakeServer,
                 store = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.DalSources');
@@ -258,7 +257,7 @@ describe('Dal Search', function() {
             server.respondWith(readMethod, testUrl, fixtures.allDals);
 
             // set up the view (it should pull in the store we just created)
-            topView = Ext.create('Savanna.search.view.SearchDals', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
+            topView = Ext.create('Savanna.search.view.searchComponent.searchBody.SearchDals', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
 
             // load the store now (should trigger event to render the view)
             store.load();
@@ -289,14 +288,14 @@ describe('Dal Search', function() {
         });
 
         describe('createCustomSearchGroupPanel', function() {
-            it('should create an instance of the Savanna.search.view.searchDals.CustomSearchGroupForm', function() {
+            it('should create an instance of the Savanna.search.view.searchComponent.searchBody.searchDals.CustomSearchGroupForm', function() {
                 var store = Ext.create('Savanna.search.store.DalSources', {
                     autoload: false
                 });
                 store.loadData(fixtures.allDals);
                 var view = controller.createCustomSearchGroupPanel(store);
 
-                expect(view instanceof Savanna.search.view.searchDals.CustomSearchGroupForm).toBeTruthy();
+                expect(view instanceof Savanna.search.view.searchComponent.searchBody.searchDals.CustomSearchGroupForm).toBeTruthy();
             });
         });
         describe('CustomGroup', function() {
@@ -307,7 +306,7 @@ describe('Dal Search', function() {
 
                 myStore = store.getAt(1).getCustomSearchDescription().customSearchGroups();
                 myRecord = myStore.getAt(0);
-                myView = Ext.create('Savanna.search.view.searchDals.CustomGroup', { model: myRecord });
+                myView = Ext.create('Savanna.search.view.searchComponent.searchBody.searchDals.CustomGroup', { model: myRecord });
             });
             afterEach(function(){
                 myStore = null;
@@ -596,7 +595,7 @@ describe('Dal Search', function() {
 
                 store.loadData(fixtures.allDals);
 
-                var childSearchDalsPanel =  Ext.create('Savanna.search.view.searchDals.CustomSearchGroupForm', { store: store });
+                var childSearchDalsPanel =  Ext.create('Savanna.search.view.searchComponent.searchBody.searchDals.CustomSearchGroupForm', { store: store });
 
                 testView.add(childSearchDalsPanel);
 
