@@ -82,14 +82,10 @@
 
         jasmineEnv.addReporter(reporter);
 
-        if (jasmine.PhantomJSReporter) {
-            reporter = new jasmine.PhantomJSReporter();
+        // only add the phantomjs reporter if we are in phantomjs...
+        if (window.navigator.userAgent.match(/PhantomJS/) && jasmine.PhantomJSReporter) {
+            jasmineEnv.addReporter(new jasmine.PhantomJSReporter());
         }
-        else {
-            console.error('Unable to add PhantomJSReporter...');
-        }
-
-        jasmineEnv.addReporter(reporter);
 
         if (reporter.specFilter) {
             jasmineEnv.specFilter = function(spec) {
