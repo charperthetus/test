@@ -463,7 +463,7 @@ describe('Savanna.crumbnet', function() {
 
                     controller.handleLinkTypeMenuClick(linkTypeMenu, menuButton);
 
-                    expect(raisedError).toBeTruthy();
+                    expect(errorRaised).toBeTruthy();
                 });
             });
 
