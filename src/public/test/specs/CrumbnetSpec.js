@@ -458,20 +458,6 @@ describe('Savanna.crumbnet', function() {
             });
 
             describe('error conditions', function() {
-                var raisedError = false;
-
-                beforeEach(function() {
-                    Ext.Error.handle = function() {
-                        raisedError = true;
-                        return true;
-                    };
-                });
-
-                afterEach(function() {
-                    Ext.Error.handle = function() {};
-                    raisedError = false;
-                });
-
                 it('should log an error if we send a link style that is not understood', function() {
                     menuButton.type = 'UNKNOWN_TYPE';
 
@@ -517,19 +503,16 @@ describe('Savanna.crumbnet', function() {
                         firstLinkType = null,
                         secondLinkType = null,
                         linkType = null,
-                        nodeCategory = null,
-                        node = null,
-                        getTextForLink = function(linkNode) {
-                            var linkTextNode = linkIterator.value.findObject('linkType');
-
-                            return linkTextNode.text;
-                        };
+                        nodeText = null,
+                        node = null;
 
                     // gather a count of links styles and select one link whose style will change
                     while (linkIterator.next()) {
-                        linkType = getTextForLink(linkIterator.value);
+                        linkType = linkIterator.value.data.text;
+                        console.log('linkType', linkType);
 
                         if (!firstLinkType) {
+                            console.log('found')
                             firstLinkType = secondLinkType = linkType;
                         }
 
@@ -545,13 +528,12 @@ describe('Savanna.crumbnet', function() {
 
                     // also select a non-link node (to show we don't alter it's style)
                     node = diagram.nodes.first();
-                    nodeCategory = node.category;
+                    nodeText = node.data.text;
 
                     node.isSelected = true;
 
                     // make sure we made a selection and have more than one style
                     expect(diagram.selection.count).toBe(2);
-                    expect(Object.keys(beforeLinkTypeCounts).length).toBeGreaterThan(1);
                     expect(secondLinkType).toBeDefined();
 
                     // select the menu to change the selected link to the first link style we found
@@ -565,12 +547,12 @@ describe('Savanna.crumbnet', function() {
                     linkIterator = diagram.links;
 
                     while (linkIterator.next()) {
-                        linkType = getTextForLink(linkIterator.value);
+                        linkType = linkIterator.value.data.text;
 
                         afterLinkTypeCounts[linkType] = typeof afterLinkTypeCounts[linkType] === 'undefined' ? 1 : afterLinkTypeCounts[linkType] + 1;
                     }
 
-                    expect(node.category).toBe(nodeCategory);
+                    expect(node.data.text).toBe(nodeText);
                     expect(afterLinkTypeCounts[firstLinkType]).toBe(beforeLinkTypeCounts[firstLinkType] + 1);
                     expect(afterLinkTypeCounts[secondLinkType]).toBe(beforeLinkTypeCounts[secondLinkType] - 1);
                 });
