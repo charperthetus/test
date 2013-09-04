@@ -44,7 +44,7 @@
     <!--
         Generates the cobertura format reports
     -->
-    <target name="jscover-generate-cobertura" depends="jscover-test,jscover-stop">
+    <target name="jscover-generate-cobertura" depends="jscover-test,jscover-stop" description="runs unit tests, generating surefire unit-test and cobertura coverage reports">
         <java classpath="${user.home}/.m2/repository/com/github/tntim96/JSCover/0.3.0/JSCover-0.3.0.jar" classname="jscover.report.Main">
             <arg value="--format=COBERTURAXML"/>
             <arg value="${basedir}/${maven.jscover.reportdir}${maven.jscover.outputdir}"/>
@@ -57,21 +57,21 @@
         NOTE:
             Expects that you have run "git remote add upstream htttps://github.com/path/to/thetus/repos.git"
     -->
-    <target name="savanna-checkout-master">
+    <target name="savanna-checkout-master" description="checks out the 'master' git branch">
         <exec executable="git">
             <arg value="checkout"/>
             <arg value="master"/>
         </exec>
     </target>
 
-    <target name="savanna-checkout-map">
+    <target name="savanna-checkout-map" description="checks out the 'MapPrototype' git branch">
         <exec executable="git">
             <arg value="checkout"/>
             <arg value="MapPrototype"/>
         </exec>
     </target>
 
-    <target name="savanna-fetch">
+    <target name="savanna-fetch" description="fetches upstream (i.e. ThetusCorportation repos) changes">
         <exec executable="git">
             <arg value="fetch"/>
             <arg value="--progress"/>
@@ -80,7 +80,7 @@
         </exec>
     </target>
 
-    <target name="savanna-rebase-master" depends="savanna-checkout-map,savanna-fetch">
+    <target name="savanna-rebase-master" depends="savanna-checkout-map,savanna-fetch" description="fetches/rebases the master branch from the upstream repos">
         <exec executable="git">
             <arg value="rebase"/>
             <arg value="-v"/>
@@ -89,7 +89,7 @@
         </exec>
     </target>
 
-    <target name="savanna-rebase-map" depends="savanna-checkout-map,savanna-fetch">
+    <target name="savanna-rebase-map" depends="savanna-checkout-map,savanna-fetch" description="fetches/rebases the MapPrototype branch from the upstream repos">
         <exec executable="git">
             <arg value="rebase"/>
             <arg value="-v"/>
