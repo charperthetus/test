@@ -306,6 +306,7 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
         var textBlockOptions = {};
 
         Ext.apply(textBlockOptions, options, {
+            name: 'linkType',
             textAlign: 'center',
             font: 'bold 14px sans-serif',
             stroke: '#1967B3',

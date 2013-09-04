@@ -38,6 +38,9 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
             'go-graph #linkStyleMenu menu': {
                 click: this.handleLinkStyleMenuClick
             },
+            'go-graph #linkTypeMenu menu': {
+                click: this.handleLinkTypeMenuClick
+            },
             'go-graph #nodeColorPicker': {
                 select: this.handleNodeColorSelect
             },
@@ -241,6 +244,33 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
         }
         else {
             Ext.Error.raise('Unknown link style "' + item.type + '"');
+        }
+    },
+
+    handleLinkTypeMenuClick: function(menu, item) {
+        var linkRelationshipTypes = Savanna.crumbnet.utils.ViewTemplates.linkRelationshipTypes,
+            diagram,
+            selectedNodeSet,
+            iterator,
+            linkTextNode;
+
+        if (Ext.Array.contains(linkRelationshipTypes, item.type)) {
+            diagram = this.getDiagramForMenu(menu);
+            selectedNodeSet = diagram.selection;
+            iterator = selectedNodeSet.iterator;
+
+            diagram.startTransaction('changeLinkType');
+            while (iterator.next()) {
+                if (iterator.value instanceof go.Link) {
+                    linkTextNode = iterator.value.findObject('linkType');
+                    linkTextNode.text = item.type;
+                }
+            }
+            // TODO: should this be rollbackTransaction if nothing is changed?
+            diagram.commitTransaction('changeLinkType');
+        }
+        else {
+            Ext.Error.raise('Unknown link type "' + item.type + '"');
         }
     },
 
