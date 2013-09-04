@@ -250,20 +250,19 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
     handleLinkTypeMenuClick: function(menu, item) {
         var linkRelationshipTypes = Savanna.crumbnet.utils.ViewTemplates.linkRelationshipTypes,
             diagram,
-            selectedNodeSet,
+            selectionSet,
             iterator,
             linkTextNode;
 
         if (Ext.Array.contains(linkRelationshipTypes, item.type)) {
             diagram = this.getDiagramForMenu(menu);
-            selectedNodeSet = diagram.selection;
-            iterator = selectedNodeSet.iterator;
+            selectionSet = diagram.selection;
+            iterator = selectionSet.iterator;
 
             diagram.startTransaction('changeLinkType');
             while (iterator.next()) {
                 if (iterator.value instanceof go.Link) {
-                    linkTextNode = iterator.value.findObject('linkType');
-                    linkTextNode.text = item.type;
+                    diagram.model.setDataProperty(iterator.value.data, 'text', item.type);
                 }
             }
             // TODO: should this be rollbackTransaction if nothing is changed?
@@ -276,8 +275,8 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
 
     handleNodeColorSelect: function(picker, selColor){
         var diagram = this.getDiagramForMenu(picker);
-        var selectedNodeSet = diagram.selection;
-        var iterator = selectedNodeSet.iterator;
+        var selectionSet = diagram.selection;
+        var iterator = selectionSet.iterator;
 
         diagram.startTransaction('changeNodeColor');
 
