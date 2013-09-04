@@ -963,7 +963,14 @@ describe('Savanna.crumbnet', function() {
 
     describe('Utils', function() {
         var view = null,
-            diagram = null;
+            diagram = null,
+            portVisible = function(port) {
+                if (port instanceof go.Panel) {
+                    return port.opacity !== 0;
+                } else { // it's a shape
+                    return port.stroke !== null || port.fill !== null;
+                }
+            };
 
         beforeEach(function() {
             view = Ext.create('Savanna.crumbnet.view.CrumbnetComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID, width: 500, height: 500 });
@@ -981,14 +988,6 @@ describe('Savanna.crumbnet', function() {
             }
 
         });
-
-        var portVisible = function(port) {
-            if (port instanceof go.Panel) {
-                return port.opacity !== 0;
-            } else { // it's a shape
-                return port.stroke !== null || port.fill !== null;
-            }
-        };
 
         describe('nodeMouseEnter', function() {
 
