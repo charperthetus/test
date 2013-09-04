@@ -6,7 +6,7 @@
  * Time: 11:08 AM
  * To change this template use File | Settings | File Templates.
  */
-Ext.define('Savanna.search.view.searchComponent.SearchComponent', {
+Ext.define('Savanna.search.view.SearchComponent', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.search_searchcomponent',
 

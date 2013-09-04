@@ -10,7 +10,7 @@ Ext.require('Savanna.search.model.SearchHistory');
 Ext.require('Savanna.search.model.SearchRequest');
 Ext.require('Savanna.search.model.SearchResult');
 Ext.require('Savanna.search.store.SearchHistory');
-Ext.require('Savanna.search.view.searchComponent.SearchComponent');
+Ext.require('Savanna.search.view.SearchComponent');
 Ext.require('Savanna.search.view.searchComponent.searchBody.ResultsComponent');
 Ext.require('Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsPanel');
 Ext.require('Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsPanelGrid');
@@ -46,7 +46,7 @@ describe('Search Results', function () {
 
         beforeEach(function () {
             // create a SearchResults store for results tests
-            searchComponent = Ext.create('Savanna.search.view.searchComponent.SearchComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
+            searchComponent = Ext.create('Savanna.search.view.SearchComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
 
             resultsComponent = Ext.create('Savanna.search.view.searchComponent.searchBody.ResultsComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
 
@@ -181,7 +181,7 @@ describe('Search Results', function () {
 
                 beforeEach(function () {
 
-                    searchComponent = Ext.create('Savanna.search.view.searchComponent.SearchComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
+                    searchComponent = Ext.create('Savanna.search.view.SearchComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
 
                     dalsView = searchComponent.queryById('searchdals');
 
@@ -294,7 +294,7 @@ describe('Search Results', function () {
 
             resultsController = Savanna.controller.Factory.getController('Savanna.search.controller.ResultsComponent');
 
-            searchComponent = Ext.create('Savanna.search.view.searchComponent.SearchComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
+            searchComponent = Ext.create('Savanna.search.view.SearchComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
 
             searchController = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
 

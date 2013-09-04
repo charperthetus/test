@@ -13,7 +13,7 @@ Ext.require('Savanna.search.view.searchComponent.searchBar.SearchAdvancedTextfie
 Ext.require('Savanna.search.view.searchComponent.SearchBar');
 Ext.require('Savanna.search.view.searchComponent.searchBar.SearchForm');
 Ext.require('Savanna.search.view.searchComponent.SearchBody');
-Ext.require('Savanna.search.view.searchComponent.SearchComponent');
+Ext.require('Savanna.search.view.SearchComponent');
 Ext.require('Savanna.search.view.searchComponent.SearchToolbar');
 
 describe('Search Component', function () {
@@ -58,7 +58,7 @@ describe('Search Component', function () {
         var component = null;
 
         beforeEach(function () {
-            component = Ext.create('Savanna.search.view.searchComponent.SearchComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
+            component = Ext.create('Savanna.search.view.SearchComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
         });
 
         afterEach(function () {
@@ -124,7 +124,7 @@ describe('Search Component', function () {
             controller = null;
 
         beforeEach(function () {
-            component = Ext.create('Savanna.search.view.searchComponent.SearchComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
+            component = Ext.create('Savanna.search.view.SearchComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
             toolbar = component.queryById('searchtoolbar');
             controller = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
 
