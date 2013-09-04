@@ -56,19 +56,25 @@
         NOTE:
             Expects that you have run "git remote add upstream htttps://github.com/path/to/thetus/repos.git"
     -->
-    <target name="savanna-rebase">
+    <target name="savanna-fetch">
         <exec executable="git">
             <arg value="fetch"/>
             <arg value="--progress"/>
             <arg value="--prune"/>
             <arg value="upstream"/>
         </exec>
+    </target>
+
+    <target name="savanna-rebase-master" depends="savanna-fetch">
         <exec executable="git">
             <arg value="rebase"/>
             <arg value="-v"/>
             <arg value="-m"/>
             <arg value="refs/remotes/upstream/master"/>
         </exec>
+    </target>
+
+    <target name="savanna-rebase-map" depends="savanna-fetch">
         <exec executable="git">
             <arg value="rebase"/>
             <arg value="-v"/>
