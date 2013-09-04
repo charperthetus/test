@@ -7,6 +7,7 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
         'Savanna.crumbnet.utils.ExtendedLink'
     ],
 
+    // TODO: add to testCrumbnetTemplates.json
     linkRelationshipTypes: [
         'Connects to',
         'Supports',
@@ -310,7 +311,7 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
             textAlign: 'center',
             font: 'bold 14px sans-serif',
             stroke: '#1967B3',
-            segmentOrientation: go.Link.OrientUpright45,
+            segmentOrientation: go.Link.OrientUpright, // TODO: this needs to be tuned...
             segmentOffset: new go.Point(NaN, NaN)
         });
 
