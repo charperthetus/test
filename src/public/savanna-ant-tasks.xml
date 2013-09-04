@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<project name="savanna-ant-tasks" default="savanna-rebase">
+<project name="savanna-ant-tasks" default="savanna-rebase-master">
 
     <property file="../savanna-client.properties" prefix="maven"/>
 
@@ -29,7 +29,8 @@
     <target name="jscover-test" depends="jscover-start">
         <exec executable="phantomjs" dir="test">
             <arg value="lib/run-jscover-jasmine.js"/>
-            <arg value="http://localhost:8080/test/phantomjsRunner.html"/>
+            <arg value="${basedir}/${maven.jscover.reportdir}${maven.jscover.outputdir}/${maven.surefire.outputdir}"/>
+            <arg value="http://localhost:8080/test/SpecRunner.html"/>
         </exec>
     </target>
 

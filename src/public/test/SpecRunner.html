@@ -1,21 +1,15 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html>
 <head>
-    <title id="page-title">HTML Jasmine Tester</title>
-    <!--
-        This is s copy of the test runner to be used specifically for running unit tests in a browser.
-
-        NOTE: if you make changes to any of the files loaded here, you need to do the same in PhantomJsRunner.html
-    -->
+    <title>Jasmine Test Runner</title>
 
     <link rel="stylesheet" type="text/css" href="lib/jasmine-1.3.1/jasmine.css">
 
     <!-- Jasmine libs -->
     <script type="text/javascript" src="lib/jasmine-1.3.1/jasmine.js"></script>
     <script type="text/javascript" src="lib/jasmine-1.3.1/jasmine-html.js"></script>
+    <script type="text/javascript" src="lib/jasmine-reporters/jasmine.phantomjs-reporter.js"></script>
     <script type="text/javascript" src="lib/sinon-1.7.1.js"></script>
-
-    <!-- START TEST INCLUDES (should be same for all files) -->
 
     <!-- ExtJS -->
     <script type="text/javascript" src="../ext/ext-all-debug.js"></script>
@@ -67,36 +61,48 @@
     <script type="text/javascript" src="specs/LeafletSpec.js"></script>
     <script type="text/javascript" src="specs/LocationSearchSpec.js"></script>
 
-    <!-- END TEST INCLUDES (should be same for all files) -->
-
-
-    <script type="text/javascript">
-        (function() {
-            var jasmineEnv = jasmine.getEnv();
-            jasmineEnv.updateInterval = 1000;
-
-            var htmlReporter = new jasmine.HtmlReporter();
-
-            jasmineEnv.addReporter(htmlReporter);
-
-            jasmineEnv.specFilter = function(spec) {
-                return htmlReporter.specFilter(spec);
-            };
-
-            var currentWindowOnload = window.onload;
-
-            window.onload = function() {
-                if (currentWindowOnload) {
-                    currentWindowOnload();
-                }
-
-                Ext.onReady(function() {
-                    jasmineEnv.execute();
-                });
-            };
-        })();
-    </script>
 </head>
 <body>
+
+<script type="text/javascript">
+    (function() {
+        var jasmineEnv = jasmine.getEnv();
+        jasmineEnv.updateInterval = 1000;
+
+        var reporter = new jasmine.HtmlReporter();
+
+        jasmineEnv.addReporter(reporter);
+
+        // only add the phantomjs reporter if we are in phantomjs...
+        if (window.navigator.userAgent.match(/PhantomJS/) && jasmine.PhantomJSReporter) {
+            jasmineEnv.addReporter(new jasmine.PhantomJSReporter());
+        }
+
+        if (reporter.specFilter) {
+            jasmineEnv.specFilter = function(spec) {
+                return reporter.specFilter(spec);
+            };
+        }
+
+        var currentWindowOnload = window.onload;
+
+        window.onload = function() {
+            if (currentWindowOnload) {
+                currentWindowOnload();
+            }
+
+            var origErrorHandler = Ext.Error.handle;
+            Ext.Error.handle = function() {
+                origErrorHandler.apply(this, arguments);
+                return true;
+            };
+
+            Ext.onReady(function() {
+                jasmineEnv.execute();
+            });
+        };
+    })();
+</script>
+
 </body>
 </html>
