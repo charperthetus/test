@@ -38,6 +38,9 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
             'go-graph #linkStyleMenu menu': {
                 click: this.handleLinkStyleMenuClick
             },
+            'go-graph #linkTypeMenu menu': {
+                click: this.handleLinkTypeMenuClick
+            },
             'go-graph #nodeColorPicker': {
                 select: this.handleNodeColorSelect
             },
@@ -51,16 +54,20 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
 
     handlePaletteSelectionChange: function(e, selPalette){
         var iterator = e.diagram.selection.iterator;
+
         //There should only ever be one selected node in the palette
         iterator.next();
+
         if (iterator.value){
-            var mainView = selPalette.up('go-graph')
+            var mainView = selPalette.up('go-graph');
             var diagram = mainView.down('go-graph_canvas').diagram;
+
             diagram.toolManager.clickCreatingTool.archetypeNodeData = iterator.value.data;
 
             var palettes = mainView.query('crumbnet_part_palette-group');
+
             palettes.forEach(function(paletteView){
-                if (selPalette != paletteView){
+                if (selPalette !== paletteView){
                     paletteView.palette.clearSelection();
                 }
             });
@@ -240,29 +247,58 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
         }
     },
 
+    handleLinkTypeMenuClick: function(menu, item) {
+        var linkRelationshipTypes = Savanna.crumbnet.utils.ViewTemplates.linkRelationshipTypes,
+            diagram,
+            selectionSet,
+            iterator,
+            linkTextNode;
+
+        if (Ext.Array.contains(linkRelationshipTypes, item.type)) {
+            diagram = this.getDiagramForMenu(menu);
+            selectionSet = diagram.selection;
+            iterator = selectionSet.iterator;
+
+            diagram.startTransaction('changeLinkType');
+            while (iterator.next()) {
+                if (iterator.value instanceof go.Link) {
+                    diagram.model.setDataProperty(iterator.value.data, 'text', item.type);
+                }
+            }
+            // TODO: should this be rollbackTransaction if nothing is changed?
+            diagram.commitTransaction('changeLinkType');
+        }
+        else {
+            Ext.Error.raise('Unknown link type "' + item.type + '"');
+        }
+    },
+
     handleNodeColorSelect: function(picker, selColor){
         var diagram = this.getDiagramForMenu(picker);
-        var selectedNodeSet = diagram.selection;
-        var iterator = selectedNodeSet.iterator;
+        var selectionSet = diagram.selection;
+        var iterator = selectionSet.iterator;
 
         diagram.startTransaction('changeNodeColor');
+
         while (iterator.next()) {
             if (iterator.value instanceof go.Node) {
                 diagram.model.setDataProperty(iterator.value.data, 'color', '#' + selColor);
             }
         }
+
         diagram.commitTransaction('changeNodeColor');
     },
 
     setupImageDrop: function(canvasView) {
         if (typeof window.FileReader !== 'undefined') {
             var dropArea = canvasView.getEl().dom;
-            var _diagram = canvasView.diagram;
+
             dropArea.ondragover = function () {
                 //TODO - check the type of thing dragged in to determine if it can be dropped
                 //Note that false means it can be dropped
                 return false;
             };
+
             dropArea.ondrop = Ext.bind(this.imageDropHandler, null, [canvasView.diagram], true);
         }
     },
@@ -289,6 +325,7 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
             model.addNodeData(newNode);
             diagram.commitTransaction('addImage');
         };
+
         reader.readAsDataURL(file);
 
         return false;
