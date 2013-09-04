@@ -56,6 +56,20 @@
         NOTE:
             Expects that you have run "git remote add upstream htttps://github.com/path/to/thetus/repos.git"
     -->
+    <target name="savanna-checkout-master">
+        <exec executable="git">
+            <arg value="checkout"/>
+            <arg value="master"/>
+        </exec>
+    </target>
+
+    <target name="savanna-checkout-map">
+        <exec executable="git">
+            <arg value="checkout"/>
+            <arg value="MapPrototype"/>
+        </exec>
+    </target>
+
     <target name="savanna-fetch">
         <exec executable="git">
             <arg value="fetch"/>
@@ -65,7 +79,7 @@
         </exec>
     </target>
 
-    <target name="savanna-rebase-master" depends="savanna-fetch">
+    <target name="savanna-rebase-master" depends="savanna-checkout-map,savanna-fetch">
         <exec executable="git">
             <arg value="rebase"/>
             <arg value="-v"/>
@@ -74,7 +88,7 @@
         </exec>
     </target>
 
-    <target name="savanna-rebase-map" depends="savanna-fetch">
+    <target name="savanna-rebase-map" depends="savanna-checkout-map,savanna-fetch">
         <exec executable="git">
             <arg value="rebase"/>
             <arg value="-v"/>
