@@ -250,11 +250,11 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
             arrowhead = gmake(go.Shape, { toArrow: 'standard', stroke: null });
 
         return gmake(ExtendedLink, {
-                selectionAdorned: true,
-                layerName: 'Foreground',
+                layerName: 'Foreground', // kholman: why does this type of link get a layerName?
                 routing: go.Link.AvoidsNodes,
                 corner: 5,
-                toShortLength: 5
+                toShortLength: 5, // give it breathing room for the arrowhead
+                selectionAdornmentTemplate: this.makeLinkSelectionAdornment(true)
             },
             linkShape,
             fromLabel,
@@ -262,18 +262,34 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
         );
     },
 
+    makeLinkSelectionAdornment: function(addArrow) {
+        var gmake = go.GraphObject.make,
+            adornment = gmake(go.Adornment,
+                            gmake(go.Shape,
+                                { isPanelMain: true, stroke: 'red', fill: 'red', strokeWidth: 3 }));
+        if (addArrow) {
+            adornment.add(gmake(go.Shape, { toArrow: 'Standard', fill: 'red', stroke: null }));
+        }
+
+        return adornment;
+    },
+
     makeStraightLink: function() {
         var gmake = go.GraphObject.make,
             linkShape = gmake(go.Shape, { strokeWidth: 3, stroke: 'skyblue' }),
-            fromLabel = this.makeLinkTextBlock();
+            fromLabel = this.makeLinkTextBlock(),
+            arrowhead = gmake(go.Shape, { toArrow: 'standard', stroke: null, fill: 'skyblue' });
 
         return gmake(ExtendedLink, {
                 routing: go.Link.Normal,
                 fromEndSegmentLength: 0,
-                toEndSegmentLength: 0
+                toEndSegmentLength: 0,
+                toShortLength: 5, // give it breathing room for the arrowhead
+                selectionAdornmentTemplate: this.makeLinkSelectionAdornment(true)
             },
             linkShape,
-            fromLabel
+            fromLabel,
+            arrowhead
         );
     },
 
@@ -289,7 +305,8 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
                 toEndSegmentLength: 1,
                 selectionObjectName: 'Path',
                 relinkableFrom: true,
-                relinkableTo: true
+                relinkableTo: true,
+                selectionAdornmentTemplate: this.makeLinkSelectionAdornment()
             },
             gmake(go.Shape, {
                 isPanelMain: true,
