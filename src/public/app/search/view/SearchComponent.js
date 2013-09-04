@@ -11,9 +11,9 @@ Ext.define('Savanna.search.view.SearchComponent', {
     alias: 'widget.search_searchcomponent',
 
     requires: [
-        'Savanna.search.view.SearchBody',
-        'Savanna.search.view.SearchBar',
-        'Savanna.search.view.SearchToolbar',
+        'Savanna.search.view.searchComponent.SearchBody',
+        'Savanna.search.view.searchComponent.SearchBar',
+        'Savanna.search.view.searchComponent.SearchToolbar',
         'Savanna.controller.Factory',
         'Savanna.search.controller.SearchDals'
     ],

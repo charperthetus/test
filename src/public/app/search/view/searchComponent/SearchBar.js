@@ -1,5 +1,5 @@
 /* global Ext: false, Savanna: false */
-Ext.define('Savanna.search.view.SearchBar', {
+Ext.define('Savanna.search.view.searchComponent.SearchBar', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.search_searchbar',
 
@@ -7,7 +7,7 @@ Ext.define('Savanna.search.view.SearchBar', {
         'Ext.ux.layout.Center',
         'Ext.form.field.Text',
         'Savanna.controller.Factory',
-        'Savanna.search.view.SearchForm'
+        'Savanna.search.view.searchComponent.searchBar.SearchForm'
     ],
 
     border: false,

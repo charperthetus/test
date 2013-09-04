@@ -5,12 +5,12 @@
  * Time: 4:31 PM
  * To change this template use File | Settings | File Templates.
  */
-Ext.define('Savanna.search.view.ResultsComponent', {
+Ext.define('Savanna.search.view.searchComponent.searchBody.ResultsComponent', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.search_resultscomponent',
     requires: [
-        'Savanna.search.view.ResultsDals',
-        'Savanna.search.view.ResultsPanel',
+        'Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsDals',
+        'Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsPanel',
         'Savanna.controller.Factory',
         'Savanna.search.store.DalSources'
     ],

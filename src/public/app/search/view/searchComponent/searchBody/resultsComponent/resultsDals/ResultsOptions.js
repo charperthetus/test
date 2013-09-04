@@ -1,4 +1,4 @@
-Ext.define('Savanna.search.view.resultsDals.ResultsOptions', {
+Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsOptions', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.search_resultsDals_resultsoptions',
 

@@ -10,7 +10,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
     extend: 'Ext.app.Controller',
 
     views: [
-        'Savanna.search.view.ResultsComponent'
+        'Savanna.search.view.searchComponent.searchBody.ResultsComponent'
     ],
     init: function () {
 
@@ -82,7 +82,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
     },
 
     createFacet: function (facet) {
-        return Ext.create('Savanna.search.view.resultsDals.ResultsFacet', {
+        return Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacet', {
             model: facet
         });
     }

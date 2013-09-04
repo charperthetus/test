@@ -6,7 +6,7 @@
  * Time: 12:31 PM
  * To change this template use File | Settings | File Templates.
  */
-Ext.define('Savanna.search.view.ResultsPanelToolbar', {
+Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsPanelToolbar', {
     extend: 'Ext.toolbar.Toolbar',
     alias: 'widget.search_resultspaneltoolbar',
 

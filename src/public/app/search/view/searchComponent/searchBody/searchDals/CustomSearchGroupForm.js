@@ -1,9 +1,9 @@
-Ext.define('Savanna.search.view.searchDals.CustomSearchGroupForm', {
+Ext.define('Savanna.search.view.searchComponent.searchBody.searchDals.CustomSearchGroupForm', {
     extend: 'Ext.container.Container',
     alias: 'widget.search_searchDals_custom-search-group-form',
 
     requires: [
-        'Savanna.search.view.searchDals.CustomGroup'
+        'Savanna.search.view.searchComponent.searchBody.searchDals.CustomGroup'
     ],
 
     store: null,
@@ -20,7 +20,7 @@ Ext.define('Savanna.search.view.searchDals.CustomSearchGroupForm', {
         this.store = config.store;
 
         this.store.each(function(record) {
-            me.add(Ext.create('Savanna.search.view.searchDals.CustomGroup', { model: record }));
+            me.add(Ext.create('Savanna.search.view.searchComponent.searchBody.searchDals.CustomGroup', { model: record }));
         });
     }
 });

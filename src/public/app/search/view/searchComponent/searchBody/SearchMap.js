@@ -8,7 +8,7 @@
 /**
  * TODO: Document what events we may emit...
  */
-Ext.define('Savanna.search.view.SearchMap', {
+Ext.define('Savanna.search.view.searchComponent.searchBody.SearchMap', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.search_searchmap',
 

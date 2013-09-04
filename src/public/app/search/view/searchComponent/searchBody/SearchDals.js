@@ -6,7 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 /* global Ext: false, Savanna: false */
-Ext.define('Savanna.search.view.SearchDals', {
+Ext.define('Savanna.search.view.searchComponent.searchBody.SearchDals', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.search_searchdals',
 
@@ -19,7 +19,7 @@ Ext.define('Savanna.search.view.SearchDals', {
     requires: [
         'Ext.form.Label',
         'Ext.toolbar.Spacer',
-        'Savanna.search.view.searchDals.SearchOptions'
+        'Savanna.search.view.searchComponent.searchBody.searchDals.SearchOptions'
     ],
 
     layout: 'vbox',
@@ -92,12 +92,12 @@ Ext.define('Savanna.search.view.SearchDals', {
         }, this);
     },
 
-    createPanel: function(dalRecord) {
-        return Ext.create('Savanna.search.view.searchDals.SearchOptions', {
-            itemId: dalRecord.data.id,
-            checkboxLabel: dalRecord.data.displayName,
-            label: dalRecord.data.textDescription,
-            showButton: (dalRecord.getCustomSearchDescription().customSearchGroups().data.length > 0)
+    createPanel: function(myRecord) {
+        return Ext.create('Savanna.search.view.searchComponent.searchBody.searchDals.SearchOptions', {
+            itemId: myRecord.data.id,
+            checkboxLabel: myRecord.data.displayName,
+            label: myRecord.data.textDescription,
+            showButton: (myRecord.getCustomSearchDescription().customSearchGroups().data.length > 0)
         });
     }
 });
