@@ -8,8 +8,8 @@ Ext.require('Savanna.Config');
 Ext.require('Savanna.search.model.DalSource');
 Ext.require('Savanna.search.model.dalSource.CustomSearchDescription');
 Ext.require('Savanna.search.store.DalSources');
+Ext.require('Savanna.search.view.SearchComponent');
 Ext.require('Savanna.search.view.searchComponent.SearchBody');
-Ext.require('Savanna.search.view.searchComponent.SearchComponent');
 Ext.require('Savanna.search.view.searchComponent.searchBody.searchDals.CustomGroup');
 Ext.require('Savanna.search.view.searchComponent.searchBody.searchDals.CustomSearchGroupForm');
 Ext.require('Savanna.search.view.searchComponent.searchBody.searchDals.SearchOptions');
@@ -132,7 +132,8 @@ describe('Dal Search', function() {
 
     describe('Savanna.search.view.searchComponent.searchBody.SearchDals', function() {
         var view = null,
-            store = null;;
+            store = null,
+            server = null;
 
         beforeEach(function() {
             //noinspection JSValidateTypes
@@ -141,6 +142,7 @@ describe('Dal Search', function() {
 
             server = new ThetusTestHelpers.FakeServer(sinon);
 
+            //noinspection JSValidateTypes
             spyOn(Savanna.controller.Factory, 'getController');
             view = Ext.create('Savanna.search.view.searchComponent.searchBody.SearchDals', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
         });
@@ -304,7 +306,7 @@ describe('Dal Search', function() {
 
                 myStore = store.getAt(1).getCustomSearchDescription().customSearchGroups();
                 myRecord = myStore.getAt(0);
-                myView = Ext.create('Savanna.search.view.searchDals.CustomGroup', { model: myRecord });
+                myView = Ext.create('Savanna.search.view.searchComponent.searchBody.searchDals.CustomGroup', { model: myRecord });
             });
             afterEach(function(){
                 myStore = null;
@@ -360,7 +362,11 @@ describe('Dal Search', function() {
 
                 //noinspection JSValidateTypes
                 spyOn(testView, 'add').andCallThrough();
+
+                //noinspection JSValidateTypes
                 spyOn(testView, 'doLayout'); // don't necessarily need to redo the layout...
+
+                //noinspection JSValidateTypes
                 spyOn(button, 'setText').andCallThrough();
             });
 
@@ -402,8 +408,14 @@ describe('Dal Search', function() {
 
                 //noinspection JSValidateTypes
                 spyOn(testView, 'doLayout'); // don't necessarily need to redo the layout...
+
+                //noinspection JSValidateTypes
                 spyOn(checkbox, 'getValue').andCallThrough();
+
+                //noinspection JSValidateTypes
                 spyOn(checkbox, 'up').andCallThrough();
+
+                //noinspection JSValidateTypes
                 spyOn(button, 'setText').andCallThrough();
             });
 
@@ -471,6 +483,8 @@ describe('Dal Search', function() {
 
                 //noinspection JSValidateTypes
                 spyOn(testView, 'doLayout'); // don't necessarily need to redo the layout...
+
+                //noinspection JSValidateTypes
                 spyOn(topView, 'query').andCallThrough();
             });
 
@@ -510,7 +524,11 @@ describe('Dal Search', function() {
 
                 //noinspection JSValidateTypes
                 spyOn(testView, 'doLayout'); // don't necessarily need to redo the layout...
+
+                //noinspection JSValidateTypes
                 spyOn(topView, 'removeAll').andCallThrough();
+
+                //noinspection JSValidateTypes
                 spyOn(topView, 'createDalPanels').andCallThrough();
             });
 
@@ -560,6 +578,8 @@ describe('Dal Search', function() {
 
                 //noinspection JSValidateTypes
                 spyOn(testView, 'doLayout'); // don't necessarily need to redo the layout...
+
+                //noinspection JSValidateTypes
                 spyOn(topView, 'remove').andCallThrough();
             });
 

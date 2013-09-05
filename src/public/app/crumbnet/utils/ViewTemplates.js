@@ -7,6 +7,16 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
         'Savanna.crumbnet.utils.ExtendedLink'
     ],
 
+    // TODO: add to testCrumbnetTemplates.json
+    linkRelationshipTypes: [
+        'Connects to',
+        'Supports',
+        'Contradicts',
+        'Proves',
+        'Disproves',
+        'Unknown'
+    ],
+
     /**
      * Creates our default node template for use with GoJS
      *
@@ -236,15 +246,15 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
     makeOrthogonalLink: function() {
         var gmake = go.GraphObject.make,
             linkShape = gmake(go.Shape, { isPanelMain: true, stroke: '#303B45', strokeWidth: 2.5 }),
-            fromLabel = this.makeLinkTextBlock({ segmentIndex: 0, segmentOrientation: go.Link.OrientUpright }),
+            fromLabel = this.makeLinkTextBlock(),
             arrowhead = gmake(go.Shape, { toArrow: 'standard', stroke: null });
 
         return gmake(ExtendedLink, {
-                selectionAdorned: true,
-                layerName: 'Foreground',
                 routing: go.Link.AvoidsNodes,
+                layerName: 'Foreground', // kholman: why does this type of link get a layerName?
                 corner: 5,
-                toShortLength: 5
+                toShortLength: 5, // give it breathing room for the arrowhead
+                selectionAdornmentTemplate: this.makeLinkSelectionAdornment(true)
             },
             linkShape,
             fromLabel,
@@ -255,38 +265,58 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
     makeStraightLink: function() {
         var gmake = go.GraphObject.make,
             linkShape = gmake(go.Shape, { strokeWidth: 3, stroke: 'skyblue' }),
-            fromLabel = this.makeLinkTextBlock();
+            fromLabel = this.makeLinkTextBlock(),
+            arrowhead = gmake(go.Shape, { toArrow: 'standard', stroke: null, fill: 'skyblue' });
 
         return gmake(ExtendedLink, {
                 routing: go.Link.Normal,
                 fromEndSegmentLength: 0,
-                toEndSegmentLength: 0
+                toEndSegmentLength: 0,
+                toShortLength: 5, // give it breathing room for the arrowhead
+                selectionAdornmentTemplate: this.makeLinkSelectionAdornment(true)
             },
             linkShape,
-            fromLabel
+            fromLabel,
+            arrowhead
         );
     },
 
     makeTaperedLink: function() {
-        var gmake = go.GraphObject.make;
+        var gmake = go.GraphObject.make,
+            fromLabel = this.makeLinkTextBlock();
 
         return gmake(ExtendedLink,
             go.Link.Bezier,
-            go.Link.Orthogonal,
             {
+                routing: go.Link.Orthogonal,
                 fromEndSegmentLength: 1,
                 toEndSegmentLength: 1,
                 selectionObjectName: 'Path',
-                relinkableFrom: true,
-                relinkableTo: true
+                selectionAdornmentTemplate: this.makeLinkSelectionAdornment()
             },
             gmake(go.Shape, {
                 isPanelMain: true,
                 name: 'Path',
                 stroke: null,
                 fill: 'blue'
-            })
+            }),
+            fromLabel
         );
+    },
+
+    makeLinkSelectionAdornment: function(addArrow) {
+        var gmake = go.GraphObject.make,
+            adornment = gmake(go.Adornment,
+                gmake(go.Shape,
+                    { isPanelMain: true, stroke: 'red', fill: 'red', strokeWidth: 3 }
+                )
+            );
+
+        if (addArrow) {
+            adornment.add(gmake(go.Shape, { toArrow: 'Standard', fill: 'red', stroke: null }));
+        }
+
+        return adornment;
     },
 
     makeLinkTextBlock: function(options) {
@@ -295,9 +325,11 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
         var textBlockOptions = {};
 
         Ext.apply(textBlockOptions, options, {
+            name: 'linkType',
             textAlign: 'center',
             font: 'bold 14px sans-serif',
             stroke: '#1967B3',
+            segmentOrientation: go.Link.OrientUpright, // TODO: this needs to be tuned...
             segmentOffset: new go.Point(NaN, NaN)
         });
 
@@ -459,13 +491,5 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
         }
 
         return ports.iterator;
-    },
-
-    portVisible: function(port) {
-        if (port instanceof go.Panel) {
-            return port.opacity !== 0;
-        } else { // it's a shape
-            return port.stroke !== null || port.fill !== null;
-        }
     }
 });

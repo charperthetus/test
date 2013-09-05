@@ -22,6 +22,7 @@ Ext.define('Savanna.controller.Main', {
             login: {
                 render: function() {
                     Ext.EventManager.on(window, 'message', function(e) {
+                        //TODO - This needs to either remove after the first time or case based on the message that is sent
                         me.swapLogin(e.browserEvent.data);
                     });
                 }
@@ -40,8 +41,8 @@ Ext.define('Savanna.controller.Main', {
 
         if (this.app && this.app.viewport && this.app.viewport.queryById) {
             var mainViewport = this.app.viewport.queryById('viewport_main');
-
-            if (mainViewport) {
+            var login = this.app.viewport.queryById('login');
+            if (mainViewport && login) {
                 mainViewport.remove('login');
 
                 var main = Ext.create('Savanna.view.SavannaDesktop', { itemId: 'main' });

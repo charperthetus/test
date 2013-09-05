@@ -26,7 +26,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
     ],
 
     views: [
-        'Savanna.search.view.searchComponent.SearchComponent'
+        'Savanna.search.view.SearchComponent'
     ],
 
     init: function () {

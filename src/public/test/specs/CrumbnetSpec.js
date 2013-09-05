@@ -311,18 +311,18 @@ describe('Savanna.crumbnet', function() {
 
         describe('handleLinkStyleClick', function() {
             var menuButton = null,
-                menu = null,
+                linkStyleMenu = null,
                 diagram = null;
 
             beforeEach(function() {
-                menuButton = view.down('menuitem[type="Orthogonal"]'); //TODO - figure out how to get the first menu item from the menu instead of explicitly by name.
-                menu = view.down('#linkStyleMenu');
-                diagram = controller.getDiagramForMenu(menu);
+                linkStyleMenu = view.down('#linkStyleMenu');
+                menuButton = linkStyleMenu.menu.down('menuitem'); // should return the first menu button
+                diagram = controller.getDiagramForMenu(linkStyleMenu);
             });
 
             afterEach(function() {
                 menuButton = null;
-                menu = null;
+                linkStyleMenu = null;
                 diagram = null;
             });
 
@@ -344,7 +344,7 @@ describe('Savanna.crumbnet', function() {
                 it('should log an error if we send a link style that is not understood', function() {
                     menuButton.type = 'UNKNOWN_TYPE';
 
-                    controller.handleLinkStyleMenuClick(menu, menuButton);
+                    controller.handleLinkStyleMenuClick(linkStyleMenu, menuButton);
 
                     expect(raisedError).toBeTruthy();
                 });
@@ -367,7 +367,7 @@ describe('Savanna.crumbnet', function() {
 
                     expect(Object.keys(linkStylesSeen).length).toBeGreaterThan(1);
 
-                    controller.handleLinkStyleMenuClick(menu, menuButton);
+                    controller.handleLinkStyleMenuClick(linkStyleMenu, menuButton);
 
                     linkIterator = diagram.links;
                     linkStylesSeen = {};
@@ -385,23 +385,25 @@ describe('Savanna.crumbnet', function() {
                         firstLinkStyle = null,
                         secondLinkStyle = null,
                         linkStyle = null,
-                        node = null,
-                        nodeCategory = null;
+                        nodeCategory = null,
+                        node = null;
 
                     // gather a count of links styles and select one link whose style will change
                     while (linkIterator.next()) {
                         linkStyle = linkIterator.value.category;
 
                         if (!firstLinkStyle) {
-                            firstLinkStyle = linkStyle;
+                            firstLinkStyle = secondLinkStyle = linkStyle;
                         }
-                        if (!secondLinkStyle && linkStyle !== firstLinkStyle) {
+                        if (secondLinkStyle === firstLinkStyle && linkStyle !== firstLinkStyle) {
                             secondLinkStyle = linkStyle;
                             linkIterator.value.isSelected = true;
                         }
 
                         beforeLinkStyleCounts[linkStyle] = 'undefined' === typeof beforeLinkStyleCounts[linkStyle] ?  1 : beforeLinkStyleCounts[linkStyle] + 1;
                     }
+
+                    expect(firstLinkStyle).not.toBe(secondLinkStyle);
 
                     // also select a non-link node (to show we don't alter it's style)
                     node = diagram.nodes.first();
@@ -419,7 +421,7 @@ describe('Savanna.crumbnet', function() {
 
                     expect(menuButton).toBeDefined();
 
-                    controller.handleLinkStyleMenuClick(menu, menuButton);
+                    controller.handleLinkStyleMenuClick(linkStyleMenu, menuButton);
 
                     // get a count of link styles after we made our change
                     var afterLinkStyleCounts = {};
@@ -434,6 +436,125 @@ describe('Savanna.crumbnet', function() {
                     expect(node.category).toBe(nodeCategory);
                     expect(afterLinkStyleCounts[firstLinkStyle]).toBe(beforeLinkStyleCounts[firstLinkStyle] + 1);
                     expect(afterLinkStyleCounts[secondLinkStyle]).toBe(beforeLinkStyleCounts[secondLinkStyle] - 1);
+                });
+            });
+        });
+
+        describe('handleLinkTypeClick', function() {
+            var menuButton = null,
+                linkTypeMenu = null,
+                diagram = null;
+
+            beforeEach(function() {
+                linkTypeMenu = view.down('#linkTypeMenu');
+                menuButton = linkTypeMenu.menu.down('menuitem'); // should return the first menu item
+                diagram = controller.getDiagramForMenu(linkTypeMenu);
+            });
+
+            afterEach(function() {
+                menuButton = null;
+                linkTypeMenu = null;
+                diagram = null;
+            });
+
+            describe('error conditions', function() {
+                it('should log an error if we send a link style that is not understood', function() {
+                    menuButton.type = 'UNKNOWN_TYPE';
+
+                    controller.handleLinkTypeMenuClick(linkTypeMenu, menuButton);
+
+                    expect(errorRaised).toBeTruthy();
+                });
+            });
+
+            describe('valid conditions', function() {
+                // TODO: validate that this is true (it may be that if no links are selected, then ALL links should change
+                //       in which case there will be only one link category after the button is clickec)
+                it('should NOT change link styles if no link is selected', function() {
+                    var selectedNodeSet = diagram.selection;
+
+                    expect(selectedNodeSet.count).toBe(0);
+
+                    var linkIterator = diagram.links;
+                    var linkStylesSeen = {};
+
+                    while (linkIterator.next()) {
+                        linkStylesSeen[linkIterator.value.category] = true;
+                    }
+
+                    expect(Object.keys(linkStylesSeen).length).toBeGreaterThan(1);
+
+                    controller.handleLinkTypeMenuClick(linkTypeMenu, menuButton);
+
+                    linkIterator = diagram.links;
+                    linkStylesSeen = {};
+
+                    while (linkIterator.next()) {
+                        linkStylesSeen[linkIterator.value.category] = true;
+                    }
+
+                    expect(Object.keys(linkStylesSeen).length).toBeGreaterThan(1);
+                });
+
+                it('should only change the style for the selected links', function() {
+                    var linkIterator = diagram.links,
+                        beforeLinkTypeCounts = {},
+                        afterLinkTypeCounts = {},
+                        firstLinkType = null,
+                        secondLinkType = null,
+                        linkType = null,
+                        nodeText = null,
+                        node = null;
+
+                    // gather a count of links styles and select one link whose style will change
+                    while (linkIterator.next()) {
+                        linkType = linkIterator.value.data.text;
+                        console.log('linkType', linkType);
+
+                        if (!firstLinkType) {
+                            console.log('found')
+                            firstLinkType = secondLinkType = linkType;
+                        }
+
+                        if (secondLinkType === firstLinkType && linkType !== firstLinkType) {
+                            secondLinkType = linkType;
+                            linkIterator.value.isSelected = true;
+                        }
+
+                        beforeLinkTypeCounts[linkType] = typeof beforeLinkTypeCounts[linkType] === 'undefined' ?  1 : beforeLinkTypeCounts[linkType] + 1;
+                    }
+
+                    expect(firstLinkType).not.toBe(secondLinkType);
+
+                    // also select a non-link node (to show we don't alter it's style)
+                    node = diagram.nodes.first();
+                    nodeText = node.data.text;
+
+                    node.isSelected = true;
+
+                    // make sure we made a selection and have more than one style
+                    expect(diagram.selection.count).toBe(2);
+                    expect(secondLinkType).toBeDefined();
+
+                    // select the menu to change the selected link to the first link style we found
+                    menuButton = view.down('menuitem[type="' + firstLinkType + '"]');
+
+                    expect(menuButton).toBeDefined();
+
+                    controller.handleLinkTypeMenuClick(linkTypeMenu, menuButton);
+
+                    // get a count of link styles after we made our change
+                    linkIterator = diagram.links;
+
+                    while (linkIterator.next()) {
+                        linkType = linkIterator.value.data.text;
+
+                        afterLinkTypeCounts[linkType] = typeof afterLinkTypeCounts[linkType] === 'undefined' ? 1 : afterLinkTypeCounts[linkType] + 1;
+                    }
+
+                    expect(node.data.text).toBe(nodeText);
+                    expect(afterLinkTypeCounts[firstLinkType]).toBe(beforeLinkTypeCounts[firstLinkType] + 1);
+                    expect(afterLinkTypeCounts[secondLinkType]).toBe(beforeLinkTypeCounts[secondLinkType] - 1);
                 });
             });
         });
@@ -842,7 +963,14 @@ describe('Savanna.crumbnet', function() {
 
     describe('Utils', function() {
         var view = null,
-            diagram = null;
+            diagram = null,
+            portVisible = function(port) {
+                if (port instanceof go.Panel) {
+                    return port.opacity !== 0;
+                } else { // it's a shape
+                    return port.stroke !== null || port.fill !== null;
+                }
+            };
 
         beforeEach(function() {
             view = Ext.create('Savanna.crumbnet.view.CrumbnetComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID, width: 500, height: 500 });
@@ -878,7 +1006,7 @@ describe('Savanna.crumbnet', function() {
                 var port = it.next() ? it.value : null;
 
                 expect(port).not.toBeNull();
-                expect(Savanna.crumbnet.utils.ViewTemplates.portVisible(port)).toBeTruthy();
+                expect(portVisible(port)).toBeTruthy();
             });
 
             it('should NOT set ports to be visible if we are part of a diagram that is readOnly', function() {
@@ -895,7 +1023,7 @@ describe('Savanna.crumbnet', function() {
                 var port = it.next() ?it.value : null;
 
                 expect(port).not.toBeNull();
-                expect(Savanna.crumbnet.utils.ViewTemplates.portVisible(port)).toBeFalsy();
+                expect(portVisible(port)).toBeFalsy();
             });
 
             it('should NOT set ports to be visible if we are part of a diagram that does not allowLink', function() {
@@ -912,7 +1040,7 @@ describe('Savanna.crumbnet', function() {
                 var port = it.next() ?it.value : null;
 
                 expect(port).not.toBeNull();
-                expect(Savanna.crumbnet.utils.ViewTemplates.portVisible(port)).toBeFalsy();
+                expect(portVisible(port)).toBeFalsy();
             });
         });
 
@@ -938,7 +1066,7 @@ describe('Savanna.crumbnet', function() {
                 var port = it.next() ?it.value : null;
 
                 expect(port).not.toBeNull();
-                expect(Savanna.crumbnet.utils.ViewTemplates.portVisible(port)).toBeFalsy();
+                expect(portVisible(port)).toBeFalsy();
             });
 
             it('should NOT set ports to be visible if we are part of a diagram that is readOnly', function() {
@@ -955,7 +1083,7 @@ describe('Savanna.crumbnet', function() {
                 var port = it.next() ?it.value : null;
 
                 expect(port).not.toBeNull();
-                expect(Savanna.crumbnet.utils.ViewTemplates.portVisible(port)).toBeTruthy();
+                expect(portVisible(port)).toBeTruthy();
             });
 
             it('should NOT set ports to be visible if we are part of a diagram that does not allowLink', function() {
@@ -972,7 +1100,7 @@ describe('Savanna.crumbnet', function() {
                 var port = it.next() ?it.value : null;
 
                 expect(port).not.toBeNull();
-                expect(Savanna.crumbnet.utils.ViewTemplates.portVisible(port)).toBeTruthy();
+                expect(portVisible(port)).toBeTruthy();
             });
         });
 

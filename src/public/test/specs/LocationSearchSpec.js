@@ -6,8 +6,8 @@
 Ext.require('Savanna.Config');
 Ext.require('Savanna.search.model.SearchLocation');
 Ext.require('Savanna.search.store.SearchLocation');
+Ext.require('Savanna.search.view.SearchComponent');
 Ext.require('Savanna.search.view.searchComponent.SearchBody');
-Ext.require('Savanna.search.view.searchComponent.SearchComponent');
 Ext.require('Savanna.search.view.searchComponent.searchBody.searchMap.SearchLocationForm');
 Ext.require('Savanna.search.view.searchComponent.searchBody.searchMap.SearchLocationItem');
 

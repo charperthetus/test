@@ -3,6 +3,10 @@ Ext.define('Savanna.crumbnet.view.part.Canvas', {
     extend: 'Ext.Component',
     alias: 'widget.go-graph_canvas',
 
+    requires: [
+        'Savanna.crumbnet.utils.ViewTemplates'
+    ],
+
     mixins: {
         storeable: 'Savanna.mixin.Storeable'
     },
@@ -45,7 +49,7 @@ Ext.define('Savanna.crumbnet.view.part.Canvas', {
 
         this.diagram.layout = go.GraphObject.make(go.ForceDirectedLayout, { isOngoing: false });
 
-        this.diagram.toolManager.linkingTool.archetypeLinkData = {category: 'Orthogonal', text: 'New Link'};
+        this.diagram.toolManager.linkingTool.archetypeLinkData = { category: 'Orthogonal', text: Savanna.crumbnet.utils.ViewTemplates.linkRelationshipTypes[0] };
         this.diagram.toolManager.linkingTool.direction = go.LinkingTool.ForwardsOnly;
         this.diagram.toolManager.linkingTool.portGravity = 10;
 
@@ -67,14 +71,30 @@ Ext.define('Savanna.crumbnet.view.part.Canvas', {
     },
 
     findPort: function() {
-        var diagram = this.diagram;
-        if (diagram === null) return null;
+        var diagram = this.diagram,
+            obj = null;
+
+        if (diagram === null) {
+            return null;
+        }
+
         obj = diagram.findObjectAt(diagram.firstInput.documentPoint, null, null);
-        if (obj === null) return null;
+
+        if (obj === null) {
+            return null;
+        }
+
         var node = obj.part;
-        if (!(node instanceof go.Node)) return null;
+
+        if (!(node instanceof go.Node)) {
+            return null;
+        }
+
         // return the node, not the obj
-        if (obj.fromLinkable === true) return node;
+        if (obj.fromLinkable === true) {
+            return node;
+        }
+
         return null;
     },
 
