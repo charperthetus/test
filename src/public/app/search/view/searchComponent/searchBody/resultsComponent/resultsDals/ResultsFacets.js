@@ -6,7 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacets', {
-    extend: 'Ext.panel.Panel',
+    extend: 'Ext.tab.Panel',
     alias: 'widget.search_resultsDals_resultsfacets',
     requires:   [
        'Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacet'

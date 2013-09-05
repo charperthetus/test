@@ -17,6 +17,8 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
 
     items: [],
 
+    dalName:null,
+
 
     /*
     temporary, to be replaced by design team.  This approach was requested by Joel
@@ -58,11 +60,13 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
     },
 
     initComponent: function () {
-        this.items = this.setupItems();
+
         this.callParent(arguments);
         this.on('beforerender', Ext.bind(function () {
             var config = this.initialConfig || {};
-            this.down('#dalName').html = config.dalName || 'NO LABEL';
+            this.dalName = config.dalName;
+            this.items = this.setupItems();
+            this.queryById('dalName_' + config.dalName).html = config.dalName || 'NO LABEL';
         }, this));
     },
 
@@ -70,21 +74,29 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
         var me = this,
             count = 0;
 
+        console.log('in updateDalStatus, updating ', id);
+
         Ext.each(this.findParentByType('search_resultscomponent').allResultSets, function(set)  {
+            console.log('looping allResultSets, ', set)
             if(set.id === id)    {
                 if(status !== 'fail')   {
                     count = set.store.totalCount;
                 }
-                me.down('#dalName').update(me.dalName + ' ' + '(' + count + ')');
+                console.log('my dalName is: ', me.dalName);
+                console.log('dalName_' + this.initialConfig.dalName);
+
+                me.queryById('dalName_' + this.dalName).update(me.dalName + ' ' + '(' + count + ')');
                 return false;
             }
         });
 
     },
     setupItems: function () {
+        var dName = 'dalName_' + this.dalName;
+        console.log(dName);
         return [
             {
-                itemId: 'dalName',
+                itemId: dName,
                 border:false,
                 height:20,
                 width:'65%'

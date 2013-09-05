@@ -124,6 +124,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
         /*
          check to see if this facet filter exists in the store already
          */
+        console.log('setting a filter on: ', me.dal.data.id);
         if (me.dal.data.facetFilterCriteria.length > 0) {
 
             Ext.each(me.dal.data.facetFilterCriteria, function (filter, index) {

@@ -117,21 +117,6 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             var optionsBtn = component.queryById('optionsbutton');
             optionsBtn.fireEvent('click', optionsBtn);
         }
-
-        /*
-         clear the selected dals
-         */
-        var dalStore = Ext.data.StoreManager.lookup('dalSources');
-
-        dalStore.each(function (source) {
-            var dals = component.down('#searchdals'),
-                resultsDals = component.down('#resultsdals'),
-                checkbox = dals.queryById(source.data.id).query('checkbox')[0].getValue();
-            if (checkbox.getValue()) {
-                checkbox.setValue(false);
-                resultsDals.queryById(source.data.id).down('#dalStatusIcon').getEl().setStyle(resultsDals.queryById(source.data.id).dalLoadNone);
-            }
-        });
     },
 
     handleSearchTermKeyUp: function (field, evt) {
@@ -216,6 +201,8 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             resultsDal = component.down('#resultsdals'),
             resultsPanel = component.down('#resultspanel');
 
+        resultsDal.createDalPanels();
+
         /*
          Check for selected additional Dals, and do a search on each of them
          */
@@ -237,10 +224,15 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                     }
                 ]);
 
+                //searchObj.set('contentDataSource', dalId);
+
+
                 /*
                 set the facet filters, if any
                  */
                 if(source.data.facetFilterCriteria.length)  {
+                    console.log('applying facet filters to: ', source.data.id);
+                    console.log('the criteria are: ', source.data.facetFilterCriteria);
                     searchObj.set('facetFilterCriteria', source.data.facetFilterCriteria);
                 }
                 /*
@@ -260,7 +252,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                 });
                 resultsDal.updateDalStatus(dalId, 'pending');   // begin in a pending state
             } else {
-                resultsDal.updateDalStatus(dalId, 'none');  // ...or, if not selected, style accordingly as well
+                //resultsDal.updateDalStatus(dalId, 'none');  // ...or, if not selected, style accordingly as well
             }
 
         }, this);
@@ -274,10 +266,14 @@ Ext.define('Savanna.search.controller.SearchComponent', {
     searchCallback: function (records, operation, success, resultsDal, resultsPanel, dalId, store) {
         var resultsObj = {id:dalId, store:store};
 
+        console.log('got a result back for: ', dalId, ' and the length is: ', store.totalCount)
+
         resultsPanel.up('#searchresults').allResultSets.push(resultsObj);   // add an object tying the dal and store together for referencing
 
         var statusString = success ? 'success' : 'fail';
         resultsDal.updateDalStatus(dalId, statusString);
+
+        resultsDal.createDalFacets(dalId);
 
         if (!success) {
             // server down..?

@@ -69,35 +69,10 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
         Ext.each(component.allResultSets, function(set) {
             if(set.id === dal.itemId)    {
                 component.queryById('resultspanel').updateGridStore(set);
-
-                me.displayDalFacets(dal);
                 component.currentResultSet = set;
+                dal.up('#resultsdals').queryById('resultsfacets').setActiveTab('tab_' + dal.itemId);
                 return false;
             }
-        });
-    },
-
-    displayDalFacets: function (dal) {
-        var dalRecord = Ext.data.StoreManager.lookup('dalSources').getById(dal.itemId),
-            descriptions = dalRecord.data.facetDescriptions,
-            facets = dal.up('#resultsdals').queryById('resultsfacets'),
-            me = this;
-
-        facets.removeAll();
-
-        if (descriptions.length > 0) {
-            Ext.each(descriptions, function (facet) {
-                var facetElement = me.createFacet(facet, dal.findParentByType('search_resultscomponent').currentResultSet, dalRecord);
-                facets.add(facetElement);
-            });
-        }
-    },
-
-    createFacet: function (facet, results, dalRecord) {
-        return Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacet', {
-            model: facet,
-            set:results,
-            dal: dalRecord
         });
     }
 });
