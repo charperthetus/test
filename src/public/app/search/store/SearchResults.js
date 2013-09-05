@@ -16,9 +16,16 @@ Ext.define('Savanna.search.store.SearchResults', {
 
     pageSize: 20,
 
+    facetValueSummaries:null,
+
+    facetFilterCriteria:[],
+
+    dateTimeRanges:[],
+
     constructor: function () {
 
-        var ReaderClass;
+        var ReaderClass = null,
+            me = this;
 
         this.callParent(arguments);
 
@@ -32,7 +39,11 @@ Ext.define('Savanna.search.store.SearchResults', {
         ReaderClass = Ext.extend(Ext.data.JsonReader, {
             type:'json',
             root: 'results',
-            totalProperty:'totalResults'
+            totalProperty:'totalResults',
+            readRecords: function(data) {
+                me.facetValueSummaries = data.facetValueSummaries;
+                return this.callParent([data]);
+            }
 
         });
 

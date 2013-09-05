@@ -17,7 +17,10 @@ Ext.define('Savanna.search.model.DalSource', {
         // These are fields that currently are not used
         { name: 'timeoutMillis', type: 'int' },
         { name: 'inputTypes' },
-        { name: 'outputTypes' }
+        { name: 'outputTypes' },
+
+        // this holds the selected facet filters to apply to searches against this DAL
+        { name: 'facetFilterCriteria', type: 'array', default:[]}
     ],
 
     // NOTE: the model class must be fully qualififed in your relationship definition

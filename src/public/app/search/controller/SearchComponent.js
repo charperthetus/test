@@ -227,12 +227,22 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             if (checked || dalId === dalStore.defaultId) {  // checked, or always search the default dal
 
                 // Dal has been selected, apply to the request model and do search
+
+                //searchObj.set('contentDataSource', dalId);
+
                 searchObj.set('searchPreferencesVOs', [
                     {
                         'dalId': dalId,
                         'sortOrder': 'Default'
                     }
                 ]);
+
+                /*
+                set the facet filters, if any
+                 */
+                if(source.data.facetFilterCriteria.length)  {
+                    searchObj.set('facetFilterCriteria', source.data.facetFilterCriteria);
+                }
                 /*
                 Determine the pageSize for the stores.
                  */
@@ -263,6 +273,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
     searchCallback: function (records, operation, success, resultsDal, resultsPanel, dalId, store) {
         var resultsObj = {id:dalId, store:store};
+
         resultsPanel.up('#searchresults').allResultSets.push(resultsObj);   // add an object tying the dal and store together for referencing
 
         var statusString = success ? 'success' : 'fail';
@@ -275,6 +286,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             });
         }   else    {
             if(dalId === Ext.data.StoreManager.lookup('dalSources').defaultId)    {
+                resultsPanel.up('#searchresults').currentResultSet = resultsPanel.up('#searchresults').allResultSets[resultsPanel.up('#searchresults').allResultSets.length-1];
                 var controller = Savanna.controller.Factory.getController('Savanna.search.controller.ResultsComponent');
                 controller.changeSelectedStore({}, {}, resultsDal.queryById(dalId));
             }

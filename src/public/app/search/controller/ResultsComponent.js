@@ -23,12 +23,23 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
             },
             'search_resultscomponent #resultsSortByCombobox':   {
                 select: this.onSortByChange
+            },
+            'search_resultscomponent #resultsFacetsReset':  {
+                'click': this.onDalReset
             }
         });
     },
 
     onDalRender: function (dal) {
         dal.body.on('click', this.changeSelectedStore, this, dal);
+    },
+
+    onDalReset:function(btn)   {
+        var id = btn.findParentByType('search_resultscomponent').currentResultSet.id;
+        var dalRecord = Ext.data.StoreManager.lookup('dalSources').getById(id);
+        dalRecord.data.facetFilterCriteria = [];
+        var searchController = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
+        searchController.doSearch(btn);
     },
 
     onSortByChange:function(combo){
@@ -58,6 +69,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
         Ext.each(component.allResultSets, function(set) {
             if(set.id === dal.itemId)    {
                 component.queryById('resultspanel').updateGridStore(set);
+
                 me.displayDalFacets(dal);
                 component.currentResultSet = set;
                 return false;
@@ -66,8 +78,8 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
     },
 
     displayDalFacets: function (dal) {
-        var record = Ext.data.StoreManager.lookup('dalSources').getById(dal.itemId),
-            descriptions = record.data.facetDescriptions,
+        var dalRecord = Ext.data.StoreManager.lookup('dalSources').getById(dal.itemId),
+            descriptions = dalRecord.data.facetDescriptions,
             facets = dal.up('#resultsdals').queryById('resultsfacets'),
             me = this;
 
@@ -75,15 +87,17 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
 
         if (descriptions.length > 0) {
             Ext.each(descriptions, function (facet) {
-                var facetElement = me.createFacet(facet);
+                var facetElement = me.createFacet(facet, dal.findParentByType('search_resultscomponent').currentResultSet, dalRecord);
                 facets.add(facetElement);
             });
         }
     },
 
-    createFacet: function (facet) {
+    createFacet: function (facet, results, dalRecord) {
         return Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacet', {
-            model: facet
+            model: facet,
+            set:results,
+            dal: dalRecord
         });
     }
 });
