@@ -26,6 +26,19 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
             { type: 'undo', glyph: 61800, tooltip: 'Undo', ui: 'flat-toolbar-button' },
             { type: 'redo', glyph: 61777, tooltip: 'Redo', ui: 'flat-toolbar-button' },
             { itemId: 'cutCopyPaste', glyph: 61718, ui: 'flat-toolbar-button', menu: this.buildCutCopyPasteMenu() },
+            {
+                itemId: 'layoutMenu',
+                tooltip: 'Layout',
+                glyph: 61775,
+                ui: 'flat-toolbar-button',
+                menu: [
+                    { type: 'grid', text: 'Grid' },
+                    { type: 'tree', text: 'Tree' },
+                    { type: 'force', text: 'Force' },
+                    { type: 'layeredDigraph', text: 'Layered Digraph' },
+                    { type: 'circular', text: 'Circular' }
+                ]
+            },
             { xtype: 'tbfill' }, // could also be '->'
             { type: 'zoomIn', glyph: 61806, tooltip: 'Zoom In', ui: 'flat-toolbar-button' },
             { type: 'zoomOut', glyph: 61807, tooltip: 'Zoom Out', ui: 'flat-toolbar-button' },
@@ -47,17 +60,6 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
         });
 
         return [
-            {
-                itemId: 'layoutMenu',
-                text: 'Layout',
-                menu: [
-                    { type: 'grid', text: 'Grid' },
-                    { type: 'tree', text: 'Tree' },
-                    { type: 'force', text: 'Force' },
-                    { type: 'layeredDigraph', text: 'Layered Digraph' },
-                    { type: 'circular', text: 'Circular' }
-                ]
-            },
             {
                 itemId: 'alignmentMenu',
                 text: 'Alignment',
