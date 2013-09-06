@@ -44,6 +44,9 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
             'go-graph #nodeColorPicker': {
                 select: this.handleNodeColorSelect
             },
+            'go-graph #cutCopyPaste menu': {
+                click: this.handleCutCopyPaste
+            },
             'crumbnet_part_palette-group': {
                 'nodePaletteSelectionChanged': this.handlePaletteSelectionChange
             }
@@ -333,6 +336,25 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
 
     getDiagramForMenu: function(menu) {
         return menu.up('go-graph').down('go-graph_canvas').diagram;
-    }
+    },
 
+    handleCutCopyPaste: function(menu, item) {
+        console.log('args', arguments);
+        var commandHandler = this.getDiagramForMenu(menu).commandHandler;
+
+        switch (item.type) {
+            case 'cut':
+                commandHandler.cutSelection();
+                break;
+            case 'copy':
+                throw('TEST "copy"');
+                break;
+            case 'paste':
+                throw('TEST "paste"');
+                break;
+            default:
+                Ext.Error.raise({ msg: 'Unknown "type" (' + item.type + ') for cutCopyPaste' });
+                break;
+        }
+    }
 });

@@ -628,6 +628,77 @@ describe('Savanna.crumbnet', function() {
                 expect(diagram.model.addNodeData).toHaveBeenCalled();
             });
         });
+
+        describe('handleCutCopyPaste', function() {
+            var menu;
+
+            beforeEach(function() {
+                menu = view.down('#cutCopyPaste');
+            });
+
+            afterEach(function() {
+                menu = null;
+            });
+
+            describe('cut', function() {
+                var nodeCount = 0,
+                    cutButton;
+
+                beforeEach(function() {
+                    cutButton = view.down('menuitem[type="cut"]');
+                    nodeCount = diagram.nodes.count;
+                    diagram.nodes.first().isSelected = true;
+
+                    spyOn(diagram.commandHandler, 'cutSelection').andCallThrough();
+                });
+
+                afterEach(function() {
+                    nodeCount = 0;
+                    cutButton = null;
+                });
+
+                it('should remove a selected node', function() {
+                    controller.handleCutCopyPaste(menu, cutButton);
+
+                    expect(diagram.commandHandler.cutSelection).toHaveBeenCalled();
+                    expect(diagram.nodes.count).toBe(nodeCount - 1);
+                });
+
+                it('should remove no nodes if none are selected', function() {
+                    diagram.nodes.first().isSelected = false;
+
+                    controller.handleCutCopyPaste(menu, cutButton);
+
+                    expect(diagram.nodes.count).toBe(nodeCount);
+                });
+            });
+
+            describe('copy', function() {
+                var selectedCount = 0;
+
+                beforeEach(function() {
+                    diagram.nodes.first().isSelected = true;
+
+                    selectedCount = diagram.selection.count;
+                });
+
+                afterEach(function() {
+                    selectedCount = 0;
+                });
+
+                it('should copy selected node to "clipboard"', function() {
+
+                });
+
+                it('should not copy anything if no nodes are selected', function() {
+
+                });
+            });
+
+            describe('paste', function() {
+
+            });
+        });
     });
 
     describe('Model', function() {
