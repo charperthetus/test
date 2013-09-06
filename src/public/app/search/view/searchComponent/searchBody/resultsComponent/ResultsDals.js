@@ -20,7 +20,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
     region: 'west',
     width: 175,
     minWidth: 200,
-    maxWidth: 200,
+    maxWidth: 250,
     layout: 'vbox',
     border: false,
     autoScroll: true,
@@ -145,7 +145,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
 
     updateDalStatus: function (dalId, status) {
         var myDal = this.queryById(dalId);
-        console.log('in updateDalStatus, updating ', dalId);
+
         myDal.updateDalNameCount(dalId, status);
         var styleStatus = {
             'success': myDal.dalLoadSuccess,

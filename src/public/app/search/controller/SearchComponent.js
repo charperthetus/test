@@ -224,7 +224,6 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                     }
                 ]);
 
-                //searchObj.set('contentDataSource', dalId);
 
 
                 /*
@@ -250,9 +249,8 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                 resultsStore.load({
                     callback: Ext.bind(this.searchCallback, this, [resultsDal, resultsPanel, dalId, resultsStore], true)
                 });
+
                 resultsDal.updateDalStatus(dalId, 'pending');   // begin in a pending state
-            } else {
-                //resultsDal.updateDalStatus(dalId, 'none');  // ...or, if not selected, style accordingly as well
             }
 
         }, this);
@@ -265,8 +263,6 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
     searchCallback: function (records, operation, success, resultsDal, resultsPanel, dalId, store) {
         var resultsObj = {id:dalId, store:store};
-
-        console.log('got a result back for: ', dalId, ' and the length is: ', store.totalCount)
 
         resultsPanel.up('#searchresults').allResultSets.push(resultsObj);   // add an object tying the dal and store together for referencing
 

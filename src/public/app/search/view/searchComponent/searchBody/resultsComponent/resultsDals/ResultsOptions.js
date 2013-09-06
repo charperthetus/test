@@ -15,9 +15,6 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
     cls:'results-dal',
     bodyPadding:5,
 
-    items: [],
-
-    dalName:null,
 
 
     /*
@@ -60,32 +57,27 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
     },
 
     initComponent: function () {
+        this.items = this.setupItems();
 
-        this.callParent(arguments);
         this.on('beforerender', Ext.bind(function () {
             var config = this.initialConfig || {};
-            this.dalName = config.dalName;
-            this.items = this.setupItems();
             this.queryById('dalName_' + config.dalName).html = config.dalName || 'NO LABEL';
         }, this));
+
+        this.callParent(arguments);
     },
 
     updateDalNameCount:function(id, status)    {
         var me = this,
             count = 0;
 
-        console.log('in updateDalStatus, updating ', id);
-
         Ext.each(this.findParentByType('search_resultscomponent').allResultSets, function(set)  {
-            console.log('looping allResultSets, ', set)
             if(set.id === id)    {
                 if(status !== 'fail')   {
                     count = set.store.totalCount;
                 }
-                console.log('my dalName is: ', me.dalName);
-                console.log('dalName_' + this.initialConfig.dalName);
 
-                me.queryById('dalName_' + this.dalName).update(me.dalName + ' ' + '(' + count + ')');
+                me.queryById('dalName_' + me.dalName).update(me.dalName + ' ' + '(' + count + ')');
                 return false;
             }
         });
@@ -93,7 +85,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
     },
     setupItems: function () {
         var dName = 'dalName_' + this.dalName;
-        console.log(dName);
+
         return [
             {
                 itemId: dName,
