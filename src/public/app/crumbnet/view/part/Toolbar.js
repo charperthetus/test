@@ -49,6 +49,16 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
             { xtype: 'tbspacer', margin: -8 }, /* DI team: we put this in, but you may have a CSS trick up your sleeve? */
             { itemId: 'crumbnetSearch', glyph: 61808, ui: 'flat-toolbar-button' },
             { xtype: 'tbseparator' }, // could also be '-'
+            {
+                itemId: 'save',
+                glyph: 61786,
+                ui: 'flat-toolbar-button',
+                menu: [
+                    { type: 'save', text: 'Save' },
+                    { type: 'saveAs', text: 'Save As'}
+                ]
+            },
+            { type: 'export', glyph: 61727, tooltip: 'Export', ui: 'flat-toolbar-button' },
             { type: 'print', glyph: 61773, tooltip: 'Print', ui: 'flat-toolbar-button' }
         ];
     },
