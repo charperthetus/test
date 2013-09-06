@@ -39,12 +39,16 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
                     { type: 'circular', text: 'Circular' }
                 ]
             },
-            { xtype: 'tbfill' }, // could also be '->'
             { type: 'zoomIn', glyph: 61806, tooltip: 'Zoom In', ui: 'flat-toolbar-button' },
             { type: 'zoomOut', glyph: 61807, tooltip: 'Zoom Out', ui: 'flat-toolbar-button' },
             { type: 'zoomToFit', glyph: 61789, tooltip: 'Zoom To Fit', ui: 'flat-toolbar-button' },
             { type: 'grid', glyph: 61739, tooltip: 'Toggle Grid', ui: 'flat-toolbar-button' },
             { type: 'overview', glyph: 61736, tooltip: 'Toggle Overview', ui: 'flat-toolbar-button' },
+            { xtype: 'tbfill' }, // could also be '->'
+            { xtype: 'textfield' },
+            { xtype: 'tbspacer', margin: -8 }, /* DI team: we put this in, but you may have a CSS trick up your sleeve? */
+            { itemId: 'crumbnetSearch', glyph: 61808, ui: 'flat-toolbar-button' },
+            { xtype: 'tbseparator' }, // could also be '-'
             { type: 'print', glyph: 61773, tooltip: 'Print', ui: 'flat-toolbar-button' }
         ];
     },
