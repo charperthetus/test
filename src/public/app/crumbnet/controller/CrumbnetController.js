@@ -29,6 +29,9 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
             'go-graph button': {
                 click: this.handleGraphToolbarButtonClick
             },
+            'go-graph #cutCopyPaste menu': {
+                click: this.handleCutCopyPaste
+            },
             'go-graph #layoutMenu menu':{
                 click: this.handleLayoutMenuClick
             },
@@ -44,11 +47,14 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
             'go-graph #nodeColorPicker': {
                 select: this.handleNodeColorSelect
             },
-            'go-graph #cutCopyPaste menu': {
-                click: this.handleCutCopyPaste
-            },
-            'go-graph #crumbnetSearch': {
+            'go-graph #search': {
                 click: this.handleCrumbnetSearch
+            },
+            'go-graph #save menu': {
+                click: this.handleSave
+            },
+            'go-graph #export': {
+                click: this.handleExport
             },
             'crumbnet_part_palette-group': {
                 'nodePaletteSelectionChanged': this.handlePaletteSelectionChange
@@ -369,6 +375,40 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
             height: 100,
             width: 500,
             html: 'TODO: Add functionality to search the crumbnet for "' + button.up('go-graph').down('#crumbnetSearchText').value + '"'
+        }).show();
+    },
+
+    handleSave: function(menu, item) {
+        var msg = '';
+
+        switch (item.type) {
+            case 'save':
+                msg = 'TODO: Implement "Save"';
+                break;
+            case 'saveAs':
+                msg = 'TODO: Implement "Save As"';
+                break;
+            default:
+                Ext.Error.raise({ msg: 'Unknown "type" (' + item.type + ') for cutCopyPaste' });
+                break;
+        }
+
+        if (msg) {
+            Ext.create('Ext.window.Window', {
+                modal: true,
+                width: 500,
+                height: 100,
+                html: msg
+            }).show();
+        }
+    },
+
+    handleExport: function(button, event) {
+        Ext.create('Ext.window.Window', {
+            modal: true,
+            width: 500,
+            height: 100,
+            html: 'TODO: Implement "Export"'
         }).show();
     }
 });

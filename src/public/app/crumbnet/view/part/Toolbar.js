@@ -34,10 +34,10 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
             { type: 'overview', glyph: 61736, tooltip: 'Toggle Overview', ui: 'flat-toolbar-button' },
             { xtype: 'tbfill' }, // could also be '->'
             { xtype: 'textfield', itemId: 'crumbnetSearchText' },
-            { itemId: 'crumbnetSearch', glyph: 61808, ui: 'flat-toolbar-button' },
+            { itemId: 'search', glyph: 61808, ui: 'flat-toolbar-button' },
             { xtype: 'tbseparator' }, // could also be '-'
             { itemId: 'save', glyph: 61786, ui: 'flat-toolbar-button', menu: this.buildSaveMenu() },
-            { type: 'export', glyph: 61727, tooltip: 'Export', ui: 'flat-toolbar-button' },
+            { itemId: 'export', type: 'export', glyph: 61727, tooltip: 'Export', ui: 'flat-toolbar-button' },
             { type: 'print', glyph: 61773, tooltip: 'Print', ui: 'flat-toolbar-button' }
         ];
     },
