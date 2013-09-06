@@ -339,18 +339,20 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
     },
 
     handleCutCopyPaste: function(menu, item) {
-        console.log('args', arguments);
-        var commandHandler = this.getDiagramForMenu(menu).commandHandler;
+        var diagram = this.getDiagramForMenu(menu),
+            commandHandler = diagram.commandHandler;
 
         switch (item.type) {
             case 'cut':
                 commandHandler.cutSelection();
                 break;
             case 'copy':
-                throw('TEST "copy"');
+                commandHandler.copySelection();
                 break;
             case 'paste':
-                throw('TEST "paste"');
+                diagram.startTransaction('menuPaste');
+                commandHandler.pasteFromClipboard();
+                diagram.commitTransaction('menuPaste');
                 break;
             default:
                 Ext.Error.raise({ msg: 'Unknown "type" (' + item.type + ') for cutCopyPaste' });

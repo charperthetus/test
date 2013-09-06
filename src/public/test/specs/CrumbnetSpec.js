@@ -674,29 +674,107 @@ describe('Savanna.crumbnet', function() {
             });
 
             describe('copy', function() {
-                var selectedCount = 0;
+                var selectedCount = 0,
+                    copiedNodeCount = 0,
+                    copyButton,
+                    copyEventCallback = function(changeEvent) {
+                        copiedNodeCount = changeEvent.subject.count;
+                    };
 
                 beforeEach(function() {
+                    diagram.addDiagramListener('ClipboardChanged', copyEventCallback);
+
+                    copyButton = view.down('menuitem[type="copy"]');
+
                     diagram.nodes.first().isSelected = true;
 
                     selectedCount = diagram.selection.count;
+
+                    spyOn(diagram.commandHandler, 'copySelection').andCallThrough();
                 });
 
                 afterEach(function() {
                     selectedCount = 0;
+                    copyButton = null;
+
+                    diagram.removeDiagramListener('ClipboardChanged', copyEventCallback);
                 });
 
                 it('should copy selected node to "clipboard"', function() {
+                    controller.handleCutCopyPaste(menu, copyButton);
 
+                    expect(diagram.commandHandler.copySelection).toHaveBeenCalled();
+                    expect(copiedNodeCount).toBe(1);
                 });
 
                 it('should not copy anything if no nodes are selected', function() {
+                    diagram.nodes.first().isSelected = false;
+                    controller.handleCutCopyPaste(menu, copyButton);
 
+                    expect(diagram.commandHandler.copySelection).toHaveBeenCalled();
+                    expect(copiedNodeCount).toBe(0);
                 });
             });
 
             describe('paste', function() {
+                var pasteButton,
+                    copiedNodeCount = 0,
+                    totNodeCount = 0,
+                    copyEventCallback = function(changeEvent) {
+                        copiedNodeCount = changeEvent.subject.count;
+                    };
 
+                beforeEach(function() {
+                    totNodeCount = diagram.nodes.count;
+
+                    diagram.addDiagramListener('ClipboardChanged', copyEventCallback);
+
+                    pasteButton = view.down('menuitem[type="paste"]');
+
+                    spyOn(diagram.commandHandler, 'pasteFromClipboard').andCallThrough();
+                });
+
+                afterEach(function() {
+                    pasteButton = null;
+                    totNodeCount = 0;
+                    copiedNodeCount = 0;
+
+                    diagram.removeDiagramListener('ClipboardChanged', copyEventCallback);
+                });
+
+                // TODO: this currently has to run first in order to pass
+                //       which raises concerns that Diagrams may not be being destroyed completely between tests
+                //       (and by extension will not be cleared correctly in our ExtJS app)
+                //       There is a question out to the GoJS support team to clarify the best way to ensure a Diagram
+                //       is completely reaped, but until then this test must run first...
+                describe('when there is no node selected', function() {
+                    it('should not copy anything if no nodes are selected', function() {
+                        expect(copiedNodeCount).toBe(0);
+
+                        controller.handleCutCopyPaste(menu, pasteButton);
+
+                        expect(diagram.commandHandler.pasteFromClipboard).toHaveBeenCalled();
+                        expect(diagram.nodes.count).toBe(totNodeCount);
+                    });
+                });
+
+                describe('when there is a selected node', function() {
+
+                    beforeEach(function() {
+                        diagram.startTransaction('testPaste');
+                        diagram.nodes.first().isSelected = true;
+                        diagram.commandHandler.copySelection();
+                        diagram.commitTransaction('testPaste');
+                    });
+
+                    it('should copy selected node to "clipboard"', function() {
+                        expect(copiedNodeCount).toBe(1);
+                        controller.handleCutCopyPaste(menu, pasteButton);
+
+                        expect(diagram.commandHandler.pasteFromClipboard).toHaveBeenCalled();
+                        expect(copiedNodeCount).toBe(1);
+                    });
+                });
             });
         });
     });
