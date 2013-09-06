@@ -46,7 +46,6 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
             { type: 'overview', glyph: 61736, tooltip: 'Toggle Overview', ui: 'flat-toolbar-button' },
             { xtype: 'tbfill' }, // could also be '->'
             { xtype: 'textfield' },
-            { xtype: 'tbspacer', margin: -8 }, /* DI team: we put this in, but you may have a CSS trick up your sleeve? */
             { itemId: 'crumbnetSearch', glyph: 61808, ui: 'flat-toolbar-button' },
             { xtype: 'tbseparator' }, // could also be '-'
             {
