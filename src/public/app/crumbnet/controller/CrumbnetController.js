@@ -47,6 +47,9 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
             'go-graph #cutCopyPaste menu': {
                 click: this.handleCutCopyPaste
             },
+            'go-graph #crumbnetSearch': {
+                click: this.handleCrumbnetSearch
+            },
             'crumbnet_part_palette-group': {
                 'nodePaletteSelectionChanged': this.handlePaletteSelectionChange
             }
@@ -358,5 +361,14 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
                 Ext.Error.raise({ msg: 'Unknown "type" (' + item.type + ') for cutCopyPaste' });
                 break;
         }
+    },
+
+    handleCrumbnetSearch: function(button) {
+        Ext.create('Ext.window.Window', {
+            modal: true,
+            height: 100,
+            width: 500,
+            html: 'TODO: Add functionality to search the crumbnet for "' + button.up('go-graph').down('#crumbnetSearchText').value + '"'
+        }).show();
     }
 });
