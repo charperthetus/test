@@ -10,7 +10,8 @@ Ext.define('Savanna.view.SavannaDesktop', {
         'Ext.panel.Panel',
         'Ext.tab.Panel',
         'Ext.draw.Component',
-        'Savanna.crumbnet.view.CrumbnetComponent'
+        'Savanna.crumbnet.view.CrumbnetComponent',
+        'Savanna.map.view.part.Canvas'
     ],
     layout: {
         type: 'vbox'
@@ -137,6 +138,11 @@ Ext.define('Savanna.view.SavannaDesktop', {
                             title: 'Crumbnet',
                             xtype: 'go-graph',
                             itemId: 'GRAPH_ONE'
+                        },
+                        {
+                            title: 'Map',
+                            xtype: 'map_component',
+                            itemId: 'MAP_ONE'
                         },
                         {
                             xtype: 'draw',
