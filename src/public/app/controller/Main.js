@@ -7,7 +7,7 @@ Ext.define('Savanna.controller.Main', {
 
     views: [
         'Savanna.view.Login',
-        'Savanna.view.SavannaDesktop',
+        'Savanna.desktop.view.SavannaDesktop',
         'Savanna.view.PrintModal'
     ],
 
@@ -37,7 +37,7 @@ Ext.define('Savanna.controller.Main', {
     },
 
     swapLogin: function(sessionId) {
-        Savanna.jsessionid = sessionId;
+        Savanna.appjsessionid = sessionId;
 
         if (this.app && this.app.viewport && this.app.viewport.queryById) {
             var mainViewport = this.app.viewport.queryById('viewport_main');
@@ -45,7 +45,7 @@ Ext.define('Savanna.controller.Main', {
             if (mainViewport && login) {
                 mainViewport.remove('login');
 
-                var main = Ext.create('Savanna.view.SavannaDesktop', { itemId: 'main' });
+                var main = Ext.create('Savanna.desktop.view.SavannaDesktop', { itemId: 'main' });
 
                 mainViewport.add(main);
             }
