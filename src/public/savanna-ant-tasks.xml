@@ -29,7 +29,7 @@
     <target name="jscover-test" depends="jscover-start">
         <exec executable="phantomjs" dir="test">
             <arg value="lib/run-jscover-jasmine.js"/>
-            <arg value="${basedir}/${maven.jscover.reportdir}${maven.jscover.outputdir}/${maven.surefire.outputdir}"/>
+            <arg value="${basedir}/${maven.jscover.reportdir}/${maven.surefire.outputdir}"/>
             <arg value="http://localhost:8080/test/SpecRunner.html"/>
         </exec>
     </target>
