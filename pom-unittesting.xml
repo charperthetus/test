@@ -163,7 +163,8 @@
                         <configuration>
                             <workingDirectory>${anttasks.dir}</workingDirectory>
                             <tasks>
-                                <ant dir="${anttasks.dir}" antfile="savanna-ant-tasks.xml" target="jscover-generate-cobertura"/>
+                                <ant dir="${anttasks.dir}" antfile="savanna-ant-tasks.xml" target="jscover-test"/>
+                                <ant dir="${anttasks.dir}" antfile="savanna-ant-tasks.xml" target="jscover-stop"/>
                             </tasks>
                         </configuration>
                         <goals>

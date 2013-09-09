@@ -43,14 +43,14 @@
 
     <!--
         Generates the cobertura format reports
-    -->
     <target name="jscover-generate-cobertura" depends="jscover-test,jscover-stop" description="runs unit tests, generating surefire unit-test and cobertura coverage reports">
         <java classpath="${user.home}/.m2/repository/com/github/tntim96/JSCover/0.3.0/JSCover-0.3.0.jar" classname="jscover.report.Main">
-            <arg value="--format=COBERTURAXML"/>
+            <arg value="_-format=COBERTURAXML"/>
             <arg value="${basedir}/${maven.jscover.reportdir}${maven.jscover.outputdir}"/>
             <arg value="${basedir}/${maven.jscover.reportdir}${maven.jscover.outputdir}/original-src/app"/>
         </java>
     </target>
+    -->
 
     <!--
         Helper to rebase your local repos from the canonical upstream Thetus GitHub repos
