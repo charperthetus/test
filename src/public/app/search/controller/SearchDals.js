@@ -3,9 +3,9 @@ Ext.define('Savanna.search.controller.SearchDals', {
     extend: 'Ext.app.Controller',
 
     views: [
-        'Savanna.search.view.SearchDals',
-        'Savanna.search.view.searchDals.SearchOptions',
-        'Savanna.search.view.searchDals.CustomSearchGroupForm'
+        'Savanna.search.view.searchComponent.searchBody.SearchDals',
+        'Savanna.search.view.searchComponent.searchBody.searchDals.SearchOptions',
+        'Savanna.search.view.searchComponent.searchBody.searchDals.CustomSearchGroupForm'
     ],
 
     layout: 'hbox',
@@ -13,7 +13,7 @@ Ext.define('Savanna.search.controller.SearchDals', {
     removeDalDetailText: 'Hide Search Options',
 
     createCustomSearchGroupPanel: function(store) {
-        return Ext.create('Savanna.search.view.searchDals.CustomSearchGroupForm', {
+        return Ext.create('Savanna.search.view.searchComponent.searchBody.searchDals.CustomSearchGroupForm', {
             store: store
         });
     },

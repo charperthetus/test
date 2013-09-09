@@ -8,22 +8,58 @@
 Ext.define("Savanna.flexpaper.view.FlexpaperComponent", {
     extend: "Ext.panel.Panel",
     alias: "widget.flexpaper_flexpapercomponent",
-    layout:"fit",
+    layout:"vbox",
     border:false,
     currentTool: null,
-    asset:null,
+    pdfFile:null,
+    docViewId:null, //TODO - can we just store the reference to the flexpaper component instead of the id
     requires: [
         "Savanna.flexpaper.view.FlexpaperToolbar",
         "Savanna.flexpaper.view.FlexpaperBody"
     ],
     initComponent:function()    {
-        this.ctrl = Savanna.controller.Factory.getController('Savanna.flexpaper.controller.FlexpaperComponent');
+        Savanna.controller.Factory.getController('Savanna.flexpaper.controller.FlexpaperComponent');
         this.callParent(arguments);
+    },
+    afterRender: function() {
+        this.callParent(arguments);
+
+        //This div needs an explicit id
+        this.docViewId = Ext.id();
+        var domElement = Ext.DomHelper.insertHtml("afterBegin", this.down('#fpbody').getEl().dom, "<div id='" + this.docViewId + "' class='flexpaper_viewer' style='width: 100%; height: 100%;'></div>");
+
+        jQuery(domElement).FlexPaperViewer(
+            {
+                config: {
+                    PDFFile: this.pdfFile,
+                    Scale: 0.6,
+                    ZoomTransition: 'easeOut',
+                    ZoomTime: 0.5,
+                    ZoomInterval: 0.2,
+                    FitPageOnLoad: false,
+                    FitWidthOnLoad: true,
+                    FullScreenAsMaxWindow: true,
+                    ProgressiveLoading: false,
+                    MinZoomSize: 0.2,
+                    MaxZoomSize: 5,
+                    SearchMatchAll: false,
+                    BottomToolbar: 'none',
+                    InitViewMode: 'Portrait',
+                    RenderingOrder: 'html5',
+                    StartAtPage: '',
+                    WMode: 'window',
+                    localeChain: 'en_US',
+                    localeDirectory: 'resources/flexpaper/locale/'
+                }
+            }
+        );
     },
     items:  [
         {
             xtype:"flexpaper_flexpaperbody",
-            itemId:"fpbody"
+            itemId:"fpbody",
+            width: '100%',
+            flex: 1
         }
     ],
     dockedItems:    [
@@ -33,28 +69,3 @@ Ext.define("Savanna.flexpaper.view.FlexpaperComponent", {
         }
     ]
 });
-
-/*
-
- getFlexpaper: function (div, asset, tgt, title) {
- var fp = Ext.create("Ext.panel.Panel", {
- title: title,
- closable: true,
- layout: "border"
- });
- var fpc = Ext.create("Savanna.flexpaper.view.FlexpaperComponent", {
- itemId: "flexcomponent",
- layout: "fit",
- region: "center",
- config: {
- asset: asset
- }
- });
- fp.add(fpc);
- this.queryById(tgt).add(fp);
- this.queryById(tgt).setActiveTab(fp);
- },
-
- app.viewport.queryById("main").getFlexpaper("documentViewer", "http://localhost/flexpaper/pdf/Paper.pdf", "mainsearchoptions_tabs", "Flexpaper");
-
- */

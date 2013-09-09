@@ -29,6 +29,9 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
             'go-graph button': {
                 click: this.handleGraphToolbarButtonClick
             },
+            'go-graph #cutCopyPaste menu': {
+                click: this.handleCutCopyPaste
+            },
             'go-graph #layoutMenu menu':{
                 click: this.handleLayoutMenuClick
             },
@@ -38,8 +41,20 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
             'go-graph #linkStyleMenu menu': {
                 click: this.handleLinkStyleMenuClick
             },
+            'go-graph #linkTypeMenu menu': {
+                click: this.handleLinkTypeMenuClick
+            },
             'go-graph #nodeColorPicker': {
                 select: this.handleNodeColorSelect
+            },
+            'go-graph #search': {
+                click: this.handleCrumbnetSearch
+            },
+            'go-graph #save menu': {
+                click: this.handleSave
+            },
+            'go-graph #export': {
+                click: this.handleExport
             },
             'crumbnet_part_palette-group': {
                 'nodePaletteSelectionChanged': this.handlePaletteSelectionChange
@@ -51,16 +66,20 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
 
     handlePaletteSelectionChange: function(e, selPalette){
         var iterator = e.diagram.selection.iterator;
+
         //There should only ever be one selected node in the palette
         iterator.next();
+
         if (iterator.value){
-            var mainView = selPalette.up('go-graph')
+            var mainView = selPalette.up('go-graph');
             var diagram = mainView.down('go-graph_canvas').diagram;
+
             diagram.toolManager.clickCreatingTool.archetypeNodeData = iterator.value.data;
 
             var palettes = mainView.query('crumbnet_part_palette-group');
+
             palettes.forEach(function(paletteView){
-                if (selPalette != paletteView){
+                if (selPalette !== paletteView){
                     paletteView.palette.clearSelection();
                 }
             });
@@ -240,29 +259,58 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
         }
     },
 
+    handleLinkTypeMenuClick: function(menu, item) {
+        var linkRelationshipTypes = Savanna.crumbnet.utils.ViewTemplates.linkRelationshipTypes,
+            diagram,
+            selectionSet,
+            iterator,
+            linkTextNode;
+
+        if (Ext.Array.contains(linkRelationshipTypes, item.type)) {
+            diagram = this.getDiagramForMenu(menu);
+            selectionSet = diagram.selection;
+            iterator = selectionSet.iterator;
+
+            diagram.startTransaction('changeLinkType');
+            while (iterator.next()) {
+                if (iterator.value instanceof go.Link) {
+                    diagram.model.setDataProperty(iterator.value.data, 'text', item.type);
+                }
+            }
+            // TODO: should this be rollbackTransaction if nothing is changed?
+            diagram.commitTransaction('changeLinkType');
+        }
+        else {
+            Ext.Error.raise('Unknown link type "' + item.type + '"');
+        }
+    },
+
     handleNodeColorSelect: function(picker, selColor){
         var diagram = this.getDiagramForMenu(picker);
-        var selectedNodeSet = diagram.selection;
-        var iterator = selectedNodeSet.iterator;
+        var selectionSet = diagram.selection;
+        var iterator = selectionSet.iterator;
 
         diagram.startTransaction('changeNodeColor');
+
         while (iterator.next()) {
             if (iterator.value instanceof go.Node) {
                 diagram.model.setDataProperty(iterator.value.data, 'color', '#' + selColor);
             }
         }
+
         diagram.commitTransaction('changeNodeColor');
     },
 
     setupImageDrop: function(canvasView) {
         if (typeof window.FileReader !== 'undefined') {
             var dropArea = canvasView.getEl().dom;
-            var _diagram = canvasView.diagram;
+
             dropArea.ondragover = function () {
                 //TODO - check the type of thing dragged in to determine if it can be dropped
                 //Note that false means it can be dropped
                 return false;
             };
+
             dropArea.ondrop = Ext.bind(this.imageDropHandler, null, [canvasView.diagram], true);
         }
     },
@@ -289,6 +337,7 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
             model.addNodeData(newNode);
             diagram.commitTransaction('addImage');
         };
+
         reader.readAsDataURL(file);
 
         return false;
@@ -296,6 +345,70 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
 
     getDiagramForMenu: function(menu) {
         return menu.up('go-graph').down('go-graph_canvas').diagram;
-    }
+    },
 
+    handleCutCopyPaste: function(menu, item) {
+        var diagram = this.getDiagramForMenu(menu),
+            commandHandler = diagram.commandHandler;
+
+        switch (item.type) {
+            case 'cut':
+                commandHandler.cutSelection();
+                break;
+            case 'copy':
+                commandHandler.copySelection();
+                break;
+            case 'paste':
+                diagram.startTransaction('menuPaste');
+                commandHandler.pasteFromClipboard();
+                diagram.commitTransaction('menuPaste');
+                break;
+            default:
+                Ext.Error.raise({ msg: 'Unknown "type" (' + item.type + ') for cutCopyPaste' });
+                break;
+        }
+    },
+
+    handleCrumbnetSearch: function(button) {
+        Ext.create('Ext.window.Window', {
+            modal: true,
+            height: 100,
+            width: 500,
+            html: 'TODO: Add functionality to search the crumbnet for "' + button.up('go-graph').down('#crumbnetSearchText').value + '"'
+        }).show();
+    },
+
+    handleSave: function(menu, item) {
+        var msg = '';
+
+        switch (item.type) {
+            case 'save':
+                msg = 'TODO: Implement "Save"';
+                break;
+            case 'saveAs':
+                msg = 'TODO: Implement "Save As"';
+                break;
+            default:
+                Ext.Error.raise({ msg: 'Unknown "type" (' + item.type + ') for cutCopyPaste' });
+                break;
+        }
+
+        if (msg) {
+            Ext.create('Ext.window.Window', {
+                modal: true,
+                width: 500,
+                height: 100,
+                html: msg
+            }).show();
+        }
+    },
+
+    handleExport: function(button, event) {
+        Ext.create('Ext.window.Window', {
+            modal: true,
+            width: 500,
+            height: 100,
+            html: 'TODO: Implement "Export"'
+        }).show();
+    }
 });

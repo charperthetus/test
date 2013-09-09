@@ -14,7 +14,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         'Savanna.search.model.SearchHistory',
         'Savanna.search.store.SearchResults',
         'Savanna.search.store.SearchHistory',
-        'Savanna.search.view.SearchLocationForm',
+        'Savanna.search.view.searchComponent.searchBody.searchMap.SearchLocationForm',
         'Savanna.controller.Factory'
     ],
 
@@ -86,7 +86,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         var locationSearchInput =  button.up('#searchLocationDockedItems').down('#findLocationSearchText');
         var locationSearchText = locationSearchInput.value;
         if (locationSearchText) {
-            var myForm =  Ext.create('Savanna.search.view.SearchLocationForm');
+            var myForm =  Ext.create('Savanna.search.view.searchComponent.searchBody.searchMap.SearchLocationForm');
             myForm.show();
         }
     },
