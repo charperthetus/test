@@ -30,6 +30,9 @@ Ext.define('Savanna.Config', {
     // TODO: replace this test URL with real endpoint once we have one...
     crumbnetTemplatesUrl: 'resources/data/testCrumbnetTemplates.json',
 
+    testSpacesUrl: 'resources/data/testSpaces.json',
+    savedSpacesUrl: 'resources/data/savedSpaces.json',
+
     // number of past search terms to store in recent history
     searchHistoryPageSize: 10,
 

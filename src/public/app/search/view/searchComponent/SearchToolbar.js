@@ -32,18 +32,19 @@ Ext.define('Savanna.search.view.searchComponent.SearchToolbar', {
                     { text: 'Evil-Doers' }
                 ]
             }
-        },
-        {
-            xtype: 'tbfill'
-        },
-        {
-            glyph: 61786,
-            ui: 'flat-toolbar-button'
-        },
-        {
-            glyph: 61746,
-            ui: 'flat-toolbar-button'
         }
+        //todo: uncomment if we still want search toolbar buttons for save/help
+//        ,{
+//            xtype: 'tbfill'
+//        },
+//        {
+//            glyph: 61786,
+//            ui: 'flat-toolbar-button'
+//        },
+//        {
+//            glyph: 61746,
+//            ui: 'flat-toolbar-button'
+//        }
     ],
 
     initComponent: function () {
