@@ -22,7 +22,7 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
 
     setupItems: function() {
         return [
-            { itemId: 'toolbarDropdown', text: 'Main Menu', menu: this.buildMainDropdown() },
+            { text: 'Main Menu', menu: this.buildMainDropdown() },
             { type: 'undo', glyph: 61800, tooltip: 'Undo', ui: 'flat-toolbar-button' },
             { type: 'redo', glyph: 61777, tooltip: 'Redo', ui: 'flat-toolbar-button' },
             { itemId: 'cutCopyPaste', glyph: 61718, ui: 'flat-toolbar-button', menu: this.buildCutCopyPasteMenu() },
@@ -36,9 +36,9 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
             { xtype: 'textfield', itemId: 'crumbnetSearchText' },
             { itemId: 'search', glyph: 61808, ui: 'flat-toolbar-button' },
             { xtype: 'tbseparator' }, // could also be '-'
-            { itemId: 'save', glyph: 61786, ui: 'flat-toolbar-button', menu: this.buildSaveMenu() },
-            { itemId: 'export', type: 'export', glyph: 61727, tooltip: 'Export', ui: 'flat-toolbar-button' },
-            { type: 'print', glyph: 61773, tooltip: 'Print', ui: 'flat-toolbar-button' }
+            { glyph: 61786, ui: 'flat-toolbar-button', menu: this.buildSaveMenu() },
+            this.buildExportMenuItem(),
+            this.buildPrintMenuItem()
         ];
     },
 
@@ -51,8 +51,16 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
         var linkTypeMenuChoices = Ext.Array.map(linkRelationshipTypes, function mapLinkRelationshipTypes(item) {
             return { type: item, text: item };
         });
+        var fileMenuItems = this.buildSaveMenu();
+        fileMenuItems.push(this.buildExportMenuItem(true));
+        fileMenuItems.push(this.buildPrintMenuItem(true));
+        fileMenuItems.push({ type: 'close', text: 'Close' });
 
         return [
+            {
+                text: 'File',
+                menu: fileMenuItems
+            },
             {
                 itemId: 'alignmentMenu',
                 text: 'Alignment',
@@ -94,6 +102,28 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
             { type: 'layeredDigraph', text: 'Layered Digraph' },
             { type: 'circular', text: 'Circular' }
         ];
+    },
+
+    buildExportMenuItem: function(includeLabel) {
+        var item = { type: 'export', glyph: 61727, tooltip: 'Export', ui: 'flat-toolbar-button' };
+
+        if (includeLabel) {
+            item.text = item.tooltip;
+            delete item.tooltip;
+        }
+
+        return item;
+    },
+
+    buildPrintMenuItem: function(includeLabel) {
+        var item = { type: 'print', glyph: 61773,  tooltip: 'Print', ui: 'flat-toolbar-button' };
+
+        if (includeLabel) {
+            item.text = item.tooltip;
+            delete item.tooltip;
+        }
+
+        return item;
     },
 
     buildCutCopyPasteMenu: function() {

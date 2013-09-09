@@ -26,6 +26,25 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
             'go-graph_canvas': {
                 afterrender: this.setupImageDrop
             },
+
+            'go-graph crumbnet_part_toolbar [type="save"]': {
+                click: this.handleSave
+            },
+            'go-graph crumbnet_part_toolbar [type="saveAs"]': {
+                click: this.handleSave
+            },
+            'go-graph crumbnet_part_toolbar [type="close"]': {
+                click: this.handleClose
+            },
+            'go-graph crumbnet_part_toolbar [type="export"]': {
+                click: this.handleExport
+            },
+            'go-graph crumbnet_part_toolbar [type="print"]': {
+                click: this.handlePrint
+            },
+
+
+
             'go-graph button': {
                 click: this.handleGraphToolbarButtonClick
             },
@@ -49,12 +68,6 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
             },
             'go-graph #search': {
                 click: this.handleCrumbnetSearch
-            },
-            'go-graph #save menu': {
-                click: this.handleSave
-            },
-            'go-graph #export': {
-                click: this.handleExport
             },
             'crumbnet_part_palette-group': {
                 'nodePaletteSelectionChanged': this.handlePaletteSelectionChange
@@ -113,12 +126,8 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
                 var mainCrumbnetViewport = crumbnet.down('#mainCrumbnetViewport');
                 this.toggleOverview(mainCrumbnetViewport, diagram);
                 break;
-            case 'print':
-                Ext.create('Savanna.view.PrintModal', {
-                    html: diagram.makeImage({ scale: 0.5 })
-                }).show();
-                break;
             default:
+                console.log('handleGraphToolbarButtonClick', button.type);
                 // NOTE: there is no "default" because we get clicks for other "buttons" (such as the dropdown menus)
                 //       which we do not need to handle
                 break;
@@ -263,8 +272,7 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
         var linkRelationshipTypes = Savanna.crumbnet.utils.ViewTemplates.linkRelationshipTypes,
             diagram,
             selectionSet,
-            iterator,
-            linkTextNode;
+            iterator;
 
         if (Ext.Array.contains(linkRelationshipTypes, item.type)) {
             diagram = this.getDiagramForMenu(menu);
@@ -370,18 +378,21 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
     },
 
     handleCrumbnetSearch: function(button) {
-        Ext.create('Ext.window.Window', {
-            modal: true,
-            height: 100,
-            width: 500,
-            html: 'TODO: Add functionality to search the crumbnet for "' + button.up('go-graph').down('#crumbnetSearchText').value + '"'
+        this.showTODOmodal('Add functionality to search the crumbnet for "' + button.up('go-graph').down('#crumbnetSearchText').value + '"');
+    },
+
+    handlePrint: function(button) {
+        var diagram = button.up('go-graph').down('go-graph_canvas').diagram;
+
+        Ext.create('Savanna.view.PrintModal', {
+            html: diagram.makeImage({ scale: 0.5 })
         }).show();
     },
 
-    handleSave: function(menu, item) {
+    handleSave: function(menu) {
         var msg = '';
 
-        switch (item.type) {
+        switch (menu.type) {
             case 'save':
                 msg = 'TODO: Implement "Save"';
                 break;
@@ -389,26 +400,27 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
                 msg = 'TODO: Implement "Save As"';
                 break;
             default:
-                Ext.Error.raise({ msg: 'Unknown "type" (' + item.type + ') for cutCopyPaste' });
+                Ext.Error.raise({ msg: 'Unknown "type" (' + menu.type + ') for handleSave' });
                 break;
         }
 
-        if (msg) {
-            Ext.create('Ext.window.Window', {
-                modal: true,
-                width: 500,
-                height: 100,
-                html: msg
-            }).show();
-        }
+        this.showTODOmodal(msg);
     },
 
     handleExport: function(button, event) {
+        this.showTODOmodal('Implement "Export"');
+    },
+
+    handleClose: function(button, event) {
+        this.showTODOmodal('Implement "Close"');
+    },
+
+    showTODOmodal: function(msg) {
         Ext.create('Ext.window.Window', {
             modal: true,
             width: 500,
             height: 100,
-            html: 'TODO: Implement "Export"'
+            html: 'TODO: ' + msg
         }).show();
     }
 });
