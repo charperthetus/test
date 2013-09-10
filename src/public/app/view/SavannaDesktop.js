@@ -17,50 +17,6 @@ Ext.define('Savanna.view.SavannaDesktop', {
         type: 'vbox'
     },
     items: [
-        //Not sure if we are going to need this section or not
-/*        {
-            xtype: 'panel',
-            itemId: 'buttonbarpanel',
-            region: 'top',
-            width: '100%',
-            layout: {
-                type: 'hbox',
-                pack: 'center'
-            },
-            defaults: {
-                xtype: 'button',
-                scale: 'medium',
-                iconAlign: 'top',
-                toggleGroup: 'mygroup',
-                enableToggle: true,
-                listeners: {
-                    click: function(me, event) {
-                        // make sure a button cannot be de-selected
-                        me.toggle(true);
-                    }
-                }
-            },
-            items: [
-                //TODO - make a buttonbar / togglebuttonbar component
-                {
-                    icon: 'app/assets/icons/workspaceicon.png',
-                    text: 'Workspace',
-                    pressed: true
-                }, {
-                    icon: 'app/assets/icons/dashboardicon.png',
-                    text: 'Dashboard'
-                }, {
-                    xtype: '',
-                    padding: 3,
-                    type: 'rect',
-                    width: 8,
-                    height: '100%'
-                }, {
-                    icon: 'app/assets/icons/searchicon.png',
-                    text: 'Search'
-                }
-            ]
-        },*/
         {
             xtype: 'panel',
             region: 'center',
@@ -78,24 +34,16 @@ Ext.define('Savanna.view.SavannaDesktop', {
                     height: '100%',
                     flex: 2,
                     items: [
+                        //TODO - This seems to break flexpaper if it is not the first item
+                        {
+                            title: 'Document',
+                            xtype: 'flexpaper_flexpapercomponent',
+                            itemId: 'docviewer',
+                            pdfFile: 'http://localhost:3000/resources/flexpaper/pdf/Report.pdf'
+                        },
                         {
                             xtype:"search_searchcomponent",
                             itemId:"searchcomponent"
-                        },
-                        {
-                            xtype: 'draw',
-                            title: 'Another Tab',
-                            closable: true,
-                            items: [
-
-                                {
-                                    type: 'circle',
-                                    radius: 90,
-                                    x: 100,
-                                    y: 100,
-                                    fill: 'yellow'
-                                }
-                            ]
                         }
                     ]
                 },
@@ -143,21 +91,6 @@ Ext.define('Savanna.view.SavannaDesktop', {
                             title: 'Map',
                             xtype: 'map_component',
                             itemId: 'MAP_ONE'
-                        },
-                        {
-                            xtype: 'draw',
-                            title: 'Another Tab',
-                            closable: true,
-                            items: [
-
-                                {
-                                    type: 'circle',
-                                    radius: 90,
-                                    x: 100,
-                                    y: 100,
-                                    fill: 'blue'
-                                }
-                            ]
                         }
                     ]
                 }
