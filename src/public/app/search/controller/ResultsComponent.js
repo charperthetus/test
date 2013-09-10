@@ -38,6 +38,8 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
         var id = btn.findParentByType('search_resultscomponent').currentResultSet.id;
         var dalRecord = Ext.data.StoreManager.lookup('dalSources').getById(id);
         dalRecord.data.facetFilterCriteria = [];
+        btn.up('#resultsdals').queryById('resultsfacets').removeAll();
+        btn.up('#resultsdals').createFacetsTabPanel();
         var searchController = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
         searchController.doSearch(btn);
     },
@@ -64,14 +66,12 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
      */
     changeSelectedStore:function(evt, body, dal) {
         var component = dal.findParentByType('search_resultscomponent');
-        var me = this;
 
         Ext.each(component.allResultSets, function(set) {
             if(set.id === dal.itemId)    {
                 component.queryById('resultspanel').updateGridStore(set);
                 component.currentResultSet = set;
                 dal.up('#resultsdals').queryById('resultsfacets').setActiveTab('tab_' + dal.itemId);
-                return false;
             }
         });
     }

@@ -66,11 +66,10 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
         });
     },
 
-    createFacetsTabPanel: function () {
+    createFacetsTabPanel: function (recreate) {
 
         var facetTabs;
-
-        if(this.queryById('resultsfacets') === null) {
+        if(this.queryById('resultsfacets') === null || recreate) {
             facetTabs = Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacets', {
                 itemId: 'resultsfacets'
             });
@@ -116,10 +115,11 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
 
     createDalFacets: function (id) {
 
-        var dalRecord = Ext.data.StoreManager.lookup('dalSources').getById(id),
+        var dalRecord = this.store.getById(id),
             descriptions = dalRecord.data.facetDescriptions,
             facets = this.queryById('resultsfacets').queryById('tab_' + id),
             me = this;
+
 
 
         Ext.each(this.findParentByType('search_resultscomponent').allResultSets, function (resultset) {
@@ -146,7 +146,6 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
     updateDalStatus: function (dalId, status) {
         var myDal = this.queryById(dalId);
 
-        myDal.updateDalNameCount(dalId, status);
         var styleStatus = {
             'success': myDal.dalLoadSuccess,
             'fail': myDal.dalLoadFail,
@@ -154,5 +153,24 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
             'none': myDal.dalLoadNone
         };
         myDal.down('#dalStatusIcon').getEl().setStyle(styleStatus[status]);
+
+        var me = this,
+            count = 0;
+
+        Ext.each(this.findParentByType('search_resultscomponent').allResultSets, function(set)  {
+
+            if(set.id === dalId)    {
+                if(status !== 'fail')   {
+                    count = set.store.totalCount;
+                }
+
+                /*
+                 got a nasty bug going on here - the first DAL element will not visually refresh it's text value or icon.
+                 I have tried every form of update and layout method I can find/think of to correct it, no luck yet
+                 */
+
+                myDal.down('#dalName').setText(me.store.getById(dalId).data.displayName + ' ' + '(' + count + ')');
+            }
+        });
     }
 });

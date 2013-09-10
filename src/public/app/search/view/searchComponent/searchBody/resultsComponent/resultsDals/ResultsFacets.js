@@ -18,11 +18,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
     initComponent: function () {
         this.callParent(arguments);
     },
-    items:  [
-        {
 
-        }
-    ],
     tbar:   [
         {
             xtype: 'tbtext',

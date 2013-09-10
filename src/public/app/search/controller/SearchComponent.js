@@ -215,7 +215,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
                 // Dal has been selected, apply to the request model and do search
 
-                //searchObj.set('contentDataSource', dalId);
+                searchObj.set('contentDataSource', dalId);
 
                 searchObj.set('searchPreferencesVOs', [
                     {
@@ -230,9 +230,9 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                 set the facet filters, if any
                  */
                 if(source.data.facetFilterCriteria.length)  {
-                    console.log('applying facet filters to: ', source.data.id);
-                    console.log('the criteria are: ', source.data.facetFilterCriteria);
                     searchObj.set('facetFilterCriteria', source.data.facetFilterCriteria);
+                }  else {
+                    searchObj.set('facetFilterCriteria', null);
                 }
                 /*
                 Determine the pageSize for the stores.
@@ -262,14 +262,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
     },
 
     searchCallback: function (records, operation, success, resultsDal, resultsPanel, dalId, store) {
-        var resultsObj = {id:dalId, store:store};
 
-        resultsPanel.up('#searchresults').allResultSets.push(resultsObj);   // add an object tying the dal and store together for referencing
-
-        var statusString = success ? 'success' : 'fail';
-        resultsDal.updateDalStatus(dalId, statusString);
-
-        resultsDal.createDalFacets(dalId);
 
         if (!success) {
             // server down..?
@@ -277,8 +270,17 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                 msg: 'The server could not complete the search request.'
             });
         }   else    {
+
+            var resultsObj = {id:dalId, store:store};
+
+            resultsPanel.up('#searchresults').allResultSets.push(resultsObj);   // add an object tying the dal and store together for referencing
+
+            var statusString = success ? 'success' : 'fail';
+            resultsDal.updateDalStatus(dalId, statusString);
+
+            resultsDal.createDalFacets(dalId);
+
             if(dalId === Ext.data.StoreManager.lookup('dalSources').defaultId)    {
-                resultsPanel.up('#searchresults').currentResultSet = resultsPanel.up('#searchresults').allResultSets[resultsPanel.up('#searchresults').allResultSets.length-1];
                 var controller = Savanna.controller.Factory.getController('Savanna.search.controller.ResultsComponent');
                 controller.changeSelectedStore({}, {}, resultsDal.queryById(dalId));
             }

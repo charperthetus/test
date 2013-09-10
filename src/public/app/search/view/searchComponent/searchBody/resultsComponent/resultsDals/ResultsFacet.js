@@ -25,6 +25,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
     hideCollapseTool: true,
 
     initComponent: function () {
+
         this.title = this.model.displayValue;
         this.items = this.buildFacetOptions();
         this.callParent(arguments);
@@ -48,17 +49,21 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
                         items: [
                             {
                                 xtype: 'radiogroup',
+                                itemId: 'dateFacet',
                                 // Arrange radio buttons, distributed vertically
                                 columns: 1,
                                 vertical: true,
                                 items: [
                                     { boxLabel: 'Any Time', name: this.model.facetId, inputValue: 'all', checked: true },
-                                    { boxLabel: 'Past 24 Hours', name: this.model.facetId, inputValue: 'day'},
-                                    { boxLabel: 'Past Week', name: this.model.facetId, inputValue: 'week' },
-                                    { boxLabel: 'Past Month', name: this.model.facetId, inputValue: 'month' },
-                                    { boxLabel: 'Past Year', name: this.model.facetId, inputValue: 'year' },
+                                    { boxLabel: 'Past 24 Hours', name: this.model.facetId, inputValue: 'past_year'},
+                                    { boxLabel: 'Past Week', name: this.model.facetId, inputValue: 'past_week' },
+                                    { boxLabel: 'Past Month', name: this.model.facetId, inputValue: 'past_month' },
+                                    { boxLabel: 'Past Year', name: this.model.facetId, inputValue: 'past_year' },
                                     { boxLabel: 'Custom Range', name: this.model.facetId, inputValue: 'custom' }
-                                ]
+                                ],
+                                listeners: {
+                                    'change': Ext.bind(this.onDateRangeChange, this)
+                                }
                             }
                         ]
                     }
@@ -74,18 +79,21 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
                         items: [
                             {
                                 xtype: 'checkboxgroup',
-                                itemId: 'checkboxGroup',
-                                // Arrange radio buttons, distributed vertically
+                                itemId: 'stringFacet',
                                 columns: 1,
                                 vertical: true,
-                                items: [],
-                                listeners:  {
-                                    'change': Ext.bind(this.onDateRangeChange, this, true)
-                                }
+                                items: []
                             }
                         ]
                     }
                 ];
+                break;
+
+            default:
+                content = [];
+                Ext.Error.raise({
+                    msg: 'Unknown facet type: ' + this.model.facetDataType
+                });
                 break;
         }
 
@@ -97,35 +105,102 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
             facet = this.model.facetId,
             me = this;
 
-        Ext.each(set.store.facetValueSummaries[facet].facetValues, function (facetobj) {
+        if (set.store.facetValueSummaries[facet] !== undefined) {
 
-            var checkbox = {
-                boxLabel: facetobj.key + ' (' + facetobj.value + ')',
-                name: facetobj.key,
-                inputValue: facetobj.key,
-                id: 'checkbox_' + facetobj.key + '_' + String(Ext.id()),
-                listeners:  {
-                    'change': Ext.bind(me.onFacetFilterChange, me, [this], true)
-                }
-            };
+            Ext.each(set.store.facetValueSummaries[facet].facetValues, function (facetobj) {
 
-            me.queryById('facets_' + me.model.facetId).queryById('checkboxGroup').add(checkbox);
-        });
+                var checkbox = {
+                    boxLabel: facetobj.key + ' (' + facetobj.value + ')',
+                    name: facetobj.key,
+                    inputValue: facetobj.key,
+                    id: 'checkbox_' + facetobj.key + '_' + String(Ext.id()),
+                    listeners: {
+                        'change': Ext.bind(me.onFacetFilterChange, me)
+                    }
+                };
+
+                me.queryById('facets_' + me.model.facetId).queryById('stringFacet').add(checkbox);
+            });
+
+        } else {
+            /*
+            this appears to be the case with LinkedIn - getting a 'location' facet that does not
+            line up with facetValueSummaries in the DAL sources.  May need services to resolve it,
+            will take a closer look before pinging Travis
+             */
+            Ext.Error.raise({
+                msg: 'Undefined facetValueSummary for supplied facet: ' + facet
+            });
+        }
     },
 
-    onDateRangeChange:function()    {
-        console.log(arguments);
+    onDateRangeChange: function (btn) {
+
+        var now = new Date(),
+            startDate,
+            rangeName = btn.inputValue,
+            fieldName = 'published_date',
+            endDate = Ext.Date.format(new Date(), 'c\\Z'), //default
+            me = this;
+
+        switch (btn.inputValue) {
+            case 'any'  :
+                startDate = Ext.Date.format(new Date(0), 'c\\Z');
+                break;
+
+            case 'past_year'    :
+                startDate = Ext.Date.format(Ext.Date.subtract(now, Ext.Date.YEAR, 1), 'c\\Z');
+                break;
+
+            case 'past_month'    :
+                startDate = Ext.Date.format(Ext.Date.subtract(now, Ext.Date.MONTH, 1), 'c\\Z');
+                break;
+
+            case 'past_week'    :
+                startDate = Ext.Date.format(Ext.Date.subtract(now, Ext.Date.DAY, 7), 'c\\Z');
+                break;
+
+            case 'past_day'    :
+                startDate = Ext.Date.format(Ext.Date.subtract(now, Ext.Date.DAY, 1), 'c\\Z');
+                break;
+
+            case 'custom'   :
+                // not handled yet
+                break;
+
+        }
+
+        if (!me.dal.data.dateTimeRanges.length) {
+            me.dal.data.dateTimeRanges = [];   // just set to an empty array
+        }
+        var newDateRange = {
+            'StartDate': startDate,
+            'dateRangeName': rangeName,
+            'DateFieldName': fieldName,
+            'EndDate': endDate
+        };
+        me.dal.data.dateTimeRanges.push(newDateRange);
+
+        /*
+         resubmit the search request
+         */
+        var searchController = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
+
+        if (searchController !== undefined) {
+            searchController.doSearch(me);
+        }
     },
 
-    onFacetFilterChange: function (btn, newValue, oldValue, eOpts, facetobj) {
+    onFacetFilterChange: function (btn) {
+
         var filterExists = false,
             facet = this.model.facetId,
             me = this;
         /*
          check to see if this facet filter exists in the store already
          */
-        console.log('setting a filter on: ', me.dal.data.id);
-        if (me.dal.data.facetFilterCriteria.length > 0) {
+
+        if (me.dal.data.facetFilterCriteria.length) {
 
             Ext.each(me.dal.data.facetFilterCriteria, function (filter, index) {
 
@@ -137,30 +212,42 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
 
                     if (btn.value) {   // if the checkbox has been selected, add the selection
 
-                        values.push(facetobj.key);
+                        values.push(btn.inputValue);
 
                     } else {       // if the checkbox has been deselected, remove the selection
 
-                        values.splice(index, 1);
+                        Ext.each(values, function (val, ind) {
+                            if (val === btn.inputValue) {
+                                values.splice(ind, 1);
+                            }
+                        });
+
                     }
                 }
 
-                me.dal.data.facetFilterCriteria[index].facetValues = values;
+                if (values.length > 0) {
+                    me.dal.data.facetFilterCriteria[index].facetValues = values;
+                } else {
+                    me.dal.data.facetFilterCriteria.splice(index, 1);   // remove the facetFilterCriteria entirely
+                }
+
             });
 
-        }   else    {
-            me.dal.data.facetFilterCriteria = [];   // just set to an empty array
-        }
-        if (!filterExists) {       // add the new filter to the store
-            var newFilter = {
-                'facetName': facet,
-                'facetValues': [facetobj.key]   // this is an array
-            };
-            me.dal.data.facetFilterCriteria.push(newFilter);
+        } else {
+            me.dal.data.facetFilterCriteria = [
+                {
+                    'facetName': facet,
+                    'facetValues': [btn.inputValue]   // this is always an array
+                }
+            ];
         }
         /*
-        resubmit the search request
+         resubmit the search request
          */
-        Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent').doSearch(me);
+        var searchController = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
+
+        if (searchController !== undefined) {
+            searchController.doSearch(me);
+        }
     }
 });

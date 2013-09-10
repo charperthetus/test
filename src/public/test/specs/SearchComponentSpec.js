@@ -229,10 +229,29 @@ describe('Search Component', function () {
                 searchbar.queryById('exact_phrase').setValue('other text');
                 searchbar.queryById('any_words').setValue('more and more text');
                 searchbar.queryById('none_words').setValue('bad terms');
+
+                var readMethod = 'GET',
+                    testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(dalStore.getProxy(), 'read', readMethod);
+
+                server.respondWith(readMethod, testUrl, dalFixtures.allDals);
+
+                dalStore.getProxy().addSessionId = false; // so our URL is clean
+                dalStore.load();
+
+                server.respond({
+                    errorOnInvalidRequest: true
+                });
             });
 
             afterEach(function () {
                 searchbar = null;
+
+                if (server) {
+                    server.restore();
+                    server = null;
+                }
+                dalStore = null;
+                dalFixtures = null;
             });
 
             it('should be able to hide the menu', function () {
@@ -253,8 +272,14 @@ describe('Search Component', function () {
             });
 
             it('should build the search string', function () {
-                spyOn(searchbar, 'buildSearchString').andCallThrough();
 
+                component.down('#searchdals').store = dalStore;
+                component.down('#searchdals').createDalPanels();
+
+                component.down('#resultsdals').store = dalStore;
+                component.down('#resultsdals').createDalPanels();
+
+                spyOn(searchbar, 'buildSearchString').andCallThrough();
                 controller.doSearch(searchbar);
 
                 expect(searchbar.buildSearchString).toHaveBeenCalled();
@@ -427,18 +452,51 @@ describe('Search Component', function () {
                     errorOnInvalidRequest: true
                 });
 
+                component.down('#searchdals').store = dalStore;
+                component.down('#searchdals').createDalPanels();
+
                 component.down('#resultsdals').store = dalStore;
                 component.down('#resultsdals').createDalPanels();
 
-                controller.searchCallback(fixtures.searchResults, {}, false, component.down('#resultsdals'), component.down('#resultspanel'), 'mockDAL');
+                controller.searchCallback(fixtures.searchResults, {}, false, {}, {}, 'mockDAL');
 
                 expect(errorRaised).toBeTruthy();
             });
         });
 
         describe('doSearch method', function () {
+            beforeEach(function () {
+
+                var readMethod = 'GET',
+                    testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(dalStore.getProxy(), 'read', readMethod);
+
+                server.respondWith(readMethod, testUrl, dalFixtures.allDals);
+
+                dalStore.getProxy().addSessionId = false; // so our URL is clean
+                dalStore.load();
+
+                server.respond({
+                    errorOnInvalidRequest: true
+                });
+            });
+
+            afterEach(function () {
+
+                if (server) {
+                    server.restore();
+                    server = null;
+                }
+                dalStore = null;
+                dalFixtures = null;
+            });
 
             it('should call logHistory', function () {
+                component.down('#searchdals').store = dalStore;
+                component.down('#searchdals').createDalPanels();
+
+                component.down('#resultsdals').store = dalStore;
+                component.down('#resultsdals').createDalPanels();
+
                 controller.doSearch(component.queryById('searchbar').items.first(), {});
 
                 expect(controller.logHistory).toHaveBeenCalled();
