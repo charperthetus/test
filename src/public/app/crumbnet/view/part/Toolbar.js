@@ -22,24 +22,27 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
 
     setupItems: function() {
         return [
-            {
-                itemId: 'toolbarDropdown',
-                text: 'Appearance Settings',
-                menu: this.buildDropdownMenu()
-            },
-            { xtype: 'tbfill' },
+            { itemId: 'toolbarDropdown', text: 'Main Menu', menu: this.buildMainDropdown() },
+            { type: 'undo', glyph: 61800, tooltip: 'Undo', ui: 'flat-toolbar-button' },
+            { type: 'redo', glyph: 61777, tooltip: 'Redo', ui: 'flat-toolbar-button' },
+            { itemId: 'cutCopyPaste', glyph: 61718, ui: 'flat-toolbar-button', menu: this.buildCutCopyPasteMenu() },
+            { itemId: 'layoutMenu', glyph: 61775, tooltip: 'Layout', ui: 'flat-toolbar-button', menu: this.buildLayoutMenu() },
             { type: 'zoomIn', glyph: 61806, tooltip: 'Zoom In', ui: 'flat-toolbar-button' },
             { type: 'zoomOut', glyph: 61807, tooltip: 'Zoom Out', ui: 'flat-toolbar-button' },
             { type: 'zoomToFit', glyph: 61789, tooltip: 'Zoom To Fit', ui: 'flat-toolbar-button' },
-            { type: 'undo', glyph: 61800, tooltip: 'Undo', ui: 'flat-toolbar-button' },
-            { type: 'redo', glyph: 61777, tooltip: 'Redo', ui: 'flat-toolbar-button' },
             { type: 'grid', glyph: 61739, tooltip: 'Toggle Grid', ui: 'flat-toolbar-button' },
             { type: 'overview', glyph: 61736, tooltip: 'Toggle Overview', ui: 'flat-toolbar-button' },
+            { xtype: 'tbfill' }, // could also be '->'
+            { xtype: 'textfield', itemId: 'crumbnetSearchText' },
+            { itemId: 'search', glyph: 61808, ui: 'flat-toolbar-button' },
+            { xtype: 'tbseparator' }, // could also be '-'
+            { itemId: 'save', glyph: 61786, ui: 'flat-toolbar-button', menu: this.buildSaveMenu() },
+            { itemId: 'export', type: 'export', glyph: 61727, tooltip: 'Export', ui: 'flat-toolbar-button' },
             { type: 'print', glyph: 61773, tooltip: 'Print', ui: 'flat-toolbar-button' }
         ];
     },
 
-    buildDropdownMenu: function() {
+    buildMainDropdown: function() {
         var linkTemplateNames = Savanna.crumbnet.utils.ViewTemplates.getLinkTemplateNames();
         var linkStyleMenuChoices = Ext.Array.map(linkTemplateNames, function maplLinkTemplateNames(item) {
             return { type: item, text: item };
@@ -50,17 +53,6 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
         });
 
         return [
-            {
-                itemId: 'layoutMenu',
-                text: 'Layout',
-                menu: [
-                    { type: 'grid', text: 'Grid' },
-                    { type: 'tree', text: 'Tree' },
-                    { type: 'force', text: 'Force' },
-                    { type: 'layeredDigraph', text: 'Layered Digraph' },
-                    { type: 'circular', text: 'Circular' }
-                ]
-            },
             {
                 itemId: 'alignmentMenu',
                 text: 'Alignment',
@@ -91,6 +83,31 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
                 text: 'Node Color',
                 menu: { xtype: 'colormenu', itemId: 'nodeColorPicker' }
             }
+        ];
+    },
+
+    buildLayoutMenu: function() {
+        return [
+            { type: 'grid', text: 'Grid' },
+            { type: 'tree', text: 'Tree' },
+            { type: 'force', text: 'Force' },
+            { type: 'layeredDigraph', text: 'Layered Digraph' },
+            { type: 'circular', text: 'Circular' }
+        ];
+    },
+
+    buildCutCopyPasteMenu: function() {
+        return [
+            { type: 'cut', glyph: 61718, text: 'Cut', ui: 'flat-toolbar-button' },
+            { type: 'copy', glyph: 61769, text: 'Copy', ui: 'flat-toolbar-button' },
+            { type: 'paste', glyph: 61716, text: 'Paste', ui: 'flat-toolbar-button' }
+        ];
+    },
+
+    buildSaveMenu: function() {
+        return [
+            { type: 'save', text: 'Save' },
+            { type: 'saveAs', text: 'Save As'}
         ];
     }
 });
