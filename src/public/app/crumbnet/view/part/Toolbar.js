@@ -23,16 +23,13 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
     setupItems: function() {
         return [
             { text: 'Main Menu', menu: this.buildMainDropdown() },
-            { type: 'undo', glyph: 61800, tooltip: 'Undo', ui: 'flat-toolbar-button' },
-            { type: 'redo', glyph: 61777, tooltip: 'Redo', ui: 'flat-toolbar-button' },
-            { itemId: 'cutCopyPaste', glyph: 61718, ui: 'flat-toolbar-button', menu: this.buildCutCopyPasteMenu() },
-            { itemId: 'layoutMenu', glyph: 61775, tooltip: 'Layout', ui: 'flat-toolbar-button', menu: this.buildLayoutMenu() },
-            { type: 'zoomIn', glyph: 61806, tooltip: 'Zoom In', ui: 'flat-toolbar-button' },
-            { type: 'zoomOut', glyph: 61807, tooltip: 'Zoom Out', ui: 'flat-toolbar-button' },
-            { type: 'zoomToFit', glyph: 61789, tooltip: 'Zoom To Fit', ui: 'flat-toolbar-button' },
-            { type: 'grid', glyph: 61739, tooltip: 'Toggle Grid', ui: 'flat-toolbar-button' },
-            { type: 'overview', glyph: 61736, tooltip: 'Toggle Overview', ui: 'flat-toolbar-button' },
+            this.buildUndoMenuItem(),
+            this.buildRedoMenuItem(),
+            { glyph: 61718, ui: 'flat-toolbar-button', menu: this.buildCutCopyPasteMenu() },
+            { type: 'layoutMenu', glyph: 61775, tooltip: 'Layout', ui: 'flat-toolbar-button', menu: this.buildLayoutMenuItems() },
+
             { xtype: 'tbfill' }, // could also be '->'
+
             { xtype: 'textfield', itemId: 'crumbnetSearchText' },
             { itemId: 'search', glyph: 61808, ui: 'flat-toolbar-button' },
             { xtype: 'tbseparator' }, // could also be '-'
@@ -43,6 +40,7 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
     },
 
     buildMainDropdown: function() {
+        var includeLabel = true;
         var linkTemplateNames = Savanna.crumbnet.utils.ViewTemplates.getLinkTemplateNames();
         var linkStyleMenuChoices = Ext.Array.map(linkTemplateNames, function maplLinkTemplateNames(item) {
             return { type: item, text: item };
@@ -51,10 +49,11 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
         var linkTypeMenuChoices = Ext.Array.map(linkRelationshipTypes, function mapLinkRelationshipTypes(item) {
             return { type: item, text: item };
         });
-        var fileMenuItems = this.buildSaveMenu();
-        fileMenuItems.push(this.buildExportMenuItem(true));
-        fileMenuItems.push(this.buildPrintMenuItem(true));
-        fileMenuItems.push({ type: 'close', text: 'Close' });
+        var fileMenuItems = this.buildFileMenuItems(includeLabel);
+        var editMenuItems = this.buildEditMenuItems(includeLabel);
+        var viewMenuItems = this.buildViewMenuItems(includeLabel);
+        var formatMenuItems = this.buildFormatMenuItems(includeLabel);
+        var objectMenuItems = this.buildObjectMenuItems(includeLabel);
 
         return [
             {
@@ -62,15 +61,20 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
                 menu: fileMenuItems
             },
             {
-                itemId: 'alignmentMenu',
-                text: 'Alignment',
-                menu: [
-                    { type: 'right', text: 'Right' },
-                    { type: 'left', text: 'Left' },
-                    { type: 'top', text: 'Top' },
-                    { type: 'bottom', text: 'Bottom' },
-                    { type: 'center', text: 'Center' }
-                ]
+                text: 'Edit',
+                menu: editMenuItems
+            },
+            {
+                text: 'View',
+                menu: viewMenuItems
+            },
+            {
+                text: 'Format',
+                menu: formatMenuItems
+            },
+            {
+                text: 'Object',
+                menu: objectMenuItems
             },
             {
                 itemId: 'linkStyleMenu',
@@ -94,36 +98,76 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
         ];
     },
 
-    buildLayoutMenu: function() {
+    // "File" menu
+
+    buildFileMenuItems: function(includeLabel) {
+        var fileMenuItems = this.buildSaveMenu();
+        fileMenuItems.push(this.buildExportMenuItem(includeLabel));
+        fileMenuItems.push(this.buildPrintMenuItem(includeLabel));
+        fileMenuItems.push({ type: 'close', text: 'Close' });
+
+        return fileMenuItems;
+    },
+
+    buildSaveMenu: function() {
         return [
-            { type: 'grid', text: 'Grid' },
-            { type: 'tree', text: 'Tree' },
-            { type: 'force', text: 'Force' },
-            { type: 'layeredDigraph', text: 'Layered Digraph' },
-            { type: 'circular', text: 'Circular' }
+            { type: 'save', text: 'Save' },
+            { type: 'saveAs', text: 'Save As'}
         ];
     },
 
     buildExportMenuItem: function(includeLabel) {
-        var item = { type: 'export', glyph: 61727, tooltip: 'Export', ui: 'flat-toolbar-button' };
-
-        if (includeLabel) {
-            item.text = item.tooltip;
-            delete item.tooltip;
-        }
-
-        return item;
+        return this.buildToolbarButton({
+            type: 'export',
+            glyph: 61727,
+            tooltip: 'Export',
+            includeLabel: includeLabel
+        });
     },
 
     buildPrintMenuItem: function(includeLabel) {
-        var item = { type: 'print', glyph: 61773,  tooltip: 'Print', ui: 'flat-toolbar-button' };
+        return this.buildToolbarButton({
+            type: 'print',
+            glyph: 61773,
+            tooltip: 'Print',
+            includeLabel: includeLabel
+        });
+    },
 
-        if (includeLabel) {
-            item.text = item.tooltip;
-            delete item.tooltip;
-        }
+    // "Edit" menu
 
-        return item;
+    buildEditMenuItems: function(includeLabel) {
+        var editMenuItems = [
+            this.buildUndoMenuItem(includeLabel),
+            this.buildRedoMenuItem(includeLabel)
+        ];
+
+        Ext.Array.push(editMenuItems, this.buildCutCopyPasteMenu());
+
+        // TODO: plugin to controller
+        editMenuItems.push({ type: 'selectAll', text: 'Select All' });
+        editMenuItems.push({ type: 'deselect', text: 'Deselect' });
+        editMenuItems.push({ type: 'delete', text: 'Delete' });
+
+        return editMenuItems;
+    },
+
+    buildUndoMenuItem: function(includeLabel) {
+        return this.buildToolbarButton({
+            type: 'undo',
+            glyph: 61800,
+            tooltip: 'Undo',
+            includeLabel: includeLabel
+        });
+    },
+
+    buildRedoMenuItem: function(includeLabel) {
+        return this.buildToolbarButton({
+            type: 'redo',
+            glyph: 61777,
+            tooltip: 'Redo',
+            includeLabel: includeLabel
+        });
     },
 
     buildCutCopyPasteMenu: function() {
@@ -134,10 +178,108 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
         ];
     },
 
-    buildSaveMenu: function() {
+    // "View" menu
+
+    buildViewMenuItems: function(includeLabel) {
+        var viewMenuItems = [];
+
+        viewMenuItems.push(this.buildZoomInItem(includeLabel));
+        viewMenuItems.push(this.buildZoomOutItem(includeLabel));
+        viewMenuItems.push(this.buildZoomToFitItem(includeLabel));
+        viewMenuItems.push({ type: 'layoutMenu', text: 'Layout', menu: this.buildLayoutMenuItems() });
+        viewMenuItems.push({ type: 'showMenu', text: 'Show', menu: this.buildShowMenuItems() });
+
+        return viewMenuItems;
+    },
+
+    buildZoomInItem: function(includeLabel) {
+        return this.buildToolbarButton({
+            type: 'zoomIn',
+            glyph: 61806,
+            tooltip: 'Zoom In',
+            includeLabel: includeLabel
+        });
+    },
+
+    buildZoomOutItem: function(includeLabel) {
+        return this.buildToolbarButton({
+            type: 'zoomOut',
+            glyph: 61807,
+            tooltip: 'Zoom Out',
+            includeLabel: includeLabel
+        });
+    },
+
+    buildZoomToFitItem: function(includeLabel) {
+        return this.buildToolbarButton({
+            type: 'zoomToFit',
+            glyph: 61789,
+            tooltip: 'Fit in Window',
+            includeLabel: includeLabel
+        });
+    },
+
+    buildLayoutMenuItems: function() {
         return [
-            { type: 'save', text: 'Save' },
-            { type: 'saveAs', text: 'Save As'}
+            { type: 'grid', text: 'Grid' },
+            { type: 'tree', text: 'Tree' },
+            { type: 'force', text: 'Force' },
+            { type: 'layeredDigraph', text: 'Layered Digraph' },
+            { type: 'circular', text: 'Circular' }
         ];
+    },
+
+    buildShowMenuItems: function() {
+        return [
+            { type: 'toggleGrid', glyph: 61739, text: 'Grid', ui: 'flat-toolbar-button' },
+            { type: 'toggleOverview', glyph: 61736, text: 'Overview', ui: 'flat-toolbar-button' },
+            { type: 'toggleLinkType', text: 'Link Type' },
+            { type: 'toggleNodeType', text: 'Node Type' },
+            { type: 'toggleNodeDescriptions', text: 'Node Description' },
+            { type: 'snapToGrid', text: 'Snap to Grid' },
+            { type: 'gridSettings', text: 'Grid Settings' },
+            { type: 'expandAllNodes', text: 'Expand All Nodes' }
+        ];
+    },
+
+    // "Format" menu
+
+    buildFormatMenuItems: function(includeLabel) {
+        var formatMenuItems = [
+            { type: 'alignRight', text: 'Align Right' },
+            { type: 'alignLeft', text: 'Align Left' },
+            { type: 'alignTop', text: 'Align Top' },
+            { type: 'alignBottom', text: 'Align Bottom' },
+            { type: 'alignCenter', text: 'Align Center' }
+        ];
+
+        return formatMenuItems;
+    },
+
+    // "Object" menu
+
+    buildObjectMenuItems: function(includeLabel) {
+        var objectMenuItems = [];
+
+        return objectMenuItems;
+    },
+
+    // helpers
+
+    buildToolbarButton: function(options) {
+        var includeLabel = options.includeLabel,
+            buttonOptions = {};
+
+        delete options.includeLabel;
+
+        buttonOptions = Ext.apply({}, options, {
+           ui: 'flat-toolbar-button'
+        });
+
+        if (includeLabel) {
+            buttonOptions.text = buttonOptions.tooltip;
+        }
+
+        return buttonOptions;
     }
 });
