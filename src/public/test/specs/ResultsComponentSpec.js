@@ -108,7 +108,6 @@ describe('Search Results', function () {
             beforeEach(function () {
                 //noinspection JSValidateTypes
 
-                // Set up the store first as it is autovivified by our main view
                 store = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.DalSources', { autoLoad: false });
 
                 // now set up server to get store data
@@ -119,7 +118,6 @@ describe('Search Results', function () {
 
                 server.respondWith(readMethod, testUrl, dalFixtures.allDals);
 
-                // load the store now (should trigger event to render the view)
                 store.load();
 
                 server.respond({
@@ -141,30 +139,6 @@ describe('Search Results', function () {
 
             describe('createDalPanels', function () {
 
-                beforeEach(function () {
-                    //noinspection JSValidateTypes
-
-                    view = searchComponent.down('#resultsdals');
-
-                    // Set up the store first as it is autovivified by our main view
-                    store = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.DalSources', { autoLoad: false });
-
-                    // now set up server to get store data
-                    server = new ThetusTestHelpers.FakeServer(sinon);
-
-                    var readMethod = 'GET',
-                        testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(store.getProxy(), 'read', readMethod);
-
-                    server.respondWith(readMethod, testUrl, dalFixtures.allDals);
-
-                    // load the store now (should trigger event to render the view)
-                    store.load();
-
-                    server.respond({
-                        errorOnInvalidRequest: true
-                    });
-
-                });
 
                 afterEach(function () {
 
@@ -224,7 +198,7 @@ describe('Search Results', function () {
 
             describe('createDalFacets', function () {
 
-                var fixtures, server, store, dalStore, dalFixtures, facets, resultsDals, searchDals;
+                var fixtures, server, searchStore, dalFixtures, facets, resultsDals, searchDals;
 
                 beforeEach(function () {
 
@@ -244,50 +218,29 @@ describe('Search Results', function () {
                     /*
                      search results store
                      */
-                    store = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.SearchResults', { autoLoad: false });
+                    searchStore = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.SearchResults', { autoLoad: false });
 
                     // now set up server to get store data
                     server = new ThetusTestHelpers.FakeServer(sinon);
 
                     var readMethod = 'POST',
-                        testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(store.getProxy(), 'read', readMethod);
+                        testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(searchStore.getProxy(), 'read', readMethod);
 
                     server.respondWith(readMethod, testUrl, fixtures.searchResults);
 
-                    store.load();
+                    searchStore.load();
 
                     server.respond({
                         errorOnInvalidRequest: true
                     });
-
-
-                    /*
-                     sources store load
-                     */
-                    dalStore = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.DalSources', { autoLoad: false });
-
-                    server = new ThetusTestHelpers.FakeServer(sinon);
-
-                    readMethod = 'GET';
-                    testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(dalStore.getProxy(), 'read', readMethod);
-
-                    server.respondWith(readMethod, testUrl, dalFixtures.allDals);
-
-                    // load the store now (should trigger event to render the view)
-                    dalStore.load();
-
-                    server.respond({
-                        errorOnInvalidRequest: true
-                    });
-
 
                     /*
                      set up the DAL panels now that we have a sources store
                      */
-                    searchDals.store = dalStore;
+                    searchDals.store = store;
                     searchDals.createDalPanels();
 
-                    resultsDals.store = dalStore;
+                    resultsDals.store = store;
                     resultsDals.createDalPanels();
 
 
@@ -297,8 +250,8 @@ describe('Search Results', function () {
 
                     resultsDals.createFacetsTabPanel();
 
-                    searchComponent.down('#searchresults').allResultSets.push({id: 'mockDAL', store: store});
-                    resultsDals.store = dalStore;
+                    searchComponent.down('#searchresults').allResultSets.push({id: 'mockDAL', store: searchStore});
+                    resultsDals.store = store;
 
                     facets = resultsDals.queryById('resultsfacets').queryById('tab_mockDAL');
 
@@ -317,21 +270,20 @@ describe('Search Results', function () {
 
                     server.restore();
                     server = null;
-                    store = null;
-                    dalStore = null;
+                    searchStore = null;
                 });
 
                 it('should create a facet for each facetDescription', function () {
 
                     searchComponent.down('#resultsdals').createDalFacets('mockDAL');
 
-                    var expected = dalStore.getById('mockDAL').data.facetDescriptions.length;
+                    var expected = store.getById('mockDAL').data.facetDescriptions.length;
 
                     expect(facets.add.callCount).toBe(expected);
                 });
 
                 describe('Results Facet subview', function () {
-                    var myFacet, facetFixture, store, server, errorRaised = false, origErrorHandler;
+                    var myFacet, facetFixture, searchStore, server, errorRaised = false, origErrorHandler;
                     beforeEach(function () {
 
                         origErrorHandler = Ext.Error.handle;
@@ -344,19 +296,18 @@ describe('Search Results', function () {
 
                         facetFixture = Ext.clone(ThetusTestHelpers.Fixtures.FacetModels);
 
-                        // Set up the store first as it is autovivified by our main view
-                        store = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.SearchResults', { autoLoad: false });
+                        searchStore = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.SearchResults', { autoLoad: false });
 
                         // now set up server to get store data
                         server = new ThetusTestHelpers.FakeServer(sinon);
 
                         var readMethod = 'POST',
-                            testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(store.getProxy(), 'read', readMethod);
+                            testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(searchStore.getProxy(), 'read', readMethod);
 
                         server.respondWith(readMethod, testUrl, fixtures.searchResults);
 
-                        // load the store now (should trigger event to render the view)
-                        store.load();
+
+                        searchStore.load();
 
                         server.respond({
                             errorOnInvalidRequest: true
@@ -366,7 +317,7 @@ describe('Search Results', function () {
                     afterEach(function () {
                         myFacet = null;
                         facetFixture = null;
-                        store = null;
+                        searchStore = null;
                         server = null;
                         origErrorHandler = null;
                         errorRaised = false;
@@ -387,7 +338,7 @@ describe('Search Results', function () {
 
                             myFacet = Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacet', {
                                 model: facetFixture.stringFacet,
-                                set: {id: 'mockDAL', store: store}
+                                set: {id: 'mockDAL', store: searchStore}
                             });
 
                             expect(myFacet.queryById('facets_producer').queryById('stringFacet')).toBeTruthy();
@@ -397,7 +348,7 @@ describe('Search Results', function () {
 
                             myFacet = Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacet', {
                                 model: facetFixture.unknownFacet,
-                                set: {id: 'mockDAL', store: store}
+                                set: {id: 'mockDAL', store: searchStore}
                             });
 
                             expect(errorRaised).toBeTruthy();
@@ -409,7 +360,7 @@ describe('Search Results', function () {
                         it('should add a checkbox for each facetValue', function () {
                             myFacet = Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacet', {
                                 model: facetFixture.stringFacet,
-                                set: {id: 'mockDAL', store: store}
+                                set: {id: 'mockDAL', store: searchStore}
                             });
                             spyOn(myFacet.queryById('facets_producer').queryById('stringFacet'), 'add');
 
@@ -421,37 +372,18 @@ describe('Search Results', function () {
 
                     describe('onFacetFilterChange', function()  {
 
-                        var dalStore, server, myFacet, myCheckbox;
+                        var server, myFacet, myCheckbox;
 
                         beforeEach(function()   {
-                            /*
-                             sources store load
-                             */
-                            dalStore = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.DalSources', { autoLoad: false });
-
-                            server = new ThetusTestHelpers.FakeServer(sinon);
-
-                            var readMethod = 'GET';
-                            var testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(dalStore.getProxy(), 'read', readMethod);
-
-                            server.respondWith(readMethod, testUrl, dalFixtures.allDals);
-
-                            // load the store now (should trigger event to render the view)
-                            dalStore.load();
-
-                            server.respond({
-                                errorOnInvalidRequest: true
-                            });
 
                             myFacet = Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacet', {
                                 model: facetFixture.stringFacet,
-                                set: {id: 'mockDAL', store: store},
-                                dal: dalStore.getById('mockDAL')
+                                set: {id: 'mockDAL', store: searchStore},
+                                dal: store.getById('mockDAL')
                             });
                         });
 
                         afterEach(function()    {
-                            dalStore = null;
                             server = null;
                             myFacet = null;
                             myCheckbox = null;
@@ -522,45 +454,29 @@ describe('Search Results', function () {
 
                     describe('onDateRangeChange', function()  {
 
-                        var dalStore, server, myFacet, myRadio;
+                        var server, myFacet, myRadio;
 
                         beforeEach(function()   {
-                            /*
-                             sources store load
-                             */
-                            dalStore = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.DalSources', { autoLoad: false });
 
-                            server = new ThetusTestHelpers.FakeServer(sinon);
-
-                            var readMethod = 'GET';
-                            var testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(dalStore.getProxy(), 'read', readMethod);
-
-                            server.respondWith(readMethod, testUrl, dalFixtures.allDals);
-
-                            // load the store now (should trigger event to render the view)
-                            dalStore.load();
-
-                            server.respond({
-                                errorOnInvalidRequest: true
-                            });
 
                             myFacet = Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacet', {
                                 model: facetFixture.dateFacet,
                                 set: {id: 'mockDAL', store: store},
-                                dal: dalStore.getById('mockDAL')
+                                dal: store.getById('mockDAL')
                             });
                         });
 
                         afterEach(function()    {
-                            dalStore = null;
                             server = null;
                             myFacet = null;
                             myRadio = null;
                         });
 
-                        it('should create start and end dates correctly', function () {
+                        it('should create start date and end date correctly', function () {
 
-                            myRadio = myFacet.queryById('facets_published-date').queryById('dateFacet').items.getAt(1);
+                            myRadio = myFacet.queryById('facets_published-date').queryById('dateFacet');
+
+                            myRadio.items.items[1].setValue(true);  // one year
 
                             var endDate = Ext.Date.format(new Date(), 'c\\Z');
                             var startDate = Ext.Date.format(Ext.Date.subtract(new Date(), Ext.Date.YEAR, 1), 'c\\Z');
@@ -600,24 +516,6 @@ describe('Search Results', function () {
 
                     view = searchComponent.down('#resultsdals');
 
-                    // Set up the store first as it is autovivified by our main view
-                    store = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.DalSources', { autoLoad: false });
-
-                    // now set up server to get store data
-                    server = new ThetusTestHelpers.FakeServer(sinon);
-
-                    var readMethod = 'GET',
-                        testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(store.getProxy(), 'read', readMethod);
-
-                    server.respondWith(readMethod, testUrl, dalFixtures.allDals);
-
-                    // load the store now (should trigger event to render the view)
-                    store.load();
-
-                    server.respond({
-                        errorOnInvalidRequest: true
-                    });
-
                     view.store = store;
 
                     dalsView.store = store;
@@ -635,7 +533,6 @@ describe('Search Results', function () {
                     server.restore();
 
                     server = null;
-                    store = null;
                 });
 
                 it('should select a success indicator if passed a "true" value', function () {
@@ -744,7 +641,6 @@ describe('Search Results', function () {
 
             sources = searchComponent.down('#resultsdals');
 
-            // Set up the store first as it is autovivified by our main view
             store = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.DalSources', {autoLoad: false});
 
             // now set up server to get store data
@@ -755,7 +651,6 @@ describe('Search Results', function () {
 
             server.respondWith(readMethod, testUrl, dalFixtures.allDals);
 
-            // load the store now (should trigger event to render the view)
             store.load();
 
             sources.store = store;
@@ -793,26 +688,6 @@ describe('Search Results', function () {
             var dalItem;
 
             beforeEach(function () {
-
-                // Set up the store first as it is autovivified by our main view
-                store = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.DalSources', { autoLoad: false });
-
-                // now set up server to get store data
-                server = new ThetusTestHelpers.FakeServer(sinon);
-
-                var readMethod = 'GET',
-                    testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(store.getProxy(), 'read', readMethod);
-
-                server.respondWith(readMethod, testUrl, dalFixtures.allDals);
-
-                // load the store now (should trigger event to render the view)
-                store.load();
-
-                sources.store = store;
-
-                server.respond({
-                    errorOnInvalidRequest: true
-                });
 
                 searchComponent.down('#searchdals').store = store;
                 searchComponent.down('#searchdals').createDalPanels();
@@ -876,25 +751,6 @@ describe('Search Results', function () {
             var dalItem, resultsPanel;
 
             beforeEach(function () {
-                // Set up the store first as it is autovivified by our main view
-                store = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.DalSources', { autoLoad: false });
-
-                // now set up server to get store data
-                server = new ThetusTestHelpers.FakeServer(sinon);
-
-                var readMethod = 'GET',
-                    testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(store.getProxy(), 'read', readMethod);
-
-                server.respondWith(readMethod, testUrl, dalFixtures.allDals);
-
-                // load the store now (should trigger event to render the view)
-                store.load();
-
-                sources.store = store;
-
-                server.respond({
-                    errorOnInvalidRequest: true
-                });
 
                 searchComponent.down('#searchdals').store = store;
                 searchComponent.down('#searchdals').createDalPanels();

@@ -18,9 +18,13 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
 
     title: 'Search Sources',
     region: 'west',
-    width: 175,
-    minWidth: 200,
-    maxWidth: 250,
+
+    /*
+    NOTE: to be replaced with a class attribute I'm sure - this just
+    here to get the panel to display for development.
+     */
+    width: 220,
+
     layout: 'vbox',
     border: false,
     autoScroll: true,
@@ -34,20 +38,18 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
     initComponent: function () {
         this.mixins.storeable.initStore.call(this);
         this.callParent(arguments);
-        Savanna.controller.Factory.getController('Savanna.search.controller.ResultsComponent');
-    },
-
-    onStoreLoad: function () {
-
     },
 
     createDalPanels: function () {
-        var dals = this.findParentByType('search_searchcomponent').down('#searchdals');
 
+        var searchPanelDals = this.findParentByType('search_searchcomponent').down('#searchdals'); // the dal sources in search options
 
+        /*
+        add a corresponding dal source here for each dal selected in search options
+         */
         this.store.each(function (record) {
             var dalId = record.data.id,
-                checked = dals.queryById(dalId).query('checkbox')[0].getValue(),
+                checked = searchPanelDals.queryById(dalId).query('checkbox')[0].getValue(),
                 myPanel;
             if (checked) {
                 myPanel = this.createDalPanel(record);
@@ -55,6 +57,9 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
             }
         }, this);
 
+        /*
+        create the facets panel that sits below the DALs
+         */
         var facetPanel = this.createFacetsTabPanel();
         this.add(facetPanel);
     },
@@ -68,24 +73,30 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
 
     createFacetsTabPanel: function (recreate) {
 
-        var facetTabs;
+        var facetTabs;  // tabpanel - thanks Ted!
+
         if(this.queryById('resultsfacets') === null || recreate) {
             facetTabs = Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacets', {
                 itemId: 'resultsfacets'
             });
+
+            /*
+            make tabs with no... tabs.
+             */
             facetTabs.tabBar.hide();
             facetTabs.componentLayout.childrenChanged = true;
             facetTabs.doComponentLayout();
+
         }   else    {
             facetTabs = this.queryById('resultsfacets');
         }
 
-        var dals = this.findParentByType('search_searchcomponent').down('#searchdals');
+        var searchPanelDals = this.findParentByType('search_searchcomponent').down('#searchdals');  // the dal sources in search options
 
         this.store.each(function (record) {
 
             var dalId = record.data.id,
-                checked = dals.queryById(dalId).query('checkbox')[0].getValue();
+                checked = searchPanelDals.queryById(dalId).query('checkbox')[0].getValue();
 
             var exists = (facetTabs.queryById('tab_' + record.data.id) !== null);
             if (checked) {
@@ -124,6 +135,11 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
 
         Ext.each(this.findParentByType('search_resultscomponent').allResultSets, function (resultset) {
             if (descriptions.length > 0) {
+                /*
+                loop through the facetDescriptions for each set of results to determine which facets
+                should be rendered when the user selects that DAL's results, and add them to the
+                corresponding tab in the facets tabpanel
+                 */
                 Ext.each(descriptions, function (facet) {
                     if(facets.queryById('facet_' + dalRecord.data.id + '_' + facet.facetId) === null)   {
                         var facetElement = me.createFacet(facet, resultset, dalRecord);
@@ -144,6 +160,11 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
     },
 
     updateDalStatus: function (dalId, status) {
+
+        /*
+        set the status icon - pending, success or fail - as well as the text,
+        which is the display name and number of results returned
+         */
         var myDal = this.queryById(dalId);
 
         var styleStatus = {
@@ -165,8 +186,9 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
                 }
 
                 /*
-                 got a nasty bug going on here - the first DAL element will not visually refresh it's text value or icon.
-                 I have tried every form of update and layout method I can find/think of to correct it, no luck yet
+                 nasty bug here - the first DAL element not visually refreshing it's text value or icon.
+                 I have tried every form of update and layout method I can find/think of to correct it, no luck yet.
+                 Assistance appreciated, if anyone has any insight...
                  */
 
                 myDal.down('#dalName').setText(me.store.getById(dalId).data.displayName + ' ' + '(' + count + ')');

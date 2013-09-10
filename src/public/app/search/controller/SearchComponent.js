@@ -231,9 +231,16 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                  */
                 if(source.data.facetFilterCriteria.length)  {
                     searchObj.set('facetFilterCriteria', source.data.facetFilterCriteria);
-                }  else {
-                    searchObj.set('facetFilterCriteria', null);
                 }
+
+                /*
+                 set the date ranges, if any
+                 */
+                if(source.data.dateTimeRanges.length)  {
+                    console.log(source.data.dateTimeRanges);
+                    //searchObj.set('dateTimeRanges', source.data.dateTimeRanges);
+                }
+
                 /*
                 Determine the pageSize for the stores.
                  */

@@ -67,6 +67,10 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
                 xtype:'text',
                 itemId: 'dalName',
                 height:20,
+                /*
+                 NOTE: to be replaced with a class attribute I'm sure - this just
+                 here to get the panel to display for development.
+                 */
                 width:'65%'
             },
             {

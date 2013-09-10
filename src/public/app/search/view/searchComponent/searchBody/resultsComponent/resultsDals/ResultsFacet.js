@@ -29,6 +29,11 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
         this.title = this.model.displayValue;
         this.items = this.buildFacetOptions();
         this.callParent(arguments);
+
+        /*
+        DATE facetDataTypes don't need this step because they're a static set of 6 options...
+        not ideal - the options would be nice to get dynamically from the services side
+         */
         if (this.model.facetDataType === 'STRING') {
             this.buildFacetFilterGroup();
         }
@@ -41,7 +46,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
         switch (this.model.facetDataType) {
 
             case 'DATE' :
-
+                var facetID = this.model.facetId;
                 content = [
                     {
                         xtype: 'form',
@@ -54,12 +59,12 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
                                 columns: 1,
                                 vertical: true,
                                 items: [
-                                    { boxLabel: 'Any Time', name: this.model.facetId, inputValue: 'all', checked: true },
-                                    { boxLabel: 'Past 24 Hours', name: this.model.facetId, inputValue: 'past_year'},
-                                    { boxLabel: 'Past Week', name: this.model.facetId, inputValue: 'past_week' },
-                                    { boxLabel: 'Past Month', name: this.model.facetId, inputValue: 'past_month' },
-                                    { boxLabel: 'Past Year', name: this.model.facetId, inputValue: 'past_year' },
-                                    { boxLabel: 'Custom Range', name: this.model.facetId, inputValue: 'custom' }
+                                    { boxLabel: 'Any Time', name: facetID, inputValue: 'all', checked: true },
+                                    { boxLabel: 'Past 24 Hours', name: facetID, inputValue: 'past_year'},
+                                    { boxLabel: 'Past Week', name: facetID, inputValue: 'past_week' },
+                                    { boxLabel: 'Past Month', name: facetID, inputValue: 'past_month' },
+                                    { boxLabel: 'Past Year', name: facetID, inputValue: 'past_year' },
+                                    { boxLabel: 'Custom Range', name: facetID, inputValue: 'custom' }
                                 ],
                                 listeners: {
                                     'change': Ext.bind(this.onDateRangeChange, this)
@@ -138,12 +143,12 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
 
         var now = new Date(),
             startDate,
-            rangeName = btn.inputValue,
-            fieldName = 'published_date',
+            fieldName = btn.ownerCt.itemId.replace('facets_', ''),
+            rangeName = btn.lastValue[fieldName],
             endDate = Ext.Date.format(new Date(), 'c\\Z'), //default
             me = this;
 
-        switch (btn.inputValue) {
+        switch (rangeName) {
             case 'any'  :
                 startDate = Ext.Date.format(new Date(0), 'c\\Z');
                 break;
@@ -165,9 +170,13 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
                 break;
 
             case 'custom'   :
-                // not handled yet
+                // TODO: not handled yet
                 break;
 
+            default:
+                Ext.Error.raise({
+                    msg: 'Unknown value: ' + rangeName
+                });
         }
 
         if (!me.dal.data.dateTimeRanges.length) {

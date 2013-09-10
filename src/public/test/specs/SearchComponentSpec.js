@@ -554,12 +554,7 @@ describe('Search Component', function () {
 
     describe('SearchResults Store', function () {
 
-
         describe('retrieving results data', function () {
-
-            beforeEach(function () {
-
-            });
 
             afterEach(function () {
                 if (server) {
@@ -591,43 +586,42 @@ describe('Search Component', function () {
 
     describe('SearchHistory Store', function () {
 
+        var historyFixture,
+            readMethod,
+            historyStore,
+            testUrl;
+
+        beforeEach(function () {
+
+            historyFixture = Ext.clone(ThetusTestHelpers.Fixtures.HistoryResults);
+
+            readMethod = 'GET';
+
+            historyStore = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.SearchHistory');
+
+            testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(historyStore.getProxy(), 'read', readMethod);
+
+            server.respondWith(readMethod, testUrl, historyFixture.historyResults);
+
+            historyStore.load();
+
+            server.respond({
+                errorOnInvalidRequest: true
+            });
+        });
+
+        afterEach(function () {
+
+            if (server) {
+                server.restore();
+                server = null;
+            }
+
+            historyFixture = null;
+            historyStore = null;
+        });
 
         describe('retrieving history data', function () {
-
-            var historyFixture,
-                readMethod,
-                historyStore,
-                testUrl;
-
-            beforeEach(function () {
-
-                historyFixture = Ext.clone(ThetusTestHelpers.Fixtures.HistoryResults);
-
-                readMethod = 'GET';
-
-                historyStore = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.SearchHistory');
-
-                testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(historyStore.getProxy(), 'read', readMethod);
-
-                server.respondWith(readMethod, testUrl, historyFixture.historyResults);
-
-                historyStore.load();
-
-                server.respond({
-                    errorOnInvalidRequest: true
-                });
-            });
-
-            afterEach(function () {
-
-                if (server) {
-                    server.restore();
-                    server = null;
-                }
-
-                historyFixture = null;
-                historyStore = null;
-            });
 
             it('should get same number of records as in our fixture', function () {
                 expect(historyStore.getCount()).toBe(historyFixture.historyResults.length);
