@@ -34,7 +34,7 @@ Ext.define('Savanna.view.SavannaDesktop', {
                     height: '100%',
                     flex: 2,
                     items: [
-
+                        //TODO - This seems to break flexpaper if it is not the first item
                         {
                             title: 'Document',
                             xtype: 'flexpaper_flexpapercomponent',
