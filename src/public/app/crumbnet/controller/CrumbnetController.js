@@ -39,83 +39,6 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
             },
 
 
-            /*            'go-graph crumbnet_part_toolbar [type="save"]': {
-                            click: this.handleSave
-                        },
-                        'go-graph crumbnet_part_toolbar [type="saveAs"]': {
-                            click: this.handleSave
-                        },
-                        'go-graph crumbnet_part_toolbar [type="close"]': {
-                            click: this.handleClose
-                        },
-                        'go-graph crumbnet_part_toolbar [type="export"]': {
-                            click: this.handleExport
-                        },
-                        'go-graph crumbnet_part_toolbar [type="print"]': {
-                            click: this.handlePrint
-                        },
-                        'go-graph crumbnet_part_toolbar [type="undo"]': {
-                            click: this.handleUndo
-                        },
-                        'go-graph crumbnet_part_toolbar [type="redo"]': {
-                            click: this.handleRedo
-                        },
-                        'go-graph crumbnet_part_toolbar [type="zoomIn"]': {
-                            click: this.zoomIn
-                        },
-                        'go-graph crumbnet_part_toolbar [type="zoomOut"]': {
-                            click: this.zoomOut
-                        },
-                        'go-graph crumbnet_part_toolbar [type="zoomToFit"]': {
-                            click: this.zoomToFit
-                        },
-                        'go-graph crumbnet_part_toolbar [type="layoutMenu"] menu':{
-                            click: this.handleLayoutMenuClick
-                        },
-                        'go-graph crumbnet_part_toolbar [type="toggleGrid"]': {
-                            click: this.toggleGrid
-                        },
-                        'go-graph crumbnet_part_toolbar [type="toggleOverview"]': {
-                            click: this.toggleOverview
-                        },
-                        'go-graph crumbnet_part_toolbar [type="toggleLinkType"]': {
-                            click: this.toggleLinkType
-                        },
-                        'go-graph crumbnet_part_toolbar [type="toggleNodeType"]': {
-                            click: this.toggleNodeType
-                        },
-                        'go-graph crumbnet_part_toolbar [type="toggleNodeDescriptions"]': {
-                            click: this.toggleNodeDescriptions
-                        },
-                        'go-graph crumbnet_part_toolbar [type="snapToGrid"]': {
-                            click: this.handleSnapToGrid
-                        },
-                        'go-graph crumbnet_part_toolbar [type="gridSettings"]': {
-                            click: this.handleGridSettings
-                        },
-                        'go-graph crumbnet_part_toolbar [type="expandAllNodes"]': {
-                            click: this.handleExpandAllNodes
-                         },
-                        'go-graph crumbnet_part_toolbar [type="alignRight"]': {
-                            click: this.alignNodes
-                         },
-                        'go-graph crumbnet_part_toolbar [type="alignLeft"]': {
-                            click: this.alignNodes
-                        },
-                        'go-graph crumbnet_part_toolbar [type="alignTop"]': {
-                            click: this.alignNodes
-                        },
-                        'go-graph crumbnet_part_toolbar [type="alignBottom"]': {
-                            click: this.alignNodes
-                        },
-                        'go-graph crumbnet_part_toolbar [type="alignCenter"]': {
-                            click: this.alignNodes
-                        },*/
-/*            'go-graph crumbnet_part_toolbar [type=""]': {
-                click: this.
-            },*/
-
-
 
             // TODO: these should be going away....
             'go-graph button': {
@@ -277,7 +200,6 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
     },
 
     handleZoomToFit: function(button) {
-        console.log(button);
         var diagram = this.getDiagramForComponent(button);
         diagram.zoomToFit();
     },
@@ -409,6 +331,65 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
         this.showTODOmodal('Implement "handleDelete"');
     },
 
+    handleAlignmentSubmenu: function(menu, item) {
+        var diagram = this.getDiagramForComponent(menu),
+            align = null;
+
+        switch (item.type) {
+            case 'right':
+                align = go.Spot.Right;
+                break;
+            case 'left':
+                align = go.Spot.Left;
+                break;
+            case 'top':
+                align = go.Spot.Top;
+                break;
+            case 'bottom':
+                align = go.Spot.Bottom;
+                break;
+            case 'center':
+                align = go.Spot.Center;
+                break;
+            default:
+                Ext.Error.raise('unknown type (' + item.type + ')');
+                break;
+        }
+
+        if (align) {
+            diagram.startTransaction('ChangeAlignment');
+            diagram.contentAlignment = align;
+            diagram.contentAlignment = go.Spot.Default;
+            diagram.commitTransaction('ChangeAlignment');
+        }
+    },
+
+    handleLinkStyleSubmenu: function(menu, item) {
+        var linkTemplateNames = Savanna.crumbnet.utils.ViewTemplates.getLinkTemplateNames();
+
+        if (Ext.Array.contains(linkTemplateNames, item.type)) {
+            var diagram = this.getDiagramForComponent(menu);
+            var selectedNodeSet = diagram.selection;
+            var iterator = selectedNodeSet.iterator;
+
+            // TODO: some interaction details to iron out
+            //        1) if no links are selected, should all link styles be changed?
+            //        2) if there are nodes selected, should anything change?
+            //        3) if nothing will happen, does anything need to be communicated to the user?
+            diagram.startTransaction('changeLinkStyle');
+            while (iterator.next()) {
+                if (iterator.value instanceof go.Link) {
+                    diagram.model.setDataProperty(iterator.value, 'category', item.type);
+                }
+            }
+            // TODO: should this be rollbackTransaction if nothing is changed?
+            diagram.commitTransaction('changeLinkStyle');
+        }
+        else {
+            Ext.Error.raise('Unknown link style "' + item.type + '"');
+        }
+    },
+
     // HERE'S WHERE THE NEXT ONE GOES...
 
 
@@ -485,65 +466,6 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
                 // NOTE: there is no "default" because we get clicks for other "buttons" (such as the dropdown menus)
                 //       which we do not need to handle
                 break;
-        }
-    },
-
-    handleAlignmentMenuClick: function(menu, item) {
-        var diagram = this.getDiagramForComponent(menu),
-            align = null;
-
-        switch (item.type) {
-            case 'right':
-                align = go.Spot.Right;
-                break;
-            case 'left':
-                align = go.Spot.Left;
-                break;
-            case 'top':
-                align = go.Spot.Top;
-                break;
-            case 'bottom':
-                align = go.Spot.Bottom;
-                break;
-            case 'center':
-                align = go.Spot.Center;
-                break;
-            default:
-                Ext.Error.raise('unknown type (' + item.type + ')');
-                break;
-        }
-
-        if (align) {
-            diagram.startTransaction('ChangeAlignment');
-            diagram.contentAlignment = align;
-            diagram.contentAlignment = go.Spot.Default;
-            diagram.commitTransaction('ChangeAlignment');
-        }
-    },
-
-    handleLinkStyleMenuClick: function(menu, item) {
-        var linkTemplateNames = Savanna.crumbnet.utils.ViewTemplates.getLinkTemplateNames();
-
-        if (Ext.Array.contains(linkTemplateNames, item.type)) {
-            var diagram = this.getDiagramForMenu(menu);
-            var selectedNodeSet = diagram.selection;
-            var iterator = selectedNodeSet.iterator;
-
-            // TODO: some interaction details to iron out
-            //        1) if no links are selected, should all link styles be changed?
-            //        2) if there are nodes selected, should anything change?
-            //        3) if nothing will happen, does anything need to be communicated to the user?
-            diagram.startTransaction('changeLinkStyle');
-            while (iterator.next()) {
-                if (iterator.value instanceof go.Link) {
-                    diagram.model.setDataProperty(iterator.value, 'category', item.type);
-                }
-            }
-            // TODO: should this be rollbackTransaction if nothing is changed?
-            diagram.commitTransaction('changeLinkStyle');
-        }
-        else {
-            Ext.Error.raise('Unknown link style "' + item.type + '"');
         }
     },
 

@@ -41,10 +41,6 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
 
     buildMainDropdown: function() {
         var includeLabel = true;
-        var linkTemplateNames = Savanna.crumbnet.utils.ViewTemplates.getLinkTemplateNames();
-        var linkStyleMenuChoices = Ext.Array.map(linkTemplateNames, function maplLinkTemplateNames(item) {
-            return { type: item, text: item };
-        });
         var linkRelationshipTypes = Savanna.crumbnet.utils.ViewTemplates.linkRelationshipTypes;
         var linkTypeMenuChoices = Ext.Array.map(linkRelationshipTypes, function mapLinkRelationshipTypes(item) {
             return { type: item, text: item };
@@ -75,13 +71,6 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
             {
                 text: 'Object',
                 menu: objectMenuItems
-            },
-            {
-                itemId: 'linkStyleMenu',
-                text: 'Link Style',
-                menu: {
-                    items: linkStyleMenuChoices
-                }
             },
             {
                 itemId: 'linkTypeMenu',
@@ -245,12 +234,29 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
     // "Format" menu
 
     buildFormatMenuItems: function(includeLabel) {
-        var formatMenuItems = [
-            { type: 'alignRight', text: 'Align Right' },
-            { type: 'alignLeft', text: 'Align Left' },
-            { type: 'alignTop', text: 'Align Top' },
-            { type: 'alignBottom', text: 'Align Bottom' },
-            { type: 'alignCenter', text: 'Align Center' }
+        var linkTemplateNames = Savanna.crumbnet.utils.ViewTemplates.getLinkTemplateNames(),
+            linkStyleMenuChoices = Ext.Array.map(linkTemplateNames, function maplLinkTemplateNames(item) {
+            return { type: item, text: item };
+        }),
+            formatMenuItems = [
+                {
+                    type: 'alignment submenu',
+                    text: 'Alignment',
+                    menu: [
+                        { type: 'right', text: 'Align Right' },
+                        { type: 'left', text: 'Align Left' },
+                        { type: 'top', text: 'Align Top' },
+                        { type: 'bottom', text: 'Align Bottom' },
+                        { type: 'center', text: 'Align Center' }
+                    ]
+                },
+                {
+                    type: 'linkStyle submenu',
+                    text: 'Link Style',
+                    menu: {
+                        items: linkStyleMenuChoices
+                    }
+                }
         ];
 
         return formatMenuItems;
