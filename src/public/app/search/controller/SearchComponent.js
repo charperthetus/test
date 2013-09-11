@@ -63,6 +63,9 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             'search_searchcomponent #search_submit': {
                 click: this.doSearch
             },
+            'search_searchcomponent #search_clear': {
+                click: this.clearSearch
+            },
             'search_searchcomponent #advancedsearch_submit': {
                 click: this.doSearch
             },
@@ -132,6 +135,10 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                 resultsDals.queryById(source.data.id).down('#dalStatusIcon').getEl().setStyle(resultsDals.queryById(source.data.id).dalLoadNone);
             }
         });
+    },
+    clearSearch:function(elem)  {
+        var form = elem.findParentByType('search_searchcomponent').down('#search_form');
+        form.queryById('search_terms').setValue('');
     },
 
     handleSearchTermKeyUp: function (field, evt) {
