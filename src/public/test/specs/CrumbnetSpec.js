@@ -161,9 +161,11 @@ describe('Savanna.crumbnet', function() {
                 }
 
                 for (i = 0; i < submenus.length; ++i ) {
+                    /* jshint loopfunc: true */
                     submenus[i].items.each(function(button) {
                         controller.submenuDispatchHandler(submenus[i], button);
                     });
+                    /* jshint loopfunc: false */
                 }
 
                 expect(errors).toBe([]);
