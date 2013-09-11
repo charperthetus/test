@@ -12,7 +12,8 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
     requires: [
         'Ext.XTemplate',
         'Ext.form.Panel',
-        'Ext.form.RadioGroup'
+        'Ext.form.RadioGroup',
+        'Ext.form.field.Date'
     ],
 
     width: '100%',
@@ -31,8 +32,8 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
         this.callParent(arguments);
 
         /*
-        DATE facetDataTypes don't need this step because they're a static set of 6 options...
-        not ideal - the options would be nice to get dynamically from the services side
+         DATE facetDataTypes don't need this step because they're a static set of 6 options...
+         not ideal - the options would be nice to get dynamically from the services side
          */
         if (this.model.facetDataType === 'STRING') {
             this.buildFacetFilterGroup();
@@ -69,13 +70,48 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
                                 listeners: {
                                     'change': Ext.bind(this.onDateRangeChange, this)
                                 }
+                            },
+                            {
+                                xtype: 'form',
+                                itemId:'customDatesPanel',
+                                collapsible: true,
+                                collapsed: true,
+                                titleCollapse: true,
+                                hideCollapseTool: true,
+                                header:false,
+                                width:'100%',
+                                items: [{
+                                    xtype: 'datefield',
+                                    fieldLabel: 'From',
+                                    labelWidth:50,
+                                    width:185,
+                                    name: 'from_date',
+                                    maxValue: new Date(),
+                                    value: new Date('1/1/1971'),
+                                    editable:false,
+                                    format: 'd M Y'
+                                }, {
+                                    xtype: 'datefield',
+                                    fieldLabel: 'To',
+                                    labelWidth:50,
+                                    width:185,
+                                    name: 'to_date',
+                                    maxValue: new Date(),
+                                    value: new Date(),  // defaults to today
+                                    editable:false,
+                                    format: 'd M Y'
+                                }]
+
                             }
                         ]
                     }
-                ];
+                ]
+                ;
                 break;
 
-            case 'STRING' :
+            case
+            'STRING'
+            :
 
                 content = [
                     {
@@ -129,9 +165,9 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
 
         } else {
             /*
-            this appears to be the case with LinkedIn - getting a 'location' facet that does not
-            line up with facetValueSummaries in the DAL sources.  May need services to resolve it,
-            will take a closer look before pinging Travis
+             this appears to be the case with LinkedIn - getting a 'location' facet that does not
+             line up with facetValueSummaries in the DAL sources.  May need services to resolve it,
+             will take a closer look before pinging Travis
              */
             Ext.Error.raise({
                 msg: 'Undefined facetValueSummary for supplied facet: ' + facet
@@ -147,7 +183,14 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
             rangeName = btn.lastValue[fieldName],
             format = 'Y-m-d\\TH:i:s.m\\Z',
             endDate = Ext.Date.format(new Date(), format), //default
+            customDates = btn.up('#facets_' + this.model.facetId).queryById('customDatesPanel'),
             me = this;
+
+        if(rangeName === 'custom')   {
+            customDates.expand();
+        }   else    {
+            customDates.collapse();
+        }
 
         switch (rangeName) {
             case 'any'  :
@@ -192,17 +235,17 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
 
         var updateExisting = false;
 
-        if(me.dal.data.dateTimeRanges.length > 0)    {
-            Ext.each(me.dal.data.dateTimeRanges, function(range, index) {
-               if(range.DateFieldName === fieldName)    {
+        if (me.dal.data.dateTimeRanges.length > 0) {
+            Ext.each(me.dal.data.dateTimeRanges, function (range, index) {
+                if (range.DateFieldName === fieldName) {
                     // replace it, do not add another
-                   me.dal.data.dateTimeRanges[index] = newDateRange;
-                   updateExisting = true;
-               }
+                    me.dal.data.dateTimeRanges[index] = newDateRange;
+                    updateExisting = true;
+                }
             });
         }
 
-        if(!updateExisting) {
+        if (!updateExisting) {
             me.dal.data.dateTimeRanges.push(newDateRange);
         }
 
@@ -275,4 +318,5 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
             searchController.doSearch(me);
         }
     }
-});
+})
+;
