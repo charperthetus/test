@@ -12,32 +12,3 @@
         "date": 1375825806863
     }
 ]
-
-{
-"_type": "com.thetus.platforms.savanna.mdks.search.objects.SearchParamVO",
-"contentDataSource": "SolrJdbc",
-"desiredFacets": ["published-date", "ingest-date", "producer", "producer-category", "distributor", "composite", "isf-source-type"],
-"displayLabel": "cat",
-"resultsPerPage": 20,
-"resultsStartIndex": 0,
-"returnLatLonPairs": true,
-"returnResults": true,
-"returnTagCloud": false,
-"searchTargets": [{
-"targetName": "Document",
-"resultsStartIndex": 0
-}],
-"textInputString": "cat",
-"searchPreferencesVOs": [{
-"dalId": "SolrJdbc",
-"sortOrder": "Default"
-}],
-"dateTimeRanges": [
-{
-"Startdate": "2012-08-17T01:29:40.514Z",
-"dateRangeName": "past_year",
-"DateFieldName": "published-date",
-"Enddate": "2013-08-17T01:29:40.514Z"
-}
-]
-}
