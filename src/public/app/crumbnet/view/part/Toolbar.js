@@ -67,11 +67,6 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
             {
                 text: 'Object',
                 menu: objectMenuItems
-            },
-            {
-                itemId: 'nodeColorMenu',
-                text: 'Node Color',
-                menu: { xtype: 'colormenu', itemId: 'nodeColorPicker' }
             }
         ];
     },
@@ -244,13 +239,18 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
                     ]
                 },
                 {
+                    type: 'nodeColor submenu',
+                    text: 'Node Color',
+                    menu: { xtype: 'colormenu', itemId: 'nodeColorPicker' }
+                },
+                {
                     type: 'linkStyle submenu',
                     text: 'Link Style',
                     menu: linkStyleMenuChoices
                 },
                 {
                     type: 'linkType submenu',
-                    text: 'Link Relationship Type',
+                    text: 'Link Type',
                     menu: linkTypeMenuChoices
                 }
         ];
@@ -261,7 +261,12 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
     // "Object" menu
 
     buildObjectMenuItems: function(includeLabel) {
-        var objectMenuItems = [];
+        var objectMenuItems = [
+            { type: 'flag', text: 'Flag' },
+            { type: 'tag', text: 'Tag' },
+            { type: 'link', text: 'Link' },
+            { type: 'comment', text: 'Comment' }
+        ];
 
         return objectMenuItems;
     },

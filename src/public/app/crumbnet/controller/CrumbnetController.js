@@ -34,30 +34,14 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
                 click: this.dispatchHandler
             },
 
+            // set up an event listener for buttons in any "submenu"
             'go-graph crumbnet_part_toolbar [type~=submenu] menu': {
                 click: this.submenuDispatchHandler
             },
 
-
-
-            // TODO: these should be going away....
-            'go-graph button': {
-                click: this.handleGraphToolbarButtonClick
-            },
-            'go-graph #alignmentMenu menu':{
-                click: this.handleAlignmentMenuClick
-            },
-            'go-graph #linkStyleMenu menu': {
-                click: this.handleLinkStyleMenuClick
-            },
-            'go-graph #linkTypeMenu menu': {
-                click: this.handleLinkTypeMenuClick
-            },
             'go-graph #nodeColorPicker': {
                 select: this.handleNodeColorSelect
             },
-            // END these should be going away...
-
             'go-graph #search': {
                 click: this.handleCrumbnetSearch
             },
@@ -411,11 +395,62 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
         }
     },
 
-    // HERE'S WHERE THE NEXT ONE GOES...
-
-
     handleCrumbnetSearch: function(button) {
         this.showTODOmodal('Add functionality to search the crumbnet for "' + button.up('go-graph').down('#crumbnetSearchText').value + '"');
+    },
+
+    handleNodeColorSubmenu: function(picker, selColor){
+        var diagram = this.getDiagramForComponent(picker);
+        var selectionSet = diagram.selection;
+        var iterator = selectionSet.iterator;
+
+        diagram.startTransaction('changeNodeColor');
+
+        while (iterator.next()) {
+            if (iterator.value instanceof go.Node) {
+                diagram.model.setDataProperty(iterator.value.data, 'color', '#' + selColor);
+            }
+        }
+
+        diagram.commitTransaction('changeNodeColor');
+    },
+
+    handleFlag: function(button) {
+        this.showTODOmodal('Implement handleFlag for button.type "' + button.type + '"');
+    },
+
+    handleTag: function(button) {
+        this.showTODOmodal('Implement handleTag for button.type "' + button.type + '"');
+    },
+
+    handleLink: function(button) {
+        this.showTODOmodal('Implement handleLink for button.type "' + button.type + '"');
+    },
+
+    handleComment: function(button) {
+        this.showTODOmodal('Implement handleComment for button.type "' + button.type + '"');
+    },
+
+    handlePaletteSelectionChange: function(e, selPalette){
+        var iterator = e.diagram.selection.iterator;
+
+        //There should only ever be one selected node in the palette
+        iterator.next();
+
+        if (iterator.value){
+            var mainView = selPalette.up('go-graph');
+            var diagram = mainView.down('go-graph_canvas').diagram;
+
+            diagram.toolManager.clickCreatingTool.archetypeNodeData = iterator.value.data;
+
+            var palettes = mainView.query('crumbnet_part_palette-group');
+
+            palettes.forEach(function(paletteView){
+                if (selPalette !== paletteView){
+                    paletteView.palette.clearSelection();
+                }
+            });
+        }
     },
 
     // Helper methods
@@ -449,66 +484,5 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
 
     isSubmenu: function(elem) {
         return elem.parentMenu && elem.parentMenu.parentItem && elem.parentMenu.parentItem.type && elem.parentMenu.parentItem.type.match(/submenu/);
-    },
-
-
-    // TODO: determine if any of these are still needed....
-
-    handlePaletteSelectionChange: function(e, selPalette){
-        var iterator = e.diagram.selection.iterator;
-
-        //There should only ever be one selected node in the palette
-        iterator.next();
-
-        if (iterator.value){
-            var mainView = selPalette.up('go-graph');
-            var diagram = mainView.down('go-graph_canvas').diagram;
-
-            diagram.toolManager.clickCreatingTool.archetypeNodeData = iterator.value.data;
-
-            var palettes = mainView.query('crumbnet_part_palette-group');
-
-            palettes.forEach(function(paletteView){
-                if (selPalette !== paletteView){
-                    paletteView.palette.clearSelection();
-                }
-            });
-        }
-    },
-
-    handleGraphToolbarButtonClick: function(button) {
-        return;
-        var crumbnet = button.up('go-graph');
-        var diagram = crumbnet.down('go-graph_canvas').diagram;
-
-        switch (button.type) {
-            case 'grid':
-                this.toggleGrid(diagram);
-                break;
-            case 'overview':
-                var mainCrumbnetViewport = crumbnet.down('#mainCrumbnetViewport');
-                this.toggleOverview(mainCrumbnetViewport, diagram);
-                break;
-            default:
-                // NOTE: there is no "default" because we get clicks for other "buttons" (such as the dropdown menus)
-                //       which we do not need to handle
-                break;
-        }
-    },
-
-    handleNodeColorSelect: function(picker, selColor){
-        var diagram = this.getDiagramForComponent(picker);
-        var selectionSet = diagram.selection;
-        var iterator = selectionSet.iterator;
-
-        diagram.startTransaction('changeNodeColor');
-
-        while (iterator.next()) {
-            if (iterator.value instanceof go.Node) {
-                diagram.model.setDataProperty(iterator.value.data, 'color', '#' + selColor);
-            }
-        }
-
-        diagram.commitTransaction('changeNodeColor');
     }
 });
