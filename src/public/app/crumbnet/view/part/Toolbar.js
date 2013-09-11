@@ -26,7 +26,7 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
             this.buildUndoMenuItem(),
             this.buildRedoMenuItem(),
             { glyph: 61718, ui: 'flat-toolbar-button', menu: this.buildCutCopyPasteMenu() },
-            { type: 'layoutMenu', glyph: 61775, tooltip: 'Layout', ui: 'flat-toolbar-button', menu: this.buildLayoutMenuItems() },
+            { type: 'layout submenu', glyph: 61775, tooltip: 'Layout', ui: 'flat-toolbar-button', menu: this.buildLayoutMenuItems() },
 
             { xtype: 'tbfill' }, // could also be '->'
 
@@ -186,8 +186,8 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
         viewMenuItems.push(this.buildZoomInItem(includeLabel));
         viewMenuItems.push(this.buildZoomOutItem(includeLabel));
         viewMenuItems.push(this.buildZoomToFitItem(includeLabel));
-        viewMenuItems.push({ type: 'layoutMenu', text: 'Layout', menu: this.buildLayoutMenuItems() });
-        viewMenuItems.push({ type: 'showMenu', text: 'Show', menu: this.buildShowMenuItems() });
+        viewMenuItems.push({ type: 'layout submenu', text: 'Layout', menu: this.buildLayoutMenuItems() });
+        viewMenuItems.push({ text: 'Show', menu: this.buildShowMenuItems() });
 
         return viewMenuItems;
     },

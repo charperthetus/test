@@ -21,94 +21,105 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
         }
     ],
 
+    TOOLBAR_BUTTON_QUERY: 'crumbnet_part_toolbar [type]:not([type~=submenu])',
+
     init: function() {
         this.control({
             'go-graph_canvas': {
                 afterrender: this.setupImageDrop
             },
-            'go-graph crumbnet_part_toolbar [type="save"]': {
-                click: this.handleSave
+
+            // set up an event listener for any toolbar element with a "type" that does not contain "submenu"
+            'go-graph crumbnet_part_toolbar [type]:not([type~=submenu])': {
+                click: this.dispatchHandler
             },
-            'go-graph crumbnet_part_toolbar [type="saveAs"]': {
-                click: this.handleSave
+
+            'go-graph crumbnet_part_toolbar [type~=submenu] menu': {
+                click: this.submenuDispatchHandler
             },
-            'go-graph crumbnet_part_toolbar [type="close"]': {
-                click: this.handleClose
-            },
-            'go-graph crumbnet_part_toolbar [type="export"]': {
-                click: this.handleExport
-            },
-            'go-graph crumbnet_part_toolbar [type="print"]': {
-                click: this.handlePrint
-            },
-            'go-graph crumbnet_part_toolbar [type="undo"]': {
-                click: this.handleUndo
-            },
-            'go-graph crumbnet_part_toolbar [type="redo"]': {
-                click: this.handleRedo
-            },
-            'go-graph crumbnet_part_toolbar [type="zoomIn"]': {
-                click: this.zoomIn
-            },
-            'go-graph crumbnet_part_toolbar [type="zoomOut"]': {
-                click: this.zoomOut
-            },
-            'go-graph crumbnet_part_toolbar [type="zoomToFit"]': {
-                click: this.zoomToFit
-            },
-            'go-graph crumbnet_part_toolbar [type="layoutMenu"] menu':{
-                click: this.handleLayoutMenuClick
-            },
-            'go-graph crumbnet_part_toolbar [type="toggleGrid"]': {
-                click: this.toggleGrid
-            },
-            'go-graph crumbnet_part_toolbar [type="toggleOverview"]': {
-                click: this.toggleOverview
-            },
-            'go-graph crumbnet_part_toolbar [type="toggleLinkType"]': {
-                click: this.toggleLinkType
-            },
-            'go-graph crumbnet_part_toolbar [type="toggleNodeType"]': {
-                click: this.toggleNodeType
-            },
-            'go-graph crumbnet_part_toolbar [type="toggleNodeDescriptions"]': {
-                click: this.toggleNodeDescriptions
-            },
-            'go-graph crumbnet_part_toolbar [type="snapToGrid"]': {
-                click: this.handleSnapToGrid
-            },
-            'go-graph crumbnet_part_toolbar [type="gridSettings"]': {
-                click: this.handleGridSettings
-            },
-            'go-graph crumbnet_part_toolbar [type="expandAllNodes"]': {
-                click: this.handleExpandAllNodes
-             },
-            'go-graph crumbnet_part_toolbar [type="alignRight"]': {
-                click: this.alignNodes
-             },
-            'go-graph crumbnet_part_toolbar [type="alignLeft"]': {
-                click: this.alignNodes
-            },
-            'go-graph crumbnet_part_toolbar [type="alignTop"]': {
-                click: this.alignNodes
-            },
-            'go-graph crumbnet_part_toolbar [type="alignBottom"]': {
-                click: this.alignNodes
-            },
-            'go-graph crumbnet_part_toolbar [type="alignCenter"]': {
-                click: this.alignNodes
-            },
+
+
+            /*            'go-graph crumbnet_part_toolbar [type="save"]': {
+                            click: this.handleSave
+                        },
+                        'go-graph crumbnet_part_toolbar [type="saveAs"]': {
+                            click: this.handleSave
+                        },
+                        'go-graph crumbnet_part_toolbar [type="close"]': {
+                            click: this.handleClose
+                        },
+                        'go-graph crumbnet_part_toolbar [type="export"]': {
+                            click: this.handleExport
+                        },
+                        'go-graph crumbnet_part_toolbar [type="print"]': {
+                            click: this.handlePrint
+                        },
+                        'go-graph crumbnet_part_toolbar [type="undo"]': {
+                            click: this.handleUndo
+                        },
+                        'go-graph crumbnet_part_toolbar [type="redo"]': {
+                            click: this.handleRedo
+                        },
+                        'go-graph crumbnet_part_toolbar [type="zoomIn"]': {
+                            click: this.zoomIn
+                        },
+                        'go-graph crumbnet_part_toolbar [type="zoomOut"]': {
+                            click: this.zoomOut
+                        },
+                        'go-graph crumbnet_part_toolbar [type="zoomToFit"]': {
+                            click: this.zoomToFit
+                        },
+                        'go-graph crumbnet_part_toolbar [type="layoutMenu"] menu':{
+                            click: this.handleLayoutMenuClick
+                        },
+                        'go-graph crumbnet_part_toolbar [type="toggleGrid"]': {
+                            click: this.toggleGrid
+                        },
+                        'go-graph crumbnet_part_toolbar [type="toggleOverview"]': {
+                            click: this.toggleOverview
+                        },
+                        'go-graph crumbnet_part_toolbar [type="toggleLinkType"]': {
+                            click: this.toggleLinkType
+                        },
+                        'go-graph crumbnet_part_toolbar [type="toggleNodeType"]': {
+                            click: this.toggleNodeType
+                        },
+                        'go-graph crumbnet_part_toolbar [type="toggleNodeDescriptions"]': {
+                            click: this.toggleNodeDescriptions
+                        },
+                        'go-graph crumbnet_part_toolbar [type="snapToGrid"]': {
+                            click: this.handleSnapToGrid
+                        },
+                        'go-graph crumbnet_part_toolbar [type="gridSettings"]': {
+                            click: this.handleGridSettings
+                        },
+                        'go-graph crumbnet_part_toolbar [type="expandAllNodes"]': {
+                            click: this.handleExpandAllNodes
+                         },
+                        'go-graph crumbnet_part_toolbar [type="alignRight"]': {
+                            click: this.alignNodes
+                         },
+                        'go-graph crumbnet_part_toolbar [type="alignLeft"]': {
+                            click: this.alignNodes
+                        },
+                        'go-graph crumbnet_part_toolbar [type="alignTop"]': {
+                            click: this.alignNodes
+                        },
+                        'go-graph crumbnet_part_toolbar [type="alignBottom"]': {
+                            click: this.alignNodes
+                        },
+                        'go-graph crumbnet_part_toolbar [type="alignCenter"]': {
+                            click: this.alignNodes
+                        },*/
 /*            'go-graph crumbnet_part_toolbar [type=""]': {
                 click: this.
             },*/
 
 
 
+            // TODO: these should be going away....
             'go-graph button': {
                 click: this.handleGraphToolbarButtonClick
-            },
-            'go-graph #cutCopyPaste menu': {
-                click: this.handleCutCopyPaste
             },
             'go-graph #alignmentMenu menu':{
                 click: this.handleAlignmentMenuClick
@@ -122,6 +133,8 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
             'go-graph #nodeColorPicker': {
                 select: this.handleNodeColorSelect
             },
+            // END these should be going away...
+
             'go-graph #search': {
                 click: this.handleCrumbnetSearch
             },
@@ -175,22 +188,56 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
         return false;
     },
 
-    handleSave: function(menu) {
-        var msg = '';
 
-        switch (menu.type) {
-            case 'save':
-                msg = 'TODO: Implement "Save"';
-                break;
-            case 'saveAs':
-                msg = 'TODO: Implement "Save As"';
-                break;
-            default:
-                Ext.Error.raise({ msg: 'Unknown "type" (' + menu.type + ') for handleSave' });
-                break;
+    submenuDispatchHandler: function(menu, item, event) {
+        var actualMenu = menu.parentItem,
+            typeParts = Ext.String.splitWords(actualMenu.type),
+            handler = 'handle';
+
+        typeParts.forEach(function(word) {
+            handler += Ext.String.capitalize(word);
+        });
+
+        this._dispatch(handler, menu, item, event);
+    },
+
+    dispatchHandler: function(button, event) {
+        if (this.isSubmenu(button)) {
+            return;
         }
 
-        this.showTODOmodal(msg);
+        var handler = 'handle' + Ext.String.capitalize(button.type);
+
+        if (button.type === 'button') {
+            return; // disregard spurious button "type"
+        }
+
+        this._dispatch(handler, button, event);
+    },
+
+    isSubmenu: function(elem) {
+        return elem.parentMenu && elem.parentMenu.parentItem && elem.parentMenu.parentItem.type && elem.parentMenu.parentItem.type.match(/submenu/);
+    },
+
+    _dispatch: function() {
+        var args = [].splice.call(arguments, 0),
+            handler = args.shift();
+
+        if (typeof this[handler] === 'function') {
+            this[handler].apply(this, args);
+        }
+        else {
+            Ext.Error.raise('Cannot find "' + handler + '" handler');
+        }
+    },
+
+
+    handleSave: function(menu) {
+        this.showTODOmodal('Implement "Save"');
+    },
+
+    handleSaveAs: function() {
+        this.showTODOmodal('Implement "Save As"');
     },
 
     handleClose: function(button, event) {
@@ -219,17 +266,18 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
         diagram.undoManager.redo();
     },
 
-    zoomIn: function(button) {
+    handleZoomIn: function(button) {
         var diagram = this.getDiagramForComponent(button);
         this.zoomTo(diagram, 0.9);
     },
 
-    zoomOut: function(button) {
+    handleZoomOut: function(button) {
         var diagram = this.getDiagramForComponent(button);
         this.zoomTo(diagram, 1.1);
     },
 
-    zoomToFit: function(button) {
+    handleZoomToFit: function(button) {
+        console.log(button);
         var diagram = this.getDiagramForComponent(button);
         diagram.zoomToFit();
     },
@@ -245,7 +293,7 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
         diagram.zoomToRect(viewBounds);
     },
 
-    handleLayoutMenuClick: function(menu, item) {
+    handleLayoutSubmenu: function(menu, item) {
         var diagram = this.getDiagramForComponent(menu),
             layout = null;
 
@@ -277,7 +325,7 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
         }
     },
 
-    toggleGrid: function(button) {
+    handleToggleGrid: function(button) {
         var diagram = this.getDiagramForComponent(button),
             newSetting = !diagram.grid.visible;
 
@@ -289,7 +337,7 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
         diagram.update(); //this is not working - try something else
     },
 
-    toggleOverview: function(button) {
+    handleToggleOverview: function(button) {
         var mainCrumbnetViewport = button.up('go-graph'),
             overview = mainCrumbnetViewport.down('go-graph_overview'),
             diagram = mainCrumbnetViewport.down('go-graph_canvas').diagram;
@@ -304,15 +352,15 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
         }
     },
 
-    toggleLinkType: function(button) {
+    handleToggleLinkType: function(button) {
         this.showTODOmodal('Implement toggle link type');
     },
 
-    toggleNodeType: function(button) {
+    handleToggleNodeType: function(button) {
         this.showTODOmodal('Implement toggle node type');
     },
 
-    toggleNodeDescriptions: function(button) {
+    handleToggleNodeDescriptions: function(button) {
         this.showTODOmodal('Implement toggle node descriptions');
     },
 
@@ -328,10 +376,75 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
         this.showTODOmodal('Implement expand all nodes');
     },
 
-    alignNodes: function(button) {
+    handleAlignNodes: function(button) {
         this.showTODOmodal('Implement alignment for "' + button.type + '"');
     },
 
+    handleCut: function(button) {
+        this.getCommandHandlerForComponent(button).cutSelection();
+    },
+
+    handleCopy: function(button) {
+        this.getCommandHandlerForComponent(button).copySelection();
+    },
+
+    handlePaste: function(button) {
+        var diagram = this.getDiagramForComponent(button),
+            commandHandler = diagram.commandHandler;
+
+        diagram.startTransaction('menuPaste');
+        commandHandler.pasteFromClipboard();
+        diagram.commitTransaction('menuPaste');
+    },
+
+    handleSelectAll: function(button) {
+        this.showTODOmodal('Implement "handleSelectAll"');
+    },
+
+    handleDeselect: function(button) {
+        this.showTODOmodal('Implement "handleDeselect"');
+    },
+
+    handleDelete: function(button) {
+        this.showTODOmodal('Implement "handleDelete"');
+    },
+
+    // HERE'S WHERE THE NEXT ONE GOES...
+
+
+    handleCrumbnetSearch: function(button) {
+        this.showTODOmodal('Add functionality to search the crumbnet for "' + button.up('go-graph').down('#crumbnetSearchText').value + '"');
+    },
+
+    getDiagramForComponent: function(component) {
+        var crumbnet = component.up('go-graph');
+
+        if (crumbnet) {
+            return crumbnet.down('go-graph_canvas').diagram;
+        }
+        else if (component.xtype === 'go-graph_canvas') {
+            return component.diagram;
+        }
+        else {
+            Ext.Error.raise({ msg: 'Unable to retrieve diagram'});
+        }
+    },
+
+    getCommandHandlerForComponent: function(component) {
+        return this.getDiagramForComponent(component).commandHandler;
+    },
+
+    showTODOmodal: function(msg) {
+        Ext.create('Ext.window.Window', {
+            modal: true,
+            width: 500,
+            height: 100,
+            html: 'TODO: ' + msg
+        }).show();
+    },
+
+
+    // TODO: determine if any of these are still needed....
 
     handlePaletteSelectionChange: function(e, selPalette){
         var iterator = e.diagram.selection.iterator;
@@ -356,6 +469,7 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
     },
 
     handleGraphToolbarButtonClick: function(button) {
+        return;
         var crumbnet = button.up('go-graph');
         var diagram = crumbnet.down('go-graph_canvas').diagram;
 
@@ -368,7 +482,6 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
                 this.toggleOverview(mainCrumbnetViewport, diagram);
                 break;
             default:
-                console.log('handleGraphToolbarButtonClick', button.type);
                 // NOTE: there is no "default" because we get clicks for other "buttons" (such as the dropdown menus)
                 //       which we do not need to handle
                 break;
@@ -473,44 +586,5 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
         }
 
         diagram.commitTransaction('changeNodeColor');
-    },
-
-    handleCutCopyPaste: function(menu, item) {
-        var diagram = this.getDiagramForComponent(menu),
-            commandHandler = diagram.commandHandler;
-
-        switch (item.type) {
-            case 'cut':
-                commandHandler.cutSelection();
-                break;
-            case 'copy':
-                commandHandler.copySelection();
-                break;
-            case 'paste':
-                diagram.startTransaction('menuPaste');
-                commandHandler.pasteFromClipboard();
-                diagram.commitTransaction('menuPaste');
-                break;
-            default:
-                Ext.Error.raise({ msg: 'Unknown "type" (' + item.type + ') for cutCopyPaste' });
-                break;
-        }
-    },
-
-    handleCrumbnetSearch: function(button) {
-        this.showTODOmodal('Add functionality to search the crumbnet for "' + button.up('go-graph').down('#crumbnetSearchText').value + '"');
-    },
-
-    getDiagramForComponent: function(component) {
-        return component.up('go-graph').down('go-graph_canvas').diagram;
-    },
-
-    showTODOmodal: function(msg) {
-        Ext.create('Ext.window.Window', {
-            modal: true,
-            width: 500,
-            height: 100,
-            html: 'TODO: ' + msg
-        }).show();
     }
 });
