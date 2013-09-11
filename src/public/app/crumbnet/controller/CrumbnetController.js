@@ -151,20 +151,20 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
         }
     },
 
-    handleSave: function(menu) {
-        this.showTODOmodal('Implement "Save"');
+    handleSave: function(button) {
+        this.showTODOmodal('Implement handleSave for menu.type "' + button.type + '"');
     },
 
-    handleSaveAs: function() {
-        this.showTODOmodal('Implement "Save As"');
+    handleSaveAs: function(button) {
+        this.showTODOmodal('Implement handleSaveAs for button.type "' + button.type + '"');
     },
 
-    handleClose: function(button, event) {
-        this.showTODOmodal('Implement "Close"');
+    handleClose: function(button) {
+        this.showTODOmodal('Implement handleClose for button.type "' + button.type + '"');
     },
 
-    handleExport: function(button, event) {
-        this.showTODOmodal('Implement "Export"');
+    handleExport: function(button) {
+        this.showTODOmodal('Implement handleExport for button.type "' + button.type + '"');
     },
 
     handlePrint: function(button) {
@@ -271,31 +271,31 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
     },
 
     handleToggleLinkType: function(button) {
-        this.showTODOmodal('Implement toggle link type');
+        this.showTODOmodal('Implement handleToggleLinkType for button.type "' + button.type + '"');
     },
 
     handleToggleNodeType: function(button) {
-        this.showTODOmodal('Implement toggle node type');
+        this.showTODOmodal('Implement handleToggleNodeType for button.type "' + button.type + '"');
     },
 
     handleToggleNodeDescriptions: function(button) {
-        this.showTODOmodal('Implement toggle node descriptions');
+        this.showTODOmodal('Implement handleToggleNodeDescriptions for button.type "' + button.type + '"');
     },
 
     handleSnapToGrid: function(button) {
-        this.showTODOmodal('Implement snap to grid');
+        this.showTODOmodal('Implement handleSnapToGrid for button.type "' + button.type + '"');
     },
 
     handleGridSettings: function(button) {
-        this.showTODOmodal('Implement grid settings dialog');
+        this.showTODOmodal('Implement handleGridSettings for button.type "' + button.type + '"');
     },
 
     handleExpandAllNodes: function(button) {
-        this.showTODOmodal('Implement expand all nodes');
+        this.showTODOmodal('Implement handleExpandAllNodes for button.type "' + button.type + '"');
     },
 
     handleAlignNodes: function(button) {
-        this.showTODOmodal('Implement alignment for "' + button.type + '"');
+        this.showTODOmodal('Implement handleAlignNodes for "' + button.type + '"');
     },
 
     handleCut: function(button) {
@@ -316,15 +316,15 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
     },
 
     handleSelectAll: function(button) {
-        this.showTODOmodal('Implement "handleSelectAll"');
+        this.showTODOmodal('Implement handleSelectAll for button.type "' + button.type + '"');
     },
 
     handleDeselect: function(button) {
-        this.showTODOmodal('Implement "handleDeselect"');
+        this.showTODOmodal('Implement handleDeselect for button.type "' + button.type + '"');
     },
 
     handleDelete: function(button) {
-        this.showTODOmodal('Implement "handleDelete"');
+        this.showTODOmodal('Implement handleDelete for button.type "' + button.type + '"');
     },
 
     handleAlignmentSubmenu: function(menu, item) {
