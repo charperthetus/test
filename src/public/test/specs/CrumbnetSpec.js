@@ -989,9 +989,9 @@ describe('Savanna.crumbnet', function() {
             });
 
             it('should create a link template menu using keys from the linkTemplateMap', function() {
-                var linkStyleMenu = view.queryById('linkStyleMenu');
+                var linkStyleMenu = view.down('[type="linkStyle submenu"]');
 
-                expect(linkStyleMenu).not.toBeUndefined();
+                expect(linkStyleMenu).not.toBeNull();
 
                 var templateIds = Savanna.crumbnet.utils.ViewTemplates.getLinkTemplateNames();
 
