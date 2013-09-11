@@ -111,6 +111,7 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
         return false;
     },
 
+    // event handlers
 
     submenuDispatchHandler: function(menu, item, event) {
         var actualMenu = menu.parentItem,
@@ -138,10 +139,6 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
         this._dispatch(handler, button, event);
     },
 
-    isSubmenu: function(elem) {
-        return elem.parentMenu && elem.parentMenu.parentItem && elem.parentMenu.parentItem.type && elem.parentMenu.parentItem.type.match(/submenu/);
-    },
-
     _dispatch: function() {
         var args = [].splice.call(arguments, 0),
             handler = args.shift();
@@ -153,7 +150,6 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
             Ext.Error.raise('Cannot find "' + handler + '" handler');
         }
     },
-
 
     handleSave: function(menu) {
         this.showTODOmodal('Implement "Save"');
@@ -397,6 +393,8 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
         this.showTODOmodal('Add functionality to search the crumbnet for "' + button.up('go-graph').down('#crumbnetSearchText').value + '"');
     },
 
+    // Helper methods
+
     getDiagramForComponent: function(component) {
         var crumbnet = component.up('go-graph');
 
@@ -422,6 +420,10 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
             height: 100,
             html: 'TODO: ' + msg
         }).show();
+    },
+
+    isSubmenu: function(elem) {
+        return elem.parentMenu && elem.parentMenu.parentItem && elem.parentMenu.parentItem.type && elem.parentMenu.parentItem.type.match(/submenu/);
     },
 
 

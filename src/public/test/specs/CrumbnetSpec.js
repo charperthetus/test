@@ -99,6 +99,9 @@ describe('Savanna.crumbnet', function() {
                     return true;
                 };
 
+                // NOTE: we want to test that all the buttons we've defined in the menu have handlers.
+                //       to do this, we need to get an inventory of all the buttons and submenus in order to call our
+                //       dispatcher methods
                 function findMenuButtons(menu) {
                     if (menu.type && menu.type.indexOf(' submenu') > -1) {
                         submenuSeen[menu.type] = menu;
@@ -119,6 +122,9 @@ describe('Savanna.crumbnet', function() {
 
                 for (type in buttonSeen) {
                     if (buttonSeen.hasOwnProperty(type)) {
+                        // NOTE: we have to default the "up" method to return the top level view because there is no
+                        //       actual connection between the button and the view since the button's parent menu(s)
+                        //       will not be actively clicked
                         spyOn(buttonSeen[type], 'up').andReturn(view);
                         buttons.push(buttonSeen[type]);
                     }
@@ -126,11 +132,16 @@ describe('Savanna.crumbnet', function() {
 
                 for (type in submenuSeen) {
                     if (submenuSeen.hasOwnProperty(type)) {
+                        // NOTE: we have to explicitly connect the submenu to it's child "menu" because there is no
+                        //       actual connection between the button and the view since the button's parent menu(s)
+                        //       will not be actively clicked
                         submenuSeen[type].menu.parentItem = submenuSeen[type];
                         submenus.push(submenuSeen[type].menu);
                     }
                 }
 
+                // NOTE: since there is no actual connection between a button and the view, we have to hard-wire up
+                //       the return of the diagram
                 spyOn(controller, 'getDiagramForComponent').andReturn(diagram);
             });
 
