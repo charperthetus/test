@@ -478,14 +478,14 @@ describe('Search Results', function () {
 
                             myRadio.items.items[1].setValue(true);  // one year
 
-                            var endDate = Ext.Date.format(new Date(), 'c\\Z');
-                            var startDate = Ext.Date.format(Ext.Date.subtract(new Date(), Ext.Date.YEAR, 1), 'c\\Z');
+                            var endDate = Ext.Date.format(new Date(), 'Y-m-d\\TH:i:s.m\\Z');
+                            var startDate = Ext.Date.format(Ext.Date.subtract(new Date(), Ext.Date.YEAR, 1), 'Y-m-d\\TH:i:s.m\\Z');
 
                             myFacet.onDateRangeChange(myRadio);
 
-                            expect(myFacet.dal.data.dateTimeRanges[0].StartDate).toEqual(startDate);
+                            expect(myFacet.dal.data.dateTimeRanges[0].Startdate).toEqual(startDate);
 
-                            expect(myFacet.dal.data.dateTimeRanges[0].EndDate).toEqual(endDate);
+                            expect(myFacet.dal.data.dateTimeRanges[0].Enddate).toEqual(endDate);
 
                         });
                     });

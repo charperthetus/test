@@ -187,7 +187,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
 
                 /*
                  nasty bug here - the first DAL element not visually refreshing it's text value or icon.
-                 I have tried every form of update and layout method I can find/think of to correct it, no luck yet.
+                 I have tried every form of update() and layout() method I can find/think of to correct it, no luck yet.
                  Assistance appreciated, if anyone has any insight...
                  */
 

@@ -237,8 +237,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                  set the date ranges, if any
                  */
                 if(source.data.dateTimeRanges.length)  {
-                    console.log(source.data.dateTimeRanges);
-                    //searchObj.set('dateTimeRanges', source.data.dateTimeRanges);
+                    searchObj.set('dateTimeRanges', source.data.dateTimeRanges);
                 }
 
                 /*

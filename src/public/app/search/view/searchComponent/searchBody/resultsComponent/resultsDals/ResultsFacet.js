@@ -145,28 +145,29 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
             startDate,
             fieldName = btn.ownerCt.itemId.replace('facets_', ''),
             rangeName = btn.lastValue[fieldName],
-            endDate = Ext.Date.format(new Date(), 'c\\Z'), //default
+            format = 'Y-m-d\\TH:i:s.m\\Z',
+            endDate = Ext.Date.format(new Date(), format), //default
             me = this;
 
         switch (rangeName) {
             case 'any'  :
-                startDate = Ext.Date.format(new Date(0), 'c\\Z');
+                startDate = Ext.Date.format(new Date(0), format);
                 break;
 
             case 'past_year'    :
-                startDate = Ext.Date.format(Ext.Date.subtract(now, Ext.Date.YEAR, 1), 'c\\Z');
+                startDate = Ext.Date.format(Ext.Date.subtract(now, Ext.Date.YEAR, 1), format);
                 break;
 
             case 'past_month'    :
-                startDate = Ext.Date.format(Ext.Date.subtract(now, Ext.Date.MONTH, 1), 'c\\Z');
+                startDate = Ext.Date.format(Ext.Date.subtract(now, Ext.Date.MONTH, 1), format);
                 break;
 
             case 'past_week'    :
-                startDate = Ext.Date.format(Ext.Date.subtract(now, Ext.Date.DAY, 7), 'c\\Z');
+                startDate = Ext.Date.format(Ext.Date.subtract(now, Ext.Date.DAY, 7), format);
                 break;
 
             case 'past_day'    :
-                startDate = Ext.Date.format(Ext.Date.subtract(now, Ext.Date.DAY, 1), 'c\\Z');
+                startDate = Ext.Date.format(Ext.Date.subtract(now, Ext.Date.DAY, 1), format);
                 break;
 
             case 'custom'   :
@@ -183,12 +184,27 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
             me.dal.data.dateTimeRanges = [];   // just set to an empty array
         }
         var newDateRange = {
-            'StartDate': startDate,
+            'Startdate': startDate,
             'dateRangeName': rangeName,
             'DateFieldName': fieldName,
-            'EndDate': endDate
+            'Enddate': endDate
         };
-        me.dal.data.dateTimeRanges.push(newDateRange);
+
+        var updateExisting = false;
+
+        if(me.dal.data.dateTimeRanges.length > 0)    {
+            Ext.each(me.dal.data.dateTimeRanges, function(range, index) {
+               if(range.DateFieldName === fieldName)    {
+                    // replace it, do not add another
+                   me.dal.data.dateTimeRanges[index] = newDateRange;
+                   updateExisting = true;
+               }
+            });
+        }
+
+        if(!updateExisting) {
+            me.dal.data.dateTimeRanges.push(newDateRange);
+        }
 
         /*
          resubmit the search request
