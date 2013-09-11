@@ -41,10 +41,6 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
 
     buildMainDropdown: function() {
         var includeLabel = true;
-        var linkRelationshipTypes = Savanna.crumbnet.utils.ViewTemplates.linkRelationshipTypes;
-        var linkTypeMenuChoices = Ext.Array.map(linkRelationshipTypes, function mapLinkRelationshipTypes(item) {
-            return { type: item, text: item };
-        });
         var fileMenuItems = this.buildFileMenuItems(includeLabel);
         var editMenuItems = this.buildEditMenuItems(includeLabel);
         var viewMenuItems = this.buildViewMenuItems(includeLabel);
@@ -71,13 +67,6 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
             {
                 text: 'Object',
                 menu: objectMenuItems
-            },
-            {
-                itemId: 'linkTypeMenu',
-                text: 'Link Relationship Type',
-                menu: {
-                    items: linkTypeMenuChoices
-                }
             },
             {
                 itemId: 'nodeColorMenu',
@@ -238,6 +227,10 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
             linkStyleMenuChoices = Ext.Array.map(linkTemplateNames, function maplLinkTemplateNames(item) {
             return { type: item, text: item };
         }),
+            linkRelationshipTypes = Savanna.crumbnet.utils.ViewTemplates.linkRelationshipTypes,
+            linkTypeMenuChoices = Ext.Array.map(linkRelationshipTypes, function mapLinkRelationshipTypes(item) {
+            return { type: item, text: item };
+        }),
             formatMenuItems = [
                 {
                     type: 'alignment submenu',
@@ -253,9 +246,12 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
                 {
                     type: 'linkStyle submenu',
                     text: 'Link Style',
-                    menu: {
-                        items: linkStyleMenuChoices
-                    }
+                    menu: linkStyleMenuChoices
+                },
+                {
+                    type: 'linkType submenu',
+                    text: 'Link Relationship Type',
+                    menu: linkTypeMenuChoices
                 }
         ];
 

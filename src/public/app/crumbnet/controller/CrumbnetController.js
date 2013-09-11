@@ -386,6 +386,31 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
         }
     },
 
+    handleLinkTypeSubmenu: function(menu, item) {
+        var linkRelationshipTypes = Savanna.crumbnet.utils.ViewTemplates.linkRelationshipTypes,
+            diagram,
+            selectionSet,
+            iterator;
+
+        if (Ext.Array.contains(linkRelationshipTypes, item.type)) {
+            diagram = this.getDiagramForComponent(menu);
+            selectionSet = diagram.selection;
+            iterator = selectionSet.iterator;
+
+            diagram.startTransaction('changeLinkType');
+            while (iterator.next()) {
+                if (iterator.value instanceof go.Link) {
+                    diagram.model.setDataProperty(iterator.value.data, 'text', item.type);
+                }
+            }
+            // TODO: should this be rollbackTransaction if nothing is changed?
+            diagram.commitTransaction('changeLinkType');
+        }
+        else {
+            Ext.Error.raise('Unknown link type "' + item.type + '"');
+        }
+    },
+
     // HERE'S WHERE THE NEXT ONE GOES...
 
 
@@ -468,31 +493,6 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
                 // NOTE: there is no "default" because we get clicks for other "buttons" (such as the dropdown menus)
                 //       which we do not need to handle
                 break;
-        }
-    },
-
-    handleLinkTypeMenuClick: function(menu, item) {
-        var linkRelationshipTypes = Savanna.crumbnet.utils.ViewTemplates.linkRelationshipTypes,
-            diagram,
-            selectionSet,
-            iterator;
-
-        if (Ext.Array.contains(linkRelationshipTypes, item.type)) {
-            diagram = this.getDiagramForMenu(menu);
-            selectionSet = diagram.selection;
-            iterator = selectionSet.iterator;
-
-            diagram.startTransaction('changeLinkType');
-            while (iterator.next()) {
-                if (iterator.value instanceof go.Link) {
-                    diagram.model.setDataProperty(iterator.value.data, 'text', item.type);
-                }
-            }
-            // TODO: should this be rollbackTransaction if nothing is changed?
-            diagram.commitTransaction('changeLinkType');
-        }
-        else {
-            Ext.Error.raise('Unknown link type "' + item.type + '"');
         }
     },
 
