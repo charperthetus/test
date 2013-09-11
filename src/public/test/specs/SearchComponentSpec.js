@@ -272,6 +272,26 @@ describe('Search Component', function () {
             });
         });
 
+        describe('search clear button', function () {
+            var searchbar = null;
+
+            beforeEach(function () {
+                searchbar = component.queryById('searchbar');
+                searchbar.queryById('search_terms').setValue('search bar terms');
+            });
+
+            afterEach(function () {
+                searchbar = null;
+            });
+
+            it('should clear the search text input', function () {
+                searchbar.queryById('search_clear').fireEvent('click', searchbar.queryById('search_clear'));
+                var form = searchbar.queryById('search_form');
+                expect(form.queryById('search_terms').getValue()).toEqual('');
+            });
+
+        });
+
         describe('managing SearchAdvancedTextfield subview events', function () {
 
             var field = null; // set up in each test, but we want to be sure and destroy it, even if the test fails
