@@ -219,10 +219,11 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         /*
          Check for selected additional Dals, and do a search on each of them
          */
-        dalStore.each(function (source) {
+        dalStore.each(function (dalRecord) {
 
-            var dalId = source.data.id,
-                checked = dals.queryById(dalId).query('checkbox')[0].getValue();    // has this checkbox been selected in search options?
+            var dalId = dalRecord.data.id;
+            var currentDalPanel = dals.queryById(dalId);
+            var checked = currentDalPanel.query('checkbox')[0].getValue();    // has this checkbox been selected in search options?
 
             if (checked || dalId === dalStore.defaultId) {  // checked, or always search the default dal
 
@@ -230,7 +231,8 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                 searchObj.set('searchPreferencesVOs', [
                     {
                         'dalId': dalId,
-                        'sortOrder': 'Default'
+                        'sortOrder': 'Default',
+                        'customSearchSelections': this.getCustomSearchSelections(currentDalPanel)
                     }
                 ]);
                 /*
@@ -259,6 +261,33 @@ Ext.define('Savanna.search.controller.SearchComponent', {
          track in recent searches
          */
         this.logHistory(searchString);
+    },
+
+    getCustomSearchSelections: function(currentDalPanel) {
+
+        var customSearchOptions = [];
+        var customInputs = currentDalPanel.query('[cls=customInputField]');
+        for (var i = 0, total = customInputs.length; i< total; i++){
+            var customSearchInput = {};
+            customSearchInput.key = customInputs[i].name;
+            if (customInputs[i].xtype === 'datefield') {
+                customSearchInput.value = customInputs[i].value.valueOf();
+            } else if (customInputs[i].xtype === 'radiogroup' && customInputs[i].defaultType === 'radiofield') {
+                customSearchInput.value = customInputs[i].getValue().options;
+            } else if (customInputs[i].xtype === 'fieldcontainer') {
+                // then this item must be a key value pair and will need special handling
+                customSearchInput.key = customInputs[i].down('combobox').value;
+                customSearchInput.value = customInputs[i].down('[name=keyValueText]').value;
+
+            } else {
+                customSearchInput.value = customInputs[i].value;
+            }
+            if (customSearchInput.value === undefined || customSearchInput.value === null){
+                customSearchInput.value = '';
+            }
+            customSearchOptions.push(customSearchInput);
+        }
+        return customSearchOptions;
     },
 
     searchCallback: function (records, operation, success, resultsDal, resultsPanel, dalId, store) {

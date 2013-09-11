@@ -30,7 +30,7 @@ Ext.define('Savanna.search.model.SearchRequest', {
         {name: "returnLatLonPairs", type: "boolean", defaultValue: true},
         {name: "returnResults", type: "boolean", defaultValue: true},
         {name: "returnTagCloud", type: "boolean", defaultValue: false},
-        {name: "searchPreferencesVOs", type: "array", defaultValue: Savanna.Config.defaultSearchDal},
+        {name: "searchPreferencesVOs", type: "array", defaultValue: []},
         {name: "searchTargets", type: "array", defaultValue: [
             {
                 "targetName": "Document",
