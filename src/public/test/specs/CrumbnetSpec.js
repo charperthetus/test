@@ -81,85 +81,121 @@ describe('Savanna.crumbnet', function() {
             // NOTE: I tried to test that the center-point remained the same, but there is some race condition where it will sometimes come out different...
         });
 
-        describe('handleGraphToolbarButtonClick', function() {
+        describe('dispatchHandler', function() {
+            var buttons = [],
+                errors = [],
+                origErrorHandler;
 
-            afterEach(function() {
-                var modals = Ext.ComponentQuery.query('print-modal');
+            beforeEach(function() {
+                var buttonSeen = {},
+                    type;
 
-                if (modals) {
-                    for (var i = 0; i < modals.length; ++i) {
-                        modals[i].close();
-                        modals[i].destroy();
+                origErrorHandler = Ext.Error.handle;
+
+                Ext.Error.handle = function(msgObj) {
+                    errors.push(msgObj.msg);
+                    return true;
+                };
+
+                // NOTE: we want to test that all the buttons we've defined in the menu have handlers.
+                //       to do this, we need to get an inventory of all the buttons and submenus in order to call our
+                //       dispatcher methods
+                function findMenuButtons(menu) {
+                    if (menu.type && menu.type.indexOf(' submenu') > -1) {
+                        return;
+                    }
+
+                    if (menu.type) {
+                        buttonSeen[menu.type] = menu;
+                    }
+
+                    if (menu.menu) {
+                        menu.menu.items.each(findMenuButtons);
                     }
                 }
+
+                view.down('crumbnet_part_toolbar').items.each(findMenuButtons);
+
+                for (type in buttonSeen) {
+                    if (buttonSeen.hasOwnProperty(type)) {
+                        // NOTE: we have to default the "up" method to return the top level view because there is no
+                        //       actual connection between the button and the view since the button's parent menu(s)
+                        //       will not be actively clicked
+                        spyOn(buttonSeen[type], 'up').andReturn(view);
+                        buttons.push(buttonSeen[type]);
+                    }
+                }
+
+                // NOTE: since there is no actual connection between a button and the view, we have to hard-wire up
+                //       the return of the diagram
+                spyOn(controller, 'getDiagramForComponent').andReturn(diagram);
+            });
+
+            afterEach(function() {
+                buttons = [];
+                errors = [];
+
+                Ext.Error.handle = origErrorHandler;
+            });
+
+            it('should have a handler to dispatch for every type (other than "button")', function() {
+                var i;
+
+                for (i = 0; i < buttons.length; ++i) {
+                    controller.dispatchHandler(buttons[i]);
+                }
+
+                expect(errors).toEqual([]);
             });
 
             it('should zoom the diagram when we click "zoomToFit"', function() {
-                var button = view.down('button[type="zoomToFit"]');
+                var button = view.down('[type="zoomToFit"]');
+
+                expect(button).not.toBeNull();
 
                 //noinspection JSValidateTypes
                 spyOn(diagram, 'zoomToFit');
 
-                controller.handleGraphToolbarButtonClick(button);
+                controller.dispatchHandler(button);
 
                 expect(diagram.zoomToFit).toHaveBeenCalled();
             });
 
             it('should undo the last action when we click "undo"', function() {
-                var button = view.down('button[type="undo"]');
+                var button = view.down('[type="undo"]');
+
+                expect(button).not.toBeNull();
 
                 //noinspection JSValidateTypes
                 spyOn(diagram.undoManager, 'undo');
 
-                controller.handleGraphToolbarButtonClick(button);
+                controller.dispatchHandler(button);
 
                 expect(diagram.undoManager.undo).toHaveBeenCalled();
             });
 
             it('should redo the last action when we click "redo"', function() {
-                var button = view.down('button[type="redo"]');
+                var button = view.down('[type="redo"]');
+
+                expect(button).not.toBeNull();
 
                 //noinspection JSValidateTypes
                 spyOn(diagram.undoManager, 'redo');
 
-                controller.handleGraphToolbarButtonClick(button);
+                controller.dispatchHandler(button);
 
                 expect(diagram.undoManager.redo).toHaveBeenCalled();
             });
 
-            it('should toggle the diagram grid when we click "grid"', function() {
-                var currentVis = diagram.grid.visible;
-
-                var button = view.down('button[type="grid"]');
-
-                controller.handleGraphToolbarButtonClick(button);
-
-                expect(diagram.grid.visible).not.toBe(currentVis);
-                expect(diagram.toolManager.draggingTool.isGridSnapEnabled).not.toBe(currentVis);
-                expect(diagram.toolManager.resizingTool.isGridSnapEnabled).not.toBe(currentVis);
-            });
-
-            it('should toggle the overview when we click "overview"', function() {
-                var overviewVisible = null !== view.down('go-graph_overview');
-
-                var button = view.down('button[type="overview"]');
-
-                controller.handleGraphToolbarButtonClick(button);
-
-                expect(null !== view.down('go-graph_overview')).not.toBe(overviewVisible);
-
-                controller.handleGraphToolbarButtonClick(button);
-
-                expect(null !== view.down('go-graph_overview')).toBe(overviewVisible);
-            });
-
             it('should zoom in on the diagram when we click "zoomIn"', function() {
-                var button = view.down('button[type="zoomIn"]');
+                var button = view.down('[type="zoomIn"]');
+
+                expect(button).not.toBeNull();
 
                 //noinspection JSValidateTypes
                 spyOn(controller, 'zoomTo');
 
-                controller.handleGraphToolbarButtonClick(button);
+                controller.dispatchHandler(button);
 
                 var zoomToArg = controller.zoomTo.mostRecentCall.args[1];
 
@@ -167,12 +203,12 @@ describe('Savanna.crumbnet', function() {
             });
 
             it('should zoom out on the diagram when we click "zoomOut"', function() {
-                var button = view.down('button[type="zoomOut"]');
+                var button = view.down('[type="zoomOut"]');
 
                 //noinspection JSValidateTypes
                 spyOn(controller, 'zoomTo');
 
-                controller.handleGraphToolbarButtonClick(button);
+                controller.dispatchHandler(button);
 
                 var zoomToArg = controller.zoomTo.mostRecentCall.args[1];
 
@@ -180,405 +216,694 @@ describe('Savanna.crumbnet', function() {
             });
 
             it('should spawn the PrintModal window when we click "print"', function() {
-                var button = view.down('button[type="print"]');
+                var button = view.down('[type="print"]');
 
                 expect(button).not.toBeNull();
 
-                controller.handleGraphToolbarButtonClick(button);
+                controller.dispatchHandler(button);
 
                 expect(Ext.ComponentQuery.query('print-modal')).not.toBeNull();
             });
 
             it('should do nothing if we click a button it does not understand', function() {
-                var button = view.down('button[type="zoomOut"]');
+                var button = view.down('[type="zoomOut"]');
                 button.type = 'UNKNOWN_TOOLBAR';
 
-                controller.handleGraphToolbarButtonClick(button);
+                controller.dispatchHandler(button);
 
                 // should not even throw an error...
                 expect(errorRaised).toBeFalsy();
             });
-        });
 
-        describe('handleLayoutMenuClick', function() {
+            it('should toggle the diagram grid when we click "toggleGrid"', function() {
+                var currentVis = diagram.grid.visible,
+                    button = view.down('[type="toggleGrid"]');
 
-            it('should change diagram layout when we click "tree"', function() {
-                var menuButton = view.down('menuitem[type="tree"]');
-                var menu = view.down('#layoutMenu');
-                controller.handleLayoutMenuClick(menu, menuButton);
+                expect(button).not.toBeNull();
 
-                expect(diagram.layout instanceof go.Layout).toBeTruthy();
+                controller.dispatchHandler(button);
+
+                expect(diagram.grid.visible).not.toBe(currentVis);
+                expect(diagram.toolManager.draggingTool.isGridSnapEnabled).not.toBe(currentVis);
+                expect(diagram.toolManager.resizingTool.isGridSnapEnabled).not.toBe(currentVis);
             });
 
-            it('should change diagram layout when we click "grid"', function() {
-                var menuButton = view.down('menuitem[type="grid"]');
-                var menu = view.down('#layoutMenu');
-                controller.handleLayoutMenuClick(menu, menuButton);
+            it('should toggle the overview when we click "toggleOverview"', function() {
+                var overviewVisible = null !== view.down('go-graph_overview');
 
-                expect(diagram.layout instanceof go.Layout).toBeTruthy();
+                var button = view.down('[type="toggleOverview"]');
+
+                expect(button).not.toBeNull();
+
+                controller.dispatchHandler(button);
+
+                expect(null !== view.down('go-graph_overview')).not.toBe(overviewVisible);
+
+                controller.dispatchHandler(button);
+
+                expect(null !== view.down('go-graph_overview')).toBe(overviewVisible);
             });
 
-            it('should change diagram layout when we click "force"', function() {
-                var menuButton = view.down('menuitem[type="force"]');
-                var menu = view.down('#layoutMenu');
-                controller.handleLayoutMenuClick(menu, menuButton);
-
-                expect(diagram.layout instanceof go.Layout).toBeTruthy();
-            });
-
-            it('should change diagram layout when we click "circular"', function() {
-                var menuButton = view.down('menuitem[type="circular"]');
-                var menu = view.down('#layoutMenu');
-                controller.handleLayoutMenuClick(menu, menuButton);
-
-                expect(diagram.layout instanceof go.Layout).toBeTruthy();
-            });
-
-            it('should change diagram layout when we click "layeredDigraph"', function() {
-                var menuButton = view.down('menuitem[type="layeredDigraph"]');
-                var menu = view.down('#layoutMenu');
-                controller.handleLayoutMenuClick(menu, menuButton);
-
-                expect(diagram.layout instanceof go.Layout).toBeTruthy();
-            });
-
-            it('should raise an Ext.Error if we pass an unknown diagram layout', function() {
-                var menuButton = view.down('menuitem[type="force"]');
-                menuButton.type = 'UNKNOWN_LAYOUT';
-                var menu = view.down('#layoutMenu');
-                controller.handleLayoutMenuClick(menu, menuButton);
-
-                expect(errorRaised).toBeTruthy();
-            });
-        });
-
-        describe('handleAlignmentMenuClick', function() {
-
-            it('should change diagram alignment when we click "right"', function() {
-                var menuButton = view.down('menuitem[type="right"]');
-                var menu = view.down('#alignmentMenu');
-                controller.handleAlignmentMenuClick(menu, menuButton);
-
-                // We always set the alignment back to default after changing it
-                expect(diagram.contentAlignment).toBe(go.Spot.Default);
-            });
-
-            it('should change diagram alignment when we click "left"', function() {
-                var menuButton = view.down('menuitem[type="left"]');
-                var menu = view.down('#alignmentMenu');
-                controller.handleAlignmentMenuClick(menu, menuButton);
-
-                //We always set the alignment back to default after changing it
-                expect(diagram.contentAlignment).toBe(go.Spot.Default);
-            });
-
-            it('should change diagram alignment when we click "top"', function() {
-                var menuButton = view.down('menuitem[type="top"]');
-                var menu = view.down('#alignmentMenu');
-                controller.handleAlignmentMenuClick(menu, menuButton);
-
-                //We always set the alignment back to default after changing it
-                expect(diagram.contentAlignment).toBe(go.Spot.Default);
-            });
-
-            it('should change diagram alignment when we click "bottom"', function() {
-                var menuButton = view.down('menuitem[type="bottom"]');
-                var menu = view.down('#alignmentMenu');
-                controller.handleAlignmentMenuClick(menu, menuButton);
-
-                //We always set the alignment back to default after changing it
-                expect(diagram.contentAlignment).toBe(go.Spot.Default);
-            });
-
-            it('should change diagram alignment when we click "center"', function() {
-                var menuButton = view.down('menuitem[type="center"]');
-                var menu = view.down('#alignmentMenu');
-                controller.handleAlignmentMenuClick(menu, menuButton);
-
-                //We always set the alignment back to default after changing it
-                expect(diagram.contentAlignment).toBe(go.Spot.Default);
-            });
-
-            it('should raise an Ext.Error if we pass an unknown alignment', function() {
-                var menuButton = view.down('menuitem[type="center"]');
-                menuButton.type = 'UNKNOWN';
-                var menu = view.down('#alignmentMenu');
-                controller.handleAlignmentMenuClick(menu, menuButton);
-
-                expect(errorRaised).toBeTruthy();
-            });
-        });
-
-        describe('handleLinkStyleClick', function() {
-            var menuButton = null,
-                linkStyleMenu = null,
-                diagram = null;
-
-            beforeEach(function() {
-                linkStyleMenu = view.down('#linkStyleMenu');
-                menuButton = linkStyleMenu.menu.down('menuitem'); // should return the first menu button
-                diagram = controller.getDiagramForMenu(linkStyleMenu);
-            });
-
-            afterEach(function() {
-                menuButton = null;
-                linkStyleMenu = null;
-                diagram = null;
-            });
-
-            describe('error conditions', function() {
-                var raisedError = false;
+            describe('handleCut', function() {
+                var nodeCount = 0,
+                    cutButton;
 
                 beforeEach(function() {
-                    Ext.Error.handle = function() {
-                        raisedError = true;
-                        return true;
-                    };
+                    cutButton = view.down('[type="cut"]');
+                    nodeCount = diagram.nodes.count;
+                    diagram.nodes.first().isSelected = true;
+
+                    spyOn(diagram.commandHandler, 'cutSelection').andCallThrough();
                 });
 
                 afterEach(function() {
-                    Ext.Error.handle = function() {};
-                    raisedError = false;
+                    nodeCount = 0;
+                    cutButton = null;
                 });
 
-                it('should log an error if we send a link style that is not understood', function() {
-                    menuButton.type = 'UNKNOWN_TYPE';
+                it('should remove a selected node', function() {
+                    controller.handleCut(cutButton);
 
-                    controller.handleLinkStyleMenuClick(linkStyleMenu, menuButton);
+                    expect(diagram.commandHandler.cutSelection).toHaveBeenCalled();
+                    expect(diagram.nodes.count).toBe(nodeCount - 1);
+                });
 
-                    expect(raisedError).toBeTruthy();
+                it('should remove no nodes if none are selected', function() {
+                    diagram.nodes.first().isSelected = false;
+
+                    controller.handleCut(cutButton);
+
+                    expect(diagram.nodes.count).toBe(nodeCount);
                 });
             });
 
-            describe('valid conditions', function() {
-                // TODO: validate that this is true (it may be that if no links are selected, then ALL links should change
-                //       in which case there will be only one link category after the button is clickec)
-                it('should NOT change link styles if no link is selected', function() {
-                    var selectedNodeSet = diagram.selection;
+            describe('handleCopy', function() {
+                var selectedCount = 0,
+                    copiedNodeCount = 0,
+                    copyButton,
+                    copyEventCallback = function(changeEvent) {
+                        copiedNodeCount = changeEvent.subject.count;
+                    };
 
-                    expect(selectedNodeSet.count).toBe(0);
+                beforeEach(function() {
+                    diagram.addDiagramListener('ClipboardChanged', copyEventCallback);
 
-                    var linkIterator = diagram.links;
-                    var linkStylesSeen = {};
+                    copyButton = view.down('[type="copy"]');
 
-                    while (linkIterator.next()) {
-                        linkStylesSeen[linkIterator.value.category] = true;
-                    }
+                    diagram.nodes.first().isSelected = true;
 
-                    expect(Object.keys(linkStylesSeen).length).toBeGreaterThan(1);
+                    selectedCount = diagram.selection.count;
 
-                    controller.handleLinkStyleMenuClick(linkStyleMenu, menuButton);
-
-                    linkIterator = diagram.links;
-                    linkStylesSeen = {};
-
-                    while (linkIterator.next()) {
-                        linkStylesSeen[linkIterator.value.category] = true;
-                    }
-
-                    expect(Object.keys(linkStylesSeen).length).toBeGreaterThan(1);
+                    spyOn(diagram.commandHandler, 'copySelection').andCallThrough();
                 });
 
-                it('should only change the style for the selected links', function() {
-                    var linkIterator = diagram.links,
-                        beforeLinkStyleCounts = {},
-                        firstLinkStyle = null,
-                        secondLinkStyle = null,
-                        linkStyle = null,
-                        nodeCategory = null,
-                        node = null;
+                afterEach(function() {
+                    selectedCount = 0;
+                    copyButton = null;
 
-                    // gather a count of links styles and select one link whose style will change
-                    while (linkIterator.next()) {
-                        linkStyle = linkIterator.value.category;
+                    diagram.removeDiagramListener('ClipboardChanged', copyEventCallback);
+                });
 
-                        if (!firstLinkStyle) {
-                            firstLinkStyle = secondLinkStyle = linkStyle;
-                        }
-                        if (secondLinkStyle === firstLinkStyle && linkStyle !== firstLinkStyle) {
-                            secondLinkStyle = linkStyle;
-                            linkIterator.value.isSelected = true;
-                        }
+                it('should copy selected node to "clipboard"', function() {
+                    controller.handleCopy(copyButton);
 
-                        beforeLinkStyleCounts[linkStyle] = 'undefined' === typeof beforeLinkStyleCounts[linkStyle] ?  1 : beforeLinkStyleCounts[linkStyle] + 1;
-                    }
+                    expect(diagram.commandHandler.copySelection).toHaveBeenCalled();
+                    expect(copiedNodeCount).toBe(1);
+                });
 
-                    expect(firstLinkStyle).not.toBe(secondLinkStyle);
+                it('should not copy anything if no nodes are selected', function() {
+                    diagram.nodes.first().isSelected = false;
+                    controller.handleCopy(copyButton);
 
-                    // also select a non-link node (to show we don't alter it's style)
-                    node = diagram.nodes.first();
-                    nodeCategory = node.category;
+                    expect(diagram.commandHandler.copySelection).toHaveBeenCalled();
+                    expect(copiedNodeCount).toBe(0);
+                });
+            });
 
-                    node.isSelected = true;
+            describe('handlePaste', function() {
+                var pasteButton,
+                    copiedNodeCount = 0,
+                    totNodeCount = 0,
+                    copyEventCallback = function(changeEvent) {
+                        copiedNodeCount = changeEvent.subject.count;
+                    };
 
-                    // make sure we made a selection and have more than one style
-                    expect(diagram.selection.count).toBe(2);
-                    expect(Object.keys(beforeLinkStyleCounts).length).toBeGreaterThan(1);
-                    expect(secondLinkStyle).toBeDefined();
+                beforeEach(function() {
+                    totNodeCount = diagram.nodes.count;
 
-                    // select the menu to change the selected link to the first link style we found
-                    menuButton = view.down('menuitem[type="' + firstLinkStyle + '"]');
+                    diagram.addDiagramListener('ClipboardChanged', copyEventCallback);
 
-                    expect(menuButton).toBeDefined();
+                    pasteButton = view.down('[type="paste"]');
 
-                    controller.handleLinkStyleMenuClick(linkStyleMenu, menuButton);
+                    spyOn(diagram.commandHandler, 'pasteFromClipboard').andCallThrough();
+                });
 
-                    // get a count of link styles after we made our change
-                    var afterLinkStyleCounts = {};
-                    linkIterator = diagram.links;
+                afterEach(function() {
+                    pasteButton = null;
+                    totNodeCount = 0;
+                    copiedNodeCount = 0;
 
-                    while (linkIterator.next()) {
-                        linkStyle = linkIterator.value.category;
+                    diagram.removeDiagramListener('ClipboardChanged', copyEventCallback);
+                });
 
-                        afterLinkStyleCounts[linkStyle] = 'undefined' === typeof afterLinkStyleCounts[linkStyle] ? 1 : afterLinkStyleCounts[linkStyle] + 1;
-                    }
+                // TODO: this currently has to run first in order to pass
+                //       which raises concerns that Diagrams may not be being destroyed completely between tests
+                //       (and by extension will not be cleared correctly in our ExtJS app)
+                //       There is a question out to the GoJS support team to clarify the best way to ensure a Diagram
+                //       is completely reaped, but until then this test must run first...
+                describe('when there is no node selected', function() {
+                    it('should not copy anything if no nodes are selected', function() {
+                        expect(copiedNodeCount).toBe(0);
 
-                    expect(node.category).toBe(nodeCategory);
-                    expect(afterLinkStyleCounts[firstLinkStyle]).toBe(beforeLinkStyleCounts[firstLinkStyle] + 1);
-                    expect(afterLinkStyleCounts[secondLinkStyle]).toBe(beforeLinkStyleCounts[secondLinkStyle] - 1);
+                        controller.handlePaste(pasteButton);
+
+                        expect(diagram.commandHandler.pasteFromClipboard).toHaveBeenCalled();
+                        expect(diagram.nodes.count).toBe(totNodeCount);
+                    });
+                });
+
+                describe('when there is a selected node', function() {
+
+                    beforeEach(function() {
+                        diagram.startTransaction('testPaste');
+                        diagram.nodes.first().isSelected = true;
+                        diagram.commandHandler.copySelection();
+                        diagram.commitTransaction('testPaste');
+                    });
+
+                    it('should copy selected node to "clipboard"', function() {
+                        expect(copiedNodeCount).toBe(1);
+                        controller.handlePaste(pasteButton);
+
+                        expect(diagram.commandHandler.pasteFromClipboard).toHaveBeenCalled();
+                        expect(copiedNodeCount).toBe(1);
+                    });
                 });
             });
         });
 
-        describe('handleLinkTypeClick', function() {
-            var menuButton = null,
-                linkTypeMenu = null,
-                diagram = null;
+        describe('submenuDispatchHandler', function() {
+            var submenus = [],
+                errors = [],
+                origErrorHandler;
 
             beforeEach(function() {
-                linkTypeMenu = view.down('#linkTypeMenu');
-                menuButton = linkTypeMenu.menu.down('menuitem'); // should return the first menu item
-                diagram = controller.getDiagramForMenu(linkTypeMenu);
+                var submenuSeen = {},
+                    type;
+
+                origErrorHandler = Ext.Error.handle;
+
+                Ext.Error.handle = function(msgObj) {
+                    errors.push(msgObj.msg);
+                    errorRaised = true;
+                    return true;
+                };
+
+                // NOTE: we want to test that all the buttons we've defined in the menu have handlers.
+                //       to do this, we need to get an inventory of all the buttons and submenus in order to call our
+                //       dispatcher methods
+                function findMenuButtons(menu) {
+                    if (menu.type && menu.type.indexOf(' submenu') > -1) {
+                        submenuSeen[menu.type] = menu;
+
+                        return;
+                    }
+
+                    if (menu.menu) {
+                        menu.menu.items.each(findMenuButtons);
+                    }
+                }
+
+                view.down('crumbnet_part_toolbar').items.each(findMenuButtons);
+
+                for (type in submenuSeen) {
+                    if (submenuSeen.hasOwnProperty(type)) {
+                        // NOTE: we have to explicitly connect the submenu to it's child "menu" because there is no
+                        //       actual connection between the button and the view since the button's parent menu(s)
+                        //       will not be actively clicked
+                        submenuSeen[type].menu.parentItem = submenuSeen[type];
+                        submenus.push(submenuSeen[type].menu);
+                    }
+                }
+
+                // NOTE: since there is no actual connection between a button and the view, we have to hard-wire up
+                //       the return of the diagram
+                spyOn(controller, 'getDiagramForComponent').andReturn(diagram);
             });
 
             afterEach(function() {
-                menuButton = null;
-                linkTypeMenu = null;
-                diagram = null;
+                submenus = [];
+                errors = [];
+
+                Ext.Error.handle = origErrorHandler;
             });
 
-            describe('error conditions', function() {
-                it('should log an error if we send a link style that is not understood', function() {
-                    menuButton.type = 'UNKNOWN_TYPE';
+            it('should have a handler to dispatch for every submenu', function() {
+                var i = 0;
 
-                    controller.handleLinkTypeMenuClick(linkTypeMenu, menuButton);
+                for (i = 0; i < submenus.length; ++i ) {
+                    /* jshint loopfunc: true */
+                    submenus[i].items.each(function(button) {
+                        controller.submenuDispatchHandler(submenus[i], button);
+                    });
+                    /* jshint loopfunc: false */
+                }
+
+                expect(errors).toEqual([]);
+            });
+
+            describe('handleLayoutMenuClick', function() {
+                var submenu;
+
+                beforeEach(function() {
+                    submenu = view.down('[type="layout submenu"]');
+
+                    // have to wire this up since ExtJs only does that if we truly click on a menu
+                    submenu.menu.parentItem = submenu;
+                    submenu = submenu.menu;
+                });
+
+                afterEach(function() {
+                    submenu = null;
+                });
+
+                it('should change diagram layout when we click "tree"', function() {
+                    var menuButton = view.down('[type="tree"]');
+
+                    expect(menuButton).not.toBeNull();
+
+                    controller.handleLayoutSubmenu(submenu, menuButton);
+
+                    expect(diagram.layout instanceof go.Layout).toBeTruthy();
+                });
+
+                it('should change diagram layout when we click "grid"', function() {
+                    var menuButton = view.down('[type="layout submenu"] [type="grid"]');
+
+                    expect(menuButton).not.toBeNull();
+
+                    controller.handleLayoutSubmenu(submenu, menuButton);
+
+                    expect(diagram.layout instanceof go.Layout).toBeTruthy();
+                });
+
+                it('should change diagram layout when we click "force"', function() {
+                    var menuButton = view.down('[type="force"]');
+
+                    expect(menuButton).not.toBeNull();
+
+                    controller.handleLayoutSubmenu(submenu, menuButton);
+
+                    expect(diagram.layout instanceof go.Layout).toBeTruthy();
+                });
+
+                it('should change diagram layout when we click "circular"', function() {
+                    var menuButton = view.down('[type="circular"]');
+
+                    expect(menuButton).not.toBeNull();
+
+                    controller.handleLayoutSubmenu(submenu, menuButton);
+
+                    expect(diagram.layout instanceof go.Layout).toBeTruthy();
+                });
+
+                it('should change diagram layout when we click "layeredDigraph"', function() {
+                    var menuButton = view.down('[type="layeredDigraph"]');
+
+                    expect(menuButton).not.toBeNull();
+
+                    controller.handleLayoutSubmenu(submenu, menuButton);
+
+                    expect(diagram.layout instanceof go.Layout).toBeTruthy();
+                });
+
+                it('should raise an Ext.Error if we pass an unknown diagram layout', function() {
+                    var menuButton = view.down('[type="force"]');
+                    menuButton.type = 'UNKNOWN_LAYOUT';
+
+                    expect(menuButton).not.toBeNull();
+
+                    controller.handleLayoutSubmenu(submenu, menuButton);
 
                     expect(errorRaised).toBeTruthy();
                 });
             });
 
-            describe('valid conditions', function() {
-                // TODO: validate that this is true (it may be that if no links are selected, then ALL links should change
-                //       in which case there will be only one link category after the button is clickec)
-                it('should NOT change link styles if no link is selected', function() {
-                    var selectedNodeSet = diagram.selection;
+            describe('handleAlignmentMenuClick', function() {
+                var submenu;
 
-                    expect(selectedNodeSet.count).toBe(0);
+                beforeEach(function() {
+                    submenu = view.down('[type="alignment submenu"]');
 
-                    var linkIterator = diagram.links;
-                    var linkStylesSeen = {};
-
-                    while (linkIterator.next()) {
-                        linkStylesSeen[linkIterator.value.category] = true;
-                    }
-
-                    expect(Object.keys(linkStylesSeen).length).toBeGreaterThan(1);
-
-                    controller.handleLinkTypeMenuClick(linkTypeMenu, menuButton);
-
-                    linkIterator = diagram.links;
-                    linkStylesSeen = {};
-
-                    while (linkIterator.next()) {
-                        linkStylesSeen[linkIterator.value.category] = true;
-                    }
-
-                    expect(Object.keys(linkStylesSeen).length).toBeGreaterThan(1);
+                    // have to wire this up since ExtJs only does that if we truly click on a menu
+                    submenu.menu.parentItem = submenu;
+                    submenu = submenu.menu;
                 });
 
-                it('should only change the style for the selected links', function() {
-                    var linkIterator = diagram.links,
-                        beforeLinkTypeCounts = {},
-                        afterLinkTypeCounts = {},
-                        firstLinkType = null,
-                        secondLinkType = null,
-                        linkType = null,
-                        nodeText = null,
-                        node = null;
+                afterEach(function() {
+                    submenu = null;
+                });
 
-                    // gather a count of links styles and select one link whose style will change
-                    while (linkIterator.next()) {
-                        linkType = linkIterator.value.data.text;
-                        console.log('linkType', linkType);
+                it('should change diagram alignment when we click "right"', function() {
+                    var menuButton = view.down('[type="alignment submenu"] [type="right"]');
 
-                        if (!firstLinkType) {
-                            console.log('found')
-                            firstLinkType = secondLinkType = linkType;
-                        }
+                    expect(menuButton).not.toBeNull();
 
-                        if (secondLinkType === firstLinkType && linkType !== firstLinkType) {
-                            secondLinkType = linkType;
-                            linkIterator.value.isSelected = true;
-                        }
+                    controller.handleAlignmentSubmenu(submenu, menuButton);
 
-                        beforeLinkTypeCounts[linkType] = typeof beforeLinkTypeCounts[linkType] === 'undefined' ?  1 : beforeLinkTypeCounts[linkType] + 1;
-                    }
+                    // We always set the alignment back to default after changing it
+                    expect(diagram.contentAlignment).toBe(go.Spot.Default);
+                });
 
-                    expect(firstLinkType).not.toBe(secondLinkType);
+                it('should change diagram alignment when we click "left"', function() {
+                    var menuButton = view.down('[type="alignment submenu"] [type="left"]');
 
-                    // also select a non-link node (to show we don't alter it's style)
-                    node = diagram.nodes.first();
-                    nodeText = node.data.text;
+                    expect(menuButton).not.toBeNull();
 
-                    node.isSelected = true;
+                    controller.handleAlignmentSubmenu(submenu, menuButton);
 
-                    // make sure we made a selection and have more than one style
-                    expect(diagram.selection.count).toBe(2);
-                    expect(secondLinkType).toBeDefined();
+                    //We always set the alignment back to default after changing it
+                    expect(diagram.contentAlignment).toBe(go.Spot.Default);
+                });
 
-                    // select the menu to change the selected link to the first link style we found
-                    menuButton = view.down('menuitem[type="' + firstLinkType + '"]');
+                it('should change diagram alignment when we click "top"', function() {
+                    var menuButton = view.down('[type="alignment submenu"] [type="top"]');
 
-                    expect(menuButton).toBeDefined();
+                    expect(menuButton).not.toBeNull();
 
-                    controller.handleLinkTypeMenuClick(linkTypeMenu, menuButton);
+                    controller.handleAlignmentSubmenu(submenu, menuButton);
 
-                    // get a count of link styles after we made our change
-                    linkIterator = diagram.links;
+                    //We always set the alignment back to default after changing it
+                    expect(diagram.contentAlignment).toBe(go.Spot.Default);
+                });
 
-                    while (linkIterator.next()) {
-                        linkType = linkIterator.value.data.text;
+                it('should change diagram alignment when we click "bottom"', function() {
+                    var menuButton = view.down('[type="alignment submenu"] [type="bottom"]');
 
-                        afterLinkTypeCounts[linkType] = typeof afterLinkTypeCounts[linkType] === 'undefined' ? 1 : afterLinkTypeCounts[linkType] + 1;
-                    }
+                    expect(menuButton).not.toBeNull();
 
-                    expect(node.data.text).toBe(nodeText);
-                    expect(afterLinkTypeCounts[firstLinkType]).toBe(beforeLinkTypeCounts[firstLinkType] + 1);
-                    expect(afterLinkTypeCounts[secondLinkType]).toBe(beforeLinkTypeCounts[secondLinkType] - 1);
+                    controller.handleAlignmentSubmenu(submenu, menuButton);
+
+                    //We always set the alignment back to default after changing it
+                    expect(diagram.contentAlignment).toBe(go.Spot.Default);
+                });
+
+                it('should change diagram alignment when we click "center"', function() {
+                    var menuButton = view.down('[type="alignment submenu"] [type="center"]');
+
+                    expect(menuButton).not.toBeNull();
+
+                    controller.handleAlignmentSubmenu(submenu, menuButton);
+
+                    //We always set the alignment back to default after changing it
+                    expect(diagram.contentAlignment).toBe(go.Spot.Default);
+                });
+
+                it('should raise an Ext.Error if we pass an unknown alignment', function() {
+                    var menuButton = view.down('[type="alignment submenu"] [type="center"]');
+
+                    expect(menuButton).not.toBeNull();
+
+                    menuButton.type = 'UNKNOWN';
+
+                    controller.handleAlignmentSubmenu(submenu, menuButton);
+
+                    expect(errorRaised).toBeTruthy();
                 });
             });
-        });
 
-        describe('handleNodeColorSelect', function() {
-            var menu;
+            describe('handleLinkTypeSubmenu', function() {
+                var menuButton = null,
+                    linkTypeMenu = null;
 
-            beforeEach(function() {
-                // NOTE: we are drilling down to a menu because there is voodoo afoot where we can go "down" to our
-                //       picker, but cannot get back "up" to the canvas...
-                menu = view.down('crumbnet_part_toolbar');
+                beforeEach(function() {
+                    linkTypeMenu = view.down('[type="linkStyle submenu"]');
+                    menuButton = linkTypeMenu.menu.down('[type]'); // should return the first menu item
+
+                    // have to wire this up since ExtJs only does that if we truly click on a menu
+                    linkTypeMenu.menu.parentItem = linkTypeMenu;
+                    linkTypeMenu = linkTypeMenu.menu;
+                });
+
+                afterEach(function() {
+                    menuButton = null;
+                    linkTypeMenu = null;
+                });
+
+                describe('error conditions', function() {
+                    it('should log an error if we send a link style that is not understood', function() {
+                        menuButton.type = 'UNKNOWN_TYPE';
+
+                        controller.handleLinkTypeSubmenu(linkTypeMenu, menuButton);
+
+                        expect(errorRaised).toBeTruthy();
+                    });
+                });
+
+                describe('valid conditions', function() {
+                    // TODO: validate that this is true (it may be that if no links are selected, then ALL links should change
+                    //       in which case there will be only one link category after the button is clickec)
+                    it('should NOT change link styles if no link is selected', function() {
+                        var selectedNodeSet = diagram.selection;
+
+                        expect(selectedNodeSet.count).toBe(0);
+
+                        var linkIterator = diagram.links;
+                        var linkStylesSeen = {};
+
+                        while (linkIterator.next()) {
+                            linkStylesSeen[linkIterator.value.category] = true;
+                        }
+
+                        expect(Object.keys(linkStylesSeen).length).toBeGreaterThan(1);
+
+                        controller.handleLinkTypeSubmenu(linkTypeMenu, menuButton);
+
+                        linkIterator = diagram.links;
+                        linkStylesSeen = {};
+
+                        while (linkIterator.next()) {
+                            linkStylesSeen[linkIterator.value.category] = true;
+                        }
+
+                        expect(Object.keys(linkStylesSeen).length).toBeGreaterThan(1);
+                    });
+
+                    it('should only change the style for the selected links', function() {
+                        var linkIterator = diagram.links,
+                            beforeLinkTypeCounts = {},
+                            afterLinkTypeCounts = {},
+                            firstLinkType = null,
+                            secondLinkType = null,
+                            linkType = null,
+                            nodeText = null,
+                            node = null;
+
+                        // gather a count of links styles and select one link whose style will change
+                        while (linkIterator.next()) {
+                            linkType = linkIterator.value.data.text;
+
+                            if (!firstLinkType) {
+                                firstLinkType = secondLinkType = linkType;
+                            }
+
+                            if (secondLinkType === firstLinkType && linkType !== firstLinkType) {
+                                secondLinkType = linkType;
+                                linkIterator.value.isSelected = true;
+                            }
+
+                            beforeLinkTypeCounts[linkType] = typeof beforeLinkTypeCounts[linkType] === 'undefined' ?  1 : beforeLinkTypeCounts[linkType] + 1;
+                        }
+
+                        expect(firstLinkType).not.toBe(secondLinkType);
+
+                        // also select a non-link node (to show we don't alter it's style)
+                        node = diagram.nodes.first();
+                        nodeText = node.data.text;
+
+                        node.isSelected = true;
+
+                        // make sure we made a selection and have more than one style
+                        expect(diagram.selection.count).toBe(2);
+                        expect(secondLinkType).toBeDefined();
+
+                        // select the menu to change the selected link to the first link style we found
+                        menuButton = view.down('menuitem[type="' + firstLinkType + '"]');
+
+                        expect(menuButton).toBeDefined();
+
+                        controller.handleLinkTypeSubmenu(linkTypeMenu, menuButton);
+
+                        // get a count of link styles after we made our change
+                        linkIterator = diagram.links;
+
+                        while (linkIterator.next()) {
+                            linkType = linkIterator.value.data.text;
+
+                            afterLinkTypeCounts[linkType] = typeof afterLinkTypeCounts[linkType] === 'undefined' ? 1 : afterLinkTypeCounts[linkType] + 1;
+                        }
+
+                        expect(node.data.text).toBe(nodeText);
+                        expect(afterLinkTypeCounts[firstLinkType]).toBe(beforeLinkTypeCounts[firstLinkType] + 1);
+                        expect(afterLinkTypeCounts[secondLinkType]).toBe(beforeLinkTypeCounts[secondLinkType] - 1);
+                    });
+                });
             });
 
-            afterEach(function() {
-                menu = null;
+            describe('handleLinkStyleSubmenu', function() {
+                var menuButton = null,
+                    linkStyleMenu = null;
+
+                beforeEach(function() {
+                    linkStyleMenu = view.down('[type="linkStyle submenu"]');
+                    menuButton = linkStyleMenu.menu.down('menuitem'); // should return the first menu button
+                });
+
+                afterEach(function() {
+                    menuButton = null;
+                    linkStyleMenu = null;
+                });
+
+                describe('error conditions', function() {
+                    var raisedError = false;
+
+                    beforeEach(function() {
+                        Ext.Error.handle = function() {
+                            raisedError = true;
+                            return true;
+                        };
+                    });
+
+                    afterEach(function() {
+                        Ext.Error.handle = function() {};
+                        raisedError = false;
+                    });
+
+                    it('should log an error if we send a link style that is not understood', function() {
+                        menuButton.type = 'UNKNOWN_TYPE';
+
+                        controller.handleLinkStyleSubmenu(linkStyleMenu, menuButton);
+
+                        expect(raisedError).toBeTruthy();
+                    });
+                });
+
+                describe('valid conditions', function() {
+                    // TODO: validate that this is true (it may be that if no links are selected, then ALL links should change
+                    //       in which case there will be only one link category after the button is clicked)
+
+                    it('should NOT change link styles if no link is selected', function() {
+                        var selectedNodeSet = diagram.selection;
+
+                        expect(selectedNodeSet.count).toBe(0);
+
+                        var linkIterator = diagram.links;
+                        var linkStylesSeen = {};
+
+                        while (linkIterator.next()) {
+                            linkStylesSeen[linkIterator.value.category] = true;
+                        }
+
+                        expect(Object.keys(linkStylesSeen).length).toBeGreaterThan(1);
+
+                        controller.handleLinkStyleSubmenu(linkStyleMenu, menuButton);
+
+                        linkIterator = diagram.links;
+                        linkStylesSeen = {};
+
+                        while (linkIterator.next()) {
+                            linkStylesSeen[linkIterator.value.category] = true;
+                        }
+
+                        expect(Object.keys(linkStylesSeen).length).toBeGreaterThan(1);
+                    });
+
+                    it('should only change the style for the selected links', function() {
+                        var linkIterator = diagram.links,
+                            beforeLinkStyleCounts = {},
+                            firstLinkStyle = null,
+                            secondLinkStyle = null,
+                            linkStyle = null,
+                            nodeCategory = null,
+                            node = null;
+
+                        // gather a count of links styles and select one link whose style will change
+                        while (linkIterator.next()) {
+                            linkStyle = linkIterator.value.category;
+
+                            if (!firstLinkStyle) {
+                                firstLinkStyle = secondLinkStyle = linkStyle;
+                            }
+                            if (secondLinkStyle === firstLinkStyle && linkStyle !== firstLinkStyle) {
+                                secondLinkStyle = linkStyle;
+                                linkIterator.value.isSelected = true;
+                            }
+
+                            beforeLinkStyleCounts[linkStyle] = 'undefined' === typeof beforeLinkStyleCounts[linkStyle] ?  1 : beforeLinkStyleCounts[linkStyle] + 1;
+                        }
+
+                        expect(firstLinkStyle).not.toBe(secondLinkStyle);
+
+                        // also select a non-link node (to show we don't alter it's style)
+                        node = diagram.nodes.first();
+                        nodeCategory = node.category;
+
+                        node.isSelected = true;
+
+                        // make sure we made a selection and have more than one style
+                        expect(diagram.selection.count).toBe(2);
+                        expect(Object.keys(beforeLinkStyleCounts).length).toBeGreaterThan(1);
+                        expect(secondLinkStyle).toBeDefined();
+
+                        // select the menu to change the selected link to the first link style we found
+                        menuButton = view.down('menuitem[type="' + firstLinkStyle + '"]');
+
+                        expect(menuButton).toBeDefined();
+
+                        controller.handleLinkStyleSubmenu(linkStyleMenu, menuButton);
+
+                        // get a count of link styles after we made our change
+                        var afterLinkStyleCounts = {};
+                        linkIterator = diagram.links;
+
+                        while (linkIterator.next()) {
+                            linkStyle = linkIterator.value.category;
+
+                            afterLinkStyleCounts[linkStyle] = 'undefined' === typeof afterLinkStyleCounts[linkStyle] ? 1 : afterLinkStyleCounts[linkStyle] + 1;
+                        }
+
+                        expect(node.category).toBe(nodeCategory);
+                        expect(afterLinkStyleCounts[firstLinkStyle]).toBe(beforeLinkStyleCounts[firstLinkStyle] + 1);
+                        expect(afterLinkStyleCounts[secondLinkStyle]).toBe(beforeLinkStyleCounts[secondLinkStyle] - 1);
+                    });
+                });
             });
 
-            it('should update the color of all the selected nodes', function() {
-                //Select the first node
-                var firstNode = diagram.nodes.first();
-                firstNode.isSelected = true;
-                expect(firstNode.data.color).not.toBe('#badddd');
-                controller.handleNodeColorSelect(menu, 'badddd');
-                expect(firstNode.data.color).toBe('#badddd');
+            describe('handleNodeColorSubmenu', function() {
+                var menu;
+
+                beforeEach(function() {
+                    // NOTE: we are drilling down to a menu because there is voodoo afoot where we can go "down" to our
+                    //       picker, but cannot get back "up" to the canvas...
+                    menu = view.down('crumbnet_part_toolbar');
+                });
+
+                afterEach(function() {
+                    menu = null;
+                });
+
+                it('should update the color of all the selected nodes', function() {
+                    //Select the first node
+                    var firstNode = diagram.nodes.first();
+
+                    firstNode.isSelected = true;
+
+                    expect(firstNode.data.color).not.toBe('#badddd');
+
+                    controller.handleNodeColorSubmenu(menu, 'badddd');
+
+                    expect(firstNode.data.color).toBe('#badddd');
+                });
             });
         });
 
@@ -626,155 +951,6 @@ describe('Savanna.crumbnet', function() {
                 testReader.onload({ target: { result: 'DOES NOT MATTER'} });
 
                 expect(diagram.model.addNodeData).toHaveBeenCalled();
-            });
-        });
-
-        describe('handleCutCopyPaste', function() {
-            var menu;
-
-            beforeEach(function() {
-                menu = view.down('#cutCopyPaste');
-            });
-
-            afterEach(function() {
-                menu = null;
-            });
-
-            describe('cut', function() {
-                var nodeCount = 0,
-                    cutButton;
-
-                beforeEach(function() {
-                    cutButton = view.down('menuitem[type="cut"]');
-                    nodeCount = diagram.nodes.count;
-                    diagram.nodes.first().isSelected = true;
-
-                    spyOn(diagram.commandHandler, 'cutSelection').andCallThrough();
-                });
-
-                afterEach(function() {
-                    nodeCount = 0;
-                    cutButton = null;
-                });
-
-                it('should remove a selected node', function() {
-                    controller.handleCutCopyPaste(menu, cutButton);
-
-                    expect(diagram.commandHandler.cutSelection).toHaveBeenCalled();
-                    expect(diagram.nodes.count).toBe(nodeCount - 1);
-                });
-
-                it('should remove no nodes if none are selected', function() {
-                    diagram.nodes.first().isSelected = false;
-
-                    controller.handleCutCopyPaste(menu, cutButton);
-
-                    expect(diagram.nodes.count).toBe(nodeCount);
-                });
-            });
-
-            describe('copy', function() {
-                var selectedCount = 0,
-                    copiedNodeCount = 0,
-                    copyButton,
-                    copyEventCallback = function(changeEvent) {
-                        copiedNodeCount = changeEvent.subject.count;
-                    };
-
-                beforeEach(function() {
-                    diagram.addDiagramListener('ClipboardChanged', copyEventCallback);
-
-                    copyButton = view.down('menuitem[type="copy"]');
-
-                    diagram.nodes.first().isSelected = true;
-
-                    selectedCount = diagram.selection.count;
-
-                    spyOn(diagram.commandHandler, 'copySelection').andCallThrough();
-                });
-
-                afterEach(function() {
-                    selectedCount = 0;
-                    copyButton = null;
-
-                    diagram.removeDiagramListener('ClipboardChanged', copyEventCallback);
-                });
-
-                it('should copy selected node to "clipboard"', function() {
-                    controller.handleCutCopyPaste(menu, copyButton);
-
-                    expect(diagram.commandHandler.copySelection).toHaveBeenCalled();
-                    expect(copiedNodeCount).toBe(1);
-                });
-
-                it('should not copy anything if no nodes are selected', function() {
-                    diagram.nodes.first().isSelected = false;
-                    controller.handleCutCopyPaste(menu, copyButton);
-
-                    expect(diagram.commandHandler.copySelection).toHaveBeenCalled();
-                    expect(copiedNodeCount).toBe(0);
-                });
-            });
-
-            describe('paste', function() {
-                var pasteButton,
-                    copiedNodeCount = 0,
-                    totNodeCount = 0,
-                    copyEventCallback = function(changeEvent) {
-                        copiedNodeCount = changeEvent.subject.count;
-                    };
-
-                beforeEach(function() {
-                    totNodeCount = diagram.nodes.count;
-
-                    diagram.addDiagramListener('ClipboardChanged', copyEventCallback);
-
-                    pasteButton = view.down('menuitem[type="paste"]');
-
-                    spyOn(diagram.commandHandler, 'pasteFromClipboard').andCallThrough();
-                });
-
-                afterEach(function() {
-                    pasteButton = null;
-                    totNodeCount = 0;
-                    copiedNodeCount = 0;
-
-                    diagram.removeDiagramListener('ClipboardChanged', copyEventCallback);
-                });
-
-                // TODO: this currently has to run first in order to pass
-                //       which raises concerns that Diagrams may not be being destroyed completely between tests
-                //       (and by extension will not be cleared correctly in our ExtJS app)
-                //       There is a question out to the GoJS support team to clarify the best way to ensure a Diagram
-                //       is completely reaped, but until then this test must run first...
-                describe('when there is no node selected', function() {
-                    it('should not copy anything if no nodes are selected', function() {
-                        expect(copiedNodeCount).toBe(0);
-
-                        controller.handleCutCopyPaste(menu, pasteButton);
-
-                        expect(diagram.commandHandler.pasteFromClipboard).toHaveBeenCalled();
-                        expect(diagram.nodes.count).toBe(totNodeCount);
-                    });
-                });
-
-                describe('when there is a selected node', function() {
-
-                    beforeEach(function() {
-                        diagram.startTransaction('testPaste');
-                        diagram.nodes.first().isSelected = true;
-                        diagram.commandHandler.copySelection();
-                        diagram.commitTransaction('testPaste');
-                    });
-
-                    it('should copy selected node to "clipboard"', function() {
-                        expect(copiedNodeCount).toBe(1);
-                        controller.handleCutCopyPaste(menu, pasteButton);
-
-                        expect(diagram.commandHandler.pasteFromClipboard).toHaveBeenCalled();
-                        expect(copiedNodeCount).toBe(1);
-                    });
-                });
             });
         });
     });
@@ -895,9 +1071,9 @@ describe('Savanna.crumbnet', function() {
             });
 
             it('should create a link template menu using keys from the linkTemplateMap', function() {
-                var linkStyleMenu = view.queryById('linkStyleMenu');
+                var linkStyleMenu = view.down('[type="linkStyle submenu"]');
 
-                expect(linkStyleMenu).not.toBeUndefined();
+                expect(linkStyleMenu).not.toBeNull();
 
                 var templateIds = Savanna.crumbnet.utils.ViewTemplates.getLinkTemplateNames();
 
