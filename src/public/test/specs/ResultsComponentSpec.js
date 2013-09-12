@@ -372,11 +372,11 @@ describe('Search Results', function () {
                         });
                     });
 
-                    describe('onFacetFilterChange', function()  {
+                    describe('onFacetFilterChange', function () {
 
                         var server, myFacet, myCheckbox;
 
-                        beforeEach(function()   {
+                        beforeEach(function () {
 
                             myFacet = Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacet', {
                                 facet: facetFixture.stringFacet,
@@ -385,7 +385,7 @@ describe('Search Results', function () {
                             });
                         });
 
-                        afterEach(function()    {
+                        afterEach(function () {
                             server = null;
                             myFacet = null;
                             myCheckbox = null;
@@ -454,11 +454,11 @@ describe('Search Results', function () {
                         });
                     });
 
-                    describe('onDateRangeChange', function()  {
+                    describe('onDateRangeChange', function () {
 
                         var server, myFacet, myRadio;
 
-                        beforeEach(function()   {
+                        beforeEach(function () {
 
 
                             myFacet = Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacet', {
@@ -468,7 +468,7 @@ describe('Search Results', function () {
                             });
                         });
 
-                        afterEach(function()    {
+                        afterEach(function () {
                             server = null;
                             myFacet = null;
                             myRadio = null;
@@ -491,33 +491,59 @@ describe('Search Results', function () {
                         });
                     });
 
-                    describe('doCustomDateSearch', function()  {
+                    describe('doCustomDateSearch', function () {
 
-                        var server, myFacet, myRadio;
+                        var server, myFacet, myRadio, myPanel;
 
-                        beforeEach(function()   {
-
+                        beforeEach(function () {
 
                             myFacet = Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacet', {
                                 facet: facetFixture.dateFacet,
                                 searchResults: {id: 'mockDAL', store: store},
                                 dal: store.getById('mockDAL')
                             });
+
+                            myRadio = myFacet.queryById('facets_published-date').queryById('dateFacet');
+
+                            myPanel = myRadio.up('#facets_' + myFacet.facet.facetId).queryById('customDatesPanel');
                         });
 
-                        afterEach(function()    {
+                        afterEach(function () {
                             server = null;
                             myFacet = null;
                             myRadio = null;
+                            myPanel = null;
                         });
 
-                        it('should show From and To date pickers when Custom is selected', function () {
+                        it('should show and hide From and To date pickers when Custom is and is not selected', function () {
+
+
+                            myRadio.items.items[5].setValue(true);  // custom
+
+                            expect(myPanel.collapsed).toBeFalsy();
+
+                            myRadio.items.items[1].setValue(true);  // one year
+
+                            expect(myPanel.collapsed).toBeTruthy();
+
+                        });
+
+                        it('should set start and end dates to search from the custom date picker values', function () {
 
                             myRadio = myFacet.queryById('facets_published-date').queryById('dateFacet');
 
                             myRadio.items.items[5].setValue(true);  // custom
 
-                            expect(myFacet.dal.data.dateTimeRanges[0].Enddate).toEqual(dateRange.endDate);
+                            var startDate = Ext.Date.format(myPanel.queryById('fromDate').getValue(), 'Y-m-d\\TH:i:s.m\\Z'),
+                                endDate = Ext.Date.format(myPanel.queryById('toDate').getValue(), 'Y-m-d\\TH:i:s.m\\Z'),
+
+                                expectedStart = '1971-01-01T00:00:00.01Z',  // default
+                                expectedEnd = '2013-09-12T00:00:00.09Z';    // default
+
+
+                            expect(startDate).toEqual(expectedStart);
+
+                            expect(endDate).toEqual(expectedEnd);
 
                         });
                     });

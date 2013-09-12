@@ -260,9 +260,12 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
             }
 
             customDates.collapse();
+            customDates.collapsed = true;
+
         }   else    {
 
             customDates.expand();
+            customDates.collapsed = false;
         }
     },
 
