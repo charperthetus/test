@@ -112,16 +112,6 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             var optionsBtn = component.queryById('optionsbutton');
             optionsBtn.fireEvent('click', optionsBtn);
         }
-
-        var dalStore = Ext.data.StoreManager.lookup('dalSources');
-
-
-
-        dalStore.each(function (source) {
-            console.log(source);
-            //source.get('facetFilterCriteria') = [];
-            //source.get('dateTimeRanges') = [];
-        });
     },
 
     handleSearchTermKeyUp: function (field, evt) {
