@@ -104,7 +104,6 @@ describe('Search Component', function () {
                         xtype: 'radiogroup',
                         defaultType: 'radiofield',
                         layout: 'hbox',
-                        //items: ['chicken','frog','goat'],
                         fieldLabel: 'testing',
                         labelAlign: 'left',
                         labelWidth: 200,
@@ -159,7 +158,7 @@ describe('Search Component', function () {
                 component = null;
             }
         });
-        it('should do something', function() {
+        it('should return 6 objects with a key and value property', function() {
             var test = controller.getCustomSearchSelections(formPanel);
             expect(test.length).toBe(6);
             for(var i = 0; i < 6; i++){
