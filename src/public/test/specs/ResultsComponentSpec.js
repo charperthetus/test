@@ -480,11 +480,42 @@ describe('Search Results', function () {
 
                             myRadio.items.items[1].setValue(true);  // one year
 
-                            var dateRange = myFacet.getFormattedDateRange('past_year')
+                            var dateRange = myFacet.getFormattedDateRange('past_year');
 
                             myFacet.onDateRangeChange(myRadio);
 
                             expect(myFacet.dal.data.dateTimeRanges[0].Startdate).toEqual(dateRange.startDate);
+
+                            expect(myFacet.dal.data.dateTimeRanges[0].Enddate).toEqual(dateRange.endDate);
+
+                        });
+                    });
+
+                    describe('doCustomDateSearch', function()  {
+
+                        var server, myFacet, myRadio;
+
+                        beforeEach(function()   {
+
+
+                            myFacet = Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacet', {
+                                facet: facetFixture.dateFacet,
+                                searchResults: {id: 'mockDAL', store: store},
+                                dal: store.getById('mockDAL')
+                            });
+                        });
+
+                        afterEach(function()    {
+                            server = null;
+                            myFacet = null;
+                            myRadio = null;
+                        });
+
+                        it('should show From and To date pickers when Custom is selected', function () {
+
+                            myRadio = myFacet.queryById('facets_published-date').queryById('dateFacet');
+
+                            myRadio.items.items[5].setValue(true);  // custom
 
                             expect(myFacet.dal.data.dateTimeRanges[0].Enddate).toEqual(dateRange.endDate);
 

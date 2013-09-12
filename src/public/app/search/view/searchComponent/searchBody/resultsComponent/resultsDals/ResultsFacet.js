@@ -175,6 +175,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
     },
 
     getFormattedDateRange: function (period) {
+
         var now = new Date(),
             format = 'Y-m-d\\TH:i:s.m\\Z',
             dateObject = {startDate: '', endDate: Ext.Date.format(now, format)},
@@ -207,7 +208,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
 
             default:
                 Ext.Error.raise({
-                    msg: 'Unknown value: ' + rangeName
+                    msg: 'Unknown value: ' + period
                 });
         }
 
@@ -220,7 +221,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
             rangeName = btn.lastValue[fieldName],
             me = btn.findParentByType('search_resultsDals_resultsfacet'),
             dateRange = me.getFormattedDateRange(rangeName),
-            customDates = btn.up('#facets_' + this.model.facetId).queryById('customDatesPanel');
+            customDates = btn.up('#facets_' + me.facet.facetId).queryById('customDatesPanel');
 
         if (rangeName !== 'custom') {
             if (!me.dal.get('dateTimeRanges').length) {
@@ -257,18 +258,16 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
             if (searchController !== undefined) {
                 searchController.doSearch(me);
             }
-        }
 
-        if(rangeName === 'custom')   {
-            customDates.expand();
-        }   else    {
             customDates.collapse();
+        }   else    {
+
+            customDates.expand();
         }
     },
 
-    
-
     doCustomDateSearch:function()   {
+
         var format = 'Y-m-d\\TH:i:s.m\\Z',
             startDate = Ext.Date.format(this.queryById('fromDate').getValue(), format),
             endDate = Ext.Date.format(this.queryById('toDate').getValue(), format),
@@ -277,8 +276,8 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
             me = this;
 
 
-        if (!me.dal.data.dateTimeRanges.length) {
-            me.dal.data.dateTimeRanges = [];   // just set to an empty array
+        if (!me.dal.get('dateTimeRanges').length) {
+            me.dal.set('dateTimeRanges', []);   // just set to an empty array
         }
         var newDateRange = {
             'Startdate': startDate,
@@ -289,18 +288,18 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
 
         var updateExisting = false;
 
-        if (me.dal.data.dateTimeRanges.length > 0) {
-            Ext.each(me.dal.data.dateTimeRanges, function (range, index) {
+        if (me.dal.get('dateTimeRanges').length > 0) {
+            Ext.each(me.dal.get('dateTimeRanges'), function (range, index) {
                 if (range.DateFieldName === fieldName) {
                     // replace it, do not add another
-                    me.dal.data.dateTimeRanges[index] = newDateRange;
+                    me.dal.get('dateTimeRanges')[index] = newDateRange;
                     updateExisting = true;
                 }
             });
         }
 
         if (!updateExisting) {
-            me.dal.data.dateTimeRanges.push(newDateRange);
+            me.dal.get('dateTimeRanges').push(newDateRange);
         }
 
         /*
@@ -340,7 +339,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
 
                         Ext.each(values, function (val, ind) {
                             if (val === btn.inputValue) {
-                                Ext.Array.remove(values, values[ind])
+                                Ext.Array.remove(values, values[ind]);
                             }
                         });
 
