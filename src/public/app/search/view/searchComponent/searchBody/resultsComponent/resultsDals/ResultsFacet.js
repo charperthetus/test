@@ -13,7 +13,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
         'Ext.XTemplate',
         'Ext.form.Panel',
         'Ext.form.RadioGroup',
-        'Ext.form.field.Date'
+        'Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsDatefield'
     ],
 
     width: '100%',
@@ -81,25 +81,21 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
                                 header:false,
                                 width:'100%',
                                 items: [{
-                                    xtype: 'datefield',
+                                    xtype: 'search_resultsDals_resultsdatefield',
                                     fieldLabel: 'From',
                                     labelWidth:50,
                                     width:185,
                                     name: 'from_date',
-                                    maxValue: new Date(),
-                                    value: new Date('1/1/1971'),
-                                    editable:false,
-                                    format: 'd M Y'
+                                    itemId:'fromDate',
+                                    value: new Date('1/1/1971')
                                 }, {
-                                    xtype: 'datefield',
+                                    xtype: 'search_resultsDals_resultsdatefield',
                                     fieldLabel: 'To',
                                     labelWidth:50,
                                     width:185,
                                     name: 'to_date',
-                                    maxValue: new Date(),
-                                    value: new Date(),  // defaults to today
-                                    editable:false,
-                                    format: 'd M Y'
+                                    itemId:'toDate',
+                                    value: new Date()
                                 }]
 
                             }
@@ -214,7 +210,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
                 break;
 
             case 'custom'   :
-                // TODO: not handled yet
+                // do nothing, just reveals the custom date range panel
                 break;
 
             default:
@@ -222,6 +218,51 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
                     msg: 'Unknown value: ' + rangeName
                 });
         }
+
+        if (!me.dal.data.dateTimeRanges.length) {
+            me.dal.data.dateTimeRanges = [];   // just set to an empty array
+        }
+        var newDateRange = {
+            'Startdate': startDate,
+            'dateRangeName': rangeName,
+            'DateFieldName': fieldName,
+            'Enddate': endDate
+        };
+
+        var updateExisting = false;
+
+        if (me.dal.data.dateTimeRanges.length > 0) {
+            Ext.each(me.dal.data.dateTimeRanges, function (range, index) {
+                if (range.DateFieldName === fieldName) {
+                    // replace it, do not add another
+                    me.dal.data.dateTimeRanges[index] = newDateRange;
+                    updateExisting = true;
+                }
+            });
+        }
+
+        if (!updateExisting) {
+            me.dal.data.dateTimeRanges.push(newDateRange);
+        }
+
+        /*
+         resubmit the search request
+         */
+        var searchController = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
+
+        if (searchController !== undefined && rangeName !== 'custom') {
+            searchController.doSearch(me);
+        }
+    },
+
+    doCustomDateSearch:function()   {
+        var format = 'Y-m-d\\TH:i:s.m\\Z',
+            startDate = Ext.Date.format(this.queryById('fromDate').getValue(), format),
+            endDate = Ext.Date.format(this.queryById('toDate').getValue(), format),
+            fieldName = this.query('form')[0].itemId.replace('facets_', ''),
+            rangeName = 'custom',
+            me = this;
+
 
         if (!me.dal.data.dateTimeRanges.length) {
             me.dal.data.dateTimeRanges = [];   // just set to an empty array
