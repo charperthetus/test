@@ -6,10 +6,8 @@
  */
 Ext.require('Savanna.Config');
 Ext.require('Savanna.search.controller.SearchComponent');
-Ext.require('Savanna.search.model.SearchHistory');
 Ext.require('Savanna.search.model.SearchRequest');
 Ext.require('Savanna.search.model.SearchResult');
-Ext.require('Savanna.search.store.SearchHistory');
 Ext.require('Savanna.search.view.SearchComponent');
 Ext.require('Savanna.search.view.searchComponent.searchBody.ResultsComponent');
 Ext.require('Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsPanel');
@@ -302,7 +300,7 @@ describe('Search Results', function () {
 
             grid = panel.queryById('resultspanelgrid');
 
-            sources = resultsComponent.queryById('resultsdals'),
+            sources = resultsComponent.queryById('resultsdals');
 
             // Set up the store first as it is autovivified by our main view
             store = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.DalSources', { autoLoad: false });

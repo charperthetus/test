@@ -5,10 +5,8 @@
  */
 Ext.require('Savanna.Config');
 Ext.require('Savanna.search.controller.SearchComponent');
-Ext.require('Savanna.search.model.SearchHistory');
 Ext.require('Savanna.search.model.SearchRequest');
 Ext.require('Savanna.search.model.SearchResult');
-Ext.require('Savanna.search.store.SearchHistory');
 Ext.require('Savanna.search.view.searchComponent.searchBar.SearchAdvancedTextfield');
 Ext.require('Savanna.search.view.searchComponent.SearchBar');
 Ext.require('Savanna.search.view.searchComponent.searchBar.SearchForm');
@@ -128,7 +126,6 @@ describe('Search Component', function () {
             toolbar = component.queryById('searchtoolbar');
             controller = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
 
-            spyOn(controller, 'logHistory').andCallThrough();
         });
 
         afterEach(function () {
@@ -143,61 +140,6 @@ describe('Search Component', function () {
             }
 
             toolbar = null;
-        });
-
-        it('should do a search when onHistoryItemClick is called', function () {
-            // TODO: make this into a real test...
-            spyOn(controller, 'doSearch');
-
-            controller.onHistoryItemClick();
-
-            expect(controller.doSearch).toHaveBeenCalled();
-        });
-
-        describe('logHistory method', function () {
-            var origErrorHandler,
-                errorRaised = false,
-                fixture = [
-                    {query: 'Apples', date: 1375746974564},
-                    {query: 'Oranges', date: 1375746974565}
-                ];
-
-            beforeEach(function () {
-                origErrorHandler = Ext.Error.handle;
-
-                Ext.Error.handle = function () {
-                    errorRaised = true;
-
-                    return true;
-                };
-            });
-
-            afterEach(function () {
-                Ext.Error.handle = origErrorHandler;
-
-                origErrorHandler = null;
-                errorRaised = false;
-            });
-
-            it('should sync the store', function () {
-                var store = toolbar.getStore();
-
-                expect(store).not.toBeUndefined();
-
-                spyOn(store, 'sync');
-
-                controller.logHistory(fixture, toolbar);
-
-                expect(store.sync).toHaveBeenCalled();
-            });
-
-            it('should raise an error if we have no store', function () {
-                spyOn(Ext.data.StoreManager, 'lookup').andReturn(null);
-
-                controller.logHistory(fixture, toolbar);
-
-                expect(errorRaised).toBeTruthy();
-            });
         });
 
         describe('handleSearchTermKeyUp callback', function () {
@@ -285,7 +227,7 @@ describe('Search Component', function () {
             });
 
             it('should clear the search text input', function () {
-                searchbar.queryById('search_clear').fireEvent('click', searchbar.queryById('search_clear'));
+                controller.clearSearch(searchbar.queryById('search_clear'));
                 var form = searchbar.queryById('search_form');
                 expect(form.queryById('search_terms').getValue()).toEqual('');
             });
@@ -456,15 +398,6 @@ describe('Search Component', function () {
             });
         });
 
-        describe('doSearch method', function () {
-
-            it('should call logHistory', function () {
-                controller.doSearch(component.queryById('searchbar').items.first(), {});
-
-                expect(controller.logHistory).toHaveBeenCalled();
-            });
-        });
-
         describe('managing Toolbar subview events', function () {
 
             describe('onBodyToolbarClick', function () {
@@ -547,127 +480,6 @@ describe('Search Component', function () {
                 });
 
                 expect(resultsStore.getCount()).toBe(resultsFixture.searchResults.results.length);
-            });
-        });
-    });
-
-    describe('SearchHistory Store', function () {
-
-
-        describe('retrieving history data', function () {
-
-            var historyFixture,
-                readMethod,
-                historyStore,
-                testUrl;
-
-            beforeEach(function () {
-
-                historyFixture = Ext.clone(ThetusTestHelpers.Fixtures.HistoryResults);
-
-                readMethod = 'GET';
-
-                historyStore = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.SearchHistory');
-
-                testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(historyStore.getProxy(), 'read', readMethod);
-
-                server.respondWith(readMethod, testUrl, historyFixture.historyResults);
-
-                historyStore.load();
-
-                server.respond({
-                    errorOnInvalidRequest: true
-                });
-            });
-
-            afterEach(function () {
-
-                if (server) {
-                    server.restore();
-                    server = null;
-                }
-
-                historyFixture = null;
-                historyStore = null;
-            });
-
-            it('should get same number of records as in our fixture', function () {
-                expect(historyStore.getCount()).toBe(historyFixture.historyResults.length);
-            });
-        });
-
-        describe('sending history data', function () {
-
-            var historyFixture,
-                readMethod,
-                historyStore,
-                testUrl;
-
-            beforeEach(function () {
-                historyFixture = Ext.clone(ThetusTestHelpers.Fixtures.HistoryResults);
-                readMethod = 'POST';
-                historyStore = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.SearchHistory');
-                testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(historyStore.getProxy(), 'read', readMethod);
-
-                server.respondWith(readMethod, testUrl, historyFixture.historyResults);
-
-            });
-
-            afterEach(function () {
-                if (server) {
-                    server.restore();
-                    server = null;
-                }
-
-                historyFixture = null;
-                historyStore = null;
-            });
-
-            it('should send our history records and get them back from the server', function () {
-
-                Ext.Array.each(historyFixture.historyResults, function (search) {
-                    historyStore.add(search);
-                });
-
-                historyStore.sync();
-
-                server.respond({
-                    returnBody: true, // since the service basically gives us back our searches...
-                    reportBody: false, // enable if you want to see the request body in the console
-                    testBody: function(body) {
-                        var json = JSON.parse(body);
-                        if (json.length !== historyFixture.historyResults.length) {
-                            return 'Expected request body to have ' + historyFixture.historyResults.length + ', but got ' + json.length;
-                        }
-
-                        return '';
-                    },
-                    errorOnInvalidRequest: true
-                });
-
-                expect(historyStore.getCount()).toBe(3);
-            });
-
-            it('should make sure data sent is sent as an array of records, even when sending one record', function () {
-                historyStore.add(historyFixture.historyResults[0]);
-
-                historyStore.sync();
-
-                server.respond({
-                    returnBody: true, // since the service basically gives us back our searches...
-                    //reportBody: false, // enable if you want to see the request body in the console
-                    testBody: function (body) {
-                        var json = JSON.parse(body);
-                        if (!Array.isArray(json)) {
-                            return 'Expected an array but got ' + body;
-                        }
-
-                        return '';
-                    },
-                    errorOnInvalidRequest: true
-                });
-
-                expect(historyStore.getCount()).toBe(1);
             });
         });
     });
