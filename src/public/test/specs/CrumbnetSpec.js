@@ -139,7 +139,7 @@ describe('Savanna.crumbnet', function() {
             });
 
             it('should have a handler to dispatch for every type (other than "button")', function() {
-                var i = 0;
+                var i;
 
                 for (i = 0; i < buttons.length; ++i) {
                     controller.dispatchHandler(buttons[i]);

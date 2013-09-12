@@ -37,9 +37,6 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
                 click: this.submenuDispatchHandler
             },
 
-            'go-graph #nodeColorPicker': {
-                select: this.handleNodeColorSelect
-            },
             'go-graph #search': {
                 click: this.handleCrumbnetSearch
             },
@@ -231,13 +228,9 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
         var diagram = this.getDiagramForComponent(button),
             newSetting = !diagram.grid.visible;
 
-        console.log('going to toggle the grid....');
         diagram.grid.visible = newSetting;
         diagram.toolManager.draggingTool.isGridSnapEnabled = newSetting;
         diagram.toolManager.resizingTool.isGridSnapEnabled = newSetting;
-
-        //TODO - The diagram is not auto updating itself when I turn the grid on the first time.  It does once it has been shown once.
-        diagram.update(); //this is not working - try something else
     },
 
     handleToggleOverview: function(button) {
