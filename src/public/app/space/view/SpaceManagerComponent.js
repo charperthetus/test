@@ -5,12 +5,13 @@
  * Time: 11:21 AM
  * To change this template use File | Settings | File Templates.
  */
-Ext.define('Savanna.spacemanager.view.SpaceManagerComponent', {
+Ext.define('Savanna.space.view.SpaceManagerComponent', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.space_spacemanagercomponent',
     requires:[
         'Ext.panel.Panel',
-        'Savanna.spacemanager.view.SpaceMetadataTabPanel',
+        'Savanna.space.view.SpaceMetadataTabPanel',
+        'Savanna.space.view.SpaceListPanel',
         'Savanna.controller.Factory'
     ],
     layout: {
@@ -37,7 +38,8 @@ Ext.define('Savanna.spacemanager.view.SpaceManagerComponent', {
                         '->',
                         {
                             xtype: 'button',
-                            text: 'Go to Space'
+                            text: 'Go to Space',
+                            itemId: 'openspacebutton'
                         }
                     ]
                 },
@@ -101,30 +103,18 @@ Ext.define('Savanna.spacemanager.view.SpaceManagerComponent', {
             Area to show a list of the user's spaces. Also contains a control to allow them to create
             a new space.
              */
-            title: 'My Spaces',
+            xtype: 'space_spacelist',
             region: 'south',
             collapsible: true,
             split: true,
             height: '20%',
             //make sure this value is below that of the metadata tab panel, to ensure correct layout
-            weight: -2,
-            layout: {
-                type: 'hbox',
-                align: 'middle',
-                padding: '20'
-            },
-            items: [
-                {
-                    xtype: 'button',
-                    scale: 'large',
-                    text: '<b>Create<br>New Space</b>'
-                }
-            ]
+            weight: -2
         }
     ],
 
     initComponent: function() {
         this.callParent(arguments);
-        Savanna.controller.Factory.getController('Savanna.spacemanager.controller.SpaceManagerController');
+        Savanna.controller.Factory.getController('Savanna.space.controller.SpaceManagerController');
     }
 });

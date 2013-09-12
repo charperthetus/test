@@ -36,17 +36,10 @@ Ext.define('Savanna.desktop.view.SavannaToolbar',{
             },
             items: [{
                 text: 'Dashboard',
-                itemId: 'dashboardbutton',
-                enableToggle: true,
-                allowDepress: false,
-                toggleGroup: 'navgroup'
+                itemId: 'dashboardbutton'
             },{
                 text: 'Space Manager',
-                itemId: 'spacemanagerbutton',
-                enableToggle: true,
-                pressed: true,
-                allowDepress: false,
-                toggleGroup: 'navgroup'
+                itemId: 'spacemanagerbutton'
             },{
                 text: 'Search',
                 itemId: 'searchbutton'

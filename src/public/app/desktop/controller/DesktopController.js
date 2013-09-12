@@ -10,35 +10,39 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
 
     statics: {
         aboutwindow: null,
-        searchwindow: null
+        searchwindow: null,
+        mystuffflyout: null
     },
     requires: [
         'Savanna.desktop.view.AboutWindow',
         'Savanna.desktop.view.SearchWindow',
-        'Savanna.desktop.view.UploadWindow'
+        'Savanna.desktop.view.UploadWindow',
+        'Savanna.desktop.view.MyStuffWindow'
     ],
     views: [
-        'Savanna.desktop.view.SavannaToolbar'
+        'Savanna.desktop.view.SavannaToolbar',
+        'Savanna.desktop.view.SavannaDesktop',
+        'Savanna.desktop.view.SavannaWorkspace'
     ],
     refs: [{
-        ref: 'workspaceComponent',
-        selector: 'desktop_savannadesktop > #savannaworkspace'
+        ref: 'desktopContainer',
+        selector: 'desktop_savannadesktop > #desktopcontainer'
     }],
-    currentWorkspaceItem: null,
+    currentDesktopItem: null,
 
     init: function () {
         this.control({
-            'desktop_savannadesktop > #savannaworkspace': {
-                render: this.onWorkspaceRendered
+            'desktop_savannadesktop > #desktopcontainer': {
+                render: this.onDesktopRendered
             },
             'desktop_savannatoolbar #logobutton': {
                 click: this.displayAboutDialog
             },
             'desktop_savannatoolbar #dashboardbutton': {
-                toggle: this.displayDashboard
+                click: this.displayDashboard
             },
             'desktop_savannatoolbar #spacemanagerbutton': {
-                toggle: this.displaySpaceManager
+                click: this.displaySpaceManager
             },
             'desktop_savannatoolbar #searchbutton': {
                 click: this.displaySearch
@@ -57,22 +61,48 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
             },
             'desktop_savannatoolbar #savannalogout': {
                 click: this.handleLogout
+            },
+            'desktop_savannaworkspace #flyoutbutton': {
+                click: this.showMyStuffFlyout
+            },
+            'desktop_savannaworkspace #singleviewbutton': {
+                toggle: function(button) {
+                    if (button.pressed) {
+                        this.setWorkspaceViewMode('single');
+                    }
+                }
+            },
+            'desktop_savannaworkspace #splitviewbutton': {
+                toggle: function(button) {
+                    if (button.pressed) {
+                        this.setWorkspaceViewMode('split');
+                    }
+                }
             }
+        });
+
+        this.application.on({
+            openspace: this.openSpace,
+            scope: this
         });
     },
 
     //CUSTOM METHODS
-    onWorkspaceRendered: function() {
-        console.log('Workspace was rendered');
-        var workspaceComponent = this.getWorkspaceComponent();
-        if (workspaceComponent) {
-            currentWorkspaceItem = workspaceComponent.items.items[0];
+    openSpace: function() { //todo: pass space as parameter
+        var spaceWorkArea = Ext.ComponentQuery.query('panel #savannaworkspace')[0];
+        if (spaceWorkArea) {
+            this.showDesktopComponent(spaceWorkArea);
+        }
+    },
+
+    onDesktopRendered: function() {
+        var desktopContainer = Ext.ComponentQuery.query('desktop_savannadesktop > #desktopcontainer')[0];
+        if (desktopContainer) {
+            currentDesktopItem = desktopContainer.items.items[0];
         }
     },
 
     displayAboutDialog: function() {
-        console.log('The user hit about');
-        //todo: is this the best way to do this? Or is it okay to create/destroy the window each time?
         if (!this.statics().aboutwindow) {
             this.statics().aboutwindow = Ext.create('Savanna.desktop.view.AboutWindow');
             console.log('creating about window');
@@ -81,29 +111,22 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
     },
 
     displayDashboard: function(button) {
-        if (button.pressed) {
-            console.log('Show Dashboard');
-            var dashboard = button.up('desktop_savannadesktop').down('#savannadashboard');
-            this.swap(dashboard);
-        }
+        var dashboard = button.up('desktop_savannadesktop').down('#savannadashboard');
+        this.showDesktopComponent(dashboard);
     },
 
     displaySpaceManager: function(button) {
-        if (button.pressed){
-            console.log('Show Space Manager');
-            var spacemanager = button.up('desktop_savannadesktop').down('#spacemanager');
-            this.swap(spacemanager);
-        }
+        var spacemanager = button.up('desktop_savannadesktop').down('#spacemanager');
+        this.showDesktopComponent(spacemanager);
     },
 
-    swap: function(cmp) {
-        var workspace = this.getWorkspaceComponent();
-        if (workspace && cmp) {
-            //todo: is this the best way to do this? I was swapping items 0 and 1 and then doing a doLayout().
-            if (currentWorkspaceItem && currentWorkspaceItem !== cmp){
+    showDesktopComponent: function(cmp) {
+        if (cmp) {
+            if (currentDesktopItem && currentDesktopItem !== cmp){
                 cmp.show();
-                currentWorkspaceItem.hide();
-                currentWorkspaceItem = cmp;
+                cmp.hidden = false;
+                currentDesktopItem.hide();
+                currentDesktopItem = cmp;
             }
         }
     },
@@ -151,5 +174,52 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
 
     handleLogout: function() {
         console.log('The user is trying to logout');
+    },
+
+    showMyStuffFlyout: function() {
+        if (!this.statics().mystuffflyout) {
+            this.statics().mystuffflyout = Ext.create('Savanna.desktop.view.MyStuffWindow');
+        }
+        var spaceTabPanel = Ext.ComponentQuery.query('panel #savannaworkspace #lefttabpanel')[0];
+        if (spaceTabPanel) {
+            this.statics().mystuffflyout.setPosition(spaceTabPanel.getPosition());
+        }
+        this.statics().mystuffflyout.show();
+    },
+
+    setWorkspaceViewMode: function(mode) {
+        var savannaWorkspace = Ext.ComponentQuery.query('panel #savannaworkspace')[0];
+        if (savannaWorkspace) {
+            var mainTabPanel = savannaWorkspace.down('#maintabpanel');
+            if (mainTabPanel){
+                if (mode === 'split') {
+                    var newTabPanel = Ext.create('Savanna.desktop.view.SavannaTabPanel', {
+                        flex: 2,
+                        height: '100%',
+                        itemId: 'secondarytabpanel'
+                    });
+                    savannaWorkspace.add(newTabPanel);
+
+                    var activeIndex = mainTabPanel.items.indexOf(mainTabPanel.getActiveTab());
+                    var len = mainTabPanel.items.length-1;
+                    while(len > activeIndex) {
+                        newTabPanel.insert(0,mainTabPanel.items.getAt(len));
+                        len--;
+                    }
+                    newTabPanel.setActiveTab(newTabPanel.items.getAt(0));
+                } else if (mode === 'single') {
+                    var secondaryTabPanel = savannaWorkspace.down('#secondarytabpanel');
+                    if (secondaryTabPanel) {
+                        while (secondaryTabPanel.items.length > 0) {
+                            mainTabPanel.add(secondaryTabPanel.items.getAt(0));
+                        }
+                        savannaWorkspace.remove(secondaryTabPanel, true);
+                    }
+                } else {
+                    console.log('unknown mode passed to DesktopController.setWorkspaceViewMode(): ' + mode)
+                }
+            }
+            savannaWorkspace.currentView = mode;
+        }
     }
 });

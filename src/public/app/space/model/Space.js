@@ -5,7 +5,7 @@
  * Time: 8:15 PM
  * To change this template use File | Settings | File Templates.
  */
-Ext.define('Savanna.spacemanager.model.Space', {
+Ext.define('Savanna.space.model.Space', {
     extend: 'Ext.data.Model',
 
     fields: [

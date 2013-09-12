@@ -13,7 +13,8 @@ Ext.define('Savanna.desktop.view.SavannaDesktop', {
         'Savanna.crumbnet.view.CrumbnetComponent',
         'Savanna.desktop.view.SavannaToolbar',
         'Savanna.desktop.view.SavannaDashboard',
-        'Savanna.spacemanager.view.SpaceManagerComponent',
+        'Savanna.desktop.view.SavannaWorkspace',
+        'Savanna.space.view.SpaceManagerComponent',
         'Savanna.controller.Factory'
     ],
     layout: {
@@ -28,7 +29,7 @@ Ext.define('Savanna.desktop.view.SavannaDesktop', {
         },
         {
             xtype: 'panel',
-            itemId: 'savannaworkspace',
+            itemId: 'desktopcontainer',
             layout: 'fit',
             region: 'center',
             items: [
@@ -39,7 +40,13 @@ Ext.define('Savanna.desktop.view.SavannaDesktop', {
                 {
                     xtype: 'desktop_savannadashboard',
                     itemId: 'savannadashboard',
-                    width: '100%'
+                    width: '100%',
+                    hidden: true
+                },
+                {
+                    xtype: 'desktop_savannaworkspace',
+                    itemId: 'savannaworkspace',
+                    hidden: true
                 }
 //                {
 //                    xtype: 'tabpanel',

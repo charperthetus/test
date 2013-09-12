@@ -5,12 +5,12 @@
  * Time: 8:48 PM
  * To change this template use File | Settings | File Templates.
  */
-Ext.define('Savanna.spacemanager.store.Spaces', {
+Ext.define('Savanna.space.store.Spaces', {
     extend: 'Ext.data.Store',
 
     storeId: 'spaceStore',
 
-    model: 'Savanna.spacemanager.model.Space',
+    model: 'Savanna.space.model.Space',
 
     autoLoad: true,
 

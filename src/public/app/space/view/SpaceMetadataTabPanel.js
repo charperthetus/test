@@ -5,15 +5,15 @@
  * Time: 8:51 AM
  * To change this template use File | Settings | File Templates.
  */
-Ext.define('Savanna.spacemanager.view.SpaceMetadataTabPanel', {
+Ext.define('Savanna.space.view.SpaceMetadataTabPanel', {
     extend: 'Ext.tab.Panel',
     alias: 'widget.space_metadatatabpanel',
     requires:[
         'Ext.tab.Panel',
-        'Savanna.spacemanager.view.metadata.DetailPanel',
-        'Savanna.spacemanager.view.metadata.TeamPanel',
-        'Savanna.spacemanager.view.metadata.CommentPanel',
-        'Savanna.spacemanager.view.metadata.ActivityPanel'
+        'Savanna.space.view.metadata.DetailPanel',
+        'Savanna.space.view.metadata.TeamPanel',
+        'Savanna.space.view.metadata.CommentPanel',
+        'Savanna.space.view.metadata.ActivityPanel'
     ],
     activeTab: 0,
     items: [
