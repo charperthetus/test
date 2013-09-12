@@ -14,7 +14,11 @@ Ext.define('Savanna.search.model.SearchRequest', {
 
     fields: [
         {name: '_type', type: 'string', defaultValue: 'com.thetus.platforms.savanna.mdks.search.objects.SearchParamVO'},
-        {name: 'contentDataSource', type: 'string', defaultValue: 'SolrJdbc'},
+        {name: 'contentDataSource', type: 'string', defaultValue: Savanna.Config.defaultSearchDal},
+        /*
+        need to consult with services about this... hard-coding is likely the reason I have a misaligned facet
+         called 'location' in LinkedIn.
+         */
         {name: 'desiredFacets', type: 'array', defaultValue: [
             'published-date',
             'ingest-date',

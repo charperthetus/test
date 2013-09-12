@@ -328,7 +328,7 @@ describe('Search Results', function () {
                         it('should return the correct UI for date facets', function () {
 
                             myFacet = Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacet', {
-                                model: facetFixture.dateFacet
+                                facet: facetFixture.dateFacet
                             });
 
                             expect(myFacet.queryById('facets_published-date').queryById('dateFacet')).toBeTruthy();
@@ -337,8 +337,8 @@ describe('Search Results', function () {
                         it('should return the correct UI for string facets', function () {
 
                             myFacet = Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacet', {
-                                model: facetFixture.stringFacet,
-                                set: {id: 'mockDAL', store: searchStore}
+                                facet: facetFixture.stringFacet,
+                                searchResults: {id: 'mockDAL', store: searchStore}
                             });
 
                             expect(myFacet.queryById('facets_producer').queryById('stringFacet')).toBeTruthy();
@@ -347,8 +347,8 @@ describe('Search Results', function () {
                         it('should raise an error for an unexpected facetDataType', function () {
 
                             myFacet = Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacet', {
-                                model: facetFixture.unknownFacet,
-                                set: {id: 'mockDAL', store: searchStore}
+                                facet: facetFixture.unknownFacet,
+                                searchResults: {id: 'mockDAL', store: searchStore}
                             });
 
                             expect(errorRaised).toBeTruthy();
@@ -359,14 +359,16 @@ describe('Search Results', function () {
 
                         it('should add a checkbox for each facetValue', function () {
                             myFacet = Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacet', {
-                                model: facetFixture.stringFacet,
-                                set: {id: 'mockDAL', store: searchStore}
+                                facet: facetFixture.stringFacet,
+                                searchResults: {id: 'mockDAL', store: searchStore}
                             });
                             spyOn(myFacet.queryById('facets_producer').queryById('stringFacet'), 'add');
 
                             myFacet.buildFacetFilterGroup();
 
-                            expect(myFacet.queryById('facets_producer').queryById('stringFacet').add.callCount).toBe(6);
+                            var expected = searchStore.facetValueSummaries.producer.facetValues.length;
+
+                            expect(myFacet.queryById('facets_producer').queryById('stringFacet').add.callCount).toBe(expected);
                         });
                     });
 
@@ -377,8 +379,8 @@ describe('Search Results', function () {
                         beforeEach(function()   {
 
                             myFacet = Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacet', {
-                                model: facetFixture.stringFacet,
-                                set: {id: 'mockDAL', store: searchStore},
+                                facet: facetFixture.stringFacet,
+                                searchResults: {id: 'mockDAL', store: searchStore},
                                 dal: store.getById('mockDAL')
                             });
                         });
@@ -460,8 +462,8 @@ describe('Search Results', function () {
 
 
                             myFacet = Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacet', {
-                                model: facetFixture.dateFacet,
-                                set: {id: 'mockDAL', store: store},
+                                facet: facetFixture.dateFacet,
+                                searchResults: {id: 'mockDAL', store: store},
                                 dal: store.getById('mockDAL')
                             });
                         });
@@ -478,14 +480,13 @@ describe('Search Results', function () {
 
                             myRadio.items.items[1].setValue(true);  // one year
 
-                            var endDate = Ext.Date.format(new Date(), 'Y-m-d\\TH:i:s.m\\Z');
-                            var startDate = Ext.Date.format(Ext.Date.subtract(new Date(), Ext.Date.YEAR, 1), 'Y-m-d\\TH:i:s.m\\Z');
+                            var dateRange = myFacet.getFormattedDateRange('past_year')
 
                             myFacet.onDateRangeChange(myRadio);
 
-                            expect(myFacet.dal.data.dateTimeRanges[0].Startdate).toEqual(startDate);
+                            expect(myFacet.dal.data.dateTimeRanges[0].Startdate).toEqual(dateRange.startDate);
 
-                            expect(myFacet.dal.data.dateTimeRanges[0].Enddate).toEqual(endDate);
+                            expect(myFacet.dal.data.dateTimeRanges[0].Enddate).toEqual(dateRange.endDate);
 
                         });
                     });
