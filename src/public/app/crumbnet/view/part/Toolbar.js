@@ -21,6 +21,40 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
     // CUSTOM METHODS
 
     setupItems: function() {
+        /*
+            A NOTE ABOUT "types"
+
+            We've elected to use the "type" property to indicate the action a given button should implement, but it
+            should be pointed out that "type" is formally defined as a parameter to control what kind of HTML <input>
+            element is created by the browser.  However, since ExtJS appears to thoroughly disregard this, we should be
+            okay with our current course.
+
+            The reason for using "type" is that allows us to create component queries in the controller to listen to
+            and filter events from the toolbar, identifying when a button is at the top-level of the toolbar and when
+            it is in a submenu. The way this works is:
+
+            top-level buttons - simply have a "type" property
+            submenu buttons - have a type at the menu which indicates:
+                                1) the name of the handler
+                                2) that it is a submenu
+
+            Examples:
+
+            {
+                type: 'topLevelButton', // the controller will look for a handleTopLevelButton method to dispatch events
+                text: 'I am a top-level button'
+            }
+            {
+                type: 'someMenu submenu', // the controller will look for a handleSomeMenuSubmenu method to dispatch events from all child buttons
+                text: 'I have child buttons',
+                menu: [
+                    {
+                        type: 'lowerLevelButton',
+                        text: 'I am a submenu button'
+                    }
+                ]
+            }
+         */
         return [
             { text: 'Main Menu', menu: this.buildMainDropdown() },
             this.buildUndoMenuItem(),
@@ -32,7 +66,9 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
 
             { xtype: 'textfield', itemId: 'crumbnetSearchText' },
             { itemId: 'search', glyph: 61808, ui: 'flat-toolbar-button' },
+
             { xtype: 'tbseparator' }, // could also be '-'
+
             { glyph: 61786, ui: 'flat-toolbar-button', menu: this.buildSaveMenu() },
             this.buildExportMenuItem(),
             this.buildPrintMenuItem()
@@ -41,32 +77,27 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
 
     buildMainDropdown: function() {
         var includeLabel = true;
-        var fileMenuItems = this.buildFileMenuItems(includeLabel);
-        var editMenuItems = this.buildEditMenuItems(includeLabel);
-        var viewMenuItems = this.buildViewMenuItems(includeLabel);
-        var formatMenuItems = this.buildFormatMenuItems(includeLabel);
-        var objectMenuItems = this.buildObjectMenuItems(includeLabel);
 
         return [
             {
                 text: 'File',
-                menu: fileMenuItems
+                menu: this.buildFileMenuItems(includeLabel)
             },
             {
                 text: 'Edit',
-                menu: editMenuItems
+                menu: this.buildEditMenuItems(includeLabel)
             },
             {
                 text: 'View',
-                menu: viewMenuItems
+                menu: this.buildViewMenuItems(includeLabel)
             },
             {
                 text: 'Format',
-                menu: formatMenuItems
+                menu: this.buildFormatMenuItems()
             },
             {
                 text: 'Object',
-                menu: objectMenuItems
+                menu: this.buildObjectMenuItems()
             }
         ];
     },
@@ -217,50 +248,52 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
 
     // "Format" menu
 
-    buildFormatMenuItems: function(includeLabel) {
-        var linkTemplateNames = Savanna.crumbnet.utils.ViewTemplates.getLinkTemplateNames(),
-            linkStyleMenuChoices = Ext.Array.map(linkTemplateNames, function maplLinkTemplateNames(item) {
-            return { type: item, text: item };
-        }),
-            linkRelationshipTypes = Savanna.crumbnet.utils.ViewTemplates.linkRelationshipTypes,
-            linkTypeMenuChoices = Ext.Array.map(linkRelationshipTypes, function mapLinkRelationshipTypes(item) {
-            return { type: item, text: item };
-        }),
-            formatMenuItems = [
-                {
-                    type: 'alignment submenu',
-                    text: 'Alignment',
-                    menu: [
-                        { type: 'right', text: 'Align Right' },
-                        { type: 'left', text: 'Align Left' },
-                        { type: 'top', text: 'Align Top' },
-                        { type: 'bottom', text: 'Align Bottom' },
-                        { type: 'center', text: 'Align Center' }
-                    ]
-                },
-                {
-                    type: 'nodeColor submenu',
-                    text: 'Node Color',
-                    menu: { xtype: 'colormenu', itemId: 'nodeColorPicker' }
-                },
-                {
-                    type: 'linkStyle submenu',
-                    text: 'Link Style',
-                    menu: linkStyleMenuChoices
-                },
-                {
-                    type: 'linkType submenu',
-                    text: 'Link Type',
-                    menu: linkTypeMenuChoices
-                }
-        ];
+    buildFormatMenuItems: function() {
+        var linkTemplateNames, linkStyleMenuChoices, linkRelationshipTypes, linkTypeMenuChoices;
 
-        return formatMenuItems;
+        linkTemplateNames = Savanna.crumbnet.utils.ViewTemplates.getLinkTemplateNames();
+        linkStyleMenuChoices = Ext.Array.map(linkTemplateNames, function maplLinkTemplateNames(item) {
+            return { type: item, text: item };
+        });
+
+        linkRelationshipTypes = Savanna.crumbnet.utils.ViewTemplates.linkRelationshipTypes;
+        linkTypeMenuChoices = Ext.Array.map(linkRelationshipTypes, function mapLinkRelationshipTypes(item) {
+            return { type: item, text: item };
+        });
+
+        return [
+            {
+                type: 'alignment submenu',
+                text: 'Alignment',
+                menu: [
+                    { type: 'right', text: 'Align Right' },
+                    { type: 'left', text: 'Align Left' },
+                    { type: 'top', text: 'Align Top' },
+                    { type: 'bottom', text: 'Align Bottom' },
+                    { type: 'center', text: 'Align Center' }
+                ]
+            },
+            {
+                type: 'nodeColor submenu',
+                text: 'Node Color',
+                menu: { xtype: 'colormenu', itemId: 'nodeColorPicker' }
+            },
+            {
+                type: 'linkStyle submenu',
+                text: 'Link Style',
+                menu: linkStyleMenuChoices
+            },
+            {
+                type: 'linkType submenu',
+                text: 'Link Type',
+                menu: linkTypeMenuChoices
+            }
+        ];
     },
 
     // "Object" menu
 
-    buildObjectMenuItems: function(includeLabel) {
+    buildObjectMenuItems: function() {
         var objectMenuItems = [
             { type: 'flag', text: 'Flag' },
             { type: 'tag', text: 'Tag' },
@@ -275,7 +308,7 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
 
     buildToolbarButton: function(options) {
         var includeLabel = options.includeLabel,
-            buttonOptions = {};
+            buttonOptions;
 
         delete options.includeLabel;
 

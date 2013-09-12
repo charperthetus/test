@@ -21,8 +21,6 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
         }
     ],
 
-    TOOLBAR_BUTTON_QUERY: 'crumbnet_part_toolbar [type]:not([type~=submenu])',
-
     init: function() {
         this.control({
             'go-graph_canvas': {
@@ -110,6 +108,8 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
     },
 
     dispatchHandler: function(button, event) {
+        // Unfortunately, I was unable to figure out a query that would prevent calling this method for submenu buttons
+        // So...we instead have to filter them out.
         if (this.isSubmenu(button)) {
             return;
         }
