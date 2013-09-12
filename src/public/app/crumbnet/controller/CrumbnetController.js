@@ -231,6 +231,7 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
         var diagram = this.getDiagramForComponent(button),
             newSetting = !diagram.grid.visible;
 
+        console.log('going to toggle the grid....');
         diagram.grid.visible = newSetting;
         diagram.toolManager.draggingTool.isGridSnapEnabled = newSetting;
         diagram.toolManager.resizingTool.isGridSnapEnabled = newSetting;
