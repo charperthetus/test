@@ -37,7 +37,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
     onDalReset:function(btn)   {
         var id = btn.findParentByType('search_resultscomponent').currentResultSet.id;
         var dalRecord = Ext.data.StoreManager.lookup('dalSources').getById(id);
-        dalRecord.data.facetFilterCriteria = [];
+        dalRecord.set('facetFilterCriteria', []);
         btn.up('#resultsdals').queryById('resultsfacets').removeAll();
         btn.up('#resultsdals').createFacetsTabPanel();
         var searchController = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');

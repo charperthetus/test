@@ -48,12 +48,20 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
         add a corresponding dal source here for each dal selected in search options
          */
         this.store.each(function (record) {
-            var dalId = record.data.id,
+            var dalId = record.get('id'),
                 checked = searchPanelDals.queryById(dalId).query('checkbox')[0].getValue(),
                 myPanel;
             if (checked) {
                 myPanel = this.createDalPanel(record);
                 this.add(myPanel);
+            }   else    {
+                /*
+                has the user deselected this DAL, but we are showing it
+                currently in the results panel?  if so, remove it
+                 */
+                if(this.queryById(record.get('id')) !== undefined)  {
+                   this.remove(record.get('id'));
+                }
             }
         }, this);
 
@@ -66,14 +74,14 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
 
     createDalPanel: function (myRecord) {
         return Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsOptions', {
-            itemId: myRecord.data.id,
-            dalName: myRecord.data.displayName
+            itemId: myRecord.get('id'),
+            dalName: myRecord.get('displayName')
         });
     },
 
     createFacetsTabPanel: function (recreate) {
 
-        var facetTabs;  // tabpanel - thanks Ted!
+        var facetTabs;
 
         if(this.queryById('resultsfacets') === null || recreate) {
             facetTabs = Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacets', {
@@ -95,10 +103,10 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
 
         this.store.each(function (record) {
 
-            var dalId = record.data.id,
+            var dalId = record.get('id'),
                 checked = searchPanelDals.queryById(dalId).query('checkbox')[0].getValue();
 
-            var exists = (facetTabs.queryById('tab_' + record.data.id) !== null);
+            var exists = (facetTabs.queryById('tab_' + record.get('id')) !== null);
             if (checked) {
                 if (!exists) {
                     /*
@@ -106,7 +114,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
                      */
                     facetTabs.add({
                         xtype: 'panel',
-                        itemId: 'tab_' + record.data.id
+                        itemId: 'tab_' + record.get('id')
                     });
                 }
             } else {
@@ -115,7 +123,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
                      the user deselected this DAL or started a brand new search,
                      but the tab exists, presumably created by the previous search
                      */
-                    facetTabs.remove('tab_' + record.data.id);
+                    facetTabs.remove('tab_' + record.get('id'));
                 }
             }
 
@@ -127,7 +135,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
     createDalFacets: function (id) {
 
         var dalRecord = this.store.getById(id),
-            descriptions = dalRecord.data.facetDescriptions,
+            descriptions = dalRecord.get('facetDescriptions'),
             facets = this.queryById('resultsfacets').queryById('tab_' + id),
             me = this;
 
@@ -138,29 +146,33 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
                 /*
                 loop through the facetDescriptions for each set of results to determine which facets
                 should be rendered when the user selects that DAL's results, and add them to the
-                corresponding tab in the facets tabpanel
+                corresponding tab in the facets tabpanel.
+
+                raw array loop for better performance
                  */
-                Ext.each(descriptions, function (facet) {
-                    if(facets.queryById('facet_' + dalRecord.data.id + '_' + facet.facetId) === null)   {
-                        var facetElement = me.createFacet(facet, resultset, dalRecord);
+
+                var len = descriptions.length;
+
+                for(var i=0;i<len;i++)  {
+                    if(facets.queryById('facet_' + dalRecord.get('id') + '_' + descriptions[i].facetId) === null)   {
+                        var facetElement = me.createFacet(descriptions[i], resultset, dalRecord);
                         facets.add(facetElement);
                     }
-                });
+                }
             }
         });
     },
 
     createFacet: function (facet, results, dalRecord) {
         return Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacet', {
-            model: facet,
-            set: results,
+            facet: facet,
+            searchResults: results,
             dal: dalRecord,
-            itemId: 'facet_' + dalRecord.data.id + '_' + facet.facetId
+            itemId: 'facet_' + dalRecord.get('id') + '_' + facet.facetId
         });
     },
 
     updateDalStatus: function (dalId, status) {
-
         /*
         set the status icon - pending, success or fail - as well as the text,
         which is the display name and number of results returned
@@ -178,11 +190,11 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
         var me = this,
             count = 0;
 
-        Ext.each(this.findParentByType('search_resultscomponent').allResultSets, function(set)  {
+        Ext.each(this.findParentByType('search_resultscomponent').allResultSets, function(searchResult)  {
 
-            if(set.id === dalId)    {
+            if(searchResult.id === dalId)    {
                 if(status !== 'fail')   {
-                    count = set.store.totalCount;
+                    count = searchResult.store.totalCount;
                 }
 
                 /*
@@ -191,7 +203,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
                  Assistance appreciated, if anyone has any insight...
                  */
 
-                myDal.down('#dalName').setText(me.store.getById(dalId).data.displayName + ' ' + '(' + count + ')');
+                myDal.down('#dalName').setText(me.store.getById(dalId).get('displayName') + ' ' + '(' + count + ')');
             }
         });
     }

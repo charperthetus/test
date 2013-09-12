@@ -182,6 +182,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             resultsComponent = component.queryById('searchresults');
 
 
+
         /*
         this is an array of objects - they store the dal id and the store instance for that dal's results.
         For each selected DAL, a new store is generated and this array is used to keep track
@@ -199,19 +200,40 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
         var dals = component.down('#searchdals'),
             resultsDal = component.down('#resultsdals'),
-            resultsPanel = component.down('#resultspanel');
+            resultsPanel = component.down('#resultspanel'),
+            dalSelected = false;
+
+
+        /*
+         are no DALs selected?  if not, select the default DAL
+         */
+
+        dalStore.each(function (source) {
+            if(dals.queryById(source.get('id')).query('checkbox')[0].getValue())    {
+                dalSelected = true;
+                return false;
+            }
+        });
+
+        if(!dalSelected)  {
+            dals.queryById(dalStore.defaultId).query('checkbox')[0].setValue(true)
+        }
+
 
         resultsDal.createDalPanels();
+
+
+
 
         /*
          Check for selected additional Dals, and do a search on each of them
          */
         dalStore.each(function (source) {
 
-            var dalId = source.data.id,
+            var dalId = source.get('id'),
                 checked = dals.queryById(dalId).query('checkbox')[0].getValue();    // has this checkbox been selected in search options?
 
-            if (checked || dalId === dalStore.defaultId) {  // checked, or always search the default dal
+            if (checked) {  // checked, or always search the default dal
 
                 // Dal has been selected, apply to the request model and do search
 
@@ -229,15 +251,15 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                 /*
                 set the facet filters, if any
                  */
-                if(source.data.facetFilterCriteria.length)  {
-                    searchObj.set('facetFilterCriteria', source.data.facetFilterCriteria);
+                if(source.get('facetFilterCriteria').length)  {
+                    searchObj.set('facetFilterCriteria', source.get('facetFilterCriteria'));
                 }
 
                 /*
                  set the date ranges, if any
                  */
-                if(source.data.dateTimeRanges.length)  {
-                    searchObj.set('dateTimeRanges', source.data.dateTimeRanges);
+                if(source.get('dateTimeRanges').length)  {
+                    searchObj.set('dateTimeRanges', source.get('dateTimeRanges'));
                 }
 
                 /*
