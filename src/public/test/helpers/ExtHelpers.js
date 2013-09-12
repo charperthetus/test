@@ -31,20 +31,16 @@
         }
 
         try {
-            for (var i = 0; i < bodyElems.length; ++i) {
+            for (var i = bodyElems.length; i > 0; --i) {
                 elem = bodyElems[i];
 
                 if (elem && elem.nodeName !== 'script' && elem.id !== 'test-html' && elem.id !== 'HTMLReporter') {
                     document.body.removeChild(elem);
-
-                    // NOTE: this is whacky, but when you remove an element from the body, it changes bodyElems...
-                    i = 0;
-                    bodyElems = document.body.childNodes;
                 }
             }
         }
         catch(e) {
-            console.log(e);
+            console.error(e);
         }
     };
 
