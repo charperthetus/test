@@ -24,6 +24,7 @@ Ext.define('Savanna.space.view.SpaceManagerComponent', {
             layout: 'vbox',
             items: [
                 {
+                    //todo: extract into a separate toolbar or move into tbar
                     xtype: 'toolbar',
                     width: '100%',
                     border: 0,
@@ -44,6 +45,7 @@ Ext.define('Savanna.space.view.SpaceManagerComponent', {
                     ]
                 },
                 {
+                    //todo: replace with map component
                     xtype: 'panel',
                     layout: 'fit',
                     width: '100%',
@@ -112,7 +114,6 @@ Ext.define('Savanna.space.view.SpaceManagerComponent', {
             weight: -2
         }
     ],
-
     initComponent: function() {
         this.callParent(arguments);
         Savanna.controller.Factory.getController('Savanna.space.controller.SpaceManagerController');

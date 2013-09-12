@@ -12,11 +12,7 @@ Ext.define('Savanna.desktop.view.AboutWindow', {
     title: 'About Savanna',
     height: 200,
     width: 400,
-    layout: 'fit',
-    closable: true,
-    closeAction: 'hide',
-    modal: true,
-
+    resizable: false, //don't let resize...for now
     items: [{
         //todo: fill with impl specific info (from model?)
         xtype: 'label',

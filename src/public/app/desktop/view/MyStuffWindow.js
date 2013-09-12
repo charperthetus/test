@@ -13,7 +13,5 @@ Ext.define('Savanna.desktop.view.MyStuffWindow', {
     height: 200,
     width: '100%',
     layout: 'fit',
-    closable: true,
-    closeAction: 'hide',
-    modal: true
+    resizable: false
 });

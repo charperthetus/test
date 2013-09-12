@@ -18,7 +18,7 @@ Ext.define('Savanna.desktop.view.SavannaWorkspace', {
             xtype: 'combobox',
             itemId: 'spacecombo',
             padding: 15,
-            //todo: hook up to the list of spaces
+            //todo: hook up to the list of spaces and init value to current space
             store: Ext.create('Ext.data.Store', {
                 fields: ['displayLabel', 'space'],
                 data: [
@@ -64,11 +64,11 @@ Ext.define('Savanna.desktop.view.SavannaWorkspace', {
                     title: 'Crumbnet',
                     xtype: 'go-graph'
                 },
-                {title: 'A'},
-                {title: 'B'},
-                {title: 'C'},
-                {title: 'D'},
-                {title: 'E'}
+                {
+                    title: 'Map',
+                    xtype: 'map_component',
+                    itemId: 'MAP_ONE'
+                }
             ]
         }
     ]

@@ -24,13 +24,10 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
         'Savanna.desktop.view.SavannaDesktop',
         'Savanna.desktop.view.SavannaWorkspace'
     ],
-    refs: [{
-        ref: 'desktopContainer',
-        selector: 'desktop_savannadesktop > #desktopcontainer'
-    }],
     currentDesktopItem: null,
 
     init: function () {
+        var me = this;
         this.control({
             'desktop_savannadesktop > #desktopcontainer': {
                 render: this.onDesktopRendered
@@ -68,14 +65,14 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
             'desktop_savannaworkspace #singleviewbutton': {
                 toggle: function(button) {
                     if (button.pressed) {
-                        this.setWorkspaceViewMode('single');
+                        me.setWorkspaceViewMode('single');
                     }
                 }
             },
             'desktop_savannaworkspace #splitviewbutton': {
                 toggle: function(button) {
                     if (button.pressed) {
-                        this.setWorkspaceViewMode('split');
+                        me.setWorkspaceViewMode('split');
                     }
                 }
             }
@@ -91,6 +88,7 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
     openSpace: function() { //todo: pass space as parameter
         var spaceWorkArea = Ext.ComponentQuery.query('panel #savannaworkspace')[0];
         if (spaceWorkArea) {
+            //todo, if space is different than currentspace, reinit the workspace component
             this.showDesktopComponent(spaceWorkArea);
         }
     },
@@ -98,14 +96,17 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
     onDesktopRendered: function() {
         var desktopContainer = Ext.ComponentQuery.query('desktop_savannadesktop > #desktopcontainer')[0];
         if (desktopContainer) {
-            currentDesktopItem = desktopContainer.items.items[0];
+            //note - this should return the space manager component
+            currentDesktopItem = desktopContainer.items.items[0]; //todo: is there a better way?
         }
     },
 
     displayAboutDialog: function() {
         if (!this.statics().aboutwindow) {
-            this.statics().aboutwindow = Ext.create('Savanna.desktop.view.AboutWindow');
-            console.log('creating about window');
+            this.statics().aboutwindow = Ext.create('Savanna.desktop.view.AboutWindow', {
+                modal: 'true',
+                closeAction: 'hide'
+            });
         }
         this.statics().aboutwindow.show();
     },
@@ -124,7 +125,7 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
         if (cmp) {
             if (currentDesktopItem && currentDesktopItem !== cmp){
                 cmp.show();
-                cmp.hidden = false;
+                cmp.hidden = false; //todo: why doesn't this value change automatically when we call show()?
                 currentDesktopItem.hide();
                 currentDesktopItem = cmp;
             }
@@ -132,25 +133,20 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
     },
 
     displaySearch: function() {
-        console.log('The user hit search');
         if (!this.statics().searchwindow) {
             this.statics().searchwindow = Ext.create('Savanna.desktop.view.SearchWindow', {closeAction: 'hide'});
-            console.log('creating search window');
         }
         this.statics().searchwindow.show();
     },
 
     displayUploadDialog: function() {
-        //todo: find out if dialog should retain state - in which case we don't destroy every time
-        console.log('The user hit upload');
+        //todo: find out if dialog should retain state - in which case we don't destroy every time (which is the default closeAction value)
         var uploadWindow = Ext.create('Savanna.desktop.view.UploadWindow', {modal: true});
-        console.log('creating upload window');
         uploadWindow.show();
     },
 
     displayErrorDialog: function(button) {
         //todo: make system messages window component
-        console.log('The user hit errors');
         var errorWindow = Ext.create('Ext.window.Window', {
             title: 'System Messages',
             width: 200,
@@ -166,7 +162,6 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
     },
 
     launchHelp: function() {
-        console.log('The user hit help');
         //todo: insert the help url here.
         //todo: do we need to get the savanna item in the active+focused tab and take them to a specific help section?
         window.open('http://www.google.com');
@@ -178,9 +173,10 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
 
     showMyStuffFlyout: function() {
         if (!this.statics().mystuffflyout) {
-            this.statics().mystuffflyout = Ext.create('Savanna.desktop.view.MyStuffWindow');
+            this.statics().mystuffflyout = Ext.create('Savanna.desktop.view.MyStuffWindow', {closeAction: 'hide', modal: 'true'});
         }
-        var spaceTabPanel = Ext.ComponentQuery.query('panel #savannaworkspace #lefttabpanel')[0];
+        //todo: the spec has the flyout show at the same x,y as the tab panel...is this really necessary?
+        var spaceTabPanel = Ext.ComponentQuery.query('panel #savannaworkspace #maintabpanel')[0];
         if (spaceTabPanel) {
             this.statics().mystuffflyout.setPosition(spaceTabPanel.getPosition());
         }
@@ -193,6 +189,7 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
             var mainTabPanel = savannaWorkspace.down('#maintabpanel');
             if (mainTabPanel){
                 if (mode === 'split') {
+                    //create and add a second tab panel in the workspace (hbox)
                     var newTabPanel = Ext.create('Savanna.desktop.view.SavannaTabPanel', {
                         flex: 2,
                         height: '100%',
@@ -200,23 +197,27 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
                     });
                     savannaWorkspace.add(newTabPanel);
 
+                    //loop through the tabs in the main panel from the end and add them to the new tab panel
                     var activeIndex = mainTabPanel.items.indexOf(mainTabPanel.getActiveTab());
                     var len = mainTabPanel.items.length-1;
                     while(len > activeIndex) {
                         newTabPanel.insert(0,mainTabPanel.items.getAt(len));
                         len--;
                     }
-                    newTabPanel.setActiveTab(newTabPanel.items.getAt(0));
+                    newTabPanel.setActiveTab(newTabPanel.items.getAt(0)); //just set the first tab in the new panel as active
+                    newTabPanel.doLayout();
                 } else if (mode === 'single') {
                     var secondaryTabPanel = savannaWorkspace.down('#secondarytabpanel');
                     if (secondaryTabPanel) {
+                        //move all tabs from the second tabpanel into the main tabpanel - they get tacked on to the end
                         while (secondaryTabPanel.items.length > 0) {
                             mainTabPanel.add(secondaryTabPanel.items.getAt(0));
                         }
-                        savannaWorkspace.remove(secondaryTabPanel, true);
+                        savannaWorkspace.remove(secondaryTabPanel, true); //remove the secondary tab panel and destroy it
+                        mainTabPanel.doLayout();
                     }
                 } else {
-                    console.log('unknown mode passed to DesktopController.setWorkspaceViewMode(): ' + mode)
+                    Ext.Error.raise({ msg: 'Unknown mode passed to DesktopController.setWorkspaceViewMode(): ' + mode });
                 }
             }
             savannaWorkspace.currentView = mode;

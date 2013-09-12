@@ -11,11 +11,9 @@ Ext.define('Savanna.desktop.view.SavannaToolbar',{
     requires: [
         'Ext.container.ButtonGroup'
     ],
-
     width: '100%',
     margin: 10,
     border: 0,
-
     items: [
         //savanna logo
         {
@@ -23,7 +21,7 @@ Ext.define('Savanna.desktop.view.SavannaToolbar',{
             text: 'Savanna Logo',
             itemId: 'logobutton',
             //todo: add image to css and use iconCls
-            scale: 'large'
+            scale: 'large' //make the button large for now (to make it stand out) until an icon is used
         },
         '->',
         //navigation buttons
@@ -69,7 +67,7 @@ Ext.define('Savanna.desktop.view.SavannaToolbar',{
                 menu: [
                     {
                         //todo: bind this text property to username
-                        text: 'Current Username here',
+                        text: '<b>Current Username here</b>',
                         itemId: 'currentuser'
                     },
                     {
