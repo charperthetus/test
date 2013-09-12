@@ -93,7 +93,7 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
     // event handlers
 
     submenuDispatchHandler: function(menu, item, event) {
-        var actualMenu = menu.parentItem,
+        var actualMenu = this.getParentItem(menu),
             typeParts = Ext.String.splitWords(actualMenu.type),
             handler = 'handle';
 
@@ -476,7 +476,21 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
         }).show();
     },
 
+    getParentItem: function(elem) {
+        return elem.parentItem || elem.ownerButton;
+    },
+
     isSubmenu: function(elem) {
-        return elem.parentMenu && elem.parentMenu.parentItem && elem.parentMenu.parentItem.type && elem.parentMenu.parentItem.type.match(/submenu/);
+        var parentMenu = elem.parentMenu;
+
+        if (parentMenu) {
+            var parentItem = this.getParentItem(parentMenu);
+
+            if (parentItem) {
+                return parentItem.type && parentItem.type.match(/submenu/);
+            }
+        }
+
+        return false;
     }
 });
