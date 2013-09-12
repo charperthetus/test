@@ -366,7 +366,9 @@ describe('Search Results', function () {
 
                             myFacet.buildFacetFilterGroup();
 
-                            expect(myFacet.queryById('facets_producer').queryById('stringFacet').add.callCount).toBe(6);
+                            var expected = searchStore.facetValueSummaries.producer.facetValues.length;
+
+                            expect(myFacet.queryById('facets_producer').queryById('stringFacet').add.callCount).toBe(expected);
                         });
                     });
 
