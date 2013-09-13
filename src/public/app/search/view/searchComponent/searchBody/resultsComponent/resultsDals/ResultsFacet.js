@@ -24,6 +24,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
     collapsed: true,
     titleCollapse: true,
     hideCollapseTool: true,
+    dateFormat: 'Y-m-d\\TH:i:s.m\\Z',
 
     initComponent: function () {
 
@@ -66,12 +67,12 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
                                 columns: 1,
                                 vertical: true,
                                 items: [
-                                    { boxLabel: 'Any Time', name: facetID, inputValue: 'all', checked: true },
-                                    { boxLabel: 'Past 24 Hours', name: facetID, inputValue: 'past_year'},
-                                    { boxLabel: 'Past Week', name: facetID, inputValue: 'past_week' },
-                                    { boxLabel: 'Past Month', name: facetID, inputValue: 'past_month' },
-                                    { boxLabel: 'Past Year', name: facetID, inputValue: 'past_year' },
-                                    { boxLabel: 'Custom Range', name: facetID, inputValue: 'custom' }
+                                    { boxLabel: 'Any Time',  itemId: 'date_all', name: facetID, inputValue: 'all', checked: true },
+                                    { boxLabel: 'Past 24 Hours',  itemId: 'date_past_day', name: facetID, inputValue: 'past_day'},
+                                    { boxLabel: 'Past Week',  itemId: 'date_past_week', name: facetID, inputValue: 'past_week' },
+                                    { boxLabel: 'Past Month',  itemId: 'date_past_month', name: facetID, inputValue: 'past_month' },
+                                    { boxLabel: 'Past Year',  itemId: 'date_past_year', name: facetID, inputValue: 'past_year' },
+                                    { boxLabel: 'Custom Range',  itemId: 'date_custom', name: facetID, inputValue: 'custom' }
                                 ],
                                 listeners: {
                                     'change': this.onDateRangeChange
@@ -177,29 +178,29 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
     getFormattedDateRange: function (period) {
 
         var now = new Date(),
-            format = 'Y-m-d\\TH:i:s.m\\Z',
-            dateObject = {startDate: '', endDate: Ext.Date.format(now, format)},
+
+            dateObject = {startDate: '', endDate: Ext.Date.format(now, this.dateFormat)},
             sinceTheBeginningOfTime = new Date('1/1/1971');
 
         switch (period) {
             case 'any'  :
-                dateObject.startDate = Ext.Date.format(sinceTheBeginningOfTime, format);
+                dateObject.startDate = Ext.Date.format(sinceTheBeginningOfTime, this.dateFormat);
                 break;
 
             case 'past_year'    :
-                dateObject.startDate = Ext.Date.format(Ext.Date.subtract(now, Ext.Date.YEAR, 1), format);
+                dateObject.startDate = Ext.Date.format(Ext.Date.subtract(now, Ext.Date.YEAR, 1), this.dateFormat);
                 break;
 
             case 'past_month'    :
-                dateObject.startDate = Ext.Date.format(Ext.Date.subtract(now, Ext.Date.MONTH, 1), format);
+                dateObject.startDate = Ext.Date.format(Ext.Date.subtract(now, Ext.Date.MONTH, 1), this.dateFormat);
                 break;
 
             case 'past_week'    :
-                dateObject.startDate = Ext.Date.format(Ext.Date.subtract(now, Ext.Date.DAY, 7), format);
+                dateObject.startDate = Ext.Date.format(Ext.Date.subtract(now, Ext.Date.DAY, 7), this.dateFormat);
                 break;
 
             case 'past_day'    :
-                dateObject.startDate = Ext.Date.format(Ext.Date.subtract(now, Ext.Date.DAY, 1), format);
+                dateObject.startDate = Ext.Date.format(Ext.Date.subtract(now, Ext.Date.DAY, 1), this.dateFormat);
                 break;
 
             case 'custom'   :
@@ -271,9 +272,8 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
 
     doCustomDateSearch:function()   {
 
-        var format = 'Y-m-d\\TH:i:s.m\\Z',
-            startDate = Ext.Date.format(this.queryById('fromDate').getValue(), format),
-            endDate = Ext.Date.format(this.queryById('toDate').getValue(), format),
+        var startDate = Ext.Date.format(this.queryById('fromDate').getValue(), this.dateFormat),
+            endDate = Ext.Date.format(this.queryById('toDate').getValue(), this.dateFormat),
             fieldName = this.query('form')[0].itemId.replace('facets_', ''),
             rangeName = 'custom',
             me = this;

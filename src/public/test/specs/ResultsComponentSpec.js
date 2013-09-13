@@ -478,7 +478,7 @@ describe('Search Results', function () {
 
                             myRadio = myFacet.queryById('facets_published-date').queryById('dateFacet');
 
-                            myRadio.items.items[1].setValue(true);  // one year
+                            myRadio.queryById('date_past_year').setValue(true);  // one year
 
                             var dateRange = myFacet.getFormattedDateRange('past_year');
 
@@ -518,11 +518,11 @@ describe('Search Results', function () {
                         it('should show and hide From and To date pickers when Custom is and is not selected', function () {
 
 
-                            myRadio.items.items[5].setValue(true);  // custom
+                            myRadio.queryById('date_custom').setValue(true);  // custom
 
                             expect(myPanel.collapsed).toBeFalsy();
 
-                            myRadio.items.items[1].setValue(true);  // one year
+                            myRadio.queryById('date_past_year').setValue(true);  // one year
 
                             expect(myPanel.collapsed).toBeTruthy();
 
@@ -532,18 +532,23 @@ describe('Search Results', function () {
 
                             myRadio = myFacet.queryById('facets_published-date').queryById('dateFacet');
 
-                            myRadio.items.items[5].setValue(true);  // custom
+                            myRadio.queryById('date_custom').setValue(true);  // custom
 
-                            var startDate = Ext.Date.format(myPanel.queryById('fromDate').getValue(), 'Y-m-d\\TH:i:s.m\\Z'),
-                                endDate = Ext.Date.format(myPanel.queryById('toDate').getValue(), 'Y-m-d\\TH:i:s.m\\Z'),
+                            var startDate = Ext.Date.format(myPanel.queryById('fromDate').getValue(), myFacet.dateFormat),
+                                endDate = Ext.Date.format(myPanel.queryById('toDate').getValue(), myFacet.dateFormat),
 
                                 expectedStart = '1971-01-01T00:00:00.01Z',  // default
-                                expectedEnd = '2013-09-12T00:00:00.09Z';    // default
+                                expectedEnd = Ext.Date.format(new Date(), myFacet.dateFormat);
+
+                            /*
+                             match the year, month and day - the exact time will never match, of course - since
+                             we are matching against the textfield value for the date picker component
+                              */
 
 
                             expect(startDate).toEqual(expectedStart);
 
-                            expect(endDate).toEqual(expectedEnd);
+                            expect(endDate.substr(0,10)).toEqual(expectedEnd.substr(0,10));
 
                         });
                     });
