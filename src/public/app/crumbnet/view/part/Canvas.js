@@ -49,7 +49,11 @@ Ext.define('Savanna.crumbnet.view.part.Canvas', {
 
         this.diagram.layout = go.GraphObject.make(go.ForceDirectedLayout, { isOngoing: false });
 
-        this.diagram.toolManager.linkingTool.archetypeLinkData = { category: 'Orthogonal', text: Savanna.crumbnet.utils.ViewTemplates.linkRelationshipTypes[0] };
+        this.diagram.toolManager.linkingTool.archetypeLinkData = {
+            category: Savanna.crumbnet.utils.ViewTemplates.defaultLinkTemplate,
+            text: Savanna.crumbnet.utils.ViewTemplates.linkRelationshipTypes[0]
+        };
+
         this.diagram.toolManager.linkingTool.direction = go.LinkingTool.ForwardsOnly;
         this.diagram.toolManager.linkingTool.portGravity = 10;
 
