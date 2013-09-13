@@ -230,9 +230,9 @@ Ext.define('Savanna.search.controller.SearchComponent', {
          */
         dalStore.each(function (source) {
 
-            var dalId = source.get('id'),
+            var dalId = source.get('id');
             var currentDalPanel = dals.queryById(dalId);
-            checked = dals.queryById(dalId).query('checkbox')[0].getValue();    // has this checkbox been selected in search options?
+            var checked = dals.queryById(dalId).query('checkbox')[0].getValue();    // has this checkbox been selected in search options?
 
             if (checked) {  // checked, or always search the default dal
 
