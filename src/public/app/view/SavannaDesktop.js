@@ -39,7 +39,7 @@ Ext.define('Savanna.view.SavannaDesktop', {
                             title: 'Document',
                             xtype: 'flexpaper_flexpapercomponent',
                             itemId: 'docviewer',
-                            pdfFile: 'http://localhost:3000/resources/flexpaper/pdf/Report.pdf'
+                            pdfFile: 'resources/flexpaper/pdf/Report.pdf'
                         },
                         {
                             xtype:"search_searchcomponent",

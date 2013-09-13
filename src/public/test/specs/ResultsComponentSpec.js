@@ -372,11 +372,11 @@ describe('Search Results', function () {
                         });
                     });
 
-                    describe('onFacetFilterChange', function()  {
+                    describe('onFacetFilterChange', function () {
 
                         var server, myFacet, myCheckbox;
 
-                        beforeEach(function()   {
+                        beforeEach(function () {
 
                             myFacet = Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacet', {
                                 facet: facetFixture.stringFacet,
@@ -385,7 +385,7 @@ describe('Search Results', function () {
                             });
                         });
 
-                        afterEach(function()    {
+                        afterEach(function () {
                             server = null;
                             myFacet = null;
                             myCheckbox = null;
@@ -454,11 +454,11 @@ describe('Search Results', function () {
                         });
                     });
 
-                    describe('onDateRangeChange', function()  {
+                    describe('onDateRangeChange', function () {
 
                         var server, myFacet, myRadio;
 
-                        beforeEach(function()   {
+                        beforeEach(function () {
 
 
                             myFacet = Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacet', {
@@ -468,7 +468,7 @@ describe('Search Results', function () {
                             });
                         });
 
-                        afterEach(function()    {
+                        afterEach(function () {
                             server = null;
                             myFacet = null;
                             myRadio = null;
@@ -478,15 +478,77 @@ describe('Search Results', function () {
 
                             myRadio = myFacet.queryById('facets_published-date').queryById('dateFacet');
 
-                            myRadio.items.items[1].setValue(true);  // one year
+                            myRadio.queryById('date_past_year').setValue(true);  // one year
 
-                            var dateRange = myFacet.getFormattedDateRange('past_year')
+                            var dateRange = myFacet.getFormattedDateRange('past_year');
 
                             myFacet.onDateRangeChange(myRadio);
 
                             expect(myFacet.dal.data.dateTimeRanges[0].Startdate).toEqual(dateRange.startDate);
 
                             expect(myFacet.dal.data.dateTimeRanges[0].Enddate).toEqual(dateRange.endDate);
+
+                        });
+                    });
+
+                    describe('doCustomDateSearch', function () {
+
+                        var server, myFacet, myRadio, myPanel;
+
+                        beforeEach(function () {
+
+                            myFacet = Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacet', {
+                                facet: facetFixture.dateFacet,
+                                searchResults: {id: 'mockDAL', store: store},
+                                dal: store.getById('mockDAL')
+                            });
+
+                            myRadio = myFacet.queryById('facets_published-date').queryById('dateFacet');
+
+                            myPanel = myRadio.up('#facets_' + myFacet.facet.facetId).queryById('customDatesPanel');
+                        });
+
+                        afterEach(function () {
+                            server = null;
+                            myFacet = null;
+                            myRadio = null;
+                            myPanel = null;
+                        });
+
+                        it('should show and hide From and To date pickers when Custom is and is not selected', function () {
+
+
+                            myRadio.queryById('date_custom').setValue(true);  // custom
+
+                            expect(myPanel.collapsed).toBeFalsy();
+
+                            myRadio.queryById('date_past_year').setValue(true);  // one year
+
+                            expect(myPanel.collapsed).toBeTruthy();
+
+                        });
+
+                        it('should set start and end dates to search from the custom date picker values', function () {
+
+                            myRadio = myFacet.queryById('facets_published-date').queryById('dateFacet');
+
+                            myRadio.queryById('date_custom').setValue(true);  // custom
+
+                            var startDate = Ext.Date.format(myPanel.queryById('fromDate').getValue(), myFacet.dateFormat),
+                                endDate = Ext.Date.format(myPanel.queryById('toDate').getValue(), myFacet.dateFormat),
+
+                                expectedStart = '1971-01-01T00:00:00.01Z',  // default
+                                expectedEnd = Ext.Date.format(new Date(), myFacet.dateFormat);
+
+                            /*
+                             match the year, month and day - the exact time will never match, of course - since
+                             we are matching against the textfield value for the date picker component
+                              */
+
+
+                            expect(startDate).toEqual(expectedStart);
+
+                            expect(endDate.substr(0,10)).toEqual(expectedEnd.substr(0,10));
 
                         });
                     });

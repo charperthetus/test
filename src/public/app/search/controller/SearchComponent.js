@@ -93,11 +93,6 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
     handleNewSearch:function(elem)  {
 
-        /*
-         Do we want this to return the user to the search options screen, if
-         they are currently in the results screen?
-         */
-
         var form = elem.findParentByType('search_searchcomponent').down('#search_form');
 
         form.queryById('search_terms').setValue('');
