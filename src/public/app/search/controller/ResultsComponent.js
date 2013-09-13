@@ -23,12 +23,25 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
             },
             'search_resultscomponent #resultsSortByCombobox':   {
                 select: this.onSortByChange
+            },
+            'search_resultscomponent #resultsFacetsReset':  {
+                'click': this.onDalReset
             }
         });
     },
 
     onDalRender: function (dal) {
         dal.body.on('click', this.changeSelectedStore, this, dal);
+    },
+
+    onDalReset:function(btn)   {
+        var id = btn.findParentByType('search_resultscomponent').currentResultSet.id;
+        var dalRecord = Ext.data.StoreManager.lookup('dalSources').getById(id);
+        dalRecord.set('facetFilterCriteria', []);
+        btn.up('#resultsdals').queryById('resultsfacets').removeAll();
+        btn.up('#resultsdals').createFacetsTabPanel();
+        var searchController = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
+        searchController.doSearch(btn);
     },
 
     onSortByChange:function(combo){
@@ -53,37 +66,13 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
      */
     changeSelectedStore:function(evt, body, dal) {
         var component = dal.findParentByType('search_resultscomponent');
-        var me = this;
 
         Ext.each(component.allResultSets, function(set) {
             if(set.id === dal.itemId)    {
                 component.queryById('resultspanel').updateGridStore(set);
-                me.displayDalFacets(dal);
                 component.currentResultSet = set;
-                return false;
+                dal.up('#resultsdals').queryById('resultsfacets').setActiveTab('tab_' + dal.itemId);
             }
-        });
-    },
-
-    displayDalFacets: function (dal) {
-        var record = Ext.data.StoreManager.lookup('dalSources').getById(dal.itemId),
-            descriptions = record.data.facetDescriptions,
-            facets = dal.up('#resultsdals').queryById('resultsfacets'),
-            me = this;
-
-        facets.removeAll();
-
-        if (descriptions.length > 0) {
-            Ext.each(descriptions, function (facet) {
-                var facetElement = me.createFacet(facet);
-                facets.add(facetElement);
-            });
-        }
-    },
-
-    createFacet: function (facet) {
-        return Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacet', {
-            model: facet
         });
     }
 });

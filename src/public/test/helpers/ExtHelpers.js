@@ -23,14 +23,24 @@
      */
     helpers.cleanTestDom = function() {
         var testDom = Ext.get(ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID),
-            extJsTooltips = Ext.get('ext-quicktips-tip');
+            elem,
+            bodyElems = document.body.childNodes;
 
         if (testDom && testDom.dom && testDom.dom.children ) {
             testDom.dom.innerHTML = '';
         }
 
-        if (extJsTooltips) {
-            extJsTooltips.remove();
+        try {
+            for (var i = bodyElems.length; i > 0; --i) {
+                elem = bodyElems[i];
+
+                if (elem && elem.nodeName !== 'script' && elem.id !== 'test-html' && elem.id !== 'HTMLReporter') {
+                    document.body.removeChild(elem);
+                }
+            }
+        }
+        catch(e) {
+            console.error(e);
         }
     };
 

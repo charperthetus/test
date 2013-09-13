@@ -117,21 +117,6 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             var optionsBtn = component.queryById('optionsbutton');
             optionsBtn.fireEvent('click', optionsBtn);
         }
-
-        /*
-         clear the selected dals
-         */
-        var dalStore = Ext.data.StoreManager.lookup('dalSources');
-
-        dalStore.each(function (source) {
-            var dals = component.down('#searchdals'),
-                resultsDals = component.down('#resultsdals'),
-                checkbox = dals.queryById(source.data.id).query('checkbox')[0].getValue();
-            if (checkbox.getValue()) {
-                checkbox.setValue(false);
-                resultsDals.queryById(source.data.id).down('#dalStatusIcon').getEl().setStyle(resultsDals.queryById(source.data.id).dalLoadNone);
-            }
-        });
     },
 
     handleSearchTermKeyUp: function (field, evt) {
@@ -197,6 +182,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             resultsComponent = component.queryById('searchresults');
 
 
+
         /*
         this is an array of objects - they store the dal id and the store instance for that dal's results.
         For each selected DAL, a new store is generated and this array is used to keep track
@@ -214,20 +200,46 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
         var dals = component.down('#searchdals'),
             resultsDal = component.down('#resultsdals'),
-            resultsPanel = component.down('#resultspanel');
+            resultsPanel = component.down('#resultspanel'),
+            dalSelected = false;
+
+
+        /*
+         are no DALs selected?  if not, select the default DAL
+         */
+
+        dalStore.each(function (source) {
+            if(dals.queryById(source.get('id')).query('checkbox')[0].getValue())    {
+                dalSelected = true;
+                return false;
+            }
+        });
+
+        if(!dalSelected)  {
+            dals.queryById(dalStore.defaultId).query('checkbox')[0].setValue(true)
+        }
+
+
+        resultsDal.createDalPanels();
+
+
+
 
         /*
          Check for selected additional Dals, and do a search on each of them
          */
-        dalStore.each(function (dalRecord) {
+        dalStore.each(function (source) {
 
-            var dalId = dalRecord.data.id;
+            var dalId = source.get('id'),
             var currentDalPanel = dals.queryById(dalId);
-            var checked = currentDalPanel.query('checkbox')[0].getValue();    // has this checkbox been selected in search options?
+            checked = dals.queryById(dalId).query('checkbox')[0].getValue();    // has this checkbox been selected in search options?
 
-            if (checked || dalId === dalStore.defaultId) {  // checked, or always search the default dal
+            if (checked) {  // checked, or always search the default dal
 
                 // Dal has been selected, apply to the request model and do search
+
+                searchObj.set('contentDataSource', dalId);
+
                 searchObj.set('searchPreferencesVOs', [
                     {
                         'dalId': dalId,
@@ -235,6 +247,23 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                         'customSearchSelections': this.getCustomSearchSelections(currentDalPanel)
                     }
                 ]);
+
+
+
+                /*
+                set the facet filters, if any
+                 */
+                if(source.get('facetFilterCriteria').length)  {
+                    searchObj.set('facetFilterCriteria', source.get('facetFilterCriteria'));
+                }
+
+                /*
+                 set the date ranges, if any
+                 */
+                if(source.get('dateTimeRanges').length)  {
+                    searchObj.set('dateTimeRanges', source.get('dateTimeRanges'));
+                }
+
                 /*
                 Determine the pageSize for the stores.
                  */
@@ -250,9 +279,8 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                 resultsStore.load({
                     callback: Ext.bind(this.searchCallback, this, [resultsDal, resultsPanel, dalId, resultsStore], true)
                 });
+
                 resultsDal.updateDalStatus(dalId, 'pending');   // begin in a pending state
-            } else {
-                resultsDal.updateDalStatus(dalId, 'none');  // ...or, if not selected, style accordingly as well
             }
 
         }, this);
@@ -291,11 +319,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
     },
 
     searchCallback: function (records, operation, success, resultsDal, resultsPanel, dalId, store) {
-        var resultsObj = {id:dalId, store:store};
-        resultsPanel.up('#searchresults').allResultSets.push(resultsObj);   // add an object tying the dal and store together for referencing
 
-        var statusString = success ? 'success' : 'fail';
-        resultsDal.updateDalStatus(dalId, statusString);
 
         if (!success) {
             // server down..?
@@ -303,6 +327,16 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                 msg: 'The server could not complete the search request.'
             });
         }   else    {
+
+            var resultsObj = {id:dalId, store:store};
+
+            resultsPanel.up('#searchresults').allResultSets.push(resultsObj);   // add an object tying the dal and store together for referencing
+
+            var statusString = success ? 'success' : 'fail';
+            resultsDal.updateDalStatus(dalId, statusString);
+
+            resultsDal.createDalFacets(dalId);
+
             if(dalId === Ext.data.StoreManager.lookup('dalSources').defaultId)    {
                 var controller = Savanna.controller.Factory.getController('Savanna.search.controller.ResultsComponent');
                 controller.changeSelectedStore({}, {}, resultsDal.queryById(dalId));

@@ -1,7 +1,7 @@
 var ThetusTestHelpers;
 
 (function (ThetusHelpers) {
-    'use strict';
+    "use strict";
 
     var legacyDal = {
         "displayName": "Savanna",
@@ -179,7 +179,55 @@ var ThetusTestHelpers;
             }
         ],
         "displayName": "mockDAL",
-        "facetDescriptions": [ ],
+        "facetDescriptions": [{
+            "displayValue": "Publish Date",
+            "facetId": "published-date",
+            "facetDataType": "DATE",
+            "providesAggregateData": true,
+            "canFilterOn": true,
+            "enumValues": null,
+            "enumValuesType": "sav_facetEnumType_None"
+        }, {
+            "displayValue": "Ingest Date",
+            "facetId": "ingest-date",
+            "facetDataType": "DATE",
+            "providesAggregateData": true,
+            "canFilterOn": true,
+            "enumValues": null,
+            "enumValuesType": "sav_facetEnumType_None"
+        }, {
+            "displayValue": "Producer",
+            "facetId": "producer",
+            "facetDataType": "STRING",
+            "providesAggregateData": true,
+            "canFilterOn": true,
+            "enumValues": null,
+            "enumValuesType": "sav_facetEnumType_None"
+        }, {
+            "displayValue": "Category",
+            "facetId": "producer-category",
+            "facetDataType": "STRING",
+            "providesAggregateData": true,
+            "canFilterOn": true,
+            "enumValues": null,
+            "enumValuesType": "sav_facetEnumType_None"
+        }, {
+            "displayValue": "Distributor",
+            "facetId": "distributor",
+            "facetDataType": "STRING",
+            "providesAggregateData": true,
+            "canFilterOn": true,
+            "enumValues": null,
+            "enumValuesType": "sav_facetEnumType_None"
+        }, {
+            "displayValue": "Classification",
+            "facetId": "composite",
+            "facetDataType": "STRING",
+            "providesAggregateData": true,
+            "canFilterOn": true,
+            "enumValues": null,
+            "enumValuesType": "sav_facetEnumType_None"
+        }],
         "timeoutMillis": 5000,
         "sortOrderVOs": null,
         "searchGeoTypes": null,
@@ -322,7 +370,7 @@ var ThetusTestHelpers;
     };
 
     var allDals = {
-        defaultId: 'mockDAL',
+        defaultId: "mockDAL",
         sources: [
             legacyDal,
             groupedDal,

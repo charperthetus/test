@@ -89,6 +89,9 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.SearchDals', {
         this.store.each(function (record) {
             var myPanel = this.createPanel(record);
             this.add(myPanel);
+            if(record.data.id === this.store.defaultId)  {
+                myPanel.query('checkbox')[0].setValue(true);
+            }
         }, this);
     },
 
