@@ -67,12 +67,12 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
                                 columns: 1,
                                 vertical: true,
                                 items: [
-                                    { boxLabel: 'Any Time',  itemId: 'date_all', name: facetID, inputValue: 'all', checked: true },
-                                    { boxLabel: 'Past 24 Hours',  itemId: 'date_past_day', name: facetID, inputValue: 'past_day'},
-                                    { boxLabel: 'Past Week',  itemId: 'date_past_week', name: facetID, inputValue: 'past_week' },
-                                    { boxLabel: 'Past Month',  itemId: 'date_past_month', name: facetID, inputValue: 'past_month' },
-                                    { boxLabel: 'Past Year',  itemId: 'date_past_year', name: facetID, inputValue: 'past_year' },
-                                    { boxLabel: 'Custom Range',  itemId: 'date_custom', name: facetID, inputValue: 'custom' }
+                                    { boxLabel: 'Any Time', itemId: 'date_all', name: facetID, inputValue: 'all', checked: true },
+                                    { boxLabel: 'Past 24 Hours', itemId: 'date_past_day', name: facetID, inputValue: 'past_day'},
+                                    { boxLabel: 'Past Week', itemId: 'date_past_week', name: facetID, inputValue: 'past_week' },
+                                    { boxLabel: 'Past Month', itemId: 'date_past_month', name: facetID, inputValue: 'past_month' },
+                                    { boxLabel: 'Past Year', itemId: 'date_past_year', name: facetID, inputValue: 'past_year' },
+                                    { boxLabel: 'Custom Range', itemId: 'date_custom', name: facetID, inputValue: 'custom' }
                                 ],
                                 listeners: {
                                     'change': this.onDateRangeChange
@@ -80,30 +80,33 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
                             },
                             {
                                 xtype: 'form',
-                                itemId:'customDatesPanel',
+                                itemId: 'customDatesPanel',
                                 collapsible: true,
                                 collapsed: true,
                                 titleCollapse: true,
                                 hideCollapseTool: true,
-                                header:false,
-                                width:'100%',
-                                items: [{
-                                    xtype: 'search_resultsDals_resultsdatefield',
-                                    fieldLabel: 'From',
-                                    labelWidth:50,
-                                    width:185,
-                                    name: 'from_date',
-                                    itemId:'fromDate',
-                                    value: new Date('1/1/1971')
-                                }, {
-                                    xtype: 'search_resultsDals_resultsdatefield',
-                                    fieldLabel: 'To',
-                                    labelWidth:50,
-                                    width:185,
-                                    name: 'to_date',
-                                    itemId:'toDate',
-                                    value: new Date()
-                                }]
+                                header: false,
+                                width: '100%',
+                                items: [
+                                    {
+                                        xtype: 'search_resultsDals_resultsdatefield',
+                                        fieldLabel: 'From',
+                                        labelWidth: 50,
+                                        width: 185,
+                                        name: 'from_date',
+                                        itemId: 'fromDate',
+                                        value: new Date('1/1/1971')
+                                    },
+                                    {
+                                        xtype: 'search_resultsDals_resultsdatefield',
+                                        fieldLabel: 'To',
+                                        labelWidth: 50,
+                                        width: 185,
+                                        name: 'to_date',
+                                        itemId: 'toDate',
+                                        value: new Date()
+                                    }
+                                ]
 
                             }
                         ]
@@ -263,14 +266,14 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
             customDates.collapse();
             customDates.collapsed = true;
 
-        }   else    {
+        } else {
 
             customDates.expand();
             customDates.collapsed = false;
         }
     },
 
-    doCustomDateSearch:function()   {
+    doCustomDateSearch: function () {
 
         var startDate = Ext.Date.format(this.queryById('fromDate').getValue(), this.dateFormat),
             endDate = Ext.Date.format(this.queryById('toDate').getValue(), this.dateFormat),
@@ -324,7 +327,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
          check to see if this facet filter exists in the store already
          */
 
-        if (me.dal.get('facetFilterCriteria').length) {
+        if (me.dal.get('facetFilterCriteria').length > 0) {
 
             Ext.each(me.dal.get('facetFilterCriteria'), function (filter, index) {
 
@@ -357,13 +360,21 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
 
             });
 
-        } else {
-            me.dal.set('facetFilterCriteria', [
-                {
+            if (!filterExists) {
+                me.dal.get('facetFilterCriteria').push({
                     'facetName': facet,
                     'facetValues': [btn.inputValue]   // this is always an array
-                }
-            ]);
+                });
+            }
+
+        } else {
+            if (me.dal.get('facetFilterCriteria').length === 0) {
+                me.dal.set('facetFilterCriteria', []);
+            }
+            me.dal.get('facetFilterCriteria').push({
+                'facetName': facet,
+                'facetValues': [btn.inputValue]   // this is always an array
+            });
         }
         /*
          resubmit the search request
