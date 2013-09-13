@@ -11,15 +11,9 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
     requires: [
         'Savanna.search.model.SearchRequest',
-        'Savanna.search.model.SearchHistory',
         'Savanna.search.store.SearchResults',
-        'Savanna.search.store.SearchHistory',
         'Savanna.search.view.searchComponent.searchBody.searchMap.SearchLocationForm',
         'Savanna.controller.Factory'
-    ],
-
-    models: [
-        'Savanna.search.model.SearchHistory'
     ],
     stores: [
         'Savanna.search.store.DalSources'
@@ -63,14 +57,14 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             'search_searchcomponent #search_submit': {
                 click: this.doSearch
             },
+            'search_searchcomponent #search_clear': {
+                click: this.clearSearch
+            },
             'search_searchcomponent #advancedsearch_submit': {
                 click: this.doSearch
             },
             'search_searchcomponent #close_panel': {
                 click: this.handleClose
-            },
-            'search_searchcomponent #historymenu menuitem': {
-                click: this.onHistoryItemClick
             },
             'search_searchcomponent #optionsbutton': {
                 click: this.onBodyToolbarClick
@@ -113,6 +107,14 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             optionsBtn.fireEvent('click', optionsBtn);
         }
     },
+    clearSearch:function(elem)  {
+        var form = elem.findParentByType('search_searchcomponent').down('#search_form');
+        form.queryById('search_terms').setValue('');
+    },
+    clearSearch:function(elem)  {
+        var form = elem.findParentByType('search_searchcomponent').down('#search_form');
+        form.queryById('search_terms').setValue('');
+    },
 
     handleSearchTermKeyUp: function (field, evt) {
         if (evt.keyCode === 13) {
@@ -131,10 +133,6 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
     alignMenuWithTextfield: function (btn) {
         btn.menu.alignTo(btn.up('#search_form').getEl());
-    },
-
-    onHistoryItemClick: function (btn) {
-        this.doSearch(btn);
     },
 
     onBodyToolbarClick: function (button) {
@@ -280,10 +278,6 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
         }, this);
         this.showResultsPage(component);
-        /*
-         track in recent searches
-         */
-        this.logHistory(searchString);
     },
 
     getCustomSearchSelections: function(currentDalPanel) {
@@ -342,22 +336,5 @@ Ext.define('Savanna.search.controller.SearchComponent', {
     showResultsPage: function (component) {
         var resultsBtn = component.down('#resultsbutton');
         resultsBtn.fireEvent('click', resultsBtn);
-    },
-
-    logHistory: function (searchString) {
-        var store = Ext.data.StoreManager.lookup('searchHistory');
-
-        if (store) {
-            store.add({
-                'query': searchString,
-                'date': Ext.Date.format(new Date(), 'time')
-            });
-
-            store.sync();
-        }
-
-        else {
-            Ext.Error.raise('Unable to find "searchHistory" store');
-        }
     }
 });
