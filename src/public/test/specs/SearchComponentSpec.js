@@ -72,8 +72,7 @@ describe('Search Component', function () {
                         labelWidth: 200,
                         labelPad: 5,
                         name: 'testing',
-                        cls: 'customInputField',
-                        value: 'testing'
+                        cls: 'customInputField'
                     },{
                         xtype: 'combobox',
                         valueField: 'value',
@@ -110,7 +109,7 @@ describe('Search Component', function () {
                         labelPad: 5,
                         name: 'testing',
                         cls: 'customInputField',
-                        value: 'chicken'
+                        value: null
 
                     },{
                         xtype: 'datefield',
@@ -164,6 +163,8 @@ describe('Search Component', function () {
             for(var i = 0; i < 6; i++){
                 expect(test[i].hasOwnProperty('key')).toBeTruthy();
                 expect(test[i].hasOwnProperty('value')).toBeTruthy();
+                // test[i].value should either have something in it that evals to true or be an empty string
+                expect(test[i].value || test[i].value === '').toBeTruthy();
             }
         });
     });
