@@ -66,6 +66,12 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
         }, this);
 
         /*
+         create the refine search panel that sits below the DALs
+         */
+        var refineSearch = this.createRefineSearchPanel();
+        this.add(refineSearch);
+
+        /*
         create the facets panel that sits below the DALs
          */
         var facetPanel = this.createFacetsTabPanel();
@@ -76,6 +82,12 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
         return Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsOptions', {
             itemId: myRecord.get('id'),
             dalName: myRecord.get('displayName')
+        });
+    },
+
+    createRefineSearchPanel:function()  {
+        return Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineSearchbar',  {
+            itemId: 'refinesearch'
         });
     },
 
