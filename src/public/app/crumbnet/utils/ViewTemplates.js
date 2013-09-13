@@ -430,7 +430,10 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
         model.addNodeData(toData);
 
         // create a link data from the old node data to the new node data
-        var linkdata = { category: Savanna.crumbnet.utils.ViewTemplates.defaultLinkTemplate }; // New link with tapered category
+        var linkdata = {
+            category: Savanna.crumbnet.utils.ViewTemplates.defaultLinkTemplate,
+            text: Savanna.crumbnet.utils.ViewTemplates.linkRelationshipTypes[Savanna.crumbnet.utils.ViewTemplates.linkRelationshipTypes.length - 1]
+        };
         linkdata[model.linkFromKeyProperty] = model.getKeyForNodeData(fromData);
         linkdata[model.linkToKeyProperty] = model.getKeyForNodeData(toData);
 

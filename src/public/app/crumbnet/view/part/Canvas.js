@@ -51,7 +51,7 @@ Ext.define('Savanna.crumbnet.view.part.Canvas', {
 
         this.diagram.toolManager.linkingTool.archetypeLinkData = {
             category: Savanna.crumbnet.utils.ViewTemplates.defaultLinkTemplate,
-            text: Savanna.crumbnet.utils.ViewTemplates.linkRelationshipTypes[0]
+            text: Savanna.crumbnet.utils.ViewTemplates.linkRelationshipTypes[Savanna.crumbnet.utils.ViewTemplates.linkRelationshipTypes.length - 1]
         };
 
         this.diagram.toolManager.linkingTool.direction = go.LinkingTool.ForwardsOnly;
