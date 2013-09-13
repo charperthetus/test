@@ -26,35 +26,19 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
             'go-graph_canvas': {
                 afterrender: this.setupImageDrop
             },
-            'go-graph button': {
-                click: this.handleGraphToolbarButtonClick
+
+            // set up an event listener for any toolbar element with a "type" that does not contain "submenu"
+            'go-graph crumbnet_part_toolbar [type]:not([type~=submenu])': {
+                click: this.dispatchHandler
             },
-            'go-graph #cutCopyPaste menu': {
-                click: this.handleCutCopyPaste
+
+            // set up an event listener for buttons in any "submenu"
+            'go-graph crumbnet_part_toolbar [type~=submenu] menu': {
+                click: this.submenuDispatchHandler
             },
-            'go-graph #layoutMenu menu':{
-                click: this.handleLayoutMenuClick
-            },
-            'go-graph #alignmentMenu menu':{
-                click: this.handleAlignmentMenuClick
-            },
-            'go-graph #linkStyleMenu menu': {
-                click: this.handleLinkStyleMenuClick
-            },
-            'go-graph #linkTypeMenu menu': {
-                click: this.handleLinkTypeMenuClick
-            },
-            'go-graph #nodeColorPicker': {
-                select: this.handleNodeColorSelect
-            },
+
             'go-graph #search': {
                 click: this.handleCrumbnetSearch
-            },
-            'go-graph #save menu': {
-                click: this.handleSave
-            },
-            'go-graph #export': {
-                click: this.handleExport
             },
             'crumbnet_part_palette-group': {
                 'nodePaletteSelectionChanged': this.handlePaletteSelectionChange
@@ -63,243 +47,6 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
     },
 
     // CUSTOM METHODS/CONFIGURATION
-
-    handlePaletteSelectionChange: function(e, selPalette){
-        var iterator = e.diagram.selection.iterator;
-
-        //There should only ever be one selected node in the palette
-        iterator.next();
-
-        if (iterator.value){
-            var mainView = selPalette.up('go-graph');
-            var diagram = mainView.down('go-graph_canvas').diagram;
-
-            diagram.toolManager.clickCreatingTool.archetypeNodeData = iterator.value.data;
-
-            var palettes = mainView.query('crumbnet_part_palette-group');
-
-            palettes.forEach(function(paletteView){
-                if (selPalette !== paletteView){
-                    paletteView.palette.clearSelection();
-                }
-            });
-        }
-    },
-
-    handleGraphToolbarButtonClick: function(button) {
-        var crumbnet = button.up('go-graph');
-        var diagram = crumbnet.down('go-graph_canvas').diagram;
-
-        switch (button.type) {
-            case 'zoomIn':
-                this.zoomIn(diagram);
-                break;
-            case 'zoomOut':
-                this.zoomOut(diagram);
-                break;
-            case 'zoomToFit':
-                diagram.zoomToFit();
-                break;
-            case 'undo':
-                diagram.undoManager.undo();
-                break;
-            case 'redo':
-                diagram.undoManager.redo();
-                break;
-            case 'grid':
-                this.toggleGrid(diagram);
-                break;
-            case 'overview':
-                var mainCrumbnetViewport = crumbnet.down('#mainCrumbnetViewport');
-                this.toggleOverview(mainCrumbnetViewport, diagram);
-                break;
-            case 'print':
-                Ext.create('Savanna.view.PrintModal', {
-                    html: diagram.makeImage({ scale: 0.5 })
-                }).show();
-                break;
-            default:
-                // NOTE: there is no "default" because we get clicks for other "buttons" (such as the dropdown menus)
-                //       which we do not need to handle
-                break;
-        }
-    },
-
-    zoomIn: function(diagram) {
-        this.zoomTo(diagram, 0.9);
-    },
-
-    zoomOut: function(diagram) {
-        this.zoomTo(diagram, 1.1);
-    },
-
-    zoomTo: function(diagram, zoomRatio) {
-        var viewBounds = diagram.viewportBounds.copy();
-        var centerPoint = viewBounds.center.copy();
-
-        viewBounds.width *= zoomRatio;
-        viewBounds.height *= zoomRatio;
-        viewBounds.center = centerPoint;
-
-        diagram.zoomToRect(viewBounds);
-    },
-
-    toggleGrid: function(diagram) {
-        var newSetting = !diagram.grid.visible;
-
-        diagram.grid.visible = newSetting;
-        diagram.toolManager.draggingTool.isGridSnapEnabled = newSetting;
-        diagram.toolManager.resizingTool.isGridSnapEnabled = newSetting;
-
-        //TODO - The diagram is not auto updating itself when I turn the grid on the first time.  It does once it has been shown once.
-        diagram.update(); //this is not working - try something else
-    },
-
-    toggleOverview: function(mainCrumbnetViewport, diagram) {
-        var overview = mainCrumbnetViewport.down('go-graph_overview');
-
-        if (overview) {
-            mainCrumbnetViewport.remove(overview);
-        }
-        else {
-            overview = Ext.create('Savanna.crumbnet.view.part.Overview', {});
-            overview.setDiagram(diagram);
-            mainCrumbnetViewport.add(overview);
-        }
-    },
-
-    handleLayoutMenuClick: function(menu, item) {
-        var diagram = this.getDiagramForMenu(menu),
-            layout = null;
-
-        switch (item.type) {
-            case 'tree':
-                layout = go.GraphObject.make(go.TreeLayout,{ isOngoing: false });
-                break;
-            case 'grid':
-                layout = go.GraphObject.make(go.GridLayout, { comparer: go.GridLayout.smartComparer, isOngoing: false });
-                break;
-            case 'force':
-                layout = go.GraphObject.make(go.ForceDirectedLayout, { isOngoing: false });
-                break;
-            case 'circular':
-                layout = go.GraphObject.make(go.CircularLayout, { isOngoing: false });
-                break;
-            case 'layeredDigraph':
-                layout = go.GraphObject.make(go.LayeredDigraphLayout, { isOngoing: false, layerSpacing: 50 });
-                break;
-            default:
-                Ext.Error.raise('unknown type (' + item.type + ')');
-                break;
-        }
-
-        if (layout) {
-            diagram.startTransaction('ChangeLayout');
-            diagram.layout = layout;
-            diagram.commitTransaction('ChangeLayout');
-        }
-    },
-
-    handleAlignmentMenuClick: function(menu, item) {
-        var diagram = this.getDiagramForMenu(menu),
-            align = null;
-
-        switch (item.type) {
-            case 'right':
-                align = go.Spot.Right;
-                break;
-            case 'left':
-                align = go.Spot.Left;
-                break;
-            case 'top':
-                align = go.Spot.Top;
-                break;
-            case 'bottom':
-                align = go.Spot.Bottom;
-                break;
-            case 'center':
-                align = go.Spot.Center;
-                break;
-            default:
-                Ext.Error.raise('unknown type (' + item.type + ')');
-                break;
-        }
-
-        if (align) {
-            diagram.startTransaction('ChangeAlignment');
-            diagram.contentAlignment = align;
-            diagram.contentAlignment = go.Spot.Default;
-            diagram.commitTransaction('ChangeAlignment');
-        }
-    },
-
-    handleLinkStyleMenuClick: function(menu, item) {
-        var linkTemplateNames = Savanna.crumbnet.utils.ViewTemplates.getLinkTemplateNames();
-
-        if (Ext.Array.contains(linkTemplateNames, item.type)) {
-            var diagram = this.getDiagramForMenu(menu);
-            var selectedNodeSet = diagram.selection;
-            var iterator = selectedNodeSet.iterator;
-
-            // TODO: some interaction details to iron out
-            //        1) if no links are selected, should all link styles be changed?
-            //        2) if there are nodes selected, should anything change?
-            //        3) if nothing will happen, does anything need to be communicated to the user?
-            diagram.startTransaction('changeLinkStyle');
-            while (iterator.next()) {
-                if (iterator.value instanceof go.Link) {
-                    diagram.model.setDataProperty(iterator.value, 'category', item.type);
-                }
-            }
-            // TODO: should this be rollbackTransaction if nothing is changed?
-            diagram.commitTransaction('changeLinkStyle');
-        }
-        else {
-            Ext.Error.raise('Unknown link style "' + item.type + '"');
-        }
-    },
-
-    handleLinkTypeMenuClick: function(menu, item) {
-        var linkRelationshipTypes = Savanna.crumbnet.utils.ViewTemplates.linkRelationshipTypes,
-            diagram,
-            selectionSet,
-            iterator,
-            linkTextNode;
-
-        if (Ext.Array.contains(linkRelationshipTypes, item.type)) {
-            diagram = this.getDiagramForMenu(menu);
-            selectionSet = diagram.selection;
-            iterator = selectionSet.iterator;
-
-            diagram.startTransaction('changeLinkType');
-            while (iterator.next()) {
-                if (iterator.value instanceof go.Link) {
-                    diagram.model.setDataProperty(iterator.value.data, 'text', item.type);
-                }
-            }
-            // TODO: should this be rollbackTransaction if nothing is changed?
-            diagram.commitTransaction('changeLinkType');
-        }
-        else {
-            Ext.Error.raise('Unknown link type "' + item.type + '"');
-        }
-    },
-
-    handleNodeColorSelect: function(picker, selColor){
-        var diagram = this.getDiagramForMenu(picker);
-        var selectionSet = diagram.selection;
-        var iterator = selectionSet.iterator;
-
-        diagram.startTransaction('changeNodeColor');
-
-        while (iterator.next()) {
-            if (iterator.value instanceof go.Node) {
-                diagram.model.setDataProperty(iterator.value.data, 'color', '#' + selColor);
-            }
-        }
-
-        diagram.commitTransaction('changeNodeColor');
-    },
 
     setupImageDrop: function(canvasView) {
         if (typeof window.FileReader !== 'undefined') {
@@ -343,72 +90,407 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
         return false;
     },
 
-    getDiagramForMenu: function(menu) {
-        return menu.up('go-graph').down('go-graph_canvas').diagram;
+    // event handlers
+
+    submenuDispatchHandler: function(menu, item, event) {
+        var actualMenu = this.getParentItem(menu),
+            typeParts = Ext.String.splitWords(actualMenu.type),
+            handler = 'handle';
+
+        typeParts.forEach(function(word) {
+            handler += Ext.String.capitalize(word);
+        });
+
+        this._dispatch(handler, menu, item, event);
     },
 
-    handleCutCopyPaste: function(menu, item) {
-        var diagram = this.getDiagramForMenu(menu),
-            commandHandler = diagram.commandHandler;
+    dispatchHandler: function(button, event) {
+        // Unfortunately, I was unable to figure out a query that would prevent calling this method for submenu buttons
+        // So...we instead have to filter them out.
+        if (this.isSubmenu(button)) {
+            return;
+        }
+
+        var handler = 'handle' + Ext.String.capitalize(button.type);
+
+        if (button.type === 'button') {
+            return; // disregard spurious button "type"
+        }
+
+        this._dispatch(handler, button, event);
+    },
+
+    _dispatch: function() {
+        var args = [].splice.call(arguments, 0),
+            handler = args.shift();
+
+        if (typeof this[handler] === 'function') {
+            this[handler].apply(this, args);
+        }
+        else {
+            Ext.Error.raise('Cannot find "' + handler + '" handler');
+        }
+    },
+
+    handleSave: function(button) {
+        this.showTODOmodal('Implement handleSave for menu.type "' + button.type + '"');
+    },
+
+    handleSaveAs: function(button) {
+        this.showTODOmodal('Implement handleSaveAs for button.type "' + button.type + '"');
+    },
+
+    handleClose: function(button) {
+        this.showTODOmodal('Implement handleClose for button.type "' + button.type + '"');
+    },
+
+    handleExport: function(button) {
+        this.showTODOmodal('Implement handleExport for button.type "' + button.type + '"');
+    },
+
+    handlePrint: function(button) {
+        var diagram = this.getDiagramForComponent(button);
+
+        Ext.create('Savanna.view.PrintModal', {
+            html: diagram.makeImage({ scale: 0.5 })
+        }).show();
+    },
+
+    handleUndo: function(button) {
+        var diagram = this.getDiagramForComponent(button);
+        diagram.undoManager.undo();
+    },
+
+    handleRedo: function(button) {
+        var diagram = this.getDiagramForComponent(button);
+        diagram.undoManager.redo();
+    },
+
+    handleZoomIn: function(button) {
+        var diagram = this.getDiagramForComponent(button);
+        this.zoomTo(diagram, 0.9);
+    },
+
+    handleZoomOut: function(button) {
+        var diagram = this.getDiagramForComponent(button);
+        this.zoomTo(diagram, 1.1);
+    },
+
+    handleZoomToFit: function(button) {
+        var diagram = this.getDiagramForComponent(button);
+        diagram.zoomToFit();
+    },
+
+    zoomTo: function(diagram, zoomRatio) {
+        var viewBounds = diagram.viewportBounds.copy();
+        var centerPoint = viewBounds.center.copy();
+
+        viewBounds.width *= zoomRatio;
+        viewBounds.height *= zoomRatio;
+        viewBounds.center = centerPoint;
+
+        diagram.zoomToRect(viewBounds);
+    },
+
+    handleLayoutSubmenu: function(menu, item) {
+        var diagram = this.getDiagramForComponent(menu),
+            layout = null;
 
         switch (item.type) {
-            case 'cut':
-                commandHandler.cutSelection();
+            case 'tree':
+                layout = go.GraphObject.make(go.TreeLayout,{ isOngoing: false });
                 break;
-            case 'copy':
-                commandHandler.copySelection();
+            case 'grid':
+                layout = go.GraphObject.make(go.GridLayout, { comparer: go.GridLayout.smartComparer, isOngoing: false });
                 break;
-            case 'paste':
-                diagram.startTransaction('menuPaste');
-                commandHandler.pasteFromClipboard();
-                diagram.commitTransaction('menuPaste');
+            case 'force':
+                layout = go.GraphObject.make(go.ForceDirectedLayout, { isOngoing: false });
+                break;
+            case 'circular':
+                layout = go.GraphObject.make(go.CircularLayout, { isOngoing: false });
+                break;
+            case 'layeredDigraph':
+                layout = go.GraphObject.make(go.LayeredDigraphLayout, { isOngoing: false, layerSpacing: 50 });
                 break;
             default:
-                Ext.Error.raise({ msg: 'Unknown "type" (' + item.type + ') for cutCopyPaste' });
+                Ext.Error.raise('unknown type (' + item.type + ')');
                 break;
+        }
+
+        if (layout) {
+            diagram.startTransaction('ChangeLayout');
+            diagram.layout = layout;
+            diagram.commitTransaction('ChangeLayout');
+        }
+    },
+
+    handleToggleGrid: function(button) {
+        var diagram = this.getDiagramForComponent(button),
+            newSetting = !diagram.grid.visible;
+
+        diagram.grid.visible = newSetting;
+        diagram.toolManager.draggingTool.isGridSnapEnabled = newSetting;
+        diagram.toolManager.resizingTool.isGridSnapEnabled = newSetting;
+    },
+
+    handleToggleOverview: function(button) {
+        var mainCrumbnetViewport = button.up('go-graph'),
+            overview = mainCrumbnetViewport.down('go-graph_overview'),
+            diagram = mainCrumbnetViewport.down('go-graph_canvas').diagram;
+
+        if (overview) {
+            mainCrumbnetViewport.remove(overview);
+        }
+        else {
+            overview = Ext.create('Savanna.crumbnet.view.part.Overview', {});
+            overview.setDiagram(diagram);
+            mainCrumbnetViewport.add(overview);
+        }
+    },
+
+    handleToggleLinkType: function(button) {
+        this.showTODOmodal('Implement handleToggleLinkType for button.type "' + button.type + '"');
+    },
+
+    handleToggleNodeType: function(button) {
+        this.showTODOmodal('Implement handleToggleNodeType for button.type "' + button.type + '"');
+    },
+
+    handleToggleNodeDescriptions: function(button) {
+        this.showTODOmodal('Implement handleToggleNodeDescriptions for button.type "' + button.type + '"');
+    },
+
+    handleSnapToGrid: function(button) {
+        this.showTODOmodal('Implement handleSnapToGrid for button.type "' + button.type + '"');
+    },
+
+    handleGridSettings: function(button) {
+        this.showTODOmodal('Implement handleGridSettings for button.type "' + button.type + '"');
+    },
+
+    handleExpandAllNodes: function(button) {
+        this.showTODOmodal('Implement handleExpandAllNodes for button.type "' + button.type + '"');
+    },
+
+    handleAlignNodes: function(button) {
+        this.showTODOmodal('Implement handleAlignNodes for "' + button.type + '"');
+    },
+
+    handleCut: function(button) {
+        this.getCommandHandlerForComponent(button).cutSelection();
+    },
+
+    handleCopy: function(button) {
+        this.getCommandHandlerForComponent(button).copySelection();
+    },
+
+    handlePaste: function(button) {
+        var diagram = this.getDiagramForComponent(button),
+            commandHandler = diagram.commandHandler;
+
+        diagram.startTransaction('menuPaste');
+        commandHandler.pasteFromClipboard();
+        diagram.commitTransaction('menuPaste');
+    },
+
+    handleSelectAll: function(button) {
+        this.showTODOmodal('Implement handleSelectAll for button.type "' + button.type + '"');
+    },
+
+    handleDeselect: function(button) {
+        this.showTODOmodal('Implement handleDeselect for button.type "' + button.type + '"');
+    },
+
+    handleDelete: function(button) {
+        this.showTODOmodal('Implement handleDelete for button.type "' + button.type + '"');
+    },
+
+    handleAlignmentSubmenu: function(menu, item) {
+        var diagram = this.getDiagramForComponent(menu),
+            align = null;
+
+        switch (item.type) {
+            case 'right':
+                align = go.Spot.Right;
+                break;
+            case 'left':
+                align = go.Spot.Left;
+                break;
+            case 'top':
+                align = go.Spot.Top;
+                break;
+            case 'bottom':
+                align = go.Spot.Bottom;
+                break;
+            case 'center':
+                align = go.Spot.Center;
+                break;
+            default:
+                Ext.Error.raise('unknown type (' + item.type + ')');
+                break;
+        }
+
+        if (align) {
+            diagram.startTransaction('ChangeAlignment');
+            diagram.contentAlignment = align;
+            diagram.contentAlignment = go.Spot.Default;
+            diagram.commitTransaction('ChangeAlignment');
+        }
+    },
+
+    handleLinkStyleSubmenu: function(menu, item) {
+        var linkTemplateNames = Savanna.crumbnet.utils.ViewTemplates.getLinkTemplateNames();
+
+        if (Ext.Array.contains(linkTemplateNames, item.type)) {
+            var diagram = this.getDiagramForComponent(menu);
+            var selectedNodeSet = diagram.selection;
+            var iterator = selectedNodeSet.iterator;
+
+            // TODO: some interaction details to iron out
+            //        1) if no links are selected, should all link styles be changed?
+            //        2) if there are nodes selected, should anything change?
+            //        3) if nothing will happen, does anything need to be communicated to the user?
+            diagram.startTransaction('changeLinkStyle');
+            while (iterator.next()) {
+                if (iterator.value instanceof go.Link) {
+                    diagram.model.setDataProperty(iterator.value, 'category', item.type);
+                }
+            }
+            // TODO: should this be rollbackTransaction if nothing is changed?
+            diagram.commitTransaction('changeLinkStyle');
+        }
+        else {
+            Ext.Error.raise('Unknown link style "' + item.type + '"');
+        }
+    },
+
+    handleLinkTypeSubmenu: function(menu, item) {
+        var linkRelationshipTypes = Savanna.crumbnet.utils.ViewTemplates.linkRelationshipTypes,
+            diagram,
+            selectionSet,
+            iterator;
+
+        if (Ext.Array.contains(linkRelationshipTypes, item.type)) {
+            diagram = this.getDiagramForComponent(menu);
+            selectionSet = diagram.selection;
+            iterator = selectionSet.iterator;
+
+            diagram.startTransaction('changeLinkType');
+            while (iterator.next()) {
+                if (iterator.value instanceof go.Link) {
+                    diagram.model.setDataProperty(iterator.value.data, 'text', item.type);
+                }
+            }
+            // TODO: should this be rollbackTransaction if nothing is changed?
+            diagram.commitTransaction('changeLinkType');
+        }
+        else {
+            Ext.Error.raise('Unknown link type "' + item.type + '"');
         }
     },
 
     handleCrumbnetSearch: function(button) {
+        this.showTODOmodal('Add functionality to search the crumbnet for "' + button.up('go-graph').down('#crumbnetSearchText').value + '"');
+    },
+
+    handleNodeColorSubmenu: function(picker, selColor){
+        var diagram = this.getDiagramForComponent(picker);
+        var selectionSet = diagram.selection;
+        var iterator = selectionSet.iterator;
+
+        diagram.startTransaction('changeNodeColor');
+
+        while (iterator.next()) {
+            if (iterator.value instanceof go.Node) {
+                diagram.model.setDataProperty(iterator.value.data, 'color', '#' + selColor);
+            }
+        }
+
+        diagram.commitTransaction('changeNodeColor');
+    },
+
+    handleFlag: function(button) {
+        this.showTODOmodal('Implement handleFlag for button.type "' + button.type + '"');
+    },
+
+    handleTag: function(button) {
+        this.showTODOmodal('Implement handleTag for button.type "' + button.type + '"');
+    },
+
+    handleLink: function(button) {
+        this.showTODOmodal('Implement handleLink for button.type "' + button.type + '"');
+    },
+
+    handleComment: function(button) {
+        this.showTODOmodal('Implement handleComment for button.type "' + button.type + '"');
+    },
+
+    handlePaletteSelectionChange: function(e, selPalette){
+        var iterator = e.diagram.selection.iterator;
+
+        //There should only ever be one selected node in the palette
+        iterator.next();
+
+        if (iterator.value){
+            var mainView = selPalette.up('go-graph');
+            var diagram = mainView.down('go-graph_canvas').diagram;
+
+            diagram.toolManager.clickCreatingTool.archetypeNodeData = iterator.value.data;
+
+            var palettes = mainView.query('crumbnet_part_palette-group');
+
+            palettes.forEach(function(paletteView){
+                if (selPalette !== paletteView){
+                    paletteView.palette.clearSelection();
+                }
+            });
+        }
+    },
+
+    // Helper methods
+
+    getDiagramForComponent: function(component) {
+        var crumbnet = component.up('go-graph');
+
+        if (crumbnet) {
+            return crumbnet.down('go-graph_canvas').diagram;
+        }
+        else if (component.xtype === 'go-graph_canvas') {
+            return component.diagram;
+        }
+        else {
+            Ext.Error.raise({ msg: 'Unable to retrieve diagram'});
+        }
+    },
+
+    getCommandHandlerForComponent: function(component) {
+        return this.getDiagramForComponent(component).commandHandler;
+    },
+
+    showTODOmodal: function(msg) {
         Ext.create('Ext.window.Window', {
             modal: true,
-            height: 100,
             width: 500,
-            html: 'TODO: Add functionality to search the crumbnet for "' + button.up('go-graph').down('#crumbnetSearchText').value + '"'
+            height: 100,
+            html: 'TODO: ' + msg
         }).show();
     },
 
-    handleSave: function(menu, item) {
-        var msg = '';
-
-        switch (item.type) {
-            case 'save':
-                msg = 'TODO: Implement "Save"';
-                break;
-            case 'saveAs':
-                msg = 'TODO: Implement "Save As"';
-                break;
-            default:
-                Ext.Error.raise({ msg: 'Unknown "type" (' + item.type + ') for cutCopyPaste' });
-                break;
-        }
-
-        if (msg) {
-            Ext.create('Ext.window.Window', {
-                modal: true,
-                width: 500,
-                height: 100,
-                html: msg
-            }).show();
-        }
+    getParentItem: function(elem) {
+        return elem.parentItem || elem.ownerButton;
     },
 
-    handleExport: function(button, event) {
-        Ext.create('Ext.window.Window', {
-            modal: true,
-            width: 500,
-            height: 100,
-            html: 'TODO: Implement "Export"'
-        }).show();
+    isSubmenu: function(elem) {
+        var parentMenu = elem.parentMenu;
+
+        if (parentMenu) {
+            var parentItem = this.getParentItem(parentMenu);
+
+            if (parentItem) {
+                return parentItem.type && parentItem.type.match(/submenu/);
+            }
+        }
+
+        return false;
     }
 });

@@ -53,7 +53,121 @@ describe('Search Component', function () {
 
         ThetusTestHelpers.ExtHelpers.cleanTestDom();
     });
+    describe('getCustomSearchSelections', function() {
+        var formPanel = {};
+        var component = {};
+        var controller = {};
+        beforeEach(function() {
+            component = Ext.create('Savanna.search.view.SearchComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
+            controller = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
+            formPanel =  Ext.create('Ext.form.Panel', {
+                title: 'testing',
+                layout: 'vbox',
 
+                items: [
+                    {
+                        xtype: 'textfield',
+                        fieldLabel: 'testing',
+                        labelAlign: 'left',
+                        labelWidth: 200,
+                        labelPad: 5,
+                        name: 'testing',
+                        cls: 'customInputField'
+                    },{
+                        xtype: 'combobox',
+                        valueField: 'value',
+                        displayField: 'value',
+                        forceSelection: true,
+                        queryMode: 'local',
+                        editable: false,
+                        fieldLabel: 'testing',
+                        labelAlign: 'left',
+                        labelWidth: 200,
+                        labelPad: 5,
+                        name: 'testing',
+                        cls: 'customInputField',
+                        value: 'testing'
+
+                    },{
+                        xtype: 'checkbox',
+                        checked: true,
+                        fieldLabel: 'testing',
+                        labelAlign: 'left',
+                        labelWidth: 200,
+                        labelPad: 5,
+                        name: 'testing',
+                        cls: 'customInputField',
+                        value: 'testing'
+
+                    },{
+                        xtype: 'radiogroup',
+                        defaultType: 'radiofield',
+                        layout: 'hbox',
+                        fieldLabel: 'testing',
+                        labelAlign: 'left',
+                        labelWidth: 200,
+                        labelPad: 5,
+                        name: 'testing',
+                        cls: 'customInputField',
+                        value: null
+
+                    },{
+                        xtype: 'datefield',
+                        value: 1347298216073,
+                        fieldLabel: 'testing',
+                        labelAlign: 'left',
+                        labelWidth: 200,
+                        labelPad: 5,
+                        name: 'testing',
+                        cls: 'customInputField'
+                    },{
+                        xtype: 'fieldcontainer',
+                        layout: 'hbox',
+                        cls: 'customInputField',
+                        items: [
+                            {
+                                xtype: 'combobox',
+                                value: 'testing',
+                                valueField: 'value',
+                                displayField: 'value',
+                                forceSelection: true,
+                                queryMode: 'local',
+                                editable: false
+                            },{
+                                xtype: 'textfield',
+                                name: 'keyValueText'
+                            },{
+                                xtype: 'button',
+                                text: 'X',
+                                itemId: 'keyValueToggleInput'
+                            }
+                        ]
+                    }
+                ]
+            });
+        });
+        afterEach(function () {
+            formPanel = null;
+            if (controller) {
+                controller.destroy();
+                controller = null;
+            }
+            if (component) {
+                component.destroy();
+                component = null;
+            }
+        });
+        it('should return 6 objects with a key and value property', function() {
+            var test = controller.getCustomSearchSelections(formPanel);
+            expect(test.length).toBe(6);
+            for(var i = 0; i < 6; i++){
+                expect(test[i].hasOwnProperty('key')).toBeTruthy();
+                expect(test[i].hasOwnProperty('value')).toBeTruthy();
+                // test[i].value should either have something in it that evals to true or be an empty string
+                expect(test[i].value || test[i].value === '').toBeTruthy();
+            }
+        });
+    });
     describe('View', function () {
         var component = null;
 
