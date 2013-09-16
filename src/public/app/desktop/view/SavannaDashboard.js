@@ -8,9 +8,6 @@
 Ext.define('Savanna.desktop.view.SavannaDashboard', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.desktop_savannadashboard',
-    requires:[
-        'Ext.panel.Panel'
-    ],
     layout: {
         type: 'fit'
     },

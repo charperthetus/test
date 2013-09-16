@@ -89,7 +89,7 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
         var spaceWorkArea = Ext.ComponentQuery.query('panel #savannaworkspace')[0];
         if (spaceWorkArea) {
             //todo, if space is different than currentspace, reinit the workspace component
-            this.showDesktopComponent(spaceWorkArea);
+            this.showDesktopComponent(currentDesktopItem, spaceWorkArea);
         }
     },
 
@@ -113,22 +113,24 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
 
     displayDashboard: function(button) {
         var dashboard = button.up('desktop_savannadesktop').down('#savannadashboard');
-        this.showDesktopComponent(dashboard);
+        this.showDesktopComponent(currentDesktopItem, dashboard);
     },
 
     displaySpaceManager: function(button) {
         var spacemanager = button.up('desktop_savannadesktop').down('#spacemanager');
-        this.showDesktopComponent(spacemanager);
+        this.showDesktopComponent(currentDesktopItem, spacemanager);
     },
 
-    showDesktopComponent: function(cmp) {
+    showDesktopComponent: function(currCmp, cmp) {
         if (cmp) {
-            if (currentDesktopItem && currentDesktopItem !== cmp){
+            if (currCmp && currCmp !== cmp){
                 cmp.show();
                 cmp.hidden = false; //todo: why doesn't this value change automatically when we call show()?
-                currentDesktopItem.hide();
+                currCmp.hide();
                 currentDesktopItem = cmp;
             }
+        } else {
+            Ext.Error.raise('Null component sent to DesktopController.showDesktopComponent()');
         }
     },
 
@@ -162,7 +164,7 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
     },
 
     launchHelp: function() {
-        //todo: insert the help url here.
+        //todo: insert the help url here - get from config?
         //todo: do we need to get the savanna item in the active+focused tab and take them to a specific help section?
         window.open('http://www.google.com');
     },
@@ -183,12 +185,13 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
         this.statics().mystuffflyout.show();
     },
 
+    //todo: this logic may change...this is the initial implementation for design interaction
     setWorkspaceViewMode: function(mode) {
         var savannaWorkspace = Ext.ComponentQuery.query('panel #savannaworkspace')[0];
         if (savannaWorkspace) {
             var mainTabPanel = savannaWorkspace.down('#maintabpanel');
             if (mainTabPanel){
-                if (mode === 'split') {
+                if ('split' === mode) {
                     //create and add a second tab panel in the workspace (hbox)
                     var newTabPanel = Ext.create('Savanna.desktop.view.SavannaTabPanel', {
                         flex: 2,
@@ -206,11 +209,11 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
                     }
                     newTabPanel.setActiveTab(newTabPanel.items.getAt(0)); //just set the first tab in the new panel as active
                     newTabPanel.doLayout();
-                } else if (mode === 'single') {
+                } else if ('single' === mode) {
                     var secondaryTabPanel = savannaWorkspace.down('#secondarytabpanel');
                     if (secondaryTabPanel) {
                         //move all tabs from the second tabpanel into the main tabpanel - they get tacked on to the end
-                        while (secondaryTabPanel.items.length > 0) {
+                        while (0 < secondaryTabPanel.items.length) {
                             mainTabPanel.add(secondaryTabPanel.items.getAt(0));
                         }
                         savannaWorkspace.remove(secondaryTabPanel, true); //remove the secondary tab panel and destroy it
