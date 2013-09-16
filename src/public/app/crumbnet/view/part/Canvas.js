@@ -57,22 +57,33 @@ Ext.define('Savanna.crumbnet.view.part.Canvas', {
 
         //TODO - Move this to the controller
         this.diagram.addDiagramListener('PartResized', Ext.bind(this.partResized, this));
+        this.diagram.addDiagramListener('ExternalObjectsDropped', Ext.bind(this.partCreated, this));
+        this.diagram.addDiagramListener('PartCreated', Ext.bind(this.partCreated, this));
 
         this.diagram.toolManager.linkingTool.findLinkablePort = this.findPort;
     },
 
     // CUSTOM METHODS
 
-    partResized: function(e){
-        if (e.subject instanceof go.TextBlock){
-            var textBlock = e.subject;
+    partResized: function(diagramEvent) {
+        if (diagramEvent.subject instanceof go.TextBlock){
+            var textBlock = diagramEvent.subject;
             textBlock.height = textBlock.lineCount * 15; //TODO - need to do this a better way - super brittle
         }
     },
 
+    partCreated: function(diagramEvent) {
+        console.log(diagramEvent, diagramEvent.subject, diagramEvent.subject.first());
+        var addedNode = diagramEvent.subject.first(),
+            textEditingTool = this.diagram.toolManager.textEditingTool;
+
+        textEditingTool.textBlock = addedNode.findObject('title');
+        textEditingTool.doActivate();
+    },
+
     findPort: function() {
         var diagram = this.diagram,
-            obj = null;
+            obj;
 
         if (diagram === null) {
             return null;
