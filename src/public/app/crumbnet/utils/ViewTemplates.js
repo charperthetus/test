@@ -381,27 +381,38 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
         }
     },
 
-    addNodeAndLink: function(e, node) {
-        var fromNode = node.part;
+    addNodeAndLink: function(evt, node) {
+        var fromNode = node.part,
+            fromData,
+            diagram,
+            toData,
+            fromLocation,
+            siblingNodes,
+            x,
+            y,
+            model,
+            linkData,
+            addedNode,
+            id;
 
         if (!fromNode) {
             return;
         }
 
-        e.handled = true;
+        evt.handled = true;
 
-        var diagram = fromNode.diagram;
+        diagram = fromNode.diagram;
 
         // get the node data for which the user clicked the button
-        var fromData = fromNode.data,
-            id = Ext.id();
+        fromData = fromNode.data;
+        id = Ext.id();
 
         //TODO - Need to figure out which properties should be copied into the new node by default (ie category, percent)
-        var toData = { title: 'New Node', type: fromData.type, color: fromData.color, category: fromData.category, key: id };
-        var fromLocation = fromNode.location;
-        var siblingNodes = fromNode.findNodesOutOf();
-        var x = 0;
-        var y = Number.NEGATIVE_INFINITY;
+        toData = { title: 'New Node', type: fromData.type, color: fromData.color, category: fromData.category, key: id };
+        fromLocation = fromNode.location;
+        siblingNodes = fromNode.findNodesOutOf();
+        x = 0;
+        y = Number.NEGATIVE_INFINITY;
 
         if (siblingNodes.count > 0) {
             while (siblingNodes.next()) {
@@ -426,40 +437,43 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
         }
 
         // add the new node data to the model
-        var model = diagram.model;
+        model = diagram.model;
 
         diagram.startTransaction('Add Node');
 
         model.addNodeData(toData);
 
         // create a link data from the old node data to the new node data
-        var linkdata = {
+        linkData = {
             category: Savanna.crumbnet.utils.ViewTemplates.defaultLinkTemplate,
             text: Savanna.crumbnet.utils.ViewTemplates.linkRelationshipTypes[Savanna.crumbnet.utils.ViewTemplates.linkRelationshipTypes.length - 1]
         };
-        linkdata[model.linkFromKeyProperty] = model.getKeyForNodeData(fromData);
-        linkdata[model.linkToKeyProperty] = model.getKeyForNodeData(toData);
-
-        console.log('linkData', linkdata);
+        linkData[model.linkFromKeyProperty] = model.getKeyForNodeData(fromData);
+        linkData[model.linkToKeyProperty] = model.getKeyForNodeData(toData);
 
         // and add the link data to the model
-        model.addLinkData(linkdata);
+        model.addLinkData(linkData);
 
         diagram.commitTransaction('Add Node');
 
-        var addedNode = diagram.findNodeForKey(id);
+        addedNode = diagram.findNodeForKey(id);
 
         Savanna.crumbnet.utils.ViewTemplates.setupTextEditor(diagram, addedNode.findObject('title'));
     },
 
     setupTextEditor: function(diagram, textNode) {
         var textEditingTool = diagram.commandHandler,
-            textAreaElem;
+            textAreaElem,
+            valueLength;
 
         textEditingTool.editTextBlock(textNode);
         textAreaElem = diagram.toolManager.textEditingTool.currentTextEditor;
 
-        textAreaElem.setSelectionRange(0, textAreaElem.value.length);
+        if (textAreaElem) {
+            valueLength = textAreaElem.value ? textAreaElem.value.length : 0;
+
+            textAreaElem.setSelectionRange(0, valueLength);
+        }
     },
 
     // PORT methods

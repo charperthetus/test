@@ -70,6 +70,7 @@ Ext.define('Savanna.crumbnet.view.part.Canvas', {
     // CUSTOM METHODS
 
     textEdited: function() {
+        // reset our textarea selection so that we do not have anything selected yet
         this.diagram.toolManager.textEditingTool.currentTextEditor.setSelectionRange(0,0);
     },
 
