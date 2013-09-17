@@ -18,7 +18,14 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.searchMap.Canvas', {
 
     initComponent: function() {
 
-        this.map = new OpenLayers.Map();
+        this.map = new OpenLayers.Map({
+            controls: [
+                new OpenLayers.Control.Navigation(),
+                new OpenLayers.Control.PanZoomBar({
+                    panIcons: false
+                })
+            ]
+        });
 
         this.callParent(arguments);
     },
