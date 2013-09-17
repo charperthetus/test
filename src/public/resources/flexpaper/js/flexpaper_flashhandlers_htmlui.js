@@ -15,14 +15,15 @@ FLEXPAPER.bindFlashEventHandlers = FLEXPAPER.flashEventHandlers = (function(el){
      */
     function addSlider(id){
         if (!slider && !FLEXPAPER.touchdevice) {
+            var maxZoom = getFlashParam("MaxZoomSize");
             slider = new Slider(id, {
                 callback: function(value){
-                    $FlexPaper(instance).sliderChange(5 * value);
+                    $FlexPaper(instance).sliderChange(maxZoom * value);
                 },
                 animation_callback: function(value){
                     if (slider) {
-                        if(value==0){value=parseFloat(getFlashParam("MinZoomSize"))/5;}
-                        $FlexPaper(instance).sliderChange(5 * value);
+                        if(value==0){value=parseFloat(getFlashParam("MinZoomSize"))/maxZoom;}
+                        $FlexPaper(instance).sliderChange(maxZoom * value);
                     }
                 }
             });
@@ -60,11 +61,13 @@ FLEXPAPER.bindFlashEventHandlers = FLEXPAPER.flashEventHandlers = (function(el){
      * @param float val
      */
     jQuery('#documentViewer').bind('onScaleChanged',function(e,val){
+        var maxZoom = getFlashParam("MaxZoomSize");
+
         if(!slider && !FLEXPAPER.touchdevice)
             addSlider(getButton(e,'.flexpaper_zoomSlider').get(0));
 
         if(!FLEXPAPER.touchdevice){
-            slider.setValue(val/5,true);
+            slider.setValue(val/maxZoom,true);
             slider.slide();
             slider.show();
             slider.initialized = true;
@@ -97,7 +100,7 @@ FLEXPAPER.bindFlashEventHandlers = FLEXPAPER.flashEventHandlers = (function(el){
         }
 
         if(!slider){
-            if(window.FlexPaperFullScreen){addSlider('zoomSliderFullScreen');bindEventListeners(e);}
+            //if(window.FlexPaperFullScreen){addSlider('zoomSliderFullScreen');bindEventListeners(e);}
         }
     });
 
@@ -316,6 +319,7 @@ FLEXPAPER.bindFlashEventHandlers = FLEXPAPER.flashEventHandlers = (function(el){
     jQuery.fn.showFullScreen = function()
     {
          var viewerId = jQuery(this).attr('id');
+
          var wrapper = jQuery(this).parent().get(0);
          var _this = this;
          var topMargin      = (jQuery(this).parent().children(0).height() / jQuery(this).parent().height()) * 100;
@@ -332,6 +336,8 @@ FLEXPAPER.bindFlashEventHandlers = FLEXPAPER.flashEventHandlers = (function(el){
          }
          else
          {
+             var conf = window['FlexPaperViewer_Instance'+viewerId].getConf();
+
              jQuery(this).parent().data('origStyle',jQuery(this).parent().attr('style'));
 
              if (document.documentElement.requestFullScreen) {
@@ -353,28 +359,73 @@ FLEXPAPER.bindFlashEventHandlers = FLEXPAPER.flashEventHandlers = (function(el){
                  nw.params = params;
 
                  var htmldata = '';
-                 var flexPaperSnip = jQuery(this).parent().html();
-                 flexPaperSnip = flexPaperSnip.replace(jQuery(this).parent().find('.flexpaper_zoomSlider').outerHTML(),'<div id="zoomSliderFullScreen" class="flexpaper_slider"><div class="flexpaper_handle"><img src="images/sliderdot.gif"/></div></div>');
 
                  htmldata += '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
                  htmldata += '<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">';
                  htmldata += '<head>';
                  htmldata += '<link rel="stylesheet" type="text/css" href="css/flexpaper.css" />';
-                 htmldata += '<link rel="stylesheet" type="text/css" href="css/slider.css" />';
-                 htmldata += '<scr'+'ipt type="text/javascript" src="js/jquery.js"></scr'+'ipt>';
-                 htmldata += '<scr'+'ipt type="text/javascript" src="js/slider.js"></scr'+'ipt>';
+                 htmldata += '<scr'+'ipt type="text/javascript" src="js/jquery.min.js"></scr'+'ipt>';
+                 htmldata += '<scr'+'ipt type="text/javascript" src="js/jquery.extensions.min.js"></scr'+'ipt>';
+                 htmldata += '<scr'+'ipt type="text/javascript" src="js/flexpaper.js"></scr'+'ipt>';
                  htmldata += '<scr'+'ipt type="text/javascript" src="js/flexpaper_flashhandlers_htmlui.js"></scr'+'ipt>';
                  htmldata += '</head>';
-                 htmldata += '<body>';
-                 htmldata += '<div id="FlexPaper" style="width:100%;height:'+(screen.height-jQuery('.flexpaper_toolbar').height()-25)+'px;">';
-                 htmldata += flexPaperSnip;
+                 htmldata += '<body onload="openViewer();">';
+                 htmldata += '<div id="documentViewer" style="width:100%;height:'+(screen.height-jQuery('.flexpaper_toolbar').height()-70)+'px;">';
                  htmldata += '</div>';
+                 htmldata += '<scr'+'ipt type="text/javascript">';
+                 htmldata += 'function openViewer(){';
+                 htmldata += 'jQuery.get((!window.isTouchScreen)?"UI_flexpaper_desktop.html":"UI_flexpaper_mobile.html",';
+                 htmldata += 'function(toolbarData) {';
+                 htmldata += 'jQuery("#documentViewer").FlexPaperViewer(';
+                 htmldata += '{ config : {';
+                 htmldata += '';
+                 htmldata += 'SWFFile : "' + conf.SwfFile + '",';
+                 htmldata += 'IMGFiles : "' + conf.IMGFiles + '",';
+                 htmldata += 'JSONFile : "' + conf.JSONFile + '",';
+                 htmldata += 'PDFFile : "' + conf.PDFFile + '",';
+                 htmldata += '';
+                 htmldata += 'Scale : '+_this.scale+',';
+                 htmldata += 'ZoomTransition : "' + conf.ZoomTransition + '",';
+                 htmldata += 'ZoomTime : ' + conf.ZoomTime + ',';
+                 htmldata += 'ZoomInterval : ' + conf.ZoomInterval + ',';
+                 htmldata += 'FitPageOnLoad : ' + conf.FitPageOnLoad + ',';
+                 htmldata += 'FitWidthOnLoad : ' + conf.FitWidthOnLoad + ',';
+                 htmldata += 'FullScreenAsMaxWindow : ' + conf.FullScreenAsMaxWindow + ',';
+                 htmldata += 'ProgressiveLoading : ' + conf.ProgressiveLoading + ',';
+                 htmldata += 'MinZoomSize : ' + conf.MinZoomSize + ',';
+                 htmldata += 'MaxZoomSize : ' + conf.MaxZoomSize + ',';
+                 htmldata += 'SearchMatchAll : ' + conf.SearchMatchAll + ',';
+                 htmldata += 'InitViewMode : "' + conf.InitViewMode + '",';
+                 htmldata += 'RenderingOrder : "' + conf.RenderingOrder + '",';
+                 htmldata += 'useCustomJSONFormat : ' + conf.useCustomJSONFormat + ',';
+                 htmldata += 'JSONDataType : "' + conf.JSONDataType + '",';
+
+                 htmldata += 'ViewModeToolsVisible : ' + conf.ViewModeToolsVisible + ',';
+                 htmldata += 'ZoomToolsVisible : ' + conf.ZoomToolsVisible + ',';
+                 htmldata += 'NavToolsVisible : ' + conf.NavToolsVisible + ',';
+                 htmldata += 'CursorToolsVisible : ' + conf.CursorToolsVisible + ',';
+                 htmldata += 'SearchToolsVisible : ' + conf.SearchToolsVisible + ',';
+                 htmldata += 'UIConfig : "' + conf.UIConfig + '",';
+                 htmldata += 'jsDirectory : "' + conf.jsDirectory + '",';
+                 htmldata += 'cssDirectory : "' + conf.cssDirectory + '",';
+                 htmldata += 'localeDirectory : "' + conf.localeDirectory + '",';
+                 htmldata += 'Toolbar : toolbarData,'
+                 htmldata += 'BottomToolbar : "' + conf.BottomToolbar + '",';
+                 htmldata += 'key : "' + conf.key + '",';
+                 htmldata += '';
+                 htmldata += 'localeChain: "' + conf.localeChain + '"';
+                 htmldata += '}});';
+                 htmldata += '});';
+                 htmldata += '}';
+                 htmldata += '</scr'+'ipt>';
                  htmldata += '</body>';
                  htmldata += '</html>';
+
                  nw.document.write(htmldata);
                  nw.PendingFullScreen = true;
 
                  if (window.focus) {nw.focus()}
+                 nw.document.close();
              }
 
              setTimeout(function() {
