@@ -20,7 +20,8 @@ Ext.define('Savanna.search.view.SearchComponent', {
 
     layout: 'border',
     flex:4,
-    title: 'Search',
+    //todo: uncomment if this component is not in a floating window
+//    title: 'Search',
     closable:false,
     border:false,
 

@@ -91,7 +91,7 @@ page.open(pageUrl, function (status) {
             console.log('Going to do jscoverage reporting....');
             page.evaluate(function () {
                 if (typeof jscoverage_report === 'function') {
-                    jscoverage_report('phantom');
+                    jscoverage_report('jscover');
                 }
             });
 

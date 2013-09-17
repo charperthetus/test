@@ -45,8 +45,13 @@ window.FlexPaperViewerEmbedding = window.$f = function(id, args) {
         mac:/mac/.test(userAgent),
         touchdevice : (function(){try {return 'ontouchstart' in document.documentElement;} catch (e) {return false;} })(),
         android : (userAgent.indexOf("android") > -1),
-        ios : ((userAgent.match(/iphone/i)) || (userAgent.match(/ipod/i)) || (userAgent.match(/ipad/i)))
+        ios : ((userAgent.match(/iphone/i)) || (userAgent.match(/ipod/i)) || (userAgent.match(/ipad/i))),
+        winphone : userAgent.match(/Windows Phone/i),
+        blackberry : userAgent.match(/BlackBerry/i),
+        webos : userAgent.match(/webOS/i)
     };
+
+    platform.touchonlydevice = platform.touchdevice && (platform.android || platform.ios || platform.winphone || platform.blackberry || platform.webos);
 
     var config = args.config;
     var _SWFFile,_PDFFile,_IMGFiles,_SVGFiles,_IMGFiles_thumbs="",_IMGFiles_highres="",_JSONFile  = "",_jsDirectory="",_cssDirectory="",_localeDirectory="";_WMode = (config.WMode!=null||config.wmmode!=null?config.wmmode||config.WMode:"direct");
@@ -78,7 +83,7 @@ window.FlexPaperViewerEmbedding = window.$f = function(id, args) {
     _localeDirectory 	= (config.localeDirectory!=null?config.localeDirectory:"locale/");
     if(_SWFFile!=null && _SWFFile.indexOf("{" )==0 && _SWFFile.indexOf("[*," ) > 0 && _SWFFile.indexOf("]" ) > 0){_SWFFile = escape(_SWFFile);} // split file fix
 
-    if(config.StartAtPage==null){
+    if(config.StartAtPage==null && FLEXPAPER.getLocationHashParameter){
         var pageFromHash = FLEXPAPER.getLocationHashParameter('page');
         if(pageFromHash!=null){
             config.StartAtPage = pageFromHash;
@@ -115,9 +120,11 @@ window.FlexPaperViewerEmbedding = window.$f = function(id, args) {
         SearchMatchAll 			: (config.SearchMatchAll!=null)?config.SearchMatchAll:false,
         SearchServiceUrl 		: config.SearchServiceUrl,
         InitViewMode 			: config.InitViewMode,
+        PreviewMode             : config.PreviewMode,
+        MixedMode               : config.MixedMode,
         BitmapBasedRendering 	: (config.BitmapBasedRendering!=null)?config.BitmapBasedRendering:false,
         StartAtPage 			: (config.StartAtPage!=null&&config.StartAtPage.toString().length>0&&!isNaN(config.StartAtPage))?config.StartAtPage:1,
-        PrintPaperAsBitmap		: (config.PrintPaperAsBitmap!=null)?config.PrintPaperAsBitmap:((browser.safari)?true:false),
+        PrintPaperAsBitmap		: (config.PrintPaperAsBitmap!=null)?config.PrintPaperAsBitmap:((browser.safari||browser.mozilla)?true:false),
         AutoAdjustPrintSize		: (config.AutoAdjustPrintSize!=null)?config.AutoAdjustPrintSize:true,
 
         EnableCornerDragging 	: ((config.EnableCornerDragging!=null)?config.EnableCornerDragging:true), // FlexPaper Zine parameter
@@ -443,13 +450,18 @@ window.FlexPaperViewerEmbedding = window.$f = function(id, args) {
             (browser.safari) ||
             (browser.opera);
 
+        var supportsCanvasDrawing 	= 	(browser.mozilla && browser.version.split(".")[0] >= 4) ||
+            (browser.chrome && browser.version.split(".") >= 535) ||
+            (browser.msie && browser.version.split(".")[0] >= 10) ||
+            (browser.safari && browser.version.split(".")[0] >= 534 /*&& !platform.ios*/);
+
         // Default to a rendering mode if its not set
         if(!conf.RenderingOrder && conf.SwfFile !=  null){conf.RenderingOrder = "flash";}
         if(!conf.RenderingOrder && conf.JSONFile !=  null && conf.JSONFile){conf.RenderingOrder = "html";}
         if(!conf.RenderingOrder && conf.PdfFile !=  null){conf.RenderingOrder = "html5";}
 
         // mobile preview removes flash from the rendering order
-        if(FLEXPAPER.getLocationHashParameter('mobilepreview')){
+        if(FLEXPAPER.getLocationHashParameter && FLEXPAPER.getLocationHashParameter('mobilepreview')){
             conf.RenderingOrder = conf.RenderingOrder.replace(/flash/g, 'html');
         }
 
@@ -457,7 +469,7 @@ window.FlexPaperViewerEmbedding = window.$f = function(id, args) {
         var instance = "FlexPaperViewer_Instance"+((viewerId==="undefined")?"":viewerId);
 
         // version is ok
-		if ((conf.RenderingOrder.indexOf('flash') == 0 || (conf.RenderingOrder.indexOf('flash')>0 &&!supportsHTML4)) && f.isSupported(opts.version)) {
+		if ((conf.RenderingOrder.indexOf('flash') == 0 || (conf.RenderingOrder.indexOf('flash')>0 &&!supportsHTML4) || (conf.RenderingOrder.indexOf('flash')>0 && conf.RenderingOrder.indexOf('html5')>=0 && !supportsCanvasDrawing)) && f.isSupported(opts.version)) {
             if(conf.Toolbar){
                 var wrapper = jQuery(root).wrap("<div class='flexpaper_toolbar_wrapper' style='"+jQuery(root).attr('style')+"'></div>").parent();
                 jQuery(root).css({
@@ -546,12 +558,12 @@ window.FlexPaperViewerEmbedding = window.$f = function(id, args) {
 				jQuery(document).ready(function() {
                     if(conf.Toolbar){jQuery.fn.showFullScreen = function(){$FlexPaper(jQuery(this).attr('id')).openFullScreen();}}
 
-					jQuery.getScript(conf.jsDirectory+'FlexPaperViewer.js', function() {
-						var supportsCanvasDrawing 	= 	(browser.mozilla && browser.version.split(".")[0] >= 4) ||
-                                                        (browser.chrome && browser.version.split(".") >= 535) ||
-                                                        (browser.msie && browser.version.split(".")[0] >= 10) ||
-                                                        (browser.safari && browser.version.split(".")[0] >= 534 /*&& !platform.ios*/);
+                    // Enable cache of scripts. You can disable this if you want to force FlexPaper to use a non-cached version every time.
+                    jQuery.ajaxSetup({
+                        cache: true
+                    });
 
+					jQuery.getScript(conf.jsDirectory+'FlexPaperViewer.js', function() {
                         // If rendering order isnt set but the formats are supplied then assume the rendering order.
                         if(!conf.RenderingOrder){
                             conf.RenderingOrder = "";
@@ -577,7 +589,7 @@ window.FlexPaperViewerEmbedding = window.$f = function(id, args) {
                             oRenderingList[0] = 'html';
                         }
 
-                        if(conf.PdfFile!=null && conf.PdfFile.length>0 && conf.RenderingOrder.split(",").length>=1 && supportsCanvasDrawing && (oRenderingList[0] == 'html5' || (oRenderingList.length > 1 && oRenderingList[0] == 'flash' && oRenderingList[1] == 'html5')) && !(platform.touchdevice && oRenderingList.length > 1 && oRenderingList[1] == 'html')){
+                        if(conf.PdfFile!=null && conf.PdfFile.length>0 && conf.RenderingOrder.split(",").length>=1 && supportsCanvasDrawing && (oRenderingList[0] == 'html5' || (oRenderingList.length > 1 && oRenderingList[0] == 'flash' && oRenderingList[1] == 'html5')) && !(platform.touchonlydevice && oRenderingList.length > 1 && oRenderingList[1] == 'html')){
 							pageRenderer = new CanvasPageRenderer(viewerId,conf.PdfFile,conf.jsDirectory,
                                 {
                                     jsonfile : conf.JSONFile,
@@ -585,7 +597,8 @@ window.FlexPaperViewerEmbedding = window.$f = function(id, args) {
                                     pageThumbImagePattern : conf.ThumbIMGFiles,
                                     compressedJSONFormat : !conf.useCustomJSONFormat,
                                     JSONPageDataFormat : conf.JSONPageDataFormat,
-                                    JSONDataType : conf.JSONDataType
+                                    JSONDataType : conf.JSONDataType,
+                                    MixedMode : conf.MixedMode
                                 });
 						}else{
 							pageRenderer = new ImagePageRenderer(
@@ -599,7 +612,8 @@ window.FlexPaperViewerEmbedding = window.$f = function(id, args) {
 							compressedJSONFormat : !conf.useCustomJSONFormat,
 							JSONPageDataFormat : conf.JSONPageDataFormat,
 							JSONDataType : conf.JSONDataType,
-                            SVGMode : conf.RenderingOrder.toLowerCase().indexOf('svg')>=0
+                            SVGMode : conf.RenderingOrder.toLowerCase().indexOf('svg')>=0,
+                            MixedMode : conf.MixedMode
 							},
                             conf.jsDirectory);
 						}					
@@ -622,6 +636,8 @@ window.FlexPaperViewerEmbedding = window.$f = function(id, args) {
 								MaxZoomSize 			: conf.MaxZoomSize,
 								SearchMatchAll 			: conf.SearchMatchAll,
 								InitViewMode 			: conf.InitViewMode,
+                                PreviewMode             : conf.PreviewMode,
+                                MixedMode               : conf.MixedMode,
 								StartAtPage 			: conf.StartAtPage,
 								RenderingOrder 			: conf.RenderingOrder,
 								useCustomJSONFormat 	: conf.useCustomJSONFormat,
@@ -671,6 +687,10 @@ window.FlexPaperViewerEmbedding = window.$f = function(id, args) {
 						window[instance]['searchText'] = window[instance].searchText;
                         window[instance]['resize'] = window[instance].resize;
                         window[instance]['rotate'] = window[instance].rotate;
+                        window[instance]['addLink'] = window[instance].addLink;
+                        window[instance]['addImage'] = window[instance].addImage;
+                        window[instance]['addVideo'] = window[instance].addVideo;
+
 						//window[instance]['nextSearchMatch'] = window[instance].nextSearchMatch; //TBD
 						//window[instance]['prevSearchMatch'] = window[instance].nextSearchMatch; //TBD
 						window[instance]['switchMode'] = window[instance].switchMode;
@@ -687,7 +707,10 @@ window.FlexPaperViewerEmbedding = window.$f = function(id, args) {
 							  window[instance].show();
 
                               jQuery(root).trigger('onDocumentLoaded',pageRenderer.getNumPages());
-						});					
+						},{
+                              StartAtPage : conf.StartAtPage,
+                              MixedMode : conf.MixedMode
+                        });
 					}).fail(function(){
                             if(arguments[0].readyState==0){
                                 console.log("failed to load FlexPaperViewer.js. Check your resources");
