@@ -20,7 +20,6 @@ Ext.application({
 
     views: [
         'Login',
-        'SavannaDesktop',
         'Viewport'
     ],
 
@@ -34,6 +33,10 @@ Ext.application({
         //Main
         'Savanna.Config',
         'Savanna.controller.Factory',
+        //Desktop
+        'Savanna.desktop.controller.DesktopController',
+        //Space
+        'Savanna.space.controller.SpaceManagerController',
         //Flexpaper
         'Savanna.flexpaper.controller.FlexpaperComponent',
         //Search
@@ -59,5 +62,6 @@ Ext.application({
     },
 
     // CUSTOM CONFIGURATION
-    jsessionid: '' // keep track of the user's session id
+    jsessionid: '', // keep track of the user's session id
+    savannauser: '' // current savanna username
 });
