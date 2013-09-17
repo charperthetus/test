@@ -24,10 +24,25 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
             'search_resultscomponent #resultsSortByCombobox':   {
                 select: this.onSortByChange
             },
+            'search_resultscomponent #resultspanelgrid': {
+                'itemdblclick': this.onItemPreview
+            },
+            'search_resultscomponent > #resultspreviewwindow #resultspreviewcontent #previewclosebutton': {
+                'click': this.onCloseItemPreview
+            },
             'search_resultscomponent #resultsFacetsReset':  {
                 'click': this.onDalReset
             }
         });
+    },
+
+    onItemPreview: function (grid, record) {
+        var win = grid.findParentByType('search_resultscomponent').queryById('resultspreviewwindow');
+        win.displayPreview(record);
+    },
+
+    onCloseItemPreview:function(btn)   {
+        btn.up('#resultspreviewwindow').hide();
     },
 
     onDalRender: function (dal) {
