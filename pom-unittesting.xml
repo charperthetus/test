@@ -38,8 +38,6 @@
             <artifactId>JSCover</artifactId>
             <version>1.0.2</version>
         </dependency>
-
-        <!-- DEVOPS: these were the new dependencies that will need to be added to artifactory...-->
         <dependency>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
@@ -134,9 +132,7 @@
             </plugin>
 
             <!--
-                Run the coverage reports
-                NOTE: this only runs the jscover-generate-cobertura ant task, but that depends upon the jscover-test
-                      task which also generates the surefire reports...so we kill two tasks with one call here...
+                Run the tests to generate coverage reports and surefire reports
             -->
 
             <plugin>
@@ -172,7 +168,9 @@
                 </dependencies>
             </plugin>
 
-            <!-- Copy the jscover report into the site before deploying -->
+            <!--
+                 Copy the jscover report into the site before deploying
+            -->
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
                 <version>2.6</version>
@@ -224,9 +222,10 @@
         </plugins>
     </build>
 
-    <!-- DEVOPS: Is this the right wait to make sure unit test reports are output?
-                 Also, I'm not sure that this is the correct config for Cobetura reports. We're using JsCover (http://tntim96.github.io/JSCover/manual/manual.xml)
-                 which claims to generate Cobetura-friendly mark-up.  Currently, the reports are configured (in src/public/test/test.sh) to write to src/public/test/reports/phantom -->
+    <!--
+         Takes surefire reports from target/surefire-reports and includes them
+         in the project's site
+    -->
     <reporting>
         <plugins>
             <plugin>
