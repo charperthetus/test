@@ -33,6 +33,7 @@ Ext.define("Savanna.flexpaper.view.FlexpaperComponent", {
                 config: {
                     PDFFile: this.pdfFile,
                     Scale: 0.6,
+                    key : "@86cf4d402afdbe0b389$f6de2e67f473111c51e",
                     ZoomTransition: 'easeOut',
                     ZoomTime: 0.5,
                     ZoomInterval: 0.2,
