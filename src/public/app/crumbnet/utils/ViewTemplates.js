@@ -381,38 +381,27 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
         }
     },
 
-    addNodeAndLink: function(evt, node) {
-        var fromNode = node.part,
-            fromData,
-            diagram,
-            toData,
-            fromLocation,
-            siblingNodes,
-            x,
-            y,
-            model,
-            linkData,
-            addedNode,
-            id;
+    addNodeAndLink: function(e, node) {
+        var fromNode = node.part;
 
         if (!fromNode) {
             return;
         }
 
-        evt.handled = true;
+        e.handled = true;
 
-        diagram = fromNode.diagram;
+        var diagram = fromNode.diagram;
 
         // get the node data for which the user clicked the button
-        fromData = fromNode.data;
-        id = Ext.id();
+        var fromData = fromNode.data;
+        var id = Ext.id();
 
         //TODO - Need to figure out which properties should be copied into the new node by default (ie category, percent)
-        toData = { title: 'New Node', type: fromData.type, color: fromData.color, category: fromData.category, key: id };
-        fromLocation = fromNode.location;
-        siblingNodes = fromNode.findNodesOutOf();
-        x = 0;
-        y = Number.NEGATIVE_INFINITY;
+        var toData = { title: 'New Node', type: fromData.type, color: fromData.color, category: fromData.category, key: id };
+        var fromLocation = fromNode.location;
+        var siblingNodes = fromNode.findNodesOutOf();
+        var x = 0;
+        var y = Number.NEGATIVE_INFINITY;
 
         if (siblingNodes.count > 0) {
             while (siblingNodes.next()) {
@@ -437,26 +426,26 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
         }
 
         // add the new node data to the model
-        model = diagram.model;
+        var model = diagram.model;
 
         diagram.startTransaction('Add Node');
 
         model.addNodeData(toData);
 
         // create a link data from the old node data to the new node data
-        linkData = {
+        var linkdata = {
             category: Savanna.crumbnet.utils.ViewTemplates.defaultLinkTemplate,
             text: Savanna.crumbnet.utils.ViewTemplates.linkRelationshipTypes[Savanna.crumbnet.utils.ViewTemplates.linkRelationshipTypes.length - 1]
         };
-        linkData[model.linkFromKeyProperty] = model.getKeyForNodeData(fromData);
-        linkData[model.linkToKeyProperty] = model.getKeyForNodeData(toData);
+        linkdata[model.linkFromKeyProperty] = model.getKeyForNodeData(fromData);
+        linkdata[model.linkToKeyProperty] = model.getKeyForNodeData(toData);
 
         // and add the link data to the model
-        model.addLinkData(linkData);
+        model.addLinkData(linkdata);
 
         diagram.commitTransaction('Add Node');
 
-        addedNode = diagram.findNodeForKey(id);
+        var addedNode = diagram.findNodeForKey(id);
 
         Savanna.crumbnet.utils.ViewTemplates.setupTextEditor(diagram, addedNode.findObject('title'));
     },
