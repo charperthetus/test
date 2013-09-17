@@ -14,20 +14,18 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.SearchMap', {
 
     requires: [
         'Savanna.controller.Factory',
-        'Savanna.leaflet.Leafletmap'
+        'Savanna.search.view.searchComponent.searchBody.searchMap.Canvas'
     ],
 
     layout: 'fit',
 
     items: [
         {
-            xtype: 'leafletmap',
-            itemId: 'leafletMap',
-            flex: 1,
-            lat: 45.3003,
-            lng: -122.9719,
+            xtype: 'search_map_canvas',
+            height: '100%',
             width: '100%',
-            height: '100%'
+            itemId: 'searchMapCanvas',
+            flex: 1
         }
     ],
     dockedItems: [

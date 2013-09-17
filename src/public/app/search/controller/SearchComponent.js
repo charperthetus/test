@@ -38,10 +38,6 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                     button.up('search_searchmap').queryById('leafletMap').fireEvent('locationSearch:zoomto', button);
                 }
             },
-            'search_searchcomponent #leafletMap': {
-                'draw:created': function () {
-                }
-            },
             'search_searchcomponent #findLocation': {
                 click: this.onFindLocation
             },
@@ -71,6 +67,9 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             },
             'search_searchcomponent #resultsbutton': {
                 click: this.onBodyToolbarClick
+            },
+            'search_searchcomponent #searchMapCanvas': {
+                beforerender: this.loadDefaultLayer
             }
         });
     },
@@ -336,5 +335,10 @@ Ext.define('Savanna.search.controller.SearchComponent', {
     showResultsPage: function (component) {
         var resultsBtn = component.down('#resultsbutton');
         resultsBtn.fireEvent('click', resultsBtn);
+    },
+
+    loadDefaultLayer: function (canvas) {
+        canvas.map.addLayer(new OpenLayers.Layer.WMS('Satellite',
+            'http://demo.opengeo.org/geoserver/wms', {layers: 'bluemarble'}));
     }
 });
