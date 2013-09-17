@@ -6,23 +6,24 @@
  * To change this template use File | Settings | File Templates.
  */
 Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacets', {
-    extend: 'Ext.panel.Panel',
+    extend: 'Ext.tab.Panel',
     alias: 'widget.search_resultsDals_resultsfacets',
     requires:   [
        'Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacet'
     ],
     header: false,
     width: '100%',
+
+    /*
+     NOTE: to be replaced with a class attribute I'm sure - this just
+     here to get the panel to display for development.
+     */
     minHeight:200,
 
     initComponent: function () {
         this.callParent(arguments);
     },
-    items:  [
-        {
 
-        }
-    ],
     tbar:   [
         {
             xtype: 'tbtext',

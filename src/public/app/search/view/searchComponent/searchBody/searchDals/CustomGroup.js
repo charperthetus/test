@@ -61,11 +61,13 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.searchDals.CustomGrou
             labelAlign: 'left',
             labelWidth: 200,
             labelPad: 5,
-            name: record.get('id')
-
+            name: record.get('id'),
+            cls: 'customInputField'
         };
+
         switch (record.get('parameterType')) {
             case 'text':
+                config.value = record.get('defaultValue');
                 break;
             case 'drop-down':
                 var list = record.get('list');
@@ -84,7 +86,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.searchDals.CustomGrou
                 config.checked = record.get('defaultValue');
                 break;
             case 'radio':
-                config.xtype = 'fieldcontainer';
+                config.xtype = 'radiogroup';
                 config.defaultType = 'radiofield';
                 config.layout = 'hbox';
                 config.items = this.getRadioOptions(record.get('radioOptions'));
@@ -102,6 +104,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.searchDals.CustomGrou
                 config.itemId = 'keyValuePanel';
                 config.layout = 'vbox';
                 config.keyList = keyList;
+                config.cls = ''; // removes class customInputField set above because it will be added to the key value input
                 config.items = [];
                 config.bbar = {
                     xtype: 'button',
@@ -125,6 +128,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.searchDals.CustomGrou
         var myFields = {
             xtype: 'fieldcontainer',
             layout: 'hbox',
+            cls: 'customInputField',
             items: [
                 {
                     xtype: 'combobox',
@@ -136,7 +140,8 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.searchDals.CustomGrou
                     queryMode: 'local',
                     editable: false
                 },{
-                    xtype: 'textfield'
+                    xtype: 'textfield',
+                    name: 'keyValueText'
                 },{
                     xtype: 'button',
                     text: 'X',

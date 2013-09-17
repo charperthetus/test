@@ -11,15 +11,9 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
     requires: [
         'Savanna.search.model.SearchRequest',
-        'Savanna.search.model.SearchHistory',
         'Savanna.search.store.SearchResults',
-        'Savanna.search.store.SearchHistory',
         'Savanna.search.view.searchComponent.searchBody.searchMap.SearchLocationForm',
         'Savanna.controller.Factory'
-    ],
-
-    models: [
-        'Savanna.search.model.SearchHistory'
     ],
     stores: [
         'Savanna.search.store.DalSources'
@@ -63,14 +57,14 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             'search_searchcomponent #search_submit': {
                 click: this.doSearch
             },
+            'search_searchcomponent #search_clear': {
+                click: this.clearSearch
+            },
             'search_searchcomponent #advancedsearch_submit': {
                 click: this.doSearch
             },
             'search_searchcomponent #close_panel': {
                 click: this.handleClose
-            },
-            'search_searchcomponent #historymenu menuitem': {
-                click: this.onHistoryItemClick
             },
             'search_searchcomponent #optionsbutton': {
                 click: this.onBodyToolbarClick
@@ -93,11 +87,6 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
     handleNewSearch:function(elem)  {
 
-        /*
-         Do we want this to return the user to the search options screen, if
-         they are currently in the results screen?
-         */
-
         var form = elem.findParentByType('search_searchcomponent').down('#search_form');
 
         form.queryById('search_terms').setValue('');
@@ -117,21 +106,14 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             var optionsBtn = component.queryById('optionsbutton');
             optionsBtn.fireEvent('click', optionsBtn);
         }
-
-        /*
-         clear the selected dals
-         */
-        var dalStore = Ext.data.StoreManager.lookup('dalSources');
-
-        dalStore.each(function (source) {
-            var dals = component.down('#searchdals'),
-                resultsDals = component.down('#resultsdals'),
-                checkbox = dals.queryById(source.data.id).query('checkbox')[0].getValue();
-            if (checkbox.getValue()) {
-                checkbox.setValue(false);
-                resultsDals.queryById(source.data.id).down('#dalStatusIcon').getEl().setStyle(resultsDals.queryById(source.data.id).dalLoadNone);
-            }
-        });
+    },
+    clearSearch:function(elem)  {
+        var form = elem.findParentByType('search_searchcomponent').down('#search_form');
+        form.queryById('search_terms').setValue('');
+    },
+    clearSearch:function(elem)  {
+        var form = elem.findParentByType('search_searchcomponent').down('#search_form');
+        form.queryById('search_terms').setValue('');
     },
 
     handleSearchTermKeyUp: function (field, evt) {
@@ -151,10 +133,6 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
     alignMenuWithTextfield: function (btn) {
         btn.menu.alignTo(btn.up('#search_form').getEl());
-    },
-
-    onHistoryItemClick: function (btn) {
-        this.doSearch(btn);
     },
 
     onBodyToolbarClick: function (button) {
@@ -197,6 +175,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             resultsComponent = component.queryById('searchresults');
 
 
+
         /*
         this is an array of objects - they store the dal id and the store instance for that dal's results.
         For each selected DAL, a new store is generated and this array is used to keep track
@@ -214,25 +193,70 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
         var dals = component.down('#searchdals'),
             resultsDal = component.down('#resultsdals'),
-            resultsPanel = component.down('#resultspanel');
+            resultsPanel = component.down('#resultspanel'),
+            dalSelected = false;
+
+
+        /*
+         are no DALs selected?  if not, select the default DAL
+         */
+
+        dalStore.each(function (source) {
+            if(dals.queryById(source.get('id')).query('checkbox')[0].getValue())    {
+                dalSelected = true;
+                return false;
+            }
+        });
+
+        if(!dalSelected)  {
+            dals.queryById(dalStore.defaultId).query('checkbox')[0].setValue(true)
+        }
+
+
+        resultsDal.createDalPanels();
+
+
+
 
         /*
          Check for selected additional Dals, and do a search on each of them
          */
         dalStore.each(function (source) {
 
-            var dalId = source.data.id,
-                checked = dals.queryById(dalId).query('checkbox')[0].getValue();    // has this checkbox been selected in search options?
+            var dalId = source.get('id');
+            var currentDalPanel = dals.queryById(dalId);
+            var checked = dals.queryById(dalId).query('checkbox')[0].getValue();    // has this checkbox been selected in search options?
 
-            if (checked || dalId === dalStore.defaultId) {  // checked, or always search the default dal
+            if (checked) {  // checked, or always search the default dal
 
                 // Dal has been selected, apply to the request model and do search
+
+                searchObj.set('contentDataSource', dalId);
+
                 searchObj.set('searchPreferencesVOs', [
                     {
                         'dalId': dalId,
-                        'sortOrder': 'Default'
+                        'sortOrder': 'Default',
+                        'customSearchSelections': this.getCustomSearchSelections(currentDalPanel)
                     }
                 ]);
+
+
+
+                /*
+                set the facet filters, if any
+                 */
+                if(source.get('facetFilterCriteria').length)  {
+                    searchObj.set('facetFilterCriteria', source.get('facetFilterCriteria'));
+                }
+
+                /*
+                 set the date ranges, if any
+                 */
+                if(source.get('dateTimeRanges').length)  {
+                    searchObj.set('dateTimeRanges', source.get('dateTimeRanges'));
+                }
+
                 /*
                 Determine the pageSize for the stores.
                  */
@@ -248,25 +272,43 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                 resultsStore.load({
                     callback: Ext.bind(this.searchCallback, this, [resultsDal, resultsPanel, dalId, resultsStore], true)
                 });
+
                 resultsDal.updateDalStatus(dalId, 'pending');   // begin in a pending state
-            } else {
-                resultsDal.updateDalStatus(dalId, 'none');  // ...or, if not selected, style accordingly as well
             }
 
         }, this);
         this.showResultsPage(component);
-        /*
-         track in recent searches
-         */
-        this.logHistory(searchString);
+    },
+
+    getCustomSearchSelections: function(currentDalPanel) {
+
+        var customSearchOptions = [];
+        var customInputs = currentDalPanel.query('[cls=customInputField]');
+        for (var i = 0, total = customInputs.length; i< total; i++){
+            var customSearchInput = {};
+            customSearchInput.key = customInputs[i].name;
+            if (customInputs[i].xtype === 'datefield') {
+                customSearchInput.value = customInputs[i].value.valueOf();
+            } else if (customInputs[i].xtype === 'radiogroup' && customInputs[i].defaultType === 'radiofield') {
+                customSearchInput.value = customInputs[i].getValue().options;
+            } else if (customInputs[i].xtype === 'fieldcontainer') {
+                // then this item must be a key value pair and will need special handling
+                customSearchInput.key = customInputs[i].down('combobox').value;
+                customSearchInput.value = customInputs[i].down('[name=keyValueText]').value;
+
+            } else {
+                customSearchInput.value = customInputs[i].value;
+            }
+            if (customSearchInput.value === undefined || customSearchInput.value === null){
+                customSearchInput.value = '';
+            }
+            customSearchOptions.push(customSearchInput);
+        }
+        return customSearchOptions;
     },
 
     searchCallback: function (records, operation, success, resultsDal, resultsPanel, dalId, store) {
-        var resultsObj = {id:dalId, store:store};
-        resultsPanel.up('#searchresults').allResultSets.push(resultsObj);   // add an object tying the dal and store together for referencing
 
-        var statusString = success ? 'success' : 'fail';
-        resultsDal.updateDalStatus(dalId, statusString);
 
         if (!success) {
             // server down..?
@@ -274,6 +316,16 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                 msg: 'The server could not complete the search request.'
             });
         }   else    {
+
+            var resultsObj = {id:dalId, store:store};
+
+            resultsPanel.up('#searchresults').allResultSets.push(resultsObj);   // add an object tying the dal and store together for referencing
+
+            var statusString = success ? 'success' : 'fail';
+            resultsDal.updateDalStatus(dalId, statusString);
+
+            resultsDal.createDalFacets(dalId);
+
             if(dalId === Ext.data.StoreManager.lookup('dalSources').defaultId)    {
                 var controller = Savanna.controller.Factory.getController('Savanna.search.controller.ResultsComponent');
                 controller.changeSelectedStore({}, {}, resultsDal.queryById(dalId));
@@ -284,22 +336,5 @@ Ext.define('Savanna.search.controller.SearchComponent', {
     showResultsPage: function (component) {
         var resultsBtn = component.down('#resultsbutton');
         resultsBtn.fireEvent('click', resultsBtn);
-    },
-
-    logHistory: function (searchString) {
-        var store = Ext.data.StoreManager.lookup('searchHistory');
-
-        if (store) {
-            store.add({
-                'query': searchString,
-                'date': Ext.Date.format(new Date(), 'time')
-            });
-
-            store.sync();
-        }
-
-        else {
-            Ext.Error.raise('Unable to find "searchHistory" store');
-        }
     }
 });

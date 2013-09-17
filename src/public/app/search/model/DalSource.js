@@ -17,7 +17,9 @@ Ext.define('Savanna.search.model.DalSource', {
         // These are fields that currently are not used
         { name: 'timeoutMillis', type: 'int' },
         { name: 'inputTypes' },
-        { name: 'outputTypes' }
+        { name: 'outputTypes' },
+        { name: 'facetFilterCriteria', type: 'array'},
+        { name: 'dateTimeRanges', type: 'array'}
     ],
 
     // NOTE: the model class must be fully qualififed in your relationship definition
