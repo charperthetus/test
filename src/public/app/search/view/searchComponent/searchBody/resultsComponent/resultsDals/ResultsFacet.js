@@ -12,7 +12,8 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
     requires: [
         'Ext.XTemplate',
         'Ext.form.Panel',
-        'Ext.form.RadioGroup'
+        'Ext.form.RadioGroup',
+        'Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsDatefield'
     ],
 
     width: '100%',
@@ -23,6 +24,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
     collapsed: true,
     titleCollapse: true,
     hideCollapseTool: true,
+    dateFormat: 'Y-m-d\\TH:i:s.m\\Z',
 
     initComponent: function () {
 
@@ -65,16 +67,47 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
                                 columns: 1,
                                 vertical: true,
                                 items: [
-                                    { boxLabel: 'Any Time', name: facetID, inputValue: 'all', checked: true },
-                                    { boxLabel: 'Past 24 Hours', name: facetID, inputValue: 'past_year'},
-                                    { boxLabel: 'Past Week', name: facetID, inputValue: 'past_week' },
-                                    { boxLabel: 'Past Month', name: facetID, inputValue: 'past_month' },
-                                    { boxLabel: 'Past Year', name: facetID, inputValue: 'past_year' },
-                                    { boxLabel: 'Custom Range', name: facetID, inputValue: 'custom' }
+                                    { boxLabel: 'Any Time', itemId: 'date_all', name: facetID, inputValue: 'all', checked: true },
+                                    { boxLabel: 'Past 24 Hours', itemId: 'date_past_day', name: facetID, inputValue: 'past_day'},
+                                    { boxLabel: 'Past Week', itemId: 'date_past_week', name: facetID, inputValue: 'past_week' },
+                                    { boxLabel: 'Past Month', itemId: 'date_past_month', name: facetID, inputValue: 'past_month' },
+                                    { boxLabel: 'Past Year', itemId: 'date_past_year', name: facetID, inputValue: 'past_year' },
+                                    { boxLabel: 'Custom Range', itemId: 'date_custom', name: facetID, inputValue: 'custom' }
                                 ],
                                 listeners: {
                                     'change': this.onDateRangeChange
                                 }
+                            },
+                            {
+                                xtype: 'form',
+                                itemId: 'customDatesPanel',
+                                collapsible: true,
+                                collapsed: true,
+                                titleCollapse: true,
+                                hideCollapseTool: true,
+                                header: false,
+                                width: '100%',
+                                items: [
+                                    {
+                                        xtype: 'search_resultsDals_resultsdatefield',
+                                        fieldLabel: 'From',
+                                        labelWidth: 50,
+                                        width: 185,
+                                        name: 'from_date',
+                                        itemId: 'fromDate',
+                                        value: new Date('1/1/1971')
+                                    },
+                                    {
+                                        xtype: 'search_resultsDals_resultsdatefield',
+                                        fieldLabel: 'To',
+                                        labelWidth: 50,
+                                        width: 185,
+                                        name: 'to_date',
+                                        itemId: 'toDate',
+                                        value: new Date()
+                                    }
+                                ]
+
                             }
                         ]
                     }
@@ -146,30 +179,31 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
     },
 
     getFormattedDateRange: function (period) {
+
         var now = new Date(),
-            format = 'Y-m-d\\TH:i:s.m\\Z',
-            dateObject = {startDate: '', endDate: Ext.Date.format(now, format)},
+
+            dateObject = {startDate: '', endDate: Ext.Date.format(now, this.dateFormat)},
             sinceTheBeginningOfTime = new Date('1/1/1971');
 
         switch (period) {
             case 'any'  :
-                dateObject.startDate = Ext.Date.format(sinceTheBeginningOfTime, format);
+                dateObject.startDate = Ext.Date.format(sinceTheBeginningOfTime, this.dateFormat);
                 break;
 
             case 'past_year'    :
-                dateObject.startDate = Ext.Date.format(Ext.Date.subtract(now, Ext.Date.YEAR, 1), format);
+                dateObject.startDate = Ext.Date.format(Ext.Date.subtract(now, Ext.Date.YEAR, 1), this.dateFormat);
                 break;
 
             case 'past_month'    :
-                dateObject.startDate = Ext.Date.format(Ext.Date.subtract(now, Ext.Date.MONTH, 1), format);
+                dateObject.startDate = Ext.Date.format(Ext.Date.subtract(now, Ext.Date.MONTH, 1), this.dateFormat);
                 break;
 
             case 'past_week'    :
-                dateObject.startDate = Ext.Date.format(Ext.Date.subtract(now, Ext.Date.DAY, 7), format);
+                dateObject.startDate = Ext.Date.format(Ext.Date.subtract(now, Ext.Date.DAY, 7), this.dateFormat);
                 break;
 
             case 'past_day'    :
-                dateObject.startDate = Ext.Date.format(Ext.Date.subtract(now, Ext.Date.DAY, 1), format);
+                dateObject.startDate = Ext.Date.format(Ext.Date.subtract(now, Ext.Date.DAY, 1), this.dateFormat);
                 break;
 
             case 'custom'   :
@@ -178,7 +212,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
 
             default:
                 Ext.Error.raise({
-                    msg: 'Unknown value: ' + rangeName
+                    msg: 'Unknown value: ' + period
                 });
         }
 
@@ -190,7 +224,8 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
         var fieldName = btn.ownerCt.itemId.replace('facets_', ''),
             rangeName = btn.lastValue[fieldName],
             me = btn.findParentByType('search_resultsDals_resultsfacet'),
-            dateRange = me.getFormattedDateRange(rangeName);
+            dateRange = me.getFormattedDateRange(rangeName),
+            customDates = btn.up('#facets_' + me.facet.facetId).queryById('customDatesPanel');
 
         if (rangeName !== 'custom') {
             if (!me.dal.get('dateTimeRanges').length) {
@@ -227,6 +262,59 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
             if (searchController !== undefined) {
                 searchController.doSearch(me);
             }
+
+            customDates.collapse();
+            customDates.collapsed = true;
+
+        } else {
+
+            customDates.expand();
+            customDates.collapsed = false;
+        }
+    },
+
+    doCustomDateSearch: function () {
+
+        var startDate = Ext.Date.format(this.queryById('fromDate').getValue(), this.dateFormat),
+            endDate = Ext.Date.format(this.queryById('toDate').getValue(), this.dateFormat),
+            fieldName = this.query('form')[0].itemId.replace('facets_', ''),
+            rangeName = 'custom',
+            me = this;
+
+
+        if (!me.dal.get('dateTimeRanges').length) {
+            me.dal.set('dateTimeRanges', []);   // just set to an empty array
+        }
+        var newDateRange = {
+            'Startdate': startDate,
+            'dateRangeName': rangeName,
+            'DateFieldName': fieldName,
+            'Enddate': endDate
+        };
+
+        var updateExisting = false;
+
+        if (me.dal.get('dateTimeRanges').length > 0) {
+            Ext.each(me.dal.get('dateTimeRanges'), function (range, index) {
+                if (range.DateFieldName === fieldName) {
+                    // replace it, do not add another
+                    me.dal.get('dateTimeRanges')[index] = newDateRange;
+                    updateExisting = true;
+                }
+            });
+        }
+
+        if (!updateExisting) {
+            me.dal.get('dateTimeRanges').push(newDateRange);
+        }
+
+        /*
+         resubmit the search request
+         */
+        var searchController = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
+
+        if (searchController !== undefined) {
+            searchController.doSearch(me);
         }
     },
 
@@ -239,7 +327,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
          check to see if this facet filter exists in the store already
          */
 
-        if (me.dal.get('facetFilterCriteria').length) {
+        if (me.dal.get('facetFilterCriteria').length > 0) {
 
             Ext.each(me.dal.get('facetFilterCriteria'), function (filter, index) {
 
@@ -257,7 +345,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
 
                         Ext.each(values, function (val, ind) {
                             if (val === btn.inputValue) {
-                                Ext.Array.remove(values, values[ind])
+                                Ext.Array.remove(values, values[ind]);
                             }
                         });
 
@@ -272,13 +360,21 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
 
             });
 
-        } else {
-            me.dal.set('facetFilterCriteria', [
-                {
+            if (!filterExists) {
+                me.dal.get('facetFilterCriteria').push({
                     'facetName': facet,
                     'facetValues': [btn.inputValue]   // this is always an array
-                }
-            ]);
+                });
+            }
+
+        } else {
+            if (me.dal.get('facetFilterCriteria').length === 0) {
+                me.dal.set('facetFilterCriteria', []);
+            }
+            me.dal.get('facetFilterCriteria').push({
+                'facetName': facet,
+                'facetValues': [btn.inputValue]   // this is always an array
+            });
         }
         /*
          resubmit the search request
