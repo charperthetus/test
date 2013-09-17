@@ -11,15 +11,9 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
     requires: [
         'Savanna.search.model.SearchRequest',
-        'Savanna.search.model.SearchHistory',
         'Savanna.search.store.SearchResults',
-        'Savanna.search.store.SearchHistory',
         'Savanna.search.view.searchComponent.searchBody.searchMap.SearchLocationForm',
         'Savanna.controller.Factory'
-    ],
-
-    models: [
-        'Savanna.search.model.SearchHistory'
     ],
     stores: [
         'Savanna.search.store.DalSources'
@@ -63,14 +57,14 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             'search_searchcomponent #search_submit': {
                 click: this.doSearch
             },
+            'search_searchcomponent #search_clear': {
+                click: this.clearSearch
+            },
             'search_searchcomponent #advancedsearch_submit': {
                 click: this.doSearch
             },
             'search_searchcomponent #close_panel': {
                 click: this.handleClose
-            },
-            'search_searchcomponent #historymenu menuitem': {
-                click: this.onHistoryItemClick
             },
             'search_searchcomponent #optionsbutton': {
                 click: this.onBodyToolbarClick
@@ -93,11 +87,6 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
     handleNewSearch:function(elem)  {
 
-        /*
-         Do we want this to return the user to the search options screen, if
-         they are currently in the results screen?
-         */
-
         var form = elem.findParentByType('search_searchcomponent').down('#search_form');
 
         form.queryById('search_terms').setValue('');
@@ -118,6 +107,14 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             optionsBtn.fireEvent('click', optionsBtn);
         }
     },
+    clearSearch:function(elem)  {
+        var form = elem.findParentByType('search_searchcomponent').down('#search_form');
+        form.queryById('search_terms').setValue('');
+    },
+    clearSearch:function(elem)  {
+        var form = elem.findParentByType('search_searchcomponent').down('#search_form');
+        form.queryById('search_terms').setValue('');
+    },
 
     handleSearchTermKeyUp: function (field, evt) {
         if (evt.keyCode === 13) {
@@ -136,10 +133,6 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
     alignMenuWithTextfield: function (btn) {
         btn.menu.alignTo(btn.up('#search_form').getEl());
-    },
-
-    onHistoryItemClick: function (btn) {
-        this.doSearch(btn);
     },
 
     onBodyToolbarClick: function (button) {
@@ -230,8 +223,9 @@ Ext.define('Savanna.search.controller.SearchComponent', {
          */
         dalStore.each(function (source) {
 
-            var dalId = source.get('id'),
-                checked = dals.queryById(dalId).query('checkbox')[0].getValue();    // has this checkbox been selected in search options?
+            var dalId = source.get('id');
+            var currentDalPanel = dals.queryById(dalId);
+            var checked = dals.queryById(dalId).query('checkbox')[0].getValue();    // has this checkbox been selected in search options?
 
             if (checked) {  // checked, or always search the default dal
 
@@ -242,7 +236,8 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                 searchObj.set('searchPreferencesVOs', [
                     {
                         'dalId': dalId,
-                        'sortOrder': 'Default'
+                        'sortOrder': 'Default',
+                        'customSearchSelections': this.getCustomSearchSelections(currentDalPanel)
                     }
                 ]);
 
@@ -283,10 +278,33 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
         }, this);
         this.showResultsPage(component);
-        /*
-         track in recent searches
-         */
-        this.logHistory(searchString);
+    },
+
+    getCustomSearchSelections: function(currentDalPanel) {
+
+        var customSearchOptions = [];
+        var customInputs = currentDalPanel.query('[cls=customInputField]');
+        for (var i = 0, total = customInputs.length; i< total; i++){
+            var customSearchInput = {};
+            customSearchInput.key = customInputs[i].name;
+            if (customInputs[i].xtype === 'datefield') {
+                customSearchInput.value = customInputs[i].value.valueOf();
+            } else if (customInputs[i].xtype === 'radiogroup' && customInputs[i].defaultType === 'radiofield') {
+                customSearchInput.value = customInputs[i].getValue().options;
+            } else if (customInputs[i].xtype === 'fieldcontainer') {
+                // then this item must be a key value pair and will need special handling
+                customSearchInput.key = customInputs[i].down('combobox').value;
+                customSearchInput.value = customInputs[i].down('[name=keyValueText]').value;
+
+            } else {
+                customSearchInput.value = customInputs[i].value;
+            }
+            if (customSearchInput.value === undefined || customSearchInput.value === null){
+                customSearchInput.value = '';
+            }
+            customSearchOptions.push(customSearchInput);
+        }
+        return customSearchOptions;
     },
 
     searchCallback: function (records, operation, success, resultsDal, resultsPanel, dalId, store) {
@@ -318,22 +336,5 @@ Ext.define('Savanna.search.controller.SearchComponent', {
     showResultsPage: function (component) {
         var resultsBtn = component.down('#resultsbutton');
         resultsBtn.fireEvent('click', resultsBtn);
-    },
-
-    logHistory: function (searchString) {
-        var store = Ext.data.StoreManager.lookup('searchHistory');
-
-        if (store) {
-            store.add({
-                'query': searchString,
-                'date': Ext.Date.format(new Date(), 'time')
-            });
-
-            store.sync();
-        }
-
-        else {
-            Ext.Error.raise('Unable to find "searchHistory" store');
-        }
     }
 });

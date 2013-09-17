@@ -5,10 +5,8 @@
  */
 Ext.require('Savanna.Config');
 Ext.require('Savanna.search.controller.SearchComponent');
-Ext.require('Savanna.search.model.SearchHistory');
 Ext.require('Savanna.search.model.SearchRequest');
 Ext.require('Savanna.search.model.SearchResult');
-Ext.require('Savanna.search.store.SearchHistory');
 Ext.require('Savanna.search.view.searchComponent.searchBar.SearchAdvancedTextfield');
 Ext.require('Savanna.search.view.searchComponent.SearchBar');
 Ext.require('Savanna.search.view.searchComponent.searchBar.SearchForm');
@@ -53,7 +51,121 @@ describe('Search Component', function () {
 
         ThetusTestHelpers.ExtHelpers.cleanTestDom();
     });
+    describe('getCustomSearchSelections', function() {
+        var formPanel = {};
+        var component = {};
+        var controller = {};
+        beforeEach(function() {
+            component = Ext.create('Savanna.search.view.SearchComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
+            controller = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
+            formPanel =  Ext.create('Ext.form.Panel', {
+                title: 'testing',
+                layout: 'vbox',
 
+                items: [
+                    {
+                        xtype: 'textfield',
+                        fieldLabel: 'testing',
+                        labelAlign: 'left',
+                        labelWidth: 200,
+                        labelPad: 5,
+                        name: 'testing',
+                        cls: 'customInputField'
+                    },{
+                        xtype: 'combobox',
+                        valueField: 'value',
+                        displayField: 'value',
+                        forceSelection: true,
+                        queryMode: 'local',
+                        editable: false,
+                        fieldLabel: 'testing',
+                        labelAlign: 'left',
+                        labelWidth: 200,
+                        labelPad: 5,
+                        name: 'testing',
+                        cls: 'customInputField',
+                        value: 'testing'
+
+                    },{
+                        xtype: 'checkbox',
+                        checked: true,
+                        fieldLabel: 'testing',
+                        labelAlign: 'left',
+                        labelWidth: 200,
+                        labelPad: 5,
+                        name: 'testing',
+                        cls: 'customInputField',
+                        value: 'testing'
+
+                    },{
+                        xtype: 'radiogroup',
+                        defaultType: 'radiofield',
+                        layout: 'hbox',
+                        fieldLabel: 'testing',
+                        labelAlign: 'left',
+                        labelWidth: 200,
+                        labelPad: 5,
+                        name: 'testing',
+                        cls: 'customInputField',
+                        value: null
+
+                    },{
+                        xtype: 'datefield',
+                        value: 1347298216073,
+                        fieldLabel: 'testing',
+                        labelAlign: 'left',
+                        labelWidth: 200,
+                        labelPad: 5,
+                        name: 'testing',
+                        cls: 'customInputField'
+                    },{
+                        xtype: 'fieldcontainer',
+                        layout: 'hbox',
+                        cls: 'customInputField',
+                        items: [
+                            {
+                                xtype: 'combobox',
+                                value: 'testing',
+                                valueField: 'value',
+                                displayField: 'value',
+                                forceSelection: true,
+                                queryMode: 'local',
+                                editable: false
+                            },{
+                                xtype: 'textfield',
+                                name: 'keyValueText'
+                            },{
+                                xtype: 'button',
+                                text: 'X',
+                                itemId: 'keyValueToggleInput'
+                            }
+                        ]
+                    }
+                ]
+            });
+        });
+        afterEach(function () {
+            formPanel = null;
+            if (controller) {
+                controller.destroy();
+                controller = null;
+            }
+            if (component) {
+                component.destroy();
+                component = null;
+            }
+        });
+        it('should return 6 objects with a key and value property', function() {
+            var test = controller.getCustomSearchSelections(formPanel);
+            expect(test.length).toBe(6);
+            for(var i = 0; i < 6; i++){
+                expect(test[i].hasOwnProperty('key')).toBeTruthy();
+                expect(test[i].hasOwnProperty('value')).toBeTruthy();
+                // test[i].value should either have something in it that evals to true or be an empty string
+                expect(test[i].value || test[i].value === '').toBeTruthy();
+            }
+        });
+    });
     describe('View', function () {
         var component = null;
 
@@ -128,7 +240,6 @@ describe('Search Component', function () {
             toolbar = component.queryById('searchtoolbar');
             controller = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
 
-            spyOn(controller, 'logHistory').andCallThrough();
         });
 
         afterEach(function () {
@@ -143,61 +254,6 @@ describe('Search Component', function () {
             }
 
             toolbar = null;
-        });
-
-        it('should do a search when onHistoryItemClick is called', function () {
-            // TODO: make this into a real test...
-            spyOn(controller, 'doSearch');
-
-            controller.onHistoryItemClick();
-
-            expect(controller.doSearch).toHaveBeenCalled();
-        });
-
-        describe('logHistory method', function () {
-            var origErrorHandler,
-                errorRaised = false,
-                fixture = [
-                    {query: 'Apples', date: 1375746974564},
-                    {query: 'Oranges', date: 1375746974565}
-                ];
-
-            beforeEach(function () {
-                origErrorHandler = Ext.Error.handle;
-
-                Ext.Error.handle = function () {
-                    errorRaised = true;
-
-                    return true;
-                };
-            });
-
-            afterEach(function () {
-                Ext.Error.handle = origErrorHandler;
-
-                origErrorHandler = null;
-                errorRaised = false;
-            });
-
-            it('should sync the store', function () {
-                var store = toolbar.getStore();
-
-                expect(store).not.toBeUndefined();
-
-                spyOn(store, 'sync');
-
-                controller.logHistory(fixture, toolbar);
-
-                expect(store.sync).toHaveBeenCalled();
-            });
-
-            it('should raise an error if we have no store', function () {
-                spyOn(Ext.data.StoreManager, 'lookup').andReturn(null);
-
-                controller.logHistory(fixture, toolbar);
-
-                expect(errorRaised).toBeTruthy();
-            });
         });
 
         describe('handleSearchTermKeyUp callback', function () {
@@ -295,6 +351,26 @@ describe('Search Component', function () {
                 expect(form.queryById('any_words').getValue()).toEqual('');
                 expect(form.queryById('none_words').getValue()).toEqual('');
             });
+        });
+
+        describe('search clear button', function () {
+            var searchbar = null;
+
+            beforeEach(function () {
+                searchbar = component.queryById('searchbar');
+                searchbar.queryById('search_terms').setValue('search bar terms');
+            });
+
+            afterEach(function () {
+                searchbar = null;
+            });
+
+            it('should clear the search text input', function () {
+                controller.clearSearch(searchbar.queryById('search_clear'));
+                var form = searchbar.queryById('search_form');
+                expect(form.queryById('search_terms').getValue()).toEqual('');
+            });
+
         });
 
         describe('managing SearchAdvancedTextfield subview events', function () {
@@ -464,45 +540,6 @@ describe('Search Component', function () {
             });
         });
 
-        describe('doSearch method', function () {
-            beforeEach(function () {
-
-                var readMethod = 'GET',
-                    testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(dalStore.getProxy(), 'read', readMethod);
-
-                server.respondWith(readMethod, testUrl, dalFixtures.allDals);
-
-                dalStore.getProxy().addSessionId = false; // so our URL is clean
-                dalStore.load();
-
-                server.respond({
-                    errorOnInvalidRequest: true
-                });
-            });
-
-            afterEach(function () {
-
-                if (server) {
-                    server.restore();
-                    server = null;
-                }
-                dalStore = null;
-                dalFixtures = null;
-            });
-
-            it('should call logHistory', function () {
-                component.down('#searchdals').store = dalStore;
-                component.down('#searchdals').createDalPanels();
-
-                component.down('#resultsdals').store = dalStore;
-                component.down('#resultsdals').createDalPanels();
-
-                controller.doSearch(component.queryById('searchbar').items.first(), {});
-
-                expect(controller.logHistory).toHaveBeenCalled();
-            });
-        });
-
         describe('managing Toolbar subview events', function () {
 
             describe('onBodyToolbarClick', function () {
@@ -580,126 +617,6 @@ describe('Search Component', function () {
                 });
 
                 expect(resultsStore.getCount()).toBe(resultsFixture.searchResults.results.length);
-            });
-        });
-    });
-
-    describe('SearchHistory Store', function () {
-
-        var historyFixture,
-            readMethod,
-            historyStore,
-            testUrl;
-
-        beforeEach(function () {
-
-            historyFixture = Ext.clone(ThetusTestHelpers.Fixtures.HistoryResults);
-
-            readMethod = 'GET';
-
-            historyStore = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.SearchHistory');
-
-            testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(historyStore.getProxy(), 'read', readMethod);
-
-            server.respondWith(readMethod, testUrl, historyFixture.historyResults);
-
-            historyStore.load();
-
-            server.respond({
-                errorOnInvalidRequest: true
-            });
-        });
-
-        afterEach(function () {
-
-            if (server) {
-                server.restore();
-                server = null;
-            }
-
-            historyFixture = null;
-            historyStore = null;
-        });
-
-        describe('retrieving history data', function () {
-
-            it('should get same number of records as in our fixture', function () {
-                expect(historyStore.getCount()).toBe(historyFixture.historyResults.length);
-            });
-        });
-
-        describe('sending history data', function () {
-
-            var historyFixture,
-                readMethod,
-                historyStore,
-                testUrl;
-
-            beforeEach(function () {
-                historyFixture = Ext.clone(ThetusTestHelpers.Fixtures.HistoryResults);
-                readMethod = 'POST';
-                historyStore = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.SearchHistory');
-                testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(historyStore.getProxy(), 'read', readMethod);
-
-                server.respondWith(readMethod, testUrl, historyFixture.historyResults);
-
-            });
-
-            afterEach(function () {
-                if (server) {
-                    server.restore();
-                    server = null;
-                }
-
-                historyFixture = null;
-                historyStore = null;
-            });
-
-            it('should send our history records and get them back from the server', function () {
-
-                Ext.Array.each(historyFixture.historyResults, function (search) {
-                    historyStore.add(search);
-                });
-
-                historyStore.sync();
-
-                server.respond({
-                    returnBody: true, // since the service basically gives us back our searches...
-                    reportBody: false, // enable if you want to see the request body in the console
-                    testBody: function(body) {
-                        var json = JSON.parse(body);
-                        if (json.length !== historyFixture.historyResults.length) {
-                            return 'Expected request body to have ' + historyFixture.historyResults.length + ', but got ' + json.length;
-                        }
-
-                        return '';
-                    },
-                    errorOnInvalidRequest: true
-                });
-
-                expect(historyStore.getCount()).toBe(3);
-            });
-
-            it('should make sure data sent is sent as an array of records, even when sending one record', function () {
-                historyStore.add(historyFixture.historyResults[0]);
-
-                historyStore.sync();
-
-                server.respond({
-                    returnBody: true, // since the service basically gives us back our searches...
-                    //reportBody: false, // enable if you want to see the request body in the console
-                    testBody: function (body) {
-                        var json = JSON.parse(body);
-                        if (!Array.isArray(json)) {
-                            return 'Expected an array but got ' + body;
-                        }
-
-                        return '';
-                    },
-                    errorOnInvalidRequest: true
-                });
-
-                expect(historyStore.getCount()).toBe(1);
             });
         });
     });
