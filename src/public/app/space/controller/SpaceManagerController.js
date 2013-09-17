@@ -22,8 +22,8 @@ Ext.define('Savanna.space.controller.SpaceManagerController', {
         //todo: the empty space is not added to the store until the user saves it
         //todo: anytime the "create space" button is pressed we go into this state again
 
-
-        var spaceStore = this.getStore('Savanna.space.store.Spaces');
+        //todo: hook up store when ready
+//        var spaceStore = this.getStore('Savanna.space.store.Spaces');
 
         this.control({
             'space_spacemanagercomponent #openspacebutton': {

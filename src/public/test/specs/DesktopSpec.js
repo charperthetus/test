@@ -117,14 +117,14 @@ describe('Savanna.desktop', function () {
                 expect(Savanna.desktop.controller.DesktopController.searchwindow).not.toBeNull();
             });
         });
-        describe('displayMyStuffFlyout()', function() {
-            it('mystuff flyout should begin null', function() {
+        describe('displayMyStuffWindow()', function() {
+            it('mystuff window should begin null', function() {
                 //access the static var through the class name...don't need an instance
-                expect(Savanna.desktop.controller.DesktopController.mystuffflyout).toBeNull();
+                expect(Savanna.desktop.controller.DesktopController.mystuffwindow).toBeNull();
             });
             it('mystuff flyout should be valid after function call', function() {
-                controller.showMyStuffFlyout();
-                expect(Savanna.desktop.controller.DesktopController.mystuffflyout).not.toBeNull();
+                controller.showMyStuffWindow();
+                expect(Savanna.desktop.controller.DesktopController.mystuffwindow).not.toBeNull();
             });
         });
         describe('showDesktopComponent()', function() {
@@ -151,18 +151,13 @@ describe('Savanna.desktop', function () {
             });
             it('should not do anything if the components are the same', function() {
                 spyOn(toolbarComponent, 'show');
-                controller.showDesktopComponent(toolbarComponent, toolbarComponent);
+                controller.showDesktopComponent(toolbarComponent);
                 expect(toolbarComponent.show).not.toHaveBeenCalled();
             });
             it('should show the new component', function() {
                 spyOn(dashboard, 'show');
-                controller.showDesktopComponent(toolbarComponent, dashboard);
+                controller.showDesktopComponent(dashboard);
                 expect(dashboard.show).toHaveBeenCalled();
-            });
-            it('current component should be the new component', function() {
-                expect(controller.currentDesktopItem !== dashboard);
-                controller.showDesktopComponent(toolbarComponent, dashboard);
-                expect(controller.currentDesktopItem === dashboard);
             });
         });
         describe ('setWorkspaceViewMode()', function() {

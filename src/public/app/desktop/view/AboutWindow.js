@@ -14,7 +14,7 @@ Ext.define('Savanna.desktop.view.AboutWindow', {
     width: 400,
     resizable: false, //don't let resize...for now
     items: [{
-        //todo: fill with impl specific info (from model?)
+        //todo: determine where the about dialog detailed information will originate from. different per impl?
         xtype: 'label',
         text: 'This is all about Savanna'
     }]

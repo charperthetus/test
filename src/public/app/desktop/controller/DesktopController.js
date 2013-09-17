@@ -24,14 +24,9 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
         'Savanna.desktop.view.SavannaDesktop',
         'Savanna.desktop.view.SavannaWorkspace'
     ],
-    currentDesktopItem: null,
-
     init: function () {
         var me = this;
         this.control({
-            'desktop_savannadesktop > #desktopcontainer': {
-                render: this.onDesktopRendered
-            },
             'desktop_savannatoolbar #logobutton': {
                 click: this.displayAboutDialog
             },
@@ -89,15 +84,7 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
         var spaceWorkArea = Ext.ComponentQuery.query('panel #savannaworkspace')[0];
         if (spaceWorkArea) {
             //todo, if space is different than currentspace, reinit the workspace component
-            this.showDesktopComponent(this.currentDesktopItem, spaceWorkArea);
-        }
-    },
-
-    onDesktopRendered: function() {
-        var desktopContainer = Ext.ComponentQuery.query('desktop_savannadesktop > #desktopcontainer')[0];
-        if (desktopContainer) {
-            //note - this should return the space manager component
-            this.currentDesktopItem = desktopContainer.items.first();
+            this.showDesktopComponent(spaceWorkArea);
         }
     },
 
@@ -113,21 +100,29 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
 
     displayDashboard: function(button) {
         var dashboard = button.up('desktop_savannadesktop').down('#savannadashboard');
-        this.showDesktopComponent(this.currentDesktopItem, dashboard);
+        this.showDesktopComponent(dashboard);
     },
 
     displaySpaceManager: function(button) {
         var spacemanager = button.up('desktop_savannadesktop').down('#spacemanager');
-        this.showDesktopComponent(this.currentDesktopItem, spacemanager);
+        this.showDesktopComponent(spacemanager);
     },
 
-    showDesktopComponent: function(currCmp, cmp) {
+    showDesktopComponent: function(cmp) {
         if (cmp) {
-            if (currCmp && currCmp !== cmp){
-                cmp.show();
-                cmp.hidden = false; //todo: why doesn't this value change automatically when we call show()?
-                currCmp.hide();
-                this.currentDesktopItem = cmp;
+            var desktopContainer = Ext.ComponentQuery.query('desktop_savannadesktop > #desktopcontainer')[0];
+            if (desktopContainer) {
+                desktopContainer.items.each(function(item){
+                    if (item === cmp) {
+                        if (item.hidden) {
+                            item.show();
+                            item.hidden = false;
+                        }
+                    } else {
+                        item.hide();
+                        item.hidden = true;
+                    }
+                });
             }
         } else {
             Ext.Error.raise('Null component sent to DesktopController.showDesktopComponent()');

@@ -95,7 +95,7 @@ Ext.define('Savanna.space.view.SpaceManagerComponent', {
             xtype: 'space_metadatatabpanel',
             itemId: 'metadatatab',
             layout: 'fit',
-            width: '30%',
+            width: '30%', //design should apply appropriate styling properties
             weight: -1,
             collapsible: true,
             split: true
@@ -109,7 +109,7 @@ Ext.define('Savanna.space.view.SpaceManagerComponent', {
             region: 'south',
             collapsible: true,
             split: true,
-            height: '20%',
+            height: '20%', //design should apply appropriate styling properties
             //make sure this value is below that of the metadata tab panel, to ensure correct layout
             weight: -2
         }
