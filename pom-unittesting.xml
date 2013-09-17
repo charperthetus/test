@@ -161,11 +161,10 @@
                     <execution>
                         <phase>test</phase>
                         <configuration>
-                            <workingDirectory>${anttasks.dir}</workingDirectory>
-                            <tasks>
+                            <target unless="maven.test.skip">
                                 <ant dir="${anttasks.dir}" antfile="savanna-ant-tasks.xml" target="jscover-test"/>
                                 <ant dir="${anttasks.dir}" antfile="savanna-ant-tasks.xml" target="jscover-stop"/>
-                            </tasks>
+                            </target>
                         </configuration>
                         <goals>
                             <goal>run</goal>
