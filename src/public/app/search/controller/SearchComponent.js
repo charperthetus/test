@@ -61,10 +61,10 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                 keyup: this.handleSearchTermKeyUp
             },
             'search_searchcomponent #search_submit': {
-                click: this.doSearch
+                click: this.handleSearchSubmit
             },
             'search_searchcomponent #advancedsearch_submit': {
-                click: this.doSearch
+                click: this.handleSearchSubmit
             },
             'search_searchcomponent #close_panel': {
                 click: this.handleClose
@@ -114,10 +114,14 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         }
     },
 
+    handleSearchSubmit: function (btn) {
+        this.doSearch(btn, this.getSelectedDals(this.getSearchComponent(btn)));
+    },
+
     handleSearchTermKeyUp: function (field, evt) {
         if (evt.keyCode === 13) {
             // user pressed enter
-            this.doSearch(field);
+            this.doSearch(field, this.getSelectedDals(this.getSearchComponent(field)));
         }
     },
 
@@ -134,7 +138,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
     },
 
     onHistoryItemClick: function (btn) {
-        this.doSearch(btn);
+        this.doSearch(btn, this.getSelectedDals(this.getSearchComponent(btn)));
     },
 
     onBodyToolbarClick: function (button) {
@@ -154,26 +158,47 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         }
     },
 
-    doSearch: function (elem) {
-
+    getSearchComponent:function(elem)   {
         var component;
 
         if (elem.xtype === 'searchadvanced_textfield' || elem.itemId === 'advancedsearch_submit') {
-            /*
-             dig your way out of the menu via 'ownerButton'.  not sure why this is necessary,
-             but I spent half an hour trying a conventional 'up' or 'findParentByType' with no
-             luck before trying the 'ownerButton' property
-             */
             component = elem.up('#searchadvanced_menu').ownerButton.up('#searchcomponent');
-
         } else {
             component = elem.findParentByType('search_searchcomponent');
         }
 
+        return component;
+    },
+
+    getSelectedDals: function (component) {
+
+        var sources = [],
+            dalStore = Ext.data.StoreManager.lookup('dalSources'),
+            dalSelected = false,
+            dals = component.down('#searchdals');
+
+        dalStore.each(function (source) {
+            if (dals.queryById(source.get('id')).query('checkbox')[0].getValue()) {
+                dalSelected = true;
+                sources.push(source);
+            }
+        });
+
+        if (!dalSelected) {
+            dals.queryById(dalStore.defaultId).query('checkbox')[0].setValue(true);
+            sources.push(dalStore.getById(dalStore.defaultId));
+        }
+
+        return sources;
+    },
+
+    doSearch: function (elem, sources) {
+
+        var component = this.getSearchComponent(elem);
+
         this.hideMenu(component);
 
         var searchString = component.queryById('searchbar').buildSearchString(),
-            dalStore = Ext.data.StoreManager.lookup('dalSources'),
             resultsComponent = component.queryById('searchresults');
 
 
@@ -194,24 +219,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
         var dals = component.down('#searchdals'),
             resultsDal = component.down('#resultsdals'),
-            resultsPanel = component.down('#resultspanel'),
-            dalSelected = false;
-
-
-        /*
-         are no DALs selected?  if not, select the default DAL
-         */
-
-        dalStore.each(function (source) {
-            if (dals.queryById(source.get('id')).query('checkbox')[0].getValue()) {
-                dalSelected = true;
-                return false;
-            }
-        });
-
-        if (!dalSelected) {
-            dals.queryById(dalStore.defaultId).query('checkbox')[0].setValue(true)
-        }
+            resultsPanel = component.down('#resultspanel');
 
 
         resultsDal.createDalPanels();
@@ -220,7 +228,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         /*
          Check for selected additional Dals, and do a search on each of them
          */
-        dalStore.each(function (source) {
+        Ext.each(sources, function (source) {
 
             var dalId = source.get('id');
             var currentDalPanel = dals.queryById(dalId);
@@ -338,7 +346,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             var statusString = success ? 'success' : 'fail';
             resultsDal.updateDalStatus(dalId, statusString);
 
-            if(store.facetValueSummaries !== null)  {
+            if (store.facetValueSummaries !== null) {
                 resultsDal.createDalFacets(dalId);
             }
 

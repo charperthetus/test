@@ -68,6 +68,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
     of the facets for the newly selected store.
      */
     changeSelectedStore:function(evt, body, dal) {
+
         var component = dal.findParentByType('search_resultscomponent');
 
         Ext.each(component.allResultSets, function(set) {

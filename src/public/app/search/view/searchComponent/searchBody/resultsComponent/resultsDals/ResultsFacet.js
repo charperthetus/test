@@ -176,8 +176,6 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
                     msg: 'Undefined facetValueSummary for supplied facet: ' + facet + ' in the store ' + searchResults.id
                 });
             }
-        } else {
-            //console.log('facetValueSummaries is null for the store ' + searchResults.id);
         }
     },
 
@@ -379,13 +377,117 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
                 'facetValues': [btn.inputValue]   // this is always an array
             });
         }
-        /*
-         resubmit the search request
-         */
-        var searchController = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
 
-        if (searchController !== undefined) {
-            searchController.doSearch(me);
+        this.doFilter(btn);
+    },
+
+    doFilter: function (btn) {
+
+
+        var searchController = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
+        var component = searchController.getSearchComponent(btn);
+        var currentDalPanel = component.down('#searchdals').queryById(this.dal.get('id'));
+
+        var searchString = component.queryById('searchbar').buildSearchString();
+
+
+        /*
+         Create the search request payload
+         */
+        var searchObj = Ext.create('Savanna.search.model.SearchRequest', {
+            'textInputString': searchString,
+            'displayLabel': searchString
+        });
+
+
+        searchObj.set('contentDataSource', this.dal.get('id'));
+
+        searchObj.set('searchPreferencesVOs', [
+            {
+                'dalId': this.dal.get('id'),
+                'sortOrder': 'Default',
+                'customSearchSelections': searchController.getCustomSearchSelections(currentDalPanel)
+            }
+        ]);
+
+        /*
+         build the 'desiredFacets' array for the request, by iterating over
+         facetValueSummaries in the DAL sources json
+         */
+        var desiredFacets = [];
+
+        Ext.each(this.dal.get('facetDescriptions'), function (description) {
+            desiredFacets.push(description.facetId);
+        });
+
+        searchObj.set('desiredFacets', desiredFacets);
+
+
+        /*
+         set the facet filters, if any
+         */
+        if (this.dal.get('facetFilterCriteria').length) {
+            searchObj.set('facetFilterCriteria', this.dal.get('facetFilterCriteria'));
+        }
+
+        /*
+         set the date ranges, if any
+         */
+        if (this.dal.get('dateTimeRanges').length) {
+            searchObj.set('dateTimeRanges', this.dal.get('dateTimeRanges'));
+        }
+
+        /*
+         Determine the pageSize for the stores.
+         */
+        var resultsPerPage = component.down('#resultsPageSizeCombobox').value;
+        /*
+         Create a new store for each DAL
+         */
+        var resultsStore = Ext.create('Savanna.search.store.SearchResults', {
+            storeId: 'searchResults_' + this.dal.get('id'),
+            pageSize: resultsPerPage
+        });
+
+        var resultsDal = component.down('#resultsdals'),
+            resultsPanel = component.down('#resultspanel');
+
+        resultsStore.proxy.jsonData = Ext.JSON.encode(searchObj.data);  // attach the search request object
+        resultsStore.load({
+            callback: Ext.bind(this.filterCallback, this, [resultsDal, resultsPanel, this.dal.get('id'), resultsStore], true)
+        });
+
+        resultsDal.updateDalStatus(this.dal.get('id'), 'pending');   // begin in a pending state
+    },
+
+    filterCallback: function (records, operation, success, resultsDal, resultsPanel, dalId, store) {
+
+        if (!success) {
+            // server down..?
+            Ext.Error.raise({
+                msg: 'The server could not complete the filter request.'
+            });
+        } else {
+
+            var resultsObj = {id: dalId, store: store};
+
+            Ext.each(resultsPanel.up('#searchresults').allResultSets, function (resultset, index) {
+                if (resultset.id === dalId) {
+                    resultsPanel.up('#searchresults').allResultSets[index] = resultsObj;
+                }
+            });
+
+            var statusString = success ? 'success' : 'fail';
+            resultsDal.updateDalStatus(dalId, statusString);
+
+
+            var controller = Savanna.controller.Factory.getController('Savanna.search.controller.ResultsComponent');
+            controller.changeSelectedStore({}, {}, resultsDal.queryById(dalId));
+
         }
     }
-});
+
+
+
+})
+;
