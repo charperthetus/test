@@ -11,5 +11,5 @@
     <div class='flexpaper_lblTotalPages flexpaper_tblabel_large flexpaper_numberOfPages'> / </div>
     <img src='images/touch/next.png'  class='flexpaper_bttnNextPage flexpaper_tbbutton_large flexpaper_next' onclick='$FlexPaper("documentViewer").nextPage()'/>
     <input type='text' class='flexpaper_txtSearchText flexpaper_tbtextinput_large' style='margin-left:15px;width:130px;' />
-    <img src='images/touch/search.png' class='flexpaper_bttnTextSearch flexpaper_find flexpaper_tbbutton_large' style='' onclick='searchText()' />
+    <img src='images/touch/search.png' class='flexpaper_bttnTextSearch flexpaper_find flexpaper_tbbutton_large' style='' onclick='$FlexPaper("documentViewer").searchText(jQuery(this).parent().find(".flexpaper_txtSearchText").val());' />
 </div>
