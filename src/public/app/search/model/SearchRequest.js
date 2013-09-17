@@ -19,15 +19,7 @@ Ext.define('Savanna.search.model.SearchRequest', {
         need to consult with services about this... hard-coding is likely the reason I have a misaligned facet
          called 'location' in LinkedIn.
          */
-        {name: 'desiredFacets', type: 'array', defaultValue: [
-            'published-date',
-            'ingest-date',
-            'producer',
-            'producer-category',
-            'distributor',
-            'composite',
-            'isf-source-type'
-        ]},
+        {name: 'desiredFacets', type: 'array', defaultValue: []},
         {name: 'displayLabel', type: 'string', defaultValue: ''},
         {name: 'resultsPerPage', type: 'int', defaultValue: 20},
         {name: 'resultsStartIndex', type: 'int', defaultValue: 0},

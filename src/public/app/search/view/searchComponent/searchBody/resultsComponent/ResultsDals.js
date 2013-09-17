@@ -71,6 +71,9 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
         var refineSearch = this.createRefineSearchPanel();
         this.add(refineSearch);
 
+        var refineTerms = this.createRefineTermsPanel();
+        this.add(refineTerms);
+
         /*
         create the facets panel that sits below the DALs
          */
@@ -88,6 +91,12 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
     createRefineSearchPanel:function()  {
         return Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineSearchbar',  {
             itemId: 'refinesearch'
+        });
+    },
+
+    createRefineTermsPanel:function()  {
+        return Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineTerms',  {
+            itemId: 'refineterms'
         });
     },
 
@@ -146,6 +155,8 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
 
     createDalFacets: function (id) {
 
+
+
         var dalRecord = this.store.getById(id),
             descriptions = dalRecord.get('facetDescriptions'),
             facets = this.queryById('resultsfacets').queryById('tab_' + id),
@@ -154,21 +165,23 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
 
 
         Ext.each(this.findParentByType('search_resultscomponent').allResultSets, function (resultset) {
-            if (descriptions.length > 0) {
-                /*
-                loop through the facetDescriptions for each set of results to determine which facets
-                should be rendered when the user selects that DAL's results, and add them to the
-                corresponding tab in the facets tabpanel.
+            if(resultset.id === id) {
+                if (descriptions.length > 0) {
+                    /*
+                     loop through the facetDescriptions for each set of results to determine which facets
+                     should be rendered when the user selects that DAL's results, and add them to the
+                     corresponding tab in the facets tabpanel.
 
-                raw array loop for better performance
-                 */
+                     raw array loop for better performance
+                     */
 
-                var len = descriptions.length;
+                    var len = descriptions.length;
 
-                for(var i=0;i<len;i++)  {
-                    if(facets.queryById('facet_' + dalRecord.get('id') + '_' + descriptions[i].facetId) === null)   {
-                        var facetElement = me.createFacet(descriptions[i], resultset, dalRecord);
-                        facets.add(facetElement);
+                    for(var i=0;i<len;i++)  {
+                        if(facets.queryById('facet_' + dalRecord.get('id') + '_' + descriptions[i].facetId) === null)   {
+                            var facetElement = me.createFacet(descriptions[i], resultset, dalRecord);
+                            facets.add(facetElement);
+                        }
                     }
                 }
             }
@@ -176,6 +189,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
     },
 
     createFacet: function (facet, results, dalRecord) {
+
         return Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacet', {
             facet: facet,
             searchResults: results,

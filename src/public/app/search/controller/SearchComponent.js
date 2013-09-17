@@ -82,16 +82,16 @@ Ext.define('Savanna.search.controller.SearchComponent', {
     },
 
     // CUSTOM METHODS    
-    onFindLocation: function(button) {
-        var locationSearchInput =  button.up('#searchLocationDockedItems').down('#findLocationSearchText');
+    onFindLocation: function (button) {
+        var locationSearchInput = button.up('#searchLocationDockedItems').down('#findLocationSearchText');
         var locationSearchText = locationSearchInput.value;
         if (locationSearchText) {
-            var myForm =  Ext.create('Savanna.search.view.searchComponent.searchBody.searchMap.SearchLocationForm');
+            var myForm = Ext.create('Savanna.search.view.searchComponent.searchBody.searchMap.SearchLocationForm');
             myForm.show();
         }
     },
 
-    handleNewSearch:function(elem)  {
+    handleNewSearch: function (elem) {
 
         var form = elem.findParentByType('search_searchcomponent').down('#search_form');
 
@@ -160,10 +160,10 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
         if (elem.xtype === 'searchadvanced_textfield' || elem.itemId === 'advancedsearch_submit') {
             /*
-            dig your way out of the menu via 'ownerButton'.  not sure why this is necessary,
-            but I spent half an hour trying a conventional 'up' or 'findParentByType' with no
-            luck before trying the 'ownerButton' property
-            */
+             dig your way out of the menu via 'ownerButton'.  not sure why this is necessary,
+             but I spent half an hour trying a conventional 'up' or 'findParentByType' with no
+             luck before trying the 'ownerButton' property
+             */
             component = elem.up('#searchadvanced_menu').ownerButton.up('#searchcomponent');
 
         } else {
@@ -177,15 +177,14 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             resultsComponent = component.queryById('searchresults');
 
 
-
         /*
-        this is an array of objects - they store the dal id and the store instance for that dal's results.
-        For each selected DAL, a new store is generated and this array is used to keep track
+         this is an array of objects - they store the dal id and the store instance for that dal's results.
+         For each selected DAL, a new store is generated and this array is used to keep track
          */
         resultsComponent.allResultSets = [];
 
         /*
-        Create the search request payload
+         Create the search request payload
          */
         var searchObj = Ext.create('Savanna.search.model.SearchRequest', {
             'textInputString': searchString,
@@ -204,20 +203,18 @@ Ext.define('Savanna.search.controller.SearchComponent', {
          */
 
         dalStore.each(function (source) {
-            if(dals.queryById(source.get('id')).query('checkbox')[0].getValue())    {
+            if (dals.queryById(source.get('id')).query('checkbox')[0].getValue()) {
                 dalSelected = true;
                 return false;
             }
         });
 
-        if(!dalSelected)  {
+        if (!dalSelected) {
             dals.queryById(dalStore.defaultId).query('checkbox')[0].setValue(true)
         }
 
 
         resultsDal.createDalPanels();
-
-
 
 
         /*
@@ -243,31 +240,42 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                     }
                 ]);
 
+                /*
+                 build the 'desiredFacets' array for the request, by iterating over
+                 facetValueSummaries in the DAL sources json
+                 */
+                var desiredFacets = [];
+
+                Ext.each(source.get('facetDescriptions'), function (description) {
+                    desiredFacets.push(description.facetId);
+                });
+
+                searchObj.set('desiredFacets', desiredFacets);
 
 
                 /*
-                set the facet filters, if any
+                 set the facet filters, if any
                  */
-                if(source.get('facetFilterCriteria').length)  {
+                if (source.get('facetFilterCriteria').length) {
                     searchObj.set('facetFilterCriteria', source.get('facetFilterCriteria'));
                 }
 
                 /*
                  set the date ranges, if any
                  */
-                if(source.get('dateTimeRanges').length)  {
+                if (source.get('dateTimeRanges').length) {
                     searchObj.set('dateTimeRanges', source.get('dateTimeRanges'));
                 }
 
                 /*
-                Determine the pageSize for the stores.
+                 Determine the pageSize for the stores.
                  */
                 var resultsPerPage = component.down('#resultsPageSizeCombobox').value;
                 /*
-                Create a new store for each DAL
+                 Create a new store for each DAL
                  */
                 var resultsStore = Ext.create('Savanna.search.store.SearchResults', {
-                    storeId:'searchResults_' + dalId,
+                    storeId: 'searchResults_' + dalId,
                     pageSize: resultsPerPage
                 });
                 resultsStore.proxy.jsonData = Ext.JSON.encode(searchObj.data);  // attach the search request object
@@ -286,11 +294,11 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         this.logHistory(searchString);
     },
 
-    getCustomSearchSelections: function(currentDalPanel) {
+    getCustomSearchSelections: function (currentDalPanel) {
 
         var customSearchOptions = [];
         var customInputs = currentDalPanel.query('[cls=customInputField]');
-        for (var i = 0, total = customInputs.length; i< total; i++){
+        for (var i = 0, total = customInputs.length; i < total; i++) {
             var customSearchInput = {};
             customSearchInput.key = customInputs[i].name;
             if (customInputs[i].xtype === 'datefield') {
@@ -305,7 +313,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             } else {
                 customSearchInput.value = customInputs[i].value;
             }
-            if (customSearchInput.value === undefined || customSearchInput.value === null){
+            if (customSearchInput.value === undefined || customSearchInput.value === null) {
                 customSearchInput.value = '';
             }
             customSearchOptions.push(customSearchInput);
@@ -321,18 +329,21 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             Ext.Error.raise({
                 msg: 'The server could not complete the search request.'
             });
-        }   else    {
+        } else {
 
-            var resultsObj = {id:dalId, store:store};
+            var resultsObj = {id: dalId, store: store};
 
             resultsPanel.up('#searchresults').allResultSets.push(resultsObj);   // add an object tying the dal and store together for referencing
 
             var statusString = success ? 'success' : 'fail';
             resultsDal.updateDalStatus(dalId, statusString);
 
-            resultsDal.createDalFacets(dalId);
+            if(store.facetValueSummaries !== null)  {
+                resultsDal.createDalFacets(dalId);
+            }
 
-            if(dalId === Ext.data.StoreManager.lookup('dalSources').defaultId)    {
+
+            if (dalId === Ext.data.StoreManager.lookup('dalSources').defaultId) {
                 var controller = Savanna.controller.Factory.getController('Savanna.search.controller.ResultsComponent');
                 controller.changeSelectedStore({}, {}, resultsDal.queryById(dalId));
             }

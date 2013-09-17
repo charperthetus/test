@@ -26,6 +26,9 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
             },
             'search_resultscomponent #resultsFacetsReset':  {
                 'click': this.onDalReset
+            },
+            'search_resultscomponent #refine_search_terms': {
+                keyup: this.handleSearchTermKeyUp
             }
         });
     },
@@ -74,5 +77,23 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
                 dal.up('#resultsdals').queryById('resultsfacets').setActiveTab('tab_' + dal.itemId);
             }
         });
+    },
+
+    handleSearchTermKeyUp: function (field, evt) {
+        if (evt.keyCode === 13) {   // user pressed enter
+
+            field.findParentByType('search_searchcomponent').refineSearchString += (field.getValue() + ' AND ');
+
+            field.findParentByType('search_searchcomponent').down('#refineterms').addTerm(field.getValue());
+
+             /*
+             resubmit the search request
+             */
+            var searchController = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
+
+            if (searchController !== undefined) {
+                searchController.doSearch(field);
+            }
+        }
     }
 });

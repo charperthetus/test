@@ -148,33 +148,36 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
         var searchResults = this.searchResults,
             facet = this.facet.facetId,
             me = this;
+        if (searchResults.store.facetValueSummaries !== null) {
+            if (searchResults.store.facetValueSummaries[facet] !== undefined) {
 
-        if (searchResults.store.facetValueSummaries[facet] !== undefined) {
+                Ext.each(searchResults.store.facetValueSummaries[facet].facetValues, function (facetobj) {
 
-            Ext.each(searchResults.store.facetValueSummaries[facet].facetValues, function (facetobj) {
+                    var checkbox = {
+                        boxLabel: facetobj.key + ' (' + facetobj.value + ')',
+                        name: facetobj.key,
+                        inputValue: facetobj.key,
+                        id: 'checkbox_' + facetobj.key + '_' + String(Ext.id()),
+                        listeners: {
+                            'change': Ext.bind(me.onFacetFilterChange, me)
+                        }
+                    };
 
-                var checkbox = {
-                    boxLabel: facetobj.key + ' (' + facetobj.value + ')',
-                    name: facetobj.key,
-                    inputValue: facetobj.key,
-                    id: 'checkbox_' + facetobj.key + '_' + String(Ext.id()),
-                    listeners: {
-                        'change': Ext.bind(me.onFacetFilterChange, me)
-                    }
-                };
+                    me.down('#stringFacet').add(checkbox);
+                });
 
-                me.down('#stringFacet').add(checkbox);
-            });
-
+            } else {
+                /*
+                 this appears to be the case with LinkedIn - getting a 'location' facet that does not
+                 line up with facetValueSummaries in the DAL sources.  May need services to resolve it,
+                 will take a closer look before pinging Travis
+                 */
+                Ext.Error.raise({
+                    msg: 'Undefined facetValueSummary for supplied facet: ' + facet + ' in the store ' + searchResults.id
+                });
+            }
         } else {
-            /*
-             this appears to be the case with LinkedIn - getting a 'location' facet that does not
-             line up with facetValueSummaries in the DAL sources.  May need services to resolve it,
-             will take a closer look before pinging Travis
-             */
-            Ext.Error.raise({
-                msg: 'Undefined facetValueSummary for supplied facet: ' + facet
-            });
+            //console.log('facetValueSummaries is null for the store ' + searchResults.id);
         }
     },
 

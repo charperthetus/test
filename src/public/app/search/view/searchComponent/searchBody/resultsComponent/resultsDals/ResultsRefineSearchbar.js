@@ -7,26 +7,40 @@
  */
 /* global Ext: false */
 Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineSearchbar', {
-    extend: 'Ext.toolbar.Toolbar',
-    alias:'widget.search_resultsDals_resultsrefine',
+    extend: 'Ext.panel.Panel',
+    alias: 'widget.search_resultsDals_resultsrefine',
+
+    requires: [
+        'Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineTerms'
+    ],
 
 
-    border: false,
+    initComponent: function () {
+        this.callParent(arguments);
+    },
 
     items: [
         {
-            xtype: 'textfield',
-            width: 180,
-            fieldLabel: '',
-            name: 'refine_search_terms',
-            itemId: 'refine_search_terms',
-            enableKeyEvents: true,
-            emptyText: 'Search'
-        },
-        {
-            xtype: 'button',
-            itemId: 'refine_search_submit',
-            glyph: 61808
+            xtype: 'panel',
+            itemId: 'refine_search_panel',
+            layout: 'hbox',
+            items: [
+                {
+                    xtype: 'textfield',
+                    width: 180,
+                    fieldLabel: '',
+                    name: 'refine_search_terms',
+                    itemId: 'refine_search_terms',
+                    enableKeyEvents: true,
+                    emptyText: 'Search'
+                },
+                {
+                    xtype: 'button',
+                    itemId: 'refine_search_submit',
+                    glyph: 61808
+                }
+            ]
         }
     ]
+
 });

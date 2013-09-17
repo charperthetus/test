@@ -85,6 +85,12 @@ Ext.define('Savanna.search.view.searchComponent.SearchBar', {
             }
         }
 
+        /*
+        lastly, if the user has specified terms to refine the search in the results screen,
+        add them to the beginning of the searchString
+         */
+        searchString  =  this.findParentByType('search_searchcomponent').refineSearchString + searchString;
+
         return searchString;
     }
 });
