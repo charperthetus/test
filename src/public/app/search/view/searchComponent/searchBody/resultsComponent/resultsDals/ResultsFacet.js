@@ -378,7 +378,11 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
             });
         }
 
-        this.doFilter(btn);
+        var searchController = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
+
+        if(searchController !== undefined)  {
+            this.doFilter(btn);
+        }
     },
 
     doFilter: function (btn) {

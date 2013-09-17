@@ -259,17 +259,47 @@ describe('Search Component', function () {
         describe('handleSearchTermKeyUp callback', function () {
 
             beforeEach(function () {
+
+                var readMethod = 'GET',
+                    testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(dalStore.getProxy(), 'read', readMethod);
+
+                server.respondWith(readMethod, testUrl, dalFixtures.allDals);
+
+                dalStore.getProxy().addSessionId = false; // so our URL is clean
+                dalStore.load();
+
+                server.respond({
+                    errorOnInvalidRequest: true
+                });
+
+                component.down('#searchdals').store = dalStore;
+                component.down('#searchdals').createDalPanels();
+
+                component.down('#resultsdals').store = dalStore;
+                component.down('#resultsdals').createDalPanels();
+
                 spyOn(controller, 'doSearch');
             });
 
+            afterEach(function () {
+                searchbar = null;
+
+                if (server) {
+                    server.restore();
+                    server = null;
+                }
+                dalStore = null;
+                dalFixtures = null;
+            });
+
             it('should call do search on keypress "Enter"', function () {
-                controller.handleSearchTermKeyUp(null, {keyCode: 13 });
+                controller.handleSearchTermKeyUp(toolbar, {keyCode: 13 });
 
                 expect(controller.doSearch).toHaveBeenCalled();
             });
 
             it('should not do search if not "Enter"', function () {
-                controller.handleSearchTermKeyUp(null, { keyCode: 0 });
+                controller.handleSearchTermKeyUp(toolbar, { keyCode: 0 });
 
                 expect(controller.doSearch).not.toHaveBeenCalled();
             });

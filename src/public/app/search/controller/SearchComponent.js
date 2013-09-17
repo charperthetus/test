@@ -86,8 +86,9 @@ Ext.define('Savanna.search.controller.SearchComponent', {
     },
 
     handleNewSearch:function(elem)  {
+        var component = this.getSearchComponent(elem);
 
-        var form = elem.findParentByType('search_searchcomponent').down('#search_form');
+        var form = component.down('#search_form');
 
         form.queryById('search_terms').setValue('');
 
@@ -98,10 +99,31 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                 field.setValue('');
             }
         });
+
+        var sources = this.getSelectedDals(this.getSearchComponent(elem));
+
+        Ext.each(sources, function (source) {
+            /*
+             set the facet filters, if any
+             */
+            if (source.get('facetFilterCriteria').length) {
+                source.set('facetFilterCriteria', []);
+            }
+
+            /*
+             set the date ranges, if any
+             */
+            if (source.get('dateTimeRanges').length) {
+                source.set('dateTimeRanges', []);
+            }
+        });
+
+        component.down('#resultsdals').removeAll();
+
         /*
          return to the options screen if we're not already there
          */
-        var component = elem.findParentByType('search_searchcomponent');
+
         if (component.down('#searchbody').currentPanel !== 'searchoptions') {
             var optionsBtn = component.queryById('optionsbutton');
             optionsBtn.fireEvent('click', optionsBtn);
@@ -167,11 +189,10 @@ Ext.define('Savanna.search.controller.SearchComponent', {
     getSelectedDals: function (component) {
 
         var sources = [],
-            dalStore = Ext.data.StoreManager.lookup('dalSources'),
             dalSelected = false,
             dals = component.down('#searchdals');
 
-        dalStore.each(function (source) {
+        dals.store.each(function (source) {
             if (dals.queryById(source.get('id')).query('checkbox')[0].getValue()) {
                 dalSelected = true;
                 sources.push(source);
@@ -179,8 +200,8 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         });
 
         if (!dalSelected) {
-            dals.queryById(dalStore.defaultId).query('checkbox')[0].setValue(true);
-            sources.push(dalStore.getById(dalStore.defaultId));
+            dals.queryById(dals.store.defaultId).query('checkbox')[0].setValue(true);
+            sources.push(dals.store.getById(dals.store.defaultId));
         }
 
         return sources;
