@@ -11,7 +11,7 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
     statics: {
         aboutwindow: null,
         searchwindow: null,
-        mystuffflyout: null
+        mystuffwindow: null
     },
     requires: [
         'Savanna.desktop.view.AboutWindow',
@@ -60,7 +60,7 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
                 click: this.handleLogout
             },
             'desktop_savannaworkspace #flyoutbutton': {
-                click: this.showMyStuffFlyout
+                click: this.showMyStuffWindow
             },
             'desktop_savannaworkspace #singleviewbutton': {
                 toggle: function(button) {
@@ -89,7 +89,7 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
         var spaceWorkArea = Ext.ComponentQuery.query('panel #savannaworkspace')[0];
         if (spaceWorkArea) {
             //todo, if space is different than currentspace, reinit the workspace component
-            this.showDesktopComponent(currentDesktopItem, spaceWorkArea);
+            this.showDesktopComponent(this.currentDesktopItem, spaceWorkArea);
         }
     },
 
@@ -97,7 +97,7 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
         var desktopContainer = Ext.ComponentQuery.query('desktop_savannadesktop > #desktopcontainer')[0];
         if (desktopContainer) {
             //note - this should return the space manager component
-            currentDesktopItem = desktopContainer.items.items[0]; //todo: is there a better way?
+            this.currentDesktopItem = desktopContainer.items.first();
         }
     },
 
@@ -113,12 +113,12 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
 
     displayDashboard: function(button) {
         var dashboard = button.up('desktop_savannadesktop').down('#savannadashboard');
-        this.showDesktopComponent(currentDesktopItem, dashboard);
+        this.showDesktopComponent(this.currentDesktopItem, dashboard);
     },
 
     displaySpaceManager: function(button) {
         var spacemanager = button.up('desktop_savannadesktop').down('#spacemanager');
-        this.showDesktopComponent(currentDesktopItem, spacemanager);
+        this.showDesktopComponent(this.currentDesktopItem, spacemanager);
     },
 
     showDesktopComponent: function(currCmp, cmp) {
@@ -127,7 +127,7 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
                 cmp.show();
                 cmp.hidden = false; //todo: why doesn't this value change automatically when we call show()?
                 currCmp.hide();
-                currentDesktopItem = cmp;
+                this.currentDesktopItem = cmp;
             }
         } else {
             Ext.Error.raise('Null component sent to DesktopController.showDesktopComponent()');
@@ -151,10 +151,13 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
         //todo: make system messages window component
         var errorWindow = Ext.create('Ext.window.Window', {
             title: 'System Messages',
-            width: 200,
+            width: 200, //size here is arbitrary to match the wireframe. Design team should apply appropriate sizing.
             height: 100
         });
         var pos = button.getPosition();
+        /*the wireframe shows the error window positioned so that the top right corner aligns with the bottom left corner
+          of the button. This code sets the (screen) position of the dialog. Design may change this positioning.
+         */
         errorWindow.setPosition([pos[0] - errorWindow.width, pos[1] + button.getHeight()]);
         errorWindow.show();
     },
@@ -173,16 +176,16 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
         console.log('The user is trying to logout');
     },
 
-    showMyStuffFlyout: function() {
-        if (!this.statics().mystuffflyout) {
-            this.statics().mystuffflyout = Ext.create('Savanna.desktop.view.MyStuffWindow', {closeAction: 'hide', modal: 'true'});
+    showMyStuffWindow: function() {
+        if (!this.statics().mystuffwindow) {
+            this.statics().mystuffwindow = Ext.create('Savanna.desktop.view.MyStuffWindow', {closeAction: 'hide', modal: 'true'});
         }
-        //todo: the spec has the flyout show at the same x,y as the tab panel...is this really necessary?
+        //todo: the spec has the window show at the same x,y as the tab panel...is this really necessary?
         var spaceTabPanel = Ext.ComponentQuery.query('panel #savannaworkspace #maintabpanel')[0];
         if (spaceTabPanel) {
-            this.statics().mystuffflyout.setPosition(spaceTabPanel.getPosition());
+            this.statics().mystuffwindow.setPosition(spaceTabPanel.getPosition());
         }
-        this.statics().mystuffflyout.show();
+        this.statics().mystuffwindow.show();
     },
 
     //todo: this logic may change...this is the initial implementation for design interaction
