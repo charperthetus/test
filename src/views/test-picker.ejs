@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Savanna4 Test Picker</title>
+</head>
+<body>
+	<main>
+		<h1>Savanna 4 Test Chooser</h1>
+		<p>Pick a test suite to run, or choose to run them all</p>
+		<form action="/test-runner" method="post">
+			<select name="tests" id="tests">
+				<option value="all" selected>Run all tests</option>
+				<% for(var i=0; i < tests.length; i++) { %>
+				   <option value="<%= tests[i] %>"><%= tests[i] %></option>
+				<% } %>
+			</select>
+			<input type="submit" value="Go">
+		</form>
+	</main>
+</body>
+</html>

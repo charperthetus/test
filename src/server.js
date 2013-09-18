@@ -6,9 +6,14 @@
 var express = require('express')
     , http = require('http')
     , path = require('path')
-    , modRewrite = require('connect-modrewrite');
+    , modRewrite = require('connect-modrewrite')
+    , fs = require('fs');
 
 var app = express();
+
+// Templating engine
+app.set('views', __dirname + '/views');
+app.set('view engine', 'ejs');
 
 // all environments
 app.set('port', process.env.PORT || 3000);
@@ -23,10 +28,28 @@ app.use(modRewrite([
 ]));
 app.use(express.static(path.join(__dirname, 'public')));
 
+
 // development only
 if ('development' == app.get('env')) {
     app.use(express.errorHandler());
 }
+
+// Test Chooser Page (builds dynamically)
+app.get('/tests', function(req, res) {
+    var testPath = './public/test/specs';
+    res.render('test-picker', { tests: fs.readdirSync(testPath) });
+});
+
+// Spec Runner Generator
+app.post('/test-runner', function(req, res) {
+    if( !req.body ) {
+        // If no params are passed, run all tests
+        res.render('spec-runner', { tests: 'all' });
+    } else {
+        // Else run the specified test(s)
+        res.render('spec-runner', req.body);        
+    }
+});
 
 http.createServer(app).listen(app.get('port'), function(){
     console.log('Express server listening on port ' + app.get('port'));
