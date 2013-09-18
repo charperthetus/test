@@ -75,19 +75,6 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
             }
 
         }, this);
-
-        /*
-
-         create the refine search panel that sits below the DALs
-
-         var refineSearch = this.createRefineSearchPanel();
-         this.add(refineSearch);
-
-         var refineTerms = this.createRefineTermsPanel();
-         this.add(refineTerms);
-
-         */
-
     },
 
     createDalPanel: function (myRecord) {
