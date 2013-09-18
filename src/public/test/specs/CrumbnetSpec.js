@@ -1499,8 +1499,11 @@ describe('Savanna.crumbnet', function() {
                 diagram.startTransaction('setupTest'); // because we are manipulating the diagram to get to a testable state (without user input)
 
                 // Make sure we have at least two siblings...
-                Savanna.crumbnet.utils.ViewTemplates.addNodeAndLink(inputEvent, node);
-                Savanna.crumbnet.utils.ViewTemplates.addNodeAndLink(inputEvent, node);
+                while (node.findNodesOutOf().count < 2) {
+                    Savanna.crumbnet.utils.ViewTemplates.addNodeAndLink(inputEvent, node);
+                }
+
+                expect(node.findNodesOutOf().count).toBeGreaterThan(1);
 
                 // Make all siblings have the same location to test that we move beyond them...
                 var siblings = node.findNodesOutOf();
@@ -1518,8 +1521,6 @@ describe('Savanna.crumbnet', function() {
 
                 var origNodeCount = diagram.nodes.count,
                     origLinkCount = diagram.links.count;
-
-                expect(node.findNodesOutOf().count).toBeGreaterThan(2);
 
                 diagram.commitTransaction('setupTest');
 
