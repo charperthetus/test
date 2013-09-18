@@ -1442,16 +1442,32 @@ describe('Savanna.crumbnet', function() {
                 expect(diagram.nodes.count).toBe(origNodeCount);
             });
 
-            it('should add a node with a link between the new node and the given node', function() {
+            it('should add a node with a link between the new node and the given node and activate the textEditor with the text selected', function() {
                 var node = diagram.nodes.first(),
                     origNodeCount = diagram.nodes.count,
                     origLinkCount = diagram.links.count,
-                    inputEvent = new go.InputEvent();
+                    inputEvent = new go.InputEvent(),
+                    textAreaElem,
+                    addedNode,
+                    testId = 'TEST-ID';
+
+                // control the key that is set for the new node so we can find it later
+                spyOn(Ext, 'id').andReturn(testId);
 
                 Savanna.crumbnet.utils.ViewTemplates.addNodeAndLink(inputEvent, node);
 
                 expect(diagram.nodes.count).toBe(origNodeCount + 1);
                 expect(diagram.links.count).toBe(origLinkCount + 1);
+
+                addedNode = diagram.findNodeForKey(testId);
+
+                expect(addedNode.data.key).not.toBeNull();
+
+                textAreaElem = diagram.toolManager.textEditingTool.currentTextEditor;
+
+                expect(textAreaElem).not.toBeNull();
+                expect(textAreaElem.selectionStart).toBe(0);
+                expect(textAreaElem.selectionEnd).toBe(addedNode.findObject('title').text.length);
             });
 
             it('should add a node with a link between the new node and the given node in the case the node has no siblings', function() {
@@ -1460,6 +1476,7 @@ describe('Savanna.crumbnet', function() {
                 diagram.startTransaction('setupTest'); // because we are manipulating the diagram to get to a testable state (without user input)
 
                 var model = diagram.model;
+
                 model.addNodeData({ text: 'TEST NODE' });
 
                 var node = diagram.nodes.first(),

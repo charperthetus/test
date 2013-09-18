@@ -18,7 +18,7 @@ Ext.define('Savanna.controller.Main', {
 
         this.app = app;
 
-        this.control({
+            this.control({
             login: {
                 render: function() {
                     Ext.EventManager.on(window, 'message', function(e) {
