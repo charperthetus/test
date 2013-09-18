@@ -38,13 +38,17 @@ app.get('/test/SpecRunner.html', function(req,res) {
     fs.readFile('./public/test/SpecRunner.html', function(err, data){
         var html = data.toString();
 
-        // If no querys are present, send back the HTML
-        if(!Object.keys(req.query).length){
+        // If no querys are present or it's 'all', send back the HTML
+        if(!Object.keys(req.query).length || req.query === 'all'){
             res.send(html);
 
-        // Strip the query, and dynamically insert into the page
+        // Strip the scripts, and insert the js file into the page
         } else {
-            res.send(req.query);
+            var scriptRequested = '<script type="text/javascript" src="specs/' + req.query.test + '"></script>'
+                , scriptStartLocation = html.indexOf('<!--[#parserstart]-->')
+                , scriptEndLocation = html.indexOf('<!--[#parserend]-->');
+            html = html.replace(html.substring(scriptStartLocation, scriptEndLocation), scriptRequested);
+            res.send(html);
         }
     });
 });
