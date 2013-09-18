@@ -2,17 +2,17 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Savanna4 Test Picker</title>
+	<title>Savanna 4 Unit Test Chooser</title>
 </head>
 <body>
 	<main>
-		<h1>Savanna 4 Test Chooser</h1>
-		<p>Pick a test suite to run, or choose to run them all</p>
-		<form action="/test-runner" method="post">
-			<select name="tests" id="tests">
-				<option value="all" selected>Run all tests</option>
-				<% for(var i=0; i < tests.length; i++) { %>
-				   <option value="<%= tests[i] %>"><%= tests[i] %></option>
+		<h1>Savanna 4 Unit Test Choose</h1>
+		<p>Select a test to run, or select to run all tests</p>
+		<form action="test/SpecRunner.html">
+			<select name="test" id="test">
+				<option value="all">Run all tests</option>
+				<% for (var test in tests) { %>
+					<option value="<%= tests[test] %>"><%= tests[test] %></option>
 				<% } %>
 			</select>
 			<input type="submit" value="Go">

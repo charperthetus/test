@@ -28,33 +28,36 @@ app.use(modRewrite([
 ]));
 app.use(express.static(path.join(__dirname, 'public')));
 
-
 // development only
 if ('development' == app.get('env')) {
     app.use(express.errorHandler());
 }
 
-// Test Chooser Page (builds dynamically)
-app.get('/tests', function(req, res) {
-    var testPath = './public/test/specs';
-    res.render('test-picker', { tests: fs.readdirSync(testPath) });
+// Interrupt the SpecRunner.html request and insert tests requested
+app.get('/test/SpecRunner.html', function(req,res) {
+    fs.readFile('./public/test/SpecRunner.html', function(err, data){
+        var html = data.toString();
+
+        // If no querys are present, send back the HTML
+        if(!Object.keys(req.query).length){
+            res.send(html);
+
+        // Strip the query, and dynamically insert into the page
+        } else {
+            res.send(req.query);
+        }
+    });
 });
 
-// Spec Runner Generator
-app.post('/test-runner', function(req, res) {
-    if( !req.body ) {
-        // If no params are passed, run all tests
-        res.render('spec-runner', { tests: 'all' });
-    } else {
-        // Else run the specified test(s)
-        res.render('spec-runner', req.body);        
-    }
+app.get('/tests', function(req, res) {
+    var testsLocation = './public/test/specs';
+    console.log(fs.readdirSync(testsLocation));
+    res.render('test-picker', { tests: fs.readdirSync(testsLocation) });
 });
 
 http.createServer(app).listen(app.get('port'), function(){
     console.log('Express server listening on port ' + app.get('port'));
 });
-
 
 function addCorsHeaders(req, res, next) {
     res.set('Access-Control-Allow-Origin', '*');
