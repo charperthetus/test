@@ -17,7 +17,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.SearchMap', {
         'Savanna.search.view.searchComponent.searchBody.searchMap.Canvas'
     ],
 
-    layout: 'fit',
+    layout: 'absolute',
 
     items: [
         {
@@ -26,6 +26,11 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.SearchMap', {
             width: '100%',
             itemId: 'searchMapCanvas',
             flex: 1
+        },
+        {
+            xtype: 'button',
+            itemId: 'drawLocationSearch',
+            glyph: 61772
         }
     ],
     dockedItems: [
