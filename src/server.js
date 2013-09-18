@@ -55,7 +55,6 @@ app.get('/test/SpecRunner.html', function(req,res) {
 
 app.get('/tests', function(req, res) {
     var testsLocation = './public/test/specs';
-    console.log(fs.readdirSync(testsLocation));
     res.render('test-picker', { tests: fs.readdirSync(testsLocation) });
 });
 
