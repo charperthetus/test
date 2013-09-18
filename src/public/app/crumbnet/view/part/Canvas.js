@@ -61,22 +61,35 @@ Ext.define('Savanna.crumbnet.view.part.Canvas', {
 
         //TODO - Move this to the controller
         this.diagram.addDiagramListener('PartResized', Ext.bind(this.partResized, this));
+        this.diagram.addDiagramListener('ExternalObjectsDropped', Ext.bind(this.externalObjectsDropped, this));
+        this.diagram.addDiagramListener('TextEdited', Ext.bind(this.textEdited, this));
 
         this.diagram.toolManager.linkingTool.findLinkablePort = this.findPort;
     },
 
     // CUSTOM METHODS
 
-    partResized: function(e){
-        if (e.subject instanceof go.TextBlock){
-            var textBlock = e.subject;
+    textEdited: function() {
+        // reset our textarea selection so that we do not have anything selected yet
+        this.diagram.toolManager.textEditingTool.currentTextEditor.setSelectionRange(0,0);
+    },
+
+    partResized: function(diagramEvent) {
+        if (diagramEvent.subject instanceof go.TextBlock){
+            var textBlock = diagramEvent.subject;
             textBlock.height = textBlock.lineCount * 15; //TODO - need to do this a better way - super brittle
         }
     },
 
+    externalObjectsDropped: function(diagramEvent) {
+        var addedNode = diagramEvent.subject.first();
+
+        Savanna.crumbnet.utils.ViewTemplates.setupTextEditor(this.diagram, addedNode.findObject('title'));
+    },
+
     findPort: function() {
         var diagram = this.diagram,
-            obj = null;
+            obj;
 
         if (diagram === null) {
             return null;

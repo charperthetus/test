@@ -35,7 +35,7 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
     generateNodeTemplate: function() {
         var gmake = go.GraphObject.make;
 
-        var titleText = this.makeTextBlock({ bold: true, alignment: go.Spot.TopLeft });
+        var titleText = this.makeTextBlock({ name: 'title', bold: true, alignment: go.Spot.TopLeft });
         titleText.bind(new go.Binding('text', 'title').makeTwoWay());
 
         var descText = this.makeTextBlock({ alignment: go.Spot.TopLeft, name: 'descText' });
@@ -391,13 +391,13 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
         e.handled = true;
 
         var diagram = fromNode.diagram;
-        diagram.startTransaction('Add Node');
 
         // get the node data for which the user clicked the button
         var fromData = fromNode.data;
+        var id = Ext.id();
 
         //TODO - Need to figure out which properties should be copied into the new node by default (ie category, percent)
-        var toData = { title: 'New Node', type: fromData.type, color: fromData.color, category: fromData.category, key: Ext.id() };
+        var toData = { title: 'New Node', type: fromData.type, color: fromData.color, category: fromData.category, key: id };
         var fromLocation = fromNode.location;
         var siblingNodes = fromNode.findNodesOutOf();
         var x = 0;
@@ -427,6 +427,9 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
 
         // add the new node data to the model
         var model = diagram.model;
+
+        diagram.startTransaction('Add Node');
+
         model.addNodeData(toData);
 
         // create a link data from the old node data to the new node data
@@ -439,7 +442,27 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
 
         // and add the link data to the model
         model.addLinkData(linkdata);
+
         diagram.commitTransaction('Add Node');
+
+        var addedNode = diagram.findNodeForKey(id);
+
+        Savanna.crumbnet.utils.ViewTemplates.setupTextEditor(diagram, addedNode.findObject('title'));
+    },
+
+    setupTextEditor: function(diagram, textNode) {
+        var textEditingTool = diagram.commandHandler,
+            textAreaElem,
+            valueLength;
+
+        textEditingTool.editTextBlock(textNode);
+        textAreaElem = diagram.toolManager.textEditingTool.currentTextEditor;
+
+        if (textAreaElem) {
+            valueLength = textAreaElem.value ? textAreaElem.value.length : 0;
+
+            textAreaElem.setSelectionRange(0, valueLength);
+        }
     },
 
     // PORT methods
