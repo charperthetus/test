@@ -1544,6 +1544,93 @@ describe('Savanna.crumbnet', function() {
                 expect(textBlock.font).toMatch(/^bold/);
             });
         });
+
+        describe('setupDescriptionText', function() {
+            var textBlock,
+                setupDescriptionText;
+
+            beforeEach(function() {
+                var node = diagram.nodes.first();
+                textBlock = node.findObject('descText');
+                setupDescriptionText = Savanna.crumbnet.utils.ViewTemplates.setupDescriptionText;
+            });
+
+            afterEach(function() {
+                textBlock = null;
+                setupDescriptionText = null;
+            });
+
+            describe('when textBlock is empty', function() {
+                beforeEach(function() {
+                    textBlock.text = '';
+                });
+
+                it('should not have any text', function() {
+                    expect(textBlock.text).toBe('');
+                });
+
+                it('should get a default label when setupDescriptionText is called', function() {
+                    setupDescriptionText(null, textBlock);
+
+                    expect(textBlock.text).toBe(Savanna.crumbnet.utils.ViewTemplates.defaultDescriptionHoverText);
+                });
+            });
+
+            describe('when textBlock already has a value', function() {
+                beforeEach(function() {
+                    textBlock.text = 'EXISTING VALUE';
+                });
+
+                it('should not change the label when setupDescriptionText is called', function() {
+                    setupDescriptionText(null, textBlock);
+
+                    expect(textBlock.text).toBe('EXISTING VALUE');
+                });
+            });
+        });
+
+        describe('cleanupDescriptionText', function() {
+            var textBlock,
+                cleanupDescriptionText;
+
+            beforeEach(function() {
+                var node = diagram.nodes.first();
+                textBlock = node.findObject('descText');
+                cleanupDescriptionText = Savanna.crumbnet.utils.ViewTemplates.cleanupDescriptionText;
+            });
+
+            afterEach(function() {
+                textBlock = null;
+                cleanupDescriptionText = null;
+            });
+
+            describe('when textBlock is empty', function() {
+                beforeEach(function() {
+                    textBlock.text = '';
+                });
+                it('should get a default label when cleanupDescriptionText is called after setupDescriptionText', function() {
+                    Savanna.crumbnet.utils.ViewTemplates.setupDescriptionText(null, textBlock);
+
+                    expect(textBlock.text).toBe(Savanna.crumbnet.utils.ViewTemplates.defaultDescriptionHoverText);
+
+                    cleanupDescriptionText(null, textBlock);
+
+                    expect(textBlock.text).toBe('');
+                });
+            });
+
+            describe('when textBlock already has a value', function() {
+                beforeEach(function() {
+                    textBlock.text = 'EXISTING VALUE';
+                });
+
+                it('should not change the label when cleanupDescriptionText is called', function() {
+                    cleanupDescriptionText(null, textBlock);
+
+                    expect(textBlock.text).toBe('EXISTING VALUE');
+                });
+            });
+        });
     });
 
     function setupPaletteTemplateStore(server, fixture) {
