@@ -327,6 +327,19 @@ describe('Search Component', function () {
                 server.respond({
                     errorOnInvalidRequest: true
                 });
+
+                component.down('#searchdals').store = dalStore;
+
+                component.down('#searchdals').createDalPanels();
+
+                component.down('#resultsdals').store = dalStore;
+
+                component.down('#searchdals').store.each(function (record) {
+                    var dalId = record.data.id;
+                    component.down('#searchdals').queryById(dalId).query('checkbox')[0].setValue(true);
+                });
+
+                component.down('#resultsdals').createDalPanels(controller.getSelectedDals(component));
             });
 
             afterEach(function () {
@@ -359,11 +372,6 @@ describe('Search Component', function () {
 
             it('should build the search string', function () {
 
-                component.down('#searchdals').store = dalStore;
-                component.down('#searchdals').createDalPanels();
-
-                component.down('#resultsdals').store = dalStore;
-                component.down('#resultsdals').createDalPanels();
 
                 spyOn(searchbar, 'buildSearchString').andCallThrough();
                 controller.doSearch(searchbar);

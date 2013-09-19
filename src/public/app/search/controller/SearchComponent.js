@@ -179,6 +179,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
      used in a few places, moving this out of doSearch
      */
     getSearchComponent: function (elem) {
+
         var component;
 
         if (elem.xtype === 'searchadvanced_textfield' || elem.itemId === 'advancedsearch_submit') {
@@ -200,6 +201,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             dals = component.down('#searchdals');
 
         dals.store.each(function (source) {
+
             if (dals.queryById(source.get('id')).query('checkbox')[0].getValue()) {
                 dalSelected = true;
                 sources.push(source);

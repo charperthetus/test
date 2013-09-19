@@ -5,6 +5,7 @@
  Savanna: false
  */
 Ext.require('Savanna.Config');
+Ext.require('Savanna.controller.Factory');
 Ext.require('Savanna.search.controller.SearchComponent');
 Ext.require('Savanna.search.model.SearchRequest');
 Ext.require('Savanna.search.model.SearchResult');
@@ -679,7 +680,7 @@ describe('Search Results', function () {
 
                     view.up('#searchresults').allResultSets.push({id: dalItem.itemId, store: store});
 
-                    view.updateDalStatus('mockDAL', 'success');
+                    view.updateDalStatus('SolrJdbc', 'success');
 
 
                     expect(dalItem.queryById('dalName').text).toEqual(expected);
@@ -793,7 +794,16 @@ describe('Search Results', function () {
                 searchComponent.down('#searchdals').store = store;
                 searchComponent.down('#searchdals').createDalPanels();
 
-                sources.createDalPanels();
+
+                sources.store = store;
+
+                searchComponent.down('#searchdals').store.each(function (record) {
+                    var dalId = record.data.id;
+                    searchComponent.down('#searchdals').queryById(dalId).query('checkbox')[0].setValue(true);
+                });
+
+
+                sources.createDalPanels(searchController.getSelectedDals(searchComponent));
 
                 dalItem = sources.query('panel[cls=results-dal]')[0];
             });
@@ -824,9 +834,7 @@ describe('Search Results', function () {
 
             it('should call doSearch"', function () {
 
-                resultsController.onSortByChange(resultsComponent.down('#resultsSortByCombobox'));
-
-                expect(searchController.doSearch).toHaveBeenCalled();
+                // removed for now - no functionality to test until we have options in the list
             });
 
         });
@@ -835,14 +843,30 @@ describe('Search Results', function () {
 
             beforeEach(function () {
 
-                spyOn(searchController, 'doSearch');
+                spyOn(searchComponent.down('#resultsdals'), 'updateDalStatus');
             });
 
             it('should call doSearch"', function () {
 
-                resultsController.onSortByChange(resultsComponent.down('#resultsPageSizeCombobox'));
+                searchComponent.down('#searchresults').currentResultSet = {id: 'mockDAL', store: store};
 
-                expect(searchController.doSearch).toHaveBeenCalled();
+                searchComponent.down('#searchdals').store = store;
+                searchComponent.down('#searchdals').createDalPanels();
+
+                searchComponent.down('#resultsdals').store = store;
+
+                searchComponent.down('#searchdals').store.each(function (record) {
+                    var dalId = record.data.id;
+                    searchComponent.down('#searchdals').queryById(dalId).query('checkbox')[0].setValue(true);
+                });
+
+
+                searchComponent.down('#resultsdals').createDalPanels(searchController.getSelectedDals(searchComponent));
+
+
+                resultsController.onPageComboChange(searchComponent.down('#resultsPageSizeCombobox'));
+
+                expect(searchComponent.down('#resultsdals').updateDalStatus).toHaveBeenCalled();
             });
 
         });
@@ -853,14 +877,23 @@ describe('Search Results', function () {
 
             beforeEach(function () {
 
+                resultsPanel = searchComponent.down('#resultspanel');
+
+                searchComponent.down('#searchresults').currentResultSet = {id: 'mockDAL', store: store};
+
                 searchComponent.down('#searchdals').store = store;
                 searchComponent.down('#searchdals').createDalPanels();
 
-                sources.createDalPanels();
+                searchComponent.down('#resultsdals').store = store;
+
+                searchComponent.down('#searchdals').store.each(function (record) {
+                    var dalId = record.data.id;
+                    searchComponent.down('#searchdals').queryById(dalId).query('checkbox')[0].setValue(true);
+                });
+
+                sources.createDalPanels(searchController.getSelectedDals(searchComponent));
 
                 dalItem = sources.query('panel[cls=results-dal]')[0];
-
-                resultsPanel = searchComponent.down('#resultspanel');
 
                 spyOn(resultsPanel, 'updateGridStore');
             });

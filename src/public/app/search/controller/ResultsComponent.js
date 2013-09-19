@@ -12,6 +12,9 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
     views: [
         'Savanna.search.view.searchComponent.searchBody.ResultsComponent'
     ],
+    requires:   [
+      'Savanna.controller.Factory'
+    ],
     init: function () {
 
         this.control({
@@ -73,14 +76,18 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
 
         var id = combo.findParentByType('search_resultscomponent').currentResultSet.id,
             dalRecord = Ext.data.StoreManager.lookup('dalSources').getById(id),
-            searchController = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent'),
-            component = searchController.getSearchComponent(combo),
+
+            searchController = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
+
+            var component = searchController.getSearchComponent(combo),
             currentDalPanel = component.down('#searchdals').queryById(id),
             searchString = component.queryById('searchbar').buildSearchString(),
             searchObj = Ext.create('Savanna.search.model.SearchRequest', {
                 'textInputString': searchString,
                 'displayLabel': searchString
             });
+
+
 
         dalRecord.set('resultsPerPage', combo.value);
 

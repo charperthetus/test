@@ -48,6 +48,10 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
 
         var searchPanelDals = this.findParentByType('search_searchcomponent').down('#searchdals'); // the dal sources in search options
 
+        if(this.queryById('resultsfacets') === undefined || this.queryById('resultsfacets') === null)    {
+            this.add(this.createFacetsTabPanel());
+        }
+
         this.store.each(function (record) {
             var dalId = record.get('id'),
                 checked = searchPanelDals.queryById(dalId).query('checkbox')[0].getValue();
@@ -69,16 +73,15 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
             if (!exists) {
                 myPanel = this.createDalPanel(record);
                 myPanel.down('#dalName').setText(record.get('displayName'));
-                this.add(myPanel);
+
+                this.insert(this.items.length - 1, myPanel);  // insert before the facets panel
             } else {
                 this.updateDalStatus(dalId);
             }
 
         }, this);
 
-        if(this.queryById('resultsfacets') === undefined || this.queryById('resultsfacets') === null)    {
-            this.add(this.createFacetsTabPanel());
-        }
+
     },
 
     createDalPanel: function (myRecord) {
@@ -220,7 +223,6 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
 
         var me = this,
             count = 0;
-
 
         Ext.each(this.findParentByType('search_resultscomponent').allResultSets, function (searchResult) {
 
