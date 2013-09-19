@@ -49,14 +49,12 @@ Ext.define('Savanna.search.view.searchComponent.SearchBody', {
                             cls: 'search-dal',
                             itemId:'searchdals',
                             xtype: 'search_searchdals'
-                        }
-                        /* ,
+                        },
                         {
                             title: 'Location',
                             itemId: 'searchMap',
                             xtype: 'search_searchmap'
                         }
-                        */
                     ]
                 }
             ]

@@ -39,6 +39,13 @@ Ext.define('Savanna.Config', {
 
     resourcesPathPrefix: '',
 
+    // Map base layer
+    mapBaseLayerUrl: 'http://demo.opengeo.org/geoserver/wms',
+    mapBaseLayerName: 'bluemarble',
+    mapBaseLayerLabel: 'Satellite',
+    mapDefaultCenter: '0,0',
+    mapDefaultZoom: 2,
+
     buildSavannaUrl: function(key) {
 
         var url,
