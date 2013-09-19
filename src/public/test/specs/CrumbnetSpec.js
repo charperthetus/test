@@ -1499,8 +1499,11 @@ describe('Savanna.crumbnet', function() {
                 diagram.startTransaction('setupTest'); // because we are manipulating the diagram to get to a testable state (without user input)
 
                 // Make sure we have at least two siblings...
-                Savanna.crumbnet.utils.ViewTemplates.addNodeAndLink(inputEvent, node);
-                Savanna.crumbnet.utils.ViewTemplates.addNodeAndLink(inputEvent, node);
+                while (node.findNodesOutOf().count < 2) {
+                    Savanna.crumbnet.utils.ViewTemplates.addNodeAndLink(inputEvent, node);
+                }
+
+                expect(node.findNodesOutOf().count).toBeGreaterThan(1);
 
                 // Make all siblings have the same location to test that we move beyond them...
                 var siblings = node.findNodesOutOf();
@@ -1518,8 +1521,6 @@ describe('Savanna.crumbnet', function() {
 
                 var origNodeCount = diagram.nodes.count,
                     origLinkCount = diagram.links.count;
-
-                expect(node.findNodesOutOf().count).toBeGreaterThan(2);
 
                 diagram.commitTransaction('setupTest');
 
@@ -1542,6 +1543,93 @@ describe('Savanna.crumbnet', function() {
                 var textBlock = Savanna.crumbnet.utils.ViewTemplates.makeTextBlock({ bold: true });
 
                 expect(textBlock.font).toMatch(/^bold/);
+            });
+        });
+
+        describe('setupDescriptionText', function() {
+            var textBlock,
+                setupDescriptionText;
+
+            beforeEach(function() {
+                var node = diagram.nodes.first();
+                textBlock = node.findObject('descText');
+                setupDescriptionText = Savanna.crumbnet.utils.ViewTemplates.setupDescriptionText;
+            });
+
+            afterEach(function() {
+                textBlock = null;
+                setupDescriptionText = null;
+            });
+
+            describe('when textBlock is empty', function() {
+                beforeEach(function() {
+                    textBlock.text = '';
+                });
+
+                it('should not have any text', function() {
+                    expect(textBlock.text).toBe('');
+                });
+
+                it('should get a default label when setupDescriptionText is called', function() {
+                    setupDescriptionText(null, textBlock);
+
+                    expect(textBlock.text).toBe(Savanna.crumbnet.utils.ViewTemplates.defaultDescriptionHoverText);
+                });
+            });
+
+            describe('when textBlock already has a value', function() {
+                beforeEach(function() {
+                    textBlock.text = 'EXISTING VALUE';
+                });
+
+                it('should not change the label when setupDescriptionText is called', function() {
+                    setupDescriptionText(null, textBlock);
+
+                    expect(textBlock.text).toBe('EXISTING VALUE');
+                });
+            });
+        });
+
+        describe('cleanupDescriptionText', function() {
+            var textBlock,
+                cleanupDescriptionText;
+
+            beforeEach(function() {
+                var node = diagram.nodes.first();
+                textBlock = node.findObject('descText');
+                cleanupDescriptionText = Savanna.crumbnet.utils.ViewTemplates.cleanupDescriptionText;
+            });
+
+            afterEach(function() {
+                textBlock = null;
+                cleanupDescriptionText = null;
+            });
+
+            describe('when textBlock is empty', function() {
+                beforeEach(function() {
+                    textBlock.text = '';
+                });
+                it('should get a default label when cleanupDescriptionText is called after setupDescriptionText', function() {
+                    Savanna.crumbnet.utils.ViewTemplates.setupDescriptionText(null, textBlock);
+
+                    expect(textBlock.text).toBe(Savanna.crumbnet.utils.ViewTemplates.defaultDescriptionHoverText);
+
+                    cleanupDescriptionText(null, textBlock);
+
+                    expect(textBlock.text).toBe('');
+                });
+            });
+
+            describe('when textBlock already has a value', function() {
+                beforeEach(function() {
+                    textBlock.text = 'EXISTING VALUE';
+                });
+
+                it('should not change the label when cleanupDescriptionText is called', function() {
+                    cleanupDescriptionText(null, textBlock);
+
+                    expect(textBlock.text).toBe('EXISTING VALUE');
+                });
             });
         });
     });
