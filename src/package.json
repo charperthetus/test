@@ -10,6 +10,7 @@
     "clone":   "*",
     "async": "*",
     "underscore": "*",
-    "connect-modrewrite": "*"
+    "connect-modrewrite": "*",
+    "ejs": "0.8.4"
   }
 }
