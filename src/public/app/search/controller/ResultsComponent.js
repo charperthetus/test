@@ -204,7 +204,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
 
             field.findParentByType('search_searchcomponent').refineSearchString += (field.getValue() + ' AND ');
 
-            field.findParentByType('search_searchcomponent').down('#refineterms').addTerm(field.getValue());
+            field.findParentByType('search_searchcomponent').down('#refineterms').addTerm(field);
 
              /*
              resubmit the search request

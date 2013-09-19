@@ -13,7 +13,8 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
         'Ext.form.Label',
         'Ext.toolbar.Spacer',
         'Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsOptions',
-        'Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacets'
+        'Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacets',
+        'Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineSearchbar'
     ],
 
     title: 'Search Sources',
@@ -48,6 +49,14 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
 
         var searchPanelDals = this.findParentByType('search_searchcomponent').down('#searchdals'); // the dal sources in search options
 
+        if(this.queryById('refinesearch') === undefined || this.queryById('refinesearch') === null)    {
+            this.add(this.createRefineSearchPanel());
+        }
+
+        if(this.queryById('refineterms') === undefined || this.queryById('refineterms') === null)    {
+            this.add(this.createRefineTermsPanel());
+        }
+
         if(this.queryById('resultsfacets') === undefined || this.queryById('resultsfacets') === null)    {
             this.add(this.createFacetsTabPanel());
         }
@@ -74,12 +83,24 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
                 myPanel = this.createDalPanel(record);
                 myPanel.down('#dalName').setText(record.get('displayName'));
 
-                this.insert(this.items.length - 1, myPanel);  // insert before the facets panel
+                this.insert(this.items.length - 3, myPanel);  // insert before the facets panel
             } else {
                 this.updateDalStatus(dalId);
             }
 
         }, this);
+
+
+
+
+
+        /*
+         create the refine search panel that sits below the DALs
+
+         var refineTerms = this.createRefineTermsPanel();
+         this.add(refineTerms);
+
+         */
 
 
     },
