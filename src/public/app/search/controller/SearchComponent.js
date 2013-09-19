@@ -64,7 +64,9 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                 click: this.onBodyToolbarClick
             },
             'search_searchcomponent #searchMapCanvas': {
-                beforerender: this.loadDefaultLayer
+                beforerender: this.loadDefaultLayer,
+                afterrender: this.loadVectorLayer,
+                resize: this.onMapCanvasResize
             },
             'search_searchcomponent #drawLocationSearch': {
                 click: this.activateDrawFeature
@@ -339,18 +341,51 @@ Ext.define('Savanna.search.controller.SearchComponent', {
     },
 
     loadDefaultLayer: function (canvas) {
-        canvas.map.addLayer(new OpenLayers.Layer.WMS('Satellite',
-            'http://demo.opengeo.org/geoserver/wms', {layers: 'bluemarble'}));
+        canvas.map.addLayer(new OpenLayers.Layer.WMS(Savanna.Config.mapBaseLayerLabel,
+            Savanna.Config.mapBaseLayerUrl, {layers: Savanna.Config.mapBaseLayerName}));
+    },
+
+    loadVectorLayer: function(canvas) {
+        // Add a feature layer to the map.
+        var searchLayer = new OpenLayers.Layer.Vector('searchLayer');
+        canvas.searchLayer = searchLayer;
+        canvas.map.addLayer(searchLayer);
+
+        // Add the draw feature control to the map.
+        var drawFeature = new OpenLayers.Control.DrawFeature(searchLayer, OpenLayers.Handler.Polygon, {
+            featureAdded: this.onFeatureAdded
+        });
+
+        drawFeature.handler.callbacks.point = this.pointCallback;
+        canvas.map.addControl(drawFeature);
+        canvas.drawFeature = drawFeature;
+    },
+
+    onFeatureAdded: function() {
+        // Scope: drawFeature
+        this.deactivate();
+    },
+
+    onMapCanvasResize: function(canvas) {
+        canvas.map.updateSize();
+    },
+
+    pointCallback: function() {
+        // Scope: drawFeature
+        // Called each time a point is added to the feature.
+        if(this.layer.features.length > 0) {
+            this.layer.removeAllFeatures();
+        }
     },
 
     activateDrawFeature: function(button) {
         var canvas = button.up('search_searchmap').down('search_map_canvas');
-        canvas.activateDrawFeature();
+        canvas.drawFeature.activate();
     },
 
     clearDrawFeature: function(button) {
         var canvas = button.up('search_searchmap').down('search_map_canvas');
-        canvas.removeFeature();
-        canvas.deactivateDrawFeature();
+        canvas.searchLayer.removeAllFeatures();
+        canvas.drawFeature.deactivate();
     }
 });
