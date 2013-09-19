@@ -22,8 +22,6 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
         {
             xtype: 'text',
             itemId: 'termValue',
-            maxWidth: 90,
-            minHeight: 25,
             text: ''
         },
         {
