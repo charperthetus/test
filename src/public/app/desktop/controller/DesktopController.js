@@ -22,6 +22,7 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
     views: [
         'Savanna.desktop.view.SavannaToolbar',
         'Savanna.desktop.view.SavannaDesktop',
+        'Savanna.desktop.view.SearchWindow',
         'Savanna.desktop.view.SavannaWorkspace'
     ],
     init: function () {
