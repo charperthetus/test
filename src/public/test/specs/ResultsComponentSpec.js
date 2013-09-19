@@ -163,8 +163,8 @@ describe('Search Results', function () {
                     });
 
 
-                    view.createDalPanels();
-                    // checking against (view.add.callCount - 1) because of the facets panel, which also triggers an 'add' event
+                    view.createDalPanels(searchController.getSelectedDals(searchComponent));
+                    // testing againt the value -1 to account for the facets panel, which also fires an add event
                     expect(view.add.callCount - 1).toBe(store.count());
                 });
             });
@@ -209,6 +209,8 @@ describe('Search Results', function () {
                     /*
                      ...and DAL panels in search and results
                      */
+
+
                     searchDals = searchComponent.down('#searchdals');
                     resultsDals = searchComponent.down('#resultsdals');
 
@@ -239,14 +241,25 @@ describe('Search Results', function () {
                     searchDals.createDalPanels();
 
                     resultsDals.store = store;
-                    resultsDals.createDalPanels();
+
+                    searchComponent.down('#searchdals').store.each(function (record) {
+                        var dalId = record.data.id;
+                        searchComponent.down('#searchdals').queryById(dalId).query('checkbox')[0].setValue(true);
+                    });
+
+
+                    resultsDals.createDalPanels(searchController.getSelectedDals(searchComponent));
+
+
+
+
 
 
                     /*
                      create facets panel and line up the last few things needed for createDalFacets method
                      */
 
-                    resultsDals.createFacetsTabPanel();
+                    //resultsDals.createFacetsTabPanel(true);
 
                     searchComponent.down('#searchresults').allResultSets.push({id: 'mockDAL', store: searchStore});
                     resultsDals.store = store;
@@ -381,6 +394,7 @@ describe('Search Results', function () {
                                 searchResults: {id: 'mockDAL', store: searchStore},
                                 dal: store.getById('mockDAL')
                             });
+
                         });
 
                         afterEach(function () {
@@ -600,7 +614,17 @@ describe('Search Results', function () {
 
                     dalsView.createDalPanels();
 
-                    view.createDalPanels();
+
+                    view.store = store;
+
+                    searchComponent.down('#searchdals').store.each(function (record) {
+                        var dalId = record.data.id;
+                        searchComponent.down('#searchdals').queryById(dalId).query('checkbox')[0].setValue(true);
+                    });
+
+
+                    view.createDalPanels(searchController.getSelectedDals(searchComponent));
+
 
                     view.updateDalStatus('mockDAL', 'success');
 
@@ -615,7 +639,15 @@ describe('Search Results', function () {
 
                     dalsView.createDalPanels();
 
-                    view.createDalPanels();
+                    view.store = store;
+
+                    searchComponent.down('#searchdals').store.each(function (record) {
+                        var dalId = record.data.id;
+                        searchComponent.down('#searchdals').queryById(dalId).query('checkbox')[0].setValue(true);
+                    });
+
+
+                    view.createDalPanels(searchController.getSelectedDals(searchComponent));
 
                     view.updateDalStatus('mockDAL', 'fail');
 
@@ -632,7 +664,15 @@ describe('Search Results', function () {
                     searchComponent.down('#searchdals').store = store;
                     searchComponent.down('#searchdals').createDalPanels();
 
-                    view.createDalPanels();
+                    view.store = store;
+
+                    searchComponent.down('#searchdals').store.each(function (record) {
+                        var dalId = record.data.id;
+                        searchComponent.down('#searchdals').queryById(dalId).query('checkbox')[0].setValue(true);
+                    });
+
+
+                    view.createDalPanels(searchController.getSelectedDals(searchComponent));
 
                     var dalItem = view.query('panel[cls=results-dal]')[0],
                         expected = store.getById(dalItem.itemId).data.displayName + ' (8)';

@@ -68,13 +68,17 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
 
             if (!exists) {
                 myPanel = this.createDalPanel(record);
+                myPanel.down('#dalName').setText(record.get('displayName'));
                 this.add(myPanel);
-                this.add(this.createFacetsTabPanel());
             } else {
                 this.updateDalStatus(dalId);
             }
 
         }, this);
+
+        if(this.queryById('resultsfacets') === undefined || this.queryById('resultsfacets') === null)    {
+            this.add(this.createFacetsTabPanel());
+        }
     },
 
     createDalPanel: function (myRecord) {
@@ -157,11 +161,14 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
             facets = this.queryById('resultsfacets').queryById('tab_' + id),
             me = this;
 
+
+
         facets.removeAll();
 
         Ext.each(this.findParentByType('search_resultscomponent').allResultSets, function (resultset) {
             if (resultset.id === id) {
                 if (descriptions.length > 0) {
+
                     /*
                      loop through the facetDescriptions for each set of results to determine which facets
                      should be rendered when the user selects that DAL's results, and add them to the
@@ -176,6 +183,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
                         var facetElement;
 
                         facetElement = me.createFacet(descriptions[i], resultset, dalRecord);
+
                         facets.add(facetElement);
 
                     }
@@ -220,12 +228,6 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
                 if (status !== 'fail') {
                     count = searchResult.store.totalCount;
                 }
-
-                /*
-                 nasty bug here - the first DAL element not visually refreshing it's text value or icon.
-                 I have tried every form of update() and layout() method I can find/think of to correct it, no luck yet.
-                 Assistance appreciated, if anyone has any insight...
-                 */
 
                 myDal.down('#dalName').setText(me.store.getById(dalId).get('displayName') + ' ' + '(' + count + ')');
             }

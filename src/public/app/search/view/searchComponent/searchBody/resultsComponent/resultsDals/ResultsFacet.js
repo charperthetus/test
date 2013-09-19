@@ -244,7 +244,12 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
             if (!updateExisting) {
                 me.dal.get('dateTimeRanges').push(newDateRange);
             }
-            me.doFilter(btn);
+
+            var searchController = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
+
+            if(searchController !== undefined)  {
+                me.doFilter(btn);
+            }
 
             customDates.collapse();
             customDates.collapsed = true;
@@ -291,7 +296,11 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
             me.dal.get('dateTimeRanges').push(newDateRange);
         }
 
-        this.doFilter(me);
+        var searchController = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
+
+        if(searchController !== undefined)  {
+            this.doFilter(me);
+        }
     },
 
 
@@ -352,8 +361,12 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
                 'facetValues': [btn.inputValue]   // this is always an array
             });
         }
+        var searchController = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
 
-        this.doFilter(btn);
+        if(searchController !== undefined)  {
+            this.doFilter(btn);
+        }
+
     },
 
 
