@@ -350,7 +350,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         if (!success) {
             // server down..?
             Ext.Error.raise({
-                msg: 'The server could not complete the search request.'
+                msg: 'The server could not complete the search request - the DAL "' + dalId + '" may be unavailable.'
             });
         } else {
 
