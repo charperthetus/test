@@ -4,7 +4,6 @@
  ThetusTestHelpers: false,
  Savanna: false
  */
-Ext.require('Savanna.Config');
 Ext.require('Savanna.controller.Factory');
 Ext.require('Savanna.search.controller.SearchComponent');
 Ext.require('Savanna.search.model.SearchRequest');

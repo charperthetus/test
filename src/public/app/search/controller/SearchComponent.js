@@ -381,8 +381,8 @@ Ext.define('Savanna.search.controller.SearchComponent', {
     },
 
     loadDefaultLayer: function (canvas) {
-        canvas.map.addLayer(new OpenLayers.Layer.WMS(Savanna.Config.mapBaseLayerLabel,
-            Savanna.Config.mapBaseLayerUrl, {layers: Savanna.Config.mapBaseLayerName}));
+        canvas.map.addLayer(new OpenLayers.Layer.WMS(SavannaConfig.mapBaseLayerLabel,
+            SavannaConfig.mapBaseLayerUrl, {layers: SavannaConfig.mapBaseLayerName}));
     },
 
     loadVectorLayer: function(canvas) {

@@ -9,7 +9,6 @@ Ext.define('Savanna.view.Login', {
     alias:  'widget.login',
 
     requires:[
-        'Savanna.Config',
         'Ext.ux.IFrame'
     ],
 
@@ -21,7 +20,7 @@ Ext.define('Savanna.view.Login', {
         this.items = [
             {
                 xtype: 'uxiframe',
-                src: Savanna.Config.savannaUrlRoot + Savanna.Config.loginUrl
+                src: SavannaConfig.loginUrl
             }
         ];
 

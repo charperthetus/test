@@ -1,7 +1,6 @@
 /* global Ext: false,
           describe: false, beforeEach: false, afterEach: false, it: false, expect: false, sinon: false, spyOn: false,
           ThetusTestHelpers: false, Savanna: false */
-Ext.require('Savanna.Config');
 Ext.require('Savanna.proxy.Cors');
 
 describe('Savanna.proxy.Cors', function() {
@@ -63,11 +62,11 @@ describe('Savanna.proxy.Cors', function() {
     describe('customization', function() {
 
         beforeEach(function() {
-            Savanna.Config.CorsTestUrl = 'http://testCors.url/';
+            SavannaConfig.CorsTestUrl = 'http://testCors.url/';
         });
 
         afterEach(function() {
-            delete Savanna.ConfigCorsTestUrl;
+            delete SavannaConfig.CorsTestUrl;
         });
 
         describe('modifying the request', function() {
@@ -75,7 +74,7 @@ describe('Savanna.proxy.Cors', function() {
 
             beforeEach(function() {
                 proxy = Ext.create('Savanna.proxy.Cors', {
-                    url: Savanna.Config.CorsTestUrl,
+                    url: SavannaConfig.CorsTestUrl,
                     modifyRequest: function(request) {
                         // do nothing (since we will spy on ourselves...
                         return request;

@@ -4,7 +4,6 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
     alias: 'widget.crumbnet_part_toolbar',
 
     requires: [
-        'Savanna.Config',
         'Savanna.crumbnet.utils.ViewTemplates',
         'Ext.menu.ColorPicker',
         'Savanna.crumbnet.view.part.NodeTypeMenu'
