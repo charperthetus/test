@@ -879,6 +879,121 @@ describe('Savanna.crumbnet', function() {
                 });
             });
 
+            describe('handleNodeTypeSubmenu', function() {
+                var menuButton = null,
+                    nodeTypeMenu = null;
+                beforeEach(function() {
+
+                    nodeTypeMenu = view.down('[type="nodeType submenu"]');
+                    nodeTypeMenu.menu.store.loadRawData(fixtures.defaultPaletteTemplateResponse);
+                    nodeTypeMenu.menu.onStoreLoad();
+                    menuButton = nodeTypeMenu.menu.items.first(); // should return the first menu item
+
+                    // have to wire this up since ExtJs only does that if we truly click on a menu
+                    menuButton.parentItem = nodeTypeMenu;
+                    nodeTypeMenu = nodeTypeMenu.menu;
+                });
+
+                afterEach(function() {
+                    menuButton = null;
+                    nodeTypeMenu = null;
+                });
+
+                describe('valid conditions', function() {
+                    it('should NOT change node types if no node is selected', function() {
+                        var selectedNodeSet = diagram.selection;
+
+                        expect(selectedNodeSet.count).toBe(0);
+
+                        var nodeIterator = diagram.nodes;
+                        var nodeTypesSeen = {};
+
+                        while (nodeIterator.next()) {
+                            nodeTypesSeen[nodeIterator.value.data.type] = true;
+                        }
+
+                        expect(Object.keys(nodeTypesSeen).length).toBeGreaterThan(1);
+
+                        controller.handleNodeTypeSubmenu(nodeTypeMenu, menuButton);
+
+                        nodeIterator = diagram.nodes;
+                        nodeTypesSeen = {};
+
+                        while (nodeIterator.next()) {
+                            nodeTypesSeen[nodeIterator.value.data.type] = true;
+                        }
+
+                        expect(Object.keys(nodeTypesSeen).length).toBeGreaterThan(1);
+                    });
+
+                    it('should only change the type for the selected nodes', function() {
+                        var nodeIterator = diagram.nodes,
+                            beforeNodeTypeCounts = {},
+                            afterNodeTypeCounts = {},
+                            firstNodeType = null,
+                            secondNodeType = null,
+                            nodeType = null,
+                            linkText = null,
+                            link = null;
+
+                        // gather a count of node types and select one node whose type will change
+                        while (nodeIterator.next()) {
+                            nodeType = nodeIterator.value.data.type;
+
+                            if (!firstNodeType) {
+                                firstNodeType = secondNodeType = nodeType;
+                            }
+
+                            if (secondNodeType === firstNodeType && nodeType !== firstNodeType) {
+                                secondNodeType = nodeType;
+                                nodeIterator.value.isSelected = true;
+                            }
+
+                            beforeNodeTypeCounts[nodeType] = typeof beforeNodeTypeCounts[nodeType] === 'undefined' ?  1 : beforeNodeTypeCounts[nodeType] + 1;
+                            if ( nodeType === firstNodeType || nodeType === secondNodeType ){
+                                console.log(beforeNodeTypeCounts[nodeType] + ' ' + nodeType + ' nodes before change.');
+                            }
+                        }
+
+                        expect(firstNodeType).not.toBe(secondNodeType);
+
+                        // also select a non-node link (to show we don't alter it's style)
+                        link = diagram.links.first();
+                        linkText = link.data.text;
+
+                        link.isSelected = true;
+
+                        // make sure we made a selection and have more than one style
+                        expect(diagram.selection.count).toBe(2);
+                        expect(secondNodeType).toBeDefined();
+
+                        // select the menu to change the selected link to the first link style we found
+                        menuButton = view.down('menuitem[type="' + firstNodeType + '"]');
+
+                        expect(menuButton).toBeDefined();
+
+                        controller.handleNodeTypeSubmenu(nodeTypeMenu, menuButton);
+
+                        // get a count of link styles after we made our change
+                        nodeIterator = diagram.nodes;
+
+                        while (nodeIterator.next()) {
+                            nodeType = nodeIterator.value.data.type;
+
+                            afterNodeTypeCounts[nodeType] = typeof afterNodeTypeCounts[nodeType] === 'undefined' ? 1 : afterNodeTypeCounts[nodeType] + 1;
+                            if ( nodeType === firstNodeType || nodeType === secondNodeType ){
+                                console.log(afterNodeTypeCounts[nodeType] + ' ' + nodeType + ' nodes after change.');
+                            }
+                        }
+
+                        expect(link.data.text).toBe(linkText);
+                        expect(afterNodeTypeCounts[firstNodeType]).toBe(beforeNodeTypeCounts[firstNodeType] + 1);
+                        expect(afterNodeTypeCounts[secondNodeType]).toBe(beforeNodeTypeCounts[secondNodeType] - 1);
+                    });
+                });
+            });
+
+
             describe('handleNodeColorSubmenu', function() {
                 var menu;
 
@@ -969,8 +1084,8 @@ describe('Savanna.crumbnet', function() {
                 var templateData = fixtures.defaultPaletteTemplateResponse.groups[0].templates[0];
                 var templateModel = Ext.create('Savanna.crumbnet.model.Template', templateData);
 
-                expect(templateModel.get('label')).toBe('Concept label');
-                expect(templateModel.get('category')).toBe('Concept');
+                expect(templateModel.get('title')).toBe('Concept');
+                expect(templateModel.get('type')).toBe('Concept');
             });
         });
 

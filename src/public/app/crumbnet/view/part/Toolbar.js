@@ -6,7 +6,8 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
     requires: [
         'Savanna.Config',
         'Savanna.crumbnet.utils.ViewTemplates',
-        'Ext.menu.ColorPicker'
+        'Ext.menu.ColorPicker',
+        'Savanna.crumbnet.view.part.NodeTypeMenu'
     ],
 
     width: '100%',
@@ -277,6 +278,11 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
                 type: 'nodeColor submenu',
                 text: 'Node Color',
                 menu: { xtype: 'colormenu', itemId: 'nodeColorPicker' }
+            },
+            {
+                type: 'nodeType submenu',
+                text: 'Node Type',
+                menu: {xtype: 'crumbnet_part_nodeTypeMenu', itemId: 'nodeTypeMenu' }
             },
             {
                 type: 'linkStyle submenu',

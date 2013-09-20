@@ -409,6 +409,46 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
         diagram.commitTransaction('changeNodeColor');
     },
 
+    handleNodeTypeSubmenu: function(menu, item) {
+        var nodeTypes = menu.items.collect('type'),         // items is an Ext.util.MixedCollection.
+            diagram,
+            selectionSet,
+            iterator,
+            changedNode;
+
+        if (Ext.Array.contains(nodeTypes, item.type)) {
+            diagram = this.getDiagramForComponent(menu);
+            iterator = diagram.selection.iterator;
+            changedNode = null;                             // TO BE REMOVED PER TO-DO BELOW
+            diagram.startTransaction('changeNodeType');
+            while (iterator.next()) {
+                if (iterator.value instanceof go.Node) {
+                    diagram.model.setDataProperty(iterator.value.data, 'type', item.type);
+                    changedNode = iterator.value;           // TO BE REMOVED PER TO-DO BELOW
+                }
+            }
+            // TODO: should this be rollbackTransaction if nothing is changed?
+            diagram.commitTransaction('changeNodeType');
+
+            //TODO: this (AND changedNode VAR) needs to be removed when we get the next version of gojs, it is a workaround for a gojs bug (view not updating) that they have fixed. ALSO, REMOVE changedNode var
+            // If at least one node was changed.
+            if (changedNode != null){
+                // when its Picture element is 'complete', force a redraw
+                var element = changedNode.findObject('icon').element;
+                var interval = setInterval(function() {
+                    if (element.complete) {
+                        diagram.redraw();
+                        clearInterval(interval);
+                    }
+                }, 100);
+            }
+        }
+        else {
+            Ext.Error.raise('Unknown Node type "' + item.type + '"');
+        }
+    },
+
+
     handleFlag: function(button) {
         this.showTODOmodal('Implement handleFlag for button.type "' + button.type + '"');
     },
