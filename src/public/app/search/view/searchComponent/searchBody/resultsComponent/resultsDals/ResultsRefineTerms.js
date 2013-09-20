@@ -14,8 +14,12 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
         'Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineTerm'
     ],
 
-    minHeight:30,
-    minWidth:200,
+    minHeight:5,
+    width:'100%',
+
+    border:false,
+
+
 
 
     initComponent:function()    {
@@ -27,8 +31,10 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
             xtype: 'panel',
             itemId:'termValues',
             items:[],
-            width:200,
-            minHeight:30
+            width:'100%',
+            minHeight:5,
+            layout:'auto',
+            border:false
         }
     ],
     addTerm:function(field)  {
@@ -38,10 +44,24 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
             });
             refineTerm.setTerm(field.getValue());
             this.queryById('termValues').add(refineTerm);
+
+            var termWidth = (refineTerm.queryById('termValue').getWidth() + refineTerm.queryById('removeTerm').getWidth() + 6);
+            refineTerm.setWidth(termWidth);
         }
         field.setValue('');
     },
     removeTerm:function(term)   {
-        this.remove(term.itemId);
+
+        var myTerm = this.queryById(term.up('panel[cls=refine-term]').itemId),
+            myValue = myTerm.queryById('termValue').text + ' AND ';
+
+        this.findParentByType('search_searchcomponent').refineSearchString = this.findParentByType('search_searchcomponent').refineSearchString.replace(myValue, '');
+        this.queryById('termValues').remove(myTerm);
+
+        var searchController = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
+
+        if (searchController !== undefined) {
+            searchController.doSearch(this);
+        }
     }
 });

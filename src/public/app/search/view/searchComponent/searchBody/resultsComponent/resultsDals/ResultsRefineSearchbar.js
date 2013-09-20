@@ -6,6 +6,9 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
         'Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineTerms'
     ],
 
+    border:false,
+    width:'100%',
+
 
     initComponent: function () {
         this.callParent(arguments);
@@ -16,10 +19,11 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
             xtype: 'panel',
             itemId: 'refine_search_panel',
             layout: 'hbox',
+            border:false,
             items: [
                 {
                     xtype: 'textfield',
-                    width: 180,
+                    width: 197,
                     fieldLabel: '',
                     name: 'refine_search_terms',
                     itemId: 'refine_search_terms',
@@ -33,6 +37,19 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
                 }
             ]
         }
-    ]
+    ],
+    tbar:   [
+        {
+            xtype: 'tbtext',
+            text: 'Refine Search'
+        },
+        {
+            xtype: 'tbfill'
+        },
+        {
+            text:'Reset',
+            itemId:'resultsFacetsReset'
+        }
 
+    ]
 });

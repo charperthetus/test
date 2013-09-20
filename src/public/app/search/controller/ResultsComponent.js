@@ -38,8 +38,34 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
             },
             'search_resultscomponent #refine_search_terms': {
                 keyup: this.handleSearchTermKeyUp
+            },
+            'search_resultscomponent panel[cls=refine-term]': {
+                'render': this.onTermRender
+            },
+            'search_resultscomponent #showHideFacets': {
+                'click': this.onShowHideFacets
             }
         });
+    },
+
+    onTermRender:function(term)    {
+        term.queryById('removeTerm').on('click', this.handleRemoveTerm, this, term);
+    },
+
+    handleRemoveTerm:function(term){
+        term.findParentByType('search_searchcomponent').down('#refineterms').removeTerm(term);
+    },
+
+    onShowHideFacets:function(btn){
+
+       Ext.each(btn.up('#resultsfacets').query('panel[cls=results-facet]'), function(facet) {
+           if(!btn.facetsExpanded)    {
+               facet.expand();
+           }    else    {
+               facet.collapse();
+           }
+       });
+        btn.facetsExpanded = !btn.facetsExpanded;
     },
 
     onItemPreview: function (grid, record) {
@@ -57,11 +83,20 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
 
     onDalReset:function(btn)   {
         var id = btn.findParentByType('search_resultscomponent').currentResultSet.id;
-        var dalRecord = Ext.data.StoreManager.lookup('dalSources').getById(id);
+        var dalRecord = Ext.data.StoreManager.lookup('dalSources').getById(id),
+            resultsDals = btn.up('#resultsdals'),
+            resultsTerms = resultsDals.down('search_resultsDals_resultsterms'),
+            searchController = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
+
         dalRecord.set('facetFilterCriteria', []);
-        btn.up('#resultsdals').queryById('resultsfacets').removeAll();
-        btn.up('#resultsdals').createFacetsTabPanel();
-        var searchController = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
+        resultsDals.queryById('resultsfacets').removeAll();
+        resultsDals.createFacetsTabPanel();
+        btn.findParentByType('search_searchcomponent').refineSearchString = '';
+
+
+        resultsTerms.queryById('termValues').removeAll();
+
+
         searchController.doSearch(btn);
     },
 

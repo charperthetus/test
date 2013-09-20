@@ -10,6 +10,11 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
     extend: 'Ext.panel.Panel',
     alias: 'widget.search_resultsDals_resultsterm',
 
+    minWidth:30,
+    bodyPadding:2,
+    border:true,
+    cls:'refine-term',
+
     initComponent: function () {
         this.callParent(arguments);
     },
@@ -27,7 +32,11 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
         {
             xtype: 'button',
             itemId: 'removeTerm',
-            text: 'x'
+            text: 'x',
+            style: {
+                background: 'transparent',
+                border: 'none'
+            }
         }
     ]
 });

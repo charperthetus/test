@@ -20,6 +20,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
     minHeight: 20,
     bodyPadding: 5,
     border: false,
+    cls:'results-facet',
     collapsible: true,
     collapsed: true,
     titleCollapse: true,

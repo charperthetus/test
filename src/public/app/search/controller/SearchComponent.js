@@ -88,6 +88,9 @@ Ext.define('Savanna.search.controller.SearchComponent', {
     handleNewSearch: function (elem) {
         var component = this.getSearchComponent(elem);
 
+            component.down('search_resultsDals_resultsterms').queryById('termValues').removeAll();
+
+
         var form = component.down('#search_form');
 
         form.queryById('search_terms').setValue('');
