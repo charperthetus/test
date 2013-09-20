@@ -3,7 +3,6 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
     singleton: true,
 
     requires: [
-        'Savanna.Config',
         'Savanna.crumbnet.utils.ExtendedLink'
     ],
 
@@ -344,7 +343,7 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
     },
 
     convertTypeToImage: function(category) {
-        return  Savanna.Config.resourcesPathPrefix + 'resources/images/' + category + 'Icon.svg';
+        return  SavannaConfig.resourcesPathPrefix + 'resources/images/' + category + 'Icon.svg';
     },
 
     // Event handlers
