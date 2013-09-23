@@ -84,6 +84,8 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.SearchDals', {
     },
 
     createDalPanels: function() {
+
+
         this.removeAll();
 
         this.store.each(function (record) {

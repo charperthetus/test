@@ -39,7 +39,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.searchMap.Canvas', {
         element = Ext.DomHelper.insertHtml('afterBegin', this.getEl().dom, '<div class="map" style="width: 100%; height: 100%; position: absolute;"></div>');
 
         this.map.render(element);
-        this.map.setCenter(new OpenLayers.LonLat.fromString(Savanna.Config.mapDefaultCenter), Savanna.Config.mapDefaultZoom);
+        this.map.setCenter(new OpenLayers.LonLat.fromString(SavannaConfig.mapDefaultCenter), SavannaConfig.mapDefaultZoom);
     }
 });
 

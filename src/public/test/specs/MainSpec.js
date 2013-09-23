@@ -2,7 +2,6 @@
         Ext: false,
         jasmine: false, describe: false, beforeEach: false, afterEach: false, it: false, expect: false, sinon: false, waitsFor: false, runs: false, spyOn: false,
         Savanna: false, ThetusTestHelpers: false */
-Ext.require('Savanna.Config');
 Ext.require('Savanna.controller.Main');
 Ext.require('Savanna.view.Login');
 Ext.require('Savanna.view.PrintModal');

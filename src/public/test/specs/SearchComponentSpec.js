@@ -3,7 +3,6 @@
         describe: false, beforeEach: false, afterEach: false, it: false, expect: false, spyOn: false, sinon: false,
         ThetusTestHelpers: false, Savanna: false
  */
-Ext.require('Savanna.Config');
 Ext.require('Savanna.search.controller.SearchComponent');
 Ext.require('Savanna.search.model.SearchRequest');
 Ext.require('Savanna.search.model.SearchResult');
@@ -259,17 +258,47 @@ describe('Search Component', function () {
         describe('handleSearchTermKeyUp callback', function () {
 
             beforeEach(function () {
+
+                var readMethod = 'GET',
+                    testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(dalStore.getProxy(), 'read', readMethod);
+
+                server.respondWith(readMethod, testUrl, dalFixtures.allDals);
+
+                dalStore.getProxy().addSessionId = false; // so our URL is clean
+                dalStore.load();
+
+                server.respond({
+                    errorOnInvalidRequest: true
+                });
+
+                component.down('#searchdals').store = dalStore;
+                component.down('#searchdals').createDalPanels();
+
+                component.down('#resultsdals').store = dalStore;
+                component.down('#resultsdals').createDalPanels();
+
                 spyOn(controller, 'doSearch');
             });
 
+            afterEach(function () {
+                searchbar = null;
+
+                if (server) {
+                    server.restore();
+                    server = null;
+                }
+                dalStore = null;
+                dalFixtures = null;
+            });
+
             it('should call do search on keypress "Enter"', function () {
-                controller.handleSearchTermKeyUp(null, {keyCode: 13 });
+                controller.handleSearchTermKeyUp(toolbar, {keyCode: 13 });
 
                 expect(controller.doSearch).toHaveBeenCalled();
             });
 
             it('should not do search if not "Enter"', function () {
-                controller.handleSearchTermKeyUp(null, { keyCode: 0 });
+                controller.handleSearchTermKeyUp(toolbar, { keyCode: 0 });
 
                 expect(controller.doSearch).not.toHaveBeenCalled();
             });
@@ -297,6 +326,19 @@ describe('Search Component', function () {
                 server.respond({
                     errorOnInvalidRequest: true
                 });
+
+                component.down('#searchdals').store = dalStore;
+
+                component.down('#searchdals').createDalPanels();
+
+                component.down('#resultsdals').store = dalStore;
+
+                component.down('#searchdals').store.each(function (record) {
+                    var dalId = record.data.id;
+                    component.down('#searchdals').queryById(dalId).query('checkbox')[0].setValue(true);
+                });
+
+                component.down('#resultsdals').createDalPanels(controller.getSelectedDals(component));
             });
 
             afterEach(function () {
@@ -329,11 +371,6 @@ describe('Search Component', function () {
 
             it('should build the search string', function () {
 
-                component.down('#searchdals').store = dalStore;
-                component.down('#searchdals').createDalPanels();
-
-                component.down('#resultsdals').store = dalStore;
-                component.down('#resultsdals').createDalPanels();
 
                 spyOn(searchbar, 'buildSearchString').andCallThrough();
                 controller.doSearch(searchbar);

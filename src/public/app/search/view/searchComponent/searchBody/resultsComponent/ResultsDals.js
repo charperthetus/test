@@ -20,8 +20,8 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
     region: 'west',
 
     /*
-    NOTE: to be replaced with a class attribute I'm sure - this just
-    here to get the panel to display for development.
+     NOTE: to be replaced with a class attribute I'm sure - this just
+     here to get the panel to display for development.
      */
     width: 220,
 
@@ -40,36 +40,48 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
         this.callParent(arguments);
     },
 
-    createDalPanels: function () {
+    createDalPanels: function (sources) {
+
+        /*
+         remove DALs that have been deselected
+         */
 
         var searchPanelDals = this.findParentByType('search_searchcomponent').down('#searchdals'); // the dal sources in search options
 
-        /*
-        add a corresponding dal source here for each dal selected in search options
-         */
+        if(this.queryById('resultsfacets') === undefined || this.queryById('resultsfacets') === null)    {
+            this.add(this.createFacetsTabPanel());
+        }
+
         this.store.each(function (record) {
             var dalId = record.get('id'),
-                checked = searchPanelDals.queryById(dalId).query('checkbox')[0].getValue(),
-                myPanel;
-            if (checked) {
-                myPanel = this.createDalPanel(record);
-                this.add(myPanel);
-            }   else    {
-                /*
-                has the user deselected this DAL, but we are showing it
-                currently in the results panel?  if so, remove it
-                 */
-                if(this.queryById(record.get('id')) !== undefined)  {
-                   this.remove(record.get('id'));
-                }
+                checked = searchPanelDals.queryById(dalId).query('checkbox')[0].getValue();
+            if (!checked && this.queryById(record.get('id')) !== undefined) {
+                this.remove(record.get('id'));
             }
         }, this);
 
         /*
-        create the facets panel that sits below the DALs
+         create any DALs in the list of sources that do not already
+         have a corresponding DAL in the panel
          */
-        var facetPanel = this.createFacetsTabPanel();
-        this.add(facetPanel);
+
+        Ext.each(sources, function (record) {
+            var dalId = record.get('id'),
+                myPanel,
+                exists = this.queryById(dalId);
+
+            if (!exists) {
+                myPanel = this.createDalPanel(record);
+                myPanel.down('#dalName').setText(record.get('displayName'));
+
+                this.insert(this.items.length - 1, myPanel);  // insert before the facets panel
+            } else {
+                this.updateDalStatus(dalId);
+            }
+
+        }, this);
+
+
     },
 
     createDalPanel: function (myRecord) {
@@ -79,23 +91,35 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
         });
     },
 
+    createRefineSearchPanel: function () {
+        return Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineSearchbar', {
+            itemId: 'refinesearch'
+        });
+    },
+
+    createRefineTermsPanel: function () {
+        return Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineTerms', {
+            itemId: 'refineterms'
+        });
+    },
+
     createFacetsTabPanel: function (recreate) {
 
         var facetTabs;
 
-        if(this.queryById('resultsfacets') === null || recreate) {
+        if (this.queryById('resultsfacets') === null || recreate) {
             facetTabs = Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacets', {
                 itemId: 'resultsfacets'
             });
 
             /*
-            make tabs with no... tabs.
+             make tabs with no... tabs.
              */
             facetTabs.tabBar.hide();
             facetTabs.componentLayout.childrenChanged = true;
             facetTabs.doComponentLayout();
 
-        }   else    {
+        } else {
             facetTabs = this.queryById('resultsfacets');
         }
 
@@ -134,6 +158,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
 
     createDalFacets: function (id) {
 
+
         var dalRecord = this.store.getById(id),
             descriptions = dalRecord.get('facetDescriptions'),
             facets = this.queryById('resultsfacets').queryById('tab_' + id),
@@ -141,22 +166,29 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
 
 
 
+        facets.removeAll();
+
         Ext.each(this.findParentByType('search_resultscomponent').allResultSets, function (resultset) {
-            if (descriptions.length > 0) {
-                /*
-                loop through the facetDescriptions for each set of results to determine which facets
-                should be rendered when the user selects that DAL's results, and add them to the
-                corresponding tab in the facets tabpanel.
+            if (resultset.id === id) {
+                if (descriptions.length > 0) {
 
-                raw array loop for better performance
-                 */
+                    /*
+                     loop through the facetDescriptions for each set of results to determine which facets
+                     should be rendered when the user selects that DAL's results, and add them to the
+                     corresponding tab in the facets tabpanel.
 
-                var len = descriptions.length;
+                     raw array loop for better performance
+                     */
 
-                for(var i=0;i<len;i++)  {
-                    if(facets.queryById('facet_' + dalRecord.get('id') + '_' + descriptions[i].facetId) === null)   {
-                        var facetElement = me.createFacet(descriptions[i], resultset, dalRecord);
+                    var len = descriptions.length;
+
+                    for (var i = 0; i < len; i++) {
+                        var facetElement;
+
+                        facetElement = me.createFacet(descriptions[i], resultset, dalRecord);
+
                         facets.add(facetElement);
+
                     }
                 }
             }
@@ -164,6 +196,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
     },
 
     createFacet: function (facet, results, dalRecord) {
+
         return Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacet', {
             facet: facet,
             searchResults: results,
@@ -173,9 +206,10 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
     },
 
     updateDalStatus: function (dalId, status) {
+
         /*
-        set the status icon - pending, success or fail - as well as the text,
-        which is the display name and number of results returned
+         set the status icon - pending, success or fail - as well as the text,
+         which is the display name and number of results returned
          */
         var myDal = this.queryById(dalId);
 
@@ -190,18 +224,12 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
         var me = this,
             count = 0;
 
-        Ext.each(this.findParentByType('search_resultscomponent').allResultSets, function(searchResult)  {
+        Ext.each(this.findParentByType('search_resultscomponent').allResultSets, function (searchResult) {
 
-            if(searchResult.id === dalId)    {
-                if(status !== 'fail')   {
+            if (searchResult.id === dalId) {
+                if (status !== 'fail') {
                     count = searchResult.store.totalCount;
                 }
-
-                /*
-                 nasty bug here - the first DAL element not visually refreshing it's text value or icon.
-                 I have tried every form of update() and layout() method I can find/think of to correct it, no luck yet.
-                 Assistance appreciated, if anyone has any insight...
-                 */
 
                 myDal.down('#dalName').setText(me.store.getById(dalId).get('displayName') + ' ' + '(' + count + ')');
             }

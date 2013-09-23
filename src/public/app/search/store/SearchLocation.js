@@ -9,7 +9,6 @@ Ext.define('Savanna.search.store.SearchLocation', {
     extend: 'Ext.data.JsonStore',
 
     requires: [
-        'Savanna.Config',
         'Savanna.search.model.SearchLocation',
         'Savanna.proxy.Cors'
     ],
