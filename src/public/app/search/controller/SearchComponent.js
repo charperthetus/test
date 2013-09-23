@@ -12,7 +12,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
     requires: [
         'Savanna.search.model.SearchRequest',
         'Savanna.search.store.SearchResults',
-        'Savanna.search.view.searchComponent.searchBody.searchMap.SearchLocationForm',
+        'Savanna.search.view.searchComponent.searchBody.searchMap.SearchForm',
         'Savanna.controller.Factory'
     ],
     stores: [
@@ -73,6 +73,9 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             },
             'search_searchcomponent #clearLocationSearch': {
                 click: this.clearDrawFeature
+            },
+            'search_searchform #zoomToLocationButton': {
+                click: this.zoomToLocation
             }
         });
     },
@@ -82,8 +85,17 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         var locationSearchInput =  button.up('#searchLocationDockedItems').down('#findLocationSearchText');
         var locationSearchText = locationSearchInput.value;
         if (locationSearchText) {
-            var myForm =  Ext.create('Savanna.search.view.searchComponent.searchBody.searchMap.SearchLocationForm');
-            myForm.show();
+            var searchForm = button.up('search_searchmap').down('search_searchform');
+            //remove all the previous search contents
+            searchForm.down('#numResults').update('Loading Results...');
+            searchForm.removeAll();
+            searchForm.store.load({
+                params: {
+                 q: locationSearchText
+                }
+            });
+            searchForm.showBy(locationSearchInput, 'tl-bl?');
+
         }
     },
 
@@ -343,6 +355,9 @@ Ext.define('Savanna.search.controller.SearchComponent', {
     loadDefaultLayer: function (canvas) {
         canvas.map.addLayer(new OpenLayers.Layer.WMS(Savanna.Config.mapBaseLayerLabel,
             Savanna.Config.mapBaseLayerUrl, {layers: Savanna.Config.mapBaseLayerName}));
+
+        //Open Street Maps using web mercator projection
+//        canvas.map.addLayer(new OpenLayers.Layer.OSM(Savanna.Config.mapBaseLayerName, Savanna.Config.mapBaseLayerUrl));
     },
 
     loadVectorLayer: function(canvas) {
@@ -387,5 +402,18 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         var canvas = button.up('search_searchmap').down('search_map_canvas');
         canvas.searchLayer.removeAllFeatures();
         canvas.drawFeature.deactivate();
+    },
+    zoomToLocation: function(button) {
+        var resultPanel = button.up('panel');
+        var viewBox = resultPanel.viewBox;
+        var mapCanvas = button.up('panel').up('search_searchform').up('search_searchmap').down('search_map_canvas');
+        var extent = new OpenLayers.Bounds(viewBox.west, viewBox.south, viewBox.east, viewBox.north);
+        mapCanvas.map.zoomToExtent(extent, true);
+
+        // Convert extent to web mercator for Open Street Maps
+//        var fromProjection = new OpenLayers.Projection("EPSG:4326");
+//        var toProjection = new OpenLayers.Projection("EPSG:900913");
+//        mapCanvas.map.zoomToExtent(extent.transform(fromProjection,toProjection), true)
+
     }
 });

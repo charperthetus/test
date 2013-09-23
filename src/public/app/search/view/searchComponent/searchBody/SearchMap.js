@@ -28,6 +28,11 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.SearchMap', {
             flex: 1
         },
         {
+            xtype: 'search_searchform',
+            itemId: 'searchForm',
+            flex: 1
+        },
+        {
             xtype: 'button',
             itemId: 'drawLocationSearch',
             glyph: 61772

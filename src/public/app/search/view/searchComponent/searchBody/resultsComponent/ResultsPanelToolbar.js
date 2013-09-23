@@ -79,5 +79,4 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
             ui: 'flat-toolbar-button'
         }
     ]
-})
-;
+});

@@ -32,6 +32,7 @@ Ext.define('Savanna.Config', {
     dalSourcesUrl: 'rest/search/sources', // local dev version: 'resources/data/testSearchDalsWithFormData.json',
     locationSearch: '/rest/map/search',   // local dev version: 'resources/data/testSearchLocationSearch.json',
     // TODO: replace this test URL with real endpoint once we have one...
+    locationSearchUrl: 'http://thedevsav1.thetuscorp.com:8080/SavannaX/rest/map/search',
     crumbnetTemplatesUrl: 'resources/data/testCrumbnetTemplates.json',
 
     testSpacesUrl: 'resources/data/testSpaces.json',
@@ -40,11 +41,19 @@ Ext.define('Savanna.Config', {
     resourcesPathPrefix: '',
 
     // Map base layer
-    mapBaseLayerUrl: 'http://demo.opengeo.org/geoserver/wms',
+
+// Standard base map
+    mapBaseLayerUrl: 'http://maps.opengeo.org/geowebcache/service/wms',
     mapBaseLayerName: 'bluemarble',
     mapBaseLayerLabel: 'Satellite',
     mapDefaultCenter: '0,0',
     mapDefaultZoom: 2,
+
+    // Base map in web mercator projection for demo
+//    mapBaseLayerUrl: ["http://a.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png",
+//        "http://b.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png",
+//        "http://c.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png"],
+//    mapBaseLayerName: "OpenCycleMap",
 
     buildSavannaUrl: function(key) {
 
