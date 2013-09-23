@@ -25,7 +25,7 @@ Ext.define('Savanna.search.store.SearchLocation', {
         this.setProxy({
             type: 'savanna-cors',
 
-            url: Savanna.Config.locationSearchUrl,
+            url: SavannaConfig.locationSearchUrl,
 
             // Use for static store
 //            url: 'app/assets/data/testSearchLocationSearch.json',

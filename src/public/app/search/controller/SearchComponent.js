@@ -393,10 +393,11 @@ Ext.define('Savanna.search.controller.SearchComponent', {
     },
 
     loadDefaultLayer: function (canvas) {
-        //Open Street Maps using web mercator projection
-//        canvas.map.addLayer(new OpenLayers.Layer.OSM(Savanna.Config.mapBaseLayerName, Savanna.Config.mapBaseLayerUrl));
         canvas.map.addLayer(new OpenLayers.Layer.WMS(SavannaConfig.mapBaseLayerLabel,
             SavannaConfig.mapBaseLayerUrl, {layers: SavannaConfig.mapBaseLayerName}));
+
+        //Open Street Maps using web mercator projection
+//        canvas.map.addLayer(new OpenLayers.Layer.OSM(Savanna.Config.mapBaseLayerName, Savanna.Config.mapBaseLayerUrl));
     },
 
     loadVectorLayer: function(canvas) {
