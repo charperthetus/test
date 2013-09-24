@@ -137,11 +137,20 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         /*
          clear the grid - it's misleading in error states with mockDAL to see results in the grid
          */
-        component.down('#resultspanelgrid').removeAll();
+        component.down('#resultspanel').updateGridStore({store: Ext.create('Savanna.search.store.SearchResults')});
     },
     clearSearch: function (elem) {
         var form = elem.findParentByType('search_searchcomponent').down('#search_form');
         form.queryById('search_terms').setValue('');
+
+        var formField = form.queryById('form_container');
+
+        Ext.Array.each(formField.query('searchadvanced_textfield'), function (field) {
+            if (field.xtype === 'searchadvanced_textfield') {
+                field.setValue('');
+            }
+        });
+
     },
 
     handleSearchSubmit: function (btn) {
@@ -165,6 +174,8 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
     alignMenuWithTextfield: function (btn) {
         btn.menu.alignTo(btn.up('#search_form').getEl());
+        if()
+        btn.up('#searchcomponent').down('#searchadvanced_menu').show();
     },
 
     onBodyToolbarClick: function (button) {

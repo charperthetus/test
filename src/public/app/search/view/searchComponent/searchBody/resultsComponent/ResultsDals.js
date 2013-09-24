@@ -171,7 +171,9 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
             facets = this.queryById('resultsfacets').queryById('tab_' + id),
             me = this;
 
-        facets.removeAll();
+        if(facets !== null) {
+            facets.removeAll();
+        }
 
         Ext.each(this.findParentByType('search_resultscomponent').allResultSets, function (resultset) {
             if (resultset.id === id) {

@@ -48,6 +48,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
      page, and re-binds the paging toolbar.
      */
     updateGridStore: function (obj) {
+        console.log('update grid');
         var grid = this.queryById('resultspanelgrid');
         grid.reconfigure(obj.store);
         grid.queryById('gridtoolbar').bindStore(obj.store);

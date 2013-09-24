@@ -9,6 +9,10 @@ Ext.define('Savanna.search.view.searchComponent.searchBar.SearchForm', {
 
     border: false,
 
+    initComponent:function()    {
+        this.callParent(arguments);
+    },
+
     items: [
         {
             xtype: 'textfield',
