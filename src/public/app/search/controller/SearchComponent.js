@@ -28,11 +28,6 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             'search_searchcomponent #search_reset_button': {
                 click: this.handleNewSearch
             },
-            'search_searchcomponent #mapZoomTo': {
-                click: function (button) {
-                    button.up('search_searchmap').queryById('leafletMap').fireEvent('locationSearch:zoomto', button);
-                }
-            },
             'search_searchcomponent #findLocation': {
                 click: this.onFindLocation
             },
@@ -76,6 +71,12 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             },
             'search_searchform #zoomToLocationButton': {
                 click: this.zoomToLocation
+            },
+            'search_searchcomponent #mapZoomToMenu': {
+                click: this.enableZoomMenu
+            },
+            'search_searchcomponent #mapZoomToMenu menu': {
+                click: this.zoomToSearchExtent
             }
         });
     },
@@ -454,6 +455,30 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 //        var fromProjection = new OpenLayers.Projection("EPSG:4326");
 //        var toProjection = new OpenLayers.Projection("EPSG:900913");
 //        mapCanvas.map.zoomToExtent(extent.transform(fromProjection,toProjection), true)
+    },
 
+    enableZoomMenu: function (button) {
+        var mapCanvas = button.up('search_searchmap').down('search_map_canvas');
+        var menuButton = button.menu.items.get('zoomToSelectedArea');
+        //check if search layer is populated
+        //if search layer has a feature enable zooom to selected area
+        if (mapCanvas.searchLayer.features.length > 0){
+            menuButton.setDisabled(false);
+        }
+        else{
+            menuButton.setDisabled(true);
+        }
+    },
+
+    zoomToSearchExtent: function (menu) {
+        var mapCanvas = menu.up('search_searchmap').down('search_map_canvas');
+        switch (menu.activeItem.itemId) {
+            case 'zoomToWholeWorld':
+                mapCanvas.map.zoomToMaxExtent();
+                break;
+            case 'zoomToSelectedArea':
+                mapCanvas.map.zoomToExtent(mapCanvas.searchLayer.getDataExtent());
+                break;
+        }
     }
 });
