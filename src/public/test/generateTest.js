@@ -1,4 +1,26 @@
 /*jshint node: true */
+
+/**
+ * generateTest.js
+ *
+ * A simple Node CLI tool for generating boilplate spec/fixture files based upon the answers to a few, simple questions
+ *
+ * Usage:
+ *
+ * > cd /path/to/test/directory
+ * > node generateTest.js
+ * > What module would you like to test? Savanna.foo.Bar
+ * > Will this test a view (yes|no)? yes
+ * > Will this test a store (yes|no)? yes
+ * > What fixture would you like to use? (leave it blank if you do not need a fixture) MyFixtureData
+ * > Add any additional libraries to require (separated by commas): Ext.window.Window, Savanna.utils.Utils
+ * > Successfully generated test file: /path/to/test/directory/specs/SavannaFooBarSpec.js
+ * > Successfully generated fixture file: /path/to/test/directory/fixtures/MyFixtureData.js
+ *
+ * CAVEATS:
+ *
+ *  - you must be in the test directory and have /specs and /fixtures directories underneath it
+ */
 var readline = require('readline'),
     rl = readline.createInterface({
         input: process.stdin,
