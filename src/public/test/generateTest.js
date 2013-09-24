@@ -7,6 +7,7 @@ var readline = require('readline'),
     async = require('async'),
     ejs = require('ejs'),
     fs = require('fs'),
+    outputPath = __dirname + '/specs/',
     templatePath = __dirname + '/specTemplate.ejs',
     templateStr = fs.readFileSync(templatePath, 'utf8'),
     templateData = {
@@ -17,12 +18,32 @@ var readline = require('readline'),
         requires: []
     };
 
+function camelCaseModuleName(moduleName) {
+    var moduleParts = moduleName.split(/\./),
+        upperCaseFirstLetter = function(word) {
+            return word.replace(/^./, function(letter) { return letter.toUpperCase(); });
+        };
+
+    return moduleParts.map(upperCaseFirstLetter).join('');
+}
+
 async.series([
     function(callback) {
         rl.question('What module do you want to test? ', function(answer) {
+            var fileName, testName;
+
             if (answer) {
-                templateData.moduleBeingTested = answer.trim();
-                callback();
+                templateData.moduleBeingTested = fileName = answer.trim();
+
+                testName = camelCaseModuleName(fileName) + 'Spec.js';
+
+                outputPath += testName;
+
+                console.log(outputPath);
+
+                fs.exists(outputPath, function(exists) {
+                    callback(exists ? '"' + testName + '" already exists!' : null);
+                });
             }
             else {
                 callback('you must at least specify the module you want to test...');
