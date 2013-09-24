@@ -34,8 +34,6 @@ Ext.application({
         'Savanna.controller.Factory',
         //Desktop
         'Savanna.desktop.controller.DesktopController',
-        //Space
-        'Savanna.space.controller.SpaceManagerController',
         //Flexpaper
         'Savanna.flexpaper.controller.FlexpaperComponent',
         //Search

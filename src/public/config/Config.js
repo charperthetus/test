@@ -30,6 +30,3 @@ SavannaConfig.dalSourcesUrl = SavannaConfig.savannaUrlRoot + 'rest/search/source
 SavannaConfig.locationSearch = SavannaConfig.savannaUrlRoot + '/rest/map/search';   // local dev version: 'resources/data/testSearchLocationSearch.json',
 // TODO: replace this test URL with real endpoint once we have one...
 SavannaConfig.crumbnetTemplatesUrl = SavannaConfig.savannaUrlRoot + 'resources/data/testCrumbnetTemplates.json';
-
-SavannaConfig.testSpacesUrl = 'resources/data/testSpaces.json';
-SavannaConfig.savedSpacesUrl = 'resources/data/savedSpaces.json';

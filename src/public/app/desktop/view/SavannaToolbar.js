@@ -32,19 +32,16 @@ Ext.define('Savanna.desktop.view.SavannaToolbar',{
                 type: 'hbox',
                 defaultMargins: '5'
             },
-            items: [{
-                text: 'Dashboard',
-                itemId: 'dashboardbutton'
-            },{
-                text: 'Space Manager',
-                itemId: 'spacemanagerbutton'
-            },{
-                text: 'Search',
-                itemId: 'searchbutton'
-            },{
-                text: 'Upload',
-                itemId: 'uploadbutton'
-            }]
+            items: [
+                {
+                    text: 'Search',
+                    itemId: 'searchbutton'
+                },
+                {
+                    text: 'Upload',
+                    itemId: 'uploadbutton'
+                }
+            ]
         },
         '->',
         //utility buttons
@@ -55,13 +52,12 @@ Ext.define('Savanna.desktop.view.SavannaToolbar',{
                 type: 'hbox',
                 defaultMargins: '5'
             },
-            items: [{
-                text: 'Errors',
-                itemId: 'errorbutton'
-            },{
+            items: [
+                {
                 text: 'Help',
                 itemId: 'helpbutton'
-            },{
+                },
+                {
                 text: 'User',
                 itemId: 'userbutton',
                 menu: [
