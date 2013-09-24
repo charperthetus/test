@@ -67,7 +67,6 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
                facet.expand();
            }    else    {
                facet.collapse();
-               console.log(facet);
            }
 
        });

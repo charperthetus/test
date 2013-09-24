@@ -174,8 +174,6 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
     alignMenuWithTextfield: function (btn) {
         btn.menu.alignTo(btn.up('#search_form').getEl());
-        if()
-        btn.up('#searchcomponent').down('#searchadvanced_menu').show();
     },
 
     onBodyToolbarClick: function (button) {
