@@ -7,8 +7,13 @@
  */
 Ext.define('Savanna.space.view.metadata.DetailPanel', {
     extend: 'Ext.panel.Panel',
+
     alias: 'widget.space_detailpanel',
+    requires: [
+        'Savanna.metadata.view.Details'
+    ],
     title: 'Details',
-    items: [
-    ]
+    items: [{
+        xtype: 'metadata_details'
+    }]
 });
