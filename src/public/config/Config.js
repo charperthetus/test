@@ -24,13 +24,10 @@ SavannaConfig = {
 //TODO - This section needs to get moved to a different file
 // Urls for all the rest endpoints
 SavannaConfig.loginUrl = SavannaConfig.savannaUrlRoot + 'authcheck/loggedIn.html';
-//SavannaConfig.searchUrl = SavannaConfig.savannaUrlRoot + 'rest/search'; // local dev version: 'fixture/testSearchResults.json',
-SavannaConfig.searchUrl = 'fixture/SearchResults.json',
+SavannaConfig.searchUrl = SavannaConfig.savannaUrlRoot + 'rest/search'; // local dev version: 'fixture/SearchResults.json',
 SavannaConfig.itemViewUrl = SavannaConfig.savannaUrlRoot + 'rest/c2is2/model/item/';
-//SavannaConfig.dalSourcesUrl = SavannaConfig.savannaUrlRoot + 'rest/search/sources'; // local dev version: 'fixture/testSearchDalsWithFormData.json',
-SavannaConfig.dalSourcesUrl = 'fixture/SearchDalsWithFormData.json',
-//SavannaConfig.locationSearch = SavannaConfig.savannaUrlRoot + '/rest/map/search';   // local dev version: 'fixture/LocationSources.json',
-SavannaConfig.locationSearch = 'fixture/LocationSources.json',
+SavannaConfig.dalSourcesUrl = SavannaConfig.savannaUrlRoot + 'rest/search/sources'; // local dev version: 'fixture/SearchDalsWithFormData.json',
+SavannaConfig.locationSearch = SavannaConfig.savannaUrlRoot + '/rest/map/search';   // local dev version: 'fixture/LocationSources.json',
 // TODO: replace this test URL with real endpoint once we have one...
 SavannaConfig.crumbnetTemplatesUrl = 'fixture/Crumbnet.json';
 
