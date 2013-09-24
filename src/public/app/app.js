@@ -43,7 +43,11 @@ Ext.application({
         //Crumbnet
         'Savanna.crumbnet.controller.CrumbnetController',
         //Map
-        'Savanna.map.controller.MapController'
+        'Savanna.map.controller.MapController',
+        //ItemView
+        'Savanna.itemView.controller.ItemViewController',
+        //Model Search
+        'Savanna.modelSearch.controller.ModelSearchController'
     ],
 
     autoCreateViewport: true,

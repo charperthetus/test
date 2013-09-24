@@ -17,7 +17,8 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
         'Savanna.desktop.view.AboutWindow',
         'Savanna.desktop.view.SearchWindow',
         'Savanna.desktop.view.UploadWindow',
-        'Savanna.desktop.view.MyStuffWindow'
+        'Savanna.desktop.view.MyStuffWindow',
+        'Savanna.desktop.view.ModelSearchWindow'
     ],
     views: [
         'Savanna.desktop.view.SavannaToolbar',
@@ -42,6 +43,10 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
             },
             'desktop_savannatoolbar #uploadbutton': {
                 click: this.displayUploadDialog
+            },
+
+            'desktop_savannatoolbar #modelsearchbutton': {
+                click: this.displayModelSearch
             },
             'desktop_savannatoolbar #errorbutton': {
                 click: this.displayErrorDialog
@@ -141,6 +146,10 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
         //todo: find out if dialog should retain state - in which case we don't destroy every time (which is the default closeAction value)
         var uploadWindow = Ext.create('Savanna.desktop.view.UploadWindow', {modal: true});
         uploadWindow.show();
+    },
+    displayModelSearch: function() {
+       var modelSearchWindow = Ext.create('Savanna.desktop.view.ModelSearchWindow', {modal: true});
+        modelSearchWindow.show();
     },
 
     displayErrorDialog: function(button) {
