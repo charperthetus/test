@@ -12,7 +12,6 @@ var readline = require('readline'),
     templateData = {
         moduleBeingTested: '',
         isViewTest: false,
-        isControllerTest: false,
         isStoreTest: false,
         fixture: '',
         requires: []
@@ -31,13 +30,13 @@ async.series([
         });
     },
     function(callback) {
-        rl.question('Will this test a view? ', function(answer) {
+        rl.question('Will this test a view (yes|no)? ', function(answer) {
             templateData.isViewTest = answer && answer.match(/^y(es)$/i);
             callback();
         });
     },
     function(callback) {
-        rl.question('Will this a store? ', function(answer) {
+        rl.question('Will this a store (yes|no)? ', function(answer) {
             templateData.isStoreTest = answer && answer.match(/^y(es)$/i);
             callback();
         });
