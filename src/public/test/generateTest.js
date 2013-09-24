@@ -7,7 +7,10 @@ var readline = require('readline'),
     async = require('async'),
     ejs = require('ejs'),
     fs = require('fs'),
-    outputPath = __dirname + '/specs/',
+    fixtureOutputPath = __dirname + '/fixtures/',
+    fixturePath = __dirname + '/fixtureTemplate.ejs',
+    fixtureStr = fs.readFileSync(fixturePath, 'utf8'),
+    testOutputPath = __dirname + '/specs/',
     templatePath = __dirname + '/specTemplate.ejs',
     templateStr = fs.readFileSync(templatePath, 'utf8'),
     templateData = {
@@ -37,11 +40,9 @@ async.series([
 
                 testName = camelCaseModuleName(fileName) + 'Spec.js';
 
-                outputPath += testName;
+                testOutputPath += testName;
 
-                console.log(outputPath);
-
-                fs.exists(outputPath, function(exists) {
+                fs.exists(testOutputPath, function(exists) {
                     callback(exists ? '"' + testName + '" already exists!' : null);
                 });
             }
@@ -52,13 +53,13 @@ async.series([
     },
     function(callback) {
         rl.question('Will this test a view (yes|no)? ', function(answer) {
-            templateData.isViewTest = answer && answer.match(/^y(es)$/i);
+            templateData.isViewTest = answer && answer.trim().match(/^y(es)$/i);
             callback();
         });
     },
     function(callback) {
         rl.question('Will this a store (yes|no)? ', function(answer) {
-            templateData.isStoreTest = answer && answer.match(/^y(es)$/i);
+            templateData.isStoreTest = answer && answer.trim().match(/^y(es)$/i);
             callback();
         });
     },
@@ -72,7 +73,7 @@ async.series([
     },
     function(callback) {
         rl.question('Add any additional libraries to require (separated by commas): ', function(answer) {
-           templateData.requires = answer.trim().split(/\s*,\s*/).filter(function(require) { return require; });
+            templateData.requires = answer.trim().split(/\s*,\s*/).filter(function(require) { return require; });
             callback();
         });
     }
@@ -81,8 +82,39 @@ async.series([
         console.error('Error: ', err);
     }
     else {
-        var renderedTemplateStr = ejs.render(templateStr, templateData);
-        console.log(renderedTemplateStr);
+        var renderedTemplateStr = ejs.render(templateStr, templateData),
+            renderedFixtureStr;
+
+        fs.writeFile(testOutputPath, renderedTemplateStr, function(err) {
+            if (err) {
+                console.error('Unable to write test to: ' + testOutputPath + ', "' + err + '"');
+            }
+            else {
+                console.log('Successfully generated test file: ' + testOutputPath);
+            }
+        });
+
+        if (templateData.fixture) {
+            fixtureOutputPath += templateData.fixture + '.js';
+
+            fs.exists(fixtureOutputPath, function(exists) {
+                if (exists) {
+                    console.log('Fixture file "' + fixtureOutputPath + '" already exists');
+                }
+                else {
+                    renderedFixtureStr = ejs.render(fixtureStr, { fixtureName: templateData.fixture });
+
+                    fs.writeFile(fixtureOutputPath, renderedFixtureStr, function(err) {
+                        if (err) {
+                            console.error('Unable to write fixture to: ' + fixtureOutputPath + ', "' + err + '"');
+                        }
+                        else {
+                            console.log('Successfully generated fixture file: ' + fixtureOutputPath);
+                        }
+                    });
+                }
+            });
+        }
     }
 
     rl.close();
