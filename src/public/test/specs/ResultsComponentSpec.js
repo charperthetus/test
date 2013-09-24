@@ -165,8 +165,8 @@ describe('Search Results', function () {
 
 
                     view.createDalPanels(searchController.getSelectedDals(searchComponent));
-                    // testing againt the value -1 to account for the facets panel, which also fires an add event
-                    expect(view.add.callCount - 1).toBe(store.count());
+                    // testing againt the value -3 to account for the facets, refine searchbar, and refine terms panels, which also fire add events
+                    expect(view.add.callCount - 3).toBe(store.count());
                 });
             });
 
@@ -177,6 +177,60 @@ describe('Search Results', function () {
                     var panelView = view.createDalPanel(store.getAt(0));
 
                     expect(panelView instanceof Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsOptions).toBeTruthy();
+                });
+            });
+
+            describe('createRefineSearchPanel', function () {
+                var panelView;
+
+                beforeEach(function () {
+                    panelView = view.createRefineSearchPanel();
+                });
+
+                afterEach(function () {
+                    panelView = null;
+                });
+
+                it('should create an instance of the ResultsRefineSearchbar panel', function () {
+
+                    expect(panelView instanceof Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineSearchbar).toBeTruthy();
+                });
+            });
+
+            describe('createRefineTermsPanel', function () {
+                var panelView, searchbarView;
+                beforeEach(function () {
+
+                    view.store = store;
+
+                    searchComponent.down('#searchdals').store = store;
+                    searchComponent.down('#searchdals').createDalPanels();
+
+                    view.createDalPanels(searchController.getSelectedDals(searchComponent));
+
+                    panelView = view.queryById('refineterms');
+                    searchbarView = view.queryById('refinesearch');
+
+                });
+
+                it('should create an instance of the ResultsRefineTerms panel', function () {
+
+                    expect(panelView instanceof Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineTerms).toBeTruthy();
+                });
+
+                describe('add refine terms', function () {
+                    it('should add terms from the search bar', function () {
+                        searchbarView.queryById('refine_search_terms').setValue('apples');
+                        panelView.addTerm(searchbarView.queryById('refine_search_terms'));
+                        expect(panelView.queryById('termValues').queryById('term_apples')).toBeTruthy();
+                    });
+
+                    it('should remove selected terms', function () {
+                        searchbarView.queryById('refine_search_terms').setValue('apples');
+                        panelView.addTerm(searchbarView.queryById('refine_search_terms'));
+                        panelView.removeTerm(panelView.queryById('termValues').queryById('term_apples').queryById('removeTerm'));
+                        expect(panelView.queryById('termValues').queryById('term_apples')).not.toBeTruthy();
+                    });
                 });
             });
 
@@ -251,11 +305,6 @@ describe('Search Results', function () {
 
                     resultsDals.createDalPanels(searchController.getSelectedDals(searchComponent));
 
-
-
-
-
-
                     /*
                      create facets panel and line up the last few things needed for createDalFacets method
                      */
@@ -317,7 +366,6 @@ describe('Search Results', function () {
                             testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(searchStore.getProxy(), 'read', readMethod);
 
                         server.respondWith(readMethod, testUrl, fixtures.searchResults);
-
 
                         searchStore.load();
 
@@ -417,7 +465,6 @@ describe('Search Results', function () {
 
                             expect(myFacet.dal.data.facetFilterCriteria[0]).toEqual(expected);
 
-
                         });
 
                         it('should add a new facetValue array element to an existing facetFilterCriteria', function () {
@@ -442,7 +489,6 @@ describe('Search Results', function () {
                         });
 
                         it('should remove facetValues from facetFilterCriteria when a checkbox is deselected ', function () {
-
 
                             myCheckbox = myFacet.queryById('facets_producer').queryById('stringFacet').items.getAt(0);
 
@@ -472,7 +518,6 @@ describe('Search Results', function () {
                         var server, myFacet, myRadio;
 
                         beforeEach(function () {
-
 
                             myFacet = Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacet', {
                                 facet: facetFixture.dateFacet,
@@ -530,7 +575,6 @@ describe('Search Results', function () {
 
                         it('should show and hide From and To date pickers when Custom is and is not selected', function () {
 
-
                             myRadio.queryById('date_custom').setValue(true);  // custom
 
                             expect(myPanel.collapsed).toBeFalsy();
@@ -556,12 +600,11 @@ describe('Search Results', function () {
                             /*
                              match the year, month and day - the exact time will never match, of course - since
                              we are matching against the textfield value for the date picker component
-                              */
-
+                             */
 
                             expect(startDate).toEqual(expectedStart);
 
-                            expect(endDate.substr(0,10)).toEqual(expectedEnd.substr(0,10));
+                            expect(endDate.substr(0, 10)).toEqual(expectedEnd.substr(0, 10));
 
                         });
                     });
@@ -821,6 +864,106 @@ describe('Search Results', function () {
                 resultsController.onDalRender(dalItem, {});
 
                 expect(dalItem.hasListener('click')).toBeTruthy();
+            });
+
+        });
+
+        describe('onShowHideFacets', function () {
+
+            var fixtures, server, searchStore, dalFixtures, facets, resultsDals, searchDals;
+
+            beforeEach(function () {
+
+                /*
+                 fixtures for both results and sources needed for facets
+                 */
+                fixtures = Ext.clone(ThetusTestHelpers.Fixtures.SearchResults);
+                dalFixtures = Ext.clone(ThetusTestHelpers.Fixtures.DalSources);
+
+                /*
+                 ...and DAL panels in search and results
+                 */
+
+
+                searchDals = searchComponent.down('#searchdals');
+                resultsDals = searchComponent.down('#resultsdals');
+
+
+                /*
+                 search results store
+                 */
+                searchStore = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.SearchResults', { autoLoad: false });
+
+                // now set up server to get store data
+                server = new ThetusTestHelpers.FakeServer(sinon);
+
+                var readMethod = 'POST',
+                    testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(searchStore.getProxy(), 'read', readMethod);
+
+                server.respondWith(readMethod, testUrl, fixtures.searchResults);
+
+                searchStore.load();
+
+                server.respond({
+                    errorOnInvalidRequest: true
+                });
+
+                /*
+                 set up the DAL panels now that we have a sources store
+                 */
+                searchDals.store = store;
+                searchDals.createDalPanels();
+
+                resultsDals.store = store;
+
+
+                    searchComponent.down('#searchdals').queryById('mockDAL').query('checkbox')[0].setValue(true);
+
+
+
+                resultsDals.createDalPanels(searchController.getSelectedDals(searchComponent));
+
+                /*
+                 create facets panel and line up the last few things needed for createDalFacets method
+                 */
+
+                //resultsDals.createFacetsTabPanel(true);
+
+                searchComponent.down('#searchresults').allResultSets.push({id: 'mockDAL', store: searchStore});
+                resultsDals.store = store;
+
+                facets = resultsDals.queryById('resultsfacets').queryById('tab_mockDAL');
+
+
+                    searchComponent.down('#resultsdals').createDalFacets('mockDAL');
+
+
+
+            });
+
+            afterEach(function () {
+                var teardown = [fixtures, dalFixtures, facets, resultsDals, searchDals];
+
+                for (var i = 0; i < teardown; i++) {
+                    if (teardown[i]) {
+                        teardown[i].destroy();
+                        teardown[i] = null;
+                    }
+                }
+                server = null;
+                searchStore = null;
+            });
+
+            it('should expand all facets"', function () {
+
+                resultsController.onShowHideFacets(searchComponent.down('#resultsdals').queryById('resultsfacets').queryById('showHideFacets'));
+                var allExpanded = true;
+                Ext.each(resultsDals.queryById('resultsfacets').query('panel[cls=results-facet]'), function(facet) {
+                    if(facet.collapsed) {
+                        allExpanded = false;
+                    }
+                });
+                expect(allExpanded).toEqual(true);
             });
 
         });

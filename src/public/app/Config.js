@@ -17,8 +17,8 @@ Ext.define('Savanna.Config', {
         NOTE: QA needs to point to their QA box, but there is no way to dynamically change this (yet)
            So....for now (as of 9/13/13), only use the 'thedevsav1' server on your local machine (SO DO NOT COMMIT IT!)
     */
-    //savannaUrlRoot: 'http://c2aptsav1:8080/c2is2/',
-    savannaUrlRoot: 'http://thedevsav1.thetuscorp.com:8080/SavannaX/',
+    savannaUrlRoot: 'http://c2aptsav1:8080/c2is2/',
+    //savannaUrlRoot: 'http://thedevsav1.thetuscorp.com:8080/SavannaX/',
     //savannaUrlRoot: 'http://qac2is2sav2/c2is2/',
     // use this if you have Savanna 3.4 running.
     // Launch chrome from terminal with security disabled: /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --disable-web-security

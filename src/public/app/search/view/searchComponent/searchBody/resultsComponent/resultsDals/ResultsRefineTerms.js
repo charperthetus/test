@@ -16,11 +16,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
 
     minHeight:5,
     width:'100%',
-
     border:false,
-
-
-
 
     initComponent:function()    {
         this.callParent(arguments);
@@ -37,12 +33,15 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
             border:false
         }
     ],
+
     addTerm:function(field)  {
+
         if(this.queryById('term_' + field.getValue()) === null)   {
             var refineTerm = Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineTerm',     {
                 itemId:'term_' + field.getValue()
             });
             refineTerm.setTerm(field.getValue());
+
             this.queryById('termValues').add(refineTerm);
 
             var termWidth = (refineTerm.queryById('termValue').getWidth() + refineTerm.queryById('removeTerm').getWidth() + 6);
@@ -50,6 +49,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
         }
         field.setValue('');
     },
+
     removeTerm:function(term)   {
 
         var myTerm = this.queryById(term.up('panel[cls=refine-term]').itemId),

@@ -90,19 +90,6 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
 
         }, this);
 
-
-
-
-
-        /*
-         create the refine search panel that sits below the DALs
-
-         var refineTerms = this.createRefineTermsPanel();
-         this.add(refineTerms);
-
-         */
-
-
     },
 
     createDalPanel: function (myRecord) {
@@ -124,17 +111,17 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
         });
     },
 
-    createFacetsTabPanel: function (recreate) {
+    createFacetsTabPanel: function () {
 
         var facetTabs;
 
-        if (this.queryById('resultsfacets') === null || recreate) {
+        if (this.queryById('resultsfacets') === null) {
             facetTabs = Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacets', {
                 itemId: 'resultsfacets'
             });
 
             /*
-             make tabs with no... tabs.
+             hide actual tabs.
              */
             facetTabs.tabBar.hide();
             facetTabs.componentLayout.childrenChanged = true;
@@ -179,13 +166,10 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
 
     createDalFacets: function (id) {
 
-
         var dalRecord = this.store.getById(id),
             descriptions = dalRecord.get('facetDescriptions'),
             facets = this.queryById('resultsfacets').queryById('tab_' + id),
             me = this;
-
-
 
         facets.removeAll();
 
