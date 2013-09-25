@@ -42,11 +42,6 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.searchMap.SearchForm'
 
     initComponent: function() {
         this.mixins.storeable.initStore.call(this);
-//        this.store.load({
-//            params: {
-//                q: this.searchParam
-//            }
-//        });
         this.callParent(arguments);
     },
 

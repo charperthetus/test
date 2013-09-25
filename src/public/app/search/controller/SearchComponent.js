@@ -395,10 +395,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
     loadDefaultLayer: function (canvas) {
         canvas.map.addLayer(new OpenLayers.Layer.WMS(SavannaConfig.mapBaseLayerLabel,
-            SavannaConfig.mapBaseLayerUrl, {layers: SavannaConfig.mapBaseLayerName}));
-
-        //Open Street Maps using web mercator projection
-//        canvas.map.addLayer(new OpenLayers.Layer.OSM(Savanna.Config.mapBaseLayerName, Savanna.Config.mapBaseLayerUrl));
+            SavannaConfig.mapBaseLayerUrl, {layers: SavannaConfig.mapBaseLayerName}))
     },
 
     loadVectorLayer: function(canvas) {
@@ -447,21 +444,16 @@ Ext.define('Savanna.search.controller.SearchComponent', {
     zoomToLocation: function(button) {
         var resultPanel = button.up('panel');
         var viewBox = resultPanel.viewBox;
-        var mapCanvas = button.up('panel').up('search_searchform').up('search_searchmap').down('search_map_canvas');
+        var mapCanvas = button.up('search_searchmap').down('search_map_canvas');
         var extent = new OpenLayers.Bounds(viewBox.west, viewBox.south, viewBox.east, viewBox.north);
         mapCanvas.map.zoomToExtent(extent, true);
-
-        // Convert extent to web mercator for Open Street Maps
-//        var fromProjection = new OpenLayers.Projection("EPSG:4326");
-//        var toProjection = new OpenLayers.Projection("EPSG:900913");
-//        mapCanvas.map.zoomToExtent(extent.transform(fromProjection,toProjection), true)
     },
 
     enableZoomMenu: function (button) {
         var mapCanvas = button.up('search_searchmap').down('search_map_canvas');
         var menuButton = button.menu.items.get('zoomToSelectedArea');
         //check if search layer is populated
-        //if search layer has a feature enable zooom to selected area
+        //if search layer has a feature enable zoom to selected area
         if (mapCanvas.searchLayer.features.length > 0){
             menuButton.setDisabled(false);
         }
@@ -472,13 +464,15 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
     zoomToSearchExtent: function (menu) {
         var mapCanvas = menu.up('search_searchmap').down('search_map_canvas');
-        switch (menu.activeItem.itemId) {
-            case 'zoomToWholeWorld':
-                mapCanvas.map.zoomToMaxExtent();
-                break;
-            case 'zoomToSelectedArea':
-                mapCanvas.map.zoomToExtent(mapCanvas.searchLayer.getDataExtent());
-                break;
+        if (menu.activeItem) {
+            switch (menu.activeItem.itemId) {
+                case 'zoomToWholeWorld':
+                    mapCanvas.map.zoomToMaxExtent();
+                    break;
+                case 'zoomToSelectedArea':
+                    mapCanvas.map.zoomToExtent(mapCanvas.searchLayer.getDataExtent());
+                    break;
+            }
         }
     }
 });
