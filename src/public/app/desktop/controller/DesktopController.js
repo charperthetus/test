@@ -18,7 +18,6 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
         'Savanna.desktop.view.UploadWindow'
     ],
     views: [
-        'Savanna.desktop.view.SavannaToolbar',
         'Savanna.desktop.view.SavannaDesktop',
         'Savanna.desktop.view.SearchWindow',
         'Savanna.desktop.view.SavannaWorkspace'
@@ -26,22 +25,22 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
     init: function () {
         var me = this;
         this.control({
-            'desktop_savannatoolbar #logobutton': {
+            'desktop_savannadesktop #logobutton': {
                 click: this.displayAboutDialog
             },
-            'desktop_savannatoolbar #searchbutton': {
+            'desktop_savannadesktop #searchbutton': {
                 click: this.displaySearch
             },
-            'desktop_savannatoolbar #uploadbutton': {
+            'desktop_savannadesktop #uploadbutton': {
                 click: this.displayUploadDialog
             },
-            'desktop_savannatoolbar #helpbutton': {
+            'desktop_savannadesktop #helpbutton': {
                 click: this.launchHelp
             },
-            'desktop_savannatoolbar #accountsettings': {
+            'desktop_savannadesktop #accountsettings': {
                 click: this.displayAccountSettings
             },
-            'desktop_savannatoolbar #savannalogout': {
+            'desktop_savannadesktop #savannalogout': {
                 click: this.handleLogout
             },
             'desktop_savannaworkspace #singleviewbutton': {
@@ -69,27 +68,6 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
             });
         }
         this.statics().aboutwindow.show();
-    },
-
-    showDesktopComponent: function(cmp) {
-        if (cmp) {
-            var desktopContainer = Ext.ComponentQuery.query('desktop_savannadesktop > #desktopcontainer')[0];
-            if (desktopContainer) {
-                desktopContainer.items.each(function(item){
-                    if (item === cmp) {
-                        if (item.hidden) {
-                            item.show();
-                            item.hidden = false;
-                        }
-                    } else {
-                        item.hide();
-                        item.hidden = true;
-                    }
-                });
-            }
-        } else {
-            Ext.Error.raise('Null component sent to DesktopController.showDesktopComponent()');
-        }
     },
 
     displaySearch: function() {

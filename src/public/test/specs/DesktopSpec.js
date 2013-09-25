@@ -38,10 +38,6 @@ describe('Savanna.desktop', function () {
             expect(componentView).not.toBeNull();
         });
 
-        it('should have a toolbar instance', function () {
-            expect(componentView.down('desktop_savannatoolbar') instanceof Savanna.desktop.view.SavannaToolbar).toBeTruthy();
-        });
-
         it('should have a workspace view', function () {
             expect(componentView.down('desktop_savannaworkspace') instanceof Savanna.desktop.view.SavannaWorkspace).toBeTruthy();
         });
@@ -117,22 +113,6 @@ describe('Savanna.desktop', function () {
                     toolbarComponent = null;
                 }
             });
-
-            it('should raise an error with a null argument', function() {
-                controller.showDesktopComponent(null);
-                expect(errorRaised).toBeTruthy();
-            });
-            it('should not do anything if the components are the same', function() {
-                spyOn(toolbarComponent, 'show');
-                controller.showDesktopComponent(toolbarComponent);
-                expect(toolbarComponent.show).not.toHaveBeenCalled();
-            });
-            // todo - Brian, what to do with this test?
-//            it('should show the new component', function() {
-//                spyOn(dashboard, 'show');
-//                controller.showDesktopComponent(dashboard);
-//                expect(dashboard.show).toHaveBeenCalled();
-//            });
         });
         describe ('setWorkspaceViewMode()', function() {
             var workspace = null,
