@@ -5,11 +5,7 @@
 Ext.require('Savanna.desktop.controller.DesktopController');
 Ext.require('Savanna.desktop.view.SavannaDesktop');
 Ext.require('Savanna.desktop.view.SavannaWorkspace');
-Ext.require('Savanna.desktop.view.SavannaDashboard');
 Ext.require('Savanna.desktop.view.SearchWindow');
-Ext.require('Savanna.space.controller.SpaceManagerController');
-Ext.require('Savanna.space.view.SpaceManagerComponent');
-Ext.require('Savanna.space.view.SpaceMetadataTabPanel');
 Ext.require('Savanna.crumbnet.controller.CrumbnetController');
 Ext.require('Savanna.map.controller.MapController');
 
@@ -44,14 +40,6 @@ describe('Savanna.desktop', function () {
 
         it('should have a toolbar instance', function () {
             expect(componentView.down('desktop_savannatoolbar') instanceof Savanna.desktop.view.SavannaToolbar).toBeTruthy();
-        });
-
-        it('should have a space manager', function () {
-            expect(componentView.down('space_spacemanagercomponent') instanceof Savanna.space.view.SpaceManagerComponent).toBeTruthy();
-        });
-
-        it('should have a dashboard', function () {
-            expect(componentView.down('desktop_savannadashboard') instanceof Savanna.desktop.view.SavannaDashboard).toBeTruthy();
         });
 
         it('should have a workspace view', function () {
@@ -118,31 +106,15 @@ describe('Savanna.desktop', function () {
                 expect(Savanna.desktop.controller.DesktopController.searchwindow).not.toBeNull();
             });
         });
-        describe('displayMyStuffWindow()', function() {
-            it('mystuff window should begin null', function() {
-                //access the static var through the class name...don't need an instance
-                expect(Savanna.desktop.controller.DesktopController.mystuffwindow).toBeNull();
-            });
-            it('mystuff flyout should be valid after function call', function() {
-                controller.showMyStuffWindow();
-                expect(Savanna.desktop.controller.DesktopController.mystuffwindow).not.toBeNull();
-            });
-        });
         describe('showDesktopComponent()', function() {
-            var toolbarComponent = null,
-                dashboard = null;
+            var toolbarComponent = null;
             beforeEach(function() {
                 toolbarComponent = componentView.down('#savannatoolbar');
-                dashboard = componentView.down('#savannadashboard');
             });
             afterEach(function() {
                 if (toolbarComponent) {
                     toolbarComponent.destroy();
                     toolbarComponent = null;
-                }
-                if (dashboard) {
-                    dashboard.destroy();
-                    dashboard = null;
                 }
             });
 
@@ -155,11 +127,12 @@ describe('Savanna.desktop', function () {
                 controller.showDesktopComponent(toolbarComponent);
                 expect(toolbarComponent.show).not.toHaveBeenCalled();
             });
-            it('should show the new component', function() {
-                spyOn(dashboard, 'show');
-                controller.showDesktopComponent(dashboard);
-                expect(dashboard.show).toHaveBeenCalled();
-            });
+            // todo - Brian, what to do with this test?
+//            it('should show the new component', function() {
+//                spyOn(dashboard, 'show');
+//                controller.showDesktopComponent(dashboard);
+//                expect(dashboard.show).toHaveBeenCalled();
+//            });
         });
         describe ('setWorkspaceViewMode()', function() {
             var workspace = null,

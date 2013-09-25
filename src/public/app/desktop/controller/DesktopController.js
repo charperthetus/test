@@ -71,6 +71,27 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
         this.statics().aboutwindow.show();
     },
 
+    showDesktopComponent: function(cmp) {
+        if (cmp) {
+            var desktopContainer = Ext.ComponentQuery.query('desktop_savannadesktop > #desktopcontainer')[0];
+            if (desktopContainer) {
+                desktopContainer.items.each(function(item){
+                    if (item === cmp) {
+                        if (item.hidden) {
+                            item.show();
+                            item.hidden = false;
+                        }
+                    } else {
+                        item.hide();
+                        item.hidden = true;
+                    }
+                });
+            }
+        } else {
+            Ext.Error.raise('Null component sent to DesktopController.showDesktopComponent()');
+        }
+    },
+
     displaySearch: function() {
         if (!this.statics().searchwindow) {
             this.statics().searchwindow = Ext.create('Savanna.desktop.view.SearchWindow', {closeAction: 'hide'});
@@ -96,47 +117,47 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
 
     handleLogout: function() {
         console.log('The user is trying to logout');
-    }
+    },
 
     //todo: this logic may change...this is the initial implementation for design interaction
-//    setWorkspaceViewMode: function(mode) {
-//        var savannaWorkspace = Ext.ComponentQuery.query('panel #savannaworkspace')[0];
-//        if (savannaWorkspace) {
-//            var mainTabPanel = savannaWorkspace.down('#maintabpanel');
-//            if (mainTabPanel){
-//                if ('split' === mode) {
-//                    //create and add a second tab panel in the workspace (hbox)
-//                    var newTabPanel = Ext.create('Savanna.desktop.view.SavannaTabPanel', {
-//                        flex: 2,
-//                        height: '100%',
-//                        itemId: 'secondarytabpanel'
-//                    });
-//                    savannaWorkspace.add(newTabPanel);
-//
-//                    //loop through the tabs in the main panel from the end and add them to the new tab panel
-//                    var activeIndex = mainTabPanel.items.indexOf(mainTabPanel.getActiveTab());
-//                    var len = mainTabPanel.items.length-1;
-//                    while(len > activeIndex) {
-//                        newTabPanel.insert(0,mainTabPanel.items.getAt(len));
-//                        len--;
-//                    }
-//                    newTabPanel.setActiveTab(newTabPanel.items.getAt(0)); //just set the first tab in the new panel as active
-//                    newTabPanel.doLayout();
-//                } else if ('single' === mode) {
-//                    var secondaryTabPanel = savannaWorkspace.down('#secondarytabpanel');
-//                    if (secondaryTabPanel) {
-//                        //move all tabs from the second tabpanel into the main tabpanel - they get tacked on to the end
-//                        while (0 < secondaryTabPanel.items.length) {
-//                            mainTabPanel.add(secondaryTabPanel.items.getAt(0));
-//                        }
-//                        savannaWorkspace.remove(secondaryTabPanel, true); //remove the secondary tab panel and destroy it
-//                        mainTabPanel.doLayout();
-//                    }
-//                } else {
-//                    Ext.Error.raise({ msg: 'Unknown mode passed to DesktopController.setWorkspaceViewMode(): ' + mode });
-//                }
-//            }
-//            savannaWorkspace.currentView = mode;
-//        }
-//    }
+    setWorkspaceViewMode: function(mode) {
+        var savannaWorkspace = Ext.ComponentQuery.query('panel #savannaworkspace')[0];
+        if (savannaWorkspace) {
+            var mainTabPanel = savannaWorkspace.down('#maintabpanel');
+            if (mainTabPanel){
+                if ('split' === mode) {
+                    //create and add a second tab panel in the workspace (hbox)
+                    var newTabPanel = Ext.create('Savanna.desktop.view.SavannaTabPanel', {
+                        flex: 2,
+                        height: '100%',
+                        itemId: 'secondarytabpanel'
+                    });
+                    savannaWorkspace.add(newTabPanel);
+
+                    //loop through the tabs in the main panel from the end and add them to the new tab panel
+                    var activeIndex = mainTabPanel.items.indexOf(mainTabPanel.getActiveTab());
+                    var len = mainTabPanel.items.length-1;
+                    while(len > activeIndex) {
+                        newTabPanel.insert(0,mainTabPanel.items.getAt(len));
+                        len--;
+                    }
+                    newTabPanel.setActiveTab(newTabPanel.items.getAt(0)); //just set the first tab in the new panel as active
+                    newTabPanel.doLayout();
+                } else if ('single' === mode) {
+                    var secondaryTabPanel = savannaWorkspace.down('#secondarytabpanel');
+                    if (secondaryTabPanel) {
+                        //move all tabs from the second tabpanel into the main tabpanel - they get tacked on to the end
+                        while (0 < secondaryTabPanel.items.length) {
+                            mainTabPanel.add(secondaryTabPanel.items.getAt(0));
+                        }
+                        savannaWorkspace.remove(secondaryTabPanel, true); //remove the secondary tab panel and destroy it
+                        mainTabPanel.doLayout();
+                    }
+                } else {
+                    Ext.Error.raise({ msg: 'Unknown mode passed to DesktopController.setWorkspaceViewMode(): ' + mode });
+                }
+            }
+            savannaWorkspace.currentView = mode;
+        }
+    }
 });
