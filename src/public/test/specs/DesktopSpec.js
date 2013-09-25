@@ -102,18 +102,6 @@ describe('Savanna.desktop', function () {
                 expect(Savanna.desktop.controller.DesktopController.searchwindow).not.toBeNull();
             });
         });
-        describe('showDesktopComponent()', function() {
-            var toolbarComponent = null;
-            beforeEach(function() {
-                toolbarComponent = componentView.down('#savannatoolbar');
-            });
-            afterEach(function() {
-                if (toolbarComponent) {
-                    toolbarComponent.destroy();
-                    toolbarComponent = null;
-                }
-            });
-        });
         describe ('setWorkspaceViewMode()', function() {
             var workspace = null,
                 mainPanel = null;
