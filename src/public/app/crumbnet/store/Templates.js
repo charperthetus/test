@@ -10,7 +10,7 @@ Ext.define('Savanna.crumbnet.store.Templates', {
 
     proxy: {
         type: 'rest',
-        url: Savanna.Config.buildSavannaUrl('crumbnetTemplatesUrl'),
+        url: SavannaConfig.crumbnetTemplatesUrl,
         reader: {
             type: 'json',
             root: 'groups'

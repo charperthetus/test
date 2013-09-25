@@ -32,18 +32,9 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             'search_searchcomponent #search_reset_button': {
                 click: this.handleNewSearch
             },
-            'search_searchcomponent #clearLocationSearch': {
-                click: function (button) {
-                    button.up('search_searchmap').queryById('leafletMap').fireEvent('locationSearch:clear');
-                }
-            },
             'search_searchcomponent #mapZoomTo': {
                 click: function (button) {
                     button.up('search_searchmap').queryById('leafletMap').fireEvent('locationSearch:zoomto', button);
-                }
-            },
-            'search_searchcomponent #leafletMap': {
-                'draw:created': function () {
                 }
             },
             'search_searchcomponent #findLocation': {
@@ -78,6 +69,17 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             },
             'search_searchcomponent #resultsbutton': {
                 click: this.onBodyToolbarClick
+            },
+            'search_searchcomponent #searchMapCanvas': {
+                beforerender: this.loadDefaultLayer,
+                afterrender: this.loadVectorLayer,
+                resize: this.onMapCanvasResize
+            },
+            'search_searchcomponent #drawLocationSearch': {
+                click: this.activateDrawFeature
+            },
+            'search_searchcomponent #clearLocationSearch': {
+                click: this.clearDrawFeature
             }
         });
     },
@@ -123,14 +125,14 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         component.down('search_resultsDals_resultsterms').queryById('termValues').removeAll();  // remove refine terms in results screen
 
 
-        /*
-        clear values from search bar and advanced menu
-         */
-        var form = component.down('#search_form');
+        var form = component.down('#search_form'),
+            searchBar = component.down('#searchbar');
 
-        form.queryById('search_terms').setValue('');
 
-        var formField = form.queryById('form_container');
+
+        searchBar.queryById('search_terms').setValue('');
+
+        var formField = form.queryById('searchadvanced_menu').queryById('form_container');
 
         Ext.Array.each(formField.query('searchadvanced_textfield'), function (field) {
             if (field.xtype === 'searchadvanced_textfield') {
@@ -175,10 +177,10 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         component.down('#resultspanel').updateGridStore({store: Ext.create('Savanna.search.store.SearchResults')});
     },
     clearSearch: function (elem) {
-        var form = elem.findParentByType('search_searchcomponent').down('#search_form');
+        var form = elem.findParentByType('search_searchcomponent').down('#searchbar');
         form.queryById('search_terms').setValue('');
 
-        var formField = form.queryById('form_container');
+        var formField = form.queryById('searchadvanced_menu').queryById('form_container');
 
         Ext.Array.each(formField.query('searchadvanced_textfield'), function (field) {
             if (field.xtype === 'searchadvanced_textfield') {
@@ -483,5 +485,54 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         var resultsBtn = component.down('#resultsbutton');
 
         resultsBtn.fireEvent('click', resultsBtn);
+    },
+
+    loadDefaultLayer: function (canvas) {
+        canvas.map.addLayer(new OpenLayers.Layer.WMS(SavannaConfig.mapBaseLayerLabel,
+            SavannaConfig.mapBaseLayerUrl, {layers: SavannaConfig.mapBaseLayerName}));
+    },
+
+    loadVectorLayer: function (canvas) {
+        // Add a feature layer to the map.
+        var searchLayer = new OpenLayers.Layer.Vector('searchLayer');
+        canvas.searchLayer = searchLayer;
+        canvas.map.addLayer(searchLayer);
+
+        // Add the draw feature control to the map.
+        var drawFeature = new OpenLayers.Control.DrawFeature(searchLayer, OpenLayers.Handler.Polygon, {
+            featureAdded: this.onFeatureAdded
+        });
+
+        drawFeature.handler.callbacks.point = this.pointCallback;
+        canvas.map.addControl(drawFeature);
+        canvas.drawFeature = drawFeature;
+    },
+
+    onFeatureAdded: function () {
+        // Scope: drawFeature
+        this.deactivate();
+    },
+
+    onMapCanvasResize: function (canvas) {
+        canvas.map.updateSize();
+    },
+
+    pointCallback: function () {
+        // Scope: drawFeature
+        // Called each time a point is added to the feature.
+        if (this.layer.features.length > 0) {
+            this.layer.removeAllFeatures();
+        }
+    },
+
+    activateDrawFeature: function (button) {
+        var canvas = button.up('search_searchmap').down('search_map_canvas');
+        canvas.drawFeature.activate();
+    },
+
+    clearDrawFeature: function (button) {
+        var canvas = button.up('search_searchmap').down('search_map_canvas');
+        canvas.searchLayer.removeAllFeatures();
+        canvas.drawFeature.deactivate();
     }
 });

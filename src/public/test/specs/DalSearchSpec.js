@@ -4,7 +4,6 @@
           ThetusTestHelpers: false,
           Savanna: false
  */
-Ext.require('Savanna.Config');
 Ext.require('Savanna.search.model.DalSource');
 Ext.require('Savanna.search.model.dalSource.CustomSearchDescription');
 Ext.require('Savanna.search.store.DalSources');

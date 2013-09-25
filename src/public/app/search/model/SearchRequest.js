@@ -9,12 +9,11 @@ Ext.define('Savanna.search.model.SearchRequest', {
     extend: 'Ext.data.Model',
 
     requires:[
-        'Savanna.Config'
     ],
 
     fields: [
         {name: '_type', type: 'string', defaultValue: 'com.thetus.platforms.savanna.mdks.search.objects.SearchParamVO'},
-        {name: 'contentDataSource', type: 'string', defaultValue: Savanna.Config.defaultSearchDal},
+        {name: 'contentDataSource', type: 'string', defaultValue: SavannaConfig.defaultSearchDal},
         {name: 'desiredFacets', type: 'array', defaultValue: []},
         {name: 'displayLabel', type: 'string', defaultValue: ''},
         {name: 'resultsPerPage', type: 'int', defaultValue: 20},

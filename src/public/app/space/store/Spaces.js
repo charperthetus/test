@@ -17,8 +17,8 @@ Ext.define('Savanna.space.store.Spaces', {
     proxy: {
         type: 'rest',
         api: {
-            read: Savanna.Config.buildSavannaUrl('testSpacesUrl'),
-            update: Savanna.Config.buildSavannaUrl('savedSpacesUrl')
+            read: SavannaConfig.testSpacesUrl,
+            update: SavannaConfig.savedSpacesUrl
         },
         reader: {
             type: 'json',
