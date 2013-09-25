@@ -10,6 +10,10 @@ Ext.define('Savanna.desktop.view.SavannaDesktop', {
         'Savanna.controller.Factory'
     ],
 
+    layout: {
+        type: 'fit'
+    },
+
     tbar: [{
             id: 'logo',
             xtype: 'button',
@@ -36,14 +40,11 @@ Ext.define('Savanna.desktop.view.SavannaDesktop', {
         {
             xtype: 'toolbar',
             scale: 'medium',
-            items: [{
-                text: 'E',
-                itemId: 'errorbutton'
-        },
-        {
-            text: 'H',
-            itemId: 'helpbutton'
-        },
+            items: [
+            {
+                text: 'H',
+                itemId: 'helpbutton'
+            },
         {
             text: 'U',
             itemId: 'userbutton',
