@@ -16,7 +16,7 @@ Ext.define('Savanna.desktop.view.SearchWindow', {
     minWidth: 200,
     minHeight: 100,
     items: [{
-        xtype: "search_searchcomponent",
-        itemId: "searchcomponent"
+        xtype: 'search_searchcomponent',
+        itemId: 'searchcomponent'
     }]
 });

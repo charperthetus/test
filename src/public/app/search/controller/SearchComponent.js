@@ -25,6 +25,9 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
     init: function () {
         this.control({
+            'search_searchcomponent': {
+                render: this.onSearchRender
+            },
             'search_searchcomponent #search_reset_button': {
                 click: this.handleNewSearch
             },
@@ -63,8 +66,13 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             'search_searchcomponent #advancedsearch_submit': {
                 click: this.handleSearchSubmit
             },
-            'search_searchcomponent #close_panel': {
-                click: this.handleClose
+            'search_searchcomponent #searchadvanced_menu': {
+                render: function (menu) {
+                    menu.queryById('close_panel').on('click', this.handleClose);
+                }
+            },
+            'search_searchcomponent > #searchbar #searchadvanced_menu #form_container #submit_panel #advancedsearch_submit': {
+                click: this.handleSearchSubmit
             },
             'search_searchcomponent #optionsbutton': {
                 click: this.onBodyToolbarClick
@@ -75,7 +83,20 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         });
     },
 
-    // CUSTOM METHODS    
+    // CUSTOM METHODS
+    onSearchRender: function (search) {
+        search.up('desktop_searchwindow').header.getEl().on('mousedown', function () {
+            search.down('#searchadvanced_menu').wasOpen = search.down('#searchadvanced_menu').isVisible();
+            search.down('#searchadvanced_menu').hide();
+        });
+
+        search.up('desktop_searchwindow').on('move', function (win) {
+            if (win.down('#searchadvanced_menu').wasOpen) {
+                win.down('#searchadvanced_menu').showBy(win.down('#search_form'));
+            }
+        });
+    },
+
     onFindLocation: function (button) {
         var locationSearchInput = button.up('#searchLocationDockedItems').down('#findLocationSearchText');
         var locationSearchText = locationSearchInput.value;
@@ -88,7 +109,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
     handleNewSearch: function (elem) {
         var component = this.getSearchComponent(elem);
 
-            component.down('search_resultsDals_resultsterms').queryById('termValues').removeAll();
+        component.down('search_resultsDals_resultsterms').queryById('termValues').removeAll();
 
 
         var form = component.down('#search_form');
@@ -124,7 +145,6 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         component.down('#resultsdals').removeAll();
 
 
-
         /*
          return to the options screen if we're not already there
          */
@@ -158,14 +178,15 @@ Ext.define('Savanna.search.controller.SearchComponent', {
     },
 
     handleSearchTermKeyUp: function (field, evt) {
-        if (evt.keyCode === 13) {
+        if (evt.keyCode === Ext.EventObject.ENTER) {
             // user pressed enter
             this.doSearch(field);
         }
     },
 
     handleClose: function (btn) {
-        btn.up('#searchadvanced_menu').ownerButton.up('#searchcomponent').down('#searchadvanced_menu').hide();
+
+        btn.up('#searchadvanced_menu').hide();
     },
 
     hideMenu: function (elem) {
@@ -173,7 +194,13 @@ Ext.define('Savanna.search.controller.SearchComponent', {
     },
 
     alignMenuWithTextfield: function (btn) {
-        btn.menu.alignTo(btn.up('#search_form').getEl());
+        if (this.getSearchComponent(btn).down('#searchadvanced_menu').isVisible()) {
+            this.getSearchComponent(btn).down('#searchadvanced_menu').hide();
+        } else {
+            this.getSearchComponent(btn).down('#searchadvanced_menu').showBy(btn.up('#search_form'));
+        }
+
+        //btn.queryById('searchadvanced_menu').toFront();
     },
 
     onBodyToolbarClick: function (button) {
@@ -198,20 +225,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
      used in a few places, moving this out of doSearch
      */
     getSearchComponent: function (elem) {
-
-        var component;
-        /*
-         dig your way out of the menu via 'ownerButton'.  not sure why this is necessary,
-         but I spent half an hour trying a conventional 'up' or 'findParentByType' with no
-         luck before trying the 'ownerButton' property
-         */
-        if (elem.xtype === 'searchadvanced_textfield' || elem.itemId === 'advancedsearch_submit') {
-            component = elem.up('#searchadvanced_menu').ownerButton.up('#searchcomponent');
-        } else {
-            component = elem.findParentByType('search_searchcomponent');
-        }
-
-        return component;
+        return elem.findParentByType('search_searchcomponent');
     },
 
     /*
@@ -239,7 +253,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         return sources;
     },
 
-    buildSearchObject:function(searchString, dal, currentDalPanel){
+    buildSearchObject: function (searchString, dal, currentDalPanel) {
         var searchObj = Ext.create('Savanna.search.model.SearchRequest', {
             'textInputString': searchString,
             'displayLabel': searchString
@@ -286,12 +300,12 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         return searchObj;
     },
 
-    buildAndLoadResultsStore:function(dal, component, searchObj, action, combo) {
+    buildAndLoadResultsStore: function (dal, component, searchObj, action, combo) {
 
         var pageSize;
-        if(combo)   {
+        if (combo) {
             pageSize = combo.value;
-        }   else    {
+        } else {
             pageSize = dal.get('resultsPerPage');
         }
 
@@ -327,7 +341,6 @@ Ext.define('Savanna.search.controller.SearchComponent', {
          For each selected DAL, a new store is generated and this array is used to keep track
          */
         resultsComponent.allResultSets = [];
-
 
 
         /*
@@ -399,9 +412,9 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
             var resultsObj = {id: dalId, store: store};
 
-            if(action === 'search') {
+            if (action === 'search') {
                 /*
-                add an object tying the dal and store together for referencing
+                 add an object tying the dal and store together for referencing
                  */
                 resultsPanel.up('#searchresults').allResultSets.push(resultsObj);
 
@@ -409,9 +422,9 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                     resultsDal.createDalFacets(dalId);
                 }
 
-            }   else    {
+            } else {
                 /*
-                filtering, action set to 'filter'
+                 filtering, action set to 'filter'
                  */
                 Ext.each(resultsPanel.up('#searchresults').allResultSets, function (resultset, index) {
                     if (resultset.id === dalId) {
@@ -425,12 +438,12 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
             var controller = Savanna.controller.Factory.getController('Savanna.search.controller.ResultsComponent');
 
-            if(action === 'search') {
+            if (action === 'search') {
                 if (dalId === Ext.data.StoreManager.lookup('dalSources').defaultId) {
 
                     controller.changeSelectedStore({}, {}, resultsDal.queryById(dalId));
                 }
-            }   else    {
+            } else {
                 /*
                  filtering, action set to 'filter'
                  */
@@ -441,6 +454,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
     showResultsPage: function (component) {
         var resultsBtn = component.down('#resultsbutton');
+
         resultsBtn.fireEvent('click', resultsBtn);
     }
 });
