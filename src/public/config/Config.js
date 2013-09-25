@@ -13,7 +13,9 @@ SavannaConfig = {
     resourcesPathPrefix: '',
 
     locationSearchUrl: 'http://thedevsav1.thetuscorp.com:8080/SavannaX/rest/map/search',
-    staticLocationSearchUrl: 'app/assets/data/testSearchLocationSearch.json',
+
+    /* Use for a static location search response */
+//    locationSearchUrl: 'app/assets/data/testSearchLocationSearch.json',
 
     // Map base layer
     mapBaseLayerUrl: 'http://demo.opengeo.org/geoserver/wms',

@@ -27,9 +27,6 @@ Ext.define('Savanna.search.store.SearchLocation', {
 
             url: SavannaConfig.locationSearchUrl,
 
-            // Use for static store
-//            url: SavannaConfig.staticLocationSearchUrl,
-
             addSessionId: false, // this needs to be left in until using correct url or Ted adds node fix
 
             reader: {
