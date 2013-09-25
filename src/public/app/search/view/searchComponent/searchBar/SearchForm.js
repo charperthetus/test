@@ -20,7 +20,6 @@ Ext.define('Savanna.search.view.searchComponent.searchBar.SearchForm', {
             floating: true,
             border: false,
             itemId: 'searchadvanced_menu',
-            wasOpen:false,
             minWidth: 400,
             items: [
                 {
