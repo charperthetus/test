@@ -29,11 +29,11 @@ Ext.define('Savanna.desktop.view.SavannaDesktop', {
                 pack: 'center'
             },
             items: [{
-                text: 'S',
+                text: 'Search',
                 itemId: 'searchbutton'
             },
             {
-                text: 'U',
+                text: 'Upload',
                 itemId: 'uploadbutton'
             }]
         },
@@ -42,11 +42,11 @@ Ext.define('Savanna.desktop.view.SavannaDesktop', {
             scale: 'medium',
             items: [
             {
-                text: 'H',
+                text: 'Help',
                 itemId: 'helpbutton'
             },
         {
-            text: 'U',
+            text: 'User',
             itemId: 'userbutton',
             menu: [{
                 text: 'Current Username here',
