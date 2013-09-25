@@ -25,21 +25,24 @@ Ext.define('Savanna.modelSearch.controller.ModelSearchController', {
     ],
 
     init: function(app) {
+        Savanna.controller.Factory.getController('Savanna.itemView.controller.ItemViewController');
         this.control({
-            'searchheader > #gobutton': {
+            'modelsearch_searchHeader #gobutton': {
                 click: function(button, event) {
                     // Get the grid and clear the data, then call the runSearch function passing the text from the text field.
 
-                    var header = button.up('searchheader'),
-                        searchInput = header.queryById('searchInput'),
-                        store = Ext.StoreManager.lookup('SearchStore');
+                    var header = button.up('modelSearchHeader'),
+                        searchInput = header.queryById('modelSearchInput'),
+                        store = Ext.StoreManager.lookup('modelSearchStore');
 
-                    store.removeAll();
+                    if (store) store.removeAll();
                     store.searchText = searchInput.value;
                     store.loadPage(1);
                 }
             },
-            'searchheader > #resetbutton': {
+            'modelsearch_searchHeader #resetbutton': {
+
+
                 click: function(button, event) {
                     // Get the grid and clear the data, then call the runSearch function passing the text from the text field.
 
@@ -52,15 +55,11 @@ Ext.define('Savanna.modelSearch.controller.ModelSearchController', {
                     store.loadPage(1);
                 }
             },
-            'resultsgrid': {
-                'itemclick': function(grid, record, item) {
+            'modelsearch_resultsGrid': {
+                itemclick: function(grid, record, item) {
+
                     app.fireEvent('search:itemSelected', grid, record, item);
 
-                }
-            },
-            'viewport > #itemviewmain #maintabs': {
-                'add': function(me, container, pos, eOpts) {
-                    me.setActiveTab(pos);
                 }
             }
         });

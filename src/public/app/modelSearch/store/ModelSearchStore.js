@@ -75,12 +75,14 @@ Ext.define('Savanna.modelSearch.store.ModelSearchStore', {
                 startIndex: (operation.page - 1) * operation.limit,
                 pageSize: operation.limit,
                 filters: [{
-                    _type:'com.c2is2.objects.modelsearch.filters.KeywordFilter',
+                    _type:'com.thetus.services.model.search.objects.filters.KeywordFilter',
                     keywords: this.searchText ? [this.searchText] : [],
                     displayName: 'Keyword',
                     isActive: true
                 }]
             };
+
         }
+
     }
 });

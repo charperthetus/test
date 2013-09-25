@@ -11,6 +11,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         'Savanna.itemView.view.itemView.Annotations',
         'Savanna.itemView.view.itemView.ImagesGrid',
         'Savanna.itemView.view.itemView.Confusers'
+
     ],
 
     constructor: function (options) {
@@ -34,13 +35,16 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
             }
         });
         this.on("itemview:created", function (tab) {
-            var tabpanel = Ext.ComponentQuery.query('viewport > #itemviewmain > #maintabs')[0];
+            var tabpanel = Ext.ComponentQuery.query('desktop_modelsearchwindow #maintabs')[0];
+            var main=tabpanel.getActiveTab();
             tabpanel.add(tab);
         });
 
     },
 
     showItemView: function (grid, record, item) {
+
+
         var bustCache = typeof this.opts.disableCaching === 'undefined' ? true : this.opts.disableCaching;
 
         Ext.Ajax.request({
@@ -55,7 +59,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
             //success: Ext.bind(this.handleRecordDataRequestSuccess, this, [record]),
 
             success: Ext.bind(this.handleRecordDataRequestSuccess, this, [record], true),
-            failure: function (response) {
+            failure: function ( response) {
 
                 // TODO: abstract out
                 console.log('server-side failure with status code ' + response.status);
@@ -65,7 +69,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
     handleRecordDataRequestSuccess: function(response, options, record) {
         var itemData = Ext.decode(response.responseText),
-            itemView = Ext.create('ItemViewer.view.ItemView',{
+            itemView = Ext.create('Savanna.itemView.view.ItemViewer',{
                 title: record.data.referenceName,
                 closable: true,
                 autoScroll: true
@@ -230,6 +234,6 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         return entry;
     },
     buildItemDataFetchUrl: function (itemId) {
-        return SavannaConfig.itemViewerUrl + itemId + ';jsessionid=' + ItemViewer.jsessionid;
+        return SavannaConfig.itemViewUrl + itemId + ';jsessionid=' + Savanna.jsessionid;
     }
 });

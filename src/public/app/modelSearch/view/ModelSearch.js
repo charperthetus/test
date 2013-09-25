@@ -18,5 +18,12 @@ Ext.define('Savanna.modelSearch.view.ModelSearch', {
             flex: 4
 
         }
-    ]
+    ],
+    initComponent: function() {
+
+        this.callParent(arguments)
+        Savanna.controller.Factory.getController('Savanna.modelSearch.controller.ModelSearchController');
+
+
+    }
 });

@@ -12,7 +12,8 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
     layout: 'hbox',
 
     initComponent: function() {
-        this.savannaUrl =
+
+
         this.items = this.buildItems();
         this.callParent(arguments);
     },
@@ -25,7 +26,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                 flex: 1,
                 items: [
                     {
-                        xtype: 'itemview_displayLabel',
+                        xtype: 'itemview_displaylabel',
                         itemId: 'itemDisplayLabel'
                     },
                     {
