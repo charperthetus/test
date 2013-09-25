@@ -613,9 +613,44 @@ describe('Search Results', function () {
 
             describe('createFacet', function () {
 
+                var searchStore;
+
+                beforeEach(function () {
+
+                    searchStore = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.SearchResults', { autoLoad: false });
+
+                    // now set up server to get store data
+                    server = new ThetusTestHelpers.FakeServer(sinon);
+
+                    var readMethod = 'POST',
+                        testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(searchStore.getProxy(), 'read', readMethod),
+                        fixtures = Ext.clone(ThetusTestHelpers.Fixtures.SearchResults);
+
+                    server.respondWith(readMethod, testUrl, fixtures.searchResults);
+
+                    searchStore.load();
+
+                    server.respond({
+                        errorOnInvalidRequest: true
+                    });
+                });
+
+                afterEach(function () {
+                    searchStore = null;
+                    server = null;
+                });
+
                 it('should return a component of the correct type', function () {
 
-                    var facet = view.createFacet({}, {}, store.getById('mockDAL'));
+                    var facet = view.createFacet({
+                        'enumValues': null,
+                        'facetId': 'producer',
+                        'facetDataType': 'STRING',
+                        'providesAggregateData': true,
+                        'canFilterOn': true,
+                        'displayValue': 'Producer',
+                        'enumValuesType': 'sav_facetEnumType_None'
+                    }, {id: 'mockDAL', store: searchStore}, store.getById('mockDAL'));
 
                     expect(facet instanceof Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacet).toBeTruthy();
                 });

@@ -87,16 +87,18 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
     // CUSTOM METHODS
     onSearchRender: function (search) {
-        search.up('desktop_searchwindow').header.getEl().on('mousedown', function () {
-            search.down('#searchadvanced_menu').wasOpen = search.down('#searchadvanced_menu').isVisible();
-            search.down('#searchadvanced_menu').hide();
-        });
+        if (search.up('desktop_searchwindow')) {
+            search.up('desktop_searchwindow').header.getEl().on('mousedown', function () {
+                search.down('#searchadvanced_menu').wasOpen = search.down('#searchadvanced_menu').isVisible();
+                search.down('#searchadvanced_menu').hide();
+            });
 
-        search.up('desktop_searchwindow').on('move', function (win) {
-            if (win.down('#searchadvanced_menu').wasOpen) {
-                win.down('#searchadvanced_menu').showBy(win.down('#search_form'));
-            }
-        });
+            search.up('desktop_searchwindow').on('move', function (win) {
+                if (win.down('#searchadvanced_menu').wasOpen) {
+                    win.down('#searchadvanced_menu').showBy(win.down('#search_form'));
+                }
+            });
+        }
     },
 
     onFindLocation: function (button) {
@@ -114,11 +116,14 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         component.down('search_resultsDals_resultsterms').queryById('termValues').removeAll();
 
 
-        var form = component.down('#search_form');
+        var form = component.down('#search_form'),
+            searchBar = component.down('#searchbar');
 
-        form.queryById('search_terms').setValue('');
 
-        var formField = form.queryById('form_container');
+
+        searchBar.queryById('search_terms').setValue('');
+
+        var formField = form.queryById('searchadvanced_menu').queryById('form_container');
 
         Ext.Array.each(formField.query('searchadvanced_textfield'), function (field) {
             if (field.xtype === 'searchadvanced_textfield') {
@@ -162,10 +167,10 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         component.down('#resultspanel').updateGridStore({store: Ext.create('Savanna.search.store.SearchResults')});
     },
     clearSearch: function (elem) {
-        var form = elem.findParentByType('search_searchcomponent').down('#search_form');
+        var form = elem.findParentByType('search_searchcomponent').down('#searchbar');
         form.queryById('search_terms').setValue('');
 
-        var formField = form.queryById('form_container');
+        var formField = form.queryById('searchadvanced_menu').queryById('form_container');
 
         Ext.Array.each(formField.query('searchadvanced_textfield'), function (field) {
             if (field.xtype === 'searchadvanced_textfield') {
@@ -465,7 +470,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             SavannaConfig.mapBaseLayerUrl, {layers: SavannaConfig.mapBaseLayerName}));
     },
 
-    loadVectorLayer: function(canvas) {
+    loadVectorLayer: function (canvas) {
         // Add a feature layer to the map.
         var searchLayer = new OpenLayers.Layer.Vector('searchLayer');
         canvas.searchLayer = searchLayer;
@@ -481,29 +486,29 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         canvas.drawFeature = drawFeature;
     },
 
-    onFeatureAdded: function() {
+    onFeatureAdded: function () {
         // Scope: drawFeature
         this.deactivate();
     },
 
-    onMapCanvasResize: function(canvas) {
+    onMapCanvasResize: function (canvas) {
         canvas.map.updateSize();
     },
 
-    pointCallback: function() {
+    pointCallback: function () {
         // Scope: drawFeature
         // Called each time a point is added to the feature.
-        if(this.layer.features.length > 0) {
+        if (this.layer.features.length > 0) {
             this.layer.removeAllFeatures();
         }
     },
 
-    activateDrawFeature: function(button) {
+    activateDrawFeature: function (button) {
         var canvas = button.up('search_searchmap').down('search_map_canvas');
         canvas.drawFeature.activate();
     },
 
-    clearDrawFeature: function(button) {
+    clearDrawFeature: function (button) {
         var canvas = button.up('search_searchmap').down('search_map_canvas');
         canvas.searchLayer.removeAllFeatures();
         canvas.drawFeature.deactivate();
