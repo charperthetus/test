@@ -40,7 +40,7 @@ app.get('/test/SpecRunner.html', function(req,res) {
         var html = data.toString();
 
         // If no querys are present or it's 'all', send back the HTML
-        if(!Object.keys(req.query).length || req.query === 'all'){
+        if(!Object.keys(req.query).length || req.query.test === 'all'){
             res.send(html);
 
         // Strip the scripts, and insert the js file into the page
