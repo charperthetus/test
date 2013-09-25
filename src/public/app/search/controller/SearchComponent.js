@@ -24,6 +24,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
     ],
 
     init: function () {
+        var me = this;
         this.control({
             'search_searchcomponent': {
                 render: this.onSearchRender
@@ -69,7 +70,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             'search_searchcomponent #searchadvanced_menu': {
                 render: function (menu) {
                     menu.queryById('close_panel').on('click', this.handleClose);
-                    menu.queryById('advancedsearch_submit').on('click', this.handleSearchSubmit, this);
+                    menu.queryById('advancedsearch_submit').on('click', me.handleSearchSubmit, me);
                 }
             },
             'search_searchcomponent #optionsbutton': {
@@ -91,18 +92,20 @@ Ext.define('Savanna.search.controller.SearchComponent', {
      */
 
     onSearchRender: function (search) {
-        var advanced_menu = search.down('#searchadvanced_menu');
+        if(search.up('desktop_searchwindow'))   {
+            var advanced_menu = search.down('#searchadvanced_menu');
 
-        search.up('desktop_searchwindow').header.getEl().on('mousedown', function () {
-            advanced_menu.wasOpen = advanced_menu.isVisible();
-            advanced_menu.hide();
-        });
+            search.up('desktop_searchwindow').header.getEl().on('mousedown', function () {
+                advanced_menu.wasOpen = advanced_menu.isVisible();
+                advanced_menu.hide();
+            });
 
-        search.up('desktop_searchwindow').on('move', function (win) {
-            if (advanced_menu.wasOpen) {
-                advanced_menu.showBy(win.down('#search_form'));
-            }
-        });
+            search.up('desktop_searchwindow').on('move', function (win) {
+                if (advanced_menu.wasOpen) {
+                    advanced_menu.showBy(win.down('#search_form'));
+                }
+            });
+        }
     },
 
     onFindLocation: function (button) {
@@ -391,28 +394,37 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
     getCustomSearchSelections: function (currentDalPanel) {
 
-        var customSearchOptions = [];
-        var customInputs = currentDalPanel.query('[cls=customInputField]');
-        for (var i = 0, total = customInputs.length; i < total; i++) {
-            var customSearchInput = {};
-            customSearchInput.key = customInputs[i].name;
-            if (customInputs[i].xtype === 'datefield') {
-                customSearchInput.value = customInputs[i].value.valueOf();
-            } else if (customInputs[i].xtype === 'radiogroup' && customInputs[i].defaultType === 'radiofield') {
-                customSearchInput.value = customInputs[i].getValue().options;
-            } else if (customInputs[i].xtype === 'fieldcontainer') {
-                // then this item must be a key value pair and will need special handling
-                customSearchInput.key = customInputs[i].down('combobox').value;
-                customSearchInput.value = customInputs[i].down('[name=keyValueText]').value;
+        var customSearchOptions = [],
+            customInputs = currentDalPanel.query('[cls=customInputField]');
 
-            } else {
-                customSearchInput.value = customInputs[i].value;
+        Ext.each(customInputs, function(input)  {
+            var customSearchInput = {},
+                type = input.xtype;
+
+            customSearchInput.key = input.name;
+            customSearchInput.value = input.value;
+
+            switch(type)  {
+                case 'datefield':
+                    customSearchInput.value = input.value.valueOf();
+                    break;
+                case 'radiogroup':
+                    if(input.defaultType === 'radiofield')    {
+                        customSearchInput.value = input.getValue().options;
+                    }
+                    break;
+                case 'fieldcontainer':
+                    customSearchInput.key = input.down('combobox').value;
+                    customSearchInput.value = input.down('[name=keyValueText]').value;
+                    break;
             }
+
             if (customSearchInput.value === undefined || customSearchInput.value === null) {
                 customSearchInput.value = '';
             }
             customSearchOptions.push(customSearchInput);
-        }
+        });
+
         return customSearchOptions;
     },
 
