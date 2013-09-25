@@ -6,6 +6,7 @@ Ext.require('Savanna.desktop.controller.DesktopController');
 Ext.require('Savanna.desktop.view.SavannaDesktop');
 Ext.require('Savanna.desktop.view.SavannaWorkspace');
 Ext.require('Savanna.desktop.view.SavannaDashboard');
+Ext.require('Savanna.desktop.view.SearchWindow');
 Ext.require('Savanna.space.controller.SpaceManagerController');
 Ext.require('Savanna.space.view.SpaceManagerComponent');
 Ext.require('Savanna.space.view.SpaceMetadataTabPanel');

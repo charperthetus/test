@@ -3,7 +3,6 @@
         describe: false, beforeEach: false, afterEach: false, it: false, expect: false, spyOn: false, sinon: false,
         ThetusTestHelpers: false, Savanna: false
  */
-Ext.require('Savanna.Config');
 Ext.require('Savanna.search.controller.SearchComponent');
 Ext.require('Savanna.search.model.SearchRequest');
 Ext.require('Savanna.search.model.SearchResult');

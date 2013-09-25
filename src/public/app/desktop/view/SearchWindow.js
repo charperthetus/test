@@ -9,6 +9,10 @@ Ext.define('Savanna.desktop.view.SearchWindow', {
     extend: 'Ext.window.Window',
     alias: 'widget.desktop_searchwindow',
 
+    requires: [
+        'Savanna.search.view.SearchComponent'
+    ],
+
     title: 'Search',
     layout: 'fit',
     height: 600, //todo: get design input on initial size and minimum size

@@ -3,7 +3,6 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
     singleton: true,
 
     requires: [
-        'Savanna.Config',
         'Savanna.crumbnet.utils.ExtendedLink'
     ],
 
@@ -17,6 +16,7 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
         'Unknown'
     ],
     defaultLinkTemplate: 'Tapered',
+    defaultDescriptionHoverText: 'click to enter description',
 
     /**
      * Creates our default node template for use with GoJS
@@ -38,7 +38,12 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
         var titleText = this.makeTextBlock({ name: 'title', bold: true, alignment: go.Spot.TopLeft });
         titleText.bind(new go.Binding('text', 'title').makeTwoWay());
 
-        var descText = this.makeTextBlock({ alignment: go.Spot.TopLeft, name: 'descText' });
+        var descText = this.makeTextBlock({
+            alignment: go.Spot.TopLeft,
+            name: 'descText',
+            mouseEnter: Savanna.crumbnet.utils.ViewTemplates.setupDescriptionText,
+            mouseLeave: Savanna.crumbnet.utils.ViewTemplates.cleanupDescriptionText
+        });
         descText.bind(new go.Binding('text', 'description').makeTwoWay());
         descText.bind(new go.Binding('width', 'width').makeTwoWay());
 
@@ -338,7 +343,7 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
     },
 
     convertTypeToImage: function(category) {
-        return  Savanna.Config.resourcesPathPrefix + 'resources/images/' + category + 'Icon.svg';
+        return  SavannaConfig.resourcesPathPrefix + 'resources/images/' + category + 'Icon.svg';
     },
 
     // Event handlers
@@ -462,6 +467,18 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
             valueLength = textAreaElem.value ? textAreaElem.value.length : 0;
 
             textAreaElem.setSelectionRange(0, valueLength);
+        }
+    },
+
+    setupDescriptionText: function(e, textBlock) {
+        if (!textBlock.text) {
+            textBlock.text = Savanna.crumbnet.utils.ViewTemplates.defaultDescriptionHoverText;
+        }
+    },
+
+    cleanupDescriptionText: function(e, textBlock) {
+        if (textBlock.text === Savanna.crumbnet.utils.ViewTemplates.defaultDescriptionHoverText) {
+            textBlock.text = '';
         }
     },
 
