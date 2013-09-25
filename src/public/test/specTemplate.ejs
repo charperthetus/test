@@ -1,0 +1,55 @@
+/* global Ext: false, Savanna: false,
+         describe: false, it: false, expect: false
+         <% if (isViewTest || isStoreTest || fixture) { %>, ThetusTestHelpers: false<% } %>
+         <% if (isStoreTest) { %>, sinon: false<% } %>
+*/
+
+Ext.require('<%= moduleBeingTested %>');
+<% for (var i=0,requireCt = requires.length; i < requireCt; ++i) { -%>
+Ext.require('<%= requires[i] %>');
+<% } -%>
+
+describe('<%= moduleBeingTested %>', function() {
+    <% if (isStoreTest) { %>var server;<% } %>
+    <% if (fixture) { %>var fixture;<% } -%>
+
+    beforeEach(function() {
+        // anything you need set up before every test runs
+
+        <% if (isViewTest) { %>ThetusTestHelpers.ExtHelpers.createTestDom();<% } %>
+        <% if (isStoreTest) { %>server = new ThetusTestHelpers.FakeServer(sinon);<% } %>
+
+        <% if (fixture) { %>
+        fixture = Ext.clone(ThetusTestHelpers.Fixtures.<%= fixture %>);
+        <% } %>
+    });
+
+    afterEach(function() {
+        // any clean-up that needed to reset the test environment
+
+        <% if (isViewTest) { %>ThetusTestHelpers.ExtHelpers.cleanTestDom();<% } %>
+        <% if (isStoreTest) { %>
+        server.restore();
+        server = null;
+        <% } %>
+        <% if (fixture) { %>fixture = {};<% } %>
+    });
+
+    describe('instantiate for test coverage analysis', function() {
+        var instance;
+
+        beforeEach(function() {
+            instance = new <%= moduleBeingTested %>();
+        });
+
+        afterEach(function() {
+            instance = null;
+        });
+
+        it('should be able to create an instance', function() {
+            expect(instance instanceof <%= moduleBeingTested %>).toBeTruthy();
+        });
+    });
+
+    // ADD YOUR TESTS HERE....
+});
