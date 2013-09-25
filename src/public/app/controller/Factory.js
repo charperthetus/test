@@ -26,6 +26,7 @@ Ext.define('Savanna.controller.Factory', {
      * @return {Ext.app.Application}
      */
     getController: function(controllerName) {
-        return Savanna.getApplication().getController(controllerName);
+//        return Savanna.getApplication().getController(controllerName);
+        return null;
     }
 });

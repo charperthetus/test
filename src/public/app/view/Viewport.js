@@ -6,7 +6,8 @@ Ext.define('Savanna.view.Viewport', {
 
     requires: [
         'Ext.tab.Panel',
-        'Savanna.view.Login'
+        'Savanna.view.Login',
+        'Savanna.desktop.view.SavannaDesktop'
     ],
 
     border: false,
@@ -23,8 +24,8 @@ Ext.define('Savanna.view.Viewport', {
             border: false,
             items:  [
                 {
-                    xtype: 'login',
-                    itemId: 'login'
+                    xtype: 'desktop_savannadesktop'//,
+                    //itemId: 'login'
                 }
             ]
         }
