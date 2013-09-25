@@ -79,6 +79,7 @@ app.all('/fixture/*', function(req, res) {
                 }
                 else {
                     try {
+                        // NOTE: yes, we are doing an eval here...it's our own code, so we better not be malicious...
                         /* jshint evil: true */
                         eval(data);
                         /* jshint evil: false */
