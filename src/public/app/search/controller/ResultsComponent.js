@@ -168,6 +168,11 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
                  */
 
                 this.getApplication().fireEvent('results:refineSearch', field);
+                return true;
+
+            }   else    {
+
+                return false;
             }
         }
     },
@@ -183,6 +188,11 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
              resubmit the search request
              */
             this.getApplication().fireEvent('results:refineSearch', field);
+            return true;
+
+        }   else    {
+
+            return false;
         }
     }
 });

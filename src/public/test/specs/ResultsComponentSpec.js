@@ -989,11 +989,25 @@ describe('Search Results', function () {
         });
 
         describe('onItemPreview', function()    {
-            var grid = resultsComponent.queryById('resultspanel').queryById('resultspanelgrid');
-            it('should show the preview window', function() {
-                  resultsController.onItemPreview(grid, {});
 
-                expect(resultsComponent.queryById('resultspreviewwindow').isVisible()).toBeTruthy();
+
+            it('should show the preview window', function() {
+
+                var grid = searchComponent.down('#resultspanel').queryById('resultspanelgrid');
+                resultsController.onItemPreview(grid, {});
+
+                expect(searchComponent.queryById('resultspreviewwindow').isVisible()).toBeTruthy();
+            });
+        });
+
+        describe('onCloseItemPreview', function()    {
+
+
+            it('should hide the preview window', function() {
+
+                resultsController.onCloseItemPreview(searchComponent.queryById('resultspreviewwindow').down('#previewclosebutton'));
+
+                expect(searchComponent.queryById('resultspreviewwindow').isVisible()).toBeFalsy();
             });
         });
 
@@ -1188,6 +1202,60 @@ describe('Search Results', function () {
                 expect(resultsPanel.updateGridStore).toHaveBeenCalled();
             });
 
+        });
+
+        describe('handleSearchTermKeyUp and handleSearchSubmit', function()    {
+            var dalItem, resultsPanel;
+
+            beforeEach(function () {
+
+                resultsPanel = searchComponent.down('#resultspanel');
+
+                searchComponent.down('#searchresults').currentResultSet = {id: 'mockDAL', store: store};
+
+                searchComponent.down('#searchdals').store = store;
+                searchComponent.down('#searchdals').createDalPanels();
+
+                searchComponent.down('#resultsdals').store = store;
+
+                searchComponent.down('#searchdals').store.each(function (record) {
+                    var dalId = record.data.id;
+                    searchComponent.down('#searchdals').queryById(dalId).query('checkbox')[0].setValue(true);
+                });
+
+                sources.createDalPanels(searchController.getSelectedDals(searchComponent));
+
+                dalItem = sources.query('panel[cls=results-dal]')[0];
+
+                spyOn(resultsPanel, 'updateGridStore');
+            });
+
+            afterEach(function () {
+
+                dalItem = null;
+
+            });
+             it('handleSearchTermKeyUp should call doSearch', function()  {
+                  var field = sources.queryById('refinesearch').down('#refine_search_terms');
+
+                 field.setValue('apples');
+
+                 var success = resultsController.handleSearchTermKeyUp(field, {keyCode:Ext.EventObject.ENTER});
+
+                 expect(success).toBeTruthy();
+             });
+
+            it('handleSearchSubmit should call doSearch', function()  {
+                var field = sources.queryById('refinesearch').down('#refine_search_terms');
+
+                field.setValue('apples');
+
+                var btn = sources.queryById('refinesearch').down('#refine_search_submit');
+
+                var success = resultsController.handleSearchSubmit(btn);
+
+                expect(success).toBeTruthy();
+            });
         });
     });
 });

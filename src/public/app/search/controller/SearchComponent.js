@@ -274,6 +274,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         });
 
         if (!dalSelected) {
+            console.log(dals.store);
             dals.queryById(dals.store.defaultId).query('checkbox')[0].setValue(true);
             sources.push(dals.store.getById(dals.store.defaultId));
         }

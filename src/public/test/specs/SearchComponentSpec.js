@@ -1,7 +1,7 @@
 /* global
-        Ext: false,
-        describe: false, beforeEach: false, afterEach: false, it: false, expect: false, spyOn: false, sinon: false,
-        ThetusTestHelpers: false, Savanna: false
+ Ext: false,
+ describe: false, beforeEach: false, afterEach: false, it: false, expect: false, spyOn: false, sinon: false,
+ ThetusTestHelpers: false, Savanna: false
  */
 Ext.require('Savanna.search.controller.SearchComponent');
 Ext.require('Savanna.search.model.SearchRequest');
@@ -50,14 +50,14 @@ describe('Search Component', function () {
 
         ThetusTestHelpers.ExtHelpers.cleanTestDom();
     });
-    describe('getCustomSearchSelections', function() {
+    describe('getCustomSearchSelections', function () {
         var formPanel = {};
         var component = {};
         var controller = {};
-        beforeEach(function() {
+        beforeEach(function () {
             component = Ext.create('Savanna.search.view.SearchComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
             controller = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
-            formPanel =  Ext.create('Ext.form.Panel', {
+            formPanel = Ext.create('Ext.form.Panel', {
                 title: 'testing',
                 layout: 'vbox',
 
@@ -70,7 +70,8 @@ describe('Search Component', function () {
                         labelPad: 5,
                         name: 'testing',
                         cls: 'customInputField'
-                    },{
+                    },
+                    {
                         xtype: 'combobox',
                         valueField: 'value',
                         displayField: 'value',
@@ -85,7 +86,8 @@ describe('Search Component', function () {
                         cls: 'customInputField',
                         value: 'testing'
 
-                    },{
+                    },
+                    {
                         xtype: 'checkbox',
                         checked: true,
                         fieldLabel: 'testing',
@@ -96,7 +98,8 @@ describe('Search Component', function () {
                         cls: 'customInputField',
                         value: 'testing'
 
-                    },{
+                    },
+                    {
                         xtype: 'radiogroup',
                         defaultType: 'radiofield',
                         layout: 'hbox',
@@ -108,7 +111,8 @@ describe('Search Component', function () {
                         cls: 'customInputField',
                         value: null
 
-                    },{
+                    },
+                    {
                         xtype: 'datefield',
                         value: 1347298216073,
                         fieldLabel: 'testing',
@@ -117,7 +121,8 @@ describe('Search Component', function () {
                         labelPad: 5,
                         name: 'testing',
                         cls: 'customInputField'
-                    },{
+                    },
+                    {
                         xtype: 'fieldcontainer',
                         layout: 'hbox',
                         cls: 'customInputField',
@@ -130,10 +135,12 @@ describe('Search Component', function () {
                                 forceSelection: true,
                                 queryMode: 'local',
                                 editable: false
-                            },{
+                            },
+                            {
                                 xtype: 'textfield',
                                 name: 'keyValueText'
-                            },{
+                            },
+                            {
                                 xtype: 'button',
                                 text: 'X',
                                 itemId: 'keyValueToggleInput'
@@ -154,10 +161,10 @@ describe('Search Component', function () {
                 component = null;
             }
         });
-        it('should return 6 objects with a key and value property', function() {
+        it('should return 6 objects with a key and value property', function () {
             var test = controller.getCustomSearchSelections(formPanel);
             expect(test.length).toBe(6);
-            for(var i = 0; i < 6; i++){
+            for (var i = 0; i < 6; i++) {
                 expect(test[i].hasOwnProperty('key')).toBeTruthy();
                 expect(test[i].hasOwnProperty('value')).toBeTruthy();
                 // test[i].value should either have something in it that evals to true or be an empty string
@@ -241,6 +248,29 @@ describe('Search Component', function () {
             toolbar = component.queryById('searchtoolbar');
             controller = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
 
+            var readMethod = 'GET',
+                testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(dalStore.getProxy(), 'read', readMethod);
+
+            server.respondWith(readMethod, testUrl, dalFixtures.allDals);
+
+            dalStore.getProxy().addSessionId = false; // so our URL is clean
+            dalStore.load();
+
+            server.respond({
+                errorOnInvalidRequest: true
+            });
+
+            component.down('#searchdals').store = dalStore;
+            component.down('#searchdals').createDalPanels();
+
+            component.down('#searchdals').store.each(function (record) {
+                var dalId = record.data.id;
+                component.down('#searchdals').queryById(dalId).query('checkbox')[0].setValue(true);
+            });
+
+            component.down('#resultsdals').store = dalStore;
+
+
         });
 
         afterEach(function () {
@@ -257,33 +287,53 @@ describe('Search Component', function () {
             toolbar = null;
         });
 
+        describe('handleNewSearch', function () {
+            it('should clear all relevant values', function () {
+                component.down('#resultsdals').createDalPanels(controller.getSelectedDals(component));
+                var values = component.down('#resultsdals').queryById('refineterms').down('#termValues');
+                controller.handleNewSearch(component.down('#search_reset_button'));
+
+                var searchBar = component.down('#searchbar');
+
+                var formField = component.down('#search_form').queryById('searchadvanced_menu').queryById('form_container');
+
+                var sources = controller.getSelectedDals(component);
+
+                expect(values.items.items.length).toBe(0);
+
+                expect(searchBar.queryById('search_terms').getValue()).toBe('');
+
+                Ext.Array.each(formField.query('searchadvanced_textfield'), function (field) {
+                    if (field.xtype === 'searchadvanced_textfield') {
+                        expect(field.getValue()).toBe('');
+                    }
+                });
+
+                Ext.each(sources, function (source) {
+                    if (source.get('facetFilterCriteria').length) {
+                        expect(source.get('facetFilterCriteria').length).toBe(0);
+                    }
+
+                    if (source.get('dateTimeRanges').length) {
+                        expect(source.get('dateTimeRanges').length).toBe(0);
+                    }
+                });
+
+                expect(component.down('#resultsdals').items.items.length).toBe(0);
+
+                expect(component.down('#searchbody').currentPanel).toBe('searchoptions');
+
+                expect(component.down('search_resultspanelgrid').items.items[0].dataSource.data.items.length).toBe(0);
+            });
+        });
+
         describe('handleSearchTermKeyUp callback', function () {
 
             beforeEach(function () {
-
-                var readMethod = 'GET',
-                    testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(dalStore.getProxy(), 'read', readMethod);
-
-                server.respondWith(readMethod, testUrl, dalFixtures.allDals);
-
-                dalStore.getProxy().addSessionId = false; // so our URL is clean
-                dalStore.load();
-
-                server.respond({
-                    errorOnInvalidRequest: true
-                });
-
-                component.down('#searchdals').store = dalStore;
-                component.down('#searchdals').createDalPanels();
-
-                component.down('#resultsdals').store = dalStore;
-                component.down('#resultsdals').createDalPanels();
-
                 spyOn(controller, 'doSearch');
             });
 
             afterEach(function () {
-                searchbar = null;
 
                 if (server) {
                     server.restore();
@@ -411,9 +461,9 @@ describe('Search Component', function () {
             var originalErrorHandler = null;
             var errorRaised = false;
 
-            beforeEach(function()   {
-                 originalErrorHandler = Ext.Error.handle;
-                Ext.Error.handle = function()   {
+            beforeEach(function () {
+                originalErrorHandler = Ext.Error.handle;
+                Ext.Error.handle = function () {
                     errorRaised = true;
                     return true;
                 };
@@ -424,7 +474,7 @@ describe('Search Component', function () {
                     field.destroy();
                     field = null;
                 }
-                if(originalErrorHandler)    {
+                if (originalErrorHandler) {
                     Ext.Error.handle = originalErrorHandler;
                     originalErrorHandler = null;
                 }
