@@ -73,6 +73,10 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                 click: this.onBodyToolbarClick
             }
         });
+
+        this.getApplication().on('results:dalreset', this.doSearch, this);
+
+        this.getApplication().on('results:buildAndLoadResultsStore', this.buildAndLoadResultsStore, this);
     },
 
     // CUSTOM METHODS    
@@ -231,6 +235,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
     },
 
     buildSearchObject:function(searchString, dal, currentDalPanel){
+
         var searchObj = Ext.create('Savanna.search.model.SearchRequest', {
             'textInputString': searchString,
             'displayLabel': searchString
@@ -275,13 +280,15 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         }
 
         return searchObj;
+
+
     },
 
-    buildAndLoadResultsStore:function(dal, component, searchObj, action, combo) {
+    buildAndLoadResultsStore:function(dal, component, searchObj, action, comboboxComponent) {
 
         var pageSize;
-        if(combo)   {
-            pageSize = combo.value;
+        if(comboboxComponent)   {
+            pageSize = comboboxComponent.value;
         }   else    {
             pageSize = dal.get('resultsPerPage');
         }
@@ -404,7 +411,8 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                 /*
                 filtering, action set to 'filter'
                  */
-                Ext.each(resultsPanel.up('#searchresults').allResultSets, function (resultset, index) {
+
+                Ext.Array.findBy(resultsPanel.up('#searchresults').allResultSets, function (resultset, index) {
                     if (resultset.id === dalId) {
                         resultsPanel.up('#searchresults').allResultSets[index] = resultsObj;
                     }
@@ -419,13 +427,13 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             if(action === 'search') {
                 if (dalId === Ext.data.StoreManager.lookup('dalSources').defaultId) {
 
-                    controller.changeSelectedStore({}, {}, resultsDal.queryById(dalId));
+                    this.getApplication().fireEvent('search:changeSelectedStore', {}, {}, resultsDal.queryById(dalId));
                 }
             }   else    {
                 /*
                  filtering, action set to 'filter'
                  */
-                controller.changeSelectedStore({}, {}, resultsDal.queryById(dalId));
+                this.getApplication().fireEvent('search:changeSelectedStore', {}, {}, resultsDal.queryById(dalId));
             }
         }
     },

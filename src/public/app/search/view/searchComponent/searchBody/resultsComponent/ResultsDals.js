@@ -49,16 +49,19 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
 
         var searchPanelDals = this.findParentByType('search_searchcomponent').down('#searchdals'); // the dal sources in search options
 
-        if(this.queryById('refinesearch') === undefined || this.queryById('refinesearch') === null)    {
+        if(!this.queryById('refinesearch'))    {
             this.add(this.createRefineSearchPanel());
         }
 
-        if(this.queryById('refineterms') === undefined || this.queryById('refineterms') === null)    {
+        if(!this.queryById('refineterms'))    {
             this.add(this.createRefineTermsPanel());
         }
 
-        if(this.queryById('resultsfacets') === undefined || this.queryById('resultsfacets') === null)    {
-            this.add(this.createFacetsTabPanel());
+        var facetTabs = this.createFacetsTabPanel();    // always do this...
+
+        if(!this.queryById('resultsfacets'))    {
+
+            this.add(facetTabs);    // ...but only add if doesn't exist
         }
 
         this.store.each(function (record) {
@@ -73,6 +76,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
          create any DALs in the list of sources that do not already
          have a corresponding DAL in the panel
          */
+        var startingItemsLength = this.items.length; // determine where to insert the dals, above facets
 
         Ext.each(sources, function (record) {
             var dalId = record.get('id'),
@@ -83,7 +87,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
                 myPanel = this.createDalPanel(record);
                 myPanel.down('#dalName').setText(record.get('displayName'));
 
-                this.insert(this.items.length - 3, myPanel);  // insert before the facets panel
+                this.insert(this.items.length - startingItemsLength, myPanel);
             } else {
                 this.updateDalStatus(dalId);
             }
@@ -112,10 +116,9 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
     },
 
     createFacetsTabPanel: function () {
-
         var facetTabs;
 
-        if (this.queryById('resultsfacets') === null) {
+        if (!this.queryById('resultsfacets')) {
             facetTabs = Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacets', {
                 itemId: 'resultsfacets'
             });
@@ -165,7 +168,6 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
     },
 
     createDalFacets: function (id) {
-
         var dalRecord = this.store.getById(id),
             descriptions = dalRecord.get('facetDescriptions'),
             facets = this.queryById('resultsfacets').queryById('tab_' + id),
