@@ -15,6 +15,7 @@ Ext.define('Savanna.metadata.view.String', {
     ],
 
     layout: 'vbox',
+    width: "100%",
 
     border: false,
 
@@ -28,11 +29,11 @@ Ext.define('Savanna.metadata.view.String', {
         {
             xtype: 'label',
             itemId: 'displayValue',
-            text: ''
+            text: '',
+            width: '100%'
         }
     ],
     initComponent: function () {
-        this.allResultSets = [];
         this.callParent(arguments);
         Savanna.controller.Factory.getController('Savanna.metadata.controller.FieldTypes');
 

@@ -15,6 +15,7 @@ Ext.define('Savanna.metadata.view.Integer', {
     ],
 
     layout: 'vbox',
+    width: "100%",
 
     border: false,
 
@@ -32,7 +33,6 @@ Ext.define('Savanna.metadata.view.Integer', {
         }
     ],
     initComponent: function () {
-        this.allResultSets = [];
         this.callParent(arguments);
         Savanna.controller.Factory.getController('Savanna.metadata.controller.FieldTypes');
 

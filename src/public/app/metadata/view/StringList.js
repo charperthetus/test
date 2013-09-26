@@ -1,14 +1,14 @@
 /**
  * Created with IntelliJ IDEA.
  * User: mfawver
- * Date: 9/25/13
- * Time: 8:49 AM
+ * Date: 9/26/13
+ * Time: 9:32 PM
  * To change this template use File | Settings | File Templates.
  */
 
-Ext.define('Savanna.metadata.view.LongString', {
+Ext.define('Savanna.metadata.view.StringList', {
     extend: 'Ext.panel.Panel',
-    alias: 'widget.metadata_longstring',
+    alias: 'widget.metadata_stringlist',
 
     requires: [
         'Savanna.controller.Factory'
@@ -25,12 +25,8 @@ Ext.define('Savanna.metadata.view.LongString', {
             itemId: 'displayLabel',
             text: ''
 
-        },
-        {
-            xtype: 'label',
-            itemId: 'displayValue',
-            text: ''
         }
+
     ],
     initComponent: function () {
         this.callParent(arguments);
@@ -40,7 +36,18 @@ Ext.define('Savanna.metadata.view.LongString', {
             var config = this.initialConfig || {};
 
             this.down('#displayLabel').text = config.displayLabel;
-            this.down('#displayValue').text = config.value;
+
+            var me = this;
+
+            Ext.Array.each(config.value, function(stringElement) {
+                var theLabel = Ext.create('Ext.form.Label', {
+                    text: '',
+                    width: "100%"
+                });
+                theLabel.setText( stringElement );
+
+                me.add( theLabel );
+            });
 
         }, this));
     }

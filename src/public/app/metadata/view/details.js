@@ -21,6 +21,7 @@ Ext.define('Savanna.metadata.view.Details', {
         'Savanna.metadata.view.Date',
         'Savanna.metadata.view.Uri',
         'Savanna.metadata.view.Integer',
+        'Savanna.metadata.view.StringList',
         'Savanna.metadata.controller.FieldTypes',
         'Savanna.metadata.store.Metadata',
         'Savanna.controller.Factory'
@@ -80,6 +81,10 @@ Ext.define('Savanna.metadata.view.Details', {
                     case 'Integer':
                         TypeToAdd = 'Savanna.metadata.view.Integer';
                         break;
+                    case 'String_List':
+                        TypeToAdd = 'Savanna.metadata.view.StringList';
+                        console.log("metadata.value", metadata.value);
+                        break;
                     default:
                         console.log('metadata.metadataType.name', metadata.metadataType.name);
                 }
@@ -96,22 +101,6 @@ Ext.define('Savanna.metadata.view.Details', {
             } else {
                 console.log('Field has no value ', metadata.metadataType.name, metadata.value);
             }
-/*            var myPanel = this.createPanel(record);
-            this.add(myPanel);
-            if(record.data.id === this.store.defaultId)  {
-                myPanel.query('checkbox')[0].setValue(true);
-            }
-            */
-        });
-    },
-
-    createPanel: function(myRecord) {
-        return Ext.create('Savanna.search.view.searchComponent.searchBody.searchDals.SearchOptions', {
-            itemId: myRecord.data.id,
-            checkboxLabel: myRecord.data.displayName,
-            label: myRecord.data.textDescription,
-            showButton: (0 < myRecord.getCustomSearchDescription().customSearchGroups().data.length)
         });
     }
-
 });

@@ -66,7 +66,11 @@
             {
                 "_type":"com.thetus.platforms.savanna.apis.item.metadata.SavannaMetadataEntry",
                 "value":[
-
+                    "Joe Blow",
+                    "Sally Forth",
+                    "Red Rocker",
+                    "Richardo Black",
+                    "Richardo Black"
                 ],
                 "key":{
                     "_type":"com.thetus.platforms.savanna.metadata.SavannaMetadataKey",
