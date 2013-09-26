@@ -2,13 +2,13 @@
  * Created with IntelliJ IDEA.
  * User: mfawver
  * Date: 9/26/13
- * Time: 8:15 AM
+ * Time: 12:29 PM
  * To change this template use File | Settings | File Templates.
  */
 
-Ext.define('Savanna.metadata.view.Integer', {
+Ext.define('Savanna.metadata.view.Boolean', {
     extend: 'Ext.panel.Panel',
-    alias: 'widget.metadata_integer',
+    alias: 'widget.metadata_boolean',
 
     requires: [
         'Savanna.controller.Factory'
@@ -24,7 +24,6 @@ Ext.define('Savanna.metadata.view.Integer', {
             xtype: 'label',
             itemId: 'displayLabel',
             text: ''
-
         },
         {
             xtype: 'label',
@@ -41,7 +40,7 @@ Ext.define('Savanna.metadata.view.Integer', {
 
             this.down('#displayLabel').text = config.displayLabel;
 
-            this.down('#displayValue').text = config.value.toLocaleString();
+            this.down('#displayValue').text = config.value.toString();
 
         }, this));
     }

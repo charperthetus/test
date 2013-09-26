@@ -13,6 +13,7 @@ Ext.define('Savanna.space.view.metadata.DetailPanel', {
         'Savanna.metadata.view.Details'
     ],
     title: 'Details',
+    autoScroll: true,
     items: [{
         xtype: 'metadata_details'
     }]

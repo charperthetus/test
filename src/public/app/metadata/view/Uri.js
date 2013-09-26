@@ -39,19 +39,9 @@ Ext.define('Savanna.metadata.view.Uri', {
             var config = this.initialConfig || {};
 
             this.down('#displayLabel').text = config.displayLabel;
-//            console.log('config.value', config.value);
-//            var temp = Ext.Object.fromQueryString(config.value);
-//            var temp2 =  Ext.Object.toQueryString(temp);
-//            var temp3 = decodeURI(config.value);
-//            var temp4 = encodeURI(config.value);
-            var temp4 = config.value.replace('%2F', '/', 'g');
-//
-//            console.log('temp', temp);
-//            console.log('temp2', temp2);
-//            console.log('temp3', temp3);
-//            console.log('temp4', temp4);
-
-            this.down('#displayValue').text = temp4;
+            // TODO: This conversion is probably not correct.  Need to decode it properly.
+            // If you change this, check UriList.js for similar.
+            this.down('#displayValue').text = config.value.replace('%2F', '/', 'g');
 
         }, this));
     }

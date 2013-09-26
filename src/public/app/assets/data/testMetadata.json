@@ -296,7 +296,169 @@
                 "entityVersion":-1,
                 "uri":"MetadataEntry%2Ftitle%2FMetadata%2F183200%2FVirtualDocument",
                 "displayLabel":null
+            },
+            {
+                "_type":"com.thetus.platforms.savanna.apis.item.metadata.SavannaMetadataEntry",
+                "value": true,
+                "key":{
+                    "_type":"com.thetus.platforms.savanna.metadata.SavannaMetadataKey",
+                    "key":"modifiedDate",
+                    "uri":"MetadataKeymodifiedDate",
+                    "displayLabel":"This is true"
+                },
+                "metadataType":{
+                    "name":"Boolean"
+                },
+                "editable":false,
+                "visible":true,
+                "sortKey":null,
+                "entityVersion":-1,
+                "uri":"MetadataEntry%2FmodifiedDate%2FMetadata%2F183200%2FVirtualDocument",
+                "displayLabel":null
+            },
+            {
+                "_type":"com.thetus.platforms.savanna.apis.item.metadata.SavannaMetadataEntry",
+                "value": 123.321,
+                "key":{
+                    "_type":"com.thetus.platforms.savanna.metadata.SavannaMetadataKey",
+                    "key":"ISBN",
+                    "uri":"MetadataKeymodifiedISBN",
+                    "displayLabel":"ISBN number"
+                },
+                "metadataType":{
+                    "name":"Double"
+                },
+                "editable":false,
+                "visible":true,
+                "sortKey":null,
+                "entityVersion":-1,
+                "uri":"MetadataEntry%2FmodifiedDate%2FMetadata%2F183200%2FVirtualDocument",
+                "displayLabel":null
+            },
+            {
+                "_type":"com.thetus.platforms.savanna.apis.item.metadata.SavannaMetadataEntry",
+                "value":[
+                    true,
+                    false,
+                    true,
+                    false,
+                    true
+                ],
+                "key":{
+                    "_type":"com.thetus.platforms.savanna.metadata.SavannaMetadataKey",
+                    "key":"truth",
+                    "uri":"MetadataKeyauthors",
+                    "displayLabel":"List of Truths"
+                },
+                "metadataType":{
+                    "name":"Boolean_List"
+                },
+                "editable":true,
+                "visible":true,
+                "sortKey":null,
+                "entityVersion":-1,
+                "uri":"MetadataEntry%2Fauthors%2FMetadata%2F183200%2FVirtualDocument",
+                "displayLabel":null
+            },
+            {
+                "_type":"com.thetus.platforms.savanna.apis.item.metadata.SavannaMetadataEntry",
+                "value":[
+                    1367876256050,
+                    1368876356050,
+                    1369876456050
+                ],
+                "key":{
+                    "_type":"com.thetus.platforms.savanna.metadata.SavannaMetadataKey",
+                    "key":"truth",
+                    "uri":"MetadataKeyDates",
+                    "displayLabel":"Important Dates associated with this document"
+                },
+                "metadataType":{
+                    "name":"Date_List"
+                },
+                "editable":true,
+                "visible":true,
+                "sortKey":null,
+                "entityVersion":-1,
+                "uri":"MetadataEntry%2Fauthors%2FMetadata%2F183200%2FVirtualDocument",
+                "displayLabel":null
+            },
+            {
+                "_type":"com.thetus.platforms.savanna.apis.item.metadata.SavannaMetadataEntry",
+                "value":[
+                    12345,
+                    67890,
+                    1369876456050,
+                    1,
+                    0
+                ],
+                "key":{
+                    "_type":"com.thetus.platforms.savanna.metadata.SavannaMetadataKey",
+                    "key":"truth",
+                    "uri":"MetadataKeyDates",
+                    "displayLabel":"A bunch of numbers"
+                },
+                "metadataType":{
+                    "name":"Integer_List"
+                },
+                "editable":true,
+                "visible":true,
+                "sortKey":null,
+                "entityVersion":-1,
+                "uri":"MetadataEntry%2Fauthors%2FMetadata%2F183200%2FVirtualDocument",
+                "displayLabel":null
+            },
+            {
+                "_type":"com.thetus.platforms.savanna.apis.item.metadata.SavannaMetadataEntry",
+                "value":[
+                    12.345,
+                    6.7890,
+                    13698764560.50,
+                    1.0,
+                    0,
+                    0.9753
+                ],
+                "key":{
+                    "_type":"com.thetus.platforms.savanna.metadata.SavannaMetadataKey",
+                    "key":"more",
+                    "uri":"MetadataKeyDates",
+                    "displayLabel":"Another bunch of numbers"
+                },
+                "metadataType":{
+                    "name":"Double_List"
+                },
+                "editable":true,
+                "visible":true,
+                "sortKey":null,
+                "entityVersion":-1,
+                "uri":"MetadataEntry%2Fauthors%2FMetadata%2F183200%2FVirtualDocument",
+                "displayLabel":null
+            },
+            {
+                "_type":"com.thetus.platforms.savanna.apis.item.metadata.SavannaMetadataEntry",
+                "value":[
+                    "http:%2F%2Flocalhost:8095%2FSavannaX%2Frest%2Fwebclipper",
+                    "http:%2F%2Flocalhost:8095%2FSavannaX%2Frest%2Fsomeplace%2F",
+                    "http:%2F%2Flocalhost:8095%2FSavannaX%2Frest%2Felse%2Fhere%2For%2Fthere"
+                ],
+                "key":{
+                    "_type":"com.thetus.platforms.savanna.metadata.SavannaMetadataKey",
+                    "key":"more",
+                    "uri":"MetadataKeyDates",
+                    "displayLabel":"More Uris than you probably want to see, but here you go."
+                },
+                "metadataType":{
+                    "name":"Uri_List"
+                },
+                "editable":true,
+                "visible":true,
+                "sortKey":null,
+                "entityVersion":-1,
+                "uri":"MetadataEntry%2Fauthors%2FMetadata%2F183200%2FVirtualDocument",
+                "displayLabel":null
             }
+
+
 
         ],
         "canAdd":false,

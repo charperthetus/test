@@ -21,7 +21,14 @@ Ext.define('Savanna.metadata.view.Details', {
         'Savanna.metadata.view.Date',
         'Savanna.metadata.view.Uri',
         'Savanna.metadata.view.Integer',
+        'Savanna.metadata.view.Boolean',
+        'Savanna.metadata.view.Double',
         'Savanna.metadata.view.StringList',
+        'Savanna.metadata.view.BooleanList',
+        'Savanna.metadata.view.DateList',
+        'Savanna.metadata.view.IntegerList',
+        'Savanna.metadata.view.DoubleList',
+        'Savanna.metadata.view.UriList',
         'Savanna.metadata.controller.FieldTypes',
         'Savanna.metadata.store.Metadata',
         'Savanna.controller.Factory'
@@ -29,6 +36,8 @@ Ext.define('Savanna.metadata.view.Details', {
 
     layout: 'vbox',
     //collapsible: 'true',
+
+    autoScroll: true,
     editMode: false,
 
     items: [
@@ -81,9 +90,30 @@ Ext.define('Savanna.metadata.view.Details', {
                     case 'Integer':
                         TypeToAdd = 'Savanna.metadata.view.Integer';
                         break;
+                    case 'Boolean':
+                        TypeToAdd = 'Savanna.metadata.view.Boolean';
+                        break;
+                    case 'Double':
+                        TypeToAdd = 'Savanna.metadata.view.Double';
+                        break;
                     case 'String_List':
                         TypeToAdd = 'Savanna.metadata.view.StringList';
-                        console.log("metadata.value", metadata.value);
+                        //console.log("metadata.value", metadata.value);
+                        break;
+                    case 'Boolean_List':
+                        TypeToAdd = 'Savanna.metadata.view.BooleanList';
+                        break;
+                    case 'Date_List':
+                        TypeToAdd = 'Savanna.metadata.view.DateList';
+                        break;
+                    case 'Integer_List':
+                        TypeToAdd = 'Savanna.metadata.view.IntegerList';
+                        break;
+                    case 'Double_List':
+                        TypeToAdd = 'Savanna.metadata.view.DoubleList';
+                        break;
+                    case 'Uri_List':
+                        TypeToAdd = 'Savanna.metadata.view.UriList';
                         break;
                     default:
                         console.log('metadata.metadataType.name', metadata.metadataType.name);

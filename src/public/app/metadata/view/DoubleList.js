@@ -2,13 +2,13 @@
  * Created with IntelliJ IDEA.
  * User: mfawver
  * Date: 9/26/13
- * Time: 8:15 AM
+ * Time: 1:23 PM
  * To change this template use File | Settings | File Templates.
  */
 
-Ext.define('Savanna.metadata.view.Integer', {
+Ext.define('Savanna.metadata.view.DoubleList', {
     extend: 'Ext.panel.Panel',
-    alias: 'widget.metadata_integer',
+    alias: 'widget.metadata_doublelist',
 
     requires: [
         'Savanna.controller.Factory'
@@ -24,12 +24,6 @@ Ext.define('Savanna.metadata.view.Integer', {
             xtype: 'label',
             itemId: 'displayLabel',
             text: ''
-
-        },
-        {
-            xtype: 'label',
-            itemId: 'displayValue',
-            text: ''
         }
     ],
     initComponent: function () {
@@ -41,7 +35,17 @@ Ext.define('Savanna.metadata.view.Integer', {
 
             this.down('#displayLabel').text = config.displayLabel;
 
-            this.down('#displayValue').text = config.value.toLocaleString();
+            var me = this;
+
+            Ext.Array.each(config.value, function(stringElement) {
+                var theLabel = Ext.create('Ext.form.Label', {
+                    text: '',
+                    width: "100%"
+                });
+                theLabel.setText( stringElement.toLocaleString() );
+
+                me.add( theLabel );
+            });
 
         }, this));
     }
