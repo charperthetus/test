@@ -29,7 +29,7 @@ Ext.define('Savanna.search.store.SearchLocation', {
 
             // the follow url will replace the url in use once we have a service running
             //url: SavannaConfig.locationSearch,
-            url: 'app/assets/data/testSearchLocationSearch.json',
+            url: 'fixture/LocationSources.json',
             addSessionId: false, // this needs to be left in until using correct url or Ted adds node fix
 
             reader: {
