@@ -1,14 +1,14 @@
 /**
  * Created with IntelliJ IDEA.
- * User: swatson
- * Date: 9/24/13
- * Time: 9:13 AM
+ * User: mfawver
+ * Date: 9/25/13
+ * Time: 1:09 PM
  * To change this template use File | Settings | File Templates.
  */
 
-Ext.define('Savanna.metadata.view.String', {
+Ext.define('Savanna.metadata.view.Uri', {
     extend: 'Ext.panel.Panel',
-    alias: 'widget.metadata_string',
+    alias: 'widget.metadata_uri',
 
     requires: [
         'Savanna.controller.Factory'
@@ -27,8 +27,7 @@ Ext.define('Savanna.metadata.view.String', {
         },
         {
             xtype: 'label',
-            itemId: 'displayValue',
-            text: ''
+            itemId: 'displayValue'
         }
     ],
     initComponent: function () {
@@ -40,7 +39,19 @@ Ext.define('Savanna.metadata.view.String', {
             var config = this.initialConfig || {};
 
             this.down('#displayLabel').text = config.displayLabel;
-            this.down('#displayValue').text = config.value;
+//            console.log('config.value', config.value);
+//            var temp = Ext.Object.fromQueryString(config.value);
+//            var temp2 =  Ext.Object.toQueryString(temp);
+//            var temp3 = decodeURI(config.value);
+//            var temp4 = encodeURI(config.value);
+            var temp4 = config.value.replace('%2F', '/', 'g');
+//
+//            console.log('temp', temp);
+//            console.log('temp2', temp2);
+//            console.log('temp3', temp3);
+//            console.log('temp4', temp4);
+
+            this.down('#displayValue').text = temp4;
 
         }, this));
     }

@@ -9,7 +9,8 @@ Ext.define('Savanna.metadata.controller.FieldTypes', {
     extend: 'Ext.app.Controller',
 
     views: [
-        'Savanna.metadata.view.String'
+        'Savanna.metadata.view.String',
+        'Savanna.metadata.view.LongString'
     ],
     requires:   [
         'Savanna.controller.Factory'

@@ -1,14 +1,14 @@
 /**
  * Created with IntelliJ IDEA.
- * User: swatson
- * Date: 9/24/13
- * Time: 9:13 AM
+ * User: mfawver
+ * Date: 9/25/13
+ * Time: 8:49 AM
  * To change this template use File | Settings | File Templates.
  */
 
-Ext.define('Savanna.metadata.view.String', {
+Ext.define('Savanna.metadata.view.LongString', {
     extend: 'Ext.panel.Panel',
-    alias: 'widget.metadata_string',
+    alias: 'widget.metadata_longstring',
 
     requires: [
         'Savanna.controller.Factory'

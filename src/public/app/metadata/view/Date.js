@@ -6,9 +6,9 @@
  * To change this template use File | Settings | File Templates.
  */
 
-Ext.define('Savanna.metadata.view.String', {
+Ext.define('Savanna.metadata.view.Date', {
     extend: 'Ext.panel.Panel',
-    alias: 'widget.metadata_string',
+    alias: 'widget.metadata_date',
 
     requires: [
         'Savanna.controller.Factory'
@@ -40,7 +40,9 @@ Ext.define('Savanna.metadata.view.String', {
             var config = this.initialConfig || {};
 
             this.down('#displayLabel').text = config.displayLabel;
-            this.down('#displayValue').text = config.value;
+
+            var myDate = new Date(config.value);
+            this.down('#displayValue').text = Ext.Date.format(myDate,'F j, Y, g:i a');
 
         }, this));
     }
