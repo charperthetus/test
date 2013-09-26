@@ -78,6 +78,8 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
         this.getApplication().on('results:dalreset', this.doSearch, this);
 
+        this.getApplication().on('results:refineSearch', this.doSearch, this);
+
         this.getApplication().on('results:buildAndLoadResultsStore', this.buildAndLoadResultsStore, this);
     },
 

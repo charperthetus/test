@@ -161,11 +161,8 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
                 /*
                  resubmit the search request
                  */
-                var searchController = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
 
-                if (searchController !== undefined) {
-                    searchController.doSearch(field);
-                }
+                this.getApplication().fireEvent('results:refineSearch', field);
             }
         }
     },
@@ -180,11 +177,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
             /*
              resubmit the search request
              */
-            var searchController = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
-
-            if (searchController !== undefined) {
-                searchController.doSearch(field);
-            }
+            this.getApplication().fireEvent('results:refineSearch', field);
         }
     }
 });
