@@ -902,6 +902,101 @@ describe('Search Results', function () {
 
         });
 
+        describe('add and remove terms', function () {
+            var refineTerm, fixtures, server, searchStore, dalFixtures, resultsDals, searchDals;
+            beforeEach(function () {
+
+                /*
+                 fixtures for both results and sources needed for facets
+                 */
+                fixtures = Ext.clone(ThetusTestHelpers.Fixtures.SearchResults);
+                dalFixtures = Ext.clone(ThetusTestHelpers.Fixtures.DalSources);
+
+                /*
+                 ...and DAL panels in search and results
+                 */
+
+
+                searchDals = searchComponent.down('#searchdals');
+                resultsDals = searchComponent.down('#resultsdals');
+
+
+                /*
+                 search results store
+                 */
+                searchStore = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.SearchResults', { autoLoad: false });
+
+                // now set up server to get store data
+                server = new ThetusTestHelpers.FakeServer(sinon);
+
+                var readMethod = 'POST',
+                    testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(searchStore.getProxy(), 'read', readMethod);
+
+                server.respondWith(readMethod, testUrl, fixtures.searchResults);
+
+                searchStore.load();
+
+                server.respond({
+                    errorOnInvalidRequest: true
+                });
+
+                /*
+                 set up the DAL panels now that we have a sources store
+                 */
+                searchDals.store = store;
+                searchDals.createDalPanels();
+
+                resultsDals.store = store;
+
+
+                searchComponent.down('#searchdals').queryById('mockDAL').query('checkbox')[0].setValue(true);
+
+
+
+                resultsDals.createDalPanels(searchController.getSelectedDals(searchComponent));
+
+
+                spyOn(searchComponent.down('#refineterms'), 'removeTerm');
+
+                refineTerm = Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineTerm',     {
+                    itemId:'term_apple'
+                });
+                refineTerm.setTerm('apple');
+
+
+
+            });
+
+            describe('onTermRender', function() {
+
+                 it('should add an event listener when a term is rendered', function()  {
+                     searchComponent.down('#refineterms').queryById('termValues').add(refineTerm);
+
+                     expect(refineTerm.hasListener('click')).toBeTruthy();
+                 });
+            });
+
+            describe('handleRemoveTerm', function() {
+                it('should call removeTerm', function () {
+
+                    searchComponent.down('#refineterms').queryById('termValues').add(refineTerm);
+
+                    resultsController.handleRemoveTerm(refineTerm.queryById('removeTerm'));
+
+                    expect(searchComponent.down('#refineterms').removeTerm).toHaveBeenCalled();
+                });
+            });
+        });
+
+        describe('onItemPreview', function()    {
+            var grid = resultsComponent.queryById('resultspanel').queryById('resultspanelgrid');
+            it('should show the preview window', function() {
+                  resultsController.onItemPreview(grid, {});
+
+                expect(resultsComponent.queryById('resultspreviewwindow').isVisible()).toBeTruthy();
+            });
+        });
+
         describe('onShowHideFacets', function () {
 
             var fixtures, server, searchStore, dalFixtures, facets, resultsDals, searchDals;

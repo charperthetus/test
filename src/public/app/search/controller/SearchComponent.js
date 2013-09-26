@@ -1,4 +1,4 @@
-/* global Ext: false, Savanna: false */
+/* global Ext: false, OpenLayers: false, SavannaConfig: false */
 /**
  * Created with IntelliJ IDEA.
  * User: ksonger
@@ -128,8 +128,10 @@ Ext.define('Savanna.search.controller.SearchComponent', {
     handleNewSearch: function (elem) {
         var component = this.getSearchComponent(elem);
 
-        component.down('search_resultsDals_resultsterms').queryById('termValues').removeAll();  // remove refine terms in results screen
+        if(component.down('search_resultsDals_resultsterms'))   {   // doesn't exist if results page has not yet been created
 
+            component.down('search_resultsDals_resultsterms').queryById('termValues').removeAll();  // remove refine terms in results screen
+        }
 
         var form = component.down('#search_form'),
             searchBar = component.down('#searchbar');
@@ -182,6 +184,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
          */
         component.down('#resultspanel').updateGridStore({store: Ext.create('Savanna.search.store.SearchResults')});
     },
+
     clearSearch: function (elem) {
         var form = elem.findParentByType('search_searchcomponent').down('#searchbar');
         form.queryById('search_terms').setValue('');
@@ -396,6 +399,15 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             }
 
         }, this);
+
+
+
+        /*
+         clear the grid - it's misleading in error states to see results in the grid, even though
+         the search request has failed for one reason or another
+         */
+        component.down('#resultspanel').updateGridStore({store: Ext.create('Savanna.search.store.SearchResults')});
+
 
         this.showResultsPage(component);
     },

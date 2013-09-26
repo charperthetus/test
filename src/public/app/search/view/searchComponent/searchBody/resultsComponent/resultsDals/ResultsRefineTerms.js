@@ -46,9 +46,8 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
         field.setValue('');
     },
 
-    removeTerm:function(term)   {
-
-        var myTerm = this.queryById(term.up('panel[cls=refine-term]').itemId),
+    removeTerm:function(closeButton)   {
+        var myTerm = this.queryById(closeButton.up('panel[cls=refine-term]').itemId),
             myValue = myTerm.queryById('termValue').text + ' AND ';
 
         this.findParentByType('search_searchcomponent').refineSearchString = this.findParentByType('search_searchcomponent').refineSearchString.replace(myValue, '');
