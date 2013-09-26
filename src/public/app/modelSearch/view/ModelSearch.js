@@ -2,7 +2,6 @@ Ext.define('Savanna.modelSearch.view.ModelSearch', {
     extend: 'Ext.Panel',
     alias: 'widget.modelsearch',
     cls: 'model-search',
-    store: 'Savanna.modelSearch.store.ModelSearchStore',
     requires: [
         'Savanna.modelSearch.view.ResultsGrid',
         'Savanna.modelSearch.view.ModelSearchHeader'
@@ -20,8 +19,8 @@ Ext.define('Savanna.modelSearch.view.ModelSearch', {
         }
     ],
     initComponent: function() {
-
-        this.callParent(arguments)
+        this.store=Ext.create('Savanna.modelSearch.store.ModelSearchStore');
+        this.callParent(arguments);
         Savanna.controller.Factory.getController('Savanna.modelSearch.controller.ModelSearchController');
 
 

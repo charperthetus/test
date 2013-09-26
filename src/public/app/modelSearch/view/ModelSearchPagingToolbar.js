@@ -3,8 +3,6 @@ Ext.define('Savanna.modelSearch.view.ModelSearchPagingToolbar', {
 
     alias: 'widget.modelsearch_pagingToolbar',
 
-    store: 'Savanna.modelSearch.store.ModelSearchStore',
-
     displayInfo: true,
 
     displayMsg: '{2} Results',
@@ -13,7 +11,7 @@ Ext.define('Savanna.modelSearch.view.ModelSearchPagingToolbar', {
 
     initComponent: function() {
 
-        this.store=Ext.create('Savanna.modelSearch.store.ModelSearchStore')
+        this.store=Ext.data.StoreManager.lookup('modelSearchStore');
         this.callParent(arguments);
 
 

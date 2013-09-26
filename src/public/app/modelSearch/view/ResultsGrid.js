@@ -5,8 +5,6 @@ Ext.define('Savanna.modelSearch.view.ResultsGrid', {
 
     title: 'Results',
 
-    store: 'Savanna.modelSearch.store.ModelSearchStore',
-
     columns: [
             { text: 'Item Name',  dataIndex: 'referenceName', flex: 1 },
             { text: 'Classification', dataIndex: 'classification', flex: 1 },
@@ -23,7 +21,7 @@ Ext.define('Savanna.modelSearch.view.ResultsGrid', {
 
    initComponent: function() {
 
-       this.store=Ext.create('Savanna.modelSearch.store.ModelSearchStore')
+       this.store=Ext.data.StoreManager.lookup('modelSearchStore');
         this.callParent(arguments);
 
         this.getStore().loadPage(1);

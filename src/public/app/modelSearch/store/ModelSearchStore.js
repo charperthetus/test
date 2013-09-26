@@ -11,11 +11,13 @@ Ext.define('Savanna.modelSearch.store.ModelSearchStore', {
 
     model: 'Savanna.modelSearch.model.ModelSearchModel',
 
+    storeId: 'modelSearchStore',
+
     pageSize: 20,
 
     remoteSort: true,
 
-    autoLoad: true,
+    autoLoad: false,
 
     searchText: '',
 

@@ -24,21 +24,16 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
         app.on('search:itemselected', this.showItemView, this);
 
-        var me = this;
 
-        // TODO: add listeners for life-cycle events on itemview components/subcomponents
-        this.control({
-            itemview: {
-                render: function (view) {
-                    //console.log('itemview render', arguments);
-                }
-            }
-        });
-        this.on("itemview:created", function (tab) {
-            var tabpanel = Ext.ComponentQuery.query('desktop_modelsearchwindow #maintabs')[0];
-            var main=tabpanel.getActiveTab();
-            tabpanel.add(tab);
-        });
+        this.on("itemview:created", this.onItemViewCreated);
+
+    },
+
+    onItemViewCreated: function (tab) {
+
+        var tabpanel = Ext.ComponentQuery.query('desktop_modelsearchwindow #maintabs')[0];
+        var main = tabpanel.getActiveTab();
+        tabpanel.add(tab);
 
     },
 
@@ -48,7 +43,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         var bustCache = typeof this.opts.disableCaching === 'undefined' ? true : this.opts.disableCaching;
 
         Ext.Ajax.request({
-            url: this.buildItemDataFetchUrl(record.data.id),
+            url: this.buildItemDataFetchUrl(record.data.uri),
             method: 'GET',
             withCredentials: true,
             disableCaching: bustCache,
@@ -56,10 +51,9 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
                 'Accept': 'application/json'
             },
 
-            //success: Ext.bind(this.handleRecordDataRequestSuccess, this, [record]),
 
             success: Ext.bind(this.handleRecordDataRequestSuccess, this, [record], true),
-            failure: function ( response) {
+            failure: function (response) {
 
                 // TODO: abstract out
                 console.log('server-side failure with status code ' + response.status);
@@ -67,9 +61,9 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         });
     },
 
-    handleRecordDataRequestSuccess: function(response, options, record) {
+    handleRecordDataRequestSuccess: function (response, options, record) {
         var itemData = Ext.decode(response.responseText),
-            itemView = Ext.create('Savanna.itemView.view.ItemViewer',{
+            itemView = Ext.create('Savanna.itemView.view.ItemViewer', {
                 title: record.data.referenceName,
                 closable: true,
                 autoScroll: true
