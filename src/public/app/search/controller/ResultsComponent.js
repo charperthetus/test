@@ -76,7 +76,6 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
     },
 
     onItemPreview: function (grid, record) {
-        console.log(grid, Ext.JSON.encode(record));
         var win = grid.findParentByType('search_resultscomponent').queryById('resultspreviewwindow');
         win.displayPreview(record);
     },
@@ -116,11 +115,10 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
 
         var id = comboboxComponent.findParentByType('search_resultscomponent').currentResultSet.id,
             dalRecord = Ext.data.StoreManager.lookup('dalSources').getById(id),
-
-        /*
-            regrettable but necessary call to the search controller directly.  The target method
-            'buildSearchObject' needs to return the request object, but when an event is fired it can
-            only return a boolean.  If anyone thinks of a way around it, please feel free to updaate.
+            /*
+             regrettable but necessary call to the SearchController directly.  The target method
+             'buildSearchObject' needs to return the request object, but when an event is fired it can
+             only return a boolean.  If anyone thinks of a way around it, please feel free to update.
              */
             searchController = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent'),
             component = comboboxComponent.findParentByType('search_searchcomponent'),
