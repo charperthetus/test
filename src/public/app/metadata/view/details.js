@@ -62,50 +62,37 @@ Ext.define('Savanna.metadata.view.Details', {
 
         Ext.Array.each(this.store.data.items[0].data.metadata.metadataEntries, function(metadata) {
             if(metadata.value) {
+                var TypeToAdd = '';
+
                 switch(metadata.metadataType.name){
                     case 'String':
-                        me.add(
-                            Ext.create('Savanna.metadata.view.String', {
-                                value: metadata.value,
-                                displayLabel: metadata.key.displayLabel
-                            })
-                        );
+                        TypeToAdd = 'Savanna.metadata.view.String';
                         break;
                     case 'LongString':
-                        me.add(
-                            Ext.create('Savanna.metadata.view.LongString', {
-                                value: metadata.value,
-                                displayLabel: metadata.key.displayLabel
-                            })
-                        );
+                        TypeToAdd = 'Savanna.metadata.view.LongString';
                         break;
                     case 'Date':
-                        me.add(
-                            Ext.create('Savanna.metadata.view.Date', {
-                                value: metadata.value,
-                                displayLabel: metadata.key.displayLabel
-                            })
-                        );
+                        TypeToAdd = 'Savanna.metadata.view.Date';
                         break;
                     case 'Uri':
-                        me.add(
-                            Ext.create('Savanna.metadata.view.Uri', {
-                                value: metadata.value,
-                                displayLabel: metadata.key.displayLabel
-                            })
-                        );
+                        TypeToAdd = 'Savanna.metadata.view.Uri';
                         break;
                     case 'Integer':
-                        me.add(
-                            Ext.create('Savanna.metadata.view.Integer', {
-                                value: metadata.value,
-                                displayLabel: metadata.key.displayLabel
-                            })
-                        );
+                        TypeToAdd = 'Savanna.metadata.view.Integer';
                         break;
                     default:
                         console.log('metadata.metadataType.name', metadata.metadataType.name);
                 }
+
+                if('' != TypeToAdd) {
+                    me.add(
+                        Ext.create(TypeToAdd, {
+                            value: metadata.value,
+                            displayLabel: metadata.key.displayLabel
+                        })
+                    );
+                }
+
             } else {
                 console.log('Field has no value ', metadata.metadataType.name, metadata.value);
             }
