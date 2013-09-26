@@ -1,4 +1,4 @@
-/* global Ext: false, Savanna: false */
+/* global Ext: false, OpenLayers: false, SavannaConfig: false */
 /**
  * Created with IntelliJ IDEA.
  * User: ksonger
@@ -28,18 +28,9 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             'search_searchcomponent #search_reset_button': {
                 click: this.handleNewSearch
             },
-            'search_searchcomponent #clearLocationSearch': {
-                click: function (button) {
-                    button.up('search_searchmap').queryById('leafletMap').fireEvent('locationSearch:clear');
-                }
-            },
             'search_searchcomponent #mapZoomTo': {
                 click: function (button) {
                     button.up('search_searchmap').queryById('leafletMap').fireEvent('locationSearch:zoomto', button);
-                }
-            },
-            'search_searchcomponent #leafletMap': {
-                'draw:created': function () {
                 }
             },
             'search_searchcomponent #findLocation': {
@@ -71,6 +62,17 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             },
             'search_searchcomponent #resultsbutton': {
                 click: this.onBodyToolbarClick
+            },
+            'search_searchcomponent #searchMapCanvas': {
+                beforerender: this.loadDefaultLayer,
+                afterrender: this.loadVectorLayer,
+                resize: this.onMapCanvasResize
+            },
+            'search_searchcomponent #drawLocationSearch': {
+                click: this.activateDrawFeature
+            },
+            'search_searchcomponent #clearLocationSearch': {
+                click: this.clearDrawFeature
             }
         });
 
@@ -92,7 +94,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
     handleNewSearch: function (elem) {
         var component = this.getSearchComponent(elem);
 
-            component.down('search_resultsDals_resultsterms').queryById('termValues').removeAll();
+        component.down('search_resultsDals_resultsterms').queryById('termValues').removeAll();
 
 
         var form = component.down('#search_form');
@@ -128,7 +130,6 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         component.down('#resultsdals').removeAll();
 
 
-
         /*
          return to the options screen if we're not already there
          */
@@ -141,11 +142,20 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         /*
          clear the grid - it's misleading in error states with mockDAL to see results in the grid
          */
-        component.down('#resultspanelgrid').removeAll();
+        component.down('#resultspanel').updateGridStore({store: Ext.create('Savanna.search.store.SearchResults')});
     },
     clearSearch: function (elem) {
         var form = elem.findParentByType('search_searchcomponent').down('#search_form');
         form.queryById('search_terms').setValue('');
+
+        var formField = form.queryById('searchadvanced_menu').queryById('form_container');
+
+        Ext.Array.each(formField.query('searchadvanced_textfield'), function (field) {
+            if (field.xtype === 'searchadvanced_textfield') {
+                field.setValue('');
+            }
+        });
+
     },
 
     handleSearchSubmit: function (btn) {
@@ -153,7 +163,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
     },
 
     handleSearchTermKeyUp: function (field, evt) {
-        if (evt.keyCode === 13) {
+        if (evt.keyCode === Ext.EventObject.ENTER) {
             // user pressed enter
             this.doSearch(field);
         }
@@ -234,8 +244,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         return sources;
     },
 
-    buildSearchObject:function(searchString, dal, currentDalPanel){
-
+    buildSearchObject: function (searchString, dal, currentDalPanel) {
         var searchObj = Ext.create('Savanna.search.model.SearchRequest', {
             'textInputString': searchString,
             'displayLabel': searchString
@@ -280,13 +289,12 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         }
 
         return searchObj;
-
-
     },
 
     buildAndLoadResultsStore:function(dal, component, searchObj, action, comboboxComponent) {
 
         var pageSize;
+
         if(comboboxComponent)   {
             pageSize = comboboxComponent.value;
         }   else    {
@@ -325,7 +333,6 @@ Ext.define('Savanna.search.controller.SearchComponent', {
          For each selected DAL, a new store is generated and this array is used to keep track
          */
         resultsComponent.allResultSets = [];
-
 
 
         /*
@@ -397,9 +404,9 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
             var resultsObj = {id: dalId, store: store};
 
-            if(action === 'search') {
+            if (action === 'search') {
                 /*
-                add an object tying the dal and store together for referencing
+                 add an object tying the dal and store together for referencing
                  */
                 resultsPanel.up('#searchresults').allResultSets.push(resultsObj);
 
@@ -407,9 +414,9 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                     resultsDal.createDalFacets(dalId);
                 }
 
-            }   else    {
+            } else {
                 /*
-                filtering, action set to 'filter'
+                 filtering, action set to 'filter'
                  */
 
                 Ext.Array.findBy(resultsPanel.up('#searchresults').allResultSets, function (resultset, index) {
@@ -422,14 +429,13 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             var statusString = success ? 'success' : 'fail';
             resultsDal.updateDalStatus(dalId, statusString);
 
-            var controller = Savanna.controller.Factory.getController('Savanna.search.controller.ResultsComponent');
 
-            if(action === 'search') {
+            if (action === 'search') {
                 if (dalId === Ext.data.StoreManager.lookup('dalSources').defaultId) {
 
                     this.getApplication().fireEvent('search:changeSelectedStore', {}, {}, resultsDal.queryById(dalId));
                 }
-            }   else    {
+            } else {
                 /*
                  filtering, action set to 'filter'
                  */
@@ -440,6 +446,56 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
     showResultsPage: function (component) {
         var resultsBtn = component.down('#resultsbutton');
+
         resultsBtn.fireEvent('click', resultsBtn);
+    },
+
+    loadDefaultLayer: function (canvas) {
+        canvas.map.addLayer(new OpenLayers.Layer.WMS(SavannaConfig.mapBaseLayerLabel,
+            SavannaConfig.mapBaseLayerUrl, {layers: SavannaConfig.mapBaseLayerName}));
+    },
+
+    loadVectorLayer: function (canvas) {
+        // Add a feature layer to the map.
+        var searchLayer = new OpenLayers.Layer.Vector('searchLayer');
+        canvas.searchLayer = searchLayer;
+        canvas.map.addLayer(searchLayer);
+
+        // Add the draw feature control to the map.
+        var drawFeature = new OpenLayers.Control.DrawFeature(searchLayer, OpenLayers.Handler.Polygon, {
+            featureAdded: this.onFeatureAdded
+        });
+
+        drawFeature.handler.callbacks.point = this.pointCallback;
+        canvas.map.addControl(drawFeature);
+        canvas.drawFeature = drawFeature;
+    },
+
+    onFeatureAdded: function () {
+        // Scope: drawFeature
+        this.deactivate();
+    },
+
+    onMapCanvasResize: function (canvas) {
+        canvas.map.updateSize();
+    },
+
+    pointCallback: function () {
+        // Scope: drawFeature
+        // Called each time a point is added to the feature.
+        if (this.layer.features.length > 0) {
+            this.layer.removeAllFeatures();
+        }
+    },
+
+    activateDrawFeature: function (button) {
+        var canvas = button.up('search_searchmap').down('search_map_canvas');
+        canvas.drawFeature.activate();
+    },
+
+    clearDrawFeature: function (button) {
+        var canvas = button.up('search_searchmap').down('search_map_canvas');
+        canvas.searchLayer.removeAllFeatures();
+        canvas.drawFeature.deactivate();
     }
 });

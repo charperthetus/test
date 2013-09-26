@@ -11,7 +11,5 @@ Ext.define('Savanna.crumbnet.model.Template', {
 
     belongsTo: 'Savanna.search.model.TemplateGroup',
 
-    idProperty: 'category',
-
-    fields: ['category', 'label']
+    fields: ['type','category','title','color','percent']
 });

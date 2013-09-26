@@ -3,7 +3,6 @@
         describe: false, beforeEach: false, afterEach: false, it: false, expect: false, spyOn: false, sinon: false,
         ThetusTestHelpers: false, Savanna: false
  */
-Ext.require('Savanna.Config');
 Ext.require('Savanna.search.controller.SearchComponent');
 Ext.require('Savanna.search.model.SearchRequest');
 Ext.require('Savanna.search.model.SearchResult');
@@ -194,16 +193,18 @@ describe('Search Component', function () {
 
         describe('SearchBar subview', function () {
             describe('buildSearchString method', function () {
-                var searchbar = null;
+                var searchbar = null, formFields = null;
 
                 beforeEach(function () {
                     searchbar = component.queryById('searchbar');
 
+                    formFields = component.down('#search_form').queryById('searchadvanced_menu').queryById('form_container');
+
                     searchbar.queryById('search_terms').setValue('search bar terms');
-                    searchbar.queryById('all_words').setValue('some text');
-                    searchbar.queryById('exact_phrase').setValue('other text');
-                    searchbar.queryById('any_words').setValue('more and more text');
-                    searchbar.queryById('none_words').setValue('bad terms');
+                    formFields.queryById('all_words').setValue('some text');
+                    formFields.queryById('exact_phrase').setValue('other text');
+                    formFields.queryById('any_words').setValue('more and more text');
+                    formFields.queryById('none_words').setValue('bad terms');
                 });
 
                 it('should correctly assemble a search string from form fields', function () {
@@ -214,17 +215,17 @@ describe('Search Component', function () {
                 });
 
                 it('should call getBooleanValue on each field', function () {
-                    spyOn(searchbar.queryById('all_words'), 'getBooleanValue');
-                    spyOn(searchbar.queryById('exact_phrase'), 'getBooleanValue');
-                    spyOn(searchbar.queryById('any_words'), 'getBooleanValue');
-                    spyOn(searchbar.queryById('none_words'), 'getBooleanValue');
+                    spyOn(formFields.queryById('all_words'), 'getBooleanValue');
+                    spyOn(formFields.queryById('exact_phrase'), 'getBooleanValue');
+                    spyOn(formFields.queryById('any_words'), 'getBooleanValue');
+                    spyOn(formFields.queryById('none_words'), 'getBooleanValue');
 
                     searchbar.buildSearchString();
 
-                    expect(searchbar.queryById('all_words').getBooleanValue).toHaveBeenCalled();
-                    expect(searchbar.queryById('exact_phrase').getBooleanValue).toHaveBeenCalled();
-                    expect(searchbar.queryById('any_words').getBooleanValue).toHaveBeenCalled();
-                    expect(searchbar.queryById('none_words').getBooleanValue).toHaveBeenCalled();
+                    expect(formFields.queryById('all_words').getBooleanValue).toHaveBeenCalled();
+                    expect(formFields.queryById('exact_phrase').getBooleanValue).toHaveBeenCalled();
+                    expect(formFields.queryById('any_words').getBooleanValue).toHaveBeenCalled();
+                    expect(formFields.queryById('none_words').getBooleanValue).toHaveBeenCalled();
                 });
             });
         });
@@ -306,15 +307,17 @@ describe('Search Component', function () {
         });
 
         describe('managing SearchBar subview events', function () {
-            var searchbar = null;
+            var searchbar = null, formFields = null;
 
             beforeEach(function () {
                 searchbar = component.queryById('searchbar');
+                formFields = component.down('#search_form').queryById('searchadvanced_menu').queryById('form_container');
+
                 searchbar.queryById('search_terms').setValue('search bar terms');
-                searchbar.queryById('all_words').setValue('some text');
-                searchbar.queryById('exact_phrase').setValue('other text');
-                searchbar.queryById('any_words').setValue('more and more text');
-                searchbar.queryById('none_words').setValue('bad terms');
+                formFields.queryById('all_words').setValue('some text');
+                formFields.queryById('exact_phrase').setValue('other text');
+                formFields.queryById('any_words').setValue('more and more text');
+                formFields.queryById('none_words').setValue('bad terms');
 
                 var readMethod = 'GET',
                     testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(dalStore.getProxy(), 'read', readMethod);
@@ -344,6 +347,7 @@ describe('Search Component', function () {
 
             afterEach(function () {
                 searchbar = null;
+                formFields = null;
 
                 if (server) {
                     server.restore();
@@ -359,17 +363,6 @@ describe('Search Component', function () {
                 expect(searchbar.queryById('searchadvanced_menu').isVisible()).toBeFalsy();
             });
 
-            it('should align the advanced menu below the simple search textfield', function () {
-                var button = component.queryById('searchadvanced_btn');
-                var menu = button.menu;
-
-                spyOn(menu, 'alignTo');
-
-                controller.alignMenuWithTextfield(button);
-
-                expect(menu.alignTo).toHaveBeenCalled();
-            });
-
             it('should build the search string', function () {
 
 
@@ -381,13 +374,14 @@ describe('Search Component', function () {
 
             it('should remove search field values when "Start New Search" is selected', function () {
                 var form = searchbar.queryById('search_form');
+
                 controller.handleNewSearch(component.queryById('searchbar'));
 
                 expect(form.queryById('search_terms').getValue()).toEqual('');
-                expect(form.queryById('all_words').getValue()).toEqual('');
-                expect(form.queryById('exact_phrase').getValue()).toEqual('');
-                expect(form.queryById('any_words').getValue()).toEqual('');
-                expect(form.queryById('none_words').getValue()).toEqual('');
+                expect(formFields.queryById('all_words').getValue()).toEqual('');
+                expect(formFields.queryById('exact_phrase').getValue()).toEqual('');
+                expect(formFields.queryById('any_words').getValue()).toEqual('');
+                expect(formFields.queryById('none_words').getValue()).toEqual('');
             });
         });
 

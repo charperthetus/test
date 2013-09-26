@@ -83,7 +83,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
         Savanna.controller.Factory.getController('Savanna.search.controller.ResultsComponent');
     },
     populate: function () {
-        console.log('test')
+
     }
 
 });

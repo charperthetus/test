@@ -12,8 +12,8 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
     views: [
         'Savanna.search.view.searchComponent.searchBody.ResultsComponent'
     ],
-    requires:   [
-      'Savanna.controller.Factory'
+    requires: [
+        'Savanna.controller.Factory'
     ],
     init: function () {
 
@@ -21,10 +21,10 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
             'search_resultscomponent panel[cls=results-dal]': {
                 'render': this.onDalRender
             },
-            'search_resultscomponent #resultsPageSizeCombobox':   {
+            'search_resultscomponent #resultsPageSizeCombobox': {
                 select: this.onPageComboChange
             },
-            'search_resultscomponent #resultsSortByCombobox':   {
+            'search_resultscomponent #resultsSortByCombobox': {
                 select: this.onSortByChange
             },
             'search_resultscomponent #resultspanelgrid': {
@@ -33,7 +33,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
             'search_resultscomponent > #resultspreviewwindow #resultspreviewcontent #previewclosebutton': {
                 'click': this.onCloseItemPreview
             },
-            'search_resultscomponent #resultsFacetsReset':  {
+            'search_resultscomponent #resultsFacetsReset': {
                 'click': this.onDalReset
             },
             'search_resultscomponent #refine_search_terms': {
@@ -58,21 +58,20 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
         term.mon(term.queryById('removeTerm'), 'click', this.handleRemoveTerm, this, term);
     },
 
-    handleRemoveTerm:function(term){
+    handleRemoveTerm: function (term) {
         term.findParentByType('search_searchcomponent').down('#refineterms').removeTerm(term);
     },
 
-    onShowHideFacets:function(btn){
+    onShowHideFacets: function (btn) {
 
-       Ext.each(btn.up('#resultsfacets').query('panel[cls=results-facet]'), function(facet) {
+        Ext.each(btn.up('#resultsfacets').query('panel[cls=results-facet]'), function (facet) {
 
            if(!btn.facetsExpanded)    {
                facet.expand();
            }    else    {
                facet.collapse();
            }
-
-       });
+        });
         btn.facetsExpanded = !btn.facetsExpanded;
     },
 
@@ -81,7 +80,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
         win.displayPreview(record);
     },
 
-    onCloseItemPreview:function(btn)   {
+    onCloseItemPreview: function (btn) {
         btn.up('#resultspreviewwindow').hide();
     },
 
@@ -89,7 +88,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
         dal.body.on('click', this.changeSelectedStore, this, dal);
     },
 
-    onDalReset:function(btn)   {
+    onDalReset: function (btn) {
         var id = btn.findParentByType('search_resultscomponent').currentResultSet.id;
         var dalRecord = Ext.data.StoreManager.lookup('dalSources').getById(id),
             resultsDals = btn.up('#resultsdals'),
@@ -105,10 +104,10 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
         this.getApplication().fireEvent('results:dalreset', btn);
     },
 
-    onSortByChange:function(){
+    onSortByChange: function () {
         /*
-        this is a placeholder at the moment - not sure what the available sort options
-        will be, and only 'relevance' appears in the comps and flex client version.
+         this is a placeholder at the moment - not sure what the available sort options
+         will be, and only 'relevance' appears in the comps and flex client version.
          */
     },
 
@@ -129,16 +128,16 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
     },
 
     /*
-    swaps the store assigned to our grid based on whichever DAL the
-    user selects from the left-hand panel, and triggers an update
-    of the facets for the newly selected store.
+     swaps the store assigned to our grid based on whichever DAL the
+     user selects from the left-hand panel, and triggers an update
+     of the facets for the newly selected store.
      */
-    changeSelectedStore:function(evt, body, dal) {
+    changeSelectedStore: function (evt, body, dal) {
 
         var component = dal.findParentByType('search_resultscomponent');
 
-        Ext.each(component.allResultSets, function(resultSet) {
-            if(resultSet.id === dal.itemId)    {
+        Ext.each(component.allResultSets, function (resultSet) {
+            if (resultSet.id === dal.itemId) {
 
                 component.queryById('resultspanel').updateGridStore(resultSet);
 
@@ -154,18 +153,19 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
     },
 
     handleSearchTermKeyUp: function (field, evt) {
-        if (evt.keyCode === Ext.EventObject.ENTER) {
+        if (evt.keyCode === Ext.EventObject.ENTER) {   
+            if (field.getValue().trim().length) {
+                field.findParentByType('search_searchcomponent').refineSearchString += (field.getValue() + ' AND ');
+                field.findParentByType('search_searchcomponent').down('#refineterms').addTerm(field);
 
-            field.findParentByType('search_searchcomponent').refineSearchString += (field.getValue() + ' AND ');
-            field.findParentByType('search_searchcomponent').down('#refineterms').addTerm(field);
+                /*
+                 resubmit the search request
+                 */
+                var searchController = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
 
-             /*
-             resubmit the search request
-             */
-            var searchController = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
-
-            if (searchController !== undefined) {
-                searchController.doSearch(field);
+                if (searchController !== undefined) {
+                    searchController.doSearch(field);
+                }
             }
         }
     },
@@ -173,16 +173,18 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
     handleSearchSubmit: function (btn) {
         var field = btn.findParentByType('search_resultscomponent').down('#refine_search_terms');
 
-        field.findParentByType('search_searchcomponent').refineSearchString += (field.getValue() + ' AND ');
-        field.findParentByType('search_searchcomponent').down('#refineterms').addTerm(field);
+        if (field.getValue().trim().length) {
+            field.findParentByType('search_searchcomponent').refineSearchString += (field.getValue() + ' AND ');
+            field.findParentByType('search_searchcomponent').down('#refineterms').addTerm(field);
 
-        /*
-         resubmit the search request
-         */
-        var searchController = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
+            /*
+             resubmit the search request
+             */
+            var searchController = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
 
-        if (searchController !== undefined) {
-            searchController.doSearch(field);
+            if (searchController !== undefined) {
+                searchController.doSearch(field);
+            }
         }
     }
 });

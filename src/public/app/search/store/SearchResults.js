@@ -3,7 +3,6 @@ Ext.define('Savanna.search.store.SearchResults', {
     extend: 'Ext.data.JsonStore',
 
     requires: [
-        'Savanna.Config',
         'Savanna.search.model.SearchResult',
         'Savanna.proxy.Cors'
     ],
@@ -49,7 +48,7 @@ Ext.define('Savanna.search.store.SearchResults', {
 
         this.setProxy({
             type: 'savanna-cors',
-            url: Savanna.Config.buildSavannaUrl('searchUrl'),
+            url: SavannaConfig.searchUrl,
             reader: new ReaderClass(),
 
             // TODO: we should take one last stab at not having to monkey with the jsonData...

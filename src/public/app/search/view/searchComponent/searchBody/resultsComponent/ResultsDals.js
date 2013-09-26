@@ -173,7 +173,9 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
             facets = this.queryById('resultsfacets').queryById('tab_' + id),
             me = this;
 
-        facets.removeAll();
+        if(facets !== null) {
+            facets.removeAll();
+        }
 
         Ext.each(this.findParentByType('search_resultscomponent').allResultSets, function (resultset) {
             if (resultset.id === id) {
@@ -203,13 +205,16 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
     },
 
     createFacet: function (facet, results, dalRecord) {
-
-        return Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacet', {
-            facet: facet,
-            searchResults: results,
-            dal: dalRecord,
-            itemId: 'facet_' + dalRecord.get('id') + '_' + facet.facetId
-        });
+        var hasValues = results.store.facetValueSummaries[facet.facetId].facetValues.length;
+        var isStringFacet = (facet.facetDataType === 'STRING');
+        if(!isStringFacet || (isStringFacet && hasValues))  {
+            return Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacet', {
+                facet: facet,
+                searchResults: results,
+                dal: dalRecord,
+                itemId: 'facet_' + dalRecord.get('id') + '_' + facet.facetId
+            });
+        }
     },
 
     updateDalStatus: function (dalId, status) {
