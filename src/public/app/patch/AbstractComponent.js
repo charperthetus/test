@@ -8,10 +8,8 @@ Ext.define('Savanna.patch.AbstractComponent', {
 }, function() {
     Ext.override(Ext.AbstractComponent, {
         onRender: function() {
-            var itemId = this.getItemId();
-
-            if (itemId) {
-                this.getEl().dom.setAttribute('data-selid', itemId);
+            if (this.itemId) {
+                this.getEl().dom.setAttribute('data-selid', this.itemId);
             }
 
             this.callParent(arguments);
