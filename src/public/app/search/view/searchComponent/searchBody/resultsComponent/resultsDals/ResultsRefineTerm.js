@@ -15,10 +15,6 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
     border:true,
     cls:'refine-term',
 
-    initComponent: function () {
-        this.callParent(arguments);
-    },
-
     setTerm:function(term)  {
         this.queryById('termValue').setText(term);
     },

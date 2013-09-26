@@ -49,10 +49,13 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
                 'click': this.onShowHideFacets
             }
         });
+
+        this.getApplication().on('search:changeSelectedStore', this.changeSelectedStore, this);
+
     },
 
-    onTermRender: function (term) {
-        term.queryById('removeTerm').on('click', this.handleRemoveTerm, this, term);
+    onTermRender:function(term)    {
+        term.mon(term.queryById('removeTerm'), 'click', this.handleRemoveTerm, this, term);
     },
 
     handleRemoveTerm: function (term) {
@@ -63,12 +66,11 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
 
         Ext.each(btn.up('#resultsfacets').query('panel[cls=results-facet]'), function (facet) {
 
-            if (!btn.facetsExpanded) {
-                facet.expand();
-            } else {
-                facet.collapse();
-            }
-
+           if(!btn.facetsExpanded)    {
+               facet.expand();
+           }    else    {
+               facet.collapse();
+           }
         });
         btn.facetsExpanded = !btn.facetsExpanded;
     },
@@ -90,8 +92,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
         var id = btn.findParentByType('search_resultscomponent').currentResultSet.id;
         var dalRecord = Ext.data.StoreManager.lookup('dalSources').getById(id),
             resultsDals = btn.up('#resultsdals'),
-            resultsTerms = resultsDals.down('search_resultsDals_resultsterms'),
-            searchController = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
+            resultsTerms = resultsDals.down('search_resultsDals_resultsterms');
 
         dalRecord.set('facetFilterCriteria', []);
         resultsDals.queryById('resultsfacets').removeAll();
@@ -100,7 +101,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
 
         resultsTerms.queryById('termValues').removeAll();
 
-        searchController.doSearch(btn);
+        this.getApplication().fireEvent('results:dalreset', btn);
     },
 
     onSortByChange: function () {
@@ -110,18 +111,19 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
          */
     },
 
-    onPageComboChange: function (combo) {
+    onPageComboChange:function(comboboxComponent){
 
-        var id = combo.findParentByType('search_resultscomponent').currentResultSet.id,
+        var id = comboboxComponent.findParentByType('search_resultscomponent').currentResultSet.id,
             dalRecord = Ext.data.StoreManager.lookup('dalSources').getById(id),
             searchController = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent'),
-            component = searchController.getSearchComponent(combo),
+            component = comboboxComponent.findParentByType('search_searchcomponent'),
             currentDalPanel = component.down('#searchdals').queryById(id),
             searchString = component.queryById('searchbar').buildSearchString(),
             searchObj = searchController.buildSearchObject(searchString, dalRecord, currentDalPanel);
 
-        dalRecord.set('resultsPerPage', combo.value);
-        searchController.buildAndLoadResultsStore(dalRecord, component, searchObj, 'filter', combo);
+        dalRecord.set('resultsPerPage', comboboxComponent.value);
+
+        this.getApplication().fireEvent('results:buildAndLoadResultsStore', dalRecord, component, searchObj, 'filter', comboboxComponent);
 
     },
 
@@ -151,7 +153,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
     },
 
     handleSearchTermKeyUp: function (field, evt) {
-        if (evt.keyCode === Ext.EventObject.ENTER) {   // user pressed enter
+        if (evt.keyCode === Ext.EventObject.ENTER) {   
             if (field.getValue().trim().length) {
                 field.findParentByType('search_searchcomponent').refineSearchString += (field.getValue() + ' AND ');
                 field.findParentByType('search_searchcomponent').down('#refineterms').addTerm(field);
@@ -159,11 +161,8 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
                 /*
                  resubmit the search request
                  */
-                var searchController = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
 
-                if (searchController !== undefined) {
-                    searchController.doSearch(field);
-                }
+                this.getApplication().fireEvent('results:refineSearch', field);
             }
         }
     },
@@ -178,11 +177,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
             /*
              resubmit the search request
              */
-            var searchController = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
-
-            if (searchController !== undefined) {
-                searchController.doSearch(field);
-            }
+            this.getApplication().fireEvent('results:refineSearch', field);
         }
     }
 });

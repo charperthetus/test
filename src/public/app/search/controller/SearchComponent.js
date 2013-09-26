@@ -82,6 +82,12 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                 click: this.clearDrawFeature
             }
         });
+
+        this.getApplication().on('results:dalreset', this.doSearch, this);
+
+        this.getApplication().on('results:refineSearch', this.doSearch, this);
+
+        this.getApplication().on('results:buildAndLoadResultsStore', this.buildAndLoadResultsStore, this);
     },
 
     // CUSTOM METHODS
@@ -196,7 +202,6 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
     handleSearchTermKeyUp: function (field, evt) {
         if (evt.keyCode === Ext.EventObject.ENTER) {
-            // user pressed enter
             this.doSearch(field);
         }
     },
@@ -320,12 +325,13 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         return searchObj;
     },
 
-    buildAndLoadResultsStore: function (dal, component, searchObj, action, combo) {
+    buildAndLoadResultsStore:function(dal, component, searchObj, action, comboboxComponent) {
 
         var pageSize;
-        if (combo) {
-            pageSize = combo.value;
-        } else {
+
+        if(comboboxComponent)   {
+            pageSize = comboboxComponent.value;
+        }   else    {
             pageSize = dal.get('resultsPerPage');
         }
 
@@ -465,18 +471,17 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             var statusString = success ? 'success' : 'fail';
             resultsDal.updateDalStatus(dalId, statusString);
 
-            var controller = Savanna.controller.Factory.getController('Savanna.search.controller.ResultsComponent');
 
             if (action === 'search') {
                 if (dalId === Ext.data.StoreManager.lookup('dalSources').defaultId) {
 
-                    controller.changeSelectedStore({}, {}, resultsDal.queryById(dalId));
+                    this.getApplication().fireEvent('search:changeSelectedStore', {}, {}, resultsDal.queryById(dalId));
                 }
             } else {
                 /*
                  filtering, action set to 'filter'
                  */
-                controller.changeSelectedStore({}, {}, resultsDal.queryById(dalId));
+                this.getApplication().fireEvent('search:changeSelectedStore', {}, {}, resultsDal.queryById(dalId));
             }
         }
     },

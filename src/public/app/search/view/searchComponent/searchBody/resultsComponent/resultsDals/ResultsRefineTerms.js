@@ -18,10 +18,6 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
     width:'100%',
     border:false,
 
-    initComponent:function()    {
-        this.callParent(arguments);
-    },
-
     items: [
         {
             xtype: 'panel',
