@@ -23,8 +23,8 @@ Ext.define('Savanna.metadata.view.StringList', {
         {
             xtype: 'label',
             itemId: 'displayLabel',
-            text: ''
-
+            text: '',
+            width: '100%'
         }
 
     ],

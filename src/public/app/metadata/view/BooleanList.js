@@ -23,7 +23,8 @@ Ext.define('Savanna.metadata.view.BooleanList', {
         {
             xtype: 'label',
             itemId: 'displayLabel',
-            text: ''
+            text: '',
+            width: '100%'
         }
     ],
     initComponent: function () {

@@ -23,12 +23,14 @@ Ext.define('Savanna.metadata.view.Double', {
         {
             xtype: 'label',
             itemId: 'displayLabel',
-            text: ''
+            text: '',
+            width: '100%'
         },
         {
             xtype: 'label',
             itemId: 'displayValue',
-            text: ''
+            text: '',
+            width: '100%'
         }
     ],
     initComponent: function () {

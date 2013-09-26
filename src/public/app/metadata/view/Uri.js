@@ -23,12 +23,13 @@ Ext.define('Savanna.metadata.view.Uri', {
         {
             xtype: 'label',
             itemId: 'displayLabel',
-            text: ''
-
+            text: '',
+            width: '100%'
         },
         {
             xtype: 'label',
-            itemId: 'displayValue'
+            itemId: 'displayValue',
+            width: '100%'
         }
     ],
     initComponent: function () {
