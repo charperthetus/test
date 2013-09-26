@@ -273,7 +273,27 @@
                 "entityVersion":-1,
                 "uri":"MetadataEntry%2FkeyCitationHtml%2FMetadata%2F183200%2FVirtualDocument",
                 "displayLabel":null
+            },
+            {
+                "_type":"com.thetus.platforms.savanna.apis.item.metadata.SavannaMetadataEntry",
+                "value": 98765,
+                "key":{
+                    "_type":"com.thetus.platforms.savanna.metadata.SavannaMetadataKey",
+                    "key":"Number",
+                    "uri":"MetadataNumber",
+                    "displayLabel":"Number"
+                },
+                "metadataType":{
+                    "name":"Integer"
+                },
+                "editable":true,
+                "visible":false,
+                "sortKey":null,
+                "entityVersion":-1,
+                "uri":"MetadataEntry%2Ftitle%2FMetadata%2F183200%2FVirtualDocument",
+                "displayLabel":null
             }
+
         ],
         "canAdd":false,
         "entityVersion":-1,

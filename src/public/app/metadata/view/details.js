@@ -20,6 +20,7 @@ Ext.define('Savanna.metadata.view.Details', {
         'Savanna.metadata.view.LongString',
         'Savanna.metadata.view.Date',
         'Savanna.metadata.view.Uri',
+        'Savanna.metadata.view.Integer',
         'Savanna.metadata.controller.FieldTypes',
         'Savanna.metadata.store.Metadata',
         'Savanna.controller.Factory'
@@ -94,6 +95,14 @@ Ext.define('Savanna.metadata.view.Details', {
                             })
                         );
                         break;
+                    case 'Integer':
+                        me.add(
+                            Ext.create('Savanna.metadata.view.Integer', {
+                                value: metadata.value,
+                                displayLabel: metadata.key.displayLabel
+                            })
+                        );
+                        break;
                     default:
                         console.log('metadata.metadataType.name', metadata.metadataType.name);
                 }
@@ -114,7 +123,7 @@ Ext.define('Savanna.metadata.view.Details', {
             itemId: myRecord.data.id,
             checkboxLabel: myRecord.data.displayName,
             label: myRecord.data.textDescription,
-            showButton: (myRecord.getCustomSearchDescription().customSearchGroups().data.length > 0)
+            showButton: (0 < myRecord.getCustomSearchDescription().customSearchGroups().data.length)
         });
     }
 
