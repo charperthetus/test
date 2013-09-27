@@ -7,7 +7,6 @@
  * @see http://docs.sencha.com/extjs/4.2.1/#!/api/Ext.Ajax-method-request for documentation on acceptable parameters
  */
 Ext.define('Savanna.utils.CorsAjax', {
-    extend: 'Ext.Base',
     singleton: true,
 
     requires: [
