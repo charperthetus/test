@@ -7,7 +7,7 @@ HTML client interface for Savanna 4
 
 Once you have cloned this repos, you will need to go into `src/` and run `npm install` which will get everything set up for you to be able to use [Node.js](http://nodejs.org/) as your server (of course this assumes you have Node.js](http://nodejs.org/) installed).  If you are using Idea12 you should have the Node.js plug-in already available.  If not, it is a standard IntelliJ plugin.
 
-From there, if you are using IntelliJ Idea, you need to go to `Run -> Edit Configurations` and create a "Node" configuration that has `Working Directory` set to the path to `src/` and `Path to Node App js File` set to `server.js`.  Then it's as simple as starting the server from the toolbar.
+From there, if you are using IntelliJ Idea, you need to go to `Run -> Edit Configurations` and create a "Node" configuration that has `Working Directory` set to the path to `src/` and `Path to Node App js File` set to `server.js`.  Then it's as simple as starting the server from the toolbar. It's also important to set the working directory to `src/` as the test-chooser is expecting the file structure to be setup with `src/` being the root of the project.
 
 If you like CLI, you can `cd /path/to/repos/src` and then `node server.js` which will do the same thing.
 

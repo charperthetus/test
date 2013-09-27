@@ -80,6 +80,7 @@ var ThetusTestHelpers;
     ThetusHelpers.Fixtures.Crumbnet = ThetusHelpers.Fixtures.Crumbnet || {};
 
     ThetusHelpers.Fixtures.Crumbnet.defaultPaletteTemplateResponse = defaultPaletteTemplateResponse;
+    ThetusHelpers.Fixtures.Crumbnet.json = defaultPaletteTemplateResponse;
     ThetusHelpers.Fixtures.Crumbnet.noTemplatesResponse = noTemplatesResponse;
 
 })(ThetusTestHelpers || (ThetusTestHelpers = {}));
