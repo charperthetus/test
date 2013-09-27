@@ -15,11 +15,51 @@
 //@require @packageOverrides
 Ext.Loader.setConfig( {enabled: true, disableCaching: false} );
 Ext.setGlyphFontFamily('SickFont');
-
 Ext.application({
     name: 'Savanna',
 
-    extend: 'Savanna.Application',
+    views: [
+        'Login',
+        'Viewport'
+    ],
 
-    autoCreateViewport: true
+    controllers: [
+        'Main'
+    ],
+
+    requires: [
+        'Savanna.patch.AbstractComponent',
+        'Ext.draw.Component', // NOTE: this is here because we are drawing some shapes which I believe are temporary
+        'Ext.layout.container.Border',
+        //Main
+        'Savanna.controller.Factory',
+        //Desktop
+        'Savanna.desktop.controller.DesktopController',
+        //Flexpaper
+        'Savanna.flexpaper.controller.FlexpaperComponent',
+        //Search
+        'Savanna.search.controller.SearchComponent',
+        //Crumbnet
+        'Savanna.crumbnet.controller.CrumbnetController',
+        //Map
+        'Savanna.map.controller.MapController'
+    ],
+
+    autoCreateViewport: true,
+
+    launch: function() {
+        var viewportQueryResults = Ext.ComponentQuery.query('viewport');
+
+        if (viewportQueryResults && viewportQueryResults.length > 0) {
+            this.viewport = viewportQueryResults[0];
+        }
+        else {
+            // TODO: Fatal condition...how to handle?
+            Ext.Error.raise('no viewport found. cannot start application');
+        }
+    },
+
+    // CUSTOM CONFIGURATION
+    jsessionid: '', // keep track of the user's session id
+    savannauser: '' // current savanna username
 });
