@@ -20,13 +20,11 @@
             <name>repository-snapshots</name>
             <url>http://repository-prod.thetuscorp.com:80/artifactory/libs-snapshot-local</url>
         </snapshotRepository>
-        <!--
         <site>
             <id>buildreports</id>
-            <url>${thetus.report.url}/${project.artifactId}</url>
+            <url>scp://buildreports.thetuscorp.com/home/mavenftp/public_html/${project.artifactId}</url>
             <name>${project.artifactId} Site</name>
         </site>
-        -->
     </distributionManagement>
 
     <dependencies>
@@ -35,17 +33,41 @@
             <artifactId>maven-antrun-plugin</artifactId>
             <version>1.7</version>
         </dependency>
-
-        <!-- DEVOPS: these were the new dependencies that will need to be added to artifactory...-->
         <dependency>
             <groupId>com.github.tntim96</groupId>
             <artifactId>JSCover</artifactId>
-            <version>0.3.0</version>
+            <version>1.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>2.12</version>
         </dependency>
     </dependencies>
 
     <build>
         <plugins>
+            <!--
+                Set up our properties
+            -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>properties-maven-plugin</artifactId>
+                <version>1.0-alpha-2</version>
+                <executions>
+                    <execution>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>read-project-properties</goal>
+                        </goals>
+                        <configuration>
+                            <files>
+                                <file>src/savanna-client.properties</file>
+                            </files>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
 
             <!-- NOTE: I moved the tasks to build the JavaScript code from "build" to "package" as it is not needed for
                        testing and actually should not happen if testing fails
@@ -56,11 +78,12 @@
                 <version>1.7</version>
                 <executions>
                     <execution>
+                        <id>compile</id>
                         <phase>package</phase>
                         <configuration>
                             <tasks>
-                                <ant dir="src/public" antfile="build.xml" target="clean"/>
-                                <ant dir="src/public" antfile="build.xml" target="build"/>
+                                <ant dir="${anttasks.dir}" antfile="build.xml" target="clean"/>
+                                <ant dir="${anttasks.dir}" antfile="build.xml" target="build"/>
                             </tasks>
                         </configuration>
                         <goals>
@@ -112,6 +135,9 @@
                 </executions>
             </plugin>
 
+            <!--
+                Clean out the local test coverage report directory
+            -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-clean-plugin</artifactId>
@@ -119,7 +145,7 @@
                 <configuration>
                     <filesets>
                         <fileset>
-                            <directory>src/public/test/reports/jasmine</directory>
+                            <directory>${project.basedir}${jscover.inputdir}</directory>
                             <includes>
                                 <include>**/*</include>
                             </includes>
@@ -128,20 +154,102 @@
                     </filesets>
                 </configuration>
             </plugin>
+
+            <!--
+                Run the tests to generate coverage reports and surefire reports
+            -->
+
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>1.1</version>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.7</version>
                 <executions>
-                    <!-- NOTE: there are executions defined in pom-unittesting.xml that likely need to go here -->
+                    <execution>
+                        <id>tests</id>
+                        <phase>test</phase>
+                        <configuration>
+                            <target unless="maven.test.skip">
+                                <ant dir="${anttasks.dir}" antfile="savanna-ant-tasks.xml" target="jscover-test"/>
+                                <ant dir="${anttasks.dir}" antfile="savanna-ant-tasks.xml" target="jscover-stop"/>
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>3.2</version>
+                <dependencies>
+                    <dependency><!-- add support for ssh/scp -->
+                        <groupId>org.apache.maven.wagon</groupId>
+                        <artifactId>wagon-ssh</artifactId>
+                        <version>1.0</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+
+            <!--
+                 Copy the jscover report into the site before deploying
+            -->
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.6</version>
+                <executions>
+                    <execution>
+                        <id>copy-coverage-report-site</id>
+                        <phase>post-site</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/site/jscover/</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${project.build.directory}/jscover/</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!--
+                Copy over the coverage reports to a place where Node can serve them locally
+            -->
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.6</version>
+                <executions>
+                    <execution>
+                        <id>copy-coverage-resources</id>
+                        <!-- here the phase you need -->
+                        <phase>test</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.basedir}${jscover.inputdir}</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${project.build.directory}/${jscover.outputdir}</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
         </plugins>
     </build>
 
-    <!-- DEVOPS: Is this the right wait to make sure unit test reports are output?
-                 Also, I'm not sure that this is the correct config for Cobetura reports. We're using JsCover (http://tntim96.github.io/JSCover/manual/manual.xml)
-                 which claims to generate Cobetura-friendly mark-up.  Currently, the reports are configured (in src/public/test/test.sh) to write to src/public/test/reports/phantom
+    <!--
+         Takes surefire reports from target/surefire-reports and includes them
+         in the project's site
+    -->
     <reporting>
         <plugins>
             <plugin>
@@ -149,21 +257,9 @@
                 <artifactId>maven-surefire-report-plugin</artifactId>
                 <version>2.6</version>
                 <configuration>
-                    <skipTests>false</skipTests>
+                    <skipTests>true</skipTests>
                 </configuration>
             </plugin>
-            <plugin>
-	            <groupId>org.codehaus.mojo</groupId>
-	            <artifactId>cobertura-maven-plugin</artifactId>
-	            <version>2.5.2</version>
-	            <configuration>
-	               <formats>
-	                  <format>xml</format>
-	                  <format>html</format>
-	               </formats>
-	            </configuration>
-	         </plugin>
         </plugins>
     </reporting>
-    -->
 </project>
