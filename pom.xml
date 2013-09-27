@@ -46,6 +46,7 @@
 
     <build>
         <plugins>
+
             <!-- NOTE: I moved the tasks to build the JavaScript code from "build" to "package" as it is not needed for
                        testing and actually should not happen if testing fails
             -->
@@ -61,6 +62,30 @@
                                 <ant dir="src/public" antfile="build.xml" target="clean"/>
                                 <ant dir="src/public" antfile="build.xml" target="build"/>
                             </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Installing Node's dependencies -->
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>exec-gen-sources</id>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <target name="Install Node Dependencies">
+                                <exec executable="cmd" dir="src/" osfamily="windows" failonerror="true">
+                                    <arg line="/c npm install"/>
+                                </exec>
+                                <exec executable="npm" dir="src/" osfamily="unix" failonerror="true">
+                                    <arg line="install"/>
+                                </exec>
+                            </target>
                         </configuration>
                         <goals>
                             <goal>run</goal>
