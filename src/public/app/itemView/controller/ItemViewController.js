@@ -227,7 +227,9 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
         return entry;
     },
-    buildItemDataFetchUrl: function (itemId) {
-        return SavannaConfig.itemViewUrl + itemId + ';jsessionid=' + Savanna.jsessionid;
+    buildItemDataFetchUrl: function (uri) {
+        //uri = Ext.JSON.decode(uri);
+       uri = encodeURI(uri);
+        return SavannaConfig.itemViewUrl + uri + ';jsessionid=' + Savanna.jsessionid;
     }
 });
