@@ -12,8 +12,8 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
     views: [
         'Savanna.search.view.searchComponent.searchBody.ResultsComponent'
     ],
-    requires:   [
-      'Savanna.controller.Factory'
+    requires: [
+        'Savanna.controller.Factory'
     ],
     init: function () {
 
@@ -21,10 +21,10 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
             'search_resultscomponent panel[cls=results-dal]': {
                 'render': this.onDalRender
             },
-            'search_resultscomponent #resultsPageSizeCombobox':   {
+            'search_resultscomponent #resultsPageSizeCombobox': {
                 select: this.onPageComboChange
             },
-            'search_resultscomponent #resultsSortByCombobox':   {
+            'search_resultscomponent #resultsSortByCombobox': {
                 select: this.onSortByChange
             },
             'search_resultscomponent #resultspanelgrid': {
@@ -33,13 +33,46 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
             'search_resultscomponent > #resultspreviewwindow #resultspreviewcontent #previewclosebutton': {
                 'click': this.onCloseItemPreview
             },
-            'search_resultscomponent #resultsFacetsReset':  {
+            'search_resultscomponent #resultsFacetsReset': {
                 'click': this.onDalReset
             },
             'search_resultscomponent #refine_search_terms': {
                 keyup: this.handleSearchTermKeyUp
+            },
+            'search_resultscomponent #refine_search_submit': {
+                click: this.handleSearchSubmit
+            },
+            'search_resultscomponent panel[cls=refine-term]': {
+                'render': this.onTermRender
+            },
+            'search_resultscomponent #showHideFacets': {
+                'click': this.onShowHideFacets
             }
         });
+
+        this.getApplication().on('search:changeSelectedStore', this.changeSelectedStore, this);
+
+    },
+
+    onTermRender:function(term)    {
+        term.mon(term.queryById('removeTerm'), 'click', this.handleRemoveTerm, this, term);
+    },
+
+    handleRemoveTerm: function (term) {
+        term.findParentByType('search_searchcomponent').down('#refineterms').removeTerm(term);
+    },
+
+    onShowHideFacets: function (btn) {
+
+        Ext.each(btn.up('#resultsfacets').query('panel[cls=results-facet]'), function (facet) {
+
+           if(!btn.facetsExpanded)    {
+               facet.expand();
+           }    else    {
+               facet.collapse();
+           }
+        });
+        btn.facetsExpanded = !btn.facetsExpanded;
     },
 
     onItemPreview: function (grid, record) {
@@ -47,7 +80,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
         win.displayPreview(record);
     },
 
-    onCloseItemPreview:function(btn)   {
+    onCloseItemPreview: function (btn) {
         btn.up('#resultspreviewwindow').hide();
     },
 
@@ -55,136 +88,61 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
         dal.body.on('click', this.changeSelectedStore, this, dal);
     },
 
-    onDalReset:function(btn)   {
+    onDalReset: function (btn) {
         var id = btn.findParentByType('search_resultscomponent').currentResultSet.id;
-        var dalRecord = Ext.data.StoreManager.lookup('dalSources').getById(id);
+        var dalRecord = Ext.data.StoreManager.lookup('dalSources').getById(id),
+            resultsDals = btn.up('#resultsdals'),
+            resultsTerms = resultsDals.down('search_resultsDals_resultsterms');
+
         dalRecord.set('facetFilterCriteria', []);
-        btn.up('#resultsdals').queryById('resultsfacets').removeAll();
-        btn.up('#resultsdals').createFacetsTabPanel();
-        var searchController = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
-        searchController.doSearch(btn);
+        resultsDals.queryById('resultsfacets').removeAll();
+        resultsDals.createFacetsTabPanel();
+        btn.findParentByType('search_searchcomponent').refineSearchString = '';
+
+        resultsTerms.queryById('termValues').removeAll();
+
+        this.getApplication().fireEvent('results:dalreset', btn);
     },
 
-    onSortByChange:function(){
+    onSortByChange: function () {
         /*
-        this is a placeholder at the moment - not sure what the available sort options
-        will be, and only 'relevance' appears in the comps and flex client version.
+         this is a placeholder at the moment - not sure what the available sort options
+         will be, and only 'relevance' appears in the comps and flex client version.
          */
     },
 
-    onPageComboChange:function(combo){
+    onPageComboChange:function(comboboxComponent){
 
-        var id = combo.findParentByType('search_resultscomponent').currentResultSet.id,
+        var id = comboboxComponent.findParentByType('search_resultscomponent').currentResultSet.id,
             dalRecord = Ext.data.StoreManager.lookup('dalSources').getById(id),
-
-            searchController = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
-
-            var component = searchController.getSearchComponent(combo),
+            /*
+             regrettable but necessary call to the SearchController directly.  The target method
+             'buildSearchObject' needs to return the request object, but when an event is fired it can
+             only return a boolean.  If anyone thinks of a way around it, please feel free to updaate.
+             */
+            searchController = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent'),
+            component = comboboxComponent.findParentByType('search_searchcomponent'),
             currentDalPanel = component.down('#searchdals').queryById(id),
             searchString = component.queryById('searchbar').buildSearchString(),
-            searchObj = Ext.create('Savanna.search.model.SearchRequest', {
-                'textInputString': searchString,
-                'displayLabel': searchString
-            });
+            searchObj = searchController.buildSearchObject(searchString, dalRecord, currentDalPanel);
 
+        dalRecord.set('resultsPerPage', comboboxComponent.value);
 
+        this.getApplication().fireEvent('results:buildAndLoadResultsStore', dalRecord, component, searchObj, 'filter', comboboxComponent);
 
-        dalRecord.set('resultsPerPage', combo.value);
-
-        searchObj.set('contentDataSource', dalRecord.get('id'));
-
-        searchObj.set('searchPreferencesVOs', [
-            {
-                'dalId': id,
-                'sortOrder': 'Default',
-                'customSearchSelections': searchController.getCustomSearchSelections(currentDalPanel)
-            }
-        ]);
-
-        /*
-         build the 'desiredFacets' array for the request, by iterating over
-         facetValueSummaries in the DAL sources json
-         */
-        var desiredFacets = [];
-
-        Ext.each(dalRecord.get('facetDescriptions'), function (description) {
-            desiredFacets.push(description.facetId);
-        });
-
-        searchObj.set('desiredFacets', desiredFacets);
-
-        /*
-         set the facet filters, if any
-         */
-        if (dalRecord.get('facetFilterCriteria').length) {
-            searchObj.set('facetFilterCriteria', dalRecord.get('facetFilterCriteria'));
-        }
-
-        /*
-         set the date ranges, if any
-         */
-        if (dalRecord.get('dateTimeRanges').length) {
-            searchObj.set('dateTimeRanges', dalRecord.get('dateTimeRanges'));
-        }
-
-        /*
-         Determine the pageSize for the stores,
-         create a new store for each DAL
-         */
-        var resultsStore = Ext.create('Savanna.search.store.SearchResults', {
-            storeId: 'searchResults_' + dalRecord.get('id'),
-            pageSize: combo.value
-        });
-
-        var resultsDal = component.down('#resultsdals'),
-            resultsPanel = component.down('#resultspanel');
-
-        resultsStore.proxy.jsonData = Ext.JSON.encode(searchObj.data);  // attach the search request object
-        resultsStore.load({
-            callback: Ext.bind(this.pageSizeCallback, this, [resultsDal, resultsPanel, dalRecord.get('id'), resultsStore], true)
-        });
-
-        resultsDal.updateDalStatus(dalRecord.get('id'), 'pending');   // begin in a pending state
-    },
-
-    pageSizeCallback: function (records, operation, success, resultsDal, resultsPanel, dalId, store) {
-
-        if (!success) {
-            // server down..?
-            Ext.Error.raise({
-                msg: 'The server could not complete the filter request.'
-            });
-        } else {
-
-            var resultsObj = {id: dalId, store: store};
-
-            Ext.each(resultsPanel.up('#searchresults').allResultSets, function (resultset, index) {
-                if (resultset.id === dalId) {
-                    resultsPanel.up('#searchresults').allResultSets[index] = resultsObj;
-                }
-            });
-
-            var statusString = success ? 'success' : 'fail';
-            resultsDal.updateDalStatus(dalId, statusString);
-
-
-            var controller = Savanna.controller.Factory.getController('Savanna.search.controller.ResultsComponent');
-            controller.changeSelectedStore({}, {}, resultsDal.queryById(dalId));
-
-        }
     },
 
     /*
-    tried to give this a more intuitive name - it swaps the store assigned to our grid
-    based on whichever DAL the user selects from the left-hand panel, and triggers an update
-    of the facets for the newly selected store.
+     swaps the store assigned to our grid based on whichever DAL the
+     user selects from the left-hand panel, and triggers an update
+     of the facets for the newly selected store.
      */
-    changeSelectedStore:function(evt, body, dal) {
+    changeSelectedStore: function (evt, body, dal) {
 
         var component = dal.findParentByType('search_resultscomponent');
 
-        Ext.each(component.allResultSets, function(resultSet) {
-            if(resultSet.id === dal.itemId)    {
+        Ext.each(component.allResultSets, function (resultSet) {
+            if (resultSet.id === dal.itemId) {
 
                 component.queryById('resultspanel').updateGridStore(resultSet);
 
@@ -200,20 +158,31 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
     },
 
     handleSearchTermKeyUp: function (field, evt) {
-        if (evt.keyCode === 13) {   // user pressed enter
+        if (evt.keyCode === Ext.EventObject.ENTER) {   
+            if (field.getValue().trim().length) {
+                field.findParentByType('search_searchcomponent').refineSearchString += (field.getValue() + ' AND ');
+                field.findParentByType('search_searchcomponent').down('#refineterms').addTerm(field);
 
+                /*
+                 resubmit the search request
+                 */
+
+                this.getApplication().fireEvent('results:refineSearch', field);
+            }
+        }
+    },
+
+    handleSearchSubmit: function (btn) {
+        var field = btn.findParentByType('search_resultscomponent').down('#refine_search_terms');
+
+        if (field.getValue().trim().length) {
             field.findParentByType('search_searchcomponent').refineSearchString += (field.getValue() + ' AND ');
+            field.findParentByType('search_searchcomponent').down('#refineterms').addTerm(field);
 
-            field.findParentByType('search_searchcomponent').down('#refineterms').addTerm(field.getValue());
-
-             /*
+            /*
              resubmit the search request
              */
-            var searchController = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
-
-            if (searchController !== undefined) {
-                searchController.doSearch(field);
-            }
+            this.getApplication().fireEvent('results:refineSearch', field);
         }
     }
 });

@@ -28,6 +28,7 @@ Ext.application({
     ],
 
     requires: [
+        'Savanna.patch.AbstractComponent',
         'Ext.draw.Component', // NOTE: this is here because we are drawing some shapes which I believe are temporary
         'Ext.layout.container.Border',
         //Main
