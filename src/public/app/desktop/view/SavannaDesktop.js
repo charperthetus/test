@@ -4,7 +4,7 @@
 Ext.define('Savanna.desktop.view.SavannaDesktop', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.desktop_savannadesktop',
-    requires:[
+    requires: [
         'Ext.panel.Panel',
         'Savanna.desktop.view.SavannaWorkspace',
         'Savanna.controller.Factory'
@@ -14,7 +14,8 @@ Ext.define('Savanna.desktop.view.SavannaDesktop', {
         type: 'fit'
     },
 
-    tbar: [{
+    tbar: [
+        {
             id: 'logo',
             xtype: 'button',
             scale: 'large',
@@ -28,38 +29,50 @@ Ext.define('Savanna.desktop.view.SavannaDesktop', {
             layout: {
                 pack: 'center'
             },
-            items: [{
-                text: 'Search',
-                itemId: 'searchbutton'
-            },
-            {
-                text: 'Upload',
-                itemId: 'uploadbutton'
-            }]
+            items: [
+                {
+                    text: 'Search',
+                    itemId: 'searchbutton'
+                },
+                {
+                    text: 'Upload',
+                    itemId: 'uploadbutton'
+                },
+                {
+                    text: "Model search",
+                    itemId: "modelSearchButton"
+                }
+            ]
         },
         {
             xtype: 'toolbar',
             scale: 'medium',
             items: [
-            {
-                text: 'Help',
-                itemId: 'helpbutton'
-            },
-        {
-            text: 'User',
-            itemId: 'userbutton',
-            menu: [{
-                text: 'Current Username here',
-                itemId: 'currentuser'
-            }, {
-                text: 'Account Settings',
-                itemId: 'accountsettings'
-            }, {
-                text: 'Log Out',
-                itemId: 'savannalogout'
-            }]
-        }]
-    }],
+                {
+                    text: 'Help',
+                    itemId: 'helpbutton'
+                },
+                {
+                    text: 'User',
+                    itemId: 'userbutton',
+                    menu: [
+                        {
+                            text: 'Current Username here',
+                            itemId: 'currentuser'
+                        },
+                        {
+                            text: 'Account Settings',
+                            itemId: 'accountsettings'
+                        },
+                        {
+                            text: 'Log Out',
+                            itemId: 'savannalogout'
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
 
     items: [
         {
@@ -69,7 +82,7 @@ Ext.define('Savanna.desktop.view.SavannaDesktop', {
 
     ],
 
-    initComponent: function() {
+    initComponent: function () {
         this.callParent(arguments);
         Savanna.controller.Factory.getController('Savanna.desktop.controller.DesktopController');
     }
