@@ -14,9 +14,9 @@ Ext.define('Savanna.metadata.model.Metadata', {
         { name: 'metadata' }
 
         /*
-        {name: 'type',          type: 'string'},
-        {name: 'value',         type: 'string'}, // what type?
-        {name: 'displayLabel',   type: 'string'},
+        {name: 'type' },
+        {name: 'value' },
+        {name: 'displayLabel' },
         */
 
     ]

@@ -18,6 +18,10 @@ Ext.define('Savanna.metadata.controller.FieldTypes', {
     init: function () {
 
         this.control({
+            'metadata_details #metadata_edit_button': {
+                click: this.handleEditMode
+            }
+
              /*
             'search_resultscomponent panel[cls=results-dal]': {
                 'render': this.onDalRender
@@ -27,5 +31,15 @@ Ext.define('Savanna.metadata.controller.FieldTypes', {
             }
             */
         });
+    },
+
+    handleEditMode: function (elem) {
+        console.log('Edit button pressed.');
+        Ext.create('Ext.window.Window', {
+            modal: true,
+            width: 150,
+            height: 100,
+            html: 'Edit button pressed'
+        }).show();
     }
 });

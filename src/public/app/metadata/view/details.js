@@ -35,10 +35,18 @@ Ext.define('Savanna.metadata.view.Details', {
     ],
 
     layout: 'vbox',
-    //collapsible: 'true',
+    collapsible: 'true',
 
     autoScroll: true,
     editMode: false,
+
+    tbar: [
+      {
+          xtype:    'button',
+          text:     'Edit',
+          itemId:   'metadata_edit_button'
+      }
+    ],
 
     items: [
         {
