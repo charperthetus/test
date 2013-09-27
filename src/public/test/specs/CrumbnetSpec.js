@@ -366,7 +366,7 @@ describe('Savanna.crumbnet', function() {
                     diagram.removeDiagramListener('ClipboardChanged', copyEventCallback);
                 });
 
-                // TODO: this currently has to run first in order to pass
+                // NOTE: this currently has to run first in order to pass
                 //       which raises concerns that Diagrams may not be being destroyed completely between tests
                 //       (and by extension will not be cleared correctly in our ExtJS app)
                 //       There is a question out to the GoJS support team to clarify the best way to ensure a Diagram
@@ -661,8 +661,7 @@ describe('Savanna.crumbnet', function() {
                 });
 
                 describe('valid conditions', function() {
-                    // TODO: validate that this is true (it may be that if no links are selected, then ALL links should change
-                    //       in which case there will be only one link category after the button is clickec)
+
                     it('should NOT change link styles if no link is selected', function() {
                         var selectedNodeSet = diagram.selection;
 
@@ -789,8 +788,6 @@ describe('Savanna.crumbnet', function() {
                 });
 
                 describe('valid conditions', function() {
-                    // TODO: validate that this is true (it may be that if no links are selected, then ALL links should change
-                    //       in which case there will be only one link category after the button is clicked)
 
                     it('should NOT change link styles if no link is selected', function() {
                         var selectedNodeSet = diagram.selection;
@@ -1612,15 +1609,6 @@ describe('Savanna.crumbnet', function() {
                     inputEvent = new go.InputEvent();
 
                 diagram.startTransaction('setupTest'); // because we are manipulating the diagram to get to a testable state (without user input)
-
-                // Make sure we have at least two siblings...
-                // TODO: we need a fixture that sets up the case where a node has at least two children whose locations have the same y-coordinate, but differing x-coordinates
-                //       (at this point, this test will randomly fail trying to set that case up)
-/*                while (node.findNodesOutOf().count < 2) {
-                    Savanna.crumbnet.utils.ViewTemplates.addNodeAndLink(inputEvent, node);
-                }*/
-
-                //expect(node.findNodesOutOf().count).toBeGreaterThan(1);
 
                 // Make all siblings have the same location to test that we move beyond them...
                 var siblings = node.findNodesOutOf();

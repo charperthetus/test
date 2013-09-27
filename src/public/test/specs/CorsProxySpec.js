@@ -62,7 +62,6 @@ describe('Savanna.proxy.Cors', function() {
             var requestParams = Ext.Ajax.request.mostRecentCall.args[0];
 
             expect(requestParams.cors).toBeTruthy();
-            expect(requestParams.withCredentials).toBeTruthy();
             expect(requestParams.disableCaching).toBeTruthy();
         });
     });

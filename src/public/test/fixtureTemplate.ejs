@@ -4,7 +4,9 @@ var ThetusTestHelpers;
     "use strict";
 
     // THIS IS BOILERPLATE FOR CREATING FIXTURE DATA...
+    var jsonData = {};
 
     ThetusHelpers.Fixtures = ThetusHelpers.Fixtures || {};
     ThetusHelpers.Fixtures.DalSources = ThetusHelpers.Fixtures.<%= fixtureName %> || {};
+    ThetusHelpers.Fixtures.DalSources = ThetusHelpers.Fixtures.json = jsonData;
 })(ThetusTestHelpers || (ThetusTestHelpers = {}));
