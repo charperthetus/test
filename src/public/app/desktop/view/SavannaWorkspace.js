@@ -15,24 +15,8 @@ Ext.define('Savanna.desktop.view.SavannaWorkspace', {
     currentView: 'single',
     tbar: [
         {
-            xtype: 'combobox',
-            itemId: 'spacecombo',
-            padding: 15,
-            //todo: hook up to the list of spaces and init value to current space
-            store: Ext.create('Ext.data.Store', {
-                fields: ['displayLabel', 'space'],
-                data: [
-                    {'displayLabel': 'Current Space', 'space': 'mySpace'}
-                ]
-            }),
-            displayField: 'displayLabel',
-            valueField: 'space',
-            value: 'mySpace'
-        },
-        {
-            xtype: 'button',
-            itemId: 'flyoutbutton',
-            text: 'MyStuff'
+            xtype: 'label',
+            text: 'Workspace'
         },
         '->',
         {
