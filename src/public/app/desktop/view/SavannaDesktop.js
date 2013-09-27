@@ -6,7 +6,6 @@ Ext.define('Savanna.desktop.view.SavannaDesktop', {
     alias: 'widget.desktop_savannadesktop',
     requires:[
         'Ext.panel.Panel',
-        'Savanna.desktop.view.SavannaToolbar',
         'Savanna.desktop.view.SavannaDashboard',
         'Savanna.desktop.view.SavannaWorkspace',
         'Savanna.space.view.SpaceManagerComponent',
@@ -15,12 +14,79 @@ Ext.define('Savanna.desktop.view.SavannaDesktop', {
     layout: {
         type: 'border'
     },
+    tbar: {
+        ui:'brand-header',
+        items: [{
+            itemId: 'logobutton',
+            cls:'logoButtonFramework',
+            scale: 'large',
+            xtype: 'button',
+            ui: 'brand-header',
+            listeners: {
+                afterrender: function(){
+                    this.setLocalY(0)
+                }
+            }
+        }, {
+            xtype: 'toolbar',
+            flex: 1,
+            ui:'brand-header',
+            layout: {
+                pack: 'center',
+                ui: 'brand-header',
+                defaultMargins:'5'
+            },
+            items: [{
+                itemId: 'searchbutton',
+                cls:'searchButtonFramework',
+                ui:'brand-header',
+                scale: 'medium'
+
+            }, {
+                itemId: 'uploadbutton',
+                cls:'uploadButtonFramework',
+                ui:'brand-header',
+                scale: 'medium'
+            }]
+        }, {
+            xtype: 'toolbar',
+            scale: 'medium',
+            ui:'brand-header',
+            layout: {
+                defaultMargins:'5'
+            },
+            items: [{
+                itemId: 'errorbutton',
+                cls:'errorButtonFramework',
+                ui:'brand-header',
+                scale: 'medium'
+            }, {
+                itemId: 'helpbutton',
+                cls:'helpButtonFramework',
+                ui:'brand-header',
+                scale: 'medium'
+            }, {
+                itemId: 'userbutton',
+                cls:'userButtonFramework',
+                ui:'brand-header',
+                scale: 'medium',
+                menu: {
+                    ui: 'brand-header',
+                    items: [{
+                        text: 'Current Username here',
+                        itemId: 'currentuser'
+                    }, {
+                        text: 'Account Settings',
+                        itemId: 'accountsettings',
+                    }, {
+                        text: 'Log Out',
+                        itemId: 'savannalogout'
+                    }]
+                }
+            }]
+        }]
+    },
     items: [
-        {
-            xtype: 'desktop_savannatoolbar',
-            itemId: 'savannatoolbar',
-            region: 'north'
-        },
         {
             xtype: 'panel',
             itemId: 'desktopcontainer',

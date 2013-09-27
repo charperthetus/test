@@ -1,0 +1,90 @@
+/*
+ * Styles buttons globally (including parts tabs and toolbars).
+ *
+ * @author lpelofske
+ *
+ */
+
+/*
+ *	@private variables
+ */
+$button-default-font-weight: normal; 
+
+/*
+ ######                                                                                                   
+ #     # #####  # #    #   ##   ##### ######    #    #   ##   #####  #   ##   #####  #      ######  ####  
+ #     # #    # # #    #  #  #    #   #         #    #  #  #  #    # #  #  #  #    # #      #      #      
+ ######  #    # # #    # #    #   #   #####     #    # #    # #    # # #    # #####  #      #####   ####  
+ #       #####  # #    # ######   #   #         #    # ###### #####  # ###### #    # #      #           # 
+ #       #   #  #  #  #  #    #   #   #          #  #  #    # #   #  # #    # #    # #      #      #    # 
+ #       #    # #   ##   #    #   #   ######      ##   #    # #    # # #    # #####  ###### ######  ####  
+ */
+
+ @import '../Component';
+
+/*
+ *	Regular Buttons
+ */
+$brand-header-button-base-color: transparent !default;
+$brand-header-button-base-color-over: transparent !default;
+$brand-header-button-base-color-pressed: transparent !default;
+$brand-header-button-base-color-focus: transparent !default;
+$brand-header-button-color: #fff !default;
+
+$brand-header-glyph-color: #999999 !default;
+$brand-header-glyph-opacity: 1;
+
+// brand-header
+$brand-header-button-border-radius: 3px !default;
+$brand-header-button-background-gradient: null !default;
+$brand-header-button-padding: 8px 14px !default;
+$brand-header-button-background-color: $brand-header-button-base-color !default;
+
+// brand-header Small
+$brand-header-button-small-padding: 0px !default;
+$brand-header-button-small-font-weight: $button-default-font-weight !default;
+$brand-header-button-small-font-family: $font-family !default;
+
+// brand-header medium
+$brand-header-button-medium-padding: 8px 12px 8px 12px !default;
+
+// brand-header large
+$brand-header-button-large-padding: 0px !default;
+$brand-header-button-large-radius: 0px !default;
+
+// Border removal (transparent)
+$brand-header-button-border-color: transparent !default;
+$brand-header-button-border-color: $brand-header-button-border-color !default;
+
+// brand-header:hover
+$brand-header-button-background-gradient-over: null !default;
+$brand-header-button-border-color-over: transparent !default;
+$brand-header-button-background-color-over: $brand-header-button-base-color-over !default;
+
+// brand-header:active
+$brand-header-button-background-gradient-pressed: null !default;
+$brand-header-button-border-color-pressed: transparent !default;
+
+// brand-header:focus
+$brand-header-button-border-color-focus: transparent !default;
+$brand-header-button-background-color-focus: $brand-header-button-base-color-over !default;
+
+/*
+ *	Toolbar buttons
+ */
+$brand-header-button-toolbar-color: transparent !default;
+$brand-header-button-toolbar-background-color: transparent !default;
+$brand-header-button-toolbar-background-gradient: null !default;
+$brand-header-button-toolbar-border-color: transparent !default;
+
+// toolbar:hover
+$brand-header-button-toolbar-border-color-over: transparent !default;
+$brand-header-button-toolbar-color-over: transparent !default;
+$brand-header-button-toolbar-background-color-over: $brand-header-button-toolbar-background-color !default;
+$brand-header-button-toolbar-background-gradient-over: $brand-header-button-toolbar-background-gradient !default;
+
+// toolbar:pressed
+$brand-header-button-toolbar-border-color-pressed: $brand-header-button-toolbar-color-over !default;
+$brand-header-button-toolbar-color-pressed: $brand-header-button-toolbar-color !default;
+$brand-header-button-toolbar-background-gradient-pressed: $brand-header-button-toolbar-background-gradient !default;
+$brand-header-button-toolbar-background-color-pressed: $brand-header-button-toolbar-background-color !default;

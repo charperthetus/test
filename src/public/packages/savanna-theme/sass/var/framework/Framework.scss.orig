@@ -1,0 +1,147 @@
+<<<<<<< HEAD
+/*
+*  Variables for custom framework header
+*
+* @author lpelofske
+*/
+/*
+                              d8,           d8b       d8b                
+                             `8P            ?88       88P                
+                                             88b     d88                 
+?88   d8P d888b8b    88bd88b  88b d888b8b    888888b 888   d8888b .d888b,
+d88  d8P'd8P' ?88    88P'  `  88Pd8P' ?88    88P `?8b?88  d8b_,dP ?8b,   
+?8b ,88' 88b  ,88b  d88      d88 88b  ,88b  d88,  d88 88b 88b       `?8b 
+`?888P'  `?88P'`88bd88'     d88' `?88P'`88bd88'`?88P'  88b`?888P'`?888P' 
+   */                           
+                                    
+=======
+>>>>>>> Toolbar images and styles added.
+$brand-header-background-color: #454545 !default;
+$brand-header-background-gradient-top: #4C4C4C !default;
+$brand-header-background-gradient-bottom: #3E3E3E !default;
+$brand-header-border-color-top: #6a6a6a !default;
+$brand-header-border-color-bottom: #494949 !default;
+$brand-header-color: #999999 !default;
+
+$brand-header-button-color: #999999 !default;
+$brand-header-button-color-over: #999999 !default;
+$brand-header-button-color-focus: #999999 !default;
+$brand-header-button-color-pressed: #999999 !default;
+$brand-header-button-color-disabled: #888888 !default;
+
+<<<<<<< HEAD
+$brand-header-logo-image: url('/packages/savanna-theme/resources/images/logo/logo-savanna.png');
+$brand-header-logo-image-hover: $brand-header-logo-image;
+
+$brand-header-dashboard-image: url('/packages/savanna-theme/resources/images/framework/brand-header-dashboard.png');
+$brand-header-dashboard-image-hover:url('/packages/savanna-theme/resources/images/framework/brand-header-dashboard-hover.png');
+
+$brand-header-spacemanager-image: url('/packages/savanna-theme/resources/images/framework/brand-header-spacemanager.png');
+$brand-header-spacemanager-image-hover:url('/packages/savanna-theme/resources/images/framework/brand-header-spacemanager-hover.png');
+
+$brand-header-search-image: url('/packages/savanna-theme/resources/images/framework/brand-header-search.png');
+$brand-header-search-image-hover:url('/packages/savanna-theme/resources/images/framework/brand-header-search-hover.png');
+
+$brand-header-upload-image: url('/packages/savanna-theme/resources/images/framework/brand-header-upload.png');
+$brand-header-upload-image-hover:url('/packages/savanna-theme/resources/images/framework/brand-header-upload-hover.png');
+
+$brand-header-error-image: url('/packages/savanna-theme/resources/images/framework/brand-header-error.png');
+$brand-header-error-image-hover:url('/packages/savanna-theme/resources/images/framework/brand-header-error-hover.png');
+
+$brand-header-help-image: url('/packages/savanna-theme/resources/images/framework/brand-header-help.png');
+$brand-header-help-image-hover:url('/packages/savanna-theme/resources/images/framework/brand-header-help-hover.png');
+
+$brand-header-user-image: url('/packages/savanna-theme/resources/images/framework/brand-header-user.png');
+$brand-header-user-image-hover:url('/packages/savanna-theme/resources/images/framework/brand-header-user-hover.png');
+
+/*
+        d8b                                          
+        88P                                          
+       d88                                           
+ d8888b888   d888b8b   .d888b, .d888b, d8888b .d888b,
+d8P' `P?88  d8P' ?88   ?8b,    ?8b,   d8b_,dP ?8b,   
+88b     88b 88b  ,88b    `?8b    `?8b 88b       `?8b 
+`?888P'  88b`?88P'`88b`?888P' `?888P' `?888P'`?888P'              
+ */
+
+.logoButtonFramework {
+	background-image: $brand-header-logo-image;
+	width: 160px;
+	&:hover, &:active, &:focus {
+		background-image:$brand-header-logo-image-hover;
+		@include opacity(0.9);
+	}
+}
+
+.logoButtonFramework, .searchButtonFramework, .uploadButtonFramework,.errorButtonFramework, .helpButtonFramework, .userButtonFramework {
+	background-repeat: no-repeat;
+	background-position: center;
+	display:inline-block;
+}
+
+.searchButtonFramework, .searchButtonFramework:hover, .searchButtonFramework:active {
+	background-image: $brand-header-search-image;
+	&:hover, &:active, &:focus {
+		background-image: $brand-header-search-image-hover;
+	}
+}
+
+.uploadButtonFramework, .uploadButtonFramework:hover, .uploadButtonFramework:active {
+	background-image: $brand-header-upload-image;
+	&:hover, &:active, &:focus {
+		background-image: $brand-header-upload-image-hover;
+	}
+}
+
+.errorButtonFramework, .errorButtonFramework:hover, .errorButtonFramework:active {
+	background-image: $brand-header-error-image;
+	&:hover, &:active, &:focus {
+		background-image: $brand-header-error-image-hover;
+	}
+}
+
+.helpButtonFramework, .helpButtonFramework:hover, .helpButtonFramework:active {
+	background-image: $brand-header-help-image;
+	&:hover, &:active, &:focus {
+		background-image: $brand-header-help-image-hover;
+	}
+}
+
+.userButtonFramework, .userButtonFramework:hover, .userButtonFramework:active {
+	background-image: $brand-header-user-image;
+	background-position: center left;
+	&:hover, &:active, &:focus {
+		background-image: $brand-header-user-image-hover;
+	}
+=======
+//icons
+.logoButtonFramework, .searchButtonFramework, .uploadButtonFramework,.errorButtonFramework, .helpButtonFramework, .userButtonFramework {
+	background-repeat: no-repeat;
+	background-position: middle center;
+	display:inline-block;
+}
+
+.logoButtonFramework, .logoButtonFramework:hover, .logoButtonFramework:active {
+	background-image: url('/packages/savanna-theme/resources/logo/logo-savanna.png');
+	width: 160px;
+}
+.searchButtonFramework, .searchButtonFramework:hover, .searchButtonFramework:active {
+	background-image: url('/packages/savanna-theme/resources/framework/brand-header-search.png');
+}
+
+.uploadButtonFramework, .uploadButtonFramework:hover, .uploadButtonFramework:active {
+	background-image: url('/packages/savanna-theme/resources/framework/brand-header-upload.png');
+}
+
+.errorButtonFramework, .errorButtonFramework:hover, .errorButtonFramework:active {
+	background-image: url('/packages/savanna-theme/resources/framework/brand-header-error.png');
+}
+
+.helpButtonFramework, .helpButtonFramework:hover, .helpButtonFramework:active {
+	background-image: url('/packages/savanna-theme/resources/framework/brand-header-help.png');
+}
+
+.userButtonFramework, .userButtonFramework:hover, .userButtonFramework:active {
+	background-image: url('/packages/savanna-theme/resources/framework/brand-header-user.png');
+>>>>>>> Toolbar images and styles added.
+}
