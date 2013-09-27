@@ -23,22 +23,6 @@ describe('Savanna.patch.AbstractComponent', function() {
         ThetusTestHelpers.ExtHelpers.cleanTestDom();
     });
 
-    describe('instantiate for test coverage analysis', function() {
-        var instance;
-
-        beforeEach(function() {
-            instance = new Savanna.patch.AbstractComponent();
-        });
-
-        afterEach(function() {
-            instance = null;
-        });
-
-        it('should be able to create an instance', function() {
-            expect(instance instanceof Savanna.patch.AbstractComponent).toBeTruthy();
-        });
-    });
-
     describe('adding data attribute for any component with a itemId', function() {
         var component;
 
