@@ -14,7 +14,8 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.SearchMap', {
 
     requires: [
         'Savanna.controller.Factory',
-        'Savanna.search.view.searchComponent.searchBody.searchMap.Canvas'
+        'Savanna.search.view.searchComponent.searchBody.searchMap.Canvas',
+        'Savanna.search.view.searchComponent.searchBody.searchMap.SearchLocationComboBox'
     ],
 
     layout: 'absolute',
@@ -25,11 +26,6 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.SearchMap', {
             height: '100%',
             width: '100%',
             itemId: 'searchMapCanvas',
-            flex: 1
-        },
-        {
-            xtype: 'search_searchform',
-            itemId: 'searchForm',
             flex: 1
         },
         {
@@ -58,21 +54,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.SearchMap', {
                     layout: 'hbox',
                     items: [
                         {
-                            xtype: 'textfield',
-                            width: 200,
-                            fieldLabel: '',
-                            itemId: 'findLocationSearchText',
-                            name: 'search_location',
-                            enableKeyEvents: true,
-                            emptyText: 'Find Location'
-
-                        },
-                        {
-                            xtype: 'button',
-                            itemId: 'findLocation',
-                            ui: 'small-search-button',
-                            glyph: 61808
-
+                            xtype: 'search_searchlocationcombobox'
                         },
                         {
                             xtype: 'button',
@@ -102,7 +84,6 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.SearchMap', {
                     ]
                 }
             ]
-
         }
      ]
 });

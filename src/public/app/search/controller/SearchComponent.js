@@ -12,7 +12,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
     requires: [
         'Savanna.search.model.SearchRequest',
         'Savanna.search.store.SearchResults',
-        'Savanna.search.view.searchComponent.searchBody.searchMap.SearchForm',
+        'Savanna.search.view.searchComponent.searchBody.searchMap.SearchLocationComboBox',
         'Savanna.controller.Factory'
     ],
     stores: [
@@ -27,9 +27,6 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         this.control({
             'search_searchcomponent #search_reset_button': {
                 click: this.handleNewSearch
-            },
-            'search_searchcomponent #findLocation': {
-                click: this.onFindLocation
             },
             'search_searchcomponent #searchadvanced_btn': {
                 click: this.alignMenuWithTextfield
@@ -69,37 +66,22 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             'search_searchcomponent #clearLocationSearch': {
                 click: this.clearDrawFeature
             },
-            'search_searchform #zoomToLocationButton': {
-                click: this.zoomToLocation
-            },
             'search_searchcomponent #mapZoomToMenu': {
                 click: this.enableZoomMenu
             },
             'search_searchcomponent #mapZoomToMenu menu': {
                 click: this.zoomToSearchExtent
+            },
+            'search_searchmap' : {
+                resize: this.onSearchMapResize
+            },
+            'search_searchmap search_searchlocationcombobox' : {
+                zoomButtonClick: this.zoomToLocation
             }
         });
     },
 
-    // CUSTOM METHODS    
-    onFindLocation: function (button) {
-        var locationSearchInput = button.up('#searchLocationDockedItems').down('#findLocationSearchText');
-        var locationSearchText = locationSearchInput.value;
-        if (locationSearchText) {
-            var searchForm = button.up('search_searchmap').down('search_searchform');
-            //remove all the previous search contents
-            searchForm.down('#numResults').update('Loading Results...');
-            searchForm.removeAll();
-            searchForm.store.load({
-                params: {
-                 q: locationSearchText
-                }
-            });
-            searchForm.showBy(locationSearchInput, 'tl-bl?');
-
-        }
-    },
-
+    // CUSTOM METHODS
     handleNewSearch: function (elem) {
         var component = this.getSearchComponent(elem);
 
@@ -441,17 +423,16 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         canvas.searchLayer.removeAllFeatures();
         canvas.drawFeature.deactivate();
     },
-    zoomToLocation: function(button) {
-        var resultPanel = button.up('panel');
-        var viewBox = resultPanel.viewBox;
-        var mapCanvas = button.up('search_searchmap').down('search_map_canvas');
+    zoomToLocation: function(comboBoxButton) {
+        var viewBox = comboBoxButton.viewBox;
+        var mapCanvas = comboBoxButton.parentComboBox.up('search_searchmap').down('search_map_canvas');
         var extent = new OpenLayers.Bounds(viewBox.west, viewBox.south, viewBox.east, viewBox.north);
         mapCanvas.map.zoomToExtent(extent, true);
     },
 
     enableZoomMenu: function (button) {
         var mapCanvas = button.up('search_searchmap').down('search_map_canvas');
-        var menuButton = button.menu.items.get('zoomToSelectedArea');
+        var menuButton = button.up('search_searchmap').down('#zoomToSelectedArea');
         //check if search layer is populated
         //if search layer has a feature enable zoom to selected area
         if (mapCanvas.searchLayer.features.length > 0){
@@ -474,5 +455,12 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                     break;
             }
         }
+    },
+
+    onSearchMapResize: function (searchMap) {
+        //position the draw select area button
+        var canvasSize = searchMap.body.getSize();
+        var polyButton = searchMap.down('#drawLocationSearch');
+        polyButton.setPosition(canvasSize.width - 50, 10);
     }
 });
