@@ -14,15 +14,20 @@ Ext.define('Savanna.view.Viewport', {
         type: 'border'
     },
 
-    items: [{
-        xtype:"panel",
-        region:"center",
-        layout:"fit",
-        itemId:"viewport_main",
-        border: false,
-        items:  [{
-            xtype: 'login',
-            itemId: 'login'
-        }]
-    }]
+    items: [
+        {
+            xtype:"panel",
+            region:"center",
+            layout:"fit",
+            itemId:"viewport_main",
+            border: false,
+            items:  [
+                {
+                    xtype: 'login',
+                    itemId: 'login'
+                }
+            ]
+        }
+
+    ]
 });
