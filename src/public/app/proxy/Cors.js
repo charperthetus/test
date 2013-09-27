@@ -26,9 +26,8 @@ Ext.define('Savanna.proxy.Cors', {
     extend: 'Ext.data.proxy.Ajax',
     alias: 'proxy.savanna-cors',
 
-    requires: [
-        'Savanna.utils.CorsAjax'
-    ],
+    cors: true,
+    withCredentials: true,
 
     headers: {
         'Content-Type': 'application/json',
@@ -47,14 +46,17 @@ Ext.define('Savanna.proxy.Cors', {
 
     doRequest: function (operation, callback, scope) {
         var writer = this.getWriter(),
-            request = this.buildRequest(operation, callback, scope);
+            request = this.buildRequest(operation, callback, scope),
+            origAjaxUseDefaultXhrHeaderFlag = Ext.Ajax.useDefaultXhrHeader,
+            origAjaxCorsFlag = Ext.Ajax.cors,
+            origAjaxWithCredentialsFlag = Ext.Ajax.withCredentials,
+            origAjaxDisableCachingFlag = Ext.Ajax.disableCaching;
 
         request = writer.write(request);
 
         Ext.apply(request, {
             headers: this.headers,
             timeout: this.timeout,
-            disableCaching: this.noCache,
             scope: this,
             callback: this.createRequestCallback(request, operation, callback, scope),
             method: this.getMethod(request)
@@ -64,7 +66,17 @@ Ext.define('Savanna.proxy.Cors', {
             request = this.modifyRequest(request);
         }
 
-        Savanna.utils.CorsAjax.request(request);
+        Ext.Ajax.UseDefaultXhrHeader = false;
+        Ext.Ajax.cors = this.cors;
+        Ext.Ajax.withCredentials = this.withCredentials;
+        Ext.Ajax.disableCaching = this.noCache;
+
+        Ext.Ajax.request(request);
+
+        Ext.Ajax.cors = origAjaxCorsFlag;
+        Ext.Ajax.useDefaultXhrHeader = origAjaxUseDefaultXhrHeaderFlag;
+        Ext.Ajax.withCredentials = origAjaxWithCredentialsFlag;
+        Ext.Ajax.disableCaching = origAjaxDisableCachingFlag;
 
         return request;
     },
