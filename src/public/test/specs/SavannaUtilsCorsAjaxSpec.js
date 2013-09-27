@@ -20,7 +20,6 @@ describe('Savanna.utils.CorsAjax', function() {
             var requestParams = Ext.Ajax.request.mostRecentCall.args[0];
 
             expect(requestParams.cors).toBeTruthy();
-            expect(requestParams.withCredentials).toBeTruthy();
         });
     });
 });
