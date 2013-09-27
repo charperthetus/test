@@ -420,7 +420,6 @@ this file in most cases.
         <if>
             <available file="${build.dir}/resources"/>
             <then>
-                <!--<copy todir="${build.dir}/resources" overwrite="true">-->
                 <!--Required by deft.js-->
                 <copy todir="${build.resources.dir}" overwrite="true">
                     <fileset 
