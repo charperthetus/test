@@ -39,16 +39,19 @@ app.get('/test/SpecRunner.html', function(req,res) {
     fs.readFile('./public/test/SpecRunner.html', function(err, data){
         var html = data.toString();
 
-        // If no querys are present or it's 'all', send back the HTML
-        if(!Object.keys(req.query).length || req.query.test === 'all'){
-            res.send(html);
+        // If there is a "test" query in the query string and it's not 'all'
+        if( req.query && req.query.savanna_test_chooser && req.query.savanna_test_chooser !== 'all' ){
 
-        // Strip the scripts, and insert the js file into the page
-        } else {
-            var scriptRequested = '<script type="text/javascript" src="specs/' + req.query.test + '"></script>',
+            console.log(req.query);
+
+            var scriptRequested = '<script type="text/javascript" src="specs/' + req.query.savanna_test_chooser + '"></script>',
                 scriptStartLocation = html.indexOf('<!--[#parserstart]-->'),
                 scriptEndLocation = html.indexOf('<!--[#parserend]-->');
             html = html.replace(html.substring(scriptStartLocation, scriptEndLocation), scriptRequested);
+            res.send(html);
+
+        // Else just send the document
+        } else {
             res.send(html);
         }
     });
