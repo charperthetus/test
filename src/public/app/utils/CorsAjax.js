@@ -17,8 +17,7 @@ Ext.define('Savanna.utils.CorsAjax', {
     request: function(options) {
 
         Ext.apply(options, {
-            cors: true,
-            withCredentials: true
+            cors: true
         });
 
         return Ext.Ajax.request(options);
