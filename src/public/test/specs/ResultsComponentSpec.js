@@ -1159,7 +1159,7 @@ describe('Search Results', function () {
 
         describe('changeSelectedStore', function () {
 
-            var dalItem, resultsPanel, searchStore, fixtures;
+            var dalItem, resultsPanel;
 
             beforeEach(function () {
 
@@ -1171,6 +1171,7 @@ describe('Search Results', function () {
                 searchComponent.down('#searchdals').createDalPanels();
 
                 searchComponent.down('#resultsdals').store = store;
+
                 searchComponent.down('#searchdals').store.each(function (record) {
                     var dalId = record.data.id;
                     searchComponent.down('#searchdals').queryById(dalId).query('checkbox')[0].setValue(true);
@@ -1180,43 +1181,18 @@ describe('Search Results', function () {
 
                 dalItem = sources.query('panel[cls=results-dal]')[0];
 
-                fixtures = Ext.clone(ThetusTestHelpers.Fixtures.SearchResults);
-
-                searchStore = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.SearchResults', { autoLoad: false });
-
-                // now set up server to get store data
-                server = new ThetusTestHelpers.FakeServer(sinon);
-
-                var readMethod = 'POST',
-                    testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(searchStore.getProxy(), 'read', readMethod);
-
-                server.respondWith(readMethod, testUrl, fixtures.searchResults);
-
-                searchStore.load();
-
-                server.respond({
-                    errorOnInvalidRequest: true
-                });
-
-                resultsPanel.updateGridStore({id: dalItem.itemId, store: searchStore});
-
+                spyOn(resultsPanel, 'updateGridStore');
             });
 
             afterEach(function () {
 
                 dalItem = null;
-                resultsPanel = null;
-                searchStore = null;
-
-
 
             });
 
             it('should update the results grid with the passed dal store', function () {
 
-                spyOn(resultsPanel, 'updateGridStore');
-
-                dalItem.findParentByType('search_resultscomponent').allResultSets.push({id: dalItem.itemId, store: searchStore});
+                dalItem.findParentByType('search_resultscomponent').allResultSets.push({id: dalItem.itemId, store: store});
 
                 /*
                  This call swaps the store behind the grid
@@ -1224,14 +1200,6 @@ describe('Search Results', function () {
                 resultsController.changeSelectedStore({}, {}, dalItem);
 
                 expect(resultsPanel.updateGridStore).toHaveBeenCalled();
-            });
-
-            it('the grid should have items in it', function () {
-
-                resultsPanel.updateGridStore({id: dalItem.itemId, store: searchStore});
-
-                expect(searchComponent.down('#resultspanelgrid').view.getNode(0)).toBeTruthy();
-
             });
 
         });
