@@ -44,10 +44,7 @@ Ext.define('Savanna.desktop.view.SavannaToolbar',{
             },{
                 text: 'Upload',
                 itemId: 'uploadbutton'
-            },{
-                text: 'Model Search',
-                itemId: 'modelsearchbutton'
-            } ]
+            }]
         },
         '->',
         //utility buttons

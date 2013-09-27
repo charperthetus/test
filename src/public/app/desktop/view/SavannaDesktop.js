@@ -6,47 +6,65 @@ Ext.define('Savanna.desktop.view.SavannaDesktop', {
     alias: 'widget.desktop_savannadesktop',
     requires:[
         'Ext.panel.Panel',
-        'Savanna.desktop.view.SavannaToolbar',
-        'Savanna.desktop.view.SavannaDashboard',
         'Savanna.desktop.view.SavannaWorkspace',
-        'Savanna.space.view.SpaceManagerComponent',
         'Savanna.controller.Factory'
     ],
+
     layout: {
-        type: 'border'
+        type: 'fit'
     },
-    items: [
-        {
-            xtype: 'desktop_savannatoolbar',
-            itemId: 'savannatoolbar',
-            region: 'north'
+
+    tbar: [{
+            id: 'logo',
+            xtype: 'button',
+            scale: 'large',
+            text: 'Savanna Logo'
         },
         {
-            xtype: 'panel',
-            itemId: 'desktopcontainer',
-            layout: 'fit',
-            region: 'center',
+            xtype: 'toolbar',
+            scale: 'medium',
+            flex: 1,
+
+            layout: {
+                pack: 'center'
+            },
+            items: [{
+                text: 'Search',
+                itemId: 'searchbutton'
+            },
+            {
+                text: 'Upload',
+                itemId: 'uploadbutton'
+            }]
+        },
+        {
+            xtype: 'toolbar',
+            scale: 'medium',
             items: [
-                /*todo: - the space manager component is the first child of the desktop container. We should probably
-                * change the code to create and add the desktop children only when they are needed. Do we have them
-                * as local variables in this view? or do we do that in the controller? What is the proper approach?
-                */
-                {
-                    xtype: 'space_spacemanagercomponent',
-                    itemId: 'spacemanager'
-                },
-                {
-                    xtype: 'desktop_savannadashboard',
-                    itemId: 'savannadashboard',
-                    width: '100%',
-                    hidden: true
-                },
-                {
-                    xtype: 'desktop_savannaworkspace',
-                    itemId: 'savannaworkspace',
-                    hidden: true
-                }
-            ]
+            {
+                text: 'Help',
+                itemId: 'helpbutton'
+            },
+        {
+            text: 'User',
+            itemId: 'userbutton',
+            menu: [{
+                text: 'Current Username here',
+                itemId: 'currentuser'
+            }, {
+                text: 'Account Settings',
+                itemId: 'accountsettings'
+            }, {
+                text: 'Log Out',
+                itemId: 'savannalogout'
+            }]
+        }]
+    }],
+
+    items: [
+        {
+            xtype: 'desktop_savannaworkspace',
+            itemId: 'savannaworkspace'
         }
 
     ],
