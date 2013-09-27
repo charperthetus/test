@@ -15,7 +15,7 @@
  * > What fixture would you like to use? (leave it blank if you do not need a fixture) MyFixtureData
  * > Add any additional libraries to require (separated by commas): Ext.window.Window, Savanna.utils.Utils
  * > Successfully generated test file: /path/to/test/directory/specs/SavannaFooBarSpec.js
- * > Successfully generated fixture file: /path/to/test/directory/fixtures/MyFixtureData.js
+ * > Successfully generated fixture file: /path/to/test/directory/fixtures/MyFixtureData.js (you should be able to access the "JSON" fixture via the URL: "/fixture/MyFixtureData.json")
  *
  * CAVEATS:
  *
@@ -131,7 +131,7 @@ async.series([
                             console.error('Unable to write fixture to: ' + fixtureOutputPath + ', "' + err + '"');
                         }
                         else {
-                            console.log('Successfully generated fixture file: ' + fixtureOutputPath);
+                            console.log('Successfully generated fixture file: ' + fixtureOutputPath + ' ((you should be able to access the "JSON" fixture via the URL: "/fixture/' + templateData.fixture + '.json")');
                         }
                     });
                 }

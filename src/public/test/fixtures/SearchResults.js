@@ -44982,5 +44982,6 @@ var ThetusTestHelpers;
     ThetusHelpers.Fixtures = ThetusHelpers.Fixtures || {};
     ThetusHelpers.Fixtures.SearchResults = ThetusHelpers.Fixtures.SearchResults || {};
     ThetusHelpers.Fixtures.SearchResults.searchResults = searchResults;
+    ThetusHelpers.Fixtures.SearchResults.json = searchResults;
 
 })(ThetusTestHelpers || (ThetusTestHelpers = {}));

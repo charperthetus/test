@@ -48,7 +48,7 @@ app.get('/test/SpecRunner.html', function(req,res) {
             html = html.replace(html.substring(scriptStartLocation, scriptEndLocation), scriptRequested);
             res.send(html);
 
-            // Else just send the document
+        // Else just send the document
         } else {
             res.send(html);
         }
