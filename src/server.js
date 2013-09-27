@@ -42,8 +42,6 @@ app.get('/test/SpecRunner.html', function(req,res) {
         // If there is a "test" query in the query string and it's not 'all'
         if( req.query && req.query.savanna_test_chooser && req.query.savanna_test_chooser !== 'all' ){
 
-            console.log(req.query);
-
             var scriptRequested = '<script type="text/javascript" src="specs/' + req.query.savanna_test_chooser + '"></script>',
                 scriptStartLocation = html.indexOf('<!--[#parserstart]-->'),
                 scriptEndLocation = html.indexOf('<!--[#parserend]-->');
