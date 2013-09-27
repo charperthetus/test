@@ -20,12 +20,8 @@ Ext.define('Savanna.desktop.view.SavannaDesktop', {
             cls:'logoButtonFramework',
             scale: 'large',
             xtype: 'button',
-            ui: 'brand-header',
-            listeners: {
-                afterrender: function(){
-                    this.setLocalY(0)
-                }
-            }
+            height: 42,
+            ui: 'brand-header'
         }, {
             xtype: 'toolbar',
             flex: 1,
@@ -70,13 +66,12 @@ Ext.define('Savanna.desktop.view.SavannaDesktop', {
                 ui:'brand-header',
                 scale: 'medium',
                 menu: {
-                    ui: 'brand-header',
                     items: [{
                         text: 'Current Username here',
                         itemId: 'currentuser'
                     }, {
                         text: 'Account Settings',
-                        itemId: 'accountsettings',
+                        itemId: 'accountsettings'
                     }, {
                         text: 'Log Out',
                         itemId: 'savannalogout'
@@ -85,33 +80,6 @@ Ext.define('Savanna.desktop.view.SavannaDesktop', {
             }]
         }]
     },
-    items: [
-        {
-            xtype: 'panel',
-            itemId: 'desktopcontainer',
-            layout: 'fit',
-            region: 'center',
-            items: [
-            {
-                text: 'Help',
-                itemId: 'helpbutton'
-            },
-        {
-            text: 'User',
-            itemId: 'userbutton',
-            menu: [{
-                text: 'Current Username here',
-                itemId: 'currentuser'
-            }, {
-                text: 'Account Settings',
-                itemId: 'accountsettings'
-            }, {
-                text: 'Log Out',
-                itemId: 'savannalogout'
-            }]
-        }]
-    }],
-
     items: [
         {
             xtype: 'desktop_savannaworkspace',

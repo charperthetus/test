@@ -42,7 +42,14 @@
 
 @include extjs-toolbar-ui(
     $ui: 'brand-header',
-    $background-color: #262626,
+    $background-color: transparent,
+    $border-width: 0px,
+    $border-color:transparent
+);
+
+@include extjs-toolbar-ui(
+    $ui: 'workspace-header',
+    $background-color:#262626,
     $border-width: 0px,
     $border-color:transparent
 );
@@ -62,12 +69,12 @@
   padding: 0px;
 }
 
-.#{$prefix}toolbar-docked-top .#{$prefix}toolbar-brand-header {
-  background-color: transparent;
-  padding: 0;
+.x-btn-brand-header-toolbar-medium .x-btn-arrow {
+  background-image: url(/packages/savanna-theme/resources/images/button/brand-header-toolbar-medium-arrow.png);
+  padding-left: 4px
 }
 
-.#{$prefix}toolbar-brand-header label {
+.#{$prefix}toolbar-workspace-header label {
   font-size: 15px;
   font-weight: 700;
   color: #999999;

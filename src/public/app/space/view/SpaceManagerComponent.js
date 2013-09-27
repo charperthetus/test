@@ -14,7 +14,6 @@ Ext.define('Savanna.space.view.SpaceManagerComponent', {
         'Savanna.space.view.SpaceListPanel',
         'Savanna.controller.Factory'
     ],
-    ui:'brand-header',
     layout: {
         type: 'border'
     },
@@ -22,13 +21,11 @@ Ext.define('Savanna.space.view.SpaceManagerComponent', {
         {
             region: 'center',
             xtype: 'panel',
-            ui: 'brand-header',
             layout: 'vbox',
             items: [
                 {
                     //todo: extract into a separate toolbar or move into tbar
                     xtype: 'toolbar',
-                    ui: 'brand-header',
                     width: '100%',
                     border: 0,
                     frame: false,
