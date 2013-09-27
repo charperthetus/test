@@ -436,10 +436,17 @@ describe('Search Component', function () {
         });
 
         describe('search clear button', function () {
-            var searchbar = null;
+            var searchbar = null, formFields = null;
+
 
             beforeEach(function () {
+                formFields = component.down('#search_form').queryById('searchadvanced_menu').queryById('form_container');
                 searchbar = component.queryById('searchbar');
+                formFields.queryById('all_words').setValue('some text');
+                formFields.queryById('exact_phrase').setValue('other text');
+                formFields.queryById('any_words').setValue('more and more text');
+                formFields.queryById('none_words').setValue('bad terms');
+
                 searchbar.queryById('search_terms').setValue('search bar terms');
             });
 
@@ -451,9 +458,323 @@ describe('Search Component', function () {
                 controller.clearSearch(searchbar.queryById('search_clear'));
                 var form = searchbar.queryById('search_form');
                 expect(form.queryById('search_terms').getValue()).toEqual('');
+                expect(formFields.queryById('all_words').getValue()).toEqual('');
+                expect(formFields.queryById('exact_phrase').getValue()).toEqual('');
+                expect(formFields.queryById('any_words').getValue()).toEqual('');
+                expect(formFields.queryById('none_words').getValue()).toEqual('');
             });
 
         });
+
+        describe('handleSearchSubmit', function () {
+            var searchbutton = null, searchbar = null, field = null;
+
+
+            beforeEach(function () {
+                searchbutton = component.down('#search_submit');
+                searchbar = component.queryById('searchbar');
+                field = searchbar.queryById('search_terms');
+                field.setValue('search bar terms');
+                spyOn(controller, 'doSearch');
+            });
+
+            afterEach(function () {
+                searchbutton = null;
+                searchbar = null;
+                field = null;
+            });
+
+            it('should call doSearch', function () {
+
+                controller.handleSearchSubmit(searchbutton);
+                expect(controller.doSearch).toHaveBeenCalled();
+            });
+
+        });
+
+        describe('handleSearchTermKeyUp', function () {
+
+            var searchbutton = null, searchbar = null, field = null;
+
+
+            beforeEach(function () {
+                searchbutton = component.down('#search_submit');
+                searchbar = component.queryById('searchbar');
+                field = searchbar.queryById('search_terms');
+                field.setValue('search bar terms');
+                spyOn(controller, 'doSearch');
+            });
+
+            afterEach(function () {
+                searchbutton = null;
+                searchbar = null;
+                field = null;
+            });
+
+            it('should call doSearch', function () {
+
+                controller.handleSearchTermKeyUp(field, {keyCode: Ext.EventObject.ENTER});
+                expect(controller.doSearch).toHaveBeenCalled();
+            });
+
+        });
+
+        describe('handleClose', function () {
+
+            var menu = null, btn = null;
+
+
+            beforeEach(function () {
+                menu = component.down('#searchadvanced_menu');
+                btn = menu.down('#advancedsearch_submit');
+            });
+
+            afterEach(function () {
+                menu = null;
+                btn = null;
+            });
+
+            it('should call doSearch', function () {
+
+                controller.handleClose(btn);
+                expect(menu.isVisible()).toBeFalsy();
+            });
+
+        });
+
+        describe('hideMenu', function () {
+
+            var menu = null, bar = null;
+
+
+            beforeEach(function () {
+                menu = component.down('#searchadvanced_menu');
+                bar = component.down('#searchbar');
+            });
+
+            afterEach(function () {
+                menu = null;
+                bar = null;
+            });
+
+            it('should call doSearch', function () {
+
+                controller.hideMenu(bar);
+                expect(menu.isVisible()).toBeFalsy();
+            });
+
+        });
+
+        describe('showHideMenu', function () {
+
+            var menu = null, btn = null;
+
+
+            beforeEach(function () {
+                menu = component.down('#searchadvanced_menu');
+                btn = component.down('#searchadvanced_btn');
+            });
+
+            afterEach(function () {
+                menu = null;
+                btn = null;
+            });
+
+            it('should show the menu', function () {
+                controller.showHideMenu(btn);
+                expect(menu.isVisible()).toBeTruthy();
+            });
+
+            it('should hide the menu', function () {
+                controller.showHideMenu(btn);
+                controller.showHideMenu(btn);
+                expect(menu.isVisible()).toBeFalsy();
+            });
+
+        });
+
+        describe('getSearchComponent', function () {
+
+            var menu = null;
+
+            beforeEach(function () {
+                menu = component.down('#searchadvanced_menu');
+            });
+
+            afterEach(function () {
+                menu = null;
+            });
+
+            it('should return the SearchComponent element', function () {
+                var search = controller.getSearchComponent(menu);
+                expect(search instanceof Savanna.search.view.SearchComponent).toBeTruthy();
+            });
+
+
+        });
+
+        describe('buildSearchObject', function () {
+
+            var searchString, dal, currentDalPanel, sources;
+
+            beforeEach(function () {
+
+
+
+                var readMethod = 'GET',
+                    testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(dalStore.getProxy(), 'read', readMethod);
+
+                server.respondWith(readMethod, testUrl, dalFixtures.allDals);
+
+                dalStore.getProxy().addSessionId = false; // so our URL is clean
+                dalStore.load();
+
+                server.respond({
+                    errorOnInvalidRequest: true
+                });
+
+                component.down('#searchdals').store = dalStore;
+                component.down('#searchdals').createDalPanels();
+
+                component.down('#searchdals').store.each(function (record) {
+                    var dalId = record.data.id;
+                    component.down('#searchdals').queryById(dalId).query('checkbox')[0].setValue(true);
+                });
+
+                sources = controller.getSelectedDals(component);
+
+                searchString = 'apples';
+                dal = sources[0];
+                currentDalPanel = component.down('#searchdals').queryById('mockDAL');
+            });
+
+            afterEach(function () {
+                searchString = null;
+                dal = null;
+                currentDalPanel = null;
+                sources = null;
+            });
+
+            it('should return the search request JSON', function () {
+                var searchObject = controller.buildSearchObject(searchString, dal, currentDalPanel);
+                expect(searchObject.data.textInputString).toEqual(searchString);
+            });
+
+
+        });
+
+        describe('buildAndLoadResultsStore', function () {
+
+            var searchString, dal, currentDalPanel, sources;
+
+            beforeEach(function () {
+
+
+
+                var readMethod = 'GET',
+                    testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(dalStore.getProxy(), 'read', readMethod);
+
+                server.respondWith(readMethod, testUrl, dalFixtures.allDals);
+
+                dalStore.getProxy().addSessionId = false; // so our URL is clean
+                dalStore.load();
+
+                server.respond({
+                    errorOnInvalidRequest: true
+                });
+
+                component.down('#searchdals').store = dalStore;
+                component.down('#searchdals').createDalPanels();
+
+                component.down('#searchdals').store.each(function (record) {
+                    var dalId = record.data.id;
+                    component.down('#searchdals').queryById(dalId).query('checkbox')[0].setValue(true);
+                });
+
+                sources = controller.getSelectedDals(component);
+
+                searchString = 'apples';
+                dal = sources[0];
+                currentDalPanel = component.down('#searchdals').queryById('mockDAL');
+            });
+
+            afterEach(function () {
+                searchString = null;
+                dal = null;
+                currentDalPanel = null;
+                sources = null;
+            });
+
+            it('should create the results store for the DAL', function () {
+                component.down('#resultsdals').store = dalStore;
+                component.down('#resultsdals').createDalPanels(controller.getSelectedDals(component));
+
+                var searchObject = controller.buildSearchObject(searchString, dal, currentDalPanel);
+
+                controller.buildAndLoadResultsStore(dal, component, searchObject, 'search');
+
+                expect(Ext.data.StoreManager.lookup('searchResults_' + dal.get('id'))).toBeTruthy();
+            });
+
+        });
+
+        describe('doSearch', function () {
+
+            var searchString, dal, currentDalPanel, sources, searchObject;
+
+            beforeEach(function () {
+
+                var readMethod = 'GET',
+                    testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(dalStore.getProxy(), 'read', readMethod);
+
+                server.respondWith(readMethod, testUrl, dalFixtures.allDals);
+
+                dalStore.getProxy().addSessionId = false; // so our URL is clean
+                dalStore.load();
+
+                server.respond({
+                    errorOnInvalidRequest: true
+                });
+
+                component.down('#searchdals').store = dalStore;
+                component.down('#searchdals').createDalPanels();
+
+                component.down('#searchdals').store.each(function (record) {
+                    var dalId = record.data.id;
+                    component.down('#searchdals').queryById(dalId).query('checkbox')[0].setValue(true);
+                });
+
+                sources = controller.getSelectedDals(component);
+
+                searchString = 'apples';
+                dal = sources[0];
+                currentDalPanel = component.down('#searchdals').queryById('mockDAL');
+
+                component.down('#resultsdals').store = dalStore;
+                component.down('#resultsdals').createDalPanels(controller.getSelectedDals(component));
+
+                searchObject = controller.buildSearchObject(searchString, dal, currentDalPanel);
+            });
+
+            afterEach(function () {
+                searchString = null;
+                dal = null;
+                currentDalPanel = null;
+                sources = null;
+                searchObject = null;
+            });
+
+            it('should call showResultsPage', function () {
+
+                spyOn(controller, 'showResultsPage');
+
+                controller.doSearch(component.down('#search_submit'));
+
+                expect(controller.showResultsPage).toHaveBeenCalled();
+            });
+
+        });
+
 
         describe('managing SearchAdvancedTextfield subview events', function () {
 

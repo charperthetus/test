@@ -41,7 +41,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                 click: this.onFindLocation
             },
             'search_searchcomponent #searchadvanced_btn': {
-                click: this.alignMenuWithTextfield
+                click: this.showHideMenu
             },
             'search_searchcomponent #search_terms': {
                 keyup: this.handleSearchTermKeyUp
@@ -217,7 +217,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         elem.down('#searchadvanced_menu').hide();
     },
 
-    alignMenuWithTextfield: function (btn) {
+    showHideMenu: function (btn) {
         var adv_menu = btn.findParentByType('search_searchcomponent').down('#searchadvanced_menu');
 
         if(adv_menu.isVisible())    {
@@ -274,7 +274,6 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         });
 
         if (!dalSelected) {
-            console.log(dals.store);
             dals.queryById(dals.store.defaultId).query('checkbox')[0].setValue(true);
             sources.push(dals.store.getById(dals.store.defaultId));
         }
