@@ -41,9 +41,12 @@ $brand-header-button-padding: 8px 14px !default;
 $brand-header-button-background-color: $brand-header-button-base-color !default;
 
 // brand-header Small
-$brand-header-button-small-padding: 0px !default;
-$brand-header-button-small-font-weight: $button-default-font-weight !default;
-$brand-header-button-small-font-family: $font-family !default;
+$brand-header-button-small-padding: 8px 12px 8px 12px !default;
+
+//workspace-header Small
+$workspace-header-button-background-color: transparent;
+$workspace-header-button-small-padding: 0px !default;
+$workspace-header-button-toolbar-color: #999999;
 
 // brand-header medium
 $brand-header-button-medium-padding: 8px 12px 8px 12px !default;
@@ -61,9 +64,15 @@ $brand-header-button-background-gradient-over: null !default;
 $brand-header-button-border-color-over: transparent !default;
 $brand-header-button-background-color-over: $brand-header-button-base-color-over !default;
 
+// workspace-header:hover
+$workspace-header-button-border-color-over: #0072ae;
+
 // brand-header:active
 $brand-header-button-background-gradient-pressed: null !default;
 $brand-header-button-border-color-pressed: transparent !default;
+
+//workspace-header:active
+$workspace-header-button-border-color-pressed: #0073ae !default;
 
 // brand-header:focus
 $brand-header-button-border-color-focus: transparent !default;

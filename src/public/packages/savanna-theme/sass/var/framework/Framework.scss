@@ -47,6 +47,8 @@ $brand-header-help-image-hover:url('/packages/savanna-theme/resources/images/fra
 $brand-header-user-image: url('/packages/savanna-theme/resources/images/framework/brand-header-user.png');
 $brand-header-user-image-hover:url('/packages/savanna-theme/resources/images/framework/brand-header-user-hover.png');
 
+$workspace-header-singleview-image:url('/packages/savannna-theme/resources/images/framework/workspace-header-singleview.png');
+$workspace-header-splitview-image:url('/packages/savanna-theme/resources/images/framework/workspace-header-splitview.png');
 /*
         d8b                                          
         88P                                          
@@ -57,7 +59,7 @@ d8P' `P?88  d8P' ?88   ?8b,    ?8b,   d8b_,dP ?8b,
 `?888P'  88b`?88P'`88b`?888P' `?888P' `?888P'`?888P'              
  */
 
-.logoButtonFramework {
+.logoButtonFramework, .logoButtonFramework.x-btn-brand-header-toolbar-large-focus {
 	background-image: $brand-header-logo-image;
 	background-repeat: no-repeat;
 	background-position: top left;
@@ -71,44 +73,75 @@ d8P' `P?88  d8P' ?88   ?8b,    ?8b,   d8b_,dP ?8b,
 	}
 }
 
-.searchButtonFramework, .uploadButtonFramework,.errorButtonFramework, .helpButtonFramework, .userButtonFramework {
+.searchButtonFramework,
+.uploadButtonFramework,
+.errorButtonFramework, 
+.helpButtonFramework, 
+.userButtonFramework {
 	background-repeat: no-repeat;
 	background-position: center;
 	display:inline-block;
 }
 
-.searchButtonFramework, .searchButtonFramework:hover, .searchButtonFramework:active {
+.searchButtonFramework, 
+.searchButtonFramework.x-btn-brand-header-toolbar-medium-focus {
 	background-image: $brand-header-search-image;
 	&:hover, &:active, &:focus {
 		background-image: $brand-header-search-image-hover;
 	}
 }
 
-.uploadButtonFramework, .uploadButtonFramework:hover, .uploadButtonFramework:active {
+.uploadButtonFramework, 
+.uploadButtonFramework.x-btn-brand-header-toolbar-medium-focus {
 	background-image: $brand-header-upload-image;
 	&:hover, &:active, &:focus {
 		background-image: $brand-header-upload-image-hover;
 	}
 }
 
-.errorButtonFramework, .errorButtonFramework:hover, .errorButtonFramework:active {
+.errorButtonFramework, 
+.errorButtonFramework.x-btn-brand-header-toolbar-medium-focus {
 	background-image: $brand-header-error-image;
 	&:hover, &:active, &:focus {
 		background-image: $brand-header-error-image-hover;
 	}
 }
 
-.helpButtonFramework, .helpButtonFramework:hover, .helpButtonFramework:active {
+.helpButtonFramework, 
+.helpButtonFramework.x-btn-brand-header-toolbar-medium-focus {
 	background-image: $brand-header-help-image;
 	&:hover, &:active, &:focus {
 		background-image: $brand-header-help-image-hover;
 	}
 }
 
-.userButtonFramework, .userButtonFramework:hover, .userButtonFramework:active {
+.userButtonFramework, 
+.userButtonFramework.x-btn-brand-header-toolbar-medium-focus {
 	background-image: $brand-header-user-image;
 	background-position: center left;
-	&:hover, &:active, &:focus {
+	&:hover, &:active, &:focus, .userButtonFramework.x-tn-brand-header-toolbar-medium-menu-active {
 		background-image: $brand-header-user-image-hover;
 	}
+}
+
+.singleViewButtonFramework, 
+.singleViewButtonFramework:hover, 
+.singleViewButtonFramework:active, 
+.singleViewButtonFramework.x-btn-workspace-header-toolbar-small-focus,
+.singleViewButtonFramework.x-btn-workspace-header-toolbar-small-active,
+.singleViewButtonFramewokr.x-btn-workspace-header-toolbar-small-pressed{
+	background-image: $workspace-header-singleview-image;
+	width: 15px;
+	height: 15px;
+}
+
+.splitViewButtonFramework, 
+.singleViewButtonFramework:hover, 
+.singleViewButtonFramework:active, 
+.splitViewButtonFramework.x-btn-workspace-header-toolbar-small-focus,
+.splitViewButtonFramework.x-btn-workspace-header-toolbar-small-active,
+.splitViewButtonFramework.x-btn-workspace-header-toolbar-small-pressed {
+	background-image: $workspace-header-splitview-image;
+	width: 15px;
+	width: 15px;
 }
