@@ -9,6 +9,8 @@
 Ext.define('Savanna.modelSearch.store.ModelSearchStore', {
     extend: 'Ext.data.JsonStore',
 
+    requires: ['Savanna.proxy.Cors'],
+
     model: 'Savanna.modelSearch.model.ModelSearchModel',
 
     storeId: 'modelSearchStore',
@@ -21,51 +23,29 @@ Ext.define('Savanna.modelSearch.store.ModelSearchStore', {
 
     searchText: '',
 
-    constructor: function() {
+    constructor: function () {
+        var ReaderClass = null,
+            me = this;
+
         this.callParent(arguments);
 
-        savannaUrl = SavannaConfig.savannaUrlRoot;
+        ReaderClass = Ext.extend(Ext.data.JsonReader, {
+            type:'json',
+            root: 'modelItems',
+            totalProperty:'totalResults'
+        });
 
-        // HACK: we have to set the proxy manually because for some reason the config is not read by default
         this.setProxy({
-            type: 'rest',
-            actionMethods: { create: 'POST', read: 'POST', update: 'POST', destroy: 'POST' },
+            type: 'savanna-cors',
             url: SavannaConfig.modelSearchUrl,
-            buildUrl: function (request) {
-                return this.getUrl(request) + ';jsessionid=' + Savanna.jsessionid;
-            },
-            headers: {
-                'Content-Type': "application/json",
-                'Accept': 'application/json'
-            },
-            doRequest: function (operation, callback, scope) {
-                var writer = this.getWriter(),
-                    request = this.buildRequest(operation, callback, scope);
+            reader: new ReaderClass(),
 
-                if (operation.allowWrite()) {
-                    request = writer.write(request);
-                }
-
+            modifyRequest: function(request) {
                 Ext.apply(request, {
-                    headers: this.headers,
-                    timeout: this.timeout,
-                    scope: this,
-                    callback: this.createRequestCallback(request, operation, callback, scope),
-                    method: this.getMethod(request),
                     jsonData: this.jsonData,
-                    disableCaching: false // explicitly set it to false, ServerProxy handles caching
+                    method:'POST'
                 });
-
-                Ext.Ajax.request(request);
                 return request;
-            },
-            reader: {
-                type: 'json',
-                root: 'modelItems',
-                totalProperty: 'totalResults'
-            },
-            writer: {
-                type: 'json'
             }
         });
     },
@@ -83,8 +63,7 @@ Ext.define('Savanna.modelSearch.store.ModelSearchStore', {
                     isActive: true
                 }]
             };
-
+            console.log(store.proxy.jsonData);
         }
-
     }
 });
