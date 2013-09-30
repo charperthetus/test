@@ -7,17 +7,12 @@
  */
 
 Ext.define('Savanna.metadata.view.Date', {
-    extend: 'Ext.panel.Panel',
+    extend: 'Savanna.metadata.view.MetadataItemView',
     alias: 'widget.metadata_date',
 
     requires: [
         'Savanna.controller.Factory'
     ],
-
-    layout: 'vbox',
-    width: "100%",
-
-    border: false,
 
     items: [
         {
@@ -32,18 +27,18 @@ Ext.define('Savanna.metadata.view.Date', {
             text: ''
         }
     ],
+
     initComponent: function () {
         this.callParent(arguments);
         Savanna.controller.Factory.getController('Savanna.metadata.controller.FieldTypes');
+        var config = this.initialConfig || {};
+        this.initValues(config);
+        var me = this;
 
         this.on('beforerender', Ext.bind(function() {
-            var config = this.initialConfig || {};
-
-            this.down('#displayLabel').text = config.displayLabel;
-
-            var myDate = new Date(config.value);
+            this.down('#displayLabel').text = me.displayLabel;
+            var myDate = new Date(me.value);
             this.down('#displayValue').text = Ext.Date.format(myDate,'F j, Y, g:i a');
-
         }, this));
     }
 

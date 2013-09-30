@@ -7,17 +7,12 @@
  */
 
 Ext.define('Savanna.metadata.view.LongString', {
-    extend: 'Ext.panel.Panel',
+    extend: 'Savanna.metadata.view.MetadataItemView',
     alias: 'widget.metadata_longstring',
 
     requires: [
         'Savanna.controller.Factory'
     ],
-
-    layout: 'vbox',
-    width: "100%",
-
-    border: false,
 
     items: [
         {
@@ -33,16 +28,17 @@ Ext.define('Savanna.metadata.view.LongString', {
             width: '100%'
         }
     ],
+
     initComponent: function () {
         this.callParent(arguments);
         Savanna.controller.Factory.getController('Savanna.metadata.controller.FieldTypes');
+        var config = this.initialConfig || {};
+        this.initValues(config);
+        var me = this;
 
         this.on('beforerender', Ext.bind(function() {
-            var config = this.initialConfig || {};
-
-            this.down('#displayLabel').text = config.displayLabel;
-            this.down('#displayValue').text = config.value;
-
+            me.down('#displayLabel').text = me.displayLabel;
+            me.down('#displayValue').text = me.value;
         }, this));
     }
 

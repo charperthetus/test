@@ -15,6 +15,7 @@ Ext.define('Savanna.metadata.model.Metadata', {
 
         /*
         {name: 'type' },
+        {name: 'key' },
         {name: 'value' },
         {name: 'displayLabel' },
         */

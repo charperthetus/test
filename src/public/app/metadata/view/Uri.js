@@ -7,17 +7,12 @@
  */
 
 Ext.define('Savanna.metadata.view.Uri', {
-    extend: 'Ext.panel.Panel',
+    extend: 'Savanna.metadata.view.MetadataItemView',
     alias: 'widget.metadata_uri',
 
     requires: [
         'Savanna.controller.Factory'
     ],
-
-    layout: 'vbox',
-    width: "100%",
-
-    border: false,
 
     items: [
         {
@@ -32,17 +27,19 @@ Ext.define('Savanna.metadata.view.Uri', {
             width: '100%'
         }
     ],
+
     initComponent: function () {
         this.callParent(arguments);
         Savanna.controller.Factory.getController('Savanna.metadata.controller.FieldTypes');
+        var config = this.initialConfig || {};
+        this.initValues(config);
+        var me = this;
 
         this.on('beforerender', Ext.bind(function() {
-            var config = this.initialConfig || {};
-
-            this.down('#displayLabel').text = config.displayLabel;
+            me.down('#displayLabel').text = me.displayLabel;
             // TODO: This conversion is probably not correct.  Need to decode it properly.
             // If you change this, check UriList.js for similar.
-            this.down('#displayValue').text = config.value.replace('%2F', '/', 'g');
+            me.down('#displayValue').text = me.value.replace('%2F', '/', 'g');
 
         }, this));
     }
