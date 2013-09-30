@@ -64,12 +64,15 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
 
     onShowHideFacets: function (btn) {
 
-        Ext.each(btn.up('#resultsfacets').query('panel[cls=results-facet]'), function (facet) {
-
-           if(!btn.facetsExpanded)    {
-               facet.expand();
-           }    else    {
-               facet.collapse();
+        Ext.each(btn.up('#resultsfacets').getActiveTab().query('panel[cls=results-facet]'), function (facet) {
+           if(facet)    {
+               if(!btn.facetsExpanded)    {
+                   btn.setText('Hide All');
+                   facet.expand();
+               }    else    {
+                   facet.collapse();
+                   btn.setText('Show All');
+               }
            }
         });
         btn.facetsExpanded = !btn.facetsExpanded;
