@@ -216,6 +216,7 @@ var ThetusTestHelpers;
     ThetusHelpers.Fixtures.LocationSources = ThetusHelpers.Fixtures.LocationSources || {};
 
     ThetusHelpers.Fixtures.LocationSources.locationData = locationData;
+    ThetusHelpers.Fixtures.LocationSources.json = locationData;
     ThetusHelpers.Fixtures.LocationSources.locationRecord = locationRecord;
 
 })(ThetusTestHelpers || (ThetusTestHelpers = {}));

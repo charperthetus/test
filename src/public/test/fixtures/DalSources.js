@@ -894,6 +894,7 @@ var ThetusTestHelpers;
 
     ThetusHelpers.Fixtures.DalSources.legacyDal = legacyDal;
     ThetusHelpers.Fixtures.DalSources.groupedDal = groupedDal;
+    ThetusHelpers.Fixtures.DalSources.json = groupedDal;
     ThetusHelpers.Fixtures.DalSources.allDals = allDals;
 
 })(ThetusTestHelpers || (ThetusTestHelpers = {}));

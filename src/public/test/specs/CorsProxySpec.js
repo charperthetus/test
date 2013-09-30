@@ -1,6 +1,6 @@
 /* global Ext: false,
           describe: false, beforeEach: false, afterEach: false, it: false, expect: false, sinon: false, spyOn: false,
-          ThetusTestHelpers: false, Savanna: false */
+          ThetusTestHelpers: false, SavannaConfig: false */
 Ext.require('Savanna.proxy.Cors');
 
 describe('Savanna.proxy.Cors', function() {
@@ -29,19 +29,13 @@ describe('Savanna.proxy.Cors', function() {
                     }
                 }
             });
+
+            spyOn(Ext.Ajax, 'request');
         });
 
         afterEach(function() {
             proxy = null;
             proxyData = {};
-        });
-
-        it('should be configured for cors', function() {
-            expect(proxy.cors).toBeTruthy();
-        });
-
-        it('should be configured to provide credentials', function() {
-            expect(proxy.withCredentials).toBeTruthy();
         });
 
         it('should add session id to url by default', function() {
@@ -56,6 +50,19 @@ describe('Savanna.proxy.Cors', function() {
             spyOn(proxy, 'getUrl').andReturn('TEST_URL');
 
             expect(proxy.buildUrl()).toBe('TEST_URL');
+        });
+
+        it('should set "cors", "withCredentials", and "disableCaching" parameters on call to Ajax', function() {
+            proxy.doRequest(
+                Ext.create('Ext.data.Operation', {}),
+                function() { /* empty callback */ },
+                proxy
+            );
+
+            var requestParams = Ext.Ajax.request.mostRecentCall.args[0];
+
+            expect(requestParams.cors).toBeTruthy();
+            expect(requestParams.disableCaching).toBeTruthy();
         });
     });
 
