@@ -9,7 +9,9 @@
 Ext.define('Savanna.modelSearch.store.ModelSearchStore', {
     extend: 'Ext.data.JsonStore',
 
-    requires: ['Savanna.proxy.Cors'],
+    requires: [
+        'Savanna.proxy.Cors'
+    ],
 
     model: 'Savanna.modelSearch.model.ModelSearchModel',
 
@@ -24,8 +26,7 @@ Ext.define('Savanna.modelSearch.store.ModelSearchStore', {
     searchText: '',
 
     constructor: function () {
-        var ReaderClass = null,
-            me = this;
+        var ReaderClass = null;
 
         this.callParent(arguments);
 
@@ -63,7 +64,6 @@ Ext.define('Savanna.modelSearch.store.ModelSearchStore', {
                     isActive: true
                 }]
             };
-            console.log(store.proxy.jsonData);
         }
     }
 });

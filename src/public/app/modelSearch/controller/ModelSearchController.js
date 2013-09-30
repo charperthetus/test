@@ -5,26 +5,22 @@
  * Time: 9:22 AM
  * To change this template use File | Settings | File Templates.
  */
-
 Ext.define('Savanna.modelSearch.controller.ModelSearchController', {
     extend: 'Ext.app.Controller',
 
     stores: [
         'Savanna.modelSearch.store.ModelSearchStore'
     ],
-
     models:[
         'Savanna.modelSearch.model.ModelSearchModel'
     ],
-
     views: [
         'Savanna.modelSearch.view.ModelSearch',
         'Savanna.modelSearch.view.ResultsGrid',
         'Savanna.modelSearch.view.ModelSearchHeader',
         'Savanna.modelSearch.view.ModelSearchPagingToolbar'
     ],
-
-    init: function(app) {
+    init: function() {
         Savanna.controller.Factory.getController('Savanna.itemView.controller.ItemViewController');
         this.control({
             'modelsearch_searchHeader #gobutton': {
@@ -38,7 +34,7 @@ Ext.define('Savanna.modelSearch.controller.ModelSearchController', {
             }
         });
     },
-    handleModelSearch: function(button, event) {
+    handleModelSearch: function(button) {
         // Get the grid and clear the data, then call the runSearch function passing the text from the text field.
         var header = button.up('modelSearchHeader'),
             searchInput = header.queryById('modelSearchInput'),
@@ -48,9 +44,8 @@ Ext.define('Savanna.modelSearch.controller.ModelSearchController', {
         store.searchText = searchInput.value;
         store.loadPage(1);
     },
-    clearModelSearch: function(button, event) {
+    clearModelSearch: function(button) {
         // Get the grid and clear the data, then call the runSearch function passing the text from the text field.
-
         var header = button.up('searchheader'),
             searchInput = header.queryById('searchInput'),
             store = Ext.StoreManager.lookup('SearchStore');
