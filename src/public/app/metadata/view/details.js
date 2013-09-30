@@ -40,6 +40,8 @@ Ext.define('Savanna.metadata.view.Details', {
     autoScroll: true,
     editMode: false,
 
+    itemURI: '',
+
     tbar: [
       {
           xtype:    'button',
@@ -65,18 +67,25 @@ Ext.define('Savanna.metadata.view.Details', {
         this.mixins.storeable.initStore.call(this);
         this.callParent(arguments);
         Savanna.controller.Factory.getController('Savanna.metadata.controller.FieldTypes');
+
+        var config = this.initialConfig || {};
+        this.itemURI = config.itemURI;
+
+        var metadataStore = Ext.data.StoreManager.lookup('metadata');
+        metadataStore.itemURI = config.itemURI;
+        metadataStore.load();
+
     },
 
     onStoreLoad: function() {
-
         this.createMetadataFields();
     },
 
     createMetadataFields: function() {
-
         var me = this;
 
         //console.log('this.store.data.items[0].data.metadata', this.store.data.items[0].data.metadata);
+        //console.log('this.store.itemURI', this.store.itemURI);
 
         // to sort and filter these, we'll need an array of keys
         Ext.Array.each(this.store.data.items[0].data.metadata.metadataEntries, function(metadata) {

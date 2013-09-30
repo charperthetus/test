@@ -9,18 +9,30 @@ Ext.define('Savanna.metadata.controller.FieldTypes', {
     extend: 'Ext.app.Controller',
 
     views: [
-        'Savanna.metadata.view.String',
-        'Savanna.metadata.view.LongString'
+//        'Savanna.metadata.view.String',
+//        'Savanna.metadata.view.LongString'
+//        'Savanna.metadata.view.Details'
     ],
+
     requires:   [
         'Savanna.controller.Factory'
     ],
+
+    stores: [
+        'Savanna.metadata.store.Metadata'
+    ],
+
+    models: [
+        'Savanna.metadata.model.Metadata'
+    ],
+
     init: function () {
 
         this.control({
             'metadata_details #metadata_edit_button': {
                 click: this.handleEditMode
             }
+
 
              /*
             'search_resultscomponent panel[cls=results-dal]': {
