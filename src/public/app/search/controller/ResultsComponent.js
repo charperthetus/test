@@ -118,7 +118,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
             /*
              regrettable but necessary call to the SearchController directly.  The target method
              'buildSearchObject' needs to return the request object, but when an event is fired it can
-             only return a boolean.  If anyone thinks of a way around it, please feel free to updaate.
+             only return a boolean.  If anyone thinks of a way around it, please feel free to update.
              */
             searchController = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent'),
             component = comboboxComponent.findParentByType('search_searchcomponent'),
@@ -168,6 +168,11 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
                  */
 
                 this.getApplication().fireEvent('results:refineSearch', field);
+                return true;
+
+            }   else    {
+
+                return false;
             }
         }
     },
@@ -183,6 +188,11 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
              resubmit the search request
              */
             this.getApplication().fireEvent('results:refineSearch', field);
+            return true;
+
+        }   else    {
+
+            return false;
         }
     }
 });

@@ -49,17 +49,17 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
 
         var searchPanelDals = this.findParentByType('search_searchcomponent').down('#searchdals'); // the dal sources in search options
 
-        if(!this.queryById('refinesearch'))    {
+        if (!this.queryById('refinesearch')) {
             this.add(this.createRefineSearchPanel());
         }
 
-        if(!this.queryById('refineterms'))    {
+        if (!this.queryById('refineterms')) {
             this.add(this.createRefineTermsPanel());
         }
 
         var facetTabs = this.createFacetsTabPanel();    // always do this...
 
-        if(!this.queryById('resultsfacets'))    {
+        if (!this.queryById('resultsfacets')) {
 
             this.add(facetTabs);    // ...but only add if doesn't exist
         }
@@ -173,7 +173,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
             facets = this.queryById('resultsfacets').queryById('tab_' + id),
             me = this;
 
-        if(facets !== null) {
+        if (facets !== null) {
             facets.removeAll();
         }
 
@@ -195,9 +195,9 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
                         var facetElement;
 
                         facetElement = me.createFacet(descriptions[i], resultset, dalRecord);
-
-                        facets.add(facetElement);
-
+                        if (facetElement) {
+                            facets.add(facetElement);
+                        }
                     }
                 }
             }
@@ -206,15 +206,17 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
 
     createFacet: function (facet, results, dalRecord) {
         var hasValues = results.store.facetValueSummaries[facet.facetId].facetValues.length;
-        var isStringFacet = (facet.facetDataType === 'STRING');
-        if(!isStringFacet || (isStringFacet && hasValues))  {
-            return Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacet', {
+        var isStringFacet = (facet.facetDataType === 'STRING'),
+            createdFacet;
+        if (!isStringFacet || (isStringFacet && hasValues)) {
+            createdFacet = Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacet', {
                 facet: facet,
                 searchResults: results,
                 dal: dalRecord,
                 itemId: 'facet_' + dalRecord.get('id') + '_' + facet.facetId
             });
         }
+        return createdFacet;
     },
 
     updateDalStatus: function (dalId, status) {
