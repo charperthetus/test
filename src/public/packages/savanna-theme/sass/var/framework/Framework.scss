@@ -131,6 +131,7 @@ d8P' `P?88  d8P' ?88   ?8b,    ?8b,   d8b_,dP ?8b,
 .singleViewButtonFramework.x-btn-workspace-header-toolbar-small-active,
 .singleViewButtonFramewokr.x-btn-workspace-header-toolbar-small-pressed{
 	background-image: $workspace-header-singleview-image;
+	background-position: center center;
 	width: 15px;
 	height: 15px;
 }
@@ -142,6 +143,7 @@ d8P' `P?88  d8P' ?88   ?8b,    ?8b,   d8b_,dP ?8b,
 .splitViewButtonFramework.x-btn-workspace-header-toolbar-small-active,
 .splitViewButtonFramework.x-btn-workspace-header-toolbar-small-pressed {
 	background-image: $workspace-header-splitview-image;
+	background-image: center center;
 	width: 15px;
 	width: 15px;
 }
