@@ -50,12 +50,15 @@ Ext.define('Savanna.desktop.view.SavannaDesktop', {
             layout: {
                 defaultMargins:'5'
             },
-            items: [{
-                itemId: 'errorbutton',
-                cls:'errorButtonFramework',
-                ui:'brand-header',
-                scale: 'medium'
-            }, {
+            items: [
+            // TODO: when development is ready for error messages, uncomment this block for alert button
+            // {
+            //     itemId: 'errorbutton',
+            //     cls:'errorButtonFramework',
+            //     ui:'brand-header',
+            //     scale: 'medium'
+            // }, 
+            {
                 itemId: 'helpbutton',
                 cls:'helpButtonFramework',
                 ui:'brand-header',

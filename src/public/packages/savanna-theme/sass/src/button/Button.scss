@@ -43,15 +43,6 @@
         $background-gradient-focus: $brand-header-button-background-gradient-focus,
         $background-gradient-pressed: $brand-header-button-background-gradient-pressed,
         $background-gradient-disabled: $brand-header-button-background-gradient-disabled
-
-        // $icon-size: $button-small-icon-size,
-        // $arrow-width: $button-small-arrow-width,
-        // $arrow-height: $button-small-arrow-height,
-        // $split-width: $button-small-split-width,
-        // $split-height: $button-small-split-height,
-
-        // $opacity-disabled: $button-toolbar-opacity-disabled,
-        // $inner-opacity-disabled: $button-toolbar-inner-opacity-disabled
     );
     @include extjs-button-ui(
         $ui: 'brand-header-toolbar-medium',
