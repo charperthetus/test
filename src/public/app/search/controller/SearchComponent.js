@@ -1,4 +1,4 @@
-/* global Ext: false, OpenLayers: false, SavannaConfig: false */
+/* global Ext: false, Savanna: false */
 /**
  * Created with IntelliJ IDEA.
  * User: ksonger
@@ -12,7 +12,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
     requires: [
         'Savanna.search.model.SearchRequest',
         'Savanna.search.store.SearchResults',
-        'Savanna.search.view.searchComponent.searchBody.searchMap.SearchLocationForm',
+        'Savanna.search.view.searchComponent.searchBody.searchMap.SearchLocationComboBox',
         'Savanna.controller.Factory'
     ],
     stores: [
@@ -31,14 +31,6 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             },
             'search_searchcomponent #search_reset_button': {
                 click: this.handleNewSearch
-            },
-            'search_searchcomponent #mapZoomTo': {
-                click: function (button) {
-                    button.up('search_searchmap').queryById('leafletMap').fireEvent('locationSearch:zoomto', button);
-                }
-            },
-            'search_searchcomponent #findLocation': {
-                click: this.onFindLocation
             },
             'search_searchcomponent #searchadvanced_btn': {
                 click: this.showHideMenu
@@ -80,6 +72,18 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             },
             'search_searchcomponent #clearLocationSearch': {
                 click: this.clearDrawFeature
+            },
+            'search_searchcomponent #mapZoomToMenu': {
+                click: this.enableZoomMenu
+            },
+            'search_searchcomponent #mapZoomToMenu menu': {
+                click: this.zoomToSearchExtent
+            },
+            'search_searchmap' : {
+                resize: this.onSearchMapResize
+            },
+            'search_searchmap search_searchlocationcombobox' : {
+                zoomButtonClick: this.zoomToLocation
             }
         });
 
@@ -551,5 +555,45 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         var canvas = button.up('search_searchmap').down('search_map_canvas');
         canvas.searchLayer.removeAllFeatures();
         canvas.drawFeature.deactivate();
+    },
+    zoomToLocation: function(comboBoxButton) {
+        var viewBox = comboBoxButton.viewBox;
+        var mapCanvas = comboBoxButton.parentComboBox.up('search_searchmap').down('search_map_canvas');
+        var extent = new OpenLayers.Bounds(viewBox.west, viewBox.south, viewBox.east, viewBox.north);
+        mapCanvas.map.zoomToExtent(extent, true);
+    },
+
+    enableZoomMenu: function (button) {
+        var mapCanvas = button.up('search_searchmap').down('search_map_canvas');
+        var menuButton = button.up('search_searchmap').down('#zoomToSelectedArea');
+        //check if search layer is populated
+        //if search layer has a feature enable zoom to selected area
+        if (mapCanvas.searchLayer.features.length > 0){
+            menuButton.setDisabled(false);
+        }
+        else{
+            menuButton.setDisabled(true);
+        }
+    },
+
+    zoomToSearchExtent: function (menu) {
+        var mapCanvas = menu.up('search_searchmap').down('search_map_canvas');
+        if (menu.activeItem) {
+            switch (menu.activeItem.itemId) {
+                case 'zoomToWholeWorld':
+                    mapCanvas.map.zoomToMaxExtent();
+                    break;
+                case 'zoomToSelectedArea':
+                    mapCanvas.map.zoomToExtent(mapCanvas.searchLayer.getDataExtent());
+                    break;
+            }
+        }
+    },
+
+    onSearchMapResize: function (searchMap) {
+        //position the draw select area button
+        var canvasSize = searchMap.body.getSize();
+        var polyButton = searchMap.down('#drawLocationSearch');
+        polyButton.setPosition(canvasSize.width - 50, 10);
     }
 });
