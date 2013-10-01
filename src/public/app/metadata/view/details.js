@@ -74,7 +74,7 @@ Ext.define('Savanna.metadata.view.Details', {
         var metadataStore = Ext.data.StoreManager.lookup('metadata');
         metadataStore.itemURI = config.itemURI;
         metadataStore.load();
-
+        //console.log('URI', this.itemURI);
     },
 
     onStoreLoad: function() {

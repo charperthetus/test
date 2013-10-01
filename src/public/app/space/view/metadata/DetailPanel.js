@@ -15,6 +15,13 @@ Ext.define('Savanna.space.view.metadata.DetailPanel', {
     title: 'Details',
     autoScroll: true,
     items: [{
-        xtype: 'metadata_details'
-    }]
+    }],
+
+    initComponent: function() {
+        this.callParent(arguments);
+        var detailsView = Ext.create('widget.metadata_details', {
+            itemURI: 'ThisIsAURIFromTheConstructor'
+        });
+        this.add(detailsView);
+    }
 });
