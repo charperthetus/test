@@ -4,7 +4,6 @@
           ThetusTestHelpers: false,
           Savanna: false
  */
-Ext.require('Savanna.Config');
 Ext.require('Savanna.search.model.DalSource');
 Ext.require('Savanna.search.model.dalSource.CustomSearchDescription');
 Ext.require('Savanna.search.store.DalSources');
@@ -30,17 +29,6 @@ describe('Dal Search', function() {
     });
 
     describe('Savanna.search.model.DalSource', function() {
-        var store = null;
-
-        beforeEach(function() {
-            // NOTE: this has to happen BEFORE your create a FakeServer,
-            store = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.DalSources');
-            store.add(Ext.create('Savanna.search.model.DalSource', fixtures.groupedDal));
-        });
-
-        afterEach(function() {
-            store = null;
-        });
 
         describe('constructor', function() {
 

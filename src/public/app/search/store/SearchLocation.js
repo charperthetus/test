@@ -9,7 +9,6 @@ Ext.define('Savanna.search.store.SearchLocation', {
     extend: 'Ext.data.JsonStore',
 
     requires: [
-        'Savanna.Config',
         'Savanna.search.model.SearchLocation',
         'Savanna.proxy.Cors'
     ],
@@ -29,8 +28,8 @@ Ext.define('Savanna.search.store.SearchLocation', {
             type: 'savanna-cors',
 
             // the follow url will replace the url in use once we have a service running
-            //url: Savanna.Config.buildSavannaUrl('locationSearch'),
-            url: 'app/assets/data/testSearchLocationSearch.json',
+            //url: SavannaConfig.locationSearch,
+            url: 'fixture/LocationSources.json',
             addSessionId: false, // this needs to be left in until using correct url or Ted adds node fix
 
             reader: {

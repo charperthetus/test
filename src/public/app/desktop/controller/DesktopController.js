@@ -10,52 +10,38 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
 
     statics: {
         aboutwindow: null,
-        searchwindow: null,
-        mystuffwindow: null
+        searchwindow: null
     },
     requires: [
         'Savanna.desktop.view.AboutWindow',
         'Savanna.desktop.view.SearchWindow',
-        'Savanna.desktop.view.UploadWindow',
-        'Savanna.desktop.view.MyStuffWindow'
+        'Savanna.desktop.view.UploadWindow'
     ],
     views: [
-        'Savanna.desktop.view.SavannaToolbar',
         'Savanna.desktop.view.SavannaDesktop',
+        'Savanna.desktop.view.SearchWindow',
         'Savanna.desktop.view.SavannaWorkspace'
     ],
     init: function () {
         var me = this;
         this.control({
-            'desktop_savannatoolbar #logobutton': {
+            'desktop_savannadesktop #logobutton': {
                 click: this.displayAboutDialog
             },
-            'desktop_savannatoolbar #dashboardbutton': {
-                click: this.displayDashboard
-            },
-            'desktop_savannatoolbar #spacemanagerbutton': {
-                click: this.displaySpaceManager
-            },
-            'desktop_savannatoolbar #searchbutton': {
+            'desktop_savannadesktop #searchbutton': {
                 click: this.displaySearch
             },
-            'desktop_savannatoolbar #uploadbutton': {
+            'desktop_savannadesktop #uploadbutton': {
                 click: this.displayUploadDialog
             },
-            'desktop_savannatoolbar #errorbutton': {
-                click: this.displayErrorDialog
-            },
-            'desktop_savannatoolbar #helpbutton': {
+            'desktop_savannadesktop #helpbutton': {
                 click: this.launchHelp
             },
-            'desktop_savannatoolbar #accountsettings': {
+            'desktop_savannadesktop #accountsettings': {
                 click: this.displayAccountSettings
             },
-            'desktop_savannatoolbar #savannalogout': {
+            'desktop_savannadesktop #savannalogout': {
                 click: this.handleLogout
-            },
-            'desktop_savannaworkspace #flyoutbutton': {
-                click: this.showMyStuffWindow
             },
             'desktop_savannaworkspace #singleviewbutton': {
                 toggle: function(button) {
@@ -72,20 +58,6 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
                 }
             }
         });
-
-        this.application.on({
-            openspace: this.openSpace,
-            scope: this
-        });
-    },
-
-    //CUSTOM METHODS
-    openSpace: function() { //todo: pass space as parameter
-        var spaceWorkArea = Ext.ComponentQuery.query('panel #savannaworkspace')[0];
-        if (spaceWorkArea) {
-            //todo, if space is different than currentspace, reinit the workspace component
-            this.showDesktopComponent(spaceWorkArea);
-        }
     },
 
     displayAboutDialog: function() {
@@ -96,37 +68,6 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
             });
         }
         this.statics().aboutwindow.show();
-    },
-
-    displayDashboard: function(button) {
-        var dashboard = button.up('desktop_savannadesktop').down('#savannadashboard');
-        this.showDesktopComponent(dashboard);
-    },
-
-    displaySpaceManager: function(button) {
-        var spacemanager = button.up('desktop_savannadesktop').down('#spacemanager');
-        this.showDesktopComponent(spacemanager);
-    },
-
-    showDesktopComponent: function(cmp) {
-        if (cmp) {
-            var desktopContainer = Ext.ComponentQuery.query('desktop_savannadesktop > #desktopcontainer')[0];
-            if (desktopContainer) {
-                desktopContainer.items.each(function(item){
-                    if (item === cmp) {
-                        if (item.hidden) {
-                            item.show();
-                            item.hidden = false;
-                        }
-                    } else {
-                        item.hide();
-                        item.hidden = true;
-                    }
-                });
-            }
-        } else {
-            Ext.Error.raise('Null component sent to DesktopController.showDesktopComponent()');
-        }
     },
 
     displaySearch: function() {
@@ -142,21 +83,6 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
         uploadWindow.show();
     },
 
-    displayErrorDialog: function(button) {
-        //todo: make system messages window component
-        var errorWindow = Ext.create('Ext.window.Window', {
-            title: 'System Messages',
-            width: 200, //size here is arbitrary to match the wireframe. Design team should apply appropriate sizing.
-            height: 100
-        });
-        var pos = button.getPosition();
-        /*the wireframe shows the error window positioned so that the top right corner aligns with the bottom left corner
-          of the button. This code sets the (screen) position of the dialog. Design may change this positioning.
-         */
-        errorWindow.setPosition([pos[0] - errorWindow.width, pos[1] + button.getHeight()]);
-        errorWindow.show();
-    },
-
     displayAccountSettings: function() {
         console.log('The user hit account settings');
     },
@@ -169,18 +95,6 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
 
     handleLogout: function() {
         console.log('The user is trying to logout');
-    },
-
-    showMyStuffWindow: function() {
-        if (!this.statics().mystuffwindow) {
-            this.statics().mystuffwindow = Ext.create('Savanna.desktop.view.MyStuffWindow', {closeAction: 'hide', modal: 'true'});
-        }
-        //todo: the spec has the window show at the same x,y as the tab panel...is this really necessary?
-        var spaceTabPanel = Ext.ComponentQuery.query('panel #savannaworkspace #maintabpanel')[0];
-        if (spaceTabPanel) {
-            this.statics().mystuffwindow.setPosition(spaceTabPanel.getPosition());
-        }
-        this.statics().mystuffwindow.show();
     },
 
     //todo: this logic may change...this is the initial implementation for design interaction

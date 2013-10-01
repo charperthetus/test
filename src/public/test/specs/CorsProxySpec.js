@@ -1,7 +1,6 @@
 /* global Ext: false,
           describe: false, beforeEach: false, afterEach: false, it: false, expect: false, sinon: false, spyOn: false,
-          ThetusTestHelpers: false, Savanna: false */
-Ext.require('Savanna.Config');
+          ThetusTestHelpers: false, SavannaConfig: false */
 Ext.require('Savanna.proxy.Cors');
 
 describe('Savanna.proxy.Cors', function() {
@@ -30,19 +29,13 @@ describe('Savanna.proxy.Cors', function() {
                     }
                 }
             });
+
+            spyOn(Ext.Ajax, 'request');
         });
 
         afterEach(function() {
             proxy = null;
             proxyData = {};
-        });
-
-        it('should be configured for cors', function() {
-            expect(proxy.cors).toBeTruthy();
-        });
-
-        it('should be configured to provide credentials', function() {
-            expect(proxy.withCredentials).toBeTruthy();
         });
 
         it('should add session id to url by default', function() {
@@ -58,16 +51,29 @@ describe('Savanna.proxy.Cors', function() {
 
             expect(proxy.buildUrl()).toBe('TEST_URL');
         });
+
+        it('should set "cors", "withCredentials", and "disableCaching" parameters on call to Ajax', function() {
+            proxy.doRequest(
+                Ext.create('Ext.data.Operation', {}),
+                function() { /* empty callback */ },
+                proxy
+            );
+
+            var requestParams = Ext.Ajax.request.mostRecentCall.args[0];
+
+            expect(requestParams.cors).toBeTruthy();
+            expect(requestParams.disableCaching).toBeTruthy();
+        });
     });
 
     describe('customization', function() {
 
         beforeEach(function() {
-            Savanna.Config.CorsTestUrl = 'http://testCors.url/';
+            SavannaConfig.CorsTestUrl = 'http://testCors.url/';
         });
 
         afterEach(function() {
-            delete Savanna.ConfigCorsTestUrl;
+            delete SavannaConfig.CorsTestUrl;
         });
 
         describe('modifying the request', function() {
@@ -75,7 +81,7 @@ describe('Savanna.proxy.Cors', function() {
 
             beforeEach(function() {
                 proxy = Ext.create('Savanna.proxy.Cors', {
-                    url: Savanna.Config.CorsTestUrl,
+                    url: SavannaConfig.CorsTestUrl,
                     modifyRequest: function(request) {
                         // do nothing (since we will spy on ourselves...
                         return request;

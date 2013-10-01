@@ -4,7 +4,7 @@
  ThetusTestHelpers: false,
  Savanna: false
  */
-Ext.require('Savanna.Config');
+Ext.require('Savanna.controller.Factory');
 Ext.require('Savanna.search.controller.SearchComponent');
 Ext.require('Savanna.search.model.SearchRequest');
 Ext.require('Savanna.search.model.SearchResult');
@@ -163,9 +163,9 @@ describe('Search Results', function () {
                     });
 
 
-                    view.createDalPanels();
-                    // checking against (view.add.callCount - 1) because of the facets panel, which also triggers an 'add' event
-                    expect(view.add.callCount - 1).toBe(store.count());
+                    view.createDalPanels(searchController.getSelectedDals(searchComponent));
+                    // testing againt the value -3 to account for the facets, refine searchbar, and refine terms panels, which also fire add events
+                    expect(view.add.callCount - 3).toBe(store.count());
                 });
             });
 
@@ -176,6 +176,60 @@ describe('Search Results', function () {
                     var panelView = view.createDalPanel(store.getAt(0));
 
                     expect(panelView instanceof Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsOptions).toBeTruthy();
+                });
+            });
+
+            describe('createRefineSearchPanel', function () {
+                var panelView;
+
+                beforeEach(function () {
+                    panelView = view.createRefineSearchPanel();
+                });
+
+                afterEach(function () {
+                    panelView = null;
+                });
+
+                it('should create an instance of the ResultsRefineSearchbar panel', function () {
+
+                    expect(panelView instanceof Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineSearchbar).toBeTruthy();
+                });
+            });
+
+            describe('createRefineTermsPanel', function () {
+                var panelView, searchbarView;
+                beforeEach(function () {
+
+                    view.store = store;
+
+                    searchComponent.down('#searchdals').store = store;
+                    searchComponent.down('#searchdals').createDalPanels();
+
+                    view.createDalPanels(searchController.getSelectedDals(searchComponent));
+
+                    panelView = view.queryById('refineterms');
+                    searchbarView = view.queryById('refinesearch');
+
+                });
+
+                it('should create an instance of the ResultsRefineTerms panel', function () {
+
+                    expect(panelView instanceof Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineTerms).toBeTruthy();
+                });
+
+                describe('add refine terms', function () {
+                    it('should add terms from the search bar', function () {
+                        searchbarView.queryById('refine_search_terms').setValue('apples');
+                        panelView.addTerm(searchbarView.queryById('refine_search_terms'));
+                        expect(panelView.queryById('termValues').queryById('term_apples')).toBeTruthy();
+                    });
+
+                    it('should remove selected terms', function () {
+                        searchbarView.queryById('refine_search_terms').setValue('apples');
+                        panelView.addTerm(searchbarView.queryById('refine_search_terms'));
+                        panelView.removeTerm(panelView.queryById('termValues').queryById('term_apples').queryById('removeTerm'));
+                        expect(panelView.queryById('termValues').queryById('term_apples')).not.toBeTruthy();
+                    });
                 });
             });
 
@@ -209,6 +263,8 @@ describe('Search Results', function () {
                     /*
                      ...and DAL panels in search and results
                      */
+
+
                     searchDals = searchComponent.down('#searchdals');
                     resultsDals = searchComponent.down('#resultsdals');
 
@@ -239,14 +295,20 @@ describe('Search Results', function () {
                     searchDals.createDalPanels();
 
                     resultsDals.store = store;
-                    resultsDals.createDalPanels();
 
+                    searchComponent.down('#searchdals').store.each(function (record) {
+                        var dalId = record.data.id;
+                        searchComponent.down('#searchdals').queryById(dalId).query('checkbox')[0].setValue(true);
+                    });
+
+
+                    resultsDals.createDalPanels(searchController.getSelectedDals(searchComponent));
 
                     /*
                      create facets panel and line up the last few things needed for createDalFacets method
                      */
 
-                    resultsDals.createFacetsTabPanel();
+                    //resultsDals.createFacetsTabPanel(true);
 
                     searchComponent.down('#searchresults').allResultSets.push({id: 'mockDAL', store: searchStore});
                     resultsDals.store = store;
@@ -303,7 +365,6 @@ describe('Search Results', function () {
                             testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(searchStore.getProxy(), 'read', readMethod);
 
                         server.respondWith(readMethod, testUrl, fixtures.searchResults);
-
 
                         searchStore.load();
 
@@ -381,6 +442,7 @@ describe('Search Results', function () {
                                 searchResults: {id: 'mockDAL', store: searchStore},
                                 dal: store.getById('mockDAL')
                             });
+
                         });
 
                         afterEach(function () {
@@ -401,7 +463,6 @@ describe('Search Results', function () {
                             };
 
                             expect(myFacet.dal.data.facetFilterCriteria[0]).toEqual(expected);
-
 
                         });
 
@@ -427,7 +488,6 @@ describe('Search Results', function () {
                         });
 
                         it('should remove facetValues from facetFilterCriteria when a checkbox is deselected ', function () {
-
 
                             myCheckbox = myFacet.queryById('facets_producer').queryById('stringFacet').items.getAt(0);
 
@@ -457,7 +517,6 @@ describe('Search Results', function () {
                         var server, myFacet, myRadio;
 
                         beforeEach(function () {
-
 
                             myFacet = Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacet', {
                                 facet: facetFixture.dateFacet,
@@ -515,7 +574,6 @@ describe('Search Results', function () {
 
                         it('should show and hide From and To date pickers when Custom is and is not selected', function () {
 
-
                             myRadio.queryById('date_custom').setValue(true);  // custom
 
                             expect(myPanel.collapsed).toBeFalsy();
@@ -541,12 +599,11 @@ describe('Search Results', function () {
                             /*
                              match the year, month and day - the exact time will never match, of course - since
                              we are matching against the textfield value for the date picker component
-                              */
-
+                             */
 
                             expect(startDate).toEqual(expectedStart);
 
-                            expect(endDate.substr(0,10)).toEqual(expectedEnd.substr(0,10));
+                            expect(endDate.substr(0, 10)).toEqual(expectedEnd.substr(0, 10));
 
                         });
                     });
@@ -556,9 +613,44 @@ describe('Search Results', function () {
 
             describe('createFacet', function () {
 
+                var searchStore;
+
+                beforeEach(function () {
+
+                    searchStore = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.SearchResults', { autoLoad: false });
+
+                    // now set up server to get store data
+                    server = new ThetusTestHelpers.FakeServer(sinon);
+
+                    var readMethod = 'POST',
+                        testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(searchStore.getProxy(), 'read', readMethod),
+                        fixtures = Ext.clone(ThetusTestHelpers.Fixtures.SearchResults);
+
+                    server.respondWith(readMethod, testUrl, fixtures.searchResults);
+
+                    searchStore.load();
+
+                    server.respond({
+                        errorOnInvalidRequest: true
+                    });
+                });
+
+                afterEach(function () {
+                    searchStore = null;
+                    server = null;
+                });
+
                 it('should return a component of the correct type', function () {
 
-                    var facet = view.createFacet({}, {}, store.getById('mockDAL'));
+                    var facet = view.createFacet({
+                        'enumValues': null,
+                        'facetId': 'producer',
+                        'facetDataType': 'STRING',
+                        'providesAggregateData': true,
+                        'canFilterOn': true,
+                        'displayValue': 'Producer',
+                        'enumValuesType': 'sav_facetEnumType_None'
+                    }, {id: 'mockDAL', store: searchStore}, store.getById('mockDAL'));
 
                     expect(facet instanceof Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacet).toBeTruthy();
                 });
@@ -600,7 +692,17 @@ describe('Search Results', function () {
 
                     dalsView.createDalPanels();
 
-                    view.createDalPanels();
+
+                    view.store = store;
+
+                    searchComponent.down('#searchdals').store.each(function (record) {
+                        var dalId = record.data.id;
+                        searchComponent.down('#searchdals').queryById(dalId).query('checkbox')[0].setValue(true);
+                    });
+
+
+                    view.createDalPanels(searchController.getSelectedDals(searchComponent));
+
 
                     view.updateDalStatus('mockDAL', 'success');
 
@@ -615,7 +717,15 @@ describe('Search Results', function () {
 
                     dalsView.createDalPanels();
 
-                    view.createDalPanels();
+                    view.store = store;
+
+                    searchComponent.down('#searchdals').store.each(function (record) {
+                        var dalId = record.data.id;
+                        searchComponent.down('#searchdals').queryById(dalId).query('checkbox')[0].setValue(true);
+                    });
+
+
+                    view.createDalPanels(searchController.getSelectedDals(searchComponent));
 
                     view.updateDalStatus('mockDAL', 'fail');
 
@@ -632,14 +742,22 @@ describe('Search Results', function () {
                     searchComponent.down('#searchdals').store = store;
                     searchComponent.down('#searchdals').createDalPanels();
 
-                    view.createDalPanels();
+                    view.store = store;
+
+                    searchComponent.down('#searchdals').store.each(function (record) {
+                        var dalId = record.data.id;
+                        searchComponent.down('#searchdals').queryById(dalId).query('checkbox')[0].setValue(true);
+                    });
+
+
+                    view.createDalPanels(searchController.getSelectedDals(searchComponent));
 
                     var dalItem = view.query('panel[cls=results-dal]')[0],
                         expected = store.getById(dalItem.itemId).data.displayName + ' (8)';
 
                     view.up('#searchresults').allResultSets.push({id: dalItem.itemId, store: store});
 
-                    view.updateDalStatus('mockDAL', 'success');
+                    view.updateDalStatus('SolrJdbc', 'success');
 
 
                     expect(dalItem.queryById('dalName').text).toEqual(expected);
@@ -753,7 +871,16 @@ describe('Search Results', function () {
                 searchComponent.down('#searchdals').store = store;
                 searchComponent.down('#searchdals').createDalPanels();
 
-                sources.createDalPanels();
+
+                sources.store = store;
+
+                searchComponent.down('#searchdals').store.each(function (record) {
+                    var dalId = record.data.id;
+                    searchComponent.down('#searchdals').queryById(dalId).query('checkbox')[0].setValue(true);
+                });
+
+
+                sources.createDalPanels(searchController.getSelectedDals(searchComponent));
 
                 dalItem = sources.query('panel[cls=results-dal]')[0];
             });
@@ -775,6 +902,215 @@ describe('Search Results', function () {
 
         });
 
+        describe('add and remove terms', function () {
+            var refineTerm, fixtures, server, searchStore, dalFixtures, resultsDals, searchDals;
+            beforeEach(function () {
+
+                /*
+                 fixtures for both results and sources needed for facets
+                 */
+                fixtures = Ext.clone(ThetusTestHelpers.Fixtures.SearchResults);
+                dalFixtures = Ext.clone(ThetusTestHelpers.Fixtures.DalSources);
+
+                /*
+                 ...and DAL panels in search and results
+                 */
+
+
+                searchDals = searchComponent.down('#searchdals');
+                resultsDals = searchComponent.down('#resultsdals');
+
+
+                /*
+                 search results store
+                 */
+                searchStore = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.SearchResults', { autoLoad: false });
+
+                // now set up server to get store data
+                server = new ThetusTestHelpers.FakeServer(sinon);
+
+                var readMethod = 'POST',
+                    testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(searchStore.getProxy(), 'read', readMethod);
+
+                server.respondWith(readMethod, testUrl, fixtures.searchResults);
+
+                searchStore.load();
+
+                server.respond({
+                    errorOnInvalidRequest: true
+                });
+
+                /*
+                 set up the DAL panels now that we have a sources store
+                 */
+                searchDals.store = store;
+                searchDals.createDalPanels();
+
+                resultsDals.store = store;
+
+
+                searchComponent.down('#searchdals').queryById('mockDAL').query('checkbox')[0].setValue(true);
+
+
+
+                resultsDals.createDalPanels(searchController.getSelectedDals(searchComponent));
+
+
+                spyOn(searchComponent.down('#refineterms'), 'removeTerm');
+
+                refineTerm = Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineTerm',     {
+                    itemId:'term_apple'
+                });
+                refineTerm.setTerm('apple');
+
+
+
+            });
+
+            describe('onTermRender', function() {
+
+                 it('should add an event listener when a term is rendered', function()  {
+                     searchComponent.down('#refineterms').queryById('termValues').add(refineTerm);
+
+                     expect(refineTerm.hasListener('click')).toBeTruthy();
+                 });
+            });
+
+            describe('handleRemoveTerm', function() {
+                it('should call removeTerm', function () {
+
+                    searchComponent.down('#refineterms').queryById('termValues').add(refineTerm);
+
+                    resultsController.handleRemoveTerm(refineTerm.queryById('removeTerm'));
+
+                    expect(searchComponent.down('#refineterms').removeTerm).toHaveBeenCalled();
+                });
+            });
+        });
+
+        describe('onItemPreview', function()    {
+
+
+            it('should show the preview window', function() {
+
+                var grid = searchComponent.down('#resultspanel').queryById('resultspanelgrid');
+                resultsController.onItemPreview(grid, {});
+
+                expect(searchComponent.queryById('resultspreviewwindow').isVisible()).toBeTruthy();
+            });
+        });
+
+        describe('onCloseItemPreview', function()    {
+
+
+            it('should hide the preview window', function() {
+
+                resultsController.onCloseItemPreview(searchComponent.queryById('resultspreviewwindow').down('#previewclosebutton'));
+
+                expect(searchComponent.queryById('resultspreviewwindow').isVisible()).toBeFalsy();
+            });
+        });
+
+        describe('onShowHideFacets', function () {
+
+            var fixtures, server, searchStore, dalFixtures, facets, resultsDals, searchDals;
+
+            beforeEach(function () {
+
+                /*
+                 fixtures for both results and sources needed for facets
+                 */
+                fixtures = Ext.clone(ThetusTestHelpers.Fixtures.SearchResults);
+                dalFixtures = Ext.clone(ThetusTestHelpers.Fixtures.DalSources);
+
+                /*
+                 ...and DAL panels in search and results
+                 */
+
+
+                searchDals = searchComponent.down('#searchdals');
+                resultsDals = searchComponent.down('#resultsdals');
+
+
+                /*
+                 search results store
+                 */
+                searchStore = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.SearchResults', { autoLoad: false });
+
+                // now set up server to get store data
+                server = new ThetusTestHelpers.FakeServer(sinon);
+
+                var readMethod = 'POST',
+                    testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(searchStore.getProxy(), 'read', readMethod);
+
+                server.respondWith(readMethod, testUrl, fixtures.searchResults);
+
+                searchStore.load();
+
+                server.respond({
+                    errorOnInvalidRequest: true
+                });
+
+                /*
+                 set up the DAL panels now that we have a sources store
+                 */
+                searchDals.store = store;
+                searchDals.createDalPanels();
+
+                resultsDals.store = store;
+
+
+                    searchComponent.down('#searchdals').queryById('mockDAL').query('checkbox')[0].setValue(true);
+
+
+
+                resultsDals.createDalPanels(searchController.getSelectedDals(searchComponent));
+
+                /*
+                 create facets panel and line up the last few things needed for createDalFacets method
+                 */
+
+                //resultsDals.createFacetsTabPanel(true);
+
+                searchComponent.down('#searchresults').allResultSets.push({id: 'mockDAL', store: searchStore});
+                resultsDals.store = store;
+
+                facets = resultsDals.queryById('resultsfacets').queryById('tab_mockDAL');
+
+
+                    searchComponent.down('#resultsdals').createDalFacets('mockDAL');
+
+
+
+            });
+
+            afterEach(function () {
+                var teardown = [fixtures, dalFixtures, facets, resultsDals, searchDals];
+
+                for (var i = 0; i < teardown; i++) {
+                    if (teardown[i]) {
+                        teardown[i].destroy();
+                        teardown[i] = null;
+                    }
+                }
+                server = null;
+                searchStore = null;
+            });
+
+            it('should expand all facets"', function () {
+
+                resultsController.onShowHideFacets(searchComponent.down('#resultsdals').queryById('resultsfacets').queryById('showHideFacets'));
+                var allExpanded = true;
+                Ext.each(resultsDals.queryById('resultsfacets').query('panel[cls=results-facet]'), function(facet) {
+                    if(facet.collapsed) {
+                        allExpanded = false;
+                    }
+                });
+                expect(allExpanded).toEqual(true);
+            });
+
+        });
+
         describe('onSortByChange', function () {
 
             beforeEach(function () {
@@ -784,9 +1120,7 @@ describe('Search Results', function () {
 
             it('should call doSearch"', function () {
 
-                resultsController.onSortByChange(resultsComponent.down('#resultsSortByCombobox'));
-
-                expect(searchController.doSearch).toHaveBeenCalled();
+                // removed for now - no functionality to test until we have options in the list
             });
 
         });
@@ -795,14 +1129,30 @@ describe('Search Results', function () {
 
             beforeEach(function () {
 
-                spyOn(searchController, 'doSearch');
+                spyOn(searchComponent.down('#resultsdals'), 'updateDalStatus');
             });
 
             it('should call doSearch"', function () {
 
-                resultsController.onSortByChange(resultsComponent.down('#resultsPageSizeCombobox'));
+                searchComponent.down('#searchresults').currentResultSet = {id: 'mockDAL', store: store};
 
-                expect(searchController.doSearch).toHaveBeenCalled();
+                searchComponent.down('#searchdals').store = store;
+                searchComponent.down('#searchdals').createDalPanels();
+
+                searchComponent.down('#resultsdals').store = store;
+
+                searchComponent.down('#searchdals').store.each(function (record) {
+                    var dalId = record.data.id;
+                    searchComponent.down('#searchdals').queryById(dalId).query('checkbox')[0].setValue(true);
+                });
+
+
+                searchComponent.down('#resultsdals').createDalPanels(searchController.getSelectedDals(searchComponent));
+
+
+                resultsController.onPageComboChange(searchComponent.down('#resultsPageSizeCombobox'));
+
+                expect(searchComponent.down('#resultsdals').updateDalStatus).toHaveBeenCalled();
             });
 
         });
@@ -813,14 +1163,23 @@ describe('Search Results', function () {
 
             beforeEach(function () {
 
+                resultsPanel = searchComponent.down('#resultspanel');
+
+                searchComponent.down('#searchresults').currentResultSet = {id: 'mockDAL', store: store};
+
                 searchComponent.down('#searchdals').store = store;
                 searchComponent.down('#searchdals').createDalPanels();
 
-                sources.createDalPanels();
+                searchComponent.down('#resultsdals').store = store;
+
+                searchComponent.down('#searchdals').store.each(function (record) {
+                    var dalId = record.data.id;
+                    searchComponent.down('#searchdals').queryById(dalId).query('checkbox')[0].setValue(true);
+                });
+
+                sources.createDalPanels(searchController.getSelectedDals(searchComponent));
 
                 dalItem = sources.query('panel[cls=results-dal]')[0];
-
-                resultsPanel = searchComponent.down('#resultspanel');
 
                 spyOn(resultsPanel, 'updateGridStore');
             });
@@ -843,6 +1202,60 @@ describe('Search Results', function () {
                 expect(resultsPanel.updateGridStore).toHaveBeenCalled();
             });
 
+        });
+
+        describe('handleSearchTermKeyUp and handleSearchSubmit', function()    {
+            var dalItem, resultsPanel;
+
+            beforeEach(function () {
+
+                resultsPanel = searchComponent.down('#resultspanel');
+
+                searchComponent.down('#searchresults').currentResultSet = {id: 'mockDAL', store: store};
+
+                searchComponent.down('#searchdals').store = store;
+                searchComponent.down('#searchdals').createDalPanels();
+
+                searchComponent.down('#resultsdals').store = store;
+
+                searchComponent.down('#searchdals').store.each(function (record) {
+                    var dalId = record.data.id;
+                    searchComponent.down('#searchdals').queryById(dalId).query('checkbox')[0].setValue(true);
+                });
+
+                sources.createDalPanels(searchController.getSelectedDals(searchComponent));
+
+                dalItem = sources.query('panel[cls=results-dal]')[0];
+
+                spyOn(resultsPanel, 'updateGridStore');
+            });
+
+            afterEach(function () {
+
+                dalItem = null;
+
+            });
+             it('handleSearchTermKeyUp should call doSearch', function()  {
+                  var field = sources.queryById('refinesearch').down('#refine_search_terms');
+
+                 field.setValue('apples');
+
+                 var success = resultsController.handleSearchTermKeyUp(field, {keyCode:Ext.EventObject.ENTER});
+
+                 expect(success).toBeTruthy();
+             });
+
+            it('handleSearchSubmit should call doSearch', function()  {
+                var field = sources.queryById('refinesearch').down('#refine_search_terms');
+
+                field.setValue('apples');
+
+                var btn = sources.queryById('refinesearch').down('#refine_search_submit');
+
+                var success = resultsController.handleSearchSubmit(btn);
+
+                expect(success).toBeTruthy();
+            });
         });
     });
 });

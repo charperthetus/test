@@ -20,6 +20,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
     minHeight: 20,
     bodyPadding: 5,
     border: false,
+    cls: 'results-facet',
     collapsible: true,
     collapsed: true,
     titleCollapse: true,
@@ -143,14 +144,13 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
 
         return content;
     },
+
     buildFacetFilterGroup: function () {
 
         var searchResults = this.searchResults,
             facet = this.facet.facetId,
             me = this;
-
-        if (searchResults.store.facetValueSummaries[facet] !== undefined) {
-
+        if (searchResults.store.facetValueSummaries) {
             Ext.each(searchResults.store.facetValueSummaries[facet].facetValues, function (facetobj) {
 
                 var checkbox = {
@@ -166,15 +166,6 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
                 me.down('#stringFacet').add(checkbox);
             });
 
-        } else {
-            /*
-             this appears to be the case with LinkedIn - getting a 'location' facet that does not
-             line up with facetValueSummaries in the DAL sources.  May need services to resolve it,
-             will take a closer look before pinging Travis
-             */
-            Ext.Error.raise({
-                msg: 'Undefined facetValueSummary for supplied facet: ' + facet
-            });
         }
     },
 
@@ -225,7 +216,8 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
             rangeName = btn.lastValue[fieldName],
             me = btn.findParentByType('search_resultsDals_resultsfacet'),
             dateRange = me.getFormattedDateRange(rangeName),
-            customDates = btn.up('#facets_' + me.facet.facetId).queryById('customDatesPanel');
+            customDates = btn.up('#facets_' + me.facet.facetId).queryById('customDatesPanel'),
+            updateExisting = false;
 
         if (rangeName !== 'custom') {
             if (!me.dal.get('dateTimeRanges').length) {
@@ -237,8 +229,6 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
                 'DateFieldName': fieldName,
                 'Enddate': dateRange.endDate
             };
-
-            var updateExisting = false;
 
             if (me.dal.get('dateTimeRanges').length > 0) {
                 Ext.each(me.dal.get('dateTimeRanges'), function (range, index) {
@@ -254,13 +244,10 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
                 me.dal.get('dateTimeRanges').push(newDateRange);
             }
 
-            /*
-             resubmit the search request
-             */
             var searchController = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
 
             if (searchController !== undefined) {
-                searchController.doSearch(me);
+                me.doFilter(btn);
             }
 
             customDates.collapse();
@@ -279,20 +266,19 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
             endDate = Ext.Date.format(this.queryById('toDate').getValue(), this.dateFormat),
             fieldName = this.query('form')[0].itemId.replace('facets_', ''),
             rangeName = 'custom',
+            newDateRange = {
+                'Startdate': startDate,
+                'dateRangeName': rangeName,
+                'DateFieldName': fieldName,
+                'Enddate': endDate
+            },
+            updateExisting = false,
             me = this;
 
 
         if (!me.dal.get('dateTimeRanges').length) {
             me.dal.set('dateTimeRanges', []);   // just set to an empty array
         }
-        var newDateRange = {
-            'Startdate': startDate,
-            'dateRangeName': rangeName,
-            'DateFieldName': fieldName,
-            'Enddate': endDate
-        };
-
-        var updateExisting = false;
 
         if (me.dal.get('dateTimeRanges').length > 0) {
             Ext.each(me.dal.get('dateTimeRanges'), function (range, index) {
@@ -308,13 +294,10 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
             me.dal.get('dateTimeRanges').push(newDateRange);
         }
 
-        /*
-         resubmit the search request
-         */
         var searchController = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
 
         if (searchController !== undefined) {
-            searchController.doSearch(me);
+            this.doFilter(me);
         }
     },
 
@@ -348,7 +331,6 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
                                 Ext.Array.remove(values, values[ind]);
                             }
                         });
-
                     }
                 }
 
@@ -376,13 +358,22 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
                 'facetValues': [btn.inputValue]   // this is always an array
             });
         }
-        /*
-         resubmit the search request
-         */
         var searchController = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
 
         if (searchController !== undefined) {
-            searchController.doSearch(me);
+            this.doFilter(btn);
         }
+
+    },
+
+    doFilter: function (btn) {
+
+        var searchController = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent'),
+            component = searchController.getSearchComponent(btn),
+            currentDalPanel = component.down('#searchdals').queryById(this.dal.get('id')),
+            searchString = component.queryById('searchbar').buildSearchString(),
+            searchObj = searchController.buildSearchObject(searchString, this.dal, currentDalPanel);
+
+        searchController.buildAndLoadResultsStore(this.dal, component, searchObj, 'filter');
     }
 });

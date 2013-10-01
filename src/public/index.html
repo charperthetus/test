@@ -4,13 +4,8 @@
     <meta charset="UTF-8">
     <title>Savanna</title>
 
-    <!-- Leaflet -->
-    <link rel="stylesheet" href="resources/Leaflet/leaflet.css" />
-    <script type='text/javascript' src='resources/Leaflet/leaflet.js'></script>
-    <link rel="stylesheet" href="resources/Leaflet/leaflet.draw.css" />
-    <script type='text/javascript' src='resources/Leaflet/leaflet.draw.js'></script>
-    <link rel="stylesheet" href="resources/Leaflet/L.Control.Zoomslider.css" />
-    <script type='text/javascript' src='resources/Leaflet/L.Control.Zoomslider.js'></script>
+    <!-- Config -->
+    <script src="config/Config.js"></script>
 
     <!-- Crumbnet -->
     <script src="resources/GoJS/release/go-debug.js"></script>
@@ -31,8 +26,11 @@
     <!-- <x-bootstrap> -->
 
     <link rel="stylesheet" href="bootstrap.css">
-    <script src="ext/ext-dev.js"></script>
+    <script src="ext/ext-all-dev.js"></script>
     <script src="bootstrap.js"></script>
+
+    <!-- deft.js must be declared after ext.js and before app.js, according to deft documentation -->
+    <script type="text/javascript" src="resources/deft/deft-debug.js"></script>
 
     <!-- </x-bootstrap> -->
     <script src="app/app.js"></script>
