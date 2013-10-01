@@ -4,14 +4,8 @@
 * @author lpelofske
 */
 /*
-                              d8,           d8b       d8b                
-                             `8P            ?88       88P                
-                                             88b     d88                 
-?88   d8P d888b8b    88bd88b  88b d888b8b    888888b 888   d8888b .d888b,
-d88  d8P'd8P' ?88    88P'  `  88Pd8P' ?88    88P `?8b?88  d8b_,dP ?8b,   
-?8b ,88' 88b  ,88b  d88      d88 88b  ,88b  d88,  d88 88b 88b       `?8b 
-`?888P'  `?88P'`88bd88'     d88' `?88P'`88bd88'`?88P'  88b`?888P'`?888P' 
-   */                           
+* Variables
+*/                           
                                     
 
 
@@ -24,7 +18,6 @@ $brand-header-button-color-disabled: #888888 !default;
 $brand-header-button-large-border-width: 0px;
 
 $brand-header-logo-image: url('/packages/savanna-theme/resources/images/logo/logo-savanna.png');
-$brand-header-logo-image-hover: $brand-header-logo-image;
 
 $brand-header-dashboard-image: url('/packages/savanna-theme/resources/images/framework/brand-header-dashboard.png');
 $brand-header-dashboard-image-hover:url('/packages/savanna-theme/resources/images/framework/brand-header-dashboard-hover.png');
@@ -47,103 +40,5 @@ $brand-header-help-image-hover:url('/packages/savanna-theme/resources/images/fra
 $brand-header-user-image: url('/packages/savanna-theme/resources/images/framework/brand-header-user.png');
 $brand-header-user-image-hover:url('/packages/savanna-theme/resources/images/framework/brand-header-user-hover.png');
 
-$workspace-header-singleview-image:url('/packages/savannna-theme/resources/images/framework/workspace-header-singleview.png');
-$workspace-header-splitview-image:url('/packages/savanna-theme/resources/images/framework/workspace-header-splitview.png');
-/*
-        d8b                                          
-        88P                                          
-       d88                                           
- d8888b888   d888b8b   .d888b, .d888b, d8888b .d888b,
-d8P' `P?88  d8P' ?88   ?8b,    ?8b,   d8b_,dP ?8b,   
-88b     88b 88b  ,88b    `?8b    `?8b 88b       `?8b 
-`?888P'  88b`?88P'`88b`?888P' `?888P' `?888P'`?888P'              
- */
-
-.logoButtonFramework, .logoButtonFramework.x-btn-brand-header-toolbar-large-focus {
-	background-image: $brand-header-logo-image;
-	background-repeat: no-repeat;
-	background-position: top left;
-	width: 193px;
-	height: 38px;
-	top:0;
-
-	&:hover, &:active, &:focus {
-		background-image:$brand-header-logo-image-hover;
-		@include opacity(0.85);
-	}
-}
-
-.searchButtonFramework,
-.uploadButtonFramework,
-.errorButtonFramework, 
-.helpButtonFramework, 
-.userButtonFramework {
-	background-repeat: no-repeat;
-	background-position: center;
-	display:inline-block;
-}
-
-.searchButtonFramework, 
-.searchButtonFramework.x-btn-brand-header-toolbar-medium-focus {
-	background-image: $brand-header-search-image;
-	&:hover, &:active, &:focus {
-		background-image: $brand-header-search-image-hover;
-	}
-}
-
-.uploadButtonFramework, 
-.uploadButtonFramework.x-btn-brand-header-toolbar-medium-focus {
-	background-image: $brand-header-upload-image;
-	&:hover, &:active, &:focus {
-		background-image: $brand-header-upload-image-hover;
-	}
-}
-
-.errorButtonFramework, 
-.errorButtonFramework.x-btn-brand-header-toolbar-medium-focus {
-	background-image: $brand-header-error-image;
-	&:hover, &:active, &:focus {
-		background-image: $brand-header-error-image-hover;
-	}
-}
-
-.helpButtonFramework, 
-.helpButtonFramework.x-btn-brand-header-toolbar-medium-focus {
-	background-image: $brand-header-help-image;
-	&:hover, &:active, &:focus {
-		background-image: $brand-header-help-image-hover;
-	}
-}
-
-.userButtonFramework, 
-.userButtonFramework.x-btn-brand-header-toolbar-medium-focus {
-	background-image: $brand-header-user-image;
-	background-position: center left;
-	&:hover, &:active, &:focus, .userButtonFramework.x-tn-brand-header-toolbar-medium-menu-active {
-		background-image: $brand-header-user-image-hover;
-	}
-}
-
-.singleViewButtonFramework, 
-.singleViewButtonFramework:hover, 
-.singleViewButtonFramework:active, 
-.singleViewButtonFramework.x-btn-workspace-header-toolbar-small-focus,
-.singleViewButtonFramework.x-btn-workspace-header-toolbar-small-active,
-.singleViewButtonFramewokr.x-btn-workspace-header-toolbar-small-pressed{
-	background-image: $workspace-header-singleview-image;
-	background-position: center center;
-	width: 15px;
-	height: 15px;
-}
-
-.splitViewButtonFramework, 
-.singleViewButtonFramework:hover, 
-.singleViewButtonFramework:active, 
-.splitViewButtonFramework.x-btn-workspace-header-toolbar-small-focus,
-.splitViewButtonFramework.x-btn-workspace-header-toolbar-small-active,
-.splitViewButtonFramework.x-btn-workspace-header-toolbar-small-pressed {
-	background-image: $workspace-header-splitview-image;
-	background-image: center center;
-	width: 15px;
-	width: 15px;
-}
+$workspace-header-singleview-image:url('/packages/savanna-theme/resources/images/framework/workspace-header-singleview.png');
+$workspace-header-splitview-image: url('/packages/savanna-theme/resources/images/framework/workspace-header-splitview.png');

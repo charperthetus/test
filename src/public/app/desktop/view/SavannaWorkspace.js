@@ -15,14 +15,20 @@ Ext.define('Savanna.desktop.view.SavannaWorkspace', {
     currentView: 'single',
     tbar: {
         ui:'workspace-header',
-        height: 30,
-        items: [
-            {
-                xtype: 'label',
-                text: 'Workspace'
+        height: 32,
+        items: [{
+            xtype: 'label',
+            text: 'Workspace',
+            pack: 'start',
             },
             '->',
-            {
+            {   
+            xtype: 'toolbar',
+            ui: 'workspace-header',
+            layout: {
+                defaultMargins: '0 5 0 5'
+            },
+            items: [{
                 xtype: 'button',
                 ui:'workspace-header',
                 itemId: 'singleviewbutton',
@@ -31,8 +37,8 @@ Ext.define('Savanna.desktop.view.SavannaWorkspace', {
                 allowDepress: false,
                 pressed: true,
                 toggleGroup: 'tabviewgroup'
-            },
-            {
+                },
+                {
                 xtype: 'button',
                 ui:'workspace-header',
                 itemId: 'splitviewbutton',
@@ -40,26 +46,22 @@ Ext.define('Savanna.desktop.view.SavannaWorkspace', {
                 enableToggle: true,
                 allowDepress: false,
                 toggleGroup: 'tabviewgroup'
-            }
-        ]
+                }]
+        }]
     },
-    items: [
-        {
-            xtype: 'desktop_tabpanel',
-            itemId: 'maintabpanel',
-            flex: 2,
-            height: '100%',
-            items: [
-                {
-                    title: 'Crumbnet',
-                    xtype: 'go-graph'
-                },
-                {
-                    title: 'Map',
-                    xtype: 'map_component',
-                    itemId: 'MAP_ONE'
-                }
-            ]
-        }
-    ]
+    items: [{
+        xtype: 'desktop_tabpanel',
+        itemId: 'maintabpanel',
+        flex: 2,
+        height: '100%',
+        items: [{
+            title: 'Crumbnet',
+            xtype: 'go-graph'
+            },
+            {
+                title: 'Map',
+                xtype: 'map_component',
+                itemId: 'MAP_ONE'
+        }]
+    }]
 });

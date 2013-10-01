@@ -20,9 +20,9 @@ Ext.define('Savanna.desktop.view.SavannaDesktop', {
             cls:'logoButtonFramework',
             scale: 'large',
             xtype: 'button',
-            height: 42,
+            height: 44,
             ui: 'brand-header'
-        }, {
+            }, {
             xtype: 'toolbar',
             flex: 1,
             ui:'brand-header',
@@ -36,14 +36,14 @@ Ext.define('Savanna.desktop.view.SavannaDesktop', {
                 cls:'searchButtonFramework',
                 ui:'brand-header',
                 scale: 'medium'
-
-            }, {
+                }, {
                 itemId: 'uploadbutton',
                 cls:'uploadButtonFramework',
                 ui:'brand-header',
                 scale: 'medium'
             }]
-        }, {
+        }, 
+        {
             xtype: 'toolbar',
             scale: 'medium',
             ui:'brand-header',

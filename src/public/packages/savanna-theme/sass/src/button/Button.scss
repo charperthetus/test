@@ -4,49 +4,45 @@
  *  @author lpelofske 9/23/2013
  *  
  */
-/*                                      d8,                     
-                               d8P   `8P                      
-                            d888888P                          
-  88bd88b?88   d8P  88bd88b   ?88'    88b  88bd8b,d88b  d8888b
-  88P'  `d88   88   88P' ?8b  88P     88P  88P'`?8P'?8bd8b_,dP
- d88     ?8(  d88  d88   88P  88b    d88  d88  d88  88P88b    
-d88'     `?88P'?8bd88'   88b  `?8b  d88' d88' d88'  88b`?888P'
+
+/*                    
+* Runtime
 */  
 @if $include-ext-toolbar-toolbar {
     @include extjs-button-ui(
         $ui: 'brand-header-toolbar-small',
 
+        $padding: $brand-header-button-padding,
+
         $border-radius: $brand-header-button-border-radius,
         $border-width: 0px,
 
-        $border-color: $brand-header-button-toolbar-border-color,
-        $border-color-over: $brand-header-button-toolbar-color-over,
-        $border-color-focus: $brand-header-button-border-color-focus,
-        $border-color-pressed: $brand-header-button-toolbar-color-pressed,
-        $border-color-disabled: transparent,
-
-        $padding: $brand-header-button-small-padding,
-        // $text-padding: $button-small-text-padding,
-
-        $background-color: $brand-header-button-toolbar-color,
-        $background-color-over: $brand-header-button-toolbar-background-color-over,
-        $background-color-focus: $brand-header-button-background-color-focus,
-        $background-color-pressed: $brand-header-button-toolbar-background-color-pressed,
-        // $background-color-disabled: transparent,
-
-        $background-gradient: $brand-header-button-toolbar-background-gradient,
-        $background-gradient-over: $brand-header-button-toolbar-background-gradient-over,
-        $background-gradient-focus: $brand-header-button-toolbar-background-gradient-over,
-        $background-gradient-pressed: $brand-header-button-toolbar-background-gradient-pressed,
-        $background-gradient-disabled: null,
-
-        $color: $brand-header-button-toolbar-color,
-        $color-over: $brand-header-button-toolbar-border-color-over,
-        $color-focus: $brand-header-button-toolbar-border-color-over,
-        $color-pressed: $brand-header-button-toolbar-color-pressed,
         $glyph-color: $brand-header-glyph-color,
-        $glyph-opacity: $brand-header-glyph-opacity
-        // $color-disabled: $button-toolbar-color-disabled,
+        $glyph-opacity: $brand-header-glyph-opacity,
+
+        $color: $brand-header-button-color,
+        $color-over: $brand-header-button-color-over,
+        $color-focus: $brand-header-button-color-over,
+        $color-pressed: $brand-header-button-color-pressed,
+        $color-disabled: $brand-header-button-color-disabled,
+
+        $border-color: $brand-header-button-border-color,
+        $border-color-over: $brand-header-button-border-color-over,
+        $border-color-focus: $brand-header-button-border-color-focus,
+        $border-color-pressed: $brand-header-button-border-color-pressed,
+        $border-color-disabled: $brand-header-button-border-color-disabled,
+
+        $background-color: $brand-header-button-background-color,
+        $background-color-over: $brand-header-button-background-color-over,
+        $background-color-focus: $brand-header-button-background-color-focus,
+        $background-color-pressed: $brand-header-button-background-color-pressed,
+        $background-color-disabled: $brand-header-button-background-color-disabled,
+
+        $background-gradient: $brand-header-button-background-gradient,
+        $background-gradient-over: $brand-header-button-background-gradient-over,
+        $background-gradient-focus: $brand-header-button-background-gradient-focus,
+        $background-gradient-pressed: $brand-header-button-background-gradient-pressed,
+        $background-gradient-disabled: $brand-header-button-background-gradient-disabled
 
         // $icon-size: $button-small-icon-size,
         // $arrow-width: $button-small-arrow-width,
@@ -56,163 +52,285 @@ d88'     `?88P'?8bd88'   88b  `?8b  d88' d88' d88'  88b`?888P'
 
         // $opacity-disabled: $button-toolbar-opacity-disabled,
         // $inner-opacity-disabled: $button-toolbar-inner-opacity-disabled
-        //
     );
     @include extjs-button-ui(
         $ui: 'brand-header-toolbar-medium',
 
+        $padding: $brand-header-button-padding,
+
         $border-radius: $brand-header-button-border-radius,
         $border-width: 0px,
 
-        $border-color: $brand-header-button-toolbar-border-color,
-        $border-color-over: $brand-header-button-toolbar-color-over,
-        $border-color-focus: $brand-header-button-border-color-focus,
-        $border-color-pressed: $brand-header-button-toolbar-color-pressed,
-        $border-color-disabled: transparent,
-
-        $padding: $brand-header-button-medium-padding,
-
-        $background-color: $brand-header-button-toolbar-background-color,
-        $background-color-over: $brand-header-button-toolbar-background-color-over,
-        $background-color-focus: $brand-header-button-background-color-focus,
-        $background-color-pressed: $brand-header-button-toolbar-background-color-pressed,
-
-        $background-gradient: $brand-header-button-toolbar-background-gradient,
-        $background-gradient-over: $brand-header-button-toolbar-background-gradient-over,
-        $background-gradient-focus: $brand-header-button-toolbar-background-gradient-over,
-        $background-gradient-pressed: $brand-header-button-toolbar-background-gradient-pressed,
-        $background-gradient-disabled: null,
-
-        $color: $brand-header-button-toolbar-color,
-        $color-over: $brand-header-button-toolbar-border-color-over,
-        $color-focus: $brand-header-button-toolbar-border-color-over,
-        $color-pressed: $brand-header-button-toolbar-color-pressed,
         $glyph-color: $brand-header-glyph-color,
-        $glyph-opacity: $brand-header-glyph-opacity
+        $glyph-opacity: $brand-header-glyph-opacity,
+
+        $color: $brand-header-button-color,
+        $color-over: $brand-header-button-color-over,
+        $color-focus: $brand-header-button-color-over,
+        $color-pressed: $brand-header-button-color-pressed,
+        $color-disabled: $brand-header-button-color-disabled,
+
+        $border-color: $brand-header-button-border-color,
+        $border-color-over: $brand-header-button-border-color-over,
+        $border-color-focus: $brand-header-button-border-color-focus,
+        $border-color-pressed: $brand-header-button-border-color-pressed,
+        $border-color-disabled: $brand-header-button-border-color-disabled,
+
+        $background-color: $brand-header-button-background-color,
+        $background-color-over: $brand-header-button-background-color-over,
+        $background-color-focus: $brand-header-button-background-color-focus,
+        $background-color-pressed: $brand-header-button-background-color-pressed,
+        $background-color-disabled: $brand-header-button-background-color-disabled,
+
+        $background-gradient: $brand-header-button-background-gradient,
+        $background-gradient-over: $brand-header-button-background-gradient-over,
+        $background-gradient-focus: $brand-header-button-background-gradient-focus,
+        $background-gradient-pressed: $brand-header-button-background-gradient-pressed,
+        $background-gradient-disabled: $brand-header-button-background-gradient-disabled
     );
     @include extjs-button-ui(
         $ui: 'brand-header-toolbar-large',
 
-        $border-radius: $brand-header-button-large-radius,
+        $padding: $brand-header-large-toolbar-button-padding,
+
+        $border-radius: $brand-header-button-border-radius,
         $border-width: 0px,
 
-        $border-color: $brand-header-button-toolbar-border-color,
-        $border-color-over: $brand-header-button-toolbar-color-over,
-        $border-color-focus: $brand-header-button-border-color-focus,
-        $border-color-pressed: $brand-header-button-toolbar-color-pressed,
-        $border-color-disabled: transparent,
-
-        $padding: $brand-header-button-large-padding,
-
-        $background-color: $brand-header-button-toolbar-background-color,
-        $background-color-over: $brand-header-button-toolbar-background-color-over,
-        $background-color-focus: $brand-header-button-background-color-focus,
-        $background-color-pressed: $brand-header-button-toolbar-background-color-pressed,
-
-        $background-gradient: $brand-header-button-toolbar-background-gradient,
-        $background-gradient-over: $brand-header-button-toolbar-background-gradient-over,
-        $background-gradient-focus: $brand-header-button-toolbar-background-gradient-over,
-        $background-gradient-pressed: $brand-header-button-toolbar-background-gradient-pressed,
-        $background-gradient-disabled: null,
-
-        $color: $brand-header-button-toolbar-color,
-        $color-over: $brand-header-button-toolbar-border-color-over,
-        $color-focus: $brand-header-button-toolbar-border-color-over,
-        $color-pressed: $brand-header-button-toolbar-color-pressed,
         $glyph-color: $brand-header-glyph-color,
-        $glyph-opacity: $brand-header-glyph-opacity
-    );
-    @include extjs-button-ui(
-        $ui: 'workspace-header-toolbar-large',
+        $glyph-opacity: $brand-header-glyph-opacity,
 
-        $border-radius: $brand-header-button-border-radius,
-        $border-width: 1px,
+        $color: $brand-header-button-color,
+        $color-over: $brand-header-button-color-over,
+        $color-focus: $brand-header-button-color-over,
+        $color-pressed: $brand-header-button-color-pressed,
+        $color-disabled: $brand-header-button-color-disabled,
 
-        $border-color: $brand-header-button-toolbar-border-color,
-        $border-color-over: $workspace-header-button-border-color-over,
-        $border-color-focus: $workspace-header-button-border-color-pressed,
-        $border-color-pressed: $workspace-header-button-border-color-pressed,
-        $border-color-disabled: transparent,
+        $border-color: $brand-header-button-border-color,
+        $border-color-over: $brand-header-button-border-color-over,
+        $border-color-focus: $brand-header-button-border-color-focus,
+        $border-color-pressed: $brand-header-button-border-color-pressed,
+        $border-color-disabled: $brand-header-button-border-color-disabled,
 
-        $padding: $workspace-header-button-small-padding,
+        $background-color: $brand-header-button-background-color,
+        $background-color-over: $brand-header-button-background-color-over,
+        $background-color-focus: $brand-header-button-background-color-focus,
+        $background-color-pressed: $brand-header-button-background-color-pressed,
+        $background-color-disabled: $brand-header-button-background-color-disabled,
 
-        $background-color: $workspace-header-button-background-color,
-        $background-color-over: $workspace-header-button-background-color,
-        $background-color-focus: $workspace-header-button-background-color,
-        $background-color-pressed: $workspace-header-button-background-color,
-
-        $color: $workspace-header-button-toolbar-color,
-        $color-over: $workspace-header-button-toolbar-color,
-        $color-focus: $workspace-header-button-toolbar-color,
-        $color-pressed: $workspace-header-button-toolbar-color,
-        $glyph-color: $workspace-header-button-toolbar-color,
-        $glyph-opacity: $brand-header-glyph-opacity
-    );
-    @include extjs-button-ui(
-        $ui: 'workspace-header-toolbar-medium',
-
-        $border-radius: $brand-header-button-border-radius,
-        $border-width: 1px,
-
-        $border-color: $brand-header-button-toolbar-border-color,
-        $border-color-over: $workspace-header-button-border-color-over,
-        $border-color-focus: $workspace-header-button-border-color-pressed,
-        $border-color-pressed: $workspace-header-button-border-color-pressed,
-        $border-color-disabled: transparent,
-
-        $padding: $workspace-header-button-small-padding,
-
-        $background-color: $workspace-header-button-background-color,
-        $background-color-over: $workspace-header-button-background-color,
-        $background-color-focus: $workspace-header-button-background-color,
-        $background-color-pressed: $workspace-header-button-background-color,
-
-        $color: $workspace-header-button-toolbar-color,
-        $color-over: $workspace-header-button-toolbar-color,
-        $color-focus: $workspace-header-button-toolbar-color,
-        $color-pressed: $workspace-header-button-toolbar-color,
-        $glyph-color: $workspace-header-button-toolbar-color,
-        $glyph-opacity: $brand-header-glyph-opacity
+        $background-gradient: $brand-header-button-background-gradient,
+        $background-gradient-over: $brand-header-button-background-gradient-over,
+        $background-gradient-focus: $brand-header-button-background-gradient-focus,
+        $background-gradient-pressed: $brand-header-button-background-gradient-pressed,
+        $background-gradient-disabled: $brand-header-button-background-gradient-disabled
     );
     @include extjs-button-ui(
         $ui: 'workspace-header-toolbar-small',
 
-        $border-radius: $brand-header-button-border-radius,
-        $border-width: 1px,
+        $padding: $workspace-header-small-toolbar-button-padding,
 
-        $border-color: $brand-header-button-toolbar-border-color,
+        $border-radius: $workspace-header-button-border-radius,
+        $border-width: $workspace-header-button-border-width,
+
+        $glyph-color: $workspace-header-glyph-color,
+        $glyph-opacity: $workspace-header-glyph-opacity,
+
+        $color: $workspace-header-button-color,
+        $color-over: $workspace-header-button-color-over,
+        $color-focus: $workspace-header-button-color-over,
+        $color-pressed: $workspace-header-button-color-pressed,
+        $color-disabled: $workspace-header-button-color-disabled,
+
+        $border-color: $workspace-header-button-border-color,
         $border-color-over: $workspace-header-button-border-color-over,
-        $border-color-focus: $workspace-header-button-border-color-pressed,
+        $border-color-focus: $workspace-header-button-border-color-focus,
         $border-color-pressed: $workspace-header-button-border-color-pressed,
-        $border-color-disabled: transparent,
-
-        $padding: $workspace-header-button-small-padding,
+        $border-color-disabled: $workspace-header-button-border-color-disabled,
 
         $background-color: $workspace-header-button-background-color,
-        $background-color-over: $workspace-header-button-background-color,
-        $background-color-focus: $workspace-header-button-background-color,
-        $background-color-pressed: $workspace-header-button-background-color,
+        $background-color-over: $workspace-header-button-background-color-over,
+        $background-color-focus: $workspace-header-button-background-color-focus,
+        $background-color-pressed: $workspace-header-button-background-color-pressed,
+        $background-color-disabled: $workspace-header-button-background-color-disabled,
 
-        $color: $workspace-header-button-toolbar-color,
-        $color-over: $workspace-header-button-toolbar-color,
-        $color-focus: $workspace-header-button-toolbar-color,
-        $color-pressed: $workspace-header-button-toolbar-color,
-        $glyph-color: $workspace-header-button-toolbar-color,
-        $glyph-opacity: $brand-header-glyph-opacity
+        $background-gradient: $workspace-header-button-background-gradient,
+        $background-gradient-over: $workspace-header-button-background-gradient-over,
+        $background-gradient-focus: $workspace-header-button-background-gradient-focus,
+        $background-gradient-pressed: $workspace-header-button-background-gradient-pressed,
+        $background-gradient-disabled: $workspace-header-button-background-gradient-disabled
+    );
+    @include extjs-button-ui(
+        $ui: 'workspace-header-toolbar-medium',
+
+        $padding: $workspace-header-button-padding,
+
+        $border-radius: $workspace-header-button-border-radius,
+        $border-width: $workspace-header-button-border-width,
+
+        $glyph-color: $workspace-header-glyph-color,
+        $glyph-opacity: $workspace-header-glyph-opacity,
+
+        $color: $workspace-header-button-color,
+        $color-over: $workspace-header-button-color-over,
+        $color-focus: $workspace-header-button-color-over,
+        $color-pressed: $workspace-header-button-color-pressed,
+        $color-disabled: $workspace-header-button-color-disabled,
+
+        $border-color: $workspace-header-button-border-color,
+        $border-color-over: $workspace-header-button-border-color-over,
+        $border-color-focus: $workspace-header-button-border-color-focus,
+        $border-color-pressed: $workspace-header-button-border-color-pressed,
+        $border-color-disabled: $workspace-header-button-border-color-disabled,
+
+        $background-color: $workspace-header-button-background-color,
+        $background-color-over: $workspace-header-button-background-color-over,
+        $background-color-focus: $workspace-header-button-background-color-focus,
+        $background-color-pressed: $workspace-header-button-background-color-pressed,
+        $background-color-disabled: $workspace-header-button-background-color-disabled,
+
+        $background-gradient: $workspace-header-button-background-gradient,
+        $background-gradient-over: $workspace-header-button-background-gradient-over,
+        $background-gradient-focus: $workspace-header-button-background-gradient-focus,
+        $background-gradient-pressed: $workspace-header-button-background-gradient-pressed,
+        $background-gradient-disabled: $workspace-header-button-background-gradient-disabled
+    );
+    @include extjs-button-ui(
+        $ui: 'workspace-header-toolbar-large',
+
+        $padding: $workspace-header-button-padding,
+
+        $border-radius: $workspace-header-button-border-radius,
+        $border-width: $workspace-header-button-border-width,
+
+        $glyph-color: $workspace-header-glyph-color,
+        $glyph-opacity: $workspace-header-glyph-opacity,
+
+        $color: $workspace-header-button-color,
+        $color-over: $workspace-header-button-color-over,
+        $color-focus: $workspace-header-button-color-over,
+        $color-pressed: $workspace-header-button-color-pressed,
+        $color-disabled: $workspace-header-button-color-disabled,
+
+        $border-color: $workspace-header-button-border-color,
+        $border-color-over: $workspace-header-button-border-color-over,
+        $border-color-focus: $workspace-header-button-border-color-focus,
+        $border-color-pressed: $workspace-header-button-border-color-pressed,
+        $border-color-disabled: $workspace-header-button-border-color-disabled,
+
+        $background-color: $workspace-header-button-background-color,
+        $background-color-over: $workspace-header-button-background-color-over,
+        $background-color-focus: $workspace-header-button-background-color-focus,
+        $background-color-pressed: $workspace-header-button-background-color-pressed,
+        $background-color-disabled: $workspace-header-button-background-color-disabled,
+
+        $background-gradient: $workspace-header-button-background-gradient,
+        $background-gradient-over: $workspace-header-button-background-gradient-over,
+        $background-gradient-focus: $workspace-header-button-background-gradient-focus,
+        $background-gradient-pressed: $workspace-header-button-background-gradient-pressed,
+        $background-gradient-disabled: $workspace-header-button-background-gradient-disabled
     );
 }
-/*d8b                    d8,       
- 88P                    `8P        
-d88                                
-888   d8888b  d888b8b    88b d8888b
-?88  d8P' ?88d8P' ?88    88Pd8P' `P
- 88b 88b  d8888b  ,88b  d88 88b    
-  88b`?8888P'`?88P'`88b d88' `?888P'
-                    )88            
-                   ,88P            
-               `?8888P       
+/*
+* Logic  
 */ 
 
-.#{$prefix}btn-brand-header-toolbar-medium .#{$prefix}btn-arrow-right {
-    padding-right: 14px;
+.#{$prefix}btn-brand-header-toolbar-medium .#{$prefix}btn-arrow {
+  background-image: url(/packages/savanna-theme/resources/images/button/brand-header-toolbar-medium-arrow.png);
+  padding-left: 4px;
+  padding-right: 14px;
+}
+
+.logoButtonFramework {
+    background-image: $brand-header-logo-image;
+    background-repeat: no-repeat;
+    background-position: top left;
+    width: 193px;
+    height: 38px;
+    top:0;
+
+    &:hover, &:active, &:focus, 
+    .logoButtonFramework.#{$prefix}btn-brand-header-toolbar-large-focus {
+        @include opacity(0.85);
+    }
+}
+
+.searchButtonFramework,
+.uploadButtonFramework,
+.errorButtonFramework, 
+.helpButtonFramework, 
+.userButtonFramework {
+    background-repeat: no-repeat;
+    background-position: center;
+    display:inline-block;
+}
+
+.searchButtonFramework {
+    background-image: $brand-header-search-image;
+    &:hover, &:active, &:focus, 
+    .searchButtonFramework.#{$prefix}btn-brand-header-toolbar-medium-focus, {
+        background-image: $brand-header-search-image-hover;
+    }
+}
+
+.uploadButtonFramework {
+    background-image: $brand-header-upload-image;
+    &:hover, &:active, &:focus, 
+    .uploadButtonFramework.#{$prefix}btn-brand-header-toolbar-medium-focus {
+        background-image: $brand-header-upload-image-hover;
+    }
+}
+
+.errorButtonFramework {
+    background-image: $brand-header-error-image;
+    &:hover, &:active, &:focus, 
+    .errorButtonFramework.#{$prefix}btn-brand-header-toolbar-medium-focus {
+        background-image: $brand-header-error-image-hover;
+    }
+}
+
+.helpButtonFramework {
+    background-image: $brand-header-help-image;
+    &:hover, &:active, &:focus, 
+    .helpButtonFramework.#{$prefix}btn-brand-header-toolbar-medium-focus {
+        background-image: $brand-header-help-image-hover;
+    }
+}
+
+.userButtonFramework {
+    background-image: $brand-header-user-image;
+    background-position: center left;
+
+    &:hover, 
+    &:active, 
+    &:focus, 
+    .userButtonFramework.#{$prefix}btn-brand-header-toolbar-medium-focus,
+    .userButtonFramework.#{$prefix}btn-brand-header-toolbar-medium-menu-active,
+    .userButtonFramework.#{$prefix}btn-brand-header-toolbar-medium-pressed {
+        background-image: $brand-header-user-image-hover;
+    }
+}
+
+.singleViewButtonFramework, 
+.singleViewButtonFramework:hover, 
+.singleViewButtonFramework:active, 
+.singleViewButtonFramework.#{$prefix}btn-workspace-header-toolbar-small-focus,
+.singleViewButtonFramework.#{$prefix}btn-workspace-header-toolbar-small-active,
+.singleViewButtonFramework.#{$prefix}btn-workspace-header-toolbar-small-pressed {
+    background-image: $workspace-header-singleview-image;
+    background-position: center center;
+    background-repeat: no-repeat;
+    width: 22px;
+    height: 22px;
+}
+
+.splitViewButtonFramework, 
+.splitViewButtonFramework:hover, 
+.splitViewButtonFramework:active, 
+.splitViewButtonFramework.#{$prefix}btn-workspace-header-toolbar-small-focus,
+.splitViewButtonFramework.#{$prefix}btn-workspace-header-toolbar-small-active,
+.splitViewButtonFramework.#{$prefix}btn-workspace-header-toolbar-small-pressed {
+    background-image: $workspace-header-splitview-image;
+    background-position: center center;
+    background-repeat: no-repeat;
+    width: 22px;
+    height: 22px;
 }
