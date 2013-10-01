@@ -29,25 +29,19 @@ Ext.define('Savanna.metadata.store.Metadata', {
             type: 'savanna-cors',
 
             url: 'app/assets/data/testMetadata.json',
+            //url: SavannaConfig.metadataUrl + '/uri=' + itemURI,
+
             addSessionId: false, // this needs to be left in until using correct url or Ted adds node fix
 
             reader: {
                 type: 'json'
                 //root: 'data'
-            }
-/*
-            url: SavannaConfig.metadata,
-            // Turn off the paging params...
-            startParam: undefined,
-            limitParam: undefined,
-            pageParam: undefined,
-
-            reader: new ReaderClass(),
-
+            },
             writer: {
                 type: 'json'
             }
-            */
+
         });
+
     }
 });
