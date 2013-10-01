@@ -57,6 +57,19 @@ describe('Savanna.proxy.Cors', function() {
 
             expect(proxy.buildUrl()).toBe('TEST_URL');
         });
+
+        it('should set "cors", "withCredentials", and "disableCaching" parameters on call to Ajax', function() {
+            proxy.doRequest(
+                Ext.create('Ext.data.Operation', {}),
+                function() { /* empty callback */ },
+                proxy
+            );
+
+            var requestParams = Ext.Ajax.request.mostRecentCall.args[0];
+
+            expect(requestParams.cors).toBeTruthy();
+            expect(requestParams.disableCaching).toBeTruthy();
+        });
     });
 
     describe('customization', function() {

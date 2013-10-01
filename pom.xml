@@ -92,6 +92,31 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <!-- Installing Node's dependencies -->
+            <!-- Note that this is currently breaking our deployments -->
+            <!-- <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>exec-gen-sources</id>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <target name="Install Node Dependencies">
+                                <exec executable="cmd" dir="src/" osfamily="windows" failonerror="true">
+                                    <arg line="/c npm install"/>
+                                </exec>
+                                <exec executable="npm" dir="src/" osfamily="unix" failonerror="true">
+                                    <arg line="install"/>
+                                </exec>
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin> -->
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
