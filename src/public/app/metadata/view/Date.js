@@ -17,7 +17,7 @@ Ext.define('Savanna.metadata.view.Date', {
     items: [
         {
             xtype: 'label',
-            itemId: 'displayLabel',
+            itemId: 'displayLabelItem',
             text: '',
             width: '100%'
         },
@@ -36,7 +36,7 @@ Ext.define('Savanna.metadata.view.Date', {
         var me = this;
 
         this.on('beforerender', Ext.bind(function() {
-            this.down('#displayLabel').text = me.displayLabel;
+            this.down('#displayLabelItem').text = me.displayLabel;
             var myDate = new Date(me.value);
             this.down('#displayValue').text = Ext.Date.format(myDate,'F j, Y, g:i a');
         }, this));

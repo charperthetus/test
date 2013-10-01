@@ -17,7 +17,7 @@ Ext.define('Savanna.metadata.view.DoubleList', {
     items: [
         {
             xtype: 'label',
-            itemId: 'displayLabel',
+            itemId: 'displayLabelItem',
             text: '',
             width: '100%'
         }
@@ -30,7 +30,7 @@ Ext.define('Savanna.metadata.view.DoubleList', {
         var me = this;
 
         this.on('beforerender', Ext.bind(function() {
-            me.down('#displayLabel').text = me.displayLabel;
+            me.down('#displayLabelItem').text = me.displayLabel;
             Ext.Array.each(me.value, function(stringElement) {
                 var theLabel = Ext.create('Ext.form.Label', {
                     text: '',

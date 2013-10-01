@@ -17,7 +17,7 @@ Ext.define('Savanna.metadata.view.Boolean', {
     items: [
         {
             xtype: 'label',
-            itemId: 'displayLabel',
+            itemId: 'displayLabelItem',
             text: '',
             width: '100%'
         },
@@ -35,7 +35,7 @@ Ext.define('Savanna.metadata.view.Boolean', {
         var me = this;
 
         this.on('beforerender', Ext.bind(function() {
-            this.down('#displayLabel').text = me.displayLabel;
+            this.down('#displayLabelItem').text = me.displayLabel;
             this.down('#displayValue').text = me.value.toString();
         }, this));
     }

@@ -17,7 +17,7 @@ Ext.define('Savanna.metadata.view.Uri', {
     items: [
         {
             xtype: 'label',
-            itemId: 'displayLabel',
+            itemId: 'displayLabelItem',
             text: '',
             width: '100%'
         },
@@ -36,7 +36,7 @@ Ext.define('Savanna.metadata.view.Uri', {
         var me = this;
 
         this.on('beforerender', Ext.bind(function() {
-            me.down('#displayLabel').text = me.displayLabel;
+            me.down('#displayLabelItem').text = me.displayLabel;
             // TODO: This conversion is probably not correct.  Need to decode it properly.
             // If you change this, check UriList.js for similar.
             me.down('#displayValue').text = me.value.replace('%2F', '/', 'g');

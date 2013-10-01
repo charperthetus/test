@@ -95,9 +95,9 @@ Ext.define('Savanna.metadata.view.Details', {
 
                 if('' != TypeToAdd) {
                     var valueObject = {
-                        key:            metadata.key,
+                        key:            metadata.key.key,
                         value:          metadata.value,
-                        displayLabel:   metadata.displayLabel,
+                        displayLabel:   metadata.key.displayLabel,
                         visible:        metadata.visible !== undefined ? metadata.visible : false,
                         editable:       metadata.editable !== undefined ? metadata.editable : false
                     };
