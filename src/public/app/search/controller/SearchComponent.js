@@ -120,15 +120,6 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         }
     },
 
-    onFindLocation: function (button) {
-        var locationSearchInput = button.up('#searchLocationDockedItems').down('#findLocationSearchText');
-        var locationSearchText = locationSearchInput.value;
-        if (locationSearchText) {
-            var myForm = Ext.create('Savanna.search.view.searchComponent.searchBody.searchMap.SearchLocationForm');
-            myForm.show();
-        }
-    },
-
     handleNewSearch: function (elem) {
         var component = this.getSearchComponent(elem);
 
