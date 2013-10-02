@@ -74,7 +74,6 @@ Ext.define('Savanna.metadata.view.Details', {
         var metadataStore = Ext.data.StoreManager.lookup('metadata');
         metadataStore.itemURI = config.itemURI;
         metadataStore.load();
-        //console.log('URI', this.itemURI);
     },
 
     onStoreLoad: function() {
@@ -84,13 +83,8 @@ Ext.define('Savanna.metadata.view.Details', {
     createMetadataFields: function() {
         var me = this;
 
-        //console.log('this.store.data', this.store.data.items);
-        //console.log('this.store.itemURI', this.store.itemURI);
-
         // to sort and filter these, we'll need an array of keys
         Ext.Array.each(this.store.data.items, function(metadata) {
-            //console.log('metadata.data.type', metadata.data.type);
-            //console.log('metadata.data.value', metadata.data.value);
             if(metadata.data.value && metadata.data.value != [] /*&& false != metadata.visible*/) {
                 var typeToAdd = me.getTypeFromName(metadata.data.type);
 
