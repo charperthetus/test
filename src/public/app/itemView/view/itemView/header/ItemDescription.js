@@ -15,6 +15,6 @@ Ext.define('Savanna.itemView.view.itemView.header.ItemDescription', {
 
     name: 'description',
     fieldLabel: 'Description',
-    value: 'Hello World',
+    value: 'Hello World.  This is an Rnrm Item Description',
     grow: false
 });
