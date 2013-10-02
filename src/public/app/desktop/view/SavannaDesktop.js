@@ -4,7 +4,7 @@
 Ext.define('Savanna.desktop.view.SavannaDesktop', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.desktop_savannadesktop',
-    requires: [
+    requires:[
         'Ext.panel.Panel',
         'Savanna.desktop.view.SavannaWorkspace',
         'Savanna.controller.Factory'
@@ -13,67 +13,80 @@ Ext.define('Savanna.desktop.view.SavannaDesktop', {
     layout: {
         type: 'fit'
     },
-
-    tbar: [
-        {
-            id: 'logo',
-            xtype: 'button',
+    tbar: {
+        ui:'brand-header',
+        items: [{
+            itemId: 'logobutton',
+            cls:'logoButtonFramework',
             scale: 'large',
-            text: 'Savanna Logo'
-        },
-        {
+            xtype: 'button',
+            height: 44,
+            ui: 'brand-header'
+            }, {
             xtype: 'toolbar',
-            scale: 'medium',
             flex: 1,
-
+            ui:'brand-header',
             layout: {
-                pack: 'center'
+                pack: 'center',
+                ui: 'brand-header',
+                defaultMargins:'5'
             },
-            items: [
-                {
-                    text: 'Search',
-                    itemId: 'searchbutton'
-                },
-                {
-                    text: 'Upload',
-                    itemId: 'uploadbutton'
+            items: [{
+                    itemId: 'searchbutton',
+                    cls:'searchButtonFramework',
+                    ui:'brand-header',
+                    scale: 'medium'
+                }, {
+                    itemId: 'uploadbutton',
+                    cls:'uploadButtonFramework',
+                    ui:'brand-header',
+                    scale: 'medium'
                 },
                 {
                     text: "Model search",
                     itemId: "modelSearchButton"
-                }
-            ]
-        },
+                }]
+        }, 
         {
             xtype: 'toolbar',
             scale: 'medium',
+            ui:'brand-header',
+            layout: {
+                defaultMargins:'5'
+            },
             items: [
-                {
-                    text: 'Help',
-                    itemId: 'helpbutton'
-                },
-                {
-                    text: 'User',
-                    itemId: 'userbutton',
-                    menu: [
-                        {
-                            text: 'Current Username here',
-                            itemId: 'currentuser'
-                        },
-                        {
-                            text: 'Account Settings',
-                            itemId: 'accountsettings'
-                        },
-                        {
-                            text: 'Log Out',
-                            itemId: 'savannalogout'
-                        }
-                    ]
+            // TODO: when development is ready for error messages, uncomment this block for alert button
+            // {
+            //     itemId: 'errorbutton',
+            //     cls:'errorButtonFramework',
+            //     ui:'brand-header',
+            //     scale: 'medium'
+            // }, 
+            {
+                itemId: 'helpbutton',
+                cls:'helpButtonFramework',
+                ui:'brand-header',
+                scale: 'medium'
+            }, {
+                itemId: 'userbutton',
+                cls:'userButtonFramework',
+                ui:'brand-header',
+                scale: 'medium',
+                menu: {
+                    items: [{
+                        text: 'Current Username here',
+                        itemId: 'currentuser'
+                    }, {
+                        text: 'Account Settings',
+                        itemId: 'accountsettings'
+                    }, {
+                        text: 'Log Out',
+                        itemId: 'savannalogout'
+                    }]
                 }
-            ]
-        }
-    ],
-
+            }]
+        }]
+    },
     items: [
         {
             xtype: 'desktop_savannaworkspace',
@@ -82,7 +95,7 @@ Ext.define('Savanna.desktop.view.SavannaDesktop', {
 
     ],
 
-    initComponent: function () {
+    initComponent: function() {
         this.callParent(arguments);
         Savanna.controller.Factory.getController('Savanna.desktop.controller.DesktopController');
     }

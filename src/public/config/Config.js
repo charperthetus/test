@@ -7,10 +7,13 @@
 SavannaConfig = {
 
     // Root for all REST calls
-    savannaUrlRoot: 'http://localhost:8080/C2is2/',
+    savannaUrlRoot: 'http://c2aptsav1:8080/c2is2/',
     //savannaUrlRoot: 'http://thedevsav1.thetuscorp.com:8080/SavannaX/',
 
     resourcesPathPrefix: '',
+
+    locationSearchUrl: 'http://thedevsav1.thetuscorp.com:8080/SavannaX/rest/map/search',
+//    locationSearchUrl: '../test/fixtures/LocationSources.js',
 
     // Map base layer
     mapBaseLayerUrl: 'http://demo.opengeo.org/geoserver/wms',

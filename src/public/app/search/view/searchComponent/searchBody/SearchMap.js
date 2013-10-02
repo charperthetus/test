@@ -14,7 +14,8 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.SearchMap', {
 
     requires: [
         'Savanna.controller.Factory',
-        'Savanna.search.view.searchComponent.searchBody.searchMap.Canvas'
+        'Savanna.search.view.searchComponent.searchBody.searchMap.Canvas',
+        'Savanna.search.view.searchComponent.searchBody.searchMap.SearchLocationComboBox'
     ],
 
     layout: 'absolute',
@@ -53,29 +54,25 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.SearchMap', {
                     layout: 'hbox',
                     items: [
                         {
-                            xtype: 'textfield',
-                            width: 200,
-                            fieldLabel: '',
-                            itemId: 'findLocationSearchText',
-                            name: 'search_location',
-                            enableKeyEvents: true,
-                            emptyText: 'Find Location'
-
+                            xtype: 'search_searchlocationcombobox'
                         },
                         {
                             xtype: 'button',
-                            itemId: 'findLocation',
-                            ui: 'small-search-button',
-                            glyph: 61808
-
-                        },
-                        {
-                            itemId: 'mapZoomTo',
+                            itemId: 'mapZoomToMenu',
                             text: 'Zoom To',
                             ui: 'flat-toolbar-button',
-                            menu: [{
-                                text: 'Cancel'
-                            }]
+                            menu: [
+                                {
+                                    itemId: 'zoomToWholeWorld',
+                                    text: 'Whole World',
+                                    disabled: false
+                                },
+                                {
+                                    itemId: 'zoomToSelectedArea',
+                                    text: 'Selected Area',
+                                    disabled: true
+                                }
+                            ]
                         },
                         '->',
                         {
@@ -87,7 +84,6 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.SearchMap', {
                     ]
                 }
             ]
-
         }
      ]
 });
