@@ -46,6 +46,7 @@ var ThetusTestHelpers;
      *
      *   Typical use case:
      *
+     * @example
      * <code>
      *   var fakeServer = new FakeServer();
      *   fakeServer.handleAuthentication(); // if there is code to deal with authentication
@@ -146,9 +147,14 @@ var ThetusTestHelpers;
         this.clear();
     };
 
+    /**
+     * create an HTTP response for a given response data
+     * @param response {Object} - contains HTTP headers and possible response JSON
+     * @returns {Array}
+     */
     FakeServer.prototype.validResponse = function(response) {
-        var statusCode = response._statusCode || 200;
-        var headers = response._headers || { 'Content-Type': 'application/json' };
+        var statusCode = response._statusCode || 200,
+            headers = response._headers || { 'Content-Type': 'application/json' };
 
         delete response._statusCode;
 
@@ -174,7 +180,19 @@ var ThetusTestHelpers;
      *
      * @param {String} method HTTP verb (i.e. GET|PUT|POST|DELETE|OPTIONS)
      * @param {String} url string of URL for request
-     * @param {Object} [data] object of data for the response (TODO: document the structure of this object)
+     * @param {Object} [data] object of data for the response
+     *
+     * The "data" parameter can take one of the following two forms:
+     *
+     * function() { return { some: 'response', data: 'object' }; }
+     *
+     * -OR-
+     * {
+     *    _statusCode: optional HTTP status code to use for response (defaults to 200)
+     *    _headers: optional Object of HTTP headers for response (defaults to "Content-Type" set to "application/json")
+     *    ...other response data key/values...
+     * }
+     *
      */
     FakeServer.prototype.respondWith = function(method, url, data) {
         this.responseCache[method] = this.responseCache[method] || {};
@@ -242,9 +260,11 @@ var ThetusTestHelpers;
                             }
                         }
 
+                        // cache what we responded to so we can test for that if needed
                         this.responses[method] = this.responses[method] || {};
                         this.responses[method][url] = true;
 
+                        // finally, have the Sinon XHR request respond...
                         request.respond.apply(request, response);
                     }
                     else {

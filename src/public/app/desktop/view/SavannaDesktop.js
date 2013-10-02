@@ -6,47 +6,87 @@ Ext.define('Savanna.desktop.view.SavannaDesktop', {
     alias: 'widget.desktop_savannadesktop',
     requires:[
         'Ext.panel.Panel',
-        'Savanna.desktop.view.SavannaToolbar',
-        'Savanna.desktop.view.SavannaDashboard',
         'Savanna.desktop.view.SavannaWorkspace',
-        'Savanna.space.view.SpaceManagerComponent',
         'Savanna.controller.Factory'
     ],
+
     layout: {
-        type: 'border'
+        type: 'fit'
+    },
+    tbar: {
+        ui:'brand-header',
+        items: [{
+            itemId: 'logobutton',
+            cls:'logoButtonFramework',
+            scale: 'large',
+            xtype: 'button',
+            height: 44,
+            ui: 'brand-header'
+            }, {
+            xtype: 'toolbar',
+            flex: 1,
+            ui:'brand-header',
+            layout: {
+                pack: 'center',
+                ui: 'brand-header',
+                defaultMargins:'5'
+            },
+            items: [{
+                itemId: 'searchbutton',
+                cls:'searchButtonFramework',
+                ui:'brand-header',
+                scale: 'medium'
+                }, {
+                itemId: 'uploadbutton',
+                cls:'uploadButtonFramework',
+                ui:'brand-header',
+                scale: 'medium'
+            }]
+        }, 
+        {
+            xtype: 'toolbar',
+            scale: 'medium',
+            ui:'brand-header',
+            layout: {
+                defaultMargins:'5'
+            },
+            items: [
+            // TODO: when development is ready for error messages, uncomment this block for alert button
+            // {
+            //     itemId: 'errorbutton',
+            //     cls:'errorButtonFramework',
+            //     ui:'brand-header',
+            //     scale: 'medium'
+            // }, 
+            {
+                itemId: 'helpbutton',
+                cls:'helpButtonFramework',
+                ui:'brand-header',
+                scale: 'medium'
+            }, {
+                itemId: 'userbutton',
+                cls:'userButtonFramework',
+                ui:'brand-header',
+                scale: 'medium',
+                menu: {
+                    items: [{
+                        text: 'Current Username here',
+                        itemId: 'currentuser'
+                    }, {
+                        text: 'Account Settings',
+                        itemId: 'accountsettings'
+                    }, {
+                        text: 'Log Out',
+                        itemId: 'savannalogout'
+                    }]
+                }
+            }]
+        }]
     },
     items: [
         {
-            xtype: 'desktop_savannatoolbar',
-            itemId: 'savannatoolbar',
-            region: 'north'
-        },
-        {
-            xtype: 'panel',
-            itemId: 'desktopcontainer',
-            layout: 'fit',
-            region: 'center',
-            items: [
-                /*todo: - the space manager component is the first child of the desktop container. We should probably
-                * change the code to create and add the desktop children only when they are needed. Do we have them
-                * as local variables in this view? or do we do that in the controller? What is the proper approach?
-                */
-                {
-                    xtype: 'space_spacemanagercomponent',
-                    itemId: 'spacemanager'
-                },
-                {
-                    xtype: 'desktop_savannadashboard',
-                    itemId: 'savannadashboard',
-                    width: '100%',
-                    hidden: true
-                },
-                {
-                    xtype: 'desktop_savannaworkspace',
-                    itemId: 'savannaworkspace',
-                    hidden: true
-                }
-            ]
+            xtype: 'desktop_savannaworkspace',
+            itemId: 'savannaworkspace'
         }
 
     ],

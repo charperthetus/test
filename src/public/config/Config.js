@@ -7,10 +7,13 @@
 SavannaConfig = {
 
     // Root for all REST calls
-    //savannaUrlRoot: 'http://c2aptsav1:8080/c2is2/',
-    savannaUrlRoot: 'http://thedevsav1.thetuscorp.com:8080/SavannaX/',
+    savannaUrlRoot: 'http://c2aptsav1:8080/c2is2/',
+    //savannaUrlRoot: 'http://thedevsav1.thetuscorp.com:8080/SavannaX/',
 
     resourcesPathPrefix: '',
+
+    locationSearchUrl: 'http://thedevsav1.thetuscorp.com:8080/SavannaX/rest/map/search',
+//    locationSearchUrl: '../test/fixtures/LocationSources.js',
 
     // Map base layer
     mapBaseLayerUrl: 'http://demo.opengeo.org/geoserver/wms',
@@ -29,8 +32,5 @@ SavannaConfig.itemViewUrl = SavannaConfig.savannaUrlRoot + 'rest/c2is2/model/ite
 SavannaConfig.dalSourcesUrl = SavannaConfig.savannaUrlRoot + 'rest/search/sources'; // local dev version: 'resources/data/testSearchDalsWithFormData.json',
 SavannaConfig.locationSearch = SavannaConfig.savannaUrlRoot + '/rest/map/search';   // local dev version: 'resources/data/testSearchLocationSearch.json',
 SavannaConfig.metadataUrl = SavannaConfig.savannaUrlRoot + 'rest/metadata';
-// TODO: replace this test URL with real endpoint once we have one...
-SavannaConfig.crumbnetTemplatesUrl = SavannaConfig.savannaUrlRoot + 'resources/data/testCrumbnetTemplates.json';
-
-SavannaConfig.testSpacesUrl = 'resources/data/testSpaces.json';
-SavannaConfig.savedSpacesUrl = 'resources/data/savedSpaces.json';
+// TODO: replace this test URL with real endpoint once we have one....
+SavannaConfig.crumbnetTemplatesUrl = 'fixture/Crumbnet.json';
