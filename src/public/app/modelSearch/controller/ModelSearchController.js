@@ -55,6 +55,6 @@ Ext.define('Savanna.modelSearch.controller.ModelSearchController', {
         store.loadPage(1);        
     },
     handleModelClick: function(grid, record, item) {
-        app.fireEvent('search:itemSelected', grid, record, item);
+        this.getApplication().fireEvent('search:itemSelected', grid, record, item);
     }
 });

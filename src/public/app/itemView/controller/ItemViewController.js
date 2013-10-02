@@ -5,13 +5,16 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
     views: [
         'Savanna.itemView.view.ItemViewer',
-        'Savanna.itemView.view.itemView.DisplayLabel',
+        'Savanna.itemView.view.itemView.Header',
+        'Savanna.itemView.view.itemView.header.DisplayLabel',
+        'Savanna.itemView.view.itemView.header.ItemAlias',
+        'Savanna.itemView.view.itemView.header.ItemUse',
+        'Savanna.itemView.view.itemView.header.ItemDescription',
         'Savanna.itemView.view.itemView.Boilerplate',
         'Savanna.itemView.view.itemView.RelatedContent',
         'Savanna.itemView.view.itemView.Annotations',
         'Savanna.itemView.view.itemView.ImagesGrid',
         'Savanna.itemView.view.itemView.Confusers'
-
     ],
 
     constructor: function (options) {
@@ -123,8 +126,8 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
             taxParentText += ', ' + data.taxoParents[i].referenceName;
         }
 
-        createdBy = this.getEntryForKey('createdBy', data.metadata.metadataEntries);
-        modifiedBy = this.getEntryForKey('modifiedBy', data.metadata.metadataEntries);
+        createdBy = "benji"; // this.getEntryForKey('createdBy', data.metadata.metadataEntries);
+        modifiedBy = "benji"; // this.getEntryForKey('modifiedBy', data.metadata.metadataEntries);
 
         bpData = {
             'Aliases': data.aliases.join(', '),

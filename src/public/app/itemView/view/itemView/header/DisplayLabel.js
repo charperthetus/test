@@ -1,10 +1,10 @@
-Ext.define('Savanna.itemView.view.itemView.DisplayLabel', {
+Ext.define('Savanna.itemView.view.itemView.header.DisplayLabel', {
     extend: 'Ext.Component',
 
     alias: 'widget.itemview_displaylabel',
 
     tpl: [
-        '<h2>{displayLabel}</h2>'
+        '<h1>{displayLabel}</h1>'
     ],
 
     margin: 10,
