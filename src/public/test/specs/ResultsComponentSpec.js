@@ -1098,7 +1098,7 @@ describe('Search Results', function () {
             });
 
             it('should expand all facets"', function () {
-
+                searchComponent.down('#resultsdals').queryById('resultsfacets').setActiveTab(0);
                 resultsController.onShowHideFacets(searchComponent.down('#resultsdals').queryById('resultsfacets').queryById('showHideFacets'));
                 var allExpanded = true;
                 Ext.each(resultsDals.queryById('resultsfacets').query('panel[cls=results-facet]'), function(facet) {
