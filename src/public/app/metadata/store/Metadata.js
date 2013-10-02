@@ -28,9 +28,6 @@ Ext.define('Savanna.metadata.store.Metadata', {
         this.setProxy({
             type: 'savanna-cors',
 
-            url: 'app/assets/data/testMetadata.json',
-            //url: SavannaConfig.metadataUrl + '/' + itemURI,
-
             addSessionId: false, // this needs to be left in until using correct url or Ted adds node fix
             startParam: undefined,
             limitParam: undefined,
@@ -49,7 +46,10 @@ Ext.define('Savanna.metadata.store.Metadata', {
     },
 
     load: function() {
+        // Put this line back in to use the URI set in the constructor.
         //this.getProxy().url = SavannaConfig.metadataUrl + '/' + this.itemURI;
+        this.getProxy().url = SavannaConfig.metadataTestDataUrl;
+
         this.callParent(arguments);
         console.log('URL ', this.getProxy().url);
     }
