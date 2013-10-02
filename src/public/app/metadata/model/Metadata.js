@@ -11,14 +11,15 @@ Ext.define('Savanna.metadata.model.Metadata', {
     // NOTE: if you have a relationship, you need to be sure to require that model...
 
     fields: [
-        { name: 'metadata' }
+        //{ name: 'metadata' }
 
-        /*
         {name: 'type' },
         {name: 'key' },
         {name: 'value' },
         {name: 'displayLabel' },
-        */
-
+        {name: 'visible' },
+        {name: 'editable' }
     ]
 });
+
+

@@ -84,81 +84,84 @@ Ext.define('Savanna.metadata.view.Details', {
     createMetadataFields: function() {
         var me = this;
 
-        //console.log('this.store.data.items[0].data.metadata', this.store.data.items[0].data.metadata);
+        //console.log('this.store.data', this.store.data.items);
         //console.log('this.store.itemURI', this.store.itemURI);
 
         // to sort and filter these, we'll need an array of keys
-        Ext.Array.each(this.store.data.items[0].data.metadata.metadataEntries, function(metadata) {
+        Ext.Array.each(this.store.data.items, function(metadata) {
+            //console.log('metadata.data.type', metadata.data.type);
+            //console.log('metadata.data.value', metadata.data.value);
+            if(metadata.data.value && metadata.data.value != [] /*&& false != metadata.visible*/) {
+                var typeToAdd = me.getTypeFromName(metadata.data.type);
 
-            if(metadata.value /*&& false != metadata.visible*/) {
-                var TypeToAdd = me.getTypeFromName(metadata.metadataType.name);
-
-                if('' != TypeToAdd) {
+                if('' != typeToAdd) {
                     var valueObject = {
-                        key:            metadata.key.key,
-                        value:          metadata.value,
-                        displayLabel:   metadata.key.displayLabel,
-                        visible:        metadata.visible !== undefined ? metadata.visible : false,
-                        editable:       metadata.editable !== undefined ? metadata.editable : false
+                        key:            metadata.data.key,
+                        value:          metadata.data.value,
+                        displayLabel:   metadata.data.displayLabel,
+                        visible:        metadata.data.visible !== undefined ? metadata.data.visible : false,
+                        editable:       metadata.data.editable !== undefined ? metadata.data.editable : false
                     };
-                    var metadataView = me.createViewForType(TypeToAdd, valueObject );
+                    var metadataView = me.createViewForType(typeToAdd, valueObject );
                     if (metadataView) {
                         me.add( metadataView );
                     }
                 }
             } else {
-                console.log('Field has no value ', metadata.metadataType.name, metadata.value);
+                console.log('Field has no value ', metadata.data.key, metadata.data.value);
             }
         });
     },
 
     getTypeFromName: function(name) {
-        var TypeToAdd = '';
+        var typeToAdd = '';
 
         switch(name){
             case 'String':
-                TypeToAdd = 'Savanna.metadata.view.String';
+                typeToAdd = 'Savanna.metadata.view.String';
                 break;
             case 'LongString':
-                TypeToAdd = 'Savanna.metadata.view.LongString';
+                typeToAdd = 'Savanna.metadata.view.LongString';
                 break;
             case 'Date':
-                TypeToAdd = 'Savanna.metadata.view.Date';
+                typeToAdd = 'Savanna.metadata.view.Date';
                 break;
             case 'Uri':
-                TypeToAdd = 'Savanna.metadata.view.Uri';
+                typeToAdd = 'Savanna.metadata.view.Uri';
                 break;
             case 'Integer':
-                TypeToAdd = 'Savanna.metadata.view.Integer';
+                typeToAdd = 'Savanna.metadata.view.Integer';
                 break;
             case 'Boolean':
-                TypeToAdd = 'Savanna.metadata.view.Boolean';
+                typeToAdd = 'Savanna.metadata.view.Boolean';
                 break;
             case 'Double':
-                TypeToAdd = 'Savanna.metadata.view.Double';
+                typeToAdd = 'Savanna.metadata.view.Double';
                 break;
             case 'String_List':
-                TypeToAdd = 'Savanna.metadata.view.StringList';
+                typeToAdd = 'Savanna.metadata.view.StringList';
                 break;
             case 'Boolean_List':
-                TypeToAdd = 'Savanna.metadata.view.BooleanList';
+                typeToAdd = 'Savanna.metadata.view.BooleanList';
                 break;
             case 'Date_List':
-                TypeToAdd = 'Savanna.metadata.view.DateList';
+                typeToAdd = 'Savanna.metadata.view.DateList';
                 break;
             case 'Integer_List':
-                TypeToAdd = 'Savanna.metadata.view.IntegerList';
+                typeToAdd = 'Savanna.metadata.view.IntegerList';
                 break;
             case 'Double_List':
-                TypeToAdd = 'Savanna.metadata.view.DoubleList';
+                typeToAdd = 'Savanna.metadata.view.DoubleList';
                 break;
             case 'Uri_List':
-                TypeToAdd = 'Savanna.metadata.view.UriList';
+                typeToAdd = 'Savanna.metadata.view.UriList';
                 break;
             default:
-                console.log('metadata.metadataType.name', metadata.metadataType.name);
+                console.log('Unknown metadata type', name);
+                typeToAdd = '';
+                break;
         }
-        return TypeToAdd;
+        return typeToAdd;
     },
 
     createViewForType: function(fieldType, valueObject) {

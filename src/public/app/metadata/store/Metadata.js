@@ -29,9 +29,12 @@ Ext.define('Savanna.metadata.store.Metadata', {
             type: 'savanna-cors',
 
             url: 'app/assets/data/testMetadata.json',
-            //url: SavannaConfig.metadataUrl + '/uri=' + itemURI,
+            //url: SavannaConfig.metadataUrl + '/' + itemURI,
 
             addSessionId: false, // this needs to be left in until using correct url or Ted adds node fix
+            startParam: undefined,
+            limitParam: undefined,
+            pageParam: undefined,
 
             reader: {
                 type: 'json'
@@ -43,5 +46,12 @@ Ext.define('Savanna.metadata.store.Metadata', {
 
         });
 
+    },
+
+    load: function() {
+        //this.getProxy().url = SavannaConfig.metadataUrl + '/' + this.itemURI;
+        this.callParent(arguments);
+        console.log('URL ', this.getProxy().url);
     }
+
 });

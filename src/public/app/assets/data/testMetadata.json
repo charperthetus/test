@@ -1,469 +1,235 @@
-{
-    "_type":"com.thetus.platforms.savanna.services.mystuff2.MyStuffNode2",
-    "uri":"183249%2FNode2%2FLeafNode",
-    "description":null,
-    "children":null,
-    "nodeType":"LeafNode",
-    "classificationPortionMarking":"U",
-    "classification":{
-        "_type":"com.thetus.gov.ic.dodiis.capco.entities.ISMClassificationWithPortionMarking",
-        "classification":"U",
-        "ownerProducer":null,
-        "scicontrols":null,
-        "disseminationControls":null,
-        "fgisourceOpen":null,
-        "fgisourceProtected":null,
-        "releasableTo":null,
-        "nonICmarkings":null,
-        "classifiedBy":null,
-        "derivativelyClassifiedBy":null,
-        "classificationReason":null,
-        "derivedFrom":null,
-        "declassDate":null,
-        "declassEvent":null,
-        "declassException":null,
-        "typeOfExemptedSource":null,
-        "dateOfExemptedSource":null,
-        "declassManualReview":null,
-        "validationErrorText":null,
-        "portionMarking":"U",
-        "saridentifier":null
+[
+    {
+        "value": "FragglePDF",
+        "key": "docTitle",
+        "type": "String",
+        "visible": false,
+        "editable": false,
+        "displayLabel": "Document Title"
     },
-    "savannaItemUri":"183200%2FVirtualDocument",
-    "parentNodeUri":"199289%2FNode2%2FSet",
-    "extent":null,
-    "isImportant":false,
-    "areaOfResponsibility":null,
-    "isCollapsed":false,
-    "childContainerCount":0,
-    "childCount":0,
-    "publishOrCreationDate":1367876255961,
-    "enteredBy":"demouser",
-    "entityVersion":0,
-    "displayLabel":"Web4 Clipper Demonstration",
-    "metadata":{
-        "_type":"com.thetus.platforms.savanna.apis.item.metadata.SavannaItemMetadata",
-        "metadataEntries":[
-            {
-                "_type":"com.thetus.platforms.savanna.apis.item.metadata.SavannaMetadataEntry",
-                "value":"Web4 Clipper Demonstration",
-                "key":{
-                    "_type":"com.thetus.platforms.savanna.metadata.SavannaMetadataKey",
-                    "key":"title",
-                    "uri":"MetadataKeytitle",
-                    "displayLabel":"Title"
-                },
-                "metadataType":{
-                    "name":"String"
-                },
-                "editable":true,
-                "visible":false,
-                "sortKey":null,
-                "entityVersion":-1,
-                "uri":"MetadataEntry%2Ftitle%2FMetadata%2F183200%2FVirtualDocument",
-                "displayLabel":null
-            },
-            {
-                "_type":"com.thetus.platforms.savanna.apis.item.metadata.SavannaMetadataEntry",
-                "value":[
-                    "Joe Blow",
-                    "Sally Forth",
-                    "Red Rocker",
-                    "Richardo Black",
-                    "Richardo Black"
-                ],
-                "key":{
-                    "_type":"com.thetus.platforms.savanna.metadata.SavannaMetadataKey",
-                    "key":"authors",
-                    "uri":"MetadataKeyauthors",
-                    "displayLabel":"Authors"
-                },
-                "metadataType":{
-                    "name":"String_List"
-                },
-                "editable":true,
-                "visible":true,
-                "sortKey":null,
-                "entityVersion":-1,
-                "uri":"MetadataEntry%2Fauthors%2FMetadata%2F183200%2FVirtualDocument",
-                "displayLabel":null
-            },
-            {
-                "_type":"com.thetus.platforms.savanna.apis.item.metadata.SavannaMetadataEntry",
-                "value":1367876256050,
-                "key":{
-                    "_type":"com.thetus.platforms.savanna.metadata.SavannaMetadataKey",
-                    "key":"modifiedDate",
-                    "uri":"MetadataKeymodifiedDate",
-                    "displayLabel":"Last Edited Date"
-                },
-                "metadataType":{
-                    "name":"Date"
-                },
-                "editable":false,
-                "visible":true,
-                "sortKey":null,
-                "entityVersion":-1,
-                "uri":"MetadataEntry%2FmodifiedDate%2FMetadata%2F183200%2FVirtualDocument",
-                "displayLabel":null
-            },
-            {
-                "_type":"com.thetus.platforms.savanna.apis.item.metadata.SavannaMetadataEntry",
-                "value":null,
-                "key":{
-                    "_type":"com.thetus.platforms.savanna.metadata.SavannaMetadataKey",
-                    "key":"published-date",
-                    "uri":"MetadataKeypublished-date",
-                    "displayLabel":"Publication Date"
-                },
-                "metadataType":{
-                    "name":"Date"
-                },
-                "editable":true,
-                "visible":true,
-                "sortKey":null,
-                "entityVersion":-1,
-                "uri":"MetadataEntry%2Fpublished-date%2FMetadata%2F183200%2FVirtualDocument",
-                "displayLabel":null
-            },
-            {
-                "_type":"com.thetus.platforms.savanna.apis.item.metadata.SavannaMetadataEntry",
-                "value":"Test Description",
-                "key":{
-                    "_type":"com.thetus.platforms.savanna.metadata.SavannaMetadataKey",
-                    "key":"description",
-                    "uri":"MetadataKeydescription",
-                    "displayLabel":"Description"
-                },
-                "metadataType":{
-                    "name":"LongString"
-                },
-                "editable":true,
-                "visible":true,
-                "sortKey":null,
-                "entityVersion":-1,
-                "uri":"MetadataEntry%2Fdescription%2FMetadata%2F183200%2FVirtualDocument",
-                "displayLabel":null
-            },
-            {
-                "_type":"com.thetus.platforms.savanna.apis.item.metadata.SavannaMetadataEntry",
-                "value":null,
-                "key":{
-                    "_type":"com.thetus.platforms.savanna.metadata.SavannaMetadataKey",
-                    "key":"publisher",
-                    "uri":"MetadataKeypublisher",
-                    "displayLabel":"Publisher"
-                },
-                "metadataType":{
-                    "name":"String"
-                },
-                "editable":true,
-                "visible":true,
-                "sortKey":null,
-                "entityVersion":-1,
-                "uri":"MetadataEntry%2Fpublisher%2FMetadata%2F183200%2FVirtualDocument",
-                "displayLabel":null
-            },
-            {
-                "_type":"com.thetus.platforms.savanna.apis.item.metadata.SavannaMetadataEntry",
-                "value":null,
-                "key":{
-                    "_type":"com.thetus.platforms.savanna.metadata.SavannaMetadataKey",
-                    "key":"pubName",
-                    "uri":"MetadataKeypubName",
-                    "displayLabel":"Publication Name"
-                },
-                "metadataType":{
-                    "name":"String"
-                },
-                "editable":true,
-                "visible":true,
-                "sortKey":null,
-                "entityVersion":-1,
-                "uri":"MetadataEntry%2FpubName%2FMetadata%2F183200%2FVirtualDocument",
-                "displayLabel":null
-            },
-            {
-                "_type":"com.thetus.platforms.savanna.apis.item.metadata.SavannaMetadataEntry",
-                "value":null,
-                "key":{
-                    "_type":"com.thetus.platforms.savanna.metadata.SavannaMetadataKey",
-                    "key":"document-language",
-                    "uri":"MetadataKeydocument-language",
-                    "displayLabel":"Source Language"
-                },
-                "metadataType":{
-                    "name":"String"
-                },
-                "editable":true,
-                "visible":true,
-                "sortKey":null,
-                "entityVersion":-1,
-                "uri":"MetadataEntry%2Fdocument-language%2FMetadata%2F183200%2FVirtualDocument",
-                "displayLabel":null
-            },
-            {
-                "_type":"com.thetus.platforms.savanna.apis.item.metadata.SavannaMetadataEntry",
-                "value":null,
-                "key":{
-                    "_type":"com.thetus.platforms.savanna.metadata.SavannaMetadataKey",
-                    "key":"document-country",
-                    "uri":"MetadataKeydocument-country",
-                    "displayLabel":"Source Country"
-                },
-                "metadataType":{
-                    "name":"String"
-                },
-                "editable":true,
-                "visible":true,
-                "sortKey":null,
-                "entityVersion":-1,
-                "uri":"MetadataEntry%2Fdocument-country%2FMetadata%2F183200%2FVirtualDocument",
-                "displayLabel":null
-            },
-            {
-                "_type":"com.thetus.platforms.savanna.apis.item.metadata.SavannaMetadataEntry",
-                "value":"http:%2F%2Flocalhost:8095%2FSavannaX%2Frest%2Fwebclipper",
-                "key":{
-                    "_type":"com.thetus.platforms.savanna.metadata.SavannaMetadataKey",
-                    "key":"webLink",
-                    "uri":"MetadataKeywebLink",
-                    "displayLabel":"URL"
-                },
-                "metadataType":{
-                    "name":"Uri"
-                },
-                "editable":true,
-                "visible":true,
-                "sortKey":null,
-                "entityVersion":-1,
-                "uri":"MetadataEntry%2FwebLink%2FMetadata%2F183200%2FVirtualDocument",
-                "displayLabel":null
-            },
-            {
-                "_type":"com.thetus.platforms.savanna.apis.item.metadata.SavannaMetadataEntry",
-                "value":"${authors}. (${published-date;DDJJNNZ MMM YY}) ${title}. ${pubName}\n                            (${document-country}). ${classification}",
-                "key":{
-                    "_type":"com.thetus.platforms.savanna.metadata.SavannaMetadataKey",
-                    "key":"keyCitationPlain",
-                    "uri":"MetadataKeykeyCitationPlain",
-                    "displayLabel":"Citation Plain"
-                },
-                "metadataType":{
-                    "name":"String"
-                },
-                "editable":false,
-                "visible":false,
-                "sortKey":null,
-                "entityVersion":-1,
-                "uri":"MetadataEntry%2FkeyCitationPlain%2FMetadata%2F183200%2FVirtualDocument",
-                "displayLabel":null
-            },
-            {
-                "_type":"com.thetus.platforms.savanna.apis.item.metadata.SavannaMetadataEntry",
-                "value":"${authors}. (${published-date;DDJJNNZ MMM YY}) ${title}. <i>${pubName}</i> (${document-country}). <b>${classification}</b>",
-                "key":{
-                    "_type":"com.thetus.platforms.savanna.metadata.SavannaMetadataKey",
-                    "key":"keyCitationHtml",
-                    "uri":"MetadataKeykeyCitationHtml",
-                    "displayLabel":"Citation Html"
-                },
-                "metadataType":{
-                    "name":"String"
-                },
-                "editable":false,
-                "visible":false,
-                "sortKey":null,
-                "entityVersion":-1,
-                "uri":"MetadataEntry%2FkeyCitationHtml%2FMetadata%2F183200%2FVirtualDocument",
-                "displayLabel":null
-            },
-            {
-                "_type":"com.thetus.platforms.savanna.apis.item.metadata.SavannaMetadataEntry",
-                "value": 98765,
-                "key":{
-                    "_type":"com.thetus.platforms.savanna.metadata.SavannaMetadataKey",
-                    "key":"Number",
-                    "uri":"MetadataNumber",
-                    "displayLabel":"Number"
-                },
-                "metadataType":{
-                    "name":"Integer"
-                },
-                "editable":true,
-                "visible":false,
-                "sortKey":null,
-                "entityVersion":-1,
-                "uri":"MetadataEntry%2Ftitle%2FMetadata%2F183200%2FVirtualDocument",
-                "displayLabel":null
-            },
-            {
-                "_type":"com.thetus.platforms.savanna.apis.item.metadata.SavannaMetadataEntry",
-                "value": true,
-                "key":{
-                    "_type":"com.thetus.platforms.savanna.metadata.SavannaMetadataKey",
-                    "key":"modifiedDate",
-                    "uri":"MetadataKeymodifiedDate",
-                    "displayLabel":"This is true"
-                },
-                "metadataType":{
-                    "name":"Boolean"
-                },
-                "editable":false,
-                "visible":true,
-                "sortKey":null,
-                "entityVersion":-1,
-                "uri":"MetadataEntry%2FmodifiedDate%2FMetadata%2F183200%2FVirtualDocument",
-                "displayLabel":null
-            },
-            {
-                "_type":"com.thetus.platforms.savanna.apis.item.metadata.SavannaMetadataEntry",
-                "value": 123.321,
-                "key":{
-                    "_type":"com.thetus.platforms.savanna.metadata.SavannaMetadataKey",
-                    "key":"ISBN",
-                    "uri":"MetadataKeymodifiedISBN",
-                    "displayLabel":"ISBN number"
-                },
-                "metadataType":{
-                    "name":"Double"
-                },
-                "editable":false,
-                "visible":true,
-                "sortKey":null,
-                "entityVersion":-1,
-                "uri":"MetadataEntry%2FmodifiedDate%2FMetadata%2F183200%2FVirtualDocument",
-                "displayLabel":null
-            },
-            {
-                "_type":"com.thetus.platforms.savanna.apis.item.metadata.SavannaMetadataEntry",
-                "value":[
-                    true,
-                    false,
-                    true,
-                    false,
-                    true
-                ],
-                "key":{
-                    "_type":"com.thetus.platforms.savanna.metadata.SavannaMetadataKey",
-                    "key":"truth",
-                    "uri":"MetadataKeyauthors",
-                    "displayLabel":"List of Truths"
-                },
-                "metadataType":{
-                    "name":"Boolean_List"
-                },
-                "editable":true,
-                "visible":true,
-                "sortKey":null,
-                "entityVersion":-1,
-                "uri":"MetadataEntry%2Fauthors%2FMetadata%2F183200%2FVirtualDocument",
-                "displayLabel":null
-            },
-            {
-                "_type":"com.thetus.platforms.savanna.apis.item.metadata.SavannaMetadataEntry",
-                "value":[
-                    1367876256050,
-                    1368876356050,
-                    1369876456050
-                ],
-                "key":{
-                    "_type":"com.thetus.platforms.savanna.metadata.SavannaMetadataKey",
-                    "key":"truth",
-                    "uri":"MetadataKeyDates",
-                    "displayLabel":"Important Dates associated with this document"
-                },
-                "metadataType":{
-                    "name":"Date_List"
-                },
-                "editable":true,
-                "visible":true,
-                "sortKey":null,
-                "entityVersion":-1,
-                "uri":"MetadataEntry%2Fauthors%2FMetadata%2F183200%2FVirtualDocument",
-                "displayLabel":null
-            },
-            {
-                "_type":"com.thetus.platforms.savanna.apis.item.metadata.SavannaMetadataEntry",
-                "value":[
-                    12345,
-                    67890,
-                    1369876456050,
-                    1,
-                    0
-                ],
-                "key":{
-                    "_type":"com.thetus.platforms.savanna.metadata.SavannaMetadataKey",
-                    "key":"truth",
-                    "uri":"MetadataKeyDates",
-                    "displayLabel":"A bunch of numbers"
-                },
-                "metadataType":{
-                    "name":"Integer_List"
-                },
-                "editable":true,
-                "visible":true,
-                "sortKey":null,
-                "entityVersion":-1,
-                "uri":"MetadataEntry%2Fauthors%2FMetadata%2F183200%2FVirtualDocument",
-                "displayLabel":null
-            },
-            {
-                "_type":"com.thetus.platforms.savanna.apis.item.metadata.SavannaMetadataEntry",
-                "value":[
-                    12.345,
-                    6.7890,
-                    13698764560.50,
-                    1.0,
-                    0,
-                    0.9753
-                ],
-                "key":{
-                    "_type":"com.thetus.platforms.savanna.metadata.SavannaMetadataKey",
-                    "key":"more",
-                    "uri":"MetadataKeyDates",
-                    "displayLabel":"Another bunch of numbers"
-                },
-                "metadataType":{
-                    "name":"Double_List"
-                },
-                "editable":true,
-                "visible":true,
-                "sortKey":null,
-                "entityVersion":-1,
-                "uri":"MetadataEntry%2Fauthors%2FMetadata%2F183200%2FVirtualDocument",
-                "displayLabel":null
-            },
-            {
-                "_type":"com.thetus.platforms.savanna.apis.item.metadata.SavannaMetadataEntry",
-                "value":[
-                    "http:%2F%2Flocalhost:8095%2FSavannaX%2Frest%2Fwebclipper",
-                    "http:%2F%2Flocalhost:8095%2FSavannaX%2Frest%2Fsomeplace%2F",
-                    "http:%2F%2Flocalhost:8095%2FSavannaX%2Frest%2Felse%2Fhere%2For%2Fthere"
-                ],
-                "key":{
-                    "_type":"com.thetus.platforms.savanna.metadata.SavannaMetadataKey",
-                    "key":"more",
-                    "uri":"MetadataKeyDates",
-                    "displayLabel":"More Uris than you probably want to see, but here you go."
-                },
-                "metadataType":{
-                    "name":"Uri_List"
-                },
-                "editable":true,
-                "visible":true,
-                "sortKey":null,
-                "entityVersion":-1,
-                "uri":"MetadataEntry%2Fauthors%2FMetadata%2F183200%2FVirtualDocument",
-                "displayLabel":null
-            }
-
-
-
-        ],
-        "canAdd":false,
-        "entityVersion":-1,
-        "uri":"Metadata%2F183200%2FVirtualDocument",
-        "displayLabel":null
+    {
+        "value": ["Bob Writer", "Sally Poet"],
+        "key": "authors",
+        "type": "String_List",
+        "visible": true,
+        "editable": true,
+        "displayLabel": "Authors"
+    },
+    {
+        "value": 1,
+        "key": "pageCount",
+        "type": "Integer",
+        "visible": true,
+        "editable": true,
+        "displayLabel": "Pages"
+    },
+    {
+        "value": 1360960609102,
+        "key": "published-date",
+        "type": "Date",
+        "visible": true,
+        "editable": true,
+        "displayLabel": "Publication Date"
+    },
+    {
+        "value": [],
+        "key": "relatedDocs",
+        "type": "Uri_List",
+        "visible": true,
+        "editable": true,
+        "displayLabel": "Related Documents"
+    },
+    {
+        "value": "The first-ever American Special series Mustang model is a stripped-down blast, with a roaring HH pickup configuration, streamlined controls and a cool sonic trick up its sleeve in the form of a push/pull master volume knob that splits the atom, so to speak—splitting both Atomic humbucking pickups for great single-coil tone (inner coil of neck pickup and outer coil of bridge pickup). Further, the Adjusto-Matic™ bridge and anchored tail piece provide rock-solid intonation and tuning stability.",
+        "key": "document-description",
+        "type": "LongString",
+        "visible": true,
+        "editable": true,
+        "displayLabel": "Description"
+    },
+    {
+        "value": "Fender",
+        "key": "publisher",
+        "type": "String",
+        "visible": true,
+        "editable": true,
+        "displayLabel": "Publisher"
+    },
+    {
+        "value": null,
+        "key": "pubName",
+        "type": "String",
+        "visible": true,
+        "editable": true,
+        "displayLabel": "Publication Name"
+    },
+    {
+        "value": "Unknown",
+        "key": "producer",
+        "type": "String",
+        "visible": true,
+        "editable": true,
+        "displayLabel": "Producer"
+    },
+    {
+        "value": "Analyst Document",
+        "key": "distributor",
+        "type": "String",
+        "visible": true,
+        "editable": true,
+        "displayLabel": "Distributor"
+    },
+    {
+        "value": null,
+        "key": "document-organization",
+        "type": "String",
+        "visible": true,
+        "editable": true,
+        "displayLabel": "Source Organization"
+    },
+    {
+        "value": null,
+        "key": "document-language",
+        "type": "String",
+        "visible": true,
+        "editable": true,
+        "displayLabel": "Source Language"
+    },
+    {
+        "value": null,
+        "key": "document-country",
+        "type": "String",
+        "visible": true,
+        "editable": true,
+        "displayLabel": "Source Country"
+    },
+    {
+        "value": 1360960788447,
+        "key": "ingest-date",
+        "type": "Date",
+        "visible": true,
+        "editable": true,
+        "displayLabel": "Ingest Date"
+    },
+    {
+        "value": "PDF (Portable Document Format)",
+        "key": "document-type",
+        "type": "String",
+        "visible": true,
+        "editable": true,
+        "displayLabel": "File Format"
+    },
+    {
+        "value": "FragglePDF.pdf",
+        "key": "document-original-name",
+        "type": "String",
+        "visible": true,
+        "editable": true,
+        "displayLabel": "Original File Name"
+    },
+    {
+        "value": true,
+        "key": "document_interesting",
+        "type": "Boolean",
+        "visible": true,
+        "editable": true,
+        "displayLabel": "Document is interesting"
+    },
+    {
+        "value": "Complete",
+        "key": "ingest-state",
+        "type": "String",
+        "visible": false,
+        "editable": false,
+        "displayLabel": "Ingestion State"
+    },
+    {
+        "value": "SolrJdbc%2FRich%2Fca1035f5-8ede-4415-ab75-e58956121819",
+        "key": "retrieval-url",
+        "type": "Uri",
+        "visible": true,
+        "editable": true,
+        "displayLabel": "URL"
+    },
+    {
+        "value": "${authors}. (${published-date;DDJJNNZ MMM YY}) ${title}. ${pubName}\n                            (${document-country}). ${classification}",
+        "key": "keyCitationPlain",
+        "type": "String",
+        "visible": false,
+        "editable": false,
+        "displayLabel": "Citation Plain"
+    },
+    {
+        "value": "${authors}. (${published-date;DDJJNNZ MMM YY}) ${title}. <i>${pubName}</i> (${document-country}). <b>${classification}</b>",
+        "key": "keyCitationHtml",
+        "type": "String",
+        "visible": false,
+        "editable": false,
+        "displayLabel": "Citation Html"
+    },
+    {
+        "value": "U",
+        "key": "classification",
+        "type": "String",
+        "visible": true,
+        "editable": true,
+        "displayLabel": "Classification"
+    },
+    {
+        "value": "Other",
+        "key": "producer-category",
+        "type": "String",
+        "visible": true,
+        "editable": true,
+        "displayLabel": "producer-category"
+    },
+    {
+        "value": [true, false, false, true],
+        "key": "survey-answers",
+        "type": "Boolean_List",
+        "visible": true,
+        "editable": true,
+        "displayLabel": "Survey answers"
+    },
+    {
+        "value": [1360960788447, 1361960788447, 1362960788447],
+        "key": "important_dates",
+        "type": "Date_List",
+        "visible": true,
+        "editable": true,
+        "displayLabel": "Important dates"
+    },
+    {
+        "value": [13609.60788447, 13.61960788447, 1362960788.447],
+        "key": "important_numbers",
+        "type": "Double_List",
+        "visible": true,
+        "editable": true,
+        "displayLabel": "Big numbers"
+    },
+    {
+        "value": [1360960788447, 1361960788447, 1362960788447],
+        "key": "important_values",
+        "type": "Integer_List",
+        "visible": true,
+        "editable": true,
+        "displayLabel": "Values"
+    },
+    {
+        "value": 1360960788447,
+        "key": "important_value",
+        "type": "Integer",
+        "visible": true,
+        "editable": true,
+        "displayLabel": "Sales volume"
+    },
+    {
+        "value": 13609607884.47,
+        "key": "important_values",
+        "type": "Double",
+        "visible": true,
+        "editable": true,
+        "displayLabel": "Sales amount"
     }
-}
+
+]
