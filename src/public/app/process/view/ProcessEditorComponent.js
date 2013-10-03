@@ -16,6 +16,8 @@ Ext.define('Savanna.process.view.ProcessEditorComponent', {
         'Savanna.crumbnet.view.part.Canvas', //todo: move canvas out of crumbnet dir
     ],
 
+    controller: 'Savanna.process.controller.ProcessController',
+
     layout: {
         type: 'border'
     },
