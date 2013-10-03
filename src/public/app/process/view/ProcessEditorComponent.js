@@ -13,7 +13,7 @@ Ext.define('Savanna.process.view.ProcessEditorComponent', {
         'Ext.layout.container.Border',
         'Savanna.process.view.part.Toolbar',
         'Savanna.process.view.part.MetadataTabPanel',
-        'Savanna.crumbnet.view.part.Canvas', //todo: move canvas out of crumbnet dir
+        'Savanna.crumbnet.view.part.Canvas' //todo: move canvas out of crumbnet dir
     ],
 
     layout: {
@@ -57,7 +57,7 @@ Ext.define('Savanna.process.view.ProcessEditorComponent', {
                 layout: 'fit',
                 width: '30%', //todo: DI should apply the appropriate styling for the sidebar
                 collapsible: true,
-                split: true,
+                split: true
             }
         ];
     }
