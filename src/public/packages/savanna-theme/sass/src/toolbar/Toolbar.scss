@@ -1,0 +1,73 @@
+/*
+*  Sets custom toolbar styles by reusing ExtJS (or UIKit) mixins.
+*
+* @author lpelofske
+*/
+
+/*
+* Runtime
+*/
+  
+@include extjs-toolbar-ui(
+    $ui: 'brand-header-toolbar-small',
+
+    $background-color: $brand-header-toolbar-background-color,
+    $background-gradient: $brand-header-toolbar-background-gradient,
+    $border-color: $brand-header-toolbar-border-color,
+    $border-width: $brand-header-toolbar-border-width
+);
+
+@include extjs-toolbar-ui(
+    $ui: 'brand-header-toolbar-medium',
+
+    $background-color: $brand-header-toolbar-background-color,
+    $background-gradient:$brand-header-toolbar-background-gradient,
+    $border-color: $brand-header-toolbar-border-color,
+    $border-width: $brand-header-toolbar-border-width
+);
+
+@include extjs-toolbar-ui(
+    $ui: 'brand-header-toolbar-large',
+
+    $background-color: $brand-header-toolbar-background-color,
+    $background-gradient:$brand-header-toolbar-background-gradient,
+    $border-color: $brand-header-toolbar-border-color,
+    $border-width: $brand-header-toolbar-border-width
+);
+
+@include extjs-toolbar-ui(
+    $ui: 'brand-header',
+    $background-color: $brand-header-toolbar-background-color,
+    $border-color: $brand-header-toolbar-border-color,
+    $border-width: $brand-header-toolbar-border-width
+
+);
+
+@include extjs-toolbar-ui(
+    $ui: 'workspace-header',
+    $background-color: $workspace-header-toolbar-background-color,
+    $border-width: $workspace-header-toolbar-border-width,
+    $border-color: $workspace-header-toolbar-border-color
+);
+
+/*
+* Logic
+*/
+
+.#{$prefix}toolbar-brand-header.#{$prefix}toolbar-docked-top {
+ 	@include background-image(linear-gradient(top, $brand-header-toolbar-border-color-top 0%, $brand-header-toolbar-background-gradient-top 4%, $brand-header-toolbar-background-gradient-bottom 96%, $brand-header-toolbar-border-color-bottom 100%));
+  border-width: 0px;
+  padding: 0px;
+}
+.#{$prefix}toolbar-workspace-header.#{$prefix}toolbar {
+  padding: 0px;
+  border-width: 0px;
+}
+
+.#{$prefix}toolbar-workspace-header label {
+  font-size: 15px;
+  font-weight: 700;
+  color: #999999;
+  text-transform: uppercase;
+  padding-left: 15px
+}
