@@ -46,12 +46,12 @@ Ext.define('Savanna.metadata.store.Metadata', {
     },
 
     load: function() {
+        // Take this line out to use the Provided URI below.
+        this.getProxy().url = SavannaConfig.metadataTestDataUrl;
         // Put this line back in to use the URI set in the constructor.
         //this.getProxy().url = SavannaConfig.metadataUrl + '/' + this.itemURI;
-        this.getProxy().url = SavannaConfig.metadataTestDataUrl;
 
         this.callParent(arguments);
-        console.log('URL ', this.getProxy().url);
     }
 
 });
