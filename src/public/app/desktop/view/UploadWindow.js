@@ -9,13 +9,20 @@ Ext.define('Savanna.desktop.view.UploadWindow', {
     extend: 'Ext.window.Window',
     alias: 'widget.desktop_uploadwindow',
 
+    requires: [
+        'Savanna.upload.view.UploadComponent'
+    ],
+
     title: 'Upload',
-    height: 600, //todo: get design input on initial size and minimum size
-    width: 600,
+    layout:'fit',
+    height: 500, //todo: get design input on initial size and minimum size
+    width: 700
+    ,
     minWidth: 200,
     minHeight: 200,
-    items: [{
-        xtype: 'label',
-        text: 'This is the upload dialog'
-    }]
+    items: [
+        {
+            xtype: 'upload_uploadcomponent'
+        }
+    ]
 });

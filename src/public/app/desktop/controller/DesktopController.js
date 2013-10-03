@@ -10,7 +10,8 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
 
     statics: {
         aboutwindow: null,
-        searchwindow: null
+        searchwindow: null,
+        uploadwindow: null,
     },
     requires: [
         'Savanna.desktop.view.AboutWindow',
@@ -78,9 +79,10 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
     },
 
     displayUploadDialog: function() {
-        //todo: find out if dialog should retain state - in which case we don't destroy every time (which is the default closeAction value)
-        var uploadWindow = Ext.create('Savanna.desktop.view.UploadWindow', {modal: true});
-        uploadWindow.show();
+        if (!this.statics().uploadwindow) {
+            this.statics().uploadwindow = Ext.create('Savanna.desktop.view.UploadWindow', { closeAction: 'hide'});
+        }
+        this.statics().uploadwindow.show();
     },
 
     displayAccountSettings: function() {
