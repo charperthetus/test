@@ -13,54 +13,76 @@ Ext.define('Savanna.desktop.view.SavannaDesktop', {
     layout: {
         type: 'fit'
     },
-
-    tbar: [{
-            id: 'logo',
-            xtype: 'button',
+    tbar: {
+        ui:'brand-header',
+        items: [{
+            itemId: 'logobutton',
+            cls:'logoButtonFramework',
             scale: 'large',
-            text: 'Savanna Logo'
-        },
-        {
+            xtype: 'button',
+            height: 44,
+            ui: 'brand-header'
+            }, {
             xtype: 'toolbar',
-            scale: 'medium',
             flex: 1,
-
+            ui:'brand-header',
             layout: {
-                pack: 'center'
+                pack: 'center',
+                ui: 'brand-header',
+                defaultMargins:'5'
             },
             items: [{
-                text: 'Search',
-                itemId: 'searchbutton'
-            },
-            {
-                text: 'Upload',
-                itemId: 'uploadbutton'
+                itemId: 'searchbutton',
+                cls:'searchButtonFramework',
+                ui:'brand-header',
+                scale: 'medium'
+                }, {
+                itemId: 'uploadbutton',
+                cls:'uploadButtonFramework',
+                ui:'brand-header',
+                scale: 'medium'
             }]
-        },
+        }, 
         {
             xtype: 'toolbar',
             scale: 'medium',
-            items: [
-            {
-                text: 'Help',
-                itemId: 'helpbutton'
+            ui:'brand-header',
+            layout: {
+                defaultMargins:'5'
             },
-        {
-            text: 'User',
-            itemId: 'userbutton',
-            menu: [{
-                text: 'Current Username here',
-                itemId: 'currentuser'
+            items: [
+            // TODO: when development is ready for error messages, uncomment this block for alert button
+            // {
+            //     itemId: 'errorbutton',
+            //     cls:'errorButtonFramework',
+            //     ui:'brand-header',
+            //     scale: 'medium'
+            // }, 
+            {
+                itemId: 'helpbutton',
+                cls:'helpButtonFramework',
+                ui:'brand-header',
+                scale: 'medium'
             }, {
-                text: 'Account Settings',
-                itemId: 'accountsettings'
-            }, {
-                text: 'Log Out',
-                itemId: 'savannalogout'
+                itemId: 'userbutton',
+                cls:'userButtonFramework',
+                ui:'brand-header',
+                scale: 'medium',
+                menu: {
+                    items: [{
+                        text: 'Current Username here',
+                        itemId: 'currentuser'
+                    }, {
+                        text: 'Account Settings',
+                        itemId: 'accountsettings'
+                    }, {
+                        text: 'Log Out',
+                        itemId: 'savannalogout'
+                    }]
+                }
             }]
         }]
-    }],
-
+    },
     items: [
         {
             xtype: 'desktop_savannaworkspace',
