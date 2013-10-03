@@ -1,4 +1,4 @@
-/* global Ext: false, Savanna: false */
+/* global Ext: false, OpenLayers: false, SavannaConfig: false */
 /**
  * Created with IntelliJ IDEA.
  * User: ksonger
@@ -452,13 +452,26 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             });
         } else {
 
-            var resultsObj = {id: dalId, store: store};
+            var resultsObj = {id: dalId, store: store, metadata: []};
+
+            /*
+             array of uri's to get the metadata for these results
+             */
+
+            var metadataArray = [];
+
+            Ext.each(records, function(record)  {
+                metadataArray.push(record.data.uri);
+            });
+
 
             if (action === 'search') {
                 /*
                  add an object tying the dal and store together for referencing
                  */
                 resultsPanel.up('#searchresults').allResultSets.push(resultsObj);
+
+                this.getDocumentMetadata(resultsPanel.up('#searchresults').allResultSets[resultsPanel.up('#searchresults').allResultSets.length - 1], metadataArray);
 
                 if (store.facetValueSummaries !== null) {
                     resultsDal.createDalFacets(dalId);
@@ -471,6 +484,8 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                 Ext.each(resultsPanel.up('#searchresults').allResultSets, function (resultset, index) {
                     if (resultset.id === dalId) {
                         resultsPanel.up('#searchresults').allResultSets[index] = resultsObj;
+
+                        this.getDocumentMetadata(resultsPanel.up('#searchresults').allResultSets[index], metadataArray);
                     }
                 });
             }
@@ -491,6 +506,50 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                 this.getApplication().fireEvent('search:changeSelectedStore', {}, {}, resultsDal.queryById(dalId));
             }
         }
+    },
+
+    getDocumentMetadata:function(results, uris)  {
+
+        var metadataStore = Ext.create('Savanna.search.store.ResultsMetadata', {
+            storeId: 'searchMetadata_' + results.id,
+            pageSize: results.store.pageSize
+        });
+
+        metadataStore.proxy.jsonData = Ext.JSON.encode(uris);  // attach the metadata request object
+
+
+
+        metadataStore.load({
+            callback: Ext.bind(this.metadataCallback, this, [results, metadataStore], true)
+        });
+    },
+
+    metadataCallback:function(records, operation, success, results, metadataStore) {
+
+        var recordArr = [];
+
+        for (var record in records) {
+            var obj = records[record];
+
+            for(var elem in obj.raw)    {
+                var elem_obj = obj.raw[elem];
+                recordArr.push(elem_obj);
+                /*
+                for (var prop in elem_obj) {
+
+                    if(elem_obj.hasOwnProperty(prop)){
+                        console.log(prop + " = " + elem_obj[prop]);
+                    }
+                }
+                 */
+            }
+        }
+
+        metadataStore.loadRawData(recordArr, false);
+
+        results.metadata = metadataStore;
+
+        console.log(metadataStore);
     },
 
     showResultsPage: function (component) {
