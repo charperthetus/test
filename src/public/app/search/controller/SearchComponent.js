@@ -13,7 +13,10 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         'Savanna.search.model.SearchRequest',
         'Savanna.search.store.SearchResults',
         'Savanna.search.view.searchComponent.searchBody.searchMap.SearchLocationComboBox',
-        'Savanna.controller.Factory'
+        'Savanna.controller.Factory',
+        'Savanna.metadata.model.Metadata',
+        'Savanna.metadata.store.Metadata',
+        'Savanna.search.model.ResultMetadata'
     ],
     stores: [
         'Savanna.search.store.DalSources'
@@ -79,10 +82,10 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             'search_searchcomponent #mapZoomToMenu menu': {
                 click: this.zoomToSearchExtent
             },
-            'search_searchmap' : {
+            'search_searchmap': {
                 resize: this.onSearchMapResize
             },
-            'search_searchmap search_searchlocationcombobox' : {
+            'search_searchmap search_searchlocationcombobox': {
                 zoomButtonClick: this.zoomToLocation
             }
         });
@@ -97,14 +100,14 @@ Ext.define('Savanna.search.controller.SearchComponent', {
     // CUSTOM METHODS
 
     /*
-    with search now appearing within a window component, the advanced search terms menu
-    no longer works correctly as a menu. Converted it to a panel (which is a good thing), but
-    moving the window around with the menu open causes misalignment issues with the menu.  These event
-    listeners on the parent window seem to sort it out.
+     with search now appearing within a window component, the advanced search terms menu
+     no longer works correctly as a menu. Converted it to a panel (which is a good thing), but
+     moving the window around with the menu open causes misalignment issues with the menu.  These event
+     listeners on the parent window seem to sort it out.
      */
 
     onSearchRender: function (search) {
-        if(search.up('desktop_searchwindow'))   {
+        if (search.up('desktop_searchwindow')) {
             var advanced_menu = search.down('#searchadvanced_menu');
 
             search.up('desktop_searchwindow').header.getEl().on('mousedown', function () {
@@ -123,14 +126,13 @@ Ext.define('Savanna.search.controller.SearchComponent', {
     handleNewSearch: function (elem) {
         var component = this.getSearchComponent(elem);
 
-        if(component.down('search_resultsDals_resultsterms'))   {   // doesn't exist if results page has not yet been created
+        if (component.down('search_resultsDals_resultsterms')) {   // doesn't exist if results page has not yet been created
 
             component.down('search_resultsDals_resultsterms').queryById('termValues').removeAll();  // remove refine terms in results screen
         }
 
         var form = component.down('#search_form'),
             searchBar = component.down('#searchbar');
-
 
 
         searchBar.queryById('search_terms').setValue('');
@@ -215,9 +217,9 @@ Ext.define('Savanna.search.controller.SearchComponent', {
     showHideMenu: function (btn) {
         var adv_menu = btn.findParentByType('search_searchcomponent').down('#searchadvanced_menu');
 
-        if(adv_menu.isVisible())    {
+        if (adv_menu.isVisible()) {
             adv_menu.hide();
-        }   else    {
+        } else {
             adv_menu.showBy(btn.up('#search_form'));
         }
     },
@@ -323,13 +325,13 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         return searchObj;
     },
 
-    buildAndLoadResultsStore:function(dal, component, searchObj, action, comboboxComponent) {
+    buildAndLoadResultsStore: function (dal, component, searchObj, action, comboboxComponent) {
 
         var pageSize;
 
-        if(comboboxComponent)   {
+        if (comboboxComponent) {
             pageSize = comboboxComponent.value;
-        }   else    {
+        } else {
             pageSize = dal.get('resultsPerPage');
         }
 
@@ -396,7 +398,6 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         }, this);
 
 
-
         /*
          clear the grid - it's misleading in error states to see results in the grid, even though
          the search request has failed for one reason or another
@@ -412,19 +413,19 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         var customSearchOptions = [],
             customInputs = currentDalPanel.query('[cls=customInputField]');
 
-        Ext.each(customInputs, function(input)  {
+        Ext.each(customInputs, function (input) {
             var customSearchInput = {},
                 type = input.xtype;
 
             customSearchInput.key = input.name;
             customSearchInput.value = input.value;
 
-            switch(type)  {
+            switch (type) {
                 case 'datefield':
                     customSearchInput.value = input.value.valueOf();
                     break;
                 case 'radiogroup':
-                    if(input.defaultType === 'radiofield')    {
+                    if (input.defaultType === 'radiofield') {
                         customSearchInput.value = input.getValue().options;
                     }
                     break;
@@ -460,7 +461,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
             var metadataArray = [];
 
-            Ext.each(records, function(record)  {
+            Ext.each(records, function (record) {
                 metadataArray.push(record.data.uri);
             });
 
@@ -508,7 +509,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         }
     },
 
-    getDocumentMetadata:function(results, uris)  {
+    getDocumentMetadata: function (results, uris) {
 
         var metadataStore = Ext.create('Savanna.search.store.ResultsMetadata', {
             storeId: 'searchMetadata_' + results.id,
@@ -517,39 +518,35 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
         metadataStore.proxy.jsonData = Ext.JSON.encode(uris);  // attach the metadata request object
 
-
-
         metadataStore.load({
-            callback: Ext.bind(this.metadataCallback, this, [results, metadataStore], true)
+            callback: Ext.bind(this.metadataCallback, this, [results], true)
         });
     },
 
-    metadataCallback:function(records, operation, success, results, metadataStore) {
-
-        var recordArr = [];
+    metadataCallback: function (records, operation, success, results) {
 
         for (var record in records) {
-            var obj = records[record];
+            if (records.hasOwnProperty(record)) {
+                var obj = records[record];
+                var metaStore = Ext.create('Ext.data.Store', {
+                    model: 'Savanna.search.model.ResultMetadata'
+                });
+                for (var elem in obj.raw) {
 
-            for(var elem in obj.raw)    {
-                var elem_obj = obj.raw[elem];
-                recordArr.push(elem_obj);
-                /*
-                for (var prop in elem_obj) {
-
-                    if(elem_obj.hasOwnProperty(prop)){
-                        console.log(prop + " = " + elem_obj[prop]);
+                    if (obj.raw.hasOwnProperty(elem)) {
+                        var elem_obj = obj.raw[elem];
+                        var metaPropertiesStore = Ext.create('Savanna.metadata.store.Metadata');
+                        for (var prop in elem_obj) {
+                            if (elem_obj.hasOwnProperty(prop)) {
+                                metaPropertiesStore.add(elem_obj[prop]);
+                            }
+                        }
+                        metaStore.add({id: elem, datastore: metaPropertiesStore});
                     }
                 }
-                 */
+                results.metadata = metaStore;
             }
         }
-
-        metadataStore.loadRawData(recordArr, false);
-
-        results.metadata = metadataStore;
-
-        console.log(metadataStore);
     },
 
     showResultsPage: function (component) {
@@ -606,7 +603,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         canvas.searchLayer.removeAllFeatures();
         canvas.drawFeature.deactivate();
     },
-    zoomToLocation: function(comboBoxButton) {
+    zoomToLocation: function (comboBoxButton) {
         var viewBox = comboBoxButton.viewBox;
         var mapCanvas = comboBoxButton.parentComboBox.up('search_searchmap').down('search_map_canvas');
         var extent = new OpenLayers.Bounds(viewBox.west, viewBox.south, viewBox.east, viewBox.north);
@@ -618,10 +615,10 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         var menuButton = button.up('search_searchmap').down('#zoomToSelectedArea');
         //check if search layer is populated
         //if search layer has a feature enable zoom to selected area
-        if (mapCanvas.searchLayer.features.length > 0){
+        if (mapCanvas.searchLayer.features.length > 0) {
             menuButton.setDisabled(false);
         }
-        else{
+        else {
             menuButton.setDisabled(true);
         }
     },

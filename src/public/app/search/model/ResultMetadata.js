@@ -6,5 +6,9 @@
  * To change this template use File | Settings | File Templates.
  */
 Ext.define('Savanna.search.model.ResultMetadata', {
-    extend: 'Ext.data.Model'
+    extend: 'Ext.data.Model',
+    fields: [
+        {name: 'id'},
+        {name: 'datastore'}
+    ]
 });
