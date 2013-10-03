@@ -472,7 +472,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                  */
                 resultsPanel.up('#searchresults').allResultSets.push(resultsObj);
 
-                this.getDocumentMetadata(resultsPanel.up('#searchresults').allResultSets[resultsPanel.up('#searchresults').allResultSets.length - 1], metadataArray);
+                //this.getDocumentMetadata(resultsPanel.up('#searchresults').allResultSets[resultsPanel.up('#searchresults').allResultSets.length - 1], metadataArray);
 
                 if (store.facetValueSummaries !== null) {
                     resultsDal.createDalFacets(dalId);
@@ -486,7 +486,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                     if (resultset.id === dalId) {
                         resultsPanel.up('#searchresults').allResultSets[index] = resultsObj;
 
-                        this.getDocumentMetadata(resultsPanel.up('#searchresults').allResultSets[index], metadataArray);
+                        //this.getDocumentMetadata(resultsPanel.up('#searchresults').allResultSets[index], metadataArray);
                     }
                 });
             }
