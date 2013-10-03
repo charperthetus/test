@@ -12,7 +12,8 @@ Ext.define('Savanna.desktop.view.SavannaTabPanel', {
         'Ext.ux.TabReorderer',
         'Ext.ux.TabCloseMenu',
         'Savanna.crumbnet.view.CrumbnetComponent',
-        'Savanna.metadata.view.Details'
+        'Savanna.metadata.view.Details',
+        'Savanna.process.view.ProcessEditorComponent'
     ],
     enableTabScroll: true,
 //    plugins: [
@@ -47,33 +48,53 @@ Ext.define('Savanna.desktop.view.SavannaTabPanel', {
             menu: {
                 xtype: 'menu',
                 plain: true,
-                defaults: {
-                    handler: function(item) {
-                        var tabPanel = item.up('tabpanel');
-                        var tab;
-                        // Stealing tab D as a temporary place to put the details panel.  (You know, "D" for Details.)
-                        if('D' == item.text)
-                        {
-                            var detailsView = Ext.create('widget.metadata_details', {
-                                title: 'Details',
-                                //itemURI: 'SolrJdbc%252FRich%252F2fa25cdf-9aab-471f-85b6-5359c0cd0dfd'
-                                itemURI: 'SolrJdbc%252FRich%252F061aedc6-d88c-497e-81dc-77d809b3262c'
-                            });
-                            tab = tabPanel.add(detailsView);
-                        } else {
-                            var dummyCrumbnet = Ext.create('Savanna.crumbnet.view.CrumbnetComponent', {title: 'Tab' + item.text});
-                            tab = tabPanel.add(dummyCrumbnet);
-                        }
-                        tabPanel.doLayout();
-                        tabPanel.setActiveTab(tab);
-                    }
-                },
                 items: [
-                    { text: 'A' },
-                    { text: 'B' },
-                    { text: 'C' },
-                    { text: 'D' },
-                    { text: 'E' }
+                    {
+                        text: 'Details',
+                        handler: function(item) {
+                            var tabPanel = item.up('tabpanel');
+                            if (tabPanel) {
+                                var detailsView = Ext.create('widget.metadata_details', {
+                                    title: 'Details',
+                                    //itemURI: 'SolrJdbc%252FRich%252F2fa25cdf-9aab-471f-85b6-5359c0cd0dfd'
+                                    itemURI: 'SolrJdbc%252FRich%252F061aedc6-d88c-497e-81dc-77d809b3262c'
+                                });
+                                tab = tabPanel.add(detailsView);
+                                tabPanel.doLayout();
+                                tabPanel.setActiveTab(tab);
+                            }
+                        }
+                    },
+                    {
+                        text: 'Process',
+                        handler: function(item) {
+                            var tabPanel = item.up('tabpanel');
+                            if (tabPanel) {
+                                var processComponent = Ext.create('Savanna.process.view.ProcessEditorComponent', {
+                                    title: 'Untitled Process' //todo: decide on default name for a new process
+                                });
+                                var tab = tabPanel.add(processComponent);
+                                tabPanel.doLayout();
+                                tabPanel.setActiveTab(tab);
+                            }
+
+                        }
+                    },
+                    {
+                        text: 'Item',
+                        handler: function(item) {
+                            var tabPanel = item.up('tabpanel');
+                            if (tabPanel) {
+                                var itemComponent = Ext.create('Ext.panel.Panel', {
+                                    title: 'Untitled Item' //todo: decide on default name for a new item
+                                });
+                                var tab = tabPanel.add(itemComponent);
+                                tabPanel.doLayout();
+                                tabPanel.setActiveTab(tab);
+                            }
+
+                        }
+                    }
                 ]
             }
         }]
