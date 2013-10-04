@@ -78,11 +78,18 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
         this.statics().searchwindow.show();
     },
 
-    displayUploadDialog: function() {
+    displayUploadDialog: function(button) {
         if (!this.statics().uploadwindow) {
             this.statics().uploadwindow = Ext.create('Savanna.desktop.view.UploadWindow', { closeAction: 'hide'});
         }
-        this.statics().uploadwindow.show();
+        var uploadWindow = this.statics().uploadwindow;
+        var desktop = button.up('desktop_savannadesktop');
+//        var appHeight = window.innerHeight;
+        var appHeight = document.height;
+        if (appHeight < uploadWindow.height + 50){
+            uploadWindow.height = appHeight - 50;
+        }
+        uploadWindow.show();
     },
 
     displayAccountSettings: function() {

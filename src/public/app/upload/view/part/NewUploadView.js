@@ -50,27 +50,11 @@ Ext.define('Savanna.upload.view.part.NewUploadView', {
                     itemId: 'chooseFilesButton',
                     text:'Choose Files'
                 },{
-                    xtype: 'fileuploadfield',
-                    itemId: 'fileUploadButton',
-                    buttonOnly: true,
-                    hideLabel: true,
-                    text:'Choose Files',
-                    style: {
-                        display: 'none'
-                    }
-                },{
                     xtype: 'filebutton',
                     itemId: 'fileBrowserButton',
                     style: {
                         display: 'none'
                     }
-//                        onRender:function(){
-//                            console.log(this.getEl().dom);
-//                        }
-//                        xtype: 'button',
-//                        alias:'widget.upload_part_newupload_choosefilesButton',
-//                        itemId:'chooseFilesButton',
-//                        text: 'Choose Files'
                 }]
             }
         ];

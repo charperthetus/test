@@ -6,7 +6,8 @@ Ext.define('Savanna.upload.view.UploadComponent', {
     requires: [
         'Ext.layout.container.VBox',
         'Savanna.upload.view.part.NewUploadView',
-        'Savanna.upload.view.part.CurrentUploadsView'
+        'Savanna.upload.view.part.CurrentUploadsView',
+        'Savanna.controller.Factory'
     ],
 
     layout: {

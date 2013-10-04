@@ -2,6 +2,7 @@
 Ext.define('Savanna.upload.view.part.CurrentUploadsView', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.upload_part_currentuploads',
+    itemId: 'currentUploadsView',
 
     requires: [
         'Savanna.upload.store.UploadGridStore',
@@ -57,6 +58,9 @@ Ext.define('Savanna.upload.view.part.CurrentUploadsView', {
                 store: Ext.create('Savanna.upload.store.UploadGridStore'),
                 flex:1,
                 width: '100%',
+                viewConfig: {
+                    preserveScrollOnRefresh: true
+                },
                 columns: [{
                     text: ' ',
                     dataIndex: 'status',
@@ -87,9 +91,7 @@ Ext.define('Savanna.upload.view.part.CurrentUploadsView', {
                     sortable: false,
                     hideable: false,
                     width: 60,
-                    renderer : function(val) {
-                        return (val < 1000000) ? val/1000 + ' KB' : val/1000000 + ' MB'; //TODO: make these values right.
-                    }
+                    renderer : Savanna.upload.controller.UploadController.formatFileSize
                 },{
                     text: 'Progress',
                     dataIndex: 'progress',

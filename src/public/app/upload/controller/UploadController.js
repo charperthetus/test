@@ -21,10 +21,6 @@ Ext.define('Savanna.upload.controller.UploadController', {
                 click: this.chooseFilesHandler
             },
 
-            'upload_part_newupload #fileUploadButton': {
-                change: this.fileBrowserChangeHandler
-            },
-
             'upload_part_newupload #fileBrowserButton': {
                 change: this.fileBrowserChangeHandler
             },
@@ -33,6 +29,18 @@ Ext.define('Savanna.upload.controller.UploadController', {
                 click: this.clearFinishedUploads
             }
         });
+    },
+    statics: {
+        formatFileSize:function(bytes){
+            var val = (bytes < 1048576) ? bytes/1024  : bytes/1048576 ;
+            var suffix = (bytes < 1048576) ? 'KB'  : 'MB' ;
+            var formatted = Ext.util.Format.number(val,'0.00');
+            formatted = formatted.replace(/.00/,""); // strip .00 off the string
+            formatted = formatted.replace(/(.\d)0/,"$1"); // if .x0 capture x and strip 0 off end
+//            This should work but for some reasome the formatter in our build has a bug. this works on the ext jsfiddle page
+//            var formatted = Ext.util.Format.number(val,'0.##');
+            return formatted + ' ' + suffix;
+        }
     },
 
     /**
@@ -65,7 +73,7 @@ Ext.define('Savanna.upload.controller.UploadController', {
     },
 
     // Launch file browser
-    chooseFilesHandler: function(button, event) {
+    chooseFilesHandler: function(button) {
         var fileBrowser = button.up('upload_uploadcomponent').down('#fileBrowserButton');
         var input  = Ext.dom.Query.selectNode("[type='file']",fileBrowser.getEl().dom);
         input.multiple = true;
@@ -171,7 +179,7 @@ Ext.define('Savanna.upload.controller.UploadController', {
         uploadGrid.getView().refresh();
     },
 
-    clearFinishedUploads: function(button,var2,var3,var4){
+    clearFinishedUploads: function(button){
         var uploadGrid = button.up('upload_uploadcomponent').down('#uploadsDataGrid');
         var finished = [];
         uploadGrid.store.each(function(record){
@@ -180,6 +188,10 @@ Ext.define('Savanna.upload.controller.UploadController', {
             }
         },finished);
         uploadGrid.store.remove(finished);
+        if (uploadGrid.store.count() === 0){
+            var currentUploadsView = uploadGrid.up('upload_part_currentuploads');
+            currentUploadsView.setVisible(false);
+        }
     },
 
     buildUploadUrl: function(forPolling){
