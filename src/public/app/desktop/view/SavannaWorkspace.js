@@ -21,7 +21,7 @@ Ext.define('Savanna.desktop.view.SavannaWorkspace', {
         items: [{
             xtype: 'label',
             text: 'Workspace',
-            pack: 'start',
+            pack: 'start'
             },
             '->',
             {   
