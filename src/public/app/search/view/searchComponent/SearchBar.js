@@ -32,6 +32,7 @@ Ext.define('Savanna.search.view.searchComponent.SearchBar', {
                     border: false,
                     bodyPadding: 0,
                     itemId:'search_reset',
+                    minHeight:25,
                     items: [
                         {
                             xtype: 'button',
