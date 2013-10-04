@@ -158,6 +158,12 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
                     name: facetobj.key,
                     inputValue: facetobj.key,
                     id: 'checkbox_' + facetobj.key + '_' + String(Ext.id()),
+                    /*
+                    added to resolve defect SAV-5380.  Needs design to assign a class.
+                     */
+                    style:   {
+                        'white-space':'nowrap'
+                    },
                     listeners: {
                         'change': Ext.bind(me.onFacetFilterChange, me)
                     }

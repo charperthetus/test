@@ -214,23 +214,22 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
         }
     },
 
-    onItemClick: function (view, rec, node, index, e, options) {
+    onItemClick: function (view, rec, node, index, e) {
         if(e && e.target && e.target.id){
-            if(e.target.id == 'openButton'){
+            if(e.target.id === 'openButton'){
                 this.openUri(rec.data.uri);
             }
         }
     },
 
-    onItemMouseLeave: function (view, rec, node, index, e, options) {
+    onItemMouseLeave: function (view, rec, node) {
         if(node){
-            node.querySelector("#hoverDiv").style.visibility = "hidden";
+            node.querySelector('#hoverDiv').style.visibility = 'hidden';
         }
     },
 
-    openUri: function( uri ){
+    openUri: function(){
         //todo open the uri...
-        console.log(uri);
     },
 
     onTermRender:function(term)    {
@@ -263,17 +262,15 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
     },
 
 
-    onNextItemPreview: function (btn) {
-        if(this.previewIndex >= this.resultsStore.totalCount){
-        } else {
+    onNextItemPreview: function () {
+        if(this.previewIndex < this.resultsStore.totalCount){
             this.previewIndex++;
             this.updatePreview();
         }
     },
 
-    onPrevItemPreview: function (btn) {
-        if(this.previewIndex <= 0){
-        } else {
+    onPrevItemPreview: function () {
+        if(this.previewIndex > 0){
             this.previewIndex--;
             this.updatePreview();
         }
@@ -361,6 +358,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
     },
 
     handleSearchTermKeyUp: function (field, evt) {
+
         if (evt.keyCode === Ext.EventObject.ENTER) {
             if (field.getValue().trim().length) {
                 field.findParentByType('search_searchcomponent').refineSearchString += (field.getValue() + ' AND ');
