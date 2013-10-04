@@ -17,8 +17,6 @@ Ext.define('Savanna.process.view.ProcessEditorComponent', {
         'Savanna.process.view.part.MetadataTabPanel'
     ],
 
-    controller: 'Savanna.process.controller.ProcessController',
-
     layout: {
         type: 'border'
     },
