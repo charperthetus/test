@@ -24,15 +24,12 @@ Ext.define('Savanna.process.view.part.PaletteWindow', {
     layout: {
         type: 'accordion',
         titleCollapse: true,
-        animate: true,
         multi: true
     },
 
-    panelClass: 'Savanna.process.view.part.Palette',
-
     modal: false,
     closable: false,
-    constrain: true,
+    constrain: true, //limit this window to the parent container
     width: 250,
     height: 400,
 
@@ -46,15 +43,15 @@ Ext.define('Savanna.process.view.part.PaletteWindow', {
     onStoreLoad: function() {
         this.removeAll();
 
-        if (this.store.getCount() === 0) {
+        if (0 === this.store.getCount()) {
             // TODO: should this be an error?
-            this.add(Ext.create(this.panelClass, {
+            this.add(Ext.create('Savanna.process.view.part.Palette', {
                 model: Ext.create('Savanna.process.model.TemplateGroup', { title: 'NO PALETTE', templates: [] })
             }));
         }
         else {
             this.store.each(function(model) {
-                this.add(Ext.create(this.panelClass, { model: model }));
+                this.add(Ext.create('Savanna.process.view.part.Palette', { model: model }));
             }, this);
         }
     }
