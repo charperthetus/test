@@ -15,6 +15,10 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
     requires: [
         'Savanna.controller.Factory'
     ],
+    refs: [{
+        ref: 'resultsComponent',             // this.getResultsComponent() should return the results component
+        selector: 'search_resultscomponent' //  xtype
+    }],
     init: function () {
 
         this.control({
@@ -28,13 +32,22 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
                 select: this.onSortByChange
             },
             'search_resultscomponent #resultspanelgrid': {
-                'itemdblclick': this.onItemPreview
+                'itemdblclick': this.onItemPreview,
+                'itemclick' : this.onItemClick,
+                'itemmouseenter': this.onItemMouseEnter,
+                'itemmouseleave': this.onItemMouseLeave
             },
             'search_resultscomponent > #resultspreviewwindow #resultspreviewcontent #previewclosebutton': {
                 'click': this.onCloseItemPreview
             },
             'search_resultscomponent #resultsFacetsReset': {
                 'click': this.onDalReset
+            },
+            'search_resultscomponent > #resultspreviewwindow #resultspreviewcontent #previewNextButton': {
+                'click': this.onNextItemPreview
+            },
+            'search_resultscomponent > #resultspreviewwindow #resultspreviewcontent #previewPrevButton': {
+                'click': this.onPrevItemPreview
             },
             'search_resultscomponent #refine_search_terms': {
                 keyup: this.handleSearchTermKeyUp
@@ -54,6 +67,172 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
 
     },
 
+    //Index to show in preview in range: 0 to store.totalCount.
+    previewIndex: 0,
+
+    //The grid with the results.
+    resultsGrid: null,
+
+    //Results store
+    resultsStore: null,
+
+    //True iff we are waiting for some preview results to show up.
+    _isWaitingForPreviewResults: false,
+
+
+    // Get the grid component.
+    getGrid: function(){
+        return  this.getResultsComponent().down('search_resultspanelgrid');
+    },
+
+    // Get the grid's store.
+    getGridStore: function(){
+        return  this.getGrid().store;
+    },
+
+    //the window that holds the preview content
+    previewWindow: function () {
+        return  this.getGrid().findParentByType('search_resultscomponent').queryById('resultspreviewwindow');
+    },
+
+    //previous button on the preview window
+    previewPrevButton: function () {
+        return this.previewWindow().down('#previewPrevButton');
+    },
+
+    //next button on the preview window
+    previewNextButton: function () {
+        return this.previewWindow().down('#previewNextButton');
+
+    },
+
+    // The 'Preview Results 1 of xxx' label
+    previewIndexAndTotalLabel: function () {
+        return this.previewWindow().down('#itemIndexAndTotalLabel');
+    },
+
+
+    getIsWaitingForPreviewResults: function () {
+        return this._isWaitingForPreviewResults;
+    },
+
+    setIsWaitingForPreviewResults: function (value) {
+        this._isWaitingForPreviewResults = value;
+    },
+
+    //Loads the store based on current store settings
+    getNewPreviewRecords: function () {
+        this.resultsStore = this.getGridStore();
+        var me = this;
+        this.resultsStore.load({
+            scope: this,
+            callback: function(records, operation, success) {
+                me.updatePreviewHelper();
+            }
+        });
+    },
+
+    //The store uses an index that is zero-based such that the first record of the current page has index zero (range is 0 to pageSize - 1).
+    // The previewIndex is zero-based but has the range 0 to totalResults - 1.
+    getStoreIndexOfPreviewIndex: function () {
+        return  this.previewIndex % this.resultsStore.pageSize;
+    },
+
+    pageOfCurrentPreviewIndex: function () {
+        if(!this.resultsStore){
+            this.resultsStore = this.getGridStore();
+        }
+        if(this.previewIndex >= (this.resultsStore.currentPage) * this.resultsStore.pageSize){
+            return this.resultsStore.currentPage + 1;
+        } else if(this.previewIndex < (this.resultsStore.currentPage - 1) * this.resultsStore.pageSize){
+            return this.resultsStore.currentPage - 1;
+        }
+        return this.resultsStore.currentPage;
+    },
+
+    updatePreviewHelper: function () {
+        this.resultsGrid = this.getGrid();
+        this.resultsStore = this.getGridStore();
+        var record = this.resultsStore.getAt(this.getStoreIndexOfPreviewIndex());
+
+        //this can happen when you hit next > 10 times/sec
+        if(!record){
+            setTimeout(this.updatePreviewHelper, 500);
+            this.setIsWaitingForPreviewResults ( true );
+            return;
+        }
+
+        this.setIsWaitingForPreviewResults ( false );
+
+        var win = this.previewWindow();
+        //Show the contents
+        win.displayPreview(record.data, this.previewIndex, this.resultsStore.totalCount);
+        //Show the index and total
+        this.previewIndexAndTotalLabel().setText('Preview Result ' + (this.previewIndex + 1) + ' of ' + this.resultsStore.totalCount);
+        //Enable/disable the prev and next buttons
+        if (this.previewIndex == 0) {
+            this.previewPrevButton().disable();
+        } else {
+            this.previewPrevButton().enable();
+        }
+        if (this.previewIndex == this.resultsStore.totalCount - 1) {
+            this.previewNextButton().disable();
+        } else {
+            this.previewNextButton().enable();
+        }
+    },
+
+    updatePreview: function (){
+        this.resultsGrid = this.getGrid();
+        this.resultsStore = this.getGridStore();
+        if(this.getIsWaitingForPreviewResults()){
+            return;
+        }
+
+        //Make sure the record is paged in.
+        var containingPage =  this.pageOfCurrentPreviewIndex();
+        if(this.resultsStore.currentPage != containingPage ) {
+            this.resultsStore.currentPage = containingPage;
+            this.getNewPreviewRecords();
+        } else {
+            this.updatePreviewHelper();
+        }
+    },
+
+    onItemPreview: function (grid, record, node, index) {
+        this.resultsGrid = grid;
+        this.resultsStore = grid.store;
+        //gaaaahhh    the index passed in does not include all the pages that have come before.
+        //gaaaahhh*10 the current page is 1-based.
+        this.previewIndex = index + (this.resultsStore.currentPage - 1)*(this.resultsStore.pageSize);
+        this.updatePreview();
+    },
+
+    onItemMouseEnter: function (view, rec, node, index, e, options) {
+        if(node){
+            node.querySelector("#hoverDiv").style.visibility = "visible";
+        }
+    },
+
+    onItemClick: function (view, rec, node, index, e, options) {
+        if(e && e.target && e.target.id){
+            if(e.target.id == 'openButton'){
+                this.openUri(rec.data.uri);
+            }
+        }
+    },
+
+    onItemMouseLeave: function (view, rec, node, index, e, options) {
+        if(node){
+            node.querySelector("#hoverDiv").style.visibility = "hidden";
+        }
+    },
+
+    openUri: function( uri ){
+        //todo open the uri...
+        console.log(uri);
+    },
+
     onTermRender:function(term)    {
         term.mon(term.queryById('removeTerm'), 'click', this.handleRemoveTerm, this, term);
     },
@@ -65,27 +244,48 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
     onShowHideFacets: function (btn) {
 
         Ext.each(btn.up('#resultsfacets').getActiveTab().query('panel[cls=results-facet]'), function (facet) {
-           if(facet)    {
-               if(!btn.facetsExpanded)    {
-                   btn.setText('Hide All');
-                   facet.expand();
-               }    else    {
-                   facet.collapse();
-                   btn.setText('Show All');
-               }
-           }
+            if(facet)    {
+                if(!btn.facetsExpanded)    {
+                    btn.setText('Hide All');
+                    facet.expand();
+                }    else    {
+                    facet.collapse();
+                    btn.setText('Show All');
+                }
+            }
         });
         btn.facetsExpanded = !btn.facetsExpanded;
     },
 
-    onItemPreview: function (grid, record) {
-        var win = grid.findParentByType('search_resultscomponent').queryById('resultspreviewwindow');
-        win.displayPreview(record);
-    },
 
     onCloseItemPreview: function (btn) {
         btn.up('#resultspreviewwindow').hide();
     },
+
+
+    onNextItemPreview: function (btn) {
+        if(this.previewIndex >= this.resultsStore.totalCount){
+        } else {
+            this.previewIndex++;
+            this.updatePreview();
+        }
+    },
+
+    onPrevItemPreview: function (btn) {
+        if(this.previewIndex <= 0){
+        } else {
+            this.previewIndex--;
+            this.updatePreview();
+        }
+    },
+
+    /*
+     onItemPreview: function (grid, record) {
+     var win = grid.findParentByType('search_resultscomponent').queryById('resultspreviewwindow');
+     win.displayPreview(record);
+     },
+     */
+
 
     onDalRender: function (dal) {
         dal.body.on('click', this.changeSelectedStore, this, dal);
@@ -118,11 +318,11 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
 
         var id = comboboxComponent.findParentByType('search_resultscomponent').currentResultSet.id,
             dalRecord = Ext.data.StoreManager.lookup('dalSources').getById(id),
-            /*
-             regrettable but necessary call to the SearchController directly.  The target method
-             'buildSearchObject' needs to return the request object, but when an event is fired it can
-             only return a boolean.  If anyone thinks of a way around it, please feel free to update.
-             */
+        /*
+         regrettable but necessary call to the SearchController directly.  The target method
+         'buildSearchObject' needs to return the request object, but when an event is fired it can
+         only return a boolean.  If anyone thinks of a way around it, please feel free to update.
+         */
             searchController = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent'),
             component = comboboxComponent.findParentByType('search_searchcomponent'),
             currentDalPanel = component.down('#searchdals').queryById(id),
@@ -161,7 +361,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
     },
 
     handleSearchTermKeyUp: function (field, evt) {
-        if (evt.keyCode === Ext.EventObject.ENTER) {   
+        if (evt.keyCode === Ext.EventObject.ENTER) {
             if (field.getValue().trim().length) {
                 field.findParentByType('search_searchcomponent').refineSearchString += (field.getValue() + ' AND ');
                 field.findParentByType('search_searchcomponent').down('#refineterms').addTerm(field);
