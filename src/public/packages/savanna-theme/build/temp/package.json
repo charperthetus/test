@@ -1,0 +1,11 @@
+{
+  "name": "savanna-theme",
+  "format": "1",
+  "version": "1.0.0",
+  "creator": "anonymous",
+  "summary": "Short summary",
+  "detailedDescription": "Long description of package",
+  "type": "theme",
+  "extend": "thetus-uikit",
+  "local": true
+}

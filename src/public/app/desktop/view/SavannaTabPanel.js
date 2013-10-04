@@ -15,6 +15,7 @@ Ext.define('Savanna.desktop.view.SavannaTabPanel', {
         'Savanna.metadata.view.Details',
         'Savanna.process.view.ProcessEditorComponent'
     ],
+    ui: 'dark',
     enableTabScroll: true,
 //    plugins: [
 //            Ext.create('Ext.ux.TabReorderer'),
@@ -41,10 +42,12 @@ Ext.define('Savanna.desktop.view.SavannaTabPanel', {
 //            })
 //    ],
     tabBar:{
+        ui: 'dark',
         items:[{
-            xtype: 'button',
+            xtype: 'tab',
             text:'+',
             closable: false,
+            ui: 'dark',
             menu: {
                 xtype: 'menu',
                 plain: true,

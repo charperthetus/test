@@ -13,11 +13,11 @@ Ext.define('Savanna.search.view.searchComponent.SearchToolbar', {
         },
         {
             glyph: 61786,
-            ui: 'flat-toolbar-button'
+            // ui: 'flat-toolbar-button'
         },
         {
             glyph: 61746,
-            ui: 'flat-toolbar-button'
+            // ui: 'flat-toolbar-button'
         }
     ]
 
