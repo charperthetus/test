@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.thetus.savanna.html5</groupId>
     <artifactId>Savanna-Html-Client</artifactId>
-    <version>0.1-SNAPSHOT</version>
+    <version>0.2</version>
     <packaging>pom</packaging>
     <name>HTML5 Savanna Client</name>
 
@@ -101,7 +101,7 @@
 
             <!-- Installing Node's dependencies -->
             <!-- Note that this is currently breaking our deployments -->
-            <!-- <plugin>
+            <plugin>
                 <artifactId>maven-antrun-plugin</artifactId>
                 <executions>
                     <execution>
@@ -122,7 +122,7 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin> -->
+            </plugin>
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
@@ -174,7 +174,7 @@
                 Run the tests to generate coverage reports and surefire reports
             -->
 
-            <!-- <plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>
                 <version>1.7</version>
@@ -193,7 +193,7 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin> -->
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
@@ -210,7 +210,7 @@
             <!--
                  Copy the jscover report into the site before deploying
             -->
-            <!-- <plugin>
+            <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
                 <version>2.6</version>
                 <executions>
@@ -230,19 +230,19 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin> -->
+            </plugin>
 
             <!--
                 Copy over the coverage reports to a place where Node can serve them locally
             -->
-            <!-- <plugin>
+            <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
                 <version>2.6</version>
                 <executions>
                     <execution>
-                        <id>copy-coverage-resources</id> -->
+                        <id>copy-coverage-resources</id>
                         <!-- here the phase you need -->
-                        <!-- <phase>test</phase>
+                        <phase>test</phase>
                         <goals>
                             <goal>copy-resources</goal>
                         </goals>
@@ -257,7 +257,7 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin> -->
+            </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

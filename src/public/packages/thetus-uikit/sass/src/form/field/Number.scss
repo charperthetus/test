@@ -1,0 +1,10 @@
+/*
+ *	@author astump 9/2013
+ *
+*/  
+.#{$prefix}tbar-page-number{
+	.#{$prefix}form-text{
+		padding:$number-field-padding;
+		text-align: $number-field-text-align;
+	}
+}

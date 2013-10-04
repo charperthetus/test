@@ -1325,61 +1325,32 @@ body.x-nbr .x-panel-header-default-closable-collapsed-left {
   border-color: transparent;
 }
 
- /*
- *    @author astump 9/17/2013 
- *    @edits astump 10/3/2013
- *          - adds the icons(item) to text field if it is a trigger item.
- *          - calculates the proper background-position-top of the trigger sprite.
+/*
+ *    @author astump 9/17/2013 - Copied from Neptune - adds the icons(item) to text field if it is a trigger item.
  *
 */
-/* line 11, ../../../thetus-uikit/sass/src/form/field/Trigger.scss */
+/* line 5, ../../../thetus-uikit/sass/src/form/field/Trigger.scss */
 .x-form-trigger {
   height: 22px;
 }
 
-/* line 19, ../../../thetus-uikit/sass/src/form/field/Trigger.scss */
+/* line 13, ../../../thetus-uikit/sass/src/form/field/Trigger.scss */
 .x-form-trigger-wrap {
   border: 1px solid;
   border-color: silver #d9d9d9 #d9d9d9;
 }
-/* line 22, ../../../thetus-uikit/sass/src/form/field/Trigger.scss */
+/* line 16, ../../../thetus-uikit/sass/src/form/field/Trigger.scss */
 .x-form-trigger-wrap .x-form-text {
   border-width: 0;
   height: 22px;
 }
-/* line 27, ../../../thetus-uikit/sass/src/form/field/Trigger.scss */
+/* line 21, ../../../thetus-uikit/sass/src/form/field/Trigger.scss */
 .x-form-trigger-wrap-focus .x-form-trigger-wrap {
   border-color: #3892d3;
 }
-/* line 31, ../../../thetus-uikit/sass/src/form/field/Trigger.scss */
+/* line 25, ../../../thetus-uikit/sass/src/form/field/Trigger.scss */
 .x-form-invalid .x-form-trigger-wrap {
   border-color: #d94e37;
-}
-
-/* line 36, ../../../thetus-uikit/sass/src/form/field/Trigger.scss */
-.x-form-trigger {
-  background-position: -22px 0px;
-}
-
-/* line 40, ../../../thetus-uikit/sass/src/form/field/Trigger.scss */
-.x-form-trigger-over {
-  background-position: -22px 0px;
-}
-
-/* line 44, ../../../thetus-uikit/sass/src/form/field/Trigger.scss */
-.x-form-trigger-wrap-focus .x-form-trigger {
-  background-position: -66px 0px;
-}
-
-/* line 48, ../../../thetus-uikit/sass/src/form/field/Trigger.scss */
-.x-form-trigger-wrap-focus .x-form-trigger-over {
-  background-position: -88px 0px;
-}
-
-/* line 53, ../../../thetus-uikit/sass/src/form/field/Trigger.scss */
-.x-form-trigger-click,
-.x-form-trigger-wrap-focus .x-form-trigger-click {
-  background-position: -44px 0px;
 }
 
 /*

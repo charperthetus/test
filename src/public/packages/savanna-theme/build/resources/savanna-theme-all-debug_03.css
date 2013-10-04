@@ -1,34 +1,3 @@
-/* line 797, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
-.x-tab-bar-strip-light-left {
-  border-width: 0 0 0 0;
-  width: 0px;
-}
-/* line 800, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
-.x-tab-bar-plain .x-tab-bar-strip-light-left {
-  border-width: 0 0 0 0;
-}
-
-/* line 805, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
-.x-tab-bar-strip-light-right {
-  border-width: 0 0 0 0;
-  width: 0px;
-}
-/* line 808, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
-.x-tab-bar-plain .x-tab-bar-strip-light-right {
-  border-width: 0 0 0 0;
-}
-
-/* line 813, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
-.x-tab-bar-light {
-  background-color: #999999;
-}
-
-/* line 818, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
-.x-tab-bar-light-top {
-  background-image: none;
-  background-color: #999999;
-}
-/* line 822, ../../../ext-theme-neutral/sass/src/tab/Panel.scss */
 .x-nlg .x-tab-bar-light-top {
   background-image: url(images/tab-bar/tab-bar-light-top-bg.gif);
 }

@@ -1,0 +1,11 @@
+{
+  "name": "thetus-uikit",
+  "format": "1",
+  "version": "1.0.0",
+  "creator": "lsanz",
+  "summary": "UIKit is the baseline stylesheet for all of Thetus\u0027 products.",
+  "detailedDescription": "UIKit is the base \u0027parent\u0027 Ext JS theme that all other depolyments (including Savanna) should inherit.",
+  "type": "theme",
+  "extend": "ext-theme-neutral",
+  "local": true
+}

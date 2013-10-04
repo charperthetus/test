@@ -1,0 +1,6 @@
+@if $accordion-item-padding {
+	.#{$prefix}accordion-item .#{$prefix}accordion-body{
+		padding-top: $accordion-item-padding;
+		padding-left: $accordion-item-padding;
+	}
+}

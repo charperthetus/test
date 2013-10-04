@@ -1,0 +1,6 @@
+/*
+ *	@author astump 9/9/2013 - added a set background color to the Viewport
+*/
+.#{$prefix}viewport, .#{$prefix}viewport body {
+    background-color: $base-background-color;
+}
