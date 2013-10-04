@@ -21,6 +21,25 @@ Ext.define('Savanna.process.view.part.Toolbar', {
     // CUSTOM METHODS
 
     setupItems: function() {
-        return []; //todo - SAV-5308
+        return [
+            {
+                text: '+ Add Step',
+                itemId: 'addstepbutton'
+            },
+            {
+                text: '+ Add Decision',
+                itemId: 'adddecisionbutton'
+            },
+            {
+                text: 'View',
+                menu: [{
+                    text: 'Expand All Steps',
+                    itemId: 'expandsteps'
+                }, {
+                    text: 'Collapse All Steps',
+                    itemId: 'collapsesteps'
+                }]
+            },
+        ];
     }
 });
