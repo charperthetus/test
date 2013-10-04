@@ -83,10 +83,8 @@ Ext.define('Savanna.metadata.view.Details', {
     createMetadataFields: function() {
         var me = this;
 
-        // to sort and filter these, we'll need an array of keys
         Ext.Array.each(this.store.data.items, function(metadata) {
-            //console.log('metadata.data.value', metadata.data.value, metadata.data.value && metadata.data.value.length == 0);
-            if('undefined' !== metadata.data.value && null !== metadata.data.value && 0 != metadata.data.value.length && false != metadata.data.visible) {
+            if(/*'undefined' !== metadata.data.value && null !== metadata.data.value && 0 != metadata.data.value.length &&*/ false != metadata.data.visible) {
                 var typeToAdd = me.getTypeFromName(metadata.data.type);
 
                 if('' != typeToAdd) {
@@ -103,8 +101,7 @@ Ext.define('Savanna.metadata.view.Details', {
                     }
                 }
             } else {
-                // Won't add items that don't have any data or aren't visible
-                //console.log('Field has no value ', metadata.data.key, metadata.data.value);
+                // Won't add items that aren't visible
             }
         });
     },

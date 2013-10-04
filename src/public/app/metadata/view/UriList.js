@@ -32,19 +32,26 @@ Ext.define('Savanna.metadata.view.UriList', {
 
         this.on('beforerender', Ext.bind(function() {
             me.down('#displayLabelItem').text = me.displayLabel;
-            Ext.Array.each(me.value, function(stringElement) {
-                var theLabel = Ext.create('Ext.form.Label', {
-                    text: '',
-                    width: "100%"
+            if(null !== me.value && 0 != me.value.length) {
+                Ext.Array.each(me.value, function(stringElement) {
+                    var theLabel = Ext.create('Ext.form.Label', {
+                        text: '',
+                        width: "100%"
+                    });
+
+                    // TODO: This conversion is probably not correct.  Need to decode it properly.
+                    // If you change this, check Uri.js for similar.
+                    var decoded = stringElement.replace('%2F', '/', 'g');
+                    theLabel.setText( decoded );
+                    me.add( theLabel );
                 });
-
-                // TODO: This conversion is probably not correct.  Need to decode it properly.
-                // If you change this, check Uri.js for similar.
-                var decoded = stringElement.replace('%2F', '/', 'g');
-                theLabel.setText( decoded );
-                me.add( theLabel );
-            });
-
+            } else {
+                me.add( Ext.create('Ext.form.Label', {
+                                    html: '&nbsp;',
+                                    width: "100%"
+                                })
+                );
+            }
         }, this));
     }
 
