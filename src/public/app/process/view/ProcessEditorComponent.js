@@ -13,9 +13,8 @@ Ext.define('Savanna.process.view.ProcessEditorComponent', {
         'Ext.layout.container.Border',
         'Savanna.process.view.part.PaletteWindow',
         'Savanna.process.view.part.Toolbar',
-        'Savanna.process.view.part.Canvas',
-        'Savanna.process.view.part.MetadataTabPanel',
-        'Savanna.crumbnet.view.part.Canvas', //todo: move canvas out of crumbnet dir
+        'Savanna.process.view.part.Canvas', //todo: do we refactor this code?
+        'Savanna.process.view.part.MetadataTabPanel'
     ],
 
     controller: 'Savanna.process.controller.ProcessController',
@@ -32,8 +31,6 @@ Ext.define('Savanna.process.view.ProcessEditorComponent', {
 
     initComponent: function() {
         this.items = this.setupItems();
-//        var uploadWindow = Ext.create('Savanna.process.view.part.PaletteWindow');
-//        uploadWindow.show();
         this.callParent(arguments);
     },
 
@@ -57,7 +54,7 @@ Ext.define('Savanna.process.view.ProcessEditorComponent', {
                     {
                         xtype: 'process_palettewindow',
                         autoShow: true,
-                        x: 50
+                        x: 50 //DI needs to position this window correctly
                     }
                 ]
             },

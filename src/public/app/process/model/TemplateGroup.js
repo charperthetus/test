@@ -14,7 +14,6 @@ Ext.define('Savanna.process.model.TemplateGroup', {
 
     fields: ['id', 'title', 'templates'],
 
-    // NOTE: the model class must be fully qualififed in your relationship definition
     hasMany: [
         { model: 'Savanna.process.model.Template', name: 'templates' }
     ],
