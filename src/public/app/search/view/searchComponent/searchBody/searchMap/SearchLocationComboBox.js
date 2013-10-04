@@ -28,7 +28,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.searchMap.SearchLocat
     emptyText: 'Find Location',
 
     listConfig: {
-        width: 300,
+        width: 350,
         getInnerTpl: function() {
             return '<table class="searchMapLocationResults">' +
                 '<tr valign="top">' +

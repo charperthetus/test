@@ -805,14 +805,13 @@ describe('Search Results', function () {
 
         beforeEach(function () {
 
-
-            resultsComponent = Ext.create('Savanna.search.view.searchComponent.searchBody.ResultsComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
+            searchController = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
 
             resultsController = Savanna.controller.Factory.getController('Savanna.search.controller.ResultsComponent');
 
             searchComponent = Ext.create('Savanna.search.view.SearchComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
 
-            searchController = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
+            resultsComponent = searchComponent.down('#searchresults');
 
             panel = resultsComponent.queryById('resultspanel');
 

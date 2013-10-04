@@ -54,7 +54,8 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.SearchMap', {
                     layout: 'hbox',
                     items: [
                         {
-                            xtype: 'search_searchlocationcombobox'
+                            xtype: 'search_searchlocationcombobox',
+                            itemId: 'searchcombobox'
                         },
                         {
                             xtype: 'button',
