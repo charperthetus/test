@@ -1,4 +1,4 @@
-/* global Ext: false, Savanna: false */
+/* global Ext: false, SavannaConfig: false, OpenLayers: false */
 /**
  * Created with IntelliJ IDEA.
  * User: ksonger
@@ -118,6 +118,10 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                 }
             });
         }
+        /*
+        hide Start New Search button
+         */
+        search.down('#search_reset_button').setVisible(false);
     },
 
     handleNewSearch: function (elem) {
@@ -143,7 +147,8 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             }
         });
 
-        var sources = this.getSelectedDals(this.getSearchComponent(elem));
+        var sources = this.getSelectedDals(this.getSearchComponent(elem)),
+            dals = component.down('#searchdals');
 
         Ext.each(sources, function (source) {
             /*
@@ -159,7 +164,13 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             if (source.get('dateTimeRanges').length) {
                 source.set('dateTimeRanges', []);
             }
+
+            if (dals.queryById(source.get('id')).query('checkbox')[0].getValue()) {
+                dals.queryById(source.get('id')).query('checkbox')[0].setValue(false);
+            }
         });
+
+        dals.queryById(dals.store.defaultId).query('checkbox')[0].setValue(true);
 
         component.down('#resultsdals').removeAll();
 
@@ -178,6 +189,11 @@ Ext.define('Savanna.search.controller.SearchComponent', {
          the search request has failed for one reason or another
          */
         component.down('#resultspanel').updateGridStore({store: Ext.create('Savanna.search.store.SearchResults')});
+
+        /*
+         hide Start New Search button
+         */
+        component.down('#search_reset_button').setVisible(false);
     },
 
     clearSearch: function (elem) {
@@ -402,6 +418,11 @@ Ext.define('Savanna.search.controller.SearchComponent', {
          the search request has failed for one reason or another
          */
         component.down('#resultspanel').updateGridStore({store: Ext.create('Savanna.search.store.SearchResults')});
+
+        /*
+         show Start New Search button
+         */
+        component.down('#search_reset_button').setVisible(true);
 
 
         this.showResultsPage(component);

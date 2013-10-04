@@ -126,7 +126,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
         var me = this;
         this.resultsStore.load({
             scope: this,
-            callback: function(records, operation, success) {
+            callback: function() {
                 me.updatePreviewHelper();
             }
         });
@@ -170,12 +170,12 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
         //Show the index and total
         this.previewIndexAndTotalLabel().setText('Preview Result ' + (this.previewIndex + 1) + ' of ' + this.resultsStore.totalCount);
         //Enable/disable the prev and next buttons
-        if (this.previewIndex == 0) {
+        if (this.previewIndex === 0) {
             this.previewPrevButton().disable();
         } else {
             this.previewPrevButton().enable();
         }
-        if (this.previewIndex == this.resultsStore.totalCount - 1) {
+        if (this.previewIndex === this.resultsStore.totalCount - 1) {
             this.previewNextButton().disable();
         } else {
             this.previewNextButton().enable();
@@ -191,7 +191,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
 
         //Make sure the record is paged in.
         var containingPage =  this.pageOfCurrentPreviewIndex();
-        if(this.resultsStore.currentPage != containingPage ) {
+        if(this.resultsStore.currentPage !== containingPage ) {
             this.resultsStore.currentPage = containingPage;
             this.getNewPreviewRecords();
         } else {
@@ -208,9 +208,9 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
         this.updatePreview();
     },
 
-    onItemMouseEnter: function (view, rec, node, index, e, options) {
+    onItemMouseEnter: function (view, rec, node) {
         if(node){
-            node.querySelector("#hoverDiv").style.visibility = "visible";
+            node.querySelector('#hoverDiv').style.visibility = 'visible';
         }
     },
 
