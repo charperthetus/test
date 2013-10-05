@@ -177,7 +177,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
 
         /*
             hm... it may make sense to pull all of the metadata stuff into here.  this method
-            below does not work when the grid is paged
+            below does not work when the grid is paged.  solution in progress above
 
             var recordMetadata = component.currentResultSet.metadata.getById(record.get('uri')).get('datastore').data;
 
