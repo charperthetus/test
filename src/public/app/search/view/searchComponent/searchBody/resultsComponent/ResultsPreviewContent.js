@@ -92,10 +92,12 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
 
 
     populate: function (record, index, totalResultsCount) {
+        /*
         console.log(this);
         console.log(record);
         console.log('Preview index: ' + index);
         console.log('Total results count: ' + totalResultsCount);
+        */
 
         if(record && record.title){
             var win = this.findParentByType('search_resultspreviewwindow');
