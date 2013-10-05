@@ -14,9 +14,9 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         'Savanna.search.store.SearchResults',
         'Savanna.search.view.searchComponent.searchBody.searchMap.SearchLocationComboBox',
         'Savanna.controller.Factory',
-        'Savanna.metadata.model.Metadata',
         'Savanna.metadata.store.Metadata',
-        'Savanna.search.model.ResultMetadata'
+        'Savanna.search.model.ResultMetadata',
+        'Savanna.search.store.ResultsMetadata'
     ],
     stores: [
         'Savanna.search.store.DalSources'
@@ -493,7 +493,6 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                  */
                 resultsPanel.up('#searchresults').allResultSets.push(resultsObj);
 
-                //this.getDocumentMetadata(resultsPanel.up('#searchresults').allResultSets[resultsPanel.up('#searchresults').allResultSets.length - 1], metadataArray);
 
                 if (store.facetValueSummaries !== null) {
                     resultsDal.createDalFacets(dalId);
@@ -506,8 +505,6 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                 Ext.each(resultsPanel.up('#searchresults').allResultSets, function (resultset, index) {
                     if (resultset.id === dalId) {
                         resultsPanel.up('#searchresults').allResultSets[index] = resultsObj;
-
-                        //this.getDocumentMetadata(resultsPanel.up('#searchresults').allResultSets[index], metadataArray);
                     }
                 });
             }
@@ -526,46 +523,6 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                  filtering, action set to 'filter'
                  */
                 this.getApplication().fireEvent('search:changeSelectedStore', {}, {}, resultsDal.queryById(dalId));
-            }
-        }
-    },
-
-    getDocumentMetadata: function (results, uris) {
-
-        var metadataStore = Ext.create('Savanna.search.store.ResultsMetadata', {
-            storeId: 'searchMetadata_' + results.id,
-            pageSize: results.store.pageSize
-        });
-
-        metadataStore.proxy.jsonData = Ext.JSON.encode(uris);  // attach the metadata request object
-
-        metadataStore.load({
-            callback: Ext.bind(this.metadataCallback, this, [results], true)
-        });
-    },
-
-    metadataCallback: function (records, operation, success, results) {
-
-        for (var record in records) {
-            if (records.hasOwnProperty(record)) {
-                var obj = records[record];
-                var metaStore = Ext.create('Ext.data.Store', {
-                    model: 'Savanna.search.model.ResultMetadata'
-                });
-                for (var elem in obj.raw) {
-
-                    if (obj.raw.hasOwnProperty(elem)) {
-                        var elem_obj = obj.raw[elem];
-                        var metaPropertiesStore = Ext.create('Savanna.metadata.store.Metadata');
-                        for (var prop in elem_obj) {
-                            if (elem_obj.hasOwnProperty(prop)) {
-                                metaPropertiesStore.add(elem_obj[prop]);
-                            }
-                        }
-                        metaStore.add({id: elem, datastore: metaPropertiesStore});
-                    }
-                }
-                results.metadata = metaStore;
             }
         }
     },

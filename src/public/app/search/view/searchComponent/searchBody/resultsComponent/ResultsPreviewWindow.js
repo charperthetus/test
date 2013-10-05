@@ -29,9 +29,9 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
         Savanna.controller.Factory.getController('Savanna.search.controller.ResultsComponent');
     },
 
-    displayPreview:function(record, index, totalCount)   {
+    displayPreview:function(record, metadata, index, totalCount)   {
         this.show();
-        this.queryById('resultspreviewcontent').populate(record, index, totalCount);
+        this.queryById('resultspreviewcontent').populate(record, metadata, index, totalCount);
 
     }
 });

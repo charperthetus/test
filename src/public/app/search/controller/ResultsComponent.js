@@ -153,7 +153,37 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
     updatePreviewHelper: function () {
         this.resultsGrid = this.getGrid();
         this.resultsStore = this.getGridStore();
-        var record = this.resultsStore.getAt(this.getStoreIndexOfPreviewIndex());
+
+
+        var record = this.resultsStore.getAt(this.getStoreIndexOfPreviewIndex()),
+            component = this.getGrid().findParentByType('search_resultscomponent');
+
+        /*
+         array of uri's to get the metadata for these results
+         */
+
+        var metadataArray = [];
+
+        console.log(component.currentResultSet.store)
+
+        Ext.each(component.currentResultSet.store.data.items, function (record) {
+            metadataArray.push(record.get('uri'));
+        });
+
+        console.log(metadataArray);
+
+        this.getDocumentMetadata(component.currentResultSet, metadataArray);
+
+
+        /*
+            hm... it may make sense to pull all of the metadata stuff into here.  this method
+            below does not work when the grid is paged
+
+            var recordMetadata = component.currentResultSet.metadata.getById(record.get('uri')).get('datastore').data;
+
+         */
+
+
 
         //this can happen when you hit next > 10 times/sec
         if(!record){
@@ -166,7 +196,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
 
         var win = this.previewWindow();
         //Show the contents
-        win.displayPreview(record.data, this.previewIndex, this.resultsStore.totalCount);
+        win.displayPreview(record.data, recordMetadata, this.previewIndex, this.resultsStore.totalCount);
         //Show the index and total
         this.previewIndexAndTotalLabel().setText('Preview Result ' + (this.previewIndex + 1) + ' of ' + this.resultsStore.totalCount);
         //Enable/disable the prev and next buttons
@@ -179,6 +209,46 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
             this.previewNextButton().disable();
         } else {
             this.previewNextButton().enable();
+        }
+    },
+
+    getDocumentMetadata: function (results, uris) {
+
+        var metadataStore = Ext.create('Savanna.search.store.ResultsMetadata', {
+            storeId: 'searchMetadata_' + results.id,
+            pageSize: results.store.pageSize
+        });
+
+        metadataStore.proxy.jsonData = Ext.JSON.encode(uris);  // attach the metadata request object
+
+        metadataStore.load({
+            callback: Ext.bind(this.metadataCallback, this, [results], true)
+        });
+    },
+
+    metadataCallback: function (records, operation, success, results) {
+
+        for (var record in records) {
+            if (records.hasOwnProperty(record)) {
+                var obj = records[record];
+                var metaStore = Ext.create('Ext.data.Store', {
+                    model: 'Savanna.search.model.ResultMetadata'
+                });
+                for (var elem in obj.raw) {
+
+                    if (obj.raw.hasOwnProperty(elem)) {
+                        var elem_obj = obj.raw[elem];
+                        var metaPropertiesStore = Ext.create('Savanna.metadata.store.Metadata');
+                        for (var prop in elem_obj) {
+                            if (elem_obj.hasOwnProperty(prop)) {
+                                metaPropertiesStore.add(elem_obj[prop]);
+                            }
+                        }
+                        metaStore.add({id: elem, datastore: metaPropertiesStore});
+                    }
+                }
+                results.metadata = metaStore;
+            }
         }
     },
 
@@ -275,14 +345,6 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
             this.updatePreview();
         }
     },
-
-    /*
-     onItemPreview: function (grid, record) {
-     var win = grid.findParentByType('search_resultscomponent').queryById('resultspreviewwindow');
-     win.displayPreview(record);
-     },
-     */
-
 
     onDalRender: function (dal) {
         dal.body.on('click', this.changeSelectedStore, this, dal);

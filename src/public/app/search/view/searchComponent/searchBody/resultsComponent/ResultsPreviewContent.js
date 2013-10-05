@@ -91,9 +91,10 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
     },
 
 
-    populate: function (record, index, totalResultsCount) {
+    populate: function (record, metadata, index, totalResultsCount) {
         console.log(this);
         console.log(record);
+        console.log(metadata);
         console.log('Preview index: ' + index);
         console.log('Total results count: ' + totalResultsCount);
 
