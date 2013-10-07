@@ -5595,7 +5595,7 @@ body.x-nbr .x-btn-workspace-header-toolbar-large {
 */
 /* line 227, ../../sass/src/button/Button.scss */
 .x-btn-brand-header-toolbar-medium .x-btn-arrow {
-  background-image: url(/packages/savanna-theme/resources/images/button/brand-header-toolbar-medium-arrow.png);
+  background-image: url(images/button/brand-header-toolbar-medium-arrow.png);
   padding-left: 4px;
   padding-right: 14px;
 }
