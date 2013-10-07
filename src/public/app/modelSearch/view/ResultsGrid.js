@@ -20,11 +20,8 @@ Ext.define('Savanna.modelSearch.view.ResultsGrid', {
     },
 
    initComponent: function() {
-
-       this.store=Ext.data.StoreManager.lookup('modelSearchStore');
+        this.store = Ext.data.StoreManager.lookup('modelSearchStore');
         this.callParent(arguments);
-
         this.getStore().loadPage(1);
     }
-
 });

@@ -10,10 +10,7 @@ Ext.define('Savanna.modelSearch.view.ModelSearchPagingToolbar', {
     emptyMsg: 'No items to display',
 
     initComponent: function() {
-
         this.store=Ext.data.StoreManager.lookup('modelSearchStore');
         this.callParent(arguments);
-
-
     }
 });
