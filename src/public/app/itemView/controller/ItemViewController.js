@@ -7,14 +7,12 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         'Savanna.itemView.view.ItemViewer',
         'Savanna.itemView.view.itemView.Header',
         'Savanna.itemView.view.itemView.header.DisplayLabel',
-        'Savanna.itemView.view.itemView.header.ItemAlias',
-        'Savanna.itemView.view.itemView.header.ItemUse',
-        'Savanna.itemView.view.itemView.header.ItemDescription',
         'Savanna.itemView.view.itemView.Boilerplate',
         'Savanna.itemView.view.itemView.RelatedContent',
         'Savanna.itemView.view.itemView.Annotations',
         'Savanna.itemView.view.itemView.ImagesGrid',
-        'Savanna.itemView.view.itemView.Confusers'
+        'Savanna.itemView.view.itemView.Confusers',
+        'Savanna.itemView.view.itemView.components.AutoCompleteWithTags'
     ],
 
     constructor: function (options) {
@@ -24,6 +22,16 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     },
 
     init: function (app) {
+
+        this.control({
+            'itemview_header #auto_complete_text_box': {
+                keyup: this.handleAutoCompleteTextKeyUp
+            },
+
+            'itemview_header #removeTerm': {
+                click: this.handleRemoveTagClick
+            }
+        });
 
         app.on('search:itemselected', this.showItemView, this);
 
@@ -48,7 +56,6 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         Ext.Ajax.request({
             url: this.buildItemDataFetchUrl(record.data.uri),
             method: 'GET',
-            withCredentials: true,
             disableCaching: bustCache,
             headers: {
                 'Accept': 'application/json'
@@ -76,12 +83,16 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
         this.fireEvent('itemview:created', itemView);
     },
+
     setData: function (data, view) {
 
         //Left Side
 
         //Display Label
         this.setupDisplayLabel(data.displayLabel, view);
+
+        //Aliases
+        this.setupAliases(data.aliases, view);
 
         //Boilerplate
         this.setupBoilerplate(data, view);
@@ -106,10 +117,22 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         //Confusers
         this.setupConfusers(data, view);
     },
+
     setupDisplayLabel: function (displayLabel, view) {
         var displayLabelComponent = view.queryById('itemDisplayLabel');
         displayLabelComponent.update({displayLabel: displayLabel});
     },
+
+    setupAliases: function (aliasList, view) {
+        if (aliasList != null && aliasList.length > 0) {
+            var aliasTags = view.down('#itemAlias > auto_complete_with_tags');
+
+            for (var i = 0; i < aliasList.length; i++) {
+                aliasTags.addTerm(aliasList[i]);
+            }
+        }
+    },
+
     setupBoilerplate: function (data, view) {
         var bpGrid = view.down('panel > propertygrid:first'),
             taxParentText = '',
@@ -217,6 +240,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         confusersStore.loadData(confusers);
         confusersBox.refresh();
     },
+
     getEntryForKey: function (key, entries) {
         var entry,
             i;
@@ -230,9 +254,23 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
         return entry;
     },
+
     buildItemDataFetchUrl: function (uri) {
         //uri = Ext.JSON.decode(uri);
        uri = encodeURI(uri);
         return SavannaConfig.itemViewUrl + uri + ';jsessionid=' + Savanna.jsessionid;
+    },
+
+    handleAutoCompleteTextKeyUp: function (field, evt) {
+        if (evt.keyCode === Ext.EventObject.ENTER) {
+            if (field.getValue().trim().length) {
+                field.findParentByType('auto_complete_with_tags').addTerm(field.getValue());
+                field.setValue('');
+            }
+        }
+    },
+
+    handleRemoveTagClick: function (btn) {
+        btn.up('auto_complete_with_tags').removeTerm(btn);
     }
 });

@@ -7,7 +7,5 @@ Ext.define('Savanna.itemView.view.itemView.header.DisplayLabel', {
         '<h1>{displayLabel}</h1>'
     ],
 
-    margin: 10,
-
     data: { displayLabel: '' } // default data
 });

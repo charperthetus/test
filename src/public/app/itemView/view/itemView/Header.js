@@ -19,22 +19,52 @@ Ext.define('Savanna.itemView.view.itemView.Header', {
 
     layout: 'vbox',
 
+    margin: 10,
+
     items: [
         {
             xtype: 'itemview_displaylabel',
             itemId: 'itemDisplayLabel'
         },
         {
-            xtype: 'itemview_alias',
-            itemId: 'itemAlias'
+            xtype: 'container',
+            itemId: 'itemAlias',
+            width: '100%',
+            layout: 'vbox',
+            items: [
+                {
+                    xtype: 'label',
+                    text: 'Alias'
+                },
+                {
+                    xtype: 'auto_complete_with_tags',
+                    labelType: 'Click to add an Alias'
+                }
+            ]
         },
         {
-            xtype: 'itemview_use',
-            itemId: 'itemUse'
+            xtype: 'container',
+            itemId: 'itemUse',
+            width: '100%',
+            layout: 'vbox',
+            items: [
+                {
+                    xtype: 'label',
+                    text: 'Intended Use'
+                },
+                {
+                    xtype: 'auto_complete_with_tags',
+                    labelType: 'Click to add an Intended Use'
+                }
+            ]
         },
         {
-            xtype: 'itemview_description',
-            itemId: 'itemDescription'
+            xtype: 'textarea',
+            itemId: 'itemDescription',
+            name: 'description',
+            fieldLabel: 'Description',
+            value: 'Hello World.  This is an Rnrm Item Description',
+            grow: false
         }
     ]
 });

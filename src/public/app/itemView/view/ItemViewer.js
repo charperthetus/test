@@ -10,10 +10,10 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
     ],
 
     layout: 'hbox',
+    overflowY: 'auto',
+    autoScroll: true,
 
     initComponent: function() {
-
-
         this.items = this.buildItems();
         this.callParent(arguments);
     },
@@ -30,12 +30,18 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                         itemId: 'itemHeader'
                     },
                     {
-                        xtype: 'itemview_boilerplate',
-                        itemId: 'boilerplate'
+                        //ToDo: create related processes component here
                     },
                     {
+                        //Todo: modify this to become related items
                         xtype: 'itemview_relatedcontent',
                         itemId: 'relatedContent'
+                    },
+
+                    //ToDo: none of this is present in the current design so remove them
+                    {
+                        xtype: 'itemview_boilerplate',
+                        itemId: 'boilerplate'
                     },
                     {
                         xtype: 'itemview_annotations',
@@ -48,14 +54,12 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                 flex: 1,
                 items: [
                     {
+                        //ToDo: switch this out for Joel's image browser
                         xtype: 'itemview_imagesgrid',
                         itemId: 'imagesGrid'
                     },
                     {
-                        xtype: 'component',
-                        html: '<h3 class="item-view">Properties</h3>'
-                    },
-                    {
+                        //ToDo: modify this to become the properties component
                         xtype: 'propertygrid',
                         itemId: 'propGrid',
                         hideHeaders: true,
@@ -63,6 +67,8 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                         source: {
                         }
                     },
+
+                    //ToDo: not present in current design so remove it
                     {
                         xtype: 'itemview_confusers',
                         itemId: 'confusers'
