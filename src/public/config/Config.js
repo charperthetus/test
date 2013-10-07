@@ -34,4 +34,5 @@ SavannaConfig.locationSearch = SavannaConfig.savannaUrlRoot + '/rest/map/search'
 SavannaConfig.metadataUrl = SavannaConfig.savannaUrlRoot + 'rest/metadata';
 // TODO: replace this test URL with real endpoint once we have one....
 SavannaConfig.crumbnetTemplatesUrl = 'fixture/Crumbnet.json';
+SavannaConfig.processTemplatesUrl = 'fixture/Process.json';
 SavannaConfig.metadataTestDataUrl = 'fixture/Metadata.json';
