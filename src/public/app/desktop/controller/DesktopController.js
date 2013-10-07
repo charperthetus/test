@@ -61,6 +61,9 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
                 }
             }
         });
+        
+        // TODO: remove this since it's just a convenience
+        this.displayModelSearch();
     },
 
     displayAboutDialog: function() {
