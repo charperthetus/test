@@ -1,0 +1,27 @@
+/*
+ *	Styles Grid Columns Globaly
+ *
+ *	@author astump 8/13/2013
+ *	@edits 	astump 8/14/2013
+ *	@edits	eirby 8/28/2013
+ *	@edits	astump 9/27/2013 - changed border-color for between columns
+ */
+
+ /*
+  *	@variables
+  */
+$grid-column-header-font: bold 13px $sans-serif !default;
+$grid-column-header-color: #333333 !default;
+$grid-header-padding: 9px 6px 9px 12px !default;
+$grid-header-background-color: #ccc !default;
+$sorted-grid-column-header-color: $grid-header-background-color !default;
+$grid-header-open-background-color: $grid-header-background-color !default;
+$grid-header-over-background-color: $grid-header-background-color !default;
+$grid-header-trigger-background-color: $grid-header-background-color !default;
+$grid-header-trigger-background-color-open: $grid-header-background-color !default;
+
+$grid-header-background-gradient: none !default;
+$grid-header-over-background-gradient: $grid-header-background-gradient !default;
+
+$grid-header-border-color: #999 !default;
+$grid-header-border-width: 0px !default;

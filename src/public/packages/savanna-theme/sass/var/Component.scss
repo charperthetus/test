@@ -16,13 +16,8 @@
  *	@variables
  */
  // Base color to white so we're not overwriting a bunch of color code
-$base-color: #fff;
-
-// This is for NORMAL, each weight has it's own FF!s
-$font-family: 'OpenSansRegular';
-$color: #333;
-$form-label-font-family: $Open-Sans-Bold;
+$base-color: $dark-gray !default;
+$color: $dark-gray !default;
 
 // Global CSS Configs
-$prefix: 'x-';
-$include-rtl: false;
+$include-rtl: false !default;

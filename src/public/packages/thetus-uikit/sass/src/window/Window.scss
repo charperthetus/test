@@ -1,0 +1,58 @@
+/*
+ *	window mixins.
+ *
+ *  @author jlashley 9/4/2013
+ */
+
+.#{$prefix}window-body {
+  //padding: $window-body-padding;
+  padding: $window-padding;
+}
+
+// .#{$prefix}tool-over .#{$prefix}tool-close, 
+.#{$prefix}window-header-default .#{$prefix}tool-close{
+	background-image:  url(images/tools/tool-close.png) ;
+	background-position: $window-close-background-position;
+	height: $window-close-background-height;
+}
+
+.#{$prefix}tabbed-window{
+	&.x-resizable{
+		border-color:#262626;
+		overflow:visible;
+	}
+	box-sizing: border-box;
+	padding: 0;
+	.x-window-body{
+		padding:0;
+	}
+	.x-box-layout-ct{
+		overflow:visible;
+		.x-box-inner{
+			overflow:visible;
+		}
+	}
+	.x-window-header-default{
+		z-index: 5;
+		background-color: transparent;
+		padding:0 0 0 0;
+		border-color: transparent;
+		.x-tool-img{
+			background-position: 0 0;
+			background-color: transparent;
+		}
+		.x-tool-restore{
+		 	background-image: url(images/tools/tool-restore.png);
+		 	width: 20px;
+			height: 20px;
+		}
+		.x-tool-maximize{
+			background-image: url(images/tools/tool-maximize.png);
+			width: 20px;
+			height: 20px;
+		} 
+	}
+	.x-panel-body-dark{
+		border-color:transparent;
+	}
+}

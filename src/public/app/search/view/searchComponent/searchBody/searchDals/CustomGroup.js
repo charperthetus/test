@@ -44,7 +44,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.searchDals.CustomGrou
                         icon: 'resources/images/searchicon.png',
                         tooltip: controlTooltip,
                         handleMouseEvents: false,
-                        ui: 'link',
+                        // ui: 'link',
                         width: 15
                     });
                 }
@@ -110,7 +110,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.searchDals.CustomGrou
                     xtype: 'button',
                     text: 'Add Key Value Pair Option',
                     handler: Ext.bind(this.addKeyValueInput, this),
-                    ui: 'link'
+                    // ui: 'link'
                 };
                 break;
         }

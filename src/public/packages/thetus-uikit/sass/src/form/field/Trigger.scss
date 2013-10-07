@@ -1,0 +1,55 @@
+/*
+ *    @author astump 9/17/2013 
+ *    @edits astump 10/3/2013
+ *          - adds the icons(item) to text field if it is a trigger item.
+ *          - calculates the proper background-position-top of the trigger sprite.
+ *
+*/  
+$form-field-text-trigger-height: $form-field-height - vertical($form-field-border-width);
+$form-field-trigger-top-position: ($form-field-text-trigger-height - $form-trigger-width)/2;
+ 
+.#{$prefix}form-trigger {
+    height: $form-field-text-trigger-height;
+    @if $include-ext-toolbar-toolbar and $form-toolbar-field-height != $form-field-height {
+        .#{$prefix}toolbar-item & {
+            height: $form-toolbar-field-height - vertical($form-field-border-width);
+        }
+    }
+}
+.#{$prefix}form-trigger-wrap {
+    border: $form-field-border-width solid;
+    border-color: $form-field-border-color;
+    .#{$prefix}form-text {
+        border-width: 0;
+        height: $form-field-text-trigger-height;
+    }
+ 
+    .#{$prefix}form-trigger-wrap-focus & {
+        border-color: $form-field-focus-border-color;
+    }
+     
+    .#{$prefix}form-invalid & {
+        border-color: $form-field-invalid-border-color;
+    }
+}
+ 
+.#{$prefix}form-trigger {
+    background-position: -$form-trigger-width $form-field-trigger-top-position;
+}
+ 
+.#{$prefix}form-trigger-over {
+    background-position: -$form-trigger-width $form-field-trigger-top-position;
+}
+ 
+.#{$prefix}form-trigger-wrap-focus .#{$prefix}form-trigger {
+    background-position: -($form-trigger-width * 3) $form-field-trigger-top-position;
+}
+ 
+.#{$prefix}form-trigger-wrap-focus .#{$prefix}form-trigger-over {
+    background-position: -($form-trigger-width * 4) $form-field-trigger-top-position;
+}
+ 
+.#{$prefix}form-trigger-click,
+.#{$prefix}form-trigger-wrap-focus .#{$prefix}form-trigger-click {
+    background-position: -($form-trigger-width * 2) $form-field-trigger-top-position;
+}

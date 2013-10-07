@@ -1,0 +1,52 @@
+.#{$prefix}resizable{
+	background-color:$resizer-background-color; 
+	overflow:$resizer-overflow;
+	border:  $resizer-border;
+
+    &.#{$prefix}window-body-resizable{
+        border: $resizer-window-inner-panel-border;
+    }
+}
+
+//Rest handlebar colors
+.#{$prefix}resizable-handle {
+    background-color:  $resizer-background-color;
+}
+
+//Resiser Handle position
+
+.#{$prefix}resizable-handle-southeast {
+        background-position: -2px -2px;
+    }
+
+//Resizer handle icons
+.#{$prefix}resizable-over,
+.#{$prefix}resizable-pinned {
+
+    // themes provide position-x based upon image width
+    .#{$prefix}resizable-handle-east,
+    .#{$prefix}resizable-handle-west {
+        background-image: $resizer-handle-default;
+    }
+
+    // themes provide position-y based upon image height
+    .#{$prefix}resizable-handle-south,
+    .#{$prefix}resizable-handle-north {
+        background-image: $resizer-handle-default;
+    }
+
+    .#{$prefix}resizable-handle-northwest {
+        background-position: bottom right;
+        background-image: $resizer-handle-default;
+    }
+
+    .#{$prefix}resizable-handle-northeast {
+        background-position: bottom left;
+        background-image: $resizer-handle-default;
+    }
+
+    .#{$prefix}resizable-handle-southwest {
+        background-position: top right;
+        background-image: $resizer-handle-default;
+    }
+}
