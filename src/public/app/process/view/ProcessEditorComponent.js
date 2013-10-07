@@ -11,7 +11,7 @@ Ext.define('Savanna.process.view.ProcessEditorComponent', {
 
     requires: [
         'Ext.layout.container.Border',
-        'Savanna.process.view.part.PaletteWindow',
+//        'Savanna.process.view.part.PaletteWindow',
         'Savanna.process.view.part.Toolbar',
         'Savanna.process.view.part.Canvas', //todo: do we refactor this code?
         'Savanna.process.view.part.MetadataTabPanel'
@@ -48,6 +48,7 @@ Ext.define('Savanna.process.view.ProcessEditorComponent', {
                 items:[
                     {
                         xtype: 'process_canvas', //todo: refactor graph canvas
+                        itemId: 'canvas',
                         width: '100%',
                         height: '100%'
                     },
@@ -60,6 +61,7 @@ Ext.define('Savanna.process.view.ProcessEditorComponent', {
             },
             {
                 xtype: 'process_metadata', //todo - this should be refactored out for all savanna item components later
+                itemId: 'metadata',
                 region: 'east',
                 layout: 'fit',
                 width: '30%', //todo: DI should apply the appropriate styling for the sidebar
