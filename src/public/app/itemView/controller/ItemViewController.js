@@ -42,7 +42,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
     onItemViewCreated: function (tab) {
 
-        var tabpanel = Ext.ComponentQuery.query('desktop_modelsearchwindow #maintabs')[0];
+        var tabpanel = Ext.ComponentQuery.query('desktop_tabpanel')[0];
         var main = tabpanel.getActiveTab();
         tabpanel.add(tab);
 

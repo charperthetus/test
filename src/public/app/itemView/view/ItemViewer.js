@@ -19,6 +19,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
     },
 
     buildItems: function() {
+        console.log(this.height);
         return [
             {
                 xtype: 'panel',

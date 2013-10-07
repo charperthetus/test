@@ -15,8 +15,7 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
     requires: [
         'Savanna.desktop.view.AboutWindow',
         'Savanna.desktop.view.SearchWindow',
-        'Savanna.desktop.view.UploadWindow', 
-        'Savanna.desktop.view.ModelSearchWindow'
+        'Savanna.desktop.view.UploadWindow'
     ],
     views: [
         'Savanna.desktop.view.SavannaDesktop',
@@ -87,8 +86,10 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
         uploadWindow.show();
     },
     displayModelSearch: function() {
-       var modelSearchWindow = Ext.create('Savanna.desktop.view.ModelSearchWindow', {modal: true});
-        modelSearchWindow.show();
+        var savannaTabPanel = Ext.ComponentQuery.query('desktop_tabpanel')[0];
+        var modelSearchTab = Ext.create('Savanna.modelSearch.view.ModelSearch');
+        savannaTabPanel.add(modelSearchTab);
+        savannaTabPanel.doLayout();
     },
 
     displayAccountSettings: function() {

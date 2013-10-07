@@ -2,6 +2,7 @@ Ext.define('Savanna.modelSearch.view.ModelSearch', {
     extend: 'Ext.Panel',
     alias: 'widget.modelsearch',
     cls: 'model-search',
+    title: 'Model Search',
     requires: [
         'Savanna.modelSearch.view.ResultsGrid',
         'Savanna.modelSearch.view.ModelSearchHeader'
