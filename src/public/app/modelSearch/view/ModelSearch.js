@@ -3,6 +3,7 @@ Ext.define('Savanna.modelSearch.view.ModelSearch', {
     alias: 'widget.modelsearch',
     cls: 'model-search',
     title: 'Model Search',
+    closable: true,
     requires: [
         'Savanna.modelSearch.view.ResultsGrid',
         'Savanna.modelSearch.view.ModelSearchHeader'
@@ -23,7 +24,5 @@ Ext.define('Savanna.modelSearch.view.ModelSearch', {
         this.store=Ext.create('Savanna.modelSearch.store.ModelSearchStore');
         this.callParent(arguments);
         Savanna.controller.Factory.getController('Savanna.modelSearch.controller.ModelSearchController');
-
-
     }
 });
