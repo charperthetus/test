@@ -5,9 +5,11 @@
  * Time: 4:31 PM
  * To change this template use File | Settings | File Templates.
  */
+
 Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsPreviewContent', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.search_resultspreviewcontent',
+    header: false,
     requires: [
 
     ],
@@ -39,16 +41,21 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
                     items: [
                         {
                             xtype: 'label',
-                            text: 'Preview Results 1 of 10'
+                            text: 'Preview Results {currentIndex} of {totalResults}',
+                            itemId: 'itemIndexAndTotalLabel'
                         },
                         '->',
                         {
                             xtype: 'button',
-                            text: 'prev'
+                            text: 'prev',
+                            itemId: 'previewPrevButton',
+                            repeat  : true
                         },
                         {
                             xtype: 'button',
-                            text: 'next'
+                            text: 'next',
+                            itemId: 'previewNextButton',
+                            repeat  : true
                         }
                     ]
                 },{
@@ -82,7 +89,25 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
         this.callParent(arguments);
         Savanna.controller.Factory.getController('Savanna.search.controller.ResultsComponent');
     },
-    populate: function () {
+
+
+    populate: function (record, index, totalResultsCount) {
+        /*
+        console.log(this);
+        console.log(record);
+        console.log('Preview index: ' + index);
+        console.log('Total results count: ' + totalResultsCount);
+        */
+
+        if(record && record.title){
+            var win = this.findParentByType('search_resultspreviewwindow');
+            win.setTitle(record.title);
+            //this.setTitle(record.title);
+        }
+        var label =  this.getComponent('itemIndexAndTotalLabel');
+        if(label){
+            label.text = 'Preview Results ' + index + ' of ' + totalResultsCount;
+        }
 
     }
 

@@ -770,10 +770,56 @@ describe('Search Results', function () {
 
             var grid = null;
             var tools = null;
+            var searchStore = null;
+            var origErrorHandler = null;
+            var fixtures = null;
+            var server = null;
+            var errorRaised = false;
 
             beforeEach(function () {
                 grid = resultsComponent.queryById('resultspanel').queryById('resultspanelgrid');
                 tools = resultsComponent.queryById('resultspanel').queryById('resultspaneltoolbar');
+                origErrorHandler = Ext.Error.handle;
+
+                Ext.Error.handle = function () {
+                    errorRaised = true;
+
+                    return true;
+                };
+
+                fixtures = Ext.clone(ThetusTestHelpers.Fixtures.SearchResults);
+
+                searchStore = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.SearchResults', { autoLoad: false });
+
+                // now set up server to get store data
+                server = new ThetusTestHelpers.FakeServer(sinon);
+
+                var readMethod = 'POST',
+                    testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(searchStore.getProxy(), 'read', readMethod);
+
+                server.respondWith(readMethod, testUrl, fixtures.searchResults);
+
+
+                searchStore.load();
+
+                server.respond({
+                    errorOnInvalidRequest: true
+                });
+
+                grid.store = searchStore;
+
+                resultsComponent.down('#resultspanel').updateGridStore({id: 'mockDAL', store: searchStore});
+                resultsComponent.down('#resultspanel').updateGridStore({id: 'mockDAL', store: searchStore});
+                resultsComponent.down('#resultspanel').updateGridStore({id: 'mockDAL', store: searchStore});
+
+                grid.getView().store = searchStore;
+
+            });
+
+            afterEach(function () {
+                server.restore();
+                server = null;
+                searchStore = null;
             });
 
             it('should have a grid of the correct component type', function () {
@@ -786,6 +832,36 @@ describe('Search Results', function () {
 
             it('should have a paging toolbar', function () {
                 expect(grid.queryById('gridtoolbar') instanceof Ext.toolbar.Paging).toBeTruthy();
+            });
+
+
+            it('should have a store', function () {
+                expect(grid.store).toBeTruthy();
+            });
+
+            it('should have some data in it', function () {
+                var count = grid.store.snapshot ? grid.store.snapshot.length : grid.store.getCount();
+                expect( count ).toBeGreaterThan(0);
+            });
+
+            it('should have a view', function () {
+                expect(grid.getView()).not.toBe(null);
+            });
+
+
+            it('should stop being a hozer and let me select something', function () {
+                var sm =  grid.getSelectionModel();
+                expect( sm ).not.toBeNull();
+                sm.clearSelections();
+                sm.select(0);
+                //expect( sm.hasSelection() ).toBeTruthy(); I commented this out because this EXTJS feature does not work the way one might expect.
+                expect(sm.getSelection()).not.toBeNull();
+                expect(sm.getSelection()[0]).not.toBeNull();
+            });
+
+            it('should have first item in the store', function () {
+                var itemIndex = 0;
+                expect(grid.store.getAt(itemIndex)).not.toBeNull();
             });
 
         });
@@ -801,7 +877,11 @@ describe('Search Results', function () {
             grid = null,
             sources = null,
             store = null,
-            server = null;
+            server = null,
+            origErrorHandler = null,
+            errorRaised = false,
+            fixtures = null,
+            searchStore = null;
 
         beforeEach(function () {
 
@@ -840,7 +920,7 @@ describe('Search Results', function () {
         });
 
         afterEach(function () {
-            var teardown = [resultsComponent, resultsController, searchComponent, searchController, panel, grid, sources];
+            var teardown = [resultsComponent, resultsController, searchComponent, searchController, panel, grid, sources, origErrorHandler, fixtures, searchStore];
 
             for (var i = 0; i < teardown; i++) {
                 if (teardown[i]) {
@@ -861,6 +941,141 @@ describe('Search Results', function () {
         it('should have a store behind the sources panel', function () {
             expect(sources.store).toBeTruthy();
         });
+
+        it('should be able to compute the page for different previewIndexes', function () {
+            resultsController.getGrid();
+            resultsController.previewIndex = 0;
+            expect(resultsController.pageOfCurrentPreviewIndex()).toBe(1);
+            resultsController.previewIndex = 19;
+            expect(resultsController.pageOfCurrentPreviewIndex()).toBe(1);
+
+            resultsController.previewIndex = 30;
+            expect(resultsController.pageOfCurrentPreviewIndex()).toBe(2);
+
+        });
+
+        describe('Controller Helper Functions', function () {
+
+            it('should have a working getGrid helper function', function () {
+                expect(resultsController.getGrid()).not.toBe(null);
+            });
+
+            it('should have a working getGridStore helper function', function () {
+                expect(resultsController.getGridStore()).not.toBe(null);
+            });
+
+            it('should be able to return the previewWindow', function () {
+                expect(resultsController.previewWindow()).not.toBe(null);
+            });
+
+            it('should be able to return the previous button on the preview Window', function () {
+                expect(resultsController.previewPrevButton()).not.toBe(null);
+            });
+
+            it('should be able to return the next button on the preview Window', function () {
+                expect(resultsController.previewPrevButton()).not.toBe(null);
+            });
+
+            it('should be able to return the index label on preview Window', function () {
+                expect(resultsController.previewIndexAndTotalLabel()).not.toBe(null);
+            });
+
+        });
+
+        describe('Preview functions', function () {
+            beforeEach(function () {
+
+                origErrorHandler = Ext.Error.handle;
+
+                Ext.Error.handle = function () {
+                    errorRaised = true;
+
+                    return true;
+                };
+
+                fixtures = Ext.clone(ThetusTestHelpers.Fixtures.SearchResults);
+
+                searchStore = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.SearchResults', { autoLoad: false });
+
+                // now set up server to get store data
+                server = new ThetusTestHelpers.FakeServer(sinon);
+
+                var readMethod = 'POST',
+                    testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(searchStore.getProxy(), 'read', readMethod);
+
+                server.respondWith(readMethod, testUrl, fixtures.searchResults);
+
+
+                searchStore.load();
+
+                server.respond({
+                    errorOnInvalidRequest: true
+                });
+
+                //grid.store = searchStore;
+
+                resultsController.getGrid().store = store;
+
+                searchStore.load();
+
+                server.respond({
+                    errorOnInvalidRequest: true
+                });
+            });
+
+            describe('Test Record Zero', function () {
+
+                beforeEach(function () {
+                    resultsController.previewIndex = 0;
+                    resultsController.updatePreview();
+                });
+
+                it('should update the preview label for the first record', function () {
+
+                    var total =resultsController.getGridStore().totalCount;
+                    expect(resultsController.previewIndexAndTotalLabel().text).toBe('Preview Result 1 of ' + total);
+
+
+                });
+
+                it('should prev button disabled for first record', function () {
+                    expect(resultsController.previewPrevButton().disabled).toBeTruthy();
+                });
+
+                it('should next button enabled for first record', function () {
+                    expect(resultsController.previewNextButton().disabled).not.toBeTruthy();
+                });
+
+
+            });
+
+            describe('Test Record ONE', function () {
+
+                beforeEach(function () {
+                    resultsController.previewIndex = 1;
+                    resultsController.updatePreview();
+                });
+
+                it('should update the preview label for the second record', function () {
+
+                    var total =resultsController.getGridStore().totalCount;
+                    expect(resultsController.previewIndexAndTotalLabel().text).toBe('Preview Result 2 of ' + total);
+
+
+                });
+
+                it('should prev button disabled for second record', function () {
+                    expect(resultsController.previewPrevButton().disabled).not.toBeTruthy();
+                });
+
+                it('should next button enabled for second record', function () {
+                    expect(resultsController.previewNextButton().disabled).not.toBeTruthy();
+                });
+            });
+        });
+
+
+
 
         describe('onDalRender', function () {
 
@@ -969,11 +1184,11 @@ describe('Search Results', function () {
 
             describe('onTermRender', function() {
 
-                 it('should add an event listener when a term is rendered', function()  {
-                     searchComponent.down('#refineterms').queryById('termValues').add(refineTerm);
+                it('should add an event listener when a term is rendered', function()  {
+                    searchComponent.down('#refineterms').queryById('termValues').add(refineTerm);
 
-                     expect(refineTerm.hasListener('click')).toBeTruthy();
-                 });
+                    expect(refineTerm.hasListener('click')).toBeTruthy();
+                });
             });
 
             describe('handleRemoveTerm', function() {
@@ -985,18 +1200,6 @@ describe('Search Results', function () {
 
                     expect(searchComponent.down('#refineterms').removeTerm).toHaveBeenCalled();
                 });
-            });
-        });
-
-        describe('onItemPreview', function()    {
-
-
-            it('should show the preview window', function() {
-
-                var grid = searchComponent.down('#resultspanel').queryById('resultspanelgrid');
-                resultsController.onItemPreview(grid, {});
-
-                expect(searchComponent.queryById('resultspreviewwindow').isVisible()).toBeTruthy();
             });
         });
 
@@ -1060,7 +1263,7 @@ describe('Search Results', function () {
                 resultsDals.store = store;
 
 
-                    searchComponent.down('#searchdals').queryById('mockDAL').query('checkbox')[0].setValue(true);
+                searchComponent.down('#searchdals').queryById('mockDAL').query('checkbox')[0].setValue(true);
 
 
 
@@ -1078,7 +1281,7 @@ describe('Search Results', function () {
                 facets = resultsDals.queryById('resultsfacets').queryById('tab_mockDAL');
 
 
-                    searchComponent.down('#resultsdals').createDalFacets('mockDAL');
+                searchComponent.down('#resultsdals').createDalFacets('mockDAL');
 
 
 
@@ -1235,15 +1438,15 @@ describe('Search Results', function () {
                 dalItem = null;
 
             });
-             it('handleSearchTermKeyUp should call doSearch', function()  {
-                  var field = sources.queryById('refinesearch').down('#refine_search_terms');
+            it('handleSearchTermKeyUp should call doSearch', function()  {
+                var field = sources.queryById('refinesearch').down('#refine_search_terms');
 
-                 field.setValue('apples');
+                field.setValue('apples');
 
-                 var success = resultsController.handleSearchTermKeyUp(field, {keyCode:Ext.EventObject.ENTER});
+                var success = resultsController.handleSearchTermKeyUp(field, {keyCode:Ext.EventObject.ENTER});
 
-                 expect(success).toBeTruthy();
-             });
+                expect(success).toBeTruthy();
+            });
 
             it('handleSearchSubmit should call doSearch', function()  {
                 var field = sources.queryById('refinesearch').down('#refine_search_terms');
