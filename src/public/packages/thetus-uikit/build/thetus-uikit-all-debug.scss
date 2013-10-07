@@ -1,4 +1,4 @@
-$image-search-path: '/opt/cmtools/jenkins/workspace/github_UIKit/src/public/packages/thetus-uikit/build/resources' !default;
+$image-search-path: '/Users/lsanz/Workspace/Thetus/Savanna/web/UIKit/src/public/packages/thetus-uikit/build/resources' !default;
 $theme-name:  'thetus-uikit' !default;
 $include-ext-abstractcomponent: true;
 $include-ext-abstractmanager: true;
@@ -729,6 +729,7 @@ $relative-image-path-for-uis: $ext-theme-neutral-resource-path;
 $thetus-uikit-resource-path: 'images' !default;
 $relative-image-path-for-uis: $thetus-uikit-resource-path;
 @import '../sass/src/ProgressBar';
+@import '../sass/src/button/button';
 @import '../sass/src/panel/Panel';
 @import '../sass/src/tip/Tip';
 @import '../sass/src/container/Viewport';
