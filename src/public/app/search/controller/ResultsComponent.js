@@ -76,8 +76,11 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
     //Results store
     resultsStore: null,
 
-    //True iff we are waiting for some preview results to show up.
+    //True if we are waiting for some preview results to show up.
     _isWaitingForPreviewResults: false,
+
+    //True if we are waiting for some preview results to show up.
+    _isWaitingForDocumentMetadata: false,
 
 
     // Get the grid component.
@@ -120,6 +123,14 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
         this._isWaitingForPreviewResults = value;
     },
 
+    getIsWaitingForDocumentMetadata: function () {
+        return this._isWaitingForDocumentMetadata;
+    },
+
+    setIsWaitingForDocumentMetadata: function (value) {
+        this._isWaitingForDocumentMetadata = value;
+    },
+
     //Loads the store based on current store settings
     getNewPreviewRecords: function () {
         this.resultsStore = this.getGridStore();
@@ -127,6 +138,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
         this.resultsStore.load({
             scope: this,
             callback: function() {
+                console.log(me);
                 me.updatePreviewHelper();
             }
         });
@@ -151,68 +163,48 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
     },
 
     updatePreviewHelper: function () {
-        this.resultsGrid = this.getGrid();
-        this.resultsStore = this.getGridStore();
+        var me = Savanna.controller.Factory.getController('Savanna.search.controller.ResultsComponent');
+        me.resultsGrid = me.getGrid();
+        me.resultsStore = me.getGridStore();
 
-
-        var record = this.resultsStore.getAt(this.getStoreIndexOfPreviewIndex()),
-            component = this.getGrid().findParentByType('search_resultscomponent');
-
-        /*
-         array of uri's to get the metadata for these results
-         */
-
-        var metadataArray = [];
-
-        console.log(component.currentResultSet.store)
-
-        Ext.each(component.currentResultSet.store.data.items, function (record) {
-            metadataArray.push(record.get('uri'));
-        });
-
-        console.log(metadataArray);
-
-        this.getDocumentMetadata(component.currentResultSet, metadataArray);
-
-
-        /*
-            hm... it may make sense to pull all of the metadata stuff into here.  this method
-            below does not work when the grid is paged.  solution in progress above
-
-            var recordMetadata = component.currentResultSet.metadata.getById(record.get('uri')).get('datastore').data;
-
-         */
-
-
+        var record = me.resultsStore.getAt(me.getStoreIndexOfPreviewIndex()),
+            recordMetadata = me.getResultsComponent().currentResultSet.metadata.getById(record.data.uri);
 
         //this can happen when you hit next > 10 times/sec
-        if(!record){
-            setTimeout(this.updatePreviewHelper, 500);
-            this.setIsWaitingForPreviewResults ( true );
+        if(!record || !recordMetadata){
+            setTimeout(me.updatePreviewHelper, 500);
+            if(!record) {
+                me.setIsWaitingForPreviewResults ( true );
+            }
+            if(!recordMetadata) {
+                me.setIsWaitingForDocumentMetadata ( true );
+            }
             return;
         }
 
-        this.setIsWaitingForPreviewResults ( false );
+        me.setIsWaitingForPreviewResults ( false );
 
-        var win = this.previewWindow();
+        var win = me.previewWindow();
         //Show the contents
-        win.displayPreview(record.data, recordMetadata, this.previewIndex, this.resultsStore.totalCount);
+        win.displayPreview(record.data, recordMetadata.get('datastore'), me.previewIndex, me.resultsStore.totalCount);
         //Show the index and total
-        this.previewIndexAndTotalLabel().setText('Preview Result ' + (this.previewIndex + 1) + ' of ' + this.resultsStore.totalCount);
+        me.previewIndexAndTotalLabel().setText('Preview Result ' + (me.previewIndex + 1) + ' of ' + me.resultsStore.totalCount);
         //Enable/disable the prev and next buttons
-        if (this.previewIndex === 0) {
-            this.previewPrevButton().disable();
+        if (me.previewIndex === 0) {
+            me.previewPrevButton().disable();
         } else {
-            this.previewPrevButton().enable();
+            me.previewPrevButton().enable();
         }
-        if (this.previewIndex === this.resultsStore.totalCount - 1) {
-            this.previewNextButton().disable();
+        if (me.previewIndex === me.resultsStore.totalCount - 1) {
+            me.previewNextButton().disable();
         } else {
-            this.previewNextButton().enable();
+            me.previewNextButton().enable();
         }
     },
 
     getDocumentMetadata: function (results, uris) {
+
+        this.setIsWaitingForDocumentMetadata ( true );
 
         var metadataStore = Ext.create('Savanna.search.store.ResultsMetadata', {
             storeId: 'searchMetadata_' + results.id,
@@ -248,6 +240,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
                     }
                 }
                 results.metadata = metaStore;
+                this.setIsWaitingForDocumentMetadata ( false );
             }
         }
     },
@@ -255,7 +248,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
     updatePreview: function (){
         this.resultsGrid = this.getGrid();
         this.resultsStore = this.getGridStore();
-        if(this.getIsWaitingForPreviewResults()){
+        if(this.getIsWaitingForPreviewResults() || this.getIsWaitingForDocumentMetadata()){
             return;
         }
 
