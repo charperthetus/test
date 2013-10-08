@@ -15,13 +15,15 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
     requires: [
         'Savanna.controller.Factory'
     ],
-    refs: [{
-        ref: 'resultsComponent',             // this.getResultsComponent() should return the results component
-        selector: 'search_resultscomponent' //  xtype
-    }],
-    init: function () {
 
+    init: function () {
+        var me = this;
         this.control({
+            'search_resultscomponent':  {
+                'render': function(search) {
+                    me.component = search;  // temporary measure, pending deft conversion next week
+                }
+            },
             'search_resultscomponent panel[cls=results-dal]': {
                 'render': this.onDalRender
             },
@@ -78,6 +80,10 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
 
     //True if we are waiting for some preview results to show up.
     _isWaitingForPreviewResults: false,
+
+    getResultsComponent:function()  {
+        return this.component;
+    },
 
     //True if we are waiting for some preview results to show up.
     _isWaitingForDocumentMetadata: false,
