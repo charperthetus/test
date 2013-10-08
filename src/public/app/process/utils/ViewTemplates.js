@@ -75,7 +75,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
         return {
             font: '10pt Helvetica, Arial, sans-serif',
             stroke: this.darkText,
-            margin: 4,
+            margin: 4
         };
     },
 
