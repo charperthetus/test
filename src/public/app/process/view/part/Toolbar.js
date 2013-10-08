@@ -22,14 +22,14 @@ Ext.define('Savanna.process.view.part.Toolbar', {
 
     setupItems: function() {
         return [
-            {
-                text: '+ Add Step',
-                itemId: 'addstepbutton'
-            },
-            {
-                text: '+ Add Decision',
-                itemId: 'adddecisionbutton'
-            },
+//            {
+//                text: '+ Add Step',
+//                itemId: 'addstepbutton'
+//            },
+//            {
+//                text: '+ Add Decision',
+//                itemId: 'adddecisionbutton'
+//            },
             {
                 text: 'View',
                 menu: [{
@@ -39,7 +39,7 @@ Ext.define('Savanna.process.view.part.Toolbar', {
                     text: 'Collapse All Steps',
                     itemId: 'collapsesteps'
                 }]
-            },
+            }
         ];
     }
 });
