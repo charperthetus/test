@@ -48,6 +48,17 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.searchMap.SearchLocat
             'beforeitemclick': function() {
                 this.enableBubble('itemclick');
             }
+            ,
+            'beforerender': function(c) {
+                console.log('Render called ',c );
+                c.pagingToolbar = Ext.create(Ext.toolbar.Toolbar, {border: 3, style: {
+                    borderColor: 'black'
+                }});
+            },
+            'beforerefresh': function(c, eOpts){
+                c.pagingToolbar.removeAll();
+                c.pagingToolbar.add('Total Results: ' + this.store.getCount());
+            }
         }
     },
 
