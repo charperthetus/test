@@ -3,7 +3,8 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
     singleton: true,
 
     requires: [
-        'Ext.ComponentQuery'
+        'Ext.ComponentQuery',
+        'Savanna.process.utils.NodeEventHandlers'
     ],
 
     darkText: '#454545',
@@ -17,34 +18,9 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
             // the Node.location is at the center of each node
             locationSpot: go.Spot.Center,
             // handle mouse enter/leave events to show/hide the ports
-            mouseEnter: function (e, obj) {
-                Savanna.process.utils.ViewTemplates.toggleButtons(obj, true);
-            },
-            mouseLeave: function (e, obj) {
-                Savanna.process.utils.ViewTemplates.toggleButtons(obj, false);
-            },
-            mouseDrop: function (e, obj) {
-                var it;
-                var newlink;
-                obj.diagram.startTransaction('autoLink');
-                if (obj && obj.containingGroup) {
-                    obj.containingGroup.addMembers(obj.diagram.selection, true);
-                    it = obj.diagram.selection.iterator;
-                    while (it.next()) {
-                        newlink = { from: it.value.data.key, to: obj.data.key };
-                        // add the new link to the model
-                        obj.diagram.model.addLinkData(newlink);
-                    }
-                } else {
-                    it = obj.diagram.selection.iterator;
-                    while (it.next()) {
-                        newlink = { from: obj.data.key, to: it.value.data.key };
-                        // add the new link to the model
-                        obj.diagram.model.addLinkData(newlink);
-                    }
-                }
-                obj.diagram.commitTransaction('autoLink');
-            }
+            mouseEnter: Savanna.process.utils.NodeEventHandlers.onMouseEnter,
+            mouseLeave: Savanna.process.utils.NodeEventHandlers.onMouseLeave,
+            mouseDrop: Savanna.process.utils.NodeEventHandlers.onMouseDrop
         };
     },
 

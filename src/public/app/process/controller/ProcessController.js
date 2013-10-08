@@ -13,12 +13,6 @@ Ext.define('Savanna.process.controller.ProcessController', {
     ],
 
     control: {
-//        addstepbutton: {
-//            click: 'addStepClick'
-//        },
-//        adddecisionbutton: {
-//            click: 'addDecisionClick'
-//        },
         expandsteps: {
             click: 'expandStepsClick'
         },
@@ -41,12 +35,6 @@ Ext.define('Savanna.process.controller.ProcessController', {
         return this.callParent(arguments);
     },
 
-    addStepClick: function() {
-        console.log('add step'); //todo: remove console log statement and do something useful
-    },
-    addDecisionClick: function() {
-        console.log('add decision'); //todo: remove console log statement and do something useful
-    },
     toggleExpanded: function(expand) {
         var canvas = this.getCanvas();
         var diagram = canvas.diagram;
