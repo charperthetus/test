@@ -10,6 +10,9 @@ Ext.define('Savanna.upload.controller.UploadController', {
 
     currentPollingIds:[],
     currentlyPolling:false,
+    ingestedCount:0, //Do not use -1s because we are incrimenting the value (this.ingestedCount++ , this.currentlyUploadingCount+=...)
+    failedCount:0,
+    currentlyUploadingCount:0,
 
     init: function() {
         this.control({
@@ -32,14 +35,17 @@ Ext.define('Savanna.upload.controller.UploadController', {
     },
     statics: {
         formatFileSize:function(bytes){
-            var val = (bytes < 1048576) ? bytes/1024  : bytes/1048576 ;
-            var suffix = (bytes < 1048576) ? 'KB'  : 'MB' ;
-            var formatted = Ext.util.Format.number(val,'0.00');
-            formatted = formatted.replace(/.00/,""); // strip .00 off the string
-            formatted = formatted.replace(/(.\d)0/,"$1"); // if .x0 capture x and strip 0 off end
-//            This should work but for some reasome the formatter in our build has a bug. this works on the ext jsfiddle page
-//            var formatted = Ext.util.Format.number(val,'0.##');
-            return formatted + ' ' + suffix;
+            var formattedNumber,
+                suffix;
+            if (bytes < 1048576){
+                formattedNumber = Ext.util.Format.number( bytes/1024 ,'0');
+                suffix = 'KB';
+            }else{                                                    // '0.#' should work here but our build has a bug, this works on the ext jsfiddle page.
+                formattedNumber = Ext.util.Format.number( bytes/1048576 ,'0.0');
+                suffix = 'MB';                                        // So we need to do this.
+                formattedNumber = formattedNumber.replace(/\.0/,"");
+            }
+            return formattedNumber + ' ' + suffix;
         }
     },
 
@@ -90,12 +96,12 @@ Ext.define('Savanna.upload.controller.UploadController', {
      */
     uploadFiles: function(files,component){
         var file;
+        this.currentlyUploadingCount += files.length;
         var currentUploadsView = component.up('upload_uploadcomponent').down('upload_part_currentuploads');
         currentUploadsView.setVisible(true);
         var uploadGrid = currentUploadsView.down('#uploadsDataGrid');
         for (var i = 0 ; i < files.length ; i++){
             file = files[i];
-
             var tempId = Ext.id();
             this.uploadFileViaXMLHttpRequest(this.buildUploadUrl() , file,  uploadGrid, tempId);
             uploadGrid.store.add({ status:'pending', fileName: file.name , fileSize: file.size , progress:'Queued', fileId: tempId});
@@ -129,7 +135,7 @@ Ext.define('Savanna.upload.controller.UploadController', {
 
     pollForDocuments: function(uploadGrid){
         Ext.Ajax.request({
-            url: this.buildUploadUrl(true),  // TODO: I don't think I need to do this anymore, check tomorrow (or before checkin at least)
+            url: this.buildUploadUrl(true),
             method: 'POST',
             cors: true,
             headers: {
@@ -149,19 +155,19 @@ Ext.define('Savanna.upload.controller.UploadController', {
             var pollingId = this.currentPollingIds[i]
             var documentStatus = responseObject[pollingId];
             if (documentStatus === undefined){
-                continue;                           //TODO: this needs to be fixed when nick gets the fix in
+                continue;                           //polling immediately, one may not be returned yet
             }
             // Update my store
             var modelIndex = uploadGrid.store.find('fileId',pollingId);
             var model = uploadGrid.store.getAt(modelIndex);
-            model.data.status = (documentStatus.status) ? documentStatus.status : 'pending'; //TODO: remove these hack status updates and find out why values are null.
-            model.data.progress = (documentStatus.statusText) ? documentStatus.statusText : 'Uploading document';
+            model.data.status = (documentStatus.status !== 'unknown') ? documentStatus.status : 'pending';
+            model.data.progress = (documentStatus.statusText !== 'unknown') ? documentStatus.statusText : 'Uploading document';
             if (!(model.data.docUri) && documentStatus.documentUri){
                 model.data.docUri = documentStatus.documentUri;
             }
-            console.log('polling response object =\n {\n   statusText : ' + documentStatus.statusText + ' ,\n   status : ' + documentStatus.status +' ,\n   documentUri : ' + documentStatus.documentUri + '\n }');
             if (documentStatus.status === 'completed' || documentStatus.status === 'failed' ){
                 this.currentPollingIds.splice(i,1);
+                (documentStatus.status === 'completed') ? this.ingestedCount++ : this.failedCount++;
             }
         }
 
@@ -177,6 +183,28 @@ Ext.define('Savanna.upload.controller.UploadController', {
         }
 
         uploadGrid.getView().refresh();
+
+        this.updateGridStatusLabel(uploadGrid);
+
+    },
+
+    updateGridStatusLabel: function(uploadGrid){
+        var uploadGridStatusLabel = uploadGrid.up('#currentUploadsView').down('#uploadProgressLabel');
+        var uploadGridStatusText;
+        if (this.currentlyPolling === false){
+            uploadGridStatusText = (this.ingestedCount !== 1) ? this.ingestedCount + ' uploads have completed.' : '1 upload has completed.';
+            if(this.failedCount > 0){
+                uploadGridStatusText += '\t';
+                uploadGridStatusText +=  (this.failedCount !== 1) ? this.failedCount + ' uploads have failed.' : '1 upload has failed.';
+            }
+            this.currentlyUploadingCount = 0;
+            this.ingestedCount = 0;
+            this.failedCount = 0;
+        }else{
+            var totalFinished = this.ingestedCount + this.failedCount;
+            uploadGridStatusText = 'Ingestion in progress (' + totalFinished + '/' + this.currentlyUploadingCount + ')';
+        }
+        uploadGridStatusLabel.setText(uploadGridStatusText);
     },
 
     clearFinishedUploads: function(button){
@@ -190,6 +218,7 @@ Ext.define('Savanna.upload.controller.UploadController', {
         uploadGrid.store.remove(finished);
         if (uploadGrid.store.count() === 0){
             var currentUploadsView = uploadGrid.up('upload_part_currentuploads');
+            currentUploadsView.down('#uploadProgressLabel').setText('');
             currentUploadsView.setVisible(false);
         }
     },

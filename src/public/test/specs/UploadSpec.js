@@ -63,8 +63,7 @@ describe('Savanna.upload', function() {
 
                 it('should add a drop handler to the fileDropZone panel', function () {
                     controller.setupFileDrop(dropZone);
-//                    expect(dropZone.hasListener('ondrop')).toBeTruthy(); // TODO:figure out how to do this (check for ondrop listener)
-//                    expect(dropZone.ondrop).toBeTruthy();
+                    expect(dropZone.getEl().dom.ondrop).not.toBeNull();
                 });
 
             });
@@ -106,10 +105,9 @@ describe('Savanna.upload', function() {
             });
 
             describe('chooseFilesHandler', function() {
-                it('should programattically click the fileBrowserButton', function () {
-                    spyOn(controller,'fileBrowserChangeHandler');
+                it('should add the fileBrowser to the view', function () {
                     controller.chooseFilesHandler(chooseFilesButton);
-//                    expect(controller.fileBrowserChangeHandler).toHaveBeenCalled(); // TODO: can't do this because it's from an event, can I test this?
+                    expect(fileBrowserButton.isVisible()).toBeTruthy();
                 });
             });
 
@@ -136,10 +134,10 @@ describe('Savanna.upload', function() {
 
         describe('formatFileSize', function() {
             it('should format the file size correctly', function () {
-                expect(Savanna.upload.controller.UploadController.formatFileSize(3145728)).toEqual('3 MB');
-                expect(Savanna.upload.controller.UploadController.formatFileSize(51200)).toEqual('50 KB');
-                expect(Savanna.upload.controller.UploadController.formatFileSize(10253)).toEqual('10.01 KB');
-                expect(Savanna.upload.controller.UploadController.formatFileSize(10342)).toEqual('10.1 KB');
+                expect(Savanna.upload.controller.UploadController.formatFileSize(3145728)).toEqual('3 MB');// Make sure we strip '.0' from '3.0'
+                expect(Savanna.upload.controller.UploadController.formatFileSize(52428800)).toEqual('50 MB');// Make sure we don't strip the '0' from '50'
+                expect(Savanna.upload.controller.UploadController.formatFileSize(5662311)).toEqual('5.4 MB');// Make sure we show tenths decimal when present
+                expect(Savanna.upload.controller.UploadController.formatFileSize(64307)).toEqual('63 KB');// Make sure we don't show tenths decimal on KB when it exist and round up
             });
         });
 
@@ -166,7 +164,7 @@ describe('Savanna.upload', function() {
                 errorRaised = true;
                 return true;
             };
-            files = [{name:'threeMegabyteFile', size: 3145728},{name:'fiftyKilobyteFile', size: 51200},{name:'tenPointZeroOneKilobyteFile', size: 10253}];/* 3MB, 50KB & 10.01KB */
+            files = [{name:'threeMegabyteFile', size: 3145728, fileId:'test1'},{name:'fiftyKilobyteFile', size: 51200, fileId:'test2'},{name:'tenPointZeroOneKilobyteFile', size: 10253, fileId:'test3'}];/* 3MB, 50KB & 10.01KB */
             spyOn(controller,'uploadFileViaXMLHttpRequest');
             controller.uploadFiles(files,uploadGrid);
         });
@@ -195,10 +193,24 @@ describe('Savanna.upload', function() {
                 expect(currentUploadsView.isVisible()).toBeTruthy();
             });
             it('should update the models status when we receive polling updates', function () {
-                var modelIndex = uploadGrid.store.find('fileName','threeMegabyteFile');
-                var model = uploadGrid.store.getAt(modelIndex);
-                model.data.status = 'completed';
-//                expect(currentUploadsView.isVisible()).toBeTruthy();//TODO - test this
+                var fixture = Ext.clone(ThetusTestHelpers.Fixtures.UploadFixture);
+                var testResponse  = {};
+                testResponse.responseText = JSON.stringify(fixture.pollingResponse);
+                controller.currentPollingIds = ['test1','test2','test3'];
+                uploadGrid.store.each(function(record){
+                    storeIndex = this.indexOf(record);
+                    record.data.fileId = controller.currentPollingIds[storeIndex];
+                },uploadGrid.store);
+                controller.currentPollingIds = ['test1','test2','test3'];
+                controller.onBatchPollingRequestLoad( testResponse , null, uploadGrid);
+                uploadGrid.store.each(function(record){
+                    var fileStatus = fixture.pollingResponse[record.data.fileId];
+                    expect(record.data.progress).toEqual(fileStatus.statusText);
+                    expect(record.data.status).toEqual(fileStatus.status);
+                    expect(record.data.docUri).toEqual(fileStatus.documentUri);
+                });
+                expect(controller.currentPollingIds).toEqual([]);
+                fixture = null;
             });
             it('should remove all finished (completed and failed) files from grid when user clicks "clear finished"', function () {
                 uploadGrid.store.each(function(record){
