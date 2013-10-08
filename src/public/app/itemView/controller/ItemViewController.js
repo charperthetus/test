@@ -15,6 +15,13 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         'Savanna.itemView.view.itemView.components.AutoCompleteWithTags'
     ],
 
+    refs: [
+        {
+            ref: 'itemview',
+            selector: 'itemview_itemviewer'
+        }
+    ],
+
     constructor: function (options) {
         this.opts = options || {};
 
@@ -22,7 +29,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     },
 
     init: function (app) {
-
+        var me = this;
         this.control({
             'itemview_header #auto_complete_text_box': {
                 keyup: this.handleAutoCompleteTextKeyUp
@@ -30,6 +37,14 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
             'itemview_header #removeTerm': {
                 click: this.handleRemoveTagClick
+            },
+
+            // Slideshow events
+            '#nav_left' : {
+                click: this.onNavLeft.bind(me)
+            },
+            '#nav_right' : {
+                click: this.onNavRight.bind(me)
             }
         });
 
@@ -206,14 +221,58 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     },
 
     setupImages: function (data, view) {
-        var imagesGrid = view.queryById('imagesGrid'),
-            i;
+        var me = this,
+            thumbnail_list = view.queryById('thumbnail_list');
+        Ext.Array.each(data.relatedCharacteristics, function(name, index) {
 
-        for (i = 0; i < data.relatedCharacteristics.length; i++) {
-            imagesGrid.store.add({
-                url: SavannaConfig.savannaUrlRoot + '/preview2/?filestoreUri=' + data.relatedCharacteristics[i] + '&width=80&height=80'
+            // TODO: Define this view elsewhere?
+            var thumbnail = Ext.create('Ext.Img', {
+                height: 100,
+                src: SavannaConfig.savannaUrlRoot + '/preview2/?filestoreUri=' + data.relatedCharacteristics[index],
+                float: true,
+
+                // TODO: Need to get this data from the service (not there yet)
+                //alt: this.description,
+                //title: this.title,
+                //isFeatured: this.isFeatured,
+                listeners: {
+                    click: {
+                        element: 'el',
+                        fn: me.onChangeImage.bind(me)
+                    }
+                }
             });
-        }
+
+            // TODO: Load featured Image on instantiation
+            //thumbnail.isFeatured = this.isFeatured;
+            thumbnail_list.add(thumbnail);
+        });
+    },
+
+    // Scroll Left Button
+    onNavLeft: function() {
+        var gallery = this.getItemview().queryById('thumbnail_list');
+        gallery.scrollBy(-450, 0, true);
+    },
+
+    // Scroll Right Button
+    onNavRight: function() {
+        var gallery = this.getItemview().queryById('thumbnail_list');
+        gallery.scrollBy(450, 0, true);
+    },
+
+    // Selecting an image to expand
+    onChangeImage: function(btn, image) {
+        var selectedImage = image.src,
+            jumboImage = this.getItemview().queryById('image_primary');
+        
+        jumboImage.setBodyStyle({
+            backgroundImage: 'url(' + selectedImage + ')',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center center',
+            backgroundSize: 'cover',
+            backgroundColor: 'transparent'
+        });
     },
 
     setupProperties: function (data, view) {
