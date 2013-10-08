@@ -66,16 +66,13 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
             },
 
             {
-                text:'Imgs',
-                // ui: 'flat-toolbar-button'
+                text:'Imgs'
             },
             {
-                text:'List',
-                // ui: 'flat-toolbar-button'
+                text:'List'
             },
             {
-                text:'Map',
-                // ui: 'flat-toolbar-button'
+                text:'Map'
             }
         ]
     }

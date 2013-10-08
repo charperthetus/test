@@ -60,7 +60,6 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.SearchMap', {
                             xtype: 'button',
                             itemId: 'mapZoomToMenu',
                             text: 'Zoom To',
-                            // ui: 'flat-toolbar-button',
                             menu: [
                                 {
                                     itemId: 'zoomToWholeWorld',
@@ -78,7 +77,6 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.SearchMap', {
                         {
                             xtype: 'button',
                             itemId: 'clearLocationSearch',
-                            // ui: 'link',
                             text: 'Clear Location Search'
                         }
                     ]
