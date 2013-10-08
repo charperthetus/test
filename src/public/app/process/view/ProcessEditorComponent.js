@@ -29,6 +29,7 @@ Ext.define('Savanna.process.view.ProcessEditorComponent', {
             xtype: 'process_toolbar'
         }
     ],
+    items: [],
 
     initComponent: function() {
         this.items = this.setupItems();
