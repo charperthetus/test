@@ -28,13 +28,12 @@ Ext.define('Savanna.process.controller.ProcessController', {
         clearJSON: {
             click: 'clearJSONClick'
         },
-        canvas: {},
-        metadata: {}
+        canvas: {
+            boxready: 'loadJSONClick'
+        },
+        metadata: {
+        }
     },
-    init: function() {
-        return this.callParent(arguments);
-    },
-
     toggleExpanded: function(expand) {
         var canvas = this.getCanvas();
         var diagram = canvas.diagram;
@@ -57,16 +56,36 @@ Ext.define('Savanna.process.controller.ProcessController', {
     loadJSONClick: function() {
         var canvas = this.getCanvas();
         var metadata = this.getMetadata();
-        Savanna.process.utils.ViewTemplates.load(canvas.diagram, metadata.down('#JSONtextarea'));
+        this.load(canvas.diagram, metadata.down('#JSONtextarea'));
     },
     saveJSONClick: function() {
         var canvas = this.getCanvas();
         var metadata = this.getMetadata();
-        Savanna.process.utils.ViewTemplates.save(canvas.diagram, metadata.down('#JSONtextarea'));
+        this.save(canvas.diagram, metadata.down('#JSONtextarea'));
     },
     clearJSONClick: function() {
         var canvas = this.getCanvas();
         var metadata = this.getMetadata();
-        Savanna.process.utils.ViewTemplates.clear(canvas.diagram, metadata.down('#JSONtextarea'));
+        this.clear(canvas.diagram, metadata.down('#JSONtextarea'));
+    },
+
+        // Show the diagram's model in JSON format that the user may have edited
+    save: function(diagram, textarea) {
+        var str = diagram.model.toJson();
+        textarea.setValue(str);
+    },
+
+    load: function(diagram, textarea) {
+       var str = textarea.value;
+       diagram.model = go.Model.fromJson(str);
+       diagram.undoManager.isEnabled = true;
+    },
+
+    clear: function(diagram, textarea) {
+       var str = '{ "class": "go.GraphLinksModel", "nodeDataArray": [ {"key":-1, "category":"Start"} ], "linkDataArray": [ ]}';
+       diagram.model = go.Model.fromJson(str);
+       textarea.setValue(str);
+       diagram.undoManager.isEnabled = true;
     }
+
 });
