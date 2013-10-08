@@ -10,42 +10,13 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
     extend: 'Ext.panel.Panel',
     alias: 'widget.search_resultspreviewcontent',
     header: false,
-    requires: [
-
-    ],
     overflowY: 'auto',
 
     items: [
         {
             xtype: 'panel',
-
-            height:'100%',
             itemId: 'previewcontent',
-            tpl: new Ext.XTemplate(
-                '<table>',
-                '<tr><td>{classification}</td></tr>',
-                '<tr><td><b>{docTitle}</b></td></tr>',
-                '<tr><td><b>Classification:</b><br>{classification}</td></tr>',
-                '<tr><td><b>Authors:</b><br>{authors}</td></tr>',
-                '<tr><td><b>Abstract:</b><br>{abstract}</td></tr>',
-                '<tr><td><b>Description:</b><br>{description}</td></tr>',
-                '<tr><td><b>Publication Date:</b><br>{published-date}</td></tr>',
-                '<tr><td><b>Publisher:</b><br>{publisher}</td></tr>',
-                '<tr><td><b>Publication Name:</b><br>{pubName}</td></tr>',
-                '<tr><td><b>Producer:</b><br>{producer}</td></tr>',
-                '<tr><td><b>Producer Category:</b><br>{producer-category}</td></tr>',
-                '<tr><b>Source Organization:</b><br>{document-organization}</td></tr>',
-                '<tr><td><b>Source Language:</b><br>{document-language}</td></tr>',
-                '<tr><td><b>Source Country:</b><br>{document-country}</td></tr>',
-                '<tr><td><b>Pages:</b><br>{pageCount}</td></tr>',
-                '<tr><td><b>Ingest Date:</b><br>{ingest-date}</td></tr>',
-                '<tr><td><b>Last Edited Date:</b><br>{modifiedDate}</td></tr>',
-                '<tr><td><b>Original File Name:</b><br>{document-original-name}</td></tr>',
-                '<tr><td><b>File Format:</b><br>{document-type}</td></tr>',
-                '<tr><td><b>URL:</b><br>{retrieval-url}</td></tr>',
-                '<tr><td><b>Related Content:</b><br>{relatedDocs}</td></tr>',
-                '</table>'
-            )
+            html: ''
         }
     ],
 
@@ -120,22 +91,73 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
 
 
     populate: function (record, metadata, index, totalResultsCount) {
+        var capco = {'U': 'UNCLASSIFIED'},
+            metaHTML = '<table>',
+            row;
 
-        var capco = {'U':'UNCLASSIFIED'};
+        var primaryKeys = [
+            'docTitle',
+            'uri_DEBUG',
+            'classification',
+            'authors',
+            'abstract',
+            'document-description',
+            'published-date',
+            'publisher',
+            'pubName',
+            'producer',
+            'producer-category',
+            'distributor',
+            'document-organization',
+            'document-language',
+            'document-country',
+            'pageCount',
+            'ingest-date',
+            'modifiedDate',
+            'document-original-name',
+            'document-type',
+            'retrieval-url',
+            'relatedDocs',
+            'document_comments',
+            'ingest-state',
+            'keyCitationPlain',
+            'keyCitationHtml'
+        ];
 
-        var metadataObject = {};
+        var added = {};
 
-        Ext.each(metadata.data.items, function(item)    {
-            if(item.data.key.toLowerCase().indexOf('date') !== -1)  {
-                metadataObject[item.data.key] = Ext.Date.format(new Date(item.data.value), 'F d, Y');
-            }  else {
-                metadataObject[item.data.key] = item.data.value;
+        /*
+        primary attributes display first
+         */
+        Ext.each(primaryKeys, function (key) {
+            Ext.each(metadata.data.items, function (item) {
+                if (item.data.key === key) {
+                    row = '<tr><td class="meta-displaylabel">' + item.data.displayLabel + '</td></tr><tr><td class="meta-value">' + item.data.value + '</td></tr>';
+                    metaHTML += row;
+                    added[item.data.key] = item.data.value;
+                }
+            });
+        });
+
+        /*
+        other dynamic attributes display below the primary attributes
+         */
+        Ext.each(metadata.data.items, function (item) {
+            if (!added[item.data.key]) {
+                if (item.data.key.toLowerCase().indexOf('date') !== -1) {
+                    item.data.value = Ext.Date.format(new Date(item.data.value), 'F d, Y');
+                }
+                if (item.data.key === 'classification') {
+                    item.data.value = capco[item.data.value];
+                }
+                row = '<tr><td class="meta-displaylabel">' + item.data.displayLabel + '</td></tr><tr><td class="meta-value">' + item.data.value + '</td></tr>';
+                metaHTML += row;
             }
         });
 
-        metadataObject.classification = capco[metadataObject.classification];
+        metaHTML += '</table>';
 
-        this.queryById('previewcontent').update(metadataObject);
+        this.queryById('previewcontent').update(metaHTML);
 
         if (record && record.title) {
             var win = this.findParentByType('search_resultspreviewwindow');
@@ -147,5 +169,4 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
         }
 
     }
-
 });

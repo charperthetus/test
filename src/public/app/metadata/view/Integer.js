@@ -36,9 +36,11 @@ Ext.define('Savanna.metadata.view.Integer', {
         this.initValues(config);
         var me = this;
 
-        this.on('beforerender', Ext.bind(function() {
+        this.on('beforerender', Ext.bind(function () {
             me.down('#displayLabelItem').text = me.displayLabel;
-            me.down('#displayValue').text = me.value.toLocaleString();
+            if (me.value) {
+                me.down('#displayValue').text = me.value.toLocaleString();
+            }
 
         }, this));
     }
