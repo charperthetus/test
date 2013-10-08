@@ -1,6 +1,6 @@
 {
     "name": "Savanna",
     "requires" : [
-        "deft@0.9.0?"
+        "deft@0.9.1?"
     ]
 }
