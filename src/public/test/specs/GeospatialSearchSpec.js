@@ -51,11 +51,6 @@ describe('Search Map Component', function () {
 
     });
 
-//    beforeEach(function(){
-//        fixtures = Ext.clone(ThetusTestHelpers.Fixtures.LocationSources);
-//        ThetusTestHelpers.ExtHelpers.createTestDom();
-//        view = Ext.create('Savanna.search.view.searchComponent.searchBody.SearchMap', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
-//    });
     afterEach(function () {
         if (server) {
             server.restore();
@@ -70,24 +65,18 @@ describe('Search Map Component', function () {
 
     describe('View', function () {
 
-
         var searchMap = null;
-
         var mapCanvas = null;
-
         var locationSearch = null;
-
         var mapSearchComboBox = null;
-
         var searchComponent = null;
-
         var resultsComponent = null;
-
         var searchMapComponent = null;
-
         var resultsController = null;
-
         var searchController = null;
+        var mapZoomToPolygonButton = null;
+        var mapClearLocationSearch = null;
+        var mapDrawSearchPolygonButton = null;
 
         beforeEach(function () {
             searchComponent = Ext.create('Savanna.search.view.SearchComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
@@ -104,9 +93,9 @@ describe('Search Map Component', function () {
             mapCanvas = searchComponent.down('#searchMapCanvas');
             locationSearch = searchComponent.down('#drawLocationSearch');
             mapSearchComboBox = searchComponent.down('#searchcombobox');
-
-
-
+            mapZoomToPolygonButton = searchComponent.down('#mapZoomToMenu');
+            mapClearLocationSearch = searchComponent.down('#clearLocationSearch');
+            mapDrawSearchPolygonButton = searchComponent.down('#drawLocationSearch');
         });
 
         afterEach(function()    {
@@ -135,8 +124,172 @@ describe('Search Map Component', function () {
             expect(mapCanvas instanceof Savanna.search.view.searchComponent.searchBody.searchMap.Canvas).toBeTruthy();
         });
 
-        it('should have a toolbar instance', function () {
+        it('should have a search location tool instance', function () {
             expect(mapSearchComboBox instanceof Savanna.search.view.searchComponent.searchBody.searchMap.SearchLocationComboBox).toBeTruthy();
+        });
+
+        it('should have a zoom to menu button instance', function () {
+            expect(mapZoomToPolygonButton instanceof Ext.button.Button).toBeTruthy();
+        });
+
+        it('should have a Clear Location Search instance', function () {
+            expect(mapClearLocationSearch instanceof Ext.button.Button).toBeTruthy();
+        });
+
+        it('should have a Draw Search Polygon instance', function () {
+            expect(mapDrawSearchPolygonButton instanceof Ext.button.Button).toBeTruthy();
+        });
+    });
+
+    describe('Methods', function () {
+
+        var searchComponent = null;
+        var searchController = null;
+        var resultsController = null;
+        var mapCanvas = null;
+        var mapDrawSearchPolygonButton = null;
+
+        beforeEach(function () {
+
+            searchComponent = Ext.create('Savanna.search.view.SearchComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
+            searchController = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
+            resultsController = Savanna.controller.Factory.getController('Savanna.search.controller.ResultsComponent');
+            mapCanvas = searchComponent.down('#searchMapCanvas');
+            mapDrawSearchPolygonButton = searchComponent.down('#drawLocationSearch');
+
+        });
+
+        afterEach(function () {
+            if (searchComponent) {
+                searchComponent.destroy();
+                searchComponent = null;
+            }
+
+            searchController = null;
+            resultsController = null;
+        });
+
+        describe('Set up map', function () {
+
+            var extent = null;
+
+            beforeEach(function () {
+                searchController.loadDefaultLayer(mapCanvas);
+                searchController.loadVectorLayer(mapCanvas);
+                extent = new OpenLayers.Bounds(2.0017225, 48.485857, 2.7048475, 49.188982);
+                store = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.SearchLocation');
+
+            });
+
+            it('should have an base layer loaded', function () {
+                expect(mapCanvas.map.layers[0]).toBeTruthy();
+            });
+
+            it('should create a drawFeature and searchLayer instance', function (){
+                expect(mapCanvas.searchLayer).toBeTruthy();
+                expect(mapCanvas.drawFeature).toBeTruthy();
+
+            });
+
+            it('should activate the drawFeature instance', function () {
+                searchController.activateDrawFeature(mapDrawSearchPolygonButton);
+                expect(mapCanvas.drawFeature.active).toBeTruthy();
+            });
+
+            it('should zoom to a location search record', function () {
+                var readMethod = 'GET';
+
+                expect(store.getTotalCount()).toBe(0);
+
+                var testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(store.getProxy(), 'read', readMethod);
+
+                server.respondWith(readMethod, testUrl, fixtures.locationData);
+
+                store.load();
+
+                server.respond({
+                    errorOnInvalidRequest: true
+                });
+
+                var comboBox = searchComponent.down('search_searchlocationcombobox');
+                var viewBox = store.data.items[0].data.viewBox;
+                var zoomToLocButton = {};
+                zoomToLocButton.parentComboBox = comboBox;
+                zoomToLocButton.viewBox = viewBox;
+                searchController.zoomToLocation(zoomToLocButton);
+                var currentExtent = mapCanvas.map.getExtent();
+                expect(currentExtent.top == extent.top && currentExtent.left == extent.left && currentExtent.right == extent.right && currentExtent.bottom == extent.bottom).toBeTruthy();
+            });
+
+
+            describe('adding a polygon to the map', function () {
+
+                var zoomToButtonMenu = null;
+                var menuSelectedAreaOption = null;
+                var menuWholeWorldOption = null;
+                var mapCanvasOut = null;
+
+                beforeEach(function () {
+                    var points = [
+                        new OpenLayers.Geometry.Point(0, 0),
+                        new OpenLayers.Geometry.Point(0, 100),
+                        new OpenLayers.Geometry.Point(100, 100),
+                        new OpenLayers.Geometry.Point(100, 0)
+                    ];
+
+                    var ring = new OpenLayers.Geometry.LinearRing(points);
+                    var polygon = new OpenLayers.Geometry.Polygon([ring]);
+                    var polygonFeature = new OpenLayers.Feature.Vector(polygon);
+                    mapCanvas.searchLayer.addFeatures([polygonFeature]);
+
+                    zoomToButtonMenu = searchComponent.down('#mapZoomToMenu');
+                    menuSelectedAreaOption = searchComponent.down('#zoomToSelectedArea');
+                    menuWholeWorldOption = searchComponent.down('#zoomToWholeWorld');
+                    mapCanvas.map.zoomToMaxExtent();
+                    mapCanvasOut = mapCanvas.map.maxExtent;
+
+                });
+
+                it('should have a searchLayer on the search map and results map', function () {
+                    expect(mapCanvas.searchLayer.features.length > 0).toBeTruthy();
+                    var resultsMap = searchComponent.down('#resultMapCanvas');
+                    expect(resultsMap.searchLayer.features.length > 0).toBeTruthy();
+                });
+
+                it('should enable the zoom to selected area option', function () {
+                    searchController.enableZoomMenu(zoomToButtonMenu);
+                    expect(menuSelectedAreaOption.disabled == false).toBeTruthy();
+                });
+
+                it('should zoom to selected area', function () {
+                    searchController.zoomToSearchExtent(menuSelectedAreaOption);
+                    expect(mapCanvas.map.maxExtent == mapCanvas.searchLayer.maxExtent).toBeTruthy();
+                });
+
+                it('should zoom to whole world', function () {
+                    searchController.zoomToSearchExtent(menuWholeWorldOption);
+                    expect(mapCanvas.map.maxExtent == mapCanvasOut).toBeTruthy();
+                });
+
+                it('should remove the polygon when the Clear Location Search is selected', function () {
+                    var clearLocationButton = searchComponent.down('#clearLocationSearch');
+                    searchController.clearDrawFeature(clearLocationButton);
+                    expect(mapCanvas.searchLayer.features.length > 0).toBeFalsy();
+                });
+
+                it('should disable the zoom to selected area when the polygon is removed', function () {
+                    mapCanvas.searchLayer.removeAllFeatures();
+                    searchController.enableZoomMenu(zoomToButtonMenu);
+                    expect(menuSelectedAreaOption.disabled == true).toBeTruthy();
+                });
+
+                it('should remove the search polygon from the search map and results map', function () {
+                    mapCanvas.searchLayer.removeAllFeatures();
+                    expect(mapCanvas.searchLayer.features.length > 0).toBeFalsy();
+                    var resultsMap = searchComponent.down('#resultMapCanvas');
+                    expect(resultsMap.searchLayer.features.length > 0).toBeFalsy();
+                });
+            });
         });
     });
 

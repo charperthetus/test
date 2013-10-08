@@ -861,6 +861,44 @@ describe('Search Results', function () {
             expect(sources.store).toBeTruthy();
         });
 
+
+        describe('populate map with results', function () {
+
+            var searchStore = null;
+            var fixtures = null;
+
+            beforeEach(function () {
+
+                fixtures = Ext.clone(ThetusTestHelpers.Fixtures.SearchResults);
+
+                searchStore = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.SearchResults', { autoLoad: false });
+
+                // now set up server to get store data
+                server = new ThetusTestHelpers.FakeServer(sinon);
+
+                var readMethod = 'POST',
+                    testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(searchStore.getProxy(), 'read', readMethod);
+
+                server.respondWith(readMethod, testUrl, fixtures.searchResults);
+
+                searchStore.load();
+
+                server.respond({
+                    errorOnInvalidRequest: true
+                });
+
+            });
+
+            it('should populate the map with search results', function () {
+                var scope = searchComponent.down('#resultsdals');
+                var resultsMap = searchComponent.down('#resultMapCanvas');
+                var results = {};
+                results.store = searchStore;
+                resultsController.loadPointsFromStore(results, scope);
+                expect(resultsMap.resultsLayer.features.length > 0).toBeTruthy();
+            });
+        });
+
         describe('onDalRender', function () {
 
             var dalItem;

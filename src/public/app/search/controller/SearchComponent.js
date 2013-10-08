@@ -550,8 +550,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
     onFeatureAdded: function (event) {
         // Scope: drawFeature
-        var drawControl = this.map.getControlsBy("id", "PolygonDrawTool")[0];
-        drawControl.deactivate();
+        this.drawFeature.deactivate();
         this.fireEvent('searchPolygonAdded', this);
     },
 
@@ -586,6 +585,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         var mapCanvas = comboBoxButton.parentComboBox.up('search_searchmap').down('search_map_canvas');
         var extent = new OpenLayers.Bounds(viewBox.west, viewBox.south, viewBox.east, viewBox.north);
         mapCanvas.map.zoomToExtent(extent, true);
+        console.log(mapCanvas.map.maxExtent);
     },
 
     enableZoomMenu: function (button) {
