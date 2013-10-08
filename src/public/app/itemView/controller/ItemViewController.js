@@ -29,7 +29,6 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     },
 
     init: function (app) {
-        var me = this;
         this.control({
             'itemview_header #auto_complete_text_box': {
                 keyup: this.handleAutoCompleteTextKeyUp
@@ -41,10 +40,10 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
             // Slideshow events
             '#nav_left' : {
-                click: this.onNavLeft.bind(me)
+                click: this.onNavLeft
             },
             '#nav_right' : {
-                click: this.onNavRight.bind(me)
+                click: this.onNavRight
             }
         });
 
