@@ -27,7 +27,6 @@
     </distributionManagement>
 
     <dependencies>
-        
         <dependency>
             <groupId>com.thetus.savanna.html5</groupId>
             <artifactId>Savanna-Html-UIKit</artifactId>
@@ -52,7 +51,7 @@
         </dependency>
     </dependencies>
 
-    <variables>
+    <properties>
         <jscover.inputdir>/src/public/test/reports/jasmine</jscover.inputdir>
         <jscover.outputdir>jasmine</jscover.outputdir>
         <anttasks.dir>src/public</anttasks.dir>
@@ -62,7 +61,7 @@
         <jscover.reportdir>../../target/</jscover.reportdir>
 
         <surefire.outputdir>surefire-reports</surefire.outputdir>
-    </variables>
+    </properties>
 
     <build>
         <plugins>
@@ -109,15 +108,15 @@
                 </executions>
             </plugin>
 
-            <!--
-                Clean out the local test coverage report directory
-            -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-clean-plugin</artifactId>
                 <version>2.4.1</version>
                 <configuration>
                     <filesets>
+                        <!--
+                            Clean out the local test coverage report directory
+                        -->
                         <fileset>
                             <directory>${project.basedir}${jscover.inputdir}</directory>
                             <includes>
@@ -125,8 +124,9 @@
                             </includes>
                             <followSymlinks>false</followSymlinks>
                         </fileset>
-
-                        <!-- This is to enable cleaning for the Thetus-UIKit -->
+                        <!--
+                            This is to enable cleaning for the Thetus-UIKit
+                        -->
                         <fileset>
                             <directory>${project.basedir}/src/public/packages</directory>
                             <includes>
@@ -138,6 +138,30 @@
                 </configuration>
             </plugin>
 
+            <!--
+                Copy over the uikit to the appropriate package
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>2.2</version>
+                <executions>
+                    <execution>
+                        <id>unpack-html-uikit</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>unpack-dependencies</goal>
+                        </goals>
+
+                        <configuration>
+                            <includeGroupIds>com.thetus.savanna.html5</includeGroupIds>
+                            <includeArtifactIds>Savanna-Html-UIKit</includeArtifactIds>
+                            <includeTypes>zip</includeTypes>
+                            <outputDirectory>${basedir}/src/public/packages</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <!--
             =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
             THE STUFF BELOW IS NOT PART OF THE BUILD. IT'S JUST FOR SITE GENERATION
@@ -230,30 +254,6 @@
                 </executions>
             </plugin>
 
-            <!-- 
-                Copy over the uikit to the appropriate package
-            -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <version>2.2</version>
-                <executions>
-                    <execution>
-                        <id>unpack-html-uikit</id>
-                        <phase>initialize</phase>
-                        <goals>
-                            <goal>unpack-dependencies</goal>
-                        </goals>
-
-                        <configuration>
-                            <includeGroupIds>com.thetus.savanna.html5</includeGroupIds>
-                            <includeArtifactIds>Savanna-Html-UIKit</includeArtifactIds>
-                            <includeTypes>zip</includeTypes>
-                            <outputDirectory>${basedir}/src/public/packages</outputDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
             
         </plugins>
     </build>
