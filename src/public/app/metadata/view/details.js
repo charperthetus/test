@@ -84,24 +84,20 @@ Ext.define('Savanna.metadata.view.Details', {
         var me = this;
 
         Ext.Array.each(this.store.data.items, function(metadata) {
-            if(/*'undefined' !== metadata.data.value && null !== metadata.data.value && 0 != metadata.data.value.length &&*/ false != metadata.data.visible) {
-                var typeToAdd = me.getTypeFromName(metadata.data.type);
+            var typeToAdd = me.getTypeFromName(metadata.data.type);
 
-                if('' != typeToAdd) {
-                    var valueObject = {
-                        key:            metadata.data.key,
-                        value:          metadata.data.value,
-                        displayLabel:   metadata.data.displayLabel,
-                        visible:        metadata.data.visible !== undefined ? metadata.data.visible : false,
-                        editable:       metadata.data.editable !== undefined ? metadata.data.editable : false
-                    };
-                    var metadataView = me.createViewForType(typeToAdd, valueObject );
-                    if (metadataView) {
-                        me.add( metadataView );
-                    }
+            if('' != typeToAdd) {
+                var valueObject = {
+                    key:            metadata.data.key,
+                    value:          metadata.data.value,
+                    displayLabel:   metadata.data.displayLabel,
+                    visible:        metadata.data.visible !== undefined ? metadata.data.visible : false,
+                    editable:       metadata.data.editable !== undefined ? metadata.data.editable : false
+                };
+                var metadataView = me.createViewForType(typeToAdd, valueObject );
+                if (metadataView) {
+                    me.add( metadataView );
                 }
-            } else {
-                // Won't add items that aren't visible
             }
         });
     },
