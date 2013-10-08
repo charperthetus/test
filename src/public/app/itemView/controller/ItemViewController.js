@@ -222,18 +222,14 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     setupImages: function (data, view) {
         var me = this,
             thumbnail_list = view.queryById('thumbnail_list');
-        Ext.Array.each(data.relatedCharacteristics, function(name, index) {
+        Ext.Array.each(data.observables, function(image, index) {
 
-            // TODO: Define this view elsewhere?
+            console.log(image);
             var thumbnail = Ext.create('Ext.Img', {
                 height: 100,
-                src: SavannaConfig.savannaUrlRoot + '/preview2/?filestoreUri=' + data.relatedCharacteristics[index],
-                float: true,
-
-                // TODO: Need to get this data from the service (not there yet)
-                //alt: this.description,
-                //title: this.title,
-                //isFeatured: this.isFeatured,
+                src: SavannaConfig.savannaUrlRoot + '/preview2/?filestoreUri=' + image.uri,
+                alt: image.comment,
+                title: image.displayLabel,
                 listeners: {
                     click: {
                         element: 'el',
@@ -241,9 +237,6 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
                     }
                 }
             });
-
-            // TODO: Load featured Image on instantiation
-            //thumbnail.isFeatured = this.isFeatured;
             thumbnail_list.add(thumbnail);
         });
     },
@@ -263,7 +256,10 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     // Selecting an image to expand
     onChangeImage: function(btn, image) {
         var selectedImage = image.src,
-            jumboImage = this.getItemview().queryById('image_primary');
+            title = (image.title) ? image.title : 'No title',
+            description = (image.alt) ? image.alt : 'No description',
+            jumboImage = this.getItemview().queryById('image_primary'),
+            jumboMeta = this.getItemview().queryById('image_text');
         
         jumboImage.setBodyStyle({
             backgroundImage: 'url(' + selectedImage + ')',
@@ -272,6 +268,9 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
             backgroundSize: 'cover',
             backgroundColor: 'transparent'
         });
+
+        jumboMeta.update(description);
+        jumboMeta.setTitle(title);
     },
 
     setupProperties: function (data, view) {

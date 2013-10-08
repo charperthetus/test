@@ -49,9 +49,9 @@ Ext.define('Savanna.itemView.view.itemView.components.AutoCompleteWithTags', {
     },
 
     addTerm: function (tag) {
-        if (this.queryById('term_' + tag.replace(/[\s']/g, "_")) === null) {
+        if (this.queryById('term_' + tag.replace(/[\s'"]/g, "_")) === null) {
             var refineTerm = Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineTerm', {
-                itemId: 'term_' + tag.replace(/[\s']/g, "_")
+                itemId: 'term_' + tag.replace(/[\s'"]/g, "_")
             });
 
             refineTerm.setTerm(tag);

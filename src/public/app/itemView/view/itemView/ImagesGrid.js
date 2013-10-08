@@ -15,10 +15,7 @@ Ext.define('Savanna.itemView.view.itemView.ImagesGrid', {
         items: [{
             xtype: 'panel',
             region: 'south',
-            collapsible: true,
-            collapsed: true,
-            itemId: 'image_text',
-            width: '100%'
+            itemId: 'image_text'
         }]
     }, {
 
@@ -32,7 +29,7 @@ Ext.define('Savanna.itemView.view.itemView.ImagesGrid', {
             xtype: 'button',
             itemId: 'nav_left',
             height: 100,
-            text: '<',
+            text: '<'
         }, {
             
             // Thumbnails get put here
@@ -40,12 +37,12 @@ Ext.define('Savanna.itemView.view.itemView.ImagesGrid', {
             itemId: 'thumbnail_list',
             layout: 'hbox',
             flex: 1,
-            overflowX: 'auto',
+            overflowX: 'auto'
         }, {
             xtype: 'button',
             text: '>',
             itemId: 'nav_right',
-            height: 100,
+            height: 100
         }]
     }]
 });
