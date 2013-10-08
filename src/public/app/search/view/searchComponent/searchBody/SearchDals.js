@@ -63,7 +63,6 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.SearchDals', {
                     {
                         xtype: 'button',
                         itemId: 'selectAllDals',
-                        ui: 'link',
                         text: 'Select All',
                         tooltip: 'Select/Unselect all sources'
                     },
@@ -71,7 +70,6 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.SearchDals', {
                     {
                         xtype: 'button',
                         itemId: 'resetAllSearchOptions',
-                        ui: 'link',
                         text: 'Reset All Search Options'
                     }
                 ]
