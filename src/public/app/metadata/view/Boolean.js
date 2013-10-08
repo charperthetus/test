@@ -36,7 +36,8 @@ Ext.define('Savanna.metadata.view.Boolean', {
 
         this.on('beforerender', Ext.bind(function() {
             this.down('#displayLabelItem').text = me.displayLabel;
-            this.down('#displayValue').text = me.value.toString();
+            //this.down('#displayValue').text = me.value.toString();
+            this.down('#displayValue').html = (null === me.value) ? '&nbsp;' : me.value.toString();
         }, this));
     }
 
