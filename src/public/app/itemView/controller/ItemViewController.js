@@ -12,7 +12,8 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         'Savanna.itemView.view.itemView.Annotations',
         'Savanna.itemView.view.itemView.ImagesGrid',
         'Savanna.itemView.view.itemView.Confusers',
-        'Savanna.itemView.view.itemView.components.AutoCompleteWithTags'
+        'Savanna.itemView.view.itemView.components.AutoCompleteWithTags',
+        'Savanna.itemView.view.itemView.ImageThumbnail'
     ],
 
     refs: [
@@ -44,6 +45,9 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
             },
             '#nav_right' : {
                 click: this.onNavRight
+            },
+            'itemview_imagethumbnail' : {
+                'onClick': this.onChangeImage
             }
         });
 
@@ -222,19 +226,17 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     setupImages: function (data, view) {
         var me = this,
             thumbnail_list = view.queryById('thumbnail_list');
-        Ext.Array.each(data.observables, function(image, index) {
 
-            console.log(image);
-            var thumbnail = Ext.create('Ext.Img', {
-                height: 100,
-                src: SavannaConfig.savannaUrlRoot + '/preview2/?filestoreUri=' + image.uri,
-                alt: image.comment,
+        Ext.Array.each(data.observables, function(image, index) {
+            var imageSource = SavannaConfig.savannaUrlRoot + '/preview2/?filestoreUri=' + image.uri;
+            var thumbnail = Ext.create('Savanna.itemView.view.itemView.ImageThumbnail', {
                 title: image.displayLabel,
-                listeners: {
-                    click: {
-                        element: 'el',
-                        fn: me.onChangeImage.bind(me)
-                    }
+                bodyStyle: {
+                    backgroundImage: 'url(' + imageSource + ')',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center center',
+                    backgroundSize: 'cover',
+                    backgroundColor: 'transparent'
                 }
             });
             thumbnail_list.add(thumbnail);
@@ -255,6 +257,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
     // Selecting an image to expand
     onChangeImage: function(btn, image) {
+        console.log('fired');
         var selectedImage = image.src,
             title = (image.title) ? image.title : 'No title',
             description = (image.alt) ? image.alt : 'No description',
