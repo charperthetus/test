@@ -35,9 +35,9 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
         };
     },
 
-    nodeTextStyle: function() {
+    nodeTextStyle: function(fontsize) {
         return {
-            font: '10pt Helvetica, Arial, sans-serif',
+            font: fontsize? fontsize.toString() + 'pt Helvetica, Arial, sans-serif' : '10pt Helvetica, Arial, sans-serif',
             stroke: this.darkText,
             margin: 4,
             maxSize: new go.Size(160, NaN),
@@ -168,6 +168,41 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
         );
 
         return nodeTemplateMap;
+    },
+
+    generatePaletteTemplateMap: function() {
+        var gmake = go.GraphObject.make;
+        var paletteTemplateMap = new go.Map();
+
+        paletteTemplateMap.add('Action',
+            gmake(go.Node, go.Panel.Spot, Savanna.process.utils.ViewTemplates.nodeStyle(),
+                gmake(go.Panel, go.Panel.Vertical, { defaultAlignment: go.Spot.Center },
+                    gmake(go.Shape, 'Circle', { width: 16, height: 16, fill: Savanna.process.utils.ViewTemplates.mainColor, stroke: null }),
+                    gmake(go.TextBlock, Savanna.process.utils.ViewTemplates.nodeTextStyle(8), new go.Binding('text', 'text').makeTwoWay())
+                )
+            )
+        );
+
+        paletteTemplateMap.add('Item',
+            gmake(go.Node, go.Panel.Spot, Savanna.process.utils.ViewTemplates.nodeStyle(),
+                // the main object is a Panel that surrounds a TextBlock with a rectangular Shape
+                gmake(go.Panel, go.Panel.Vertical, { defaultAlignment: go.Spot.Center },
+                    gmake(go.Shape, 'Rectangle', { width: 12, height: 16, fill: Savanna.process.utils.ViewTemplates.mainColor, stroke: null }),
+                    gmake(go.TextBlock, Savanna.process.utils.ViewTemplates.nodeTextStyle(8), new go.Binding('text', 'text').makeTwoWay())
+                )
+            )
+        );
+
+        paletteTemplateMap.add('Decision',
+            gmake(go.Node, go.Panel.Spot, Savanna.process.utils.ViewTemplates.nodeStyle(),
+                    gmake(go.Panel, go.Panel.Vertical, { defaultAlignment: go.Spot.Center },
+                        gmake(go.Shape, 'Diamond', { width: 16, height: 16, fill: Savanna.process.utils.ViewTemplates.mainColor, stroke: null }),
+                        gmake(go.TextBlock, Savanna.process.utils.ViewTemplates.nodeTextStyle(8), new go.Binding('text', 'text').makeTwoWay())
+                    )
+            )
+        );
+
+        return paletteTemplateMap;
     },
 
     generateLinkTemplateMap: function() {
