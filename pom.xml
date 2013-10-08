@@ -92,31 +92,7 @@
                     </execution>
                 </executions>
             </plugin>
-
-            <!-- Installing Node's dependencies -->
-            <!-- Note that this is currently breaking our deployments -->
-            <!-- <plugin>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>exec-gen-sources</id>
-                        <phase>generate-sources</phase>
-                        <configuration>
-                            <target name="Install Node Dependencies">
-                                <exec executable="cmd" dir="src/" osfamily="windows" failonerror="true">
-                                    <arg line="/c npm install"/>
-                                </exec>
-                                <exec executable="npm" dir="src/" osfamily="unix" failonerror="true">
-                                    <arg line="install"/>
-                                </exec>
-                            </target>
-                        </configuration>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin> -->
+            
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
@@ -157,29 +133,10 @@
             </plugin>
 
             <!--
-                Run the tests to generate coverage reports and surefire reports
+            =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+            THE STUFF BELOW IS NOT PART OF THE BUILD. IT'S JUST FOR SITE GENERATION
+            =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
             -->
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <version>1.7</version>
-                <executions>
-                    <execution>
-                        <id>tests</id>
-                        <phase>test</phase>
-                        <configuration>
-                            <target unless="maven.test.skip">
-                                <ant dir="${anttasks.dir}" antfile="savanna-ant-tasks.xml" target="jscover-test"/>
-                                <ant dir="${anttasks.dir}" antfile="savanna-ant-tasks.xml" target="jscover-stop"/>
-                            </target>
-                        </configuration>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
@@ -193,6 +150,29 @@
                 </dependencies>
             </plugin>
 
+            <!--
+                Run the tests to generate coverage reports and surefire reports
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.7</version>
+                <executions>
+                    <execution>
+                        <id>tests</id>
+                        <phase>site</phase>
+                        <configuration>
+                            <target unless="maven.test.skip">
+                                <ant dir="${anttasks.dir}" antfile="savanna-ant-tasks.xml" target="jscover-test"/>
+                                <ant dir="${anttasks.dir}" antfile="savanna-ant-tasks.xml" target="jscover-stop"/>
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <!--
                  Copy the jscover report into the site before deploying
             -->
@@ -217,7 +197,6 @@
                     </execution>
                 </executions>
             </plugin>
-
             <!--
                 Copy over the coverage reports to a place where Node can serve them locally
             -->
@@ -228,7 +207,7 @@
                     <execution>
                         <id>copy-coverage-resources</id>
                         <!-- here the phase you need -->
-                        <phase>test</phase>
+                        <phase>site</phase>
                         <goals>
                             <goal>copy-resources</goal>
                         </goals>
