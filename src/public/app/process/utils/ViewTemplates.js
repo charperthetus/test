@@ -381,24 +381,6 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
         Savanna.process.utils.ViewTemplates.startTextEdit(obj.diagram, step);
     },
 
-    // Show the diagram's model in JSON format that the user may have edited
-    save: function(diagram, textarea) {
-        var str = diagram.model.toJson();
-        textarea.setValue(str);
-    },
-
-    load: function(diagram, textarea) {
-       var str = textarea.value;
-       diagram.model = go.Model.fromJson(str);
-       diagram.undoManager.isEnabled = true;
-    },
-
-    clear: function(diagram, textarea) {
-       var str = '{ "class": "go.GraphLinksModel", "nodeDataArray": [ {"key":-1, "category":"Start"} ], "linkDataArray": [ ]}';
-       diagram.model = go.Model.fromJson(str);
-       textarea.setValue(str);
-       diagram.undoManager.isEnabled = true;
-    }
 
 
 });

@@ -60,9 +60,6 @@ Ext.define('Savanna.process.view.part.Canvas', {
         // temporary links used by LinkingTool and RelinkingTool are also orthogonal:
         this.diagram.toolManager.linkingTool.temporaryLink.routing = go.Link.Orthogonal;
         this.diagram.toolManager.relinkingTool.temporaryLink.routing = go.Link.Orthogonal;
-
-        Savanna.process.utils.ViewTemplates.load(this.diagram, this.up('process_component').down('#JSONtextarea'));   // load an initial diagram from some JSON text
-
     },
 
     // CUSTOM METHODS
