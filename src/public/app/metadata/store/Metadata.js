@@ -21,37 +21,13 @@ Ext.define('Savanna.metadata.store.Metadata', {
 
     itemURI: '',
 
-    constructor: function() {
-
-        this.callParent(arguments);
-
-        this.setProxy({
-            type: 'savanna-cors',
-
-            addSessionId: false, // this needs to be left in until using correct url or Ted adds node fix
-            startParam: undefined,
-            limitParam: undefined,
-            pageParam: undefined,
-
-            reader: {
-                type: 'json'
-                //root: 'data'
-            },
-            writer: {
-                type: 'json'
-            }
-
-        });
-
-    },
-
     load: function() {
+        // Take this line out to use the Provided URI below.
+        this.getProxy().url = SavannaConfig.metadataTestDataUrl;
         // Put this line back in to use the URI set in the constructor.
         //this.getProxy().url = SavannaConfig.metadataUrl + '/' + this.itemURI;
-        this.getProxy().url = SavannaConfig.metadataTestDataUrl;
 
         this.callParent(arguments);
-        console.log('URL ', this.getProxy().url);
     }
 
 });

@@ -33,15 +33,22 @@ Ext.define('Savanna.metadata.view.StringList', {
 
         this.on('beforerender', Ext.bind(function() {
             this.down('#displayLabelItem').text = me.displayLabel;
-            Ext.Array.each(me.value, function(stringElement) {
-                var theLabel = Ext.create('Ext.form.Label', {
-                    text: '',
-                    width: "100%"
+            if(null !== me.value && 0 != me.value.length) {
+                Ext.Array.each(me.value, function(stringElement) {
+                    var theLabel = Ext.create('Ext.form.Label', {
+                        text: '',
+                        width: "100%"
+                    });
+                    theLabel.setText( stringElement );
+                    me.add( theLabel );
                 });
-                theLabel.setText( stringElement );
-                me.add( theLabel );
-            });
-
+            } else {
+                me.add( Ext.create('Ext.form.Label', {
+                                    html: '&nbsp;',
+                                    width: "100%"
+                                })
+                );
+            }
         }, this));
     }
 

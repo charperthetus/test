@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.thetus.savanna.html5</groupId>
@@ -28,13 +27,14 @@
     </distributionManagement>
 
     <dependencies>
-	<dependency>
+        
+        <dependency>
             <groupId>com.thetus.savanna.html5</groupId>
             <artifactId>Savanna-Html-UIKit</artifactId>
             <version>0.2</version>
             <type>zip</type>
         </dependency>
-
+       
         <dependency>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-antrun-plugin</artifactId>
@@ -50,33 +50,22 @@
             <artifactId>maven-surefire-plugin</artifactId>
             <version>2.12</version>
         </dependency>
-
     </dependencies>
+
+    <variables>
+        <jscover.inputdir>/src/public/test/reports/jasmine</jscover.inputdir>
+        <jscover.outputdir>jasmine</jscover.outputdir>
+        <anttasks.dir>src/public</anttasks.dir>
+        <anttasks.assemblypath>src/main/assembly/assembly.xml</anttasks.assemblypath>
+
+        <jscover.docroot>./</jscover.docroot>
+        <jscover.reportdir>../../target/</jscover.reportdir>
+
+        <surefire.outputdir>surefire-reports</surefire.outputdir>
+    </variables>
 
     <build>
         <plugins>
-            <!--
-                Set up our properties
-            -->
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>properties-maven-plugin</artifactId>
-                <version>1.0-alpha-2</version>
-                <executions>
-                    <execution>
-                        <phase>initialize</phase>
-                        <goals>
-                            <goal>read-project-properties</goal>
-                        </goals>
-                        <configuration>
-                            <files>
-                                <file>src/savanna-client.properties</file>
-                            </files>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
             <!-- NOTE: I moved the tasks to build the JavaScript code from "build" to "package" as it is not needed for
                        testing and actually should not happen if testing fails
             -->
@@ -101,30 +90,6 @@
                 </executions>
             </plugin>
 
-            <!-- Installing Node's dependencies -->
-            <!-- Note that this is currently breaking our deployments -->
-            <!-- <plugin>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>exec-gen-sources</id>
-                        <phase>generate-sources</phase>
-                        <configuration>
-                            <target name="Install Node Dependencies">
-                                <exec executable="cmd" dir="src/" osfamily="windows" failonerror="true">
-                                    <arg line="/c npm install"/>
-                                </exec>
-                                <exec executable="npm" dir="src/" osfamily="unix" failonerror="true">
-                                    <arg line="install"/>
-                                </exec>
-                            </target>
-                        </configuration>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin> -->
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
@@ -161,7 +126,7 @@
                             <followSymlinks>false</followSymlinks>
                         </fileset>
 
-	  		<!-- This is to enable cleaning for the Thetus-UIKit -->
+                        <!-- This is to enable cleaning for the Thetus-UIKit -->
                         <fileset>
                             <directory>${project.basedir}/src/public/packages</directory>
                             <includes>
@@ -170,34 +135,14 @@
                             <followSymlinks>false</followSymlinks>
                         </fileset>
                     </filesets>
-
                 </configuration>
             </plugin>
 
             <!--
-                Run the tests to generate coverage reports and surefire reports
+            =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+            THE STUFF BELOW IS NOT PART OF THE BUILD. IT'S JUST FOR SITE GENERATION
+            =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
             -->
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <version>1.7</version>
-                <executions>
-                    <execution>
-                        <id>tests</id>
-                        <phase>test</phase>
-                        <configuration>
-                            <target unless="maven.test.skip">
-                                <ant dir="${anttasks.dir}" antfile="savanna-ant-tasks.xml" target="jscover-test"/>
-                                <ant dir="${anttasks.dir}" antfile="savanna-ant-tasks.xml" target="jscover-stop"/>
-                            </target>
-                        </configuration>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
@@ -211,6 +156,29 @@
                 </dependencies>
             </plugin>
 
+            <!--
+                Run the tests to generate coverage reports and surefire reports
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.7</version>
+                <executions>
+                    <execution>
+                        <id>tests</id>
+                        <phase>site</phase>
+                        <configuration>
+                            <target unless="maven.test.skip">
+                                <ant dir="${anttasks.dir}" antfile="savanna-ant-tasks.xml" target="jscover-test"/>
+                                <ant dir="${anttasks.dir}" antfile="savanna-ant-tasks.xml" target="jscover-stop"/>
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <!--
                  Copy the jscover report into the site before deploying
             -->
@@ -235,7 +203,6 @@
                     </execution>
                 </executions>
             </plugin>
-
             <!--
                 Copy over the coverage reports to a place where Node can serve them locally
             -->
@@ -246,7 +213,7 @@
                     <execution>
                         <id>copy-coverage-resources</id>
                         <!-- here the phase you need -->
-                        <phase>test</phase>
+                        <phase>site</phase>
                         <goals>
                             <goal>copy-resources</goal>
                         </goals>
@@ -263,10 +230,10 @@
                 </executions>
             </plugin>
 
-	    <!-- 
-		Copy over the uikit to the appropriate package
-   	    -->	
-	   <plugin>
+            <!-- 
+                Copy over the uikit to the appropriate package
+            -->
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <version>2.2</version>
@@ -287,7 +254,7 @@
                     </execution>
                 </executions>
             </plugin>
-
+            
         </plugins>
     </build>
 
