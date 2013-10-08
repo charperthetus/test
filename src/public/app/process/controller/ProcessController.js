@@ -34,7 +34,6 @@ Ext.define('Savanna.process.controller.ProcessController', {
         metadata: {
         }
     },
-
     toggleExpanded: function(expand) {
         var canvas = this.getCanvas();
         var diagram = canvas.diagram;
