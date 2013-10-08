@@ -4,3 +4,588 @@
  * provided to support globbing requires, custom xtypes, and other 
  * metadata-driven class system features 
  */
+Ext.Loader.addClassPathMappings({
+  "Deft.Component": "packages/deft/src/js/event/LiveEventBus.js",
+  "Deft.InjectableComponent": "packages/deft/src/js/ioc/Injector.js",
+  "Savanna.metadata.view.Details": "app/metadata/view/details.js",
+  "Ext": "ext/src",
+  "Savanna.metadata.view.LongString": "app/metadata/view/longString.js",
+  "Ext.rtl.EventObjectImpl": "ext/src/rtl/EventObject.js",
+  "Savanna": "app",
+  "Deft": "packages/deft/src/js",
+  "Savanna.metadata.view.String": "app/metadata/view/string.js"
+});
+Ext.ClassManager.addNameAlternateMappings({
+  "Savanna.metadata.view.Date": [],
+  "Ext.ux.ajax.DataSimlet": [],
+  "Ext.ux.grid.TransformGrid": [],
+  "Savanna.desktop.view.SavannaWorkspace": [],
+  "Savanna.search.view.searchComponent.searchBody.searchMap.Canvas": [],
+  "Savanna.metadata.view.Integer": [],
+  "Savanna.flexpaper.view.FlexpaperEntityWindow": [],
+  "Savanna.search.view.searchComponent.SearchBody": [],
+  "Deft.event.LiveEventBus": [
+    "Deft.LiveEventBus"
+  ],
+  "Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsDatefield": [],
+  "Savanna.metadata.view.Uri": [],
+  "Savanna.search.controller.SearchComponent": [],
+  "Savanna.process.view.ProcessEditorComponent": [],
+  "Savanna.flexpaper.controller.FlexpaperComponent": [],
+  "Savanna.desktop.view.SearchWindow": [],
+  "Ext.ux.event.Driver": [],
+  "Ext.ux.ajax.XmlSimlet": [],
+  "Savanna.patch.AbstractComponent": [],
+  "Savanna.crumbnet.view.part.PaletteGroup": [],
+  "Savanna.search.model.SearchRequest": [],
+  "Savanna.controller.Factory": [],
+  "Ext.ux.DataView.DragSelector": [],
+  "Savanna.controller.Main": [],
+  "Savanna.search.model.dalSource.CustomSearchDescription": [],
+  "Deft.mvc.Observer": [],
+  "Savanna.crumbnet.view.part.NodeTypeMenu": [],
+  "Ext.ux.grid.menu.ListMenu": [],
+  "Savanna.search.view.searchComponent.searchBar.SearchForm": [],
+  "Savanna.process.view.part.MetadataTabPanel": [],
+  "Savanna.search.view.searchComponent.searchBody.ResultsComponent": [],
+  "Savanna.view.PrintModal": [],
+  "Savanna.crumbnet.model.Graph": [],
+  "Deft.mvc.ViewController": [
+    "Deft.ViewController"
+  ],
+  "Ext.ux.form.MultiSelect": [
+    "Ext.ux.Multiselect"
+  ],
+  "Savanna.crumbnet.store.Graph": [],
+  "Deft.promise.Resolver": [
+    "Deft.Resolver"
+  ],
+  "Deft.promise.Chain": [
+    "Deft.Chain"
+  ],
+  "Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacets": [],
+  "Ext.ux.PreviewPlugin": [],
+  "Ext.ux.ajax.SimXhr": [],
+  "Ext.ux.event.RecorderManager": [],
+  "Savanna.search.view.SearchComponent": [],
+  "Ext.ux.ProgressBarPager": [],
+  "Ext.ux.CellDragDrop": [],
+  "Ext.ux.ajax.Simlet": [],
+  "Ext.ux.SlidingPager": [],
+  "Ext.ux.TabReorderer": [],
+  "Ext.ux.grid.filter.NumericFilter": [],
+  "Deft.mixin.Controllable": [],
+  "Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsPreviewContent": [],
+  "Savanna.search.store.DalSources": [],
+  "Ext.ux.event.Recorder": [],
+  "Savanna.search.model.SearchLocation": [],
+  "Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacet": [],
+  "Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsDals": [],
+  "Savanna.search.view.searchComponent.searchBody.SearchDals": [],
+  "Deft.event.LiveEventListener": [
+    "Deft.LiveEventListener"
+  ],
+  "Savanna.search.view.searchComponent.searchBody.searchMap.SearchLocationComboBox": [],
+  "Savanna.map.view.part.Canvas": [],
+  "Savanna.crumbnet.view.part.PaletteMenu": [],
+  "Ext.ux.ajax.SimManager": [],
+  "Ext.ux.grid.filter.BooleanFilter": [],
+  "Savanna.metadata.view.DateList": [],
+  "Savanna.search.controller.ResultsComponent": [],
+  "Ext.ux.TabScrollerMenu": [],
+  "Ext.ux.IFrame": [],
+  "Deft.mvc.ComponentSelector": [],
+  "Savanna.search.model.SearchResult": [],
+  "Savanna.desktop.view.AboutWindow": [],
+  "Savanna.crumbnet.view.part.Canvas": [],
+  "Deft.ioc.DependencyProvider": [],
+  "Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsPreviewWindow": [],
+  "Ext.ux.form.SearchField": [],
+  "Ext.ux.dd.CellFieldDropZone": [],
+  "Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineTerm": [],
+  "Savanna.metadata.view.String": [],
+  "Savanna.desktop.view.SavannaTabPanel": [],
+  "Ext.ux.LiveSearchGridPanel": [],
+  "Savanna.map.controller.MapController": [],
+  "Savanna.proxy.Cors": [],
+  "Ext.ux.grid.filter.DateFilter": [],
+  "Savanna.flexpaper.view.FlexpaperBody": [],
+  "Ext.ux.TreePicker": [],
+  "Savanna.metadata.view.LongString": [],
+  "Deft.mvc.Application": [
+    "Deft.Application"
+  ],
+  "Deft.promise.Deferred": [
+    "Deft.Deferred"
+  ],
+  "Ext.ux.data.PagingMemoryProxy": [
+    "Ext.data.PagingMemoryProxy"
+  ],
+  "Savanna.metadata.view.MetadataItemView": [],
+  "Savanna.crumbnet.utils.ViewTemplates": [],
+  "Savanna.search.store.SearchResults": [],
+  "Ext.ux.BoxReorderer": [],
+  "Deft.ioc.Injector": [
+    "Deft.Injector"
+  ],
+  "Savanna.mixin.Storeable": [],
+  "Ext.ux.grid.filter.Filter": [],
+  "Savanna.crumbnet.controller.CrumbnetController": [],
+  "Ext.ux.GroupTabRenderer": [],
+  "Deft.core.Class": [
+    "Deft.Class"
+  ],
+  "Ext.ux.FieldReplicator": [],
+  "Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineSearchbar": [],
+  "Deft.mixin.Injectable": [],
+  "Savanna.metadata.view.UriList": [],
+  "Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsPanel": [],
+  "Ext.ux.grid.filter.ListFilter": [],
+  "Savanna.crumbnet.store.Templates": [],
+  "Savanna.metadata.view.BooleanList": [],
+  "Savanna.desktop.view.SavannaDesktop": [],
+  "Ext.ux.dd.PanelFieldDragZone": [],
+  "Savanna.metadata.view.Double": [],
+  "Savanna.search.model.dalSource.CustomSearchGroup": [
+    "DalCustomSearchGroup"
+  ],
+  "Ext.ux.GMapPanel": [],
+  "Savanna.map.view.MapComponent": [],
+  "Ext.ux.DataView.LabelEditor": [],
+  "Ext.ux.GroupTabPanel": [],
+  "Deft.util.Function": [
+    "Deft.Function"
+  ],
+  "Savanna.search.view.searchComponent.SearchToolbar": [],
+  "Ext.ux.grid.filter.StringFilter": [],
+  "Ext.ux.statusbar.ValidationStatus": [],
+  "Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineTerms": [],
+  "Savanna.metadata.model.Metadata": [],
+  "Ext.ux.layout.Center": [],
+  "Savanna.crumbnet.model.TemplateGroup": [],
+  "Savanna.process.view.part.Toolbar": [],
+  "Deft.InjectableComponent": [],
+  "Ext.ux.DataView.Animated": [],
+  "Savanna.crumbnet.utils.ExtendedLink": [],
+  "Savanna.search.view.searchComponent.searchBar.SearchAdvancedTextfield": [],
+  "Savanna.metadata.view.Boolean": [],
+  "Savanna.metadata.view.StringList": [],
+  "Deft.Component": [],
+  "Ext.ux.statusbar.StatusBar": [
+    "Ext.ux.StatusBar"
+  ],
+  "Deft.mvc.ComponentSelectorListener": [],
+  "Savanna.flexpaper.view.FlexpaperToolbar": [],
+  "Savanna.search.model.DalSource": [],
+  "Savanna.metadata.view.IntegerList": [],
+  "Savanna.flexpaper.view.FlexpaperComponent": [],
+  "Savanna.crumbnet.view.CrumbnetComponent": [],
+  "Savanna.search.view.searchComponent.searchBody.searchDals.CustomGroup": [],
+  "Ext.ux.grid.menu.RangeMenu": [],
+  "Savanna.metadata.view.DoubleList": [],
+  "Savanna.search.controller.SearchDals": [],
+  "Ext.ux.RowExpander": [],
+  "Savanna.search.view.searchComponent.searchBody.searchDals.SearchOptions": [],
+  "Savanna.view.Viewport": [],
+  "Savanna.crumbnet.view.part.Toolbar": [],
+  "Ext.ux.event.Player": [],
+  "Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsPanelToolbar": [],
+  "Savanna.metadata.view.Details": [],
+  "Savanna.metadata.controller.FieldTypes": [],
+  "Savanna.metadata.store.Metadata": [],
+  "Savanna.crumbnet.view.part.Overview": [],
+  "Savanna.search.store.SearchLocation": [],
+  "Savanna.search.view.searchComponent.searchBody.SearchMap": [],
+  "Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsOptions": [],
+  "Ext.ux.ToolbarDroppable": [],
+  "Savanna.desktop.view.UploadWindow": [],
+  "Ext.ux.event.Maker": [],
+  "Savanna.desktop.controller.DesktopController": [],
+  "Ext.ux.DataView.Draggable": [],
+  "Savanna.crumbnet.model.Template": [],
+  "Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsPanelGrid": [],
+  "Deft.log.Logger": [
+    "Deft.Logger"
+  ],
+  "Ext.ux.TabCloseMenu": [],
+  "Deft.promise.Promise": [
+    "Deft.Promise"
+  ],
+  "Ext.ux.DataTip": [],
+  "Ext.ux.grid.filter.DateTimeFilter": [],
+  "Savanna.view.Login": [],
+  "Ext.ux.form.ItemSelector": [
+    "Ext.ux.ItemSelector"
+  ],
+  "Ext.ux.ajax.JsonSimlet": [],
+  "Ext.ux.Spotlight": [],
+  "Ext.ux.grid.FiltersFeature": [],
+  "Savanna.search.view.searchComponent.SearchBar": [],
+  "Savanna.search.model.dalSource.CustomSearchParameter": [],
+  "Savanna.search.view.searchComponent.searchBody.searchDals.CustomSearchGroupForm": [],
+  "Savanna.utils.CorsAjax": []
+});
+Ext.ClassManager.addNameAliasMappings({
+  "Savanna.metadata.view.Date": [
+    "widget.metadata_date"
+  ],
+  "Ext.ux.ajax.DataSimlet": [],
+  "Ext.ux.grid.TransformGrid": [],
+  "Savanna.desktop.view.SavannaWorkspace": [
+    "widget.desktop_savannaworkspace"
+  ],
+  "Savanna.search.view.searchComponent.searchBody.searchMap.Canvas": [
+    "widget.search_map_canvas"
+  ],
+  "Savanna.metadata.view.Integer": [
+    "widget.metadata_integer"
+  ],
+  "Savanna.flexpaper.view.FlexpaperEntityWindow": [],
+  "Savanna.search.view.searchComponent.SearchBody": [
+    "widget.search_searchbody"
+  ],
+  "Deft.event.LiveEventBus": [],
+  "Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsDatefield": [
+    "widget.search_resultsDals_resultsdatefield"
+  ],
+  "Savanna.metadata.view.Uri": [
+    "widget.metadata_uri"
+  ],
+  "Savanna.search.controller.SearchComponent": [],
+  "Savanna.process.view.ProcessEditorComponent": [
+    "widget.process_component"
+  ],
+  "Savanna.flexpaper.controller.FlexpaperComponent": [],
+  "Savanna.desktop.view.SearchWindow": [
+    "widget.desktop_searchwindow"
+  ],
+  "Ext.ux.event.Driver": [],
+  "Ext.ux.ajax.XmlSimlet": [
+    "simlet.xml"
+  ],
+  "Savanna.patch.AbstractComponent": [],
+  "Savanna.crumbnet.view.part.PaletteGroup": [
+    "widget.crumbnet_part_palette-group"
+  ],
+  "Savanna.search.model.SearchRequest": [],
+  "Savanna.controller.Factory": [],
+  "Ext.ux.DataView.DragSelector": [],
+  "Savanna.controller.Main": [],
+  "Savanna.search.model.dalSource.CustomSearchDescription": [],
+  "Deft.mvc.Observer": [],
+  "Savanna.crumbnet.view.part.NodeTypeMenu": [
+    "widget.crumbnet_part_nodeTypeMenu"
+  ],
+  "Ext.ux.grid.menu.ListMenu": [],
+  "Savanna.search.view.searchComponent.searchBar.SearchForm": [
+    "widget.searchbar_form"
+  ],
+  "Savanna.process.view.part.MetadataTabPanel": [
+    "widget.process_metadata"
+  ],
+  "Savanna.search.view.searchComponent.searchBody.ResultsComponent": [
+    "widget.search_resultscomponent"
+  ],
+  "Savanna.view.PrintModal": [
+    "widget.print-modal"
+  ],
+  "Savanna.crumbnet.model.Graph": [],
+  "Deft.mvc.ViewController": [],
+  "Ext.ux.form.MultiSelect": [
+    "widget.multiselect",
+    "widget.multiselectfield"
+  ],
+  "Savanna.crumbnet.store.Graph": [],
+  "Deft.promise.Resolver": [],
+  "Deft.promise.Chain": [],
+  "Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacets": [
+    "widget.search_resultsDals_resultsfacets"
+  ],
+  "Ext.ux.PreviewPlugin": [
+    "plugin.preview"
+  ],
+  "Ext.ux.ajax.SimXhr": [],
+  "Ext.ux.event.RecorderManager": [
+    "widget.eventrecordermanager"
+  ],
+  "Savanna.search.view.SearchComponent": [
+    "widget.search_searchcomponent"
+  ],
+  "Ext.ux.ProgressBarPager": [],
+  "Ext.ux.CellDragDrop": [
+    "plugin.celldragdrop"
+  ],
+  "Ext.ux.ajax.Simlet": [
+    "simlet.basic"
+  ],
+  "Ext.ux.SlidingPager": [],
+  "Ext.ux.TabReorderer": [],
+  "Ext.ux.grid.filter.NumericFilter": [
+    "gridfilter.numeric"
+  ],
+  "Deft.mixin.Controllable": [],
+  "Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsPreviewContent": [
+    "widget.search_resultspreviewcontent"
+  ],
+  "Savanna.search.store.DalSources": [],
+  "Ext.ux.event.Recorder": [],
+  "Savanna.search.model.SearchLocation": [],
+  "Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacet": [
+    "widget.search_resultsDals_resultsfacet"
+  ],
+  "Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsDals": [
+    "widget.search_resultsdals"
+  ],
+  "Savanna.search.view.searchComponent.searchBody.SearchDals": [
+    "widget.search_searchdals"
+  ],
+  "Deft.event.LiveEventListener": [],
+  "Savanna.search.view.searchComponent.searchBody.searchMap.SearchLocationComboBox": [
+    "widget.search_searchlocationcombobox"
+  ],
+  "Savanna.map.view.part.Canvas": [
+    "widget.map_canvas"
+  ],
+  "Savanna.crumbnet.view.part.PaletteMenu": [
+    "widget.crumbnet_part_palette-menu"
+  ],
+  "Ext.ux.ajax.SimManager": [],
+  "Ext.ux.grid.filter.BooleanFilter": [
+    "gridfilter.boolean"
+  ],
+  "Savanna.metadata.view.DateList": [
+    "widget.metadata_datelist"
+  ],
+  "Savanna.search.controller.ResultsComponent": [],
+  "Ext.ux.TabScrollerMenu": [
+    "plugin.tabscrollermenu"
+  ],
+  "Ext.ux.IFrame": [
+    "widget.uxiframe"
+  ],
+  "Deft.mvc.ComponentSelector": [],
+  "Savanna.search.model.SearchResult": [],
+  "Savanna.desktop.view.AboutWindow": [
+    "widget.desktop_aboutwindow"
+  ],
+  "Savanna.crumbnet.view.part.Canvas": [
+    "widget.go-graph_canvas"
+  ],
+  "Deft.ioc.DependencyProvider": [],
+  "Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsPreviewWindow": [
+    "widget.search_resultspreviewwindow"
+  ],
+  "Ext.ux.form.SearchField": [
+    "widget.searchfield"
+  ],
+  "Ext.ux.dd.CellFieldDropZone": [],
+  "Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineTerm": [
+    "widget.search_resultsDals_resultsterm"
+  ],
+  "Savanna.metadata.view.String": [
+    "widget.metadata_string"
+  ],
+  "Savanna.desktop.view.SavannaTabPanel": [
+    "widget.desktop_tabpanel"
+  ],
+  "Ext.ux.LiveSearchGridPanel": [],
+  "Savanna.map.controller.MapController": [],
+  "Savanna.proxy.Cors": [
+    "proxy.savanna-cors"
+  ],
+  "Ext.ux.grid.filter.DateFilter": [
+    "gridfilter.date"
+  ],
+  "Savanna.flexpaper.view.FlexpaperBody": [
+    "widget.flexpaper_flexpaperbody"
+  ],
+  "Ext.ux.TreePicker": [
+    "widget.treepicker"
+  ],
+  "Savanna.metadata.view.LongString": [
+    "widget.metadata_longstring"
+  ],
+  "Deft.mvc.Application": [],
+  "Deft.promise.Deferred": [],
+  "Ext.ux.data.PagingMemoryProxy": [
+    "proxy.pagingmemory"
+  ],
+  "Savanna.metadata.view.MetadataItemView": [
+    "widget.metadata_itemview"
+  ],
+  "Savanna.crumbnet.utils.ViewTemplates": [],
+  "Savanna.search.store.SearchResults": [],
+  "Ext.ux.BoxReorderer": [],
+  "Deft.ioc.Injector": [],
+  "Savanna.mixin.Storeable": [],
+  "Ext.ux.grid.filter.Filter": [],
+  "Savanna.crumbnet.controller.CrumbnetController": [],
+  "Ext.ux.GroupTabRenderer": [
+    "plugin.grouptabrenderer"
+  ],
+  "Deft.core.Class": [],
+  "Ext.ux.FieldReplicator": [],
+  "Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineSearchbar": [
+    "widget.search_resultsDals_resultsrefine"
+  ],
+  "Deft.mixin.Injectable": [],
+  "Savanna.metadata.view.UriList": [
+    "widget.metadata_urilist"
+  ],
+  "Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsPanel": [
+    "widget.search_resultspanel"
+  ],
+  "Ext.ux.grid.filter.ListFilter": [
+    "gridfilter.list"
+  ],
+  "Savanna.crumbnet.store.Templates": [],
+  "Savanna.metadata.view.BooleanList": [
+    "widget.metadata_booleanlist"
+  ],
+  "Savanna.desktop.view.SavannaDesktop": [
+    "widget.desktop_savannadesktop"
+  ],
+  "Ext.ux.dd.PanelFieldDragZone": [],
+  "Savanna.metadata.view.Double": [
+    "widget.metadata_double"
+  ],
+  "Savanna.search.model.dalSource.CustomSearchGroup": [],
+  "Ext.ux.GMapPanel": [
+    "widget.gmappanel"
+  ],
+  "Savanna.map.view.MapComponent": [
+    "widget.map_component"
+  ],
+  "Ext.ux.DataView.LabelEditor": [],
+  "Ext.ux.GroupTabPanel": [
+    "widget.grouptabpanel"
+  ],
+  "Deft.util.Function": [],
+  "Savanna.search.view.searchComponent.SearchToolbar": [
+    "widget.search_searchtoolbar"
+  ],
+  "Ext.ux.grid.filter.StringFilter": [
+    "gridfilter.string"
+  ],
+  "Ext.ux.statusbar.ValidationStatus": [],
+  "Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineTerms": [
+    "widget.search_resultsDals_resultsterms"
+  ],
+  "Savanna.metadata.model.Metadata": [],
+  "Ext.ux.layout.Center": [
+    "layout.ux.center"
+  ],
+  "Savanna.crumbnet.model.TemplateGroup": [],
+  "Savanna.process.view.part.Toolbar": [
+    "widget.process_toolbar"
+  ],
+  "Deft.InjectableComponent": [],
+  "Ext.ux.DataView.Animated": [],
+  "Savanna.crumbnet.utils.ExtendedLink": [],
+  "Savanna.search.view.searchComponent.searchBar.SearchAdvancedTextfield": [
+    "widget.searchadvanced_textfield"
+  ],
+  "Savanna.metadata.view.Boolean": [
+    "widget.metadata_boolean"
+  ],
+  "Savanna.metadata.view.StringList": [
+    "widget.metadata_stringlist"
+  ],
+  "Deft.Component": [],
+  "Ext.ux.statusbar.StatusBar": [
+    "widget.statusbar"
+  ],
+  "Deft.mvc.ComponentSelectorListener": [],
+  "Savanna.flexpaper.view.FlexpaperToolbar": [
+    "widget.flexpaper_flexpapertoolbar"
+  ],
+  "Savanna.search.model.DalSource": [],
+  "Savanna.metadata.view.IntegerList": [
+    "widget.metadata_integerlist"
+  ],
+  "Savanna.flexpaper.view.FlexpaperComponent": [
+    "widget.flexpaper_flexpapercomponent"
+  ],
+  "Savanna.crumbnet.view.CrumbnetComponent": [
+    "widget.go-graph"
+  ],
+  "Savanna.search.view.searchComponent.searchBody.searchDals.CustomGroup": [
+    "widget.searchDals_custom-group"
+  ],
+  "Ext.ux.grid.menu.RangeMenu": [],
+  "Savanna.metadata.view.DoubleList": [
+    "widget.metadata_doublelist"
+  ],
+  "Savanna.search.controller.SearchDals": [],
+  "Ext.ux.RowExpander": [],
+  "Savanna.search.view.searchComponent.searchBody.searchDals.SearchOptions": [
+    "widget.search_searchDals_searchoptions"
+  ],
+  "Savanna.view.Viewport": [],
+  "Savanna.crumbnet.view.part.Toolbar": [
+    "widget.crumbnet_part_toolbar"
+  ],
+  "Ext.ux.event.Player": [],
+  "Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsPanelToolbar": [
+    "widget.search_resultspaneltoolbar"
+  ],
+  "Savanna.metadata.view.Details": [
+    "widget.metadata_details"
+  ],
+  "Savanna.metadata.controller.FieldTypes": [],
+  "Savanna.metadata.store.Metadata": [],
+  "Savanna.crumbnet.view.part.Overview": [
+    "widget.go-graph_overview"
+  ],
+  "Savanna.search.store.SearchLocation": [],
+  "Savanna.search.view.searchComponent.searchBody.SearchMap": [
+    "widget.search_searchmap"
+  ],
+  "Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsOptions": [
+    "widget.search_resultsDals_resultsoptions"
+  ],
+  "Ext.ux.ToolbarDroppable": [],
+  "Savanna.desktop.view.UploadWindow": [
+    "widget.desktop_uploadwindow"
+  ],
+  "Ext.ux.event.Maker": [],
+  "Savanna.desktop.controller.DesktopController": [],
+  "Ext.ux.DataView.Draggable": [],
+  "Savanna.crumbnet.model.Template": [],
+  "Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsPanelGrid": [
+    "widget.search_resultspanelgrid"
+  ],
+  "Deft.log.Logger": [],
+  "Ext.ux.TabCloseMenu": [
+    "plugin.tabclosemenu"
+  ],
+  "Deft.promise.Promise": [],
+  "Ext.ux.DataTip": [
+    "plugin.datatip"
+  ],
+  "Ext.ux.grid.filter.DateTimeFilter": [
+    "gridfilter.datetime"
+  ],
+  "Savanna.view.Login": [
+    "widget.login"
+  ],
+  "Ext.ux.form.ItemSelector": [
+    "widget.itemselector",
+    "widget.itemselectorfield"
+  ],
+  "Ext.ux.ajax.JsonSimlet": [
+    "simlet.json"
+  ],
+  "Ext.ux.Spotlight": [],
+  "Ext.ux.grid.FiltersFeature": [
+    "feature.filters"
+  ],
+  "Savanna.search.view.searchComponent.SearchBar": [
+    "widget.search_searchbar"
+  ],
+  "Savanna.search.model.dalSource.CustomSearchParameter": [],
+  "Savanna.search.view.searchComponent.searchBody.searchDals.CustomSearchGroupForm": [
+    "widget.search_searchDals_custom-search-group-form"
+  ],
+  "Savanna.utils.CorsAjax": []
+});

@@ -7,8 +7,8 @@
 SavannaConfig = {
 
     // Root for all REST calls
-//    savannaUrlRoot: 'http://c2aptsav1:8080/c2is2/',
-    savannaUrlRoot: 'http://thedevsav1.thetuscorp.com:8080/SavannaX/',
+    savannaUrlRoot: 'http://c2aptsav1:8080/c2is2/',
+    //savannaUrlRoot: 'http://thedevsav1.thetuscorp.com:8080/SavannaX/',
 
     resourcesPathPrefix: '',
 
@@ -31,5 +31,8 @@ SavannaConfig.searchUrl = SavannaConfig.savannaUrlRoot + 'rest/search'; // local
 SavannaConfig.itemViewUrl = SavannaConfig.savannaUrlRoot + 'rest/c2is2/model/item/';
 SavannaConfig.dalSourcesUrl = SavannaConfig.savannaUrlRoot + 'rest/search/sources'; // local dev version: 'resources/data/testSearchDalsWithFormData.json',
 SavannaConfig.locationSearch = SavannaConfig.savannaUrlRoot + '/rest/map/search';   // local dev version: 'resources/data/testSearchLocationSearch.json',
+SavannaConfig.metadataUrl = SavannaConfig.savannaUrlRoot + 'rest/metadata';
 // TODO: replace this test URL with real endpoint once we have one....
 SavannaConfig.crumbnetTemplatesUrl = 'fixture/Crumbnet.json';
+SavannaConfig.processTemplatesUrl = 'fixture/Process.json';
+SavannaConfig.metadataTestDataUrl = 'fixture/Metadata.json';
