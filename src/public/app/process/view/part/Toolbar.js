@@ -39,7 +39,7 @@ Ext.define('Savanna.process.view.part.Toolbar', {
                     text: 'Collapse All Steps',
                     itemId: 'collapsesteps'
                 }]
-            },
+            }
         ];
     }
 });
