@@ -82,7 +82,7 @@ Ext.define('Savanna.process.view.part.Canvas', {
     externalObjectsDropped: function(diagramEvent) {
         var addedNode = diagramEvent.subject.first();
 
-    },
+    }
 
 
 
