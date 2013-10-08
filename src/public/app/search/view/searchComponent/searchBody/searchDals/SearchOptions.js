@@ -22,8 +22,8 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.searchDals.SearchOpti
 
         this.on('beforerender', Ext.bind(function() {
             var config = this.initialConfig || {};
-            var checkboxLabel = config.checkboxLabel || 'NO LABEL';
-            var label = config.label || 'NO LABEL';
+            var checkboxLabel = config.checkboxLabel || '';
+            var label = config.label || '';
             var showButton = config.showButton || null;
 
             this.down('checkbox').boxLabel = checkboxLabel;
@@ -40,13 +40,13 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.searchDals.SearchOpti
             {
                 xtype: 'checkbox',
                 itemId: 'includeDalCheckBox',
-                boxLabel: 'NO LABEL',
+                boxLabel: '',
                 cls: 'dal-checkbox'
             },
             {
                 xtype: 'label',
                 cls: 'dal-label',
-                text: 'NO LABEL'
+                text: ''
             },
             {
                 xtype: 'button',
