@@ -39,10 +39,7 @@ Ext.define('Savanna.metadata.view.Uri', {
             me.down('#displayLabelItem').text = me.displayLabel;
             // TODO: This conversion is probably not correct.  Need to decode it properly.
             // If you change this, check UriList.js for similar.
-            if(me.value)    {
-                me.down('#displayValue').text = me.value.replace('%2F', '/', 'g');
-            }
-
+            me.down('#displayValue').html = (null === me.value) ? '&nbsp;' : me.value.replace('%2F', '/', 'g');
 
         }, this));
     }
