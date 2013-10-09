@@ -13,6 +13,7 @@ Ext.define('Savanna.desktop.view.SavannaTabPanel', {
         'Ext.ux.TabCloseMenu',
         'Savanna.crumbnet.view.CrumbnetComponent',
         'Savanna.metadata.view.Details',
+        'Savanna.metadata.view.DetailsEdit',
         'Savanna.process.view.ProcessEditorComponent'
     ],
     enableTabScroll: true,
@@ -54,7 +55,7 @@ Ext.define('Savanna.desktop.view.SavannaTabPanel', {
                         handler: function(item) {
                             var tabPanel = item.up('tabpanel');
                             if (tabPanel) {
-                                var detailsView = Ext.create('widget.metadata_details', {
+                                var detailsView = Ext.create('widget.metadata_details_edit', {
                                     title: 'Details',
                                     //itemURI: 'SolrJdbc%252FRich%252F2fa25cdf-9aab-471f-85b6-5359c0cd0dfd'
                                     itemURI: 'SolrJdbc%252FRich%252F061aedc6-d88c-497e-81dc-77d809b3262c'

@@ -31,7 +31,11 @@ Ext.define('Savanna.metadata.controller.FieldTypes', {
         this.control({
             'metadata_details #metadata_edit_button': {
                 click: this.handleEditMode
+            },
+            'metadata_details #metadata_save_button': {
+                click: this.handleSaveButton
             }
+
 
 
              /*
@@ -52,6 +56,16 @@ Ext.define('Savanna.metadata.controller.FieldTypes', {
             width: 150,
             height: 100,
             html: 'Edit button pressed'
+        }).show();
+    },
+
+    handleSaveButton: function (elem) {
+        console.log('Save button pressed.');
+        Ext.create('Ext.window.Window', {
+            modal: true,
+            width: 150,
+            height: 100,
+            html: 'Save button pressed'
         }).show();
     }
 });
