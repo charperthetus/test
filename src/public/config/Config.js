@@ -10,6 +10,8 @@ SavannaConfig = {
 //    savannaUrlRoot: 'http://c2aptsav1:8080/c2is2/',
     savannaUrlRoot: 'http://thedevsav1.thetuscorp.com:8080/SavannaX/',
 
+    helpUrl: 'http://www.google.com',
+
     resourcesPathPrefix: '',
 
     locationSearchUrl: 'http://thedevsav1.thetuscorp.com:8080/SavannaX/rest/map/search',
