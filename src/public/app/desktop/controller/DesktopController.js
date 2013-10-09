@@ -49,14 +49,28 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
                 closeAction: 'hide'
             });
         }
-        this.statics().aboutwindow.show();
+        var aboutWindow =  this.statics().aboutwindow.show();
+        aboutWindow.show();
+        if(aboutWindow.height > Ext.getBody().getViewSize().height) {
+            aboutWindow.alignTo(Ext.getBody(), 't-t');
+        }
+        else {
+            aboutWindow.center();
+        }
     },
 
     displaySearch: function() {
         if (!this.statics().searchwindow) {
             this.statics().searchwindow = Ext.create('Savanna.desktop.view.SearchWindow', {closeAction: 'hide'});
         }
-        this.statics().searchwindow.show();
+        var searchWindow = this.statics().searchwindow;
+        searchWindow.show();
+        if(searchWindow.height > Ext.getBody().getViewSize().height) {
+            searchWindow.alignTo(Ext.getBody(), 't-t');
+        }
+        else {
+            searchWindow.center();
+        }
     },
 
     displayUploadDialog: function(button) {
@@ -64,12 +78,12 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
             this.statics().uploadwindow = Ext.create('Savanna.desktop.view.UploadWindow', { closeAction: 'hide'});
         }
         var uploadWindow = this.statics().uploadwindow;
-        var desktop = button.up('desktop_savannadesktop');
         var appHeight = document.height;
         if (appHeight < uploadWindow.height + 50){
             uploadWindow.height = appHeight - 50;
         }
         uploadWindow.show();
+        uploadWindow.center();
     },
 
     displayAccountSettings: function() {
