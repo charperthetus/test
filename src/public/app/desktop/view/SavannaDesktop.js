@@ -5,10 +5,10 @@ Ext.define('Savanna.desktop.view.SavannaDesktop', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.desktop_savannadesktop',
     requires:[
-        'Ext.panel.Panel',
-        'Savanna.desktop.view.SavannaWorkspace',
-        'Savanna.controller.Factory'
+        'Savanna.desktop.view.SavannaWorkspace'
     ],
+
+    controller: 'Savanna.desktop.controller.DesktopController',
 
     layout: {
         type: 'fit'
@@ -88,11 +88,5 @@ Ext.define('Savanna.desktop.view.SavannaDesktop', {
             xtype: 'desktop_savannaworkspace',
             itemId: 'savannaworkspace'
         }
-
-    ],
-
-    initComponent: function() {
-        this.callParent(arguments);
-        Savanna.controller.Factory.getController('Savanna.desktop.controller.DesktopController');
-    }
+    ]
 });

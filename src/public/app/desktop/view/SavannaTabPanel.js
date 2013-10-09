@@ -10,105 +10,103 @@ Ext.define('Savanna.desktop.view.SavannaTabPanel', {
     alias: 'widget.desktop_tabpanel',
     requires: [
         'Ext.ux.TabReorderer',
-        'Ext.ux.TabCloseMenu',
-        'Savanna.crumbnet.view.CrumbnetComponent',
-        'Savanna.metadata.view.Details',
-        'Savanna.process.view.ProcessEditorComponent'
+        'Ext.ux.TabCloseMenu'
     ],
+    config: {
+        view: 'single'
+    },
+
     ui: 'dark',
     enableTabScroll: true,
-//    plugins: [
-//            Ext.create('Ext.ux.TabReorderer'),
-//            Ext.create('Ext.ux.TabCloseMenu', {
-//                extraItemsHead: [
-//                    '-',
-//                    {
-//                        text: 'Split',
-//                        hideOnClick: true,
-//                        handler: function (item) {
-//                            currentItem.tab.setClosable(item.checked);
-//                        }
-//                    },
-//                    '-',
-//                    {
-//                        text: 'Move right',
-//                        hideOnClick: true,
-//                        hidden: (this.mainPanel === false),
-//                        handler: function(item) {
-//                            currentItem.tab.setDisabled(!item.checked);
-//                        }
-//                    }
-//                ],
-//            })
-//    ],
-    tabBar:{
-        ui: 'dark',
-        items:[{
-            xtype: 'tab',
+
+    tabBar: {
+        ui: 'dark'
+    },
+
+    initComponent: function() {
+        this.tabBar.items = this.setupTabBarItems();
+        this.plugins = this.setupPlugins();
+        this.callParent(arguments);
+    },
+
+    setupTabBarItems: function() {
+        return [{
+            xtype: 'button',
             text:'+',
-            closable: false,
             ui: 'dark',
             menu: {
-                xtype: 'menu',
                 plain: true,
                 items: [
                     {
-                        text: 'Details',
-                        handler: function(item) {
-                            var tabPanel = item.up('tabpanel');
-                            if (tabPanel) {
-                                var detailsView = Ext.create('widget.metadata_details', {
-                                    title: 'Details',
-                                    //itemURI: 'SolrJdbc%252FRich%252F2fa25cdf-9aab-471f-85b6-5359c0cd0dfd'
-                                    itemURI: 'SolrJdbc%252FRich%252F061aedc6-d88c-497e-81dc-77d809b3262c',
-                                    tabConfig: {
-                                        ui: 'dark'
-                                    }
-                                });
-                                var tab = tabPanel.add(detailsView);
-                                tabPanel.doLayout();
-                                tabPanel.setActiveTab(tab);
-                            }
-                        }
+                        text: 'Item',
+                        handler: this.itemHandler,
+                        scope: this
                     },
                     {
                         text: 'Process',
-                        handler: function(item) {
-                            var tabPanel = item.up('tabpanel');
-                            if (tabPanel) {
-                                var processComponent = Ext.create('Savanna.process.view.ProcessEditorComponent', {
-                                    title: 'Untitled Process', //todo: decide on default name for a new process
-                                    tabConfig: {
-                                        ui: 'dark'
-                                    }
-                                });
-                                var tab = tabPanel.add(processComponent);
-                                tabPanel.doLayout();
-                                tabPanel.setActiveTab(tab);
-                            }
-
-                        }
+                        handler: this.processHandler,
+                        scope: this
                     },
                     {
-                        text: 'Item',
-                        handler: function(item) {
-                            var tabPanel = item.up('tabpanel');
-                            if (tabPanel) {
-                                var itemComponent = Ext.create('Ext.panel.Panel', {
-                                    title: 'Untitled Item', //todo: decide on default name for a new item
-                                    tabConfig: {
-                                        ui: 'dark'
-                                    }
-                                });
-                                var tab = tabPanel.add(itemComponent);
-                                tabPanel.doLayout();
-                                tabPanel.setActiveTab(tab);
-                            }
-
-                        }
+                        text: 'Details',
+                        handler: this.detailsHandler,
+                        scope: this
                     }
                 ]
             }
         }]
+    },
+
+    setupPlugins: function() {
+        return [
+            Ext.create('Ext.ux.TabReorderer'),
+            Ext.create('Ext.ux.TabCloseMenu', {
+                extraItemsHead: [
+                    {
+                        text: 'split view',
+                        handler: this.splitViewHandler,
+                        scope: this
+                    },
+                    {
+                        text: 'single view',
+                        handler: this.singleViewHandler,
+                        scope: this
+                    },
+                    '-'
+                ],
+                listeners: {
+                    beforemenu: this.onBeforeMenu,
+                    scope: this
+                }
+            })
+        ]
+    },
+
+    /*
+     *  The deft control configuration will not work because the menu items are not children of this view.
+     *  Dispatch events off of this view so they can be caught by the deft controller.
+     */
+    itemHandler: function() {
+        this.fireEvent('createitem', this);
+    },
+
+    processHandler: function() {
+        this.fireEvent('createprocess', this);
+    },
+
+    detailsHandler: function() {
+        this.fireEvent('createdetails', this);
+    },
+
+    splitViewHandler: function() {
+        this.fireEvent('splitview');
+    },
+
+    singleViewHandler: function() {
+        this.fireEvent('singleview');
+    },
+
+    onBeforeMenu: function(menu) {
+        this.fireEvent('beforetabclosemenu', this, menu);
     }
 });
