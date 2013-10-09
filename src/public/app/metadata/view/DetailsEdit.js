@@ -5,21 +5,6 @@
  * Time: 7:01 AM
  * To change this template use File | Settings | File Templates.
  */
-
-
-//var itemTpl = new Ext.XTemplate(
-//    '<tpl for=".">',
-//        '<div class="detail-item">',
-//        '<br/><span>{displayLabel}</span>',
-//        '<input type="text" value="{value}" autocomplete="off" name="value" style="width: 100%;">',
-//        //'<br/><span>{value}</span>',
-//        '</div>',
-//    '</tpl>'
-//);
-
-
-
-
 Ext.define('Savanna.metadata.view.DetailsEdit', {
     extend: 'Ext.view.View',
     alias: 'widget.metadata_details_edit',
@@ -57,37 +42,41 @@ Ext.define('Savanna.metadata.view.DetailsEdit', {
         metadataStore.itemURI = config.itemURI;
         metadataStore.load();
 
-        var itemTpl = new Ext.XTemplate(
+        var detailsItemTpl = new Ext.XTemplate(
             '<tpl for=".">',
                 '<div class="detail-item">',
                 // if is visible
-                '<br/><span>{displayLabel}</span>',
-                //'<input type="text" value="{value}" autocomplete="off" name="value" style="width: 100%;">',
-                '<tpl if="this.isListType(values.type)">',
-                    '<tpl for="values.value">',
-                        //'<br/><span>{.}</span>',
-                        '<br/><span>{[this.formatValue(parent.type,values)]}</span>',
-                    '</tpl></p>',
-                '<tpl else>',
-                    '<br/><span>{[this.formatValue(values.type,values.value)]}</span>',
+                '<tpl if="values.visible">',
+                    '<br/><span>{displayLabel}</span>',
+                    //'<input type="text" value="{value}" autocomplete="off" name="value" style="width: 100%;">',
+                    '<tpl if="this.isListType(values.type)">',
+                        '<tpl for="values.value">',
+                            //'<br/><span>{.}</span>',
+                            '<br/><span>{[this.formatValue(parent.type,values)]}</span>',
+                        '</tpl></p>',
+                    '<tpl else>',
+                        '<br/><span>{[this.formatValue(values.type,values.value)]}</span>',
+                    '</tpl>',
                 '</tpl>',
                 '</div>',
             '</tpl>',
             {
                 formatValue: function(type, value) {
                     var formattedValue = '';
-                    console.log('type', type);
+                    //console.log('type', type);
                     switch(type){
                         case 'Integer_List':// fall through
                         case 'Integer':     // fall through
-                        case 'Double':      // fall through
-                        case 'Double_List':
+                        case 'Double_List': // fall through
+                        case 'Double':
+                            formattedValue = value.toLocaleString();
+                            break;
+                        case 'Boolean_List': // fall through
+                        case 'Boolean':
                             formattedValue = value.toLocaleString();
                             break;
                         case 'Date_List':   // fall through
                         case 'Date':
-//                            console.log('type', type);
-//                            console.log('---value', value);
                             var myDate = new Date(value);
                             formattedValue = Ext.Date.format(myDate,'F j, Y, g:i a');
                             break;
@@ -101,11 +90,16 @@ Ext.define('Savanna.metadata.view.DetailsEdit', {
                 },
                 isListType: function(type) {
                     //console.log('type', type);
-                    return ['Boolean_List', 'Date_List', 'Double_List', 'String_List'].indexOf(type) >= 0;
+                    return 0 <= (['Boolean_List'
+                                , 'Date_List'
+                                , 'Double_List'
+                                , 'String_List'
+                                , "Integer_List"
+                                , "Uri_List"].indexOf(type));
                 }
             }
         );
-        this.tpl = itemTpl;
+        this.tpl = detailsItemTpl;
     }
 
 });
