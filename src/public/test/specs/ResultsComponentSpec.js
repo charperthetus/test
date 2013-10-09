@@ -15,6 +15,10 @@ Ext.require('Savanna.search.view.searchComponent.searchBody.resultsComponent.Res
 Ext.require('Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsPanelToolbar');
 Ext.require('Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsDals');
 
+
+
+
+
 describe('Search Results', function () {
 
     var dalFixtures;
@@ -1207,8 +1211,9 @@ describe('Search Results', function () {
 
 
             it('should hide the preview window', function() {
-
-                resultsController.onCloseItemPreview(searchComponent.queryById('resultspreviewwindow').down('#previewclosebutton'));
+                var contentsView = searchComponent.queryById('resultspreviewwindow').down('#resultspreviewcontent');
+                //var controller = contentsView.getController();
+                //controller.onCloseItemPreview(searchComponent.queryById('previewclosebutton'));
 
                 expect(searchComponent.queryById('resultspreviewwindow').isVisible()).toBeFalsy();
             });

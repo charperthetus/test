@@ -12,6 +12,10 @@ Ext.define('Savanna.search.controller.ResultsPreviewContentController', {
     },
     onCloseClick: function() {
         this.getPreviewclosebutton().up('#resultspreviewwindow').hide();
+    },
+
+    init: function () {
+       return this.callParent( arguments );
     }
 
 } );
