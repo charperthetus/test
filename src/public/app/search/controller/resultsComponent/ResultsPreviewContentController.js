@@ -2,7 +2,7 @@
  * Created by jbarmettler on 10/8/13.
  */
 
-Ext.define('Savanna.search.controller.ResultsPreviewContentController', {
+Ext.define('Savanna.search.controller.resultsComponent.ResultsPreviewContentController', {
     extend: 'Deft.mvc.ViewController',
     control: {
         previewclosebutton:  {

@@ -48,12 +48,6 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
             'search_resultscomponent > #resultspreviewwindow #resultspreviewcontent #previewPrevButton': {
                 'click': this.onPrevItemPreview
             },
-            'search_resultscomponent #refine_search_terms': {
-                keyup: this.handleSearchTermKeyUp
-            },
-            'search_resultscomponent #refine_search_submit': {
-                click: this.handleSearchSubmit
-            },
             'search_resultscomponent panel[cls=refine-term]': {
                 'render': this.onTermRender
             },
@@ -355,44 +349,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
                 component.down('#resultsPageSizeCombobox').setValue(pageValue);
             }
         });
-    },
-
-    handleSearchTermKeyUp: function (field, evt) {
-        if (evt.keyCode === Ext.EventObject.ENTER) {
-            if (field.getValue().trim().length) {
-                field.findParentByType('search_searchcomponent').refineSearchString += (field.getValue() + ' AND ');
-                field.findParentByType('search_searchcomponent').down('#refineterms').addTerm(field);
-
-                /*
-                 resubmit the search request
-                 */
-
-                this.getApplication().fireEvent('results:refineSearch', field);
-                return true;
-
-            }   else    {
-
-                return false;
-            }
-        }
-    },
-
-    handleSearchSubmit: function (btn) {
-        var field = btn.findParentByType('search_resultscomponent').down('#refine_search_terms');
-
-        if (field.getValue().trim().length) {
-            field.findParentByType('search_searchcomponent').refineSearchString += (field.getValue() + ' AND ');
-            field.findParentByType('search_searchcomponent').down('#refineterms').addTerm(field);
-
-            /*
-             resubmit the search request
-             */
-            this.getApplication().fireEvent('results:refineSearch', field);
-            return true;
-
-        }   else    {
-
-            return false;
-        }
     }
+
+
 });
