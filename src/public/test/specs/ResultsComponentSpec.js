@@ -1212,8 +1212,11 @@ describe('Search Results', function () {
 
             it('should hide the preview window', function() {
                 var contentsView = searchComponent.queryById('resultspreviewwindow').down('#resultspreviewcontent');
-                //var controller = contentsView.getController();
-                //controller.onCloseItemPreview(searchComponent.queryById('previewclosebutton'));
+                var controller = contentsView.getController();
+
+                expect(controller).not.toBeNull();
+
+                controller.onCloseClick();
 
                 expect(searchComponent.queryById('resultspreviewwindow').isVisible()).toBeFalsy();
             });
