@@ -9,7 +9,6 @@ Ext.define('Savanna.itemView.view.itemView.ImagesGrid', {
         layout: 'border',
         height: 300,
         width: 450,
-        margin: '0 auto',
 
         // Image Description Item
         items: [{

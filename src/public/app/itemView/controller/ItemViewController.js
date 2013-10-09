@@ -254,21 +254,24 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
     // Selecting an image to expand
     onChangeImage: function(btn, image) {
-        console.log(arguments);
         var selectedImage = image.src,
             title = (image.title) ? image.title : 'No title',
             description = (image.alt) ? image.alt : 'No description',
             jumboImage = this.getItemview().queryById('image_primary'),
-            jumboMeta = this.getItemview().queryById('image_text');
+            jumboMeta = this.getItemview().queryById('image_text'),
+            imageWidth = image.naturalWidth,
+            imageHeight = image.naturalHeight;
+
+        var backgroundSize = (imageWidth < jumboImage.width && imageHeight < jumboImage.height) ? 'inherit' : 'contain';
         
+        // In order to display text over an image, the image is used as a background image on a panel
         jumboImage.setBodyStyle({
             backgroundImage: 'url(' + selectedImage + ')',
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center center',
-            backgroundSize: 'cover',
+            backgroundSize: backgroundSize,
             backgroundColor: 'transparent'
         });
-
         jumboMeta.update(description);
     },
 
