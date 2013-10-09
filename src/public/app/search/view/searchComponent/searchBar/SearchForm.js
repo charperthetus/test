@@ -26,7 +26,6 @@ Ext.define('Savanna.search.view.searchComponent.searchBar.SearchForm', {
                     xtype: 'button',
                     border: false,
                     text: 'Close',
-                    ui: 'link-toolbar',
                     itemId: 'close_panel'
                 },
                 {

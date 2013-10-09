@@ -34,8 +34,6 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.searchDals.CustomGrou
                    items: me.buildFormXtype(record)
                 });
                 var controlTooltip = record.get('tooltip');
-                // used for testing
-                // controlTooltip = 'this is a tooltip';
                 if (controlTooltip){
                     customInputField.add({
                         // Decided to use a button because using a xtype of tooltip or icon
@@ -44,7 +42,6 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.searchDals.CustomGrou
                         icon: 'resources/images/searchicon.png',
                         tooltip: controlTooltip,
                         handleMouseEvents: false,
-                        ui: 'link',
                         width: 15
                     });
                 }
@@ -110,7 +107,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.searchDals.CustomGrou
                     xtype: 'button',
                     text: 'Add Key Value Pair Option',
                     handler: Ext.bind(this.addKeyValueInput, this),
-                    ui: 'link'
+                    // ui: 'link'
                 };
                 break;
         }

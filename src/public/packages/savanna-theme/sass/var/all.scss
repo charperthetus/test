@@ -9,11 +9,10 @@
  */
 
 // Colors and Global vars
-@import 'general/Typography.scss';
-@import 'general/Colors.scss';
+@import 'general/Colors';
 
 //Framework level vars
-@import 'framework/Framework.scss';
+@import 'framework/Framework';
 
 // SHAME!
-@import 'general/shame.scss';
+@import 'general/shame';

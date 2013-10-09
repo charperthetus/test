@@ -59,17 +59,17 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
             { text: 'Main Menu', menu: this.buildMainDropdown() },
             this.buildUndoMenuItem(),
             this.buildRedoMenuItem(),
-            { glyph: 61718, ui: 'flat-toolbar-button', menu: this.buildCutCopyPasteMenu() },
-            { type: 'layout submenu', glyph: 61775, tooltip: 'Layout', ui: 'flat-toolbar-button', menu: this.buildLayoutMenuItems() },
+            { glyph: 61718, menu: this.buildCutCopyPasteMenu() },
+            { type: 'layout submenu', glyph: 61775, tooltip: 'Layout', menu: this.buildLayoutMenuItems() },
 
             { xtype: 'tbfill' }, // could also be '->'
 
             { xtype: 'textfield', itemId: 'crumbnetSearchText' },
-            { itemId: 'search', glyph: 61808, ui: 'flat-toolbar-button' },
+            { itemId: 'search', glyph: 61808 },
 
             { xtype: 'tbseparator' }, // could also be '-'
 
-            { glyph: 61786, ui: 'flat-toolbar-button', menu: this.buildSaveMenu() },
+            { glyph: 61786, menu: this.buildSaveMenu() },
             this.buildExportMenuItem(),
             this.buildPrintMenuItem()
         ];
@@ -176,9 +176,9 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
 
     buildCutCopyPasteMenu: function() {
         return [
-            { type: 'cut', glyph: 61718, text: 'Cut', ui: 'flat-toolbar-button' },
-            { type: 'copy', glyph: 61769, text: 'Copy', ui: 'flat-toolbar-button' },
-            { type: 'paste', glyph: 61716, text: 'Paste', ui: 'flat-toolbar-button' }
+            { type: 'cut', glyph: 61718, text: 'Cut' },
+            { type: 'copy', glyph: 61769, text: 'Copy' },
+            { type: 'paste', glyph: 61716, text: 'Paste' }
         ];
     },
 
@@ -235,8 +235,8 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
 
     buildShowMenuItems: function() {
         return [
-            { type: 'toggleGrid', glyph: 61739, text: 'Grid', ui: 'flat-toolbar-button' },
-            { type: 'toggleOverview', glyph: 61736, text: 'Overview', ui: 'flat-toolbar-button' },
+            { type: 'toggleGrid', glyph: 61739, text: 'Grid' },
+            { type: 'toggleOverview', glyph: 61736, text: 'Overview' },
             { type: 'toggleLinkType', text: 'Link Type' },
             { type: 'toggleNodeType', text: 'Node Type' },
             { type: 'toggleNodeDescriptions', text: 'Node Description' },
@@ -313,13 +313,9 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
 
     buildToolbarButton: function(options) {
         var includeLabel = options.includeLabel,
-            buttonOptions;
+            buttonOptions = {};
 
         delete options.includeLabel;
-
-        buttonOptions = Ext.apply({}, options, {
-           ui: 'flat-toolbar-button'
-        });
 
         if (includeLabel) {
             buttonOptions.text = buttonOptions.tooltip;

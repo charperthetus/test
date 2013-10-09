@@ -16,6 +16,7 @@ Ext.define('Savanna.desktop.view.SavannaTabPanel', {
         'Savanna.metadata.view.DetailsEdit',
         'Savanna.process.view.ProcessEditorComponent'
     ],
+    ui: 'dark',
     enableTabScroll: true,
 //    plugins: [
 //            Ext.create('Ext.ux.TabReorderer'),
@@ -42,10 +43,12 @@ Ext.define('Savanna.desktop.view.SavannaTabPanel', {
 //            })
 //    ],
     tabBar:{
+        ui: 'dark',
         items:[{
-            xtype: 'button',
+            xtype: 'tab',
             text:'+',
             closable: false,
+            ui: 'dark',
             menu: {
                 xtype: 'menu',
                 plain: true,
@@ -58,9 +61,12 @@ Ext.define('Savanna.desktop.view.SavannaTabPanel', {
                                 var detailsView = Ext.create('widget.metadata_details_edit', {
                                     title: 'Details',
                                     //itemURI: 'SolrJdbc%252FRich%252F2fa25cdf-9aab-471f-85b6-5359c0cd0dfd'
-                                    itemURI: 'SolrJdbc%252FRich%252F061aedc6-d88c-497e-81dc-77d809b3262c'
+                                    itemURI: 'SolrJdbc%252FRich%252F061aedc6-d88c-497e-81dc-77d809b3262c',
+                                    tabConfig: {
+                                        ui: 'dark'
+                                    }
                                 });
-                                tab = tabPanel.add(detailsView);
+                                var tab = tabPanel.add(detailsView);
                                 tabPanel.doLayout();
                                 tabPanel.setActiveTab(tab);
                             }
@@ -72,7 +78,10 @@ Ext.define('Savanna.desktop.view.SavannaTabPanel', {
                             var tabPanel = item.up('tabpanel');
                             if (tabPanel) {
                                 var processComponent = Ext.create('Savanna.process.view.ProcessEditorComponent', {
-                                    title: 'Untitled Process' //todo: decide on default name for a new process
+                                    title: 'Untitled Process', //todo: decide on default name for a new process
+                                    tabConfig: {
+                                        ui: 'dark'
+                                    }
                                 });
                                 var tab = tabPanel.add(processComponent);
                                 tabPanel.doLayout();
@@ -87,7 +96,10 @@ Ext.define('Savanna.desktop.view.SavannaTabPanel', {
                             var tabPanel = item.up('tabpanel');
                             if (tabPanel) {
                                 var itemComponent = Ext.create('Ext.panel.Panel', {
-                                    title: 'Untitled Item' //todo: decide on default name for a new item
+                                    title: 'Untitled Item', //todo: decide on default name for a new item
+                                    tabConfig: {
+                                        ui: 'dark'
+                                    }
                                 });
                                 var tab = tabPanel.add(itemComponent);
                                 tabPanel.doLayout();

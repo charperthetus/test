@@ -58,12 +58,17 @@ Ext.define('Savanna.desktop.view.SavannaWorkspace', {
         height: '100%',
         items: [{
             title: 'Crumbnet',
-            xtype: 'go-graph'
-            },
-            {
-                title: 'Map',
-                xtype: 'map_component',
-                itemId: 'MAP_ONE'
+            xtype: 'go-graph',
+            tabConfig: {
+                ui: 'dark'
+            }
+        }, {
+            title: 'Map',
+            xtype: 'map_component',
+            itemId: 'MAP_ONE',
+            tabConfig: {
+                ui: 'dark'
+            }
         }]
     }]
 });
