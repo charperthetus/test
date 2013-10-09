@@ -114,7 +114,10 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
     createItem: function(tabpanel) {
         var panel = Ext.create('Ext.panel.Panel', {
             title: 'Untitled Item',
-            closable: true
+            closable: true,
+            tabConfig: {
+                ui: 'dark'
+            }
         });
         var tab = tabpanel.add(panel);
         tabpanel.doLayout();
@@ -126,7 +129,10 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
     createProcess: function(tabpanel) {
         var process = Ext.create('Savanna.process.view.ProcessEditorComponent', {
             title: 'Untitled Process',
-            closable: true
+            closable: true,
+            tabConfig: {
+                ui: 'dark'
+            }
         });
 
         var tab = tabpanel.add(process);
@@ -140,7 +146,10 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
         var details = Ext.create('Savanna.metadata.view.Details', {
             title: 'Untitled Details',
             itemURI: 'SolrJdbc%252FRich%252F061aedc6-d88c-497e-81dc-77d809b3262c',
-            closable: true
+            closable: true,
+            tabConfig: {
+                ui: 'dark'
+            }
         });
         var tab = tabpanel.add(details);
         tabpanel.doLayout();
