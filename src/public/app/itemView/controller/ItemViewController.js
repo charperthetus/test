@@ -55,7 +55,6 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
 
         this.on("itemview:created", this.onItemViewCreated);
-
     },
 
     onItemViewCreated: function (tab) {
@@ -237,6 +236,12 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
                     backgroundPosition: 'center center',
                     backgroundSize: 'cover',
                     backgroundColor: 'transparent'
+                },
+                listeners: {
+                    click: {
+                        element: 'el',
+                        fn: me.onChangeImage
+                    }
                 }
             });
             thumbnail_list.add(thumbnail);
@@ -257,7 +262,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
     // Selecting an image to expand
     onChangeImage: function(btn, image) {
-        console.log('fired');
+        console.log(this.imageSource);
         var selectedImage = image.src,
             title = (image.title) ? image.title : 'No title',
             description = (image.alt) ? image.alt : 'No description',
@@ -273,7 +278,6 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         });
 
         jumboMeta.update(description);
-        jumboMeta.setTitle(title);
     },
 
     setupProperties: function (data, view) {
