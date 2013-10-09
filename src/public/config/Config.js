@@ -30,10 +30,10 @@ SavannaConfig = {
 // Urls for all the rest endpoints
 SavannaConfig.loginUrl = SavannaConfig.savannaUrlRoot + 'authcheck/loggedIn.html';
 SavannaConfig.searchUrl = SavannaConfig.savannaUrlRoot + 'rest/search'; // local dev version: 'app/assets/data/testSearchResults.json',
-SavannaConfig.modelSearchUrl=SavannaConfig.savannaUrlRoot+ 'rest/model/search';
-SavannaConfig.itemViewUrl = SavannaConfig.savannaUrlRoot + 'rest/model/item/';
+SavannaConfig.itemViewUrl = SavannaConfig.savannaUrlRoot + 'rest/c2is2/model/item/';
 SavannaConfig.dalSourcesUrl = SavannaConfig.savannaUrlRoot + 'rest/search/sources'; // local dev version: 'resources/data/testSearchDalsWithFormData.json',
 SavannaConfig.locationSearch = SavannaConfig.savannaUrlRoot + '/rest/map/search';   // local dev version: 'resources/data/testSearchLocationSearch.json',
+SavannaConfig.uploadUrl = SavannaConfig.savannaUrlRoot + 'rest/document/upload';
 SavannaConfig.metadataUrl = SavannaConfig.savannaUrlRoot + 'rest/metadata';
 // TODO: replace this test URL with real endpoint once we have one....
 SavannaConfig.crumbnetTemplatesUrl = 'fixture/Crumbnet.json';

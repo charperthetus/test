@@ -313,7 +313,7 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
 
     buildToolbarButton: function(options) {
         var includeLabel = options.includeLabel,
-            buttonOptions;
+            buttonOptions = {};
 
         delete options.includeLabel;
 

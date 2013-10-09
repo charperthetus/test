@@ -47,6 +47,9 @@ Ext.application({
         'Savanna.itemView.controller.ItemViewController',
         //Model Search
         'Savanna.modelSearch.controller.ModelSearchController'
+        'Savanna.map.controller.MapController',
+        //Map
+        'Savanna.upload.controller.UploadController'
     ],
 
     autoCreateViewport: true,
