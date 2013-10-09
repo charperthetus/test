@@ -45,9 +45,6 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
             },
             '#nav_right' : {
                 click: this.onNavRight
-            },
-            'itemview_imagethumbnail' : {
-                'onClick': this.onChangeImage
             }
         });
 
@@ -230,17 +227,12 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
             var imageSource = SavannaConfig.savannaUrlRoot + '/preview2/?filestoreUri=' + image.uri;
             var thumbnail = Ext.create('Savanna.itemView.view.itemView.ImageThumbnail', {
                 title: image.displayLabel,
-                bodyStyle: {
-                    backgroundImage: 'url(' + imageSource + ')',
-                    backgroundRepeat: 'no-repeat',
-                    backgroundPosition: 'center center',
-                    backgroundSize: 'cover',
-                    backgroundColor: 'transparent'
-                },
+                src: imageSource,
+                alt: image.comment,
                 listeners: {
                     click: {
                         element: 'el',
-                        fn: me.onChangeImage
+                        fn: me.onChangeImage.bind(me)
                     }
                 }
             });
@@ -262,7 +254,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
     // Selecting an image to expand
     onChangeImage: function(btn, image) {
-        console.log(this.imageSource);
+        console.log(arguments);
         var selectedImage = image.src,
             title = (image.title) ? image.title : 'No title',
             description = (image.alt) ? image.alt : 'No description',

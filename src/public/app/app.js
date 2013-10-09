@@ -46,9 +46,8 @@ Ext.application({
         //ItemView
         'Savanna.itemView.controller.ItemViewController',
         //Model Search
-        'Savanna.modelSearch.controller.ModelSearchController'
-        'Savanna.map.controller.MapController',
-        //Map
+        'Savanna.modelSearch.controller.ModelSearchController',
+        //Upload
         'Savanna.upload.controller.UploadController'
     ],
 
