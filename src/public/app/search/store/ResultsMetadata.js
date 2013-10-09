@@ -7,7 +7,7 @@ Ext.define('Savanna.search.store.ResultsMetadata', {
         'Savanna.proxy.Cors'
     ],
 
-    storeId: 'searchMetadata',
+    storeId: 'searchResultsMetadata',
 
     model: 'Savanna.search.model.ResultMetadata',
 

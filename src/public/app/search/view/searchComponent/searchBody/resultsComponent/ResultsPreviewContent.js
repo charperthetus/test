@@ -91,6 +91,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
 
 
     populate: function (record, metadata, index, totalResultsCount) {
+
         var capco = {'U': 'UNCLASSIFIED'},
             metaHTML = '<table>',
             row;

@@ -30,8 +30,13 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
     },
 
     displayPreview:function(record, metadata, index, totalCount)   {
-        this.show();
-        this.queryById('resultspreviewcontent').populate(record, metadata, index, totalCount);
-
+        if(metadata.data)    {
+            this.show();
+            this.queryById('resultspreviewcontent').populate(record, metadata, index, totalCount);
+        }   else    {
+            Ext.Error.raise({
+                msg: 'No document metadata to display.'
+            });
+        }
     }
 });

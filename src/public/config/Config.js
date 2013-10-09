@@ -12,8 +12,8 @@ SavannaConfig = {
 
     resourcesPathPrefix: '',
 
-    locationSearchUrl: 'http://thedevsav1.thetuscorp.com:8080/SavannaX/rest/map/search',
-//    locationSearchUrl: '../test/fixtures/LocationSources.js',
+    //locationSearchUrl: 'http://thedevsav1.thetuscorp.com:8080/SavannaX/rest/map/search',
+    locationSearchUrl: '../test/fixtures/LocationSources.js',
 
     // Map base layer
     mapBaseLayerUrl: 'http://demo.opengeo.org/geoserver/wms',

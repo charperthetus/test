@@ -144,7 +144,6 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
         this.resultsStore.load({
             scope: this,
             callback: function() {
-                console.log(me);
                 me.updatePreviewHelper();
             }
         });
@@ -169,12 +168,17 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
     },
 
     updatePreviewHelper: function () {
+
         var me = Savanna.controller.Factory.getController('Savanna.search.controller.ResultsComponent');
         me.resultsGrid = me.getGrid();
         me.resultsStore = me.getGridStore();
 
         var record = me.resultsStore.getAt(me.getStoreIndexOfPreviewIndex()),
+            recordMetadata;
+
+        if(me.getResultsComponent().currentResultSet.metadata)   {
             recordMetadata = me.getResultsComponent().currentResultSet.metadata.getById(record.data.uri);
+        }
 
         //this can happen when you hit next > 10 times/sec
         if(!record || !recordMetadata){
@@ -210,6 +214,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
 
     getDocumentMetadata: function (results, uris) {
 
+
         this.setIsWaitingForDocumentMetadata ( true );
 
         var metadataStore = Ext.create('Savanna.search.store.ResultsMetadata', {
@@ -227,13 +232,14 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
     metadataCallback: function (records, operation, success, results) {
 
         for (var record in records) {
+
             if (records.hasOwnProperty(record)) {
                 var obj = records[record];
+
                 var metaStore = Ext.create('Ext.data.Store', {
                     model: 'Savanna.search.model.ResultMetadata'
                 });
                 for (var elem in obj.raw) {
-
                     if (obj.raw.hasOwnProperty(elem)) {
                         var elem_obj = obj.raw[elem];
                         var metaPropertiesStore = Ext.create('Savanna.metadata.store.Metadata');
@@ -246,6 +252,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
                     }
                 }
                 results.metadata = metaStore;
+
                 this.setIsWaitingForDocumentMetadata ( false );
             }
         }
@@ -260,10 +267,12 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
 
         //Make sure the record is paged in.
         var containingPage =  this.pageOfCurrentPreviewIndex();
+
         if(this.resultsStore.currentPage !== containingPage ) {
             this.resultsStore.currentPage = containingPage;
             this.getNewPreviewRecords();
         } else {
+
             this.updatePreviewHelper();
         }
     },
