@@ -1,0 +1,16 @@
+/*
+ *  Sets custom panel.Table (grid) styles 
+ *
+ *	@author eirby
+ *	@edit 	astump 8/30/2013 - added notes
+ *	@edits	astump 10/9/2013 - added word-wrap, vertical-align, and heading padding
+ *
+ */
+
+.#{$prefix}grid-cell-inner {
+    @if $grid-cell-title-padding-bottom != null {
+    	.grid-cell-title {
+    		padding-bottom: $grid-cell-title-padding-bottom;
+    	}
+    } 
+}
