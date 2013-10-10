@@ -22,6 +22,16 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
             'search_resultscomponent': {
                 'render': function (search) {
                     me.component = search;  // temporary measure, pending deft conversion next week
+
+                    //Keelan asked that I use UI event bubbling...
+                    me.component.on('Search:PageSizeChanged', this.onPageSizeChange, this);
+                    me.component.on('Search:SortByChanged', this.onSortOrderChange, this);
+
+                    //We can grab events in a popup this way
+                    var dispatcher = this.previewWindow();
+                   // this.relayEvents( dispatcher, ['search:previewNextButton', 'search:previewPrevButton']);
+                    dispatcher.on('search:previewNextButton', this.onNextItemPreview, this);
+                    dispatcher.on('search:previewPrevButton', this.onPrevItemPreview, this);
                 }
             },
             'search_resultscomponent panel[cls=results-dal]': {
@@ -47,13 +57,9 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
 
         //Use any kind of event system to tell this controller about big changes to the results view(s)
         this.getApplication().on('search:changeSelectedStore', this.changeSelectedStore, this);
-        this.getApplication().on('search:previewNextButton', this.onNextItemPreview, this);
-        this.getApplication().on('search:previewPrevButton', this.onPrevItemPreview, this);
-        this.getApplication().on('Search:PageSizeChanged', this.onPageSizeChange, this);
-        this.getApplication().on('Search:SortByChanged', this.onSortOrderChange, this);
-
-
     },
+
+
 
     //Index to show in preview in range: 0 to store.totalCount.
     previewIndex: 0,

@@ -17,7 +17,6 @@ Ext.define('Savanna.search.controller.resultsComponent.ResultsPreviewContentCont
 
     },
 
-
     onCloseClick: function() {
         var view =  this.getView();
         if(view){
@@ -28,13 +27,13 @@ Ext.define('Savanna.search.controller.resultsComponent.ResultsPreviewContentCont
 
     onPrevClick: function() {
         var view =  this.getView();
-        Savanna.getApplication().fireEvent("search:previewPrevButton");
+        view.fireEvent("search:previewPrevButton");
 
     },
 
     onNextClick: function() {
         var view =  this.getView();
-        Savanna.getApplication().fireEvent("search:previewNextButton");
+        view.fireEvent("search:previewNextButton");
     },
 
     init: function () {

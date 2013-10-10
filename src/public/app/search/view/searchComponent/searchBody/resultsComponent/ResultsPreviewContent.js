@@ -11,6 +11,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
     controller: 'Savanna.search.controller.resultsComponent.ResultsPreviewContentController',
     alias: 'widget.search_resultspreviewcontent',
     header: false,
+    bubbleEvents: ['search:previewNextButton', 'search:previewPrevButton'],
     requires: [
 
     ],

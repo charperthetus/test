@@ -17,12 +17,12 @@ Ext.define('Savanna.search.controller.resultsComponent.ResultsPanelToolbarContro
 
 
     onPageSizeChange: function (box, record, index) {
-        Savanna.getApplication().fireEvent("Search:PageSizeChanged", record[0].data.count);
+        this.getView().fireEvent("Search:PageSizeChanged", record[0].data.count);
 
     },
 
     onSortByChange: function (box, record, index) {
-        Savanna.getApplication().fireEvent("Search:SortByChanged", record);
+        this.getView().fireEvent("Search:SortByChanged", record);
 
     },
 
