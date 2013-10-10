@@ -33,7 +33,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
             items: [
                 {
                     xtype: 'toolbar',
-                    width: 440,
+                    width: 620,
                     border: false,
                     itemId: 'results_preview_nav_text',
                     items: [
@@ -59,7 +59,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
                 },
                 {
                     xtype: 'toolbar',
-                    width: 440,
+                    width: 620,
                     border: false,
                     items: [
                         {
@@ -133,7 +133,12 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
         Ext.each(primaryKeys, function (key) {
             Ext.each(metadata.data.items, function (item) {
                 if (item.data.key === key) {
-                    row = '<tr><td class="meta-displaylabel">' + item.data.displayLabel + '</td></tr><tr><td class="meta-value">' + item.data.value + '</td></tr>';
+                    if(key === 'docTitle')    {
+                        row = '<tr><td class="doctitle-meta-value">' + item.data.value + '</td></tr>';
+                    } else  {
+                        row = '<tr><td class="meta-displaylabel">' + item.data.displayLabel + '</td></tr><tr><td class="meta-value">' + item.data.value + '</td></tr>';
+                    }
+
                     metaHTML += row;
                     added[item.data.key] = item.data.value;
                 }
@@ -160,10 +165,6 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
 
         this.queryById('previewcontent').update(metaHTML);
 
-        if (record && record.title) {
-            var win = this.findParentByType('search_resultspreviewwindow');
-            win.setTitle(record.title);
-        }
         var label = this.getComponent('itemIndexAndTotalLabel');
         if (label) {
             label.text = 'Preview Results ' + index + ' of ' + totalResultsCount;
