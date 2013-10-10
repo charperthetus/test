@@ -1352,7 +1352,7 @@ describe('Search Results', function () {
                 searchComponent.down('#resultsdals').createDalPanels(searchController.getSelectedDals(searchComponent));
 
 
-                resultsController.onPageComboChange(searchComponent.down('#resultsPageSizeCombobox'));
+                resultsController.onPageSizeChange(13);
 
                 expect(searchComponent.down('#resultsdals').updateDalStatus).toHaveBeenCalled();
             });

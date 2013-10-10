@@ -1,6 +1,7 @@
 Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsPanelToolbar', {
     extend: 'Ext.toolbar.Toolbar',
     alias: 'widget.search_resultspaneltoolbar',
+    controller: 'Savanna.search.controller.resultsComponent.ResultsPanelToolbarController',
 
     requires: [
         'Savanna.controller.Factory',
