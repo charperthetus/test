@@ -39,9 +39,6 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
                 'itemmouseenter': this.onItemMouseEnter,
                 'itemmouseleave': this.onItemMouseLeave
             },
-            'search_resultscomponent > #resultspreviewwindow #resultspreviewcontent #previewclosebutton': {
-                'click': this.onCloseItemPreview
-            },
             'search_resultscomponent #resultsFacetsReset': {
                 'click': this.onDalReset
             },
@@ -277,12 +274,6 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
         });
         btn.facetsExpanded = !btn.facetsExpanded;
     },
-
-
-    onCloseItemPreview: function (btn) {
-        btn.up('#resultspreviewwindow').hide();
-    },
-
 
     onNextItemPreview: function (btn) {
         if(this.previewIndex >= this.resultsStore.totalCount){
