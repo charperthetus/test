@@ -42,7 +42,7 @@ Ext.define('Savanna.process.utils.NodeEventHandlers', {
 
     onMouseDragLeave: function (e, grp, next) {
         //todo
-    },
+    }
 
 
 
