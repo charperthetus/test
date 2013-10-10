@@ -48,7 +48,7 @@ Ext.define('Savanna.process.view.ProcessEditorComponent', {
                 },
                 items:[
                     {
-                        xtype: 'process_canvas', //todo: refactor graph canvas
+                        xtype: 'process_canvas',
                         itemId: 'canvas',
                         width: '100%',
                         height: '100%'
