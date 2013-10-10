@@ -615,12 +615,11 @@ describe('Search Component', function () {
 
         describe('buildSearchObject', function () {
 
-            var searchString, dal, currentDalPanel, sources;
+            var searchString, dal, currentDalPanel, sources, mapView;
 
             beforeEach(function () {
 
-
-
+                console.log('BeforeEach build object running...');
                 var readMethod = 'GET',
                     testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(dalStore.getProxy(), 'read', readMethod);
 
@@ -646,6 +645,7 @@ describe('Search Component', function () {
                 searchString = 'apples';
                 dal = sources[0];
                 currentDalPanel = component.down('#searchdals').queryById('mockDAL');
+                mapView = component.down('#searchMapCanvas');
             });
 
             afterEach(function () {
@@ -653,10 +653,11 @@ describe('Search Component', function () {
                 dal = null;
                 currentDalPanel = null;
                 sources = null;
+                mapView = null;
             });
 
             it('should return the search request JSON', function () {
-                var searchObject = controller.buildSearchObject(searchString, dal, currentDalPanel);
+                var searchObject = controller.buildSearchObject(searchString, dal, currentDalPanel, mapView);
                 expect(searchObject.data.textInputString).toEqual(searchString);
             });
 
@@ -665,7 +666,7 @@ describe('Search Component', function () {
 
         describe('buildAndLoadResultsStore', function () {
 
-            var searchString, dal, currentDalPanel, sources;
+            var searchString, dal, currentDalPanel, sources, mapView;
 
             beforeEach(function () {
 
@@ -696,6 +697,7 @@ describe('Search Component', function () {
                 searchString = 'apples';
                 dal = sources[0];
                 currentDalPanel = component.down('#searchdals').queryById('mockDAL');
+                mapView = component.down('#searchMapCanvas');
             });
 
             afterEach(function () {
@@ -703,13 +705,14 @@ describe('Search Component', function () {
                 dal = null;
                 currentDalPanel = null;
                 sources = null;
+                mapView = null;
             });
 
             it('should create the results store for the DAL', function () {
                 component.down('#resultsdals').store = dalStore;
                 component.down('#resultsdals').createDalPanels(controller.getSelectedDals(component));
 
-                var searchObject = controller.buildSearchObject(searchString, dal, currentDalPanel);
+                var searchObject = controller.buildSearchObject(searchString, dal, currentDalPanel, mapView);
 
                 controller.buildAndLoadResultsStore(dal, component, searchObject, 'search');
 
@@ -720,7 +723,7 @@ describe('Search Component', function () {
 
         describe('doSearch', function () {
 
-            var searchString, dal, currentDalPanel, sources, searchObject;
+            var searchString, dal, currentDalPanel, sources, mapView, searchObject;
 
             beforeEach(function () {
 
@@ -749,17 +752,19 @@ describe('Search Component', function () {
                 searchString = 'apples';
                 dal = sources[0];
                 currentDalPanel = component.down('#searchdals').queryById('mockDAL');
+                mapView = component.down('#searchMapCanvas');
 
                 component.down('#resultsdals').store = dalStore;
                 component.down('#resultsdals').createDalPanels(controller.getSelectedDals(component));
 
-                searchObject = controller.buildSearchObject(searchString, dal, currentDalPanel);
+                searchObject = controller.buildSearchObject(searchString, dal, currentDalPanel, mapView);
             });
 
             afterEach(function () {
                 searchString = null;
                 dal = null;
                 currentDalPanel = null;
+                mapView = null;
                 sources = null;
                 searchObject = null;
             });

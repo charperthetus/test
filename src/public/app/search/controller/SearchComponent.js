@@ -276,12 +276,26 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         return sources;
     },
 
-    buildSearchObject: function (searchString, dal, currentDalPanel) {
+    buildSearchObject: function (searchString, dal, currentDalPanel, mapView) {
         var searchObj = Ext.create('Savanna.search.model.SearchRequest', {
             'textInputString': searchString,
             'displayLabel': searchString
         });
 
+        if (mapView.searchLayer) {
+            if (mapView.searchLayer.features.length > 0){
+                var polyVo = {};
+                var polyRings = [];
+                var vertices = mapView.searchLayer.features[0].geometry.getVertices();
+                for (var i = 0; i < vertices.length; i++) {
+                    var point = [vertices[i].x, vertices[i].y];
+                    polyRings.push(point);
+                }
+                polyVo.coordinates = [polyRings];
+                polyVo.type = 'Polygon';
+                searchObj.set('polygonVo', polyVo);
+            }
+        }
 
         searchObj.set('contentDataSource', dal.get('id'));
 
@@ -356,6 +370,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         var searchString = component.queryById('searchbar').buildSearchString(),
             resultsComponent = component.queryById('searchresults');
 
+        var mapView = component.down('#searchMapCanvas');
 
         /*
          this is an array of objects - they store the dal id and the store instance for that dal's results.
@@ -385,7 +400,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
             if (checked) {  // checked, or always search the default dal
 
-                searchObj = this.buildSearchObject(searchString, source, currentDalPanel);
+                searchObj = this.buildSearchObject(searchString, source, currentDalPanel, mapView);
 
                 this.buildAndLoadResultsStore(source, component, searchObj, 'search');
             }
@@ -457,6 +472,8 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                  */
                 resultsPanel.up('#searchresults').allResultSets.push(resultsObj);
 
+                this.mapGetSearchResults(resultsObj, resultsDal);
+
                 if (store.facetValueSummaries !== null) {
                     resultsDal.createDalFacets(dalId);
                 }
@@ -504,12 +521,14 @@ Ext.define('Savanna.search.controller.SearchComponent', {
     loadVectorLayer: function (canvas) {
         // Add a feature layer to the map.
         var searchLayer = new OpenLayers.Layer.Vector('searchLayer');
+        searchLayer.events.register('featureadded', canvas, this.onFeatureAdded);
+        searchLayer.events.register('featureremoved', canvas, this.onFeatureRemoved);
         canvas.searchLayer = searchLayer;
         canvas.map.addLayer(searchLayer);
 
         // Add the draw feature control to the map.
         var drawFeature = new OpenLayers.Control.DrawFeature(searchLayer, OpenLayers.Handler.Polygon, {
-            featureAdded: this.onFeatureAdded
+            id: 'PolygonDrawTool'
         });
 
         drawFeature.handler.callbacks.point = this.pointCallback;
@@ -517,9 +536,14 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         canvas.drawFeature = drawFeature;
     },
 
-    onFeatureAdded: function () {
+    onFeatureAdded: function (event) {
         // Scope: drawFeature
-        this.deactivate();
+        this.drawFeature.deactivate();
+        this.fireEvent('searchPolygonAdded', this);
+    },
+
+    onFeatureRemoved: function (event) {
+        this.fireEvent('searchPolygonRemoved', this);
     },
 
     onMapCanvasResize: function (canvas) {
@@ -549,6 +573,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         var mapCanvas = comboBoxButton.parentComboBox.up('search_searchmap').down('search_map_canvas');
         var extent = new OpenLayers.Bounds(viewBox.west, viewBox.south, viewBox.east, viewBox.north);
         mapCanvas.map.zoomToExtent(extent, true);
+        console.log(mapCanvas.map.maxExtent);
     },
 
     enableZoomMenu: function (button) {
@@ -583,5 +608,9 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         var canvasSize = searchMap.body.getSize();
         var polyButton = searchMap.down('#drawLocationSearch');
         polyButton.setPosition(canvasSize.width - 50, 10);
+    },
+
+    mapGetSearchResults: function (results, resultsDal) {
+        resultsDal.fireEvent('mapNewSearchResults', results, resultsDal);
     }
 });

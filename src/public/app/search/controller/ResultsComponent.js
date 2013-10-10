@@ -52,6 +52,21 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
             },
             'search_resultscomponent #showHideFacets': {
                 'click': this.onShowHideFacets
+            },
+            'search_searchcomponent #resultMapCanvas': {
+                beforerender: this.loadDefaultLayer,
+                afterrender: this.loadVectorLayer,
+                resize: this.onMapCanvasResize
+            },
+            'search_searchcomponent #resultspanel button': {
+                click: this.changeResultView
+            },
+            'search_searchcomponent #searchMapCanvas': {
+                searchPolygonAdded: this.addSearchPolygon,
+                searchPolygonRemoved: this.removeSearchPolygon
+            },
+            'search_searchcomponent search_resultsdals': {
+                mapNewSearchResults: this.loadPointsFromStore
             }
         });
 

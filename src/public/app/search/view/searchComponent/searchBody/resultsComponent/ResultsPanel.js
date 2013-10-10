@@ -12,6 +12,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
     requires: [
         'Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsPanelToolbar',
         'Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsPanelGrid',
+        'Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsMap',
         'Savanna.controller.Factory'
     ],
 
@@ -39,6 +40,11 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
                         displayInfo: true
                     }
                 ]
+            },
+            {
+                xtype: 'search_resultsmap',
+                itemId: 'resultsmap',
+                hidden: true
             }
         ];
     },
