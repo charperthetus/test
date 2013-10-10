@@ -7,11 +7,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         'Savanna.itemView.view.ItemViewer',
         'Savanna.itemView.view.itemView.Header',
         'Savanna.itemView.view.itemView.header.DisplayLabel',
-        'Savanna.itemView.view.itemView.Boilerplate',
-        'Savanna.itemView.view.itemView.RelatedContent',
-        'Savanna.itemView.view.itemView.Annotations',
         'Savanna.itemView.view.itemView.ImagesGrid',
-        'Savanna.itemView.view.itemView.Confusers',
         'Savanna.itemView.view.itemView.components.AutoCompleteWithTags',
         'Savanna.itemView.view.itemView.ImageThumbnail',
         'Savanna.itemView.view.itemView.ItemProperties',
@@ -107,17 +103,8 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         //Aliases
         this.setupAliases(data.aliases, view);
 
-        //Boilerplate
-        this.setupBoilerplate(data, view);
-
         //Related Processes
         this.setupRelatedProcesses(data, view);
-
-        //Related Content
-        this.setupRelatedContent(data, view);
-
-        //Annotations
-        this.setupAnnotations(data, view);
 
         //Right Side
 
@@ -126,9 +113,6 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
         //Properties
         this.setupProperties(data, view);
-
-        //Confusers
-        this.setupConfusers(data, view);
     },
 
     setupDisplayLabel: function (displayLabel, view) {
@@ -146,76 +130,8 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         }
     },
 
-    setupBoilerplate: function (data, view) {
-        var bpGrid = view.down('panel > propertygrid:first'),
-            taxParentText = '',
-            i,
-            createdBy,
-            modifiedBy,
-            bpData;
-
-        if (data.taxoParents.length > 0) {
-            taxParentText = data.taxoParents[0].referenceName;
-        }
-
-        for (i = 1; i < data.taxoParents.length; i++) {
-            taxParentText += ', ' + data.taxoParents[i].referenceName;
-        }
-
-        createdBy = "benji"; // this.getEntryForKey('createdBy', data.metadata.metadataEntries);
-        modifiedBy = "benji"; // this.getEntryForKey('modifiedBy', data.metadata.metadataEntries);
-
-        bpData = {
-            'Aliases': data.aliases.join(', '),
-            //'Parent Classes': data.classParents.join(', '), // BUG: this is an object, not an array of strings...
-            'Taxonomic Categories': taxParentText,
-            'Created': new Date(data.createdDate) + ' - ' + createdBy,
-            'Modified': new Date(data.lastModifiedDate) + ' - ' + modifiedBy,
-            //'Workflow Status': data.workflowInfo.workflowState + ' - ' + new Date(data.workflowInfo.lastWorkflowActionDate) + ' - ' + data.workflowInfo.lastWorkflowActionPerformedBy,
-            'Workflow Notes': data.functionalDescription
-        };
-
-        bpGrid.setSource(bpData);
-    },
-
     setupRelatedProcesses: function (data, view) {
         console.log('TODO: figure out how to source "relatedProcesses" data and render it');
-    },
-
-    setupRelatedContent: function (data, view) {
-        var relatedItems = data.relatedItems,
-            relatedContentBox = view.queryById('relatedContent'),
-            relatedContentStore = relatedContentBox.getStore();
-
-        relatedContentStore.loadData(relatedItems);
-        relatedContentBox.refresh();
-    },
-
-    setupAnnotations: function (data, view) {
-        var annotationGrid = view.queryById('annotationGrid');
-
-        Ext.Ajax.request({
-            url: SavannaConfig.savannaUrlRoot + '/rest/crud/query;jsessionid=' + Savanna.jsessionid,
-            method: 'POST',
-            cors: true,
-            withCredentials: true,
-            headers: {
-                'Accept': 'application/json'
-            },
-            jsonData: {
-                _type: 'com.thetus.platforms.savanna.services.annotation.AnnotationDataQuery',
-                uris: [data.uri],
-                numResultsOnly: false
-            },
-            success: function (response, opts) {
-                var annotations = Ext.decode(response.responseText);
-
-                annotationGrid.store.add(annotations);
-            },
-            failure: function (response, opts) {
-                console.log('server-side failure with status code ' + response.status);
-            }
-        });
     },
 
     setupImages: function (data, view) {
@@ -275,42 +191,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     },
 
     setupProperties: function (data, view) {
-        var propData = {},
-            propGrid,
-            prop,
-            i = 0;
-
-        for (; i < data.itemProperties.length; i++) {
-            prop = data.itemProperties[i];
-            propData[prop.propertyName] = prop.propertyValue;
-        }
-
-        propGrid = Ext.ComponentQuery.query('#propGrid', view)[0];
-
-        propGrid.setSource(propData);
-    },
-
-    setupConfusers: function (data, view) {
-        var confusers = data.confusers,
-            confusersBox = view.queryById('confusers'),
-            confusersStore = confusersBox.getStore();
-
-        confusersStore.loadData(confusers);
-        confusersBox.refresh();
-    },
-
-    getEntryForKey: function (key, entries) {
-        var entry,
-            i;
-
-        for (i = 0; i < entries.length; i++) {
-            if (entries[i].key.key == key) {
-                entry = entries[i].value;
-                break;
-            }
-        }
-
-        return entry;
+        //ToDo: set up to load current incoming properties
     },
 
     buildItemDataFetchUrl: function (uri) {

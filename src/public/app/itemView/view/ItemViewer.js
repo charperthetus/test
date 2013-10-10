@@ -40,19 +40,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                         //ToDo: create related processes component here
                     },
                     {
-                        //Todo: modify this to become related items
-                        xtype: 'itemview_relatedcontent',
-                        itemId: 'relatedContent'
-                    },
-
-                    //ToDo: none of this is present in the current design so remove them
-                    {
-                        xtype: 'itemview_boilerplate',
-                        itemId: 'boilerplate'
-                    },
-                    {
-                        xtype: 'itemview_annotations',
-                        itemId: 'annotationGrid'
+                        //Todo: create related items component here
                     }
                 ]
             },
@@ -60,11 +48,10 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                 xtype: 'panel',
                 flex: 1,
                 items: [
-//                    {
-//                        //ToDo: switch this out for Joel's image browser
-//                        xtype: 'itemview_imagesgrid',
-//                        itemId: 'imagesGrid'
-//                    },
+                    {
+                        xtype: 'itemview_imagesgrid',
+                        itemId: 'imagesGrid'
+                    },
                     {
                         xtype: 'button',
                         text: 'Add Property',
@@ -76,21 +63,6 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                         itemId: 'itemProperties',
                         width: '100%'
                     }
-//                    {
-//                        //ToDo: modify this to become the properties component
-//                        xtype: 'propertygrid',
-//                        itemId: 'propGrid',
-//                        hideHeaders: true,
-//                        width: '100%',
-//                        source: {
-//                        }
-//                    },
-
-//                    //ToDo: not present in current design so remove it
-//                    {
-//                        xtype: 'itemview_confusers',
-//                        itemId: 'confusers'
-//                    }
                 ]
             }
         ];
