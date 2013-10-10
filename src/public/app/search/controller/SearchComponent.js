@@ -282,7 +282,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             'displayLabel': searchString
         });
 
-        if (mapView.searchLayer) {
+        if ((typeof mapView != 'undefined') && mapView &&  mapView.searchLayer) {
             if (mapView.searchLayer.features.length > 0){
                 var polyVo = {};
                 var polyRings = [];

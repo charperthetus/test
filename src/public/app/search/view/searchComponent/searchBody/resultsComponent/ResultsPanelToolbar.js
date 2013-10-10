@@ -27,9 +27,9 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
         var countStore = Ext.create('Ext.data.Store', {
             fields: ['count', 'name'],
             data: [
-                {'count': '20', 'name': '20'},
-                {'count': '50', 'name': '50'},
-                {'count': '100', 'name': '100'}
+                {'count': 20, 'name': '20'},
+                {'count': 50, 'name': '50'},
+                {'count': 100, 'name': '100'}
             ]
         });
 
