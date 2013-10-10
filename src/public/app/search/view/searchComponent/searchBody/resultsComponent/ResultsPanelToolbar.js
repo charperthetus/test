@@ -20,7 +20,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
         var sortStore = Ext.create('Ext.data.Store', {
             fields: ['sortby', 'name'],
             data: [
-                {'sortby': 'relevance', 'name': 'Relevance'},
+                {'sortby': 'relevance', 'name': 'Relevance'}
             ]
         });
 
