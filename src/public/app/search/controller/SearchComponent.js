@@ -282,7 +282,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             'displayLabel': searchString
         });
 
-        if (mapView.searchLayer) {
+        if ((typeof mapView != 'undefined') && mapView &&  mapView.searchLayer) {
             if (mapView.searchLayer.features.length > 0){
                 var polyVo = {};
                 var polyRings = [];
@@ -337,13 +337,10 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         return searchObj;
     },
 
-    buildAndLoadResultsStore:function(dal, component, searchObj, action, comboboxComponent) {
+    buildAndLoadResultsStore:function(dal, component, searchObj, action, pageSize) {
 
-        var pageSize;
-
-        if(comboboxComponent)   {
-            pageSize = comboboxComponent.value;
-        }   else    {
+        //supposedly the best way to check for undefined
+        if( typeof pageSize == 'undefined')     {
             pageSize = dal.get('resultsPerPage');
         }
 
