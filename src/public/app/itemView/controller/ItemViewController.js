@@ -1,8 +1,6 @@
 Ext.define('Savanna.itemView.controller.ItemViewController', {
     extend: 'Ext.app.Controller',
 
-    // TODO: define stores for itemview subcomponents
-
     views: [
         'Savanna.itemView.view.ItemViewer',
         'Savanna.itemView.view.itemView.Header',
@@ -12,24 +10,29 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         'Savanna.itemView.view.itemView.Annotations',
         'Savanna.itemView.view.itemView.ImagesGrid',
         'Savanna.itemView.view.itemView.Confusers',
-        'Savanna.itemView.view.itemView.components.AutoCompleteWithTags'
+        'Savanna.itemView.view.itemView.components.AutoCompleteWithTags',
+        'Savanna.itemView.view.itemView.ItemProperties',
+        'Savanna.itemView.view.itemView.components.LabeledFieldWithTags',
+        'Savanna.itemView.view.itemView.Toolbar'
     ],
 
     constructor: function (options) {
         this.opts = options || {};
-
         this.callParent(arguments);
     },
 
     init: function (app) {
 
         this.control({
-            'itemview_header #auto_complete_text_box': {
+            'itemview_itemviewer #auto_complete_box': {
                 keyup: this.handleAutoCompleteTextKeyUp
             },
 
-            'itemview_header #removeTerm': {
+            'itemview_itemviewer #removeTerm': {
                 click: this.handleRemoveTagClick
+            },
+            'itemview_itemviewer #addPropBtn': {
+                click: this.handleAddPropertyBtnClick
             }
         });
 
@@ -108,14 +111,14 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
         //Right Side
 
-        //Images
-        this.setupImages(data, view);
-
-        //Properties
-        this.setupProperties(data, view);
-
-        //Confusers
-        this.setupConfusers(data, view);
+//        //Images
+//        this.setupImages(data, view);
+//
+//        //Properties
+//        this.setupProperties(data, view);
+//
+//        //Confusers
+//        this.setupConfusers(data, view);
     },
 
     setupDisplayLabel: function (displayLabel, view) {
@@ -265,12 +268,19 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         if (evt.keyCode === Ext.EventObject.ENTER) {
             if (field.getValue().trim().length) {
                 field.findParentByType('auto_complete_with_tags').addTerm(field.getValue());
-                field.setValue('');
+                field.reset();
             }
         }
     },
 
     handleRemoveTagClick: function (btn) {
         btn.up('auto_complete_with_tags').removeTerm(btn);
+    },
+
+    handleAddPropertyBtnClick: function (btn) {
+        var valArray = new Array();
+        valArray[0] = "Red";
+        valArray[1] = "Blue";
+        btn.up('itemview_itemviewer').down('item_properties').addProp({propName: "Color" + Math.random(), propValue: valArray});
     }
 });

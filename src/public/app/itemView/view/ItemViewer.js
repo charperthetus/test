@@ -6,7 +6,14 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
     cls: 'itemview',
 
     require: [
-        'Ext.grid.property.Grid'
+        'Ext.grid.property.Grid',
+        'Savanna.itemView.view.itemView.Toolbar'
+    ],
+
+    tbar: [
+        {
+            xtype: 'itemview_toolbar'
+        }
     ],
 
     layout: 'hbox',
@@ -54,26 +61,37 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                 xtype: 'panel',
                 flex: 1,
                 items: [
+//                    {
+//                        //ToDo: switch this out for Joel's image browser
+//                        xtype: 'itemview_imagesgrid',
+//                        itemId: 'imagesGrid'
+//                    },
                     {
-                        //ToDo: switch this out for Joel's image browser
-                        xtype: 'itemview_imagesgrid',
-                        itemId: 'imagesGrid'
+                        xtype: 'button',
+                        text: 'Add Property',
+                        renderTo: Ext.getBody(),
+                        itemId: 'addPropBtn'
                     },
                     {
-                        //ToDo: modify this to become the properties component
-                        xtype: 'propertygrid',
-                        itemId: 'propGrid',
-                        hideHeaders: true,
-                        width: '100%',
-                        source: {
-                        }
-                    },
-
-                    //ToDo: not present in current design so remove it
-                    {
-                        xtype: 'itemview_confusers',
-                        itemId: 'confusers'
+                        xtype: 'item_properties',
+                        itemId: 'itemProperties',
+                        width: '100%'
                     }
+//                    {
+//                        //ToDo: modify this to become the properties component
+//                        xtype: 'propertygrid',
+//                        itemId: 'propGrid',
+//                        hideHeaders: true,
+//                        width: '100%',
+//                        source: {
+//                        }
+//                    },
+
+//                    //ToDo: not present in current design so remove it
+//                    {
+//                        xtype: 'itemview_confusers',
+//                        itemId: 'confusers'
+//                    }
                 ]
             }
         ];
