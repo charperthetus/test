@@ -15,7 +15,7 @@ Ext.define('Savanna.search.model.SearchResult', {
 
     fields: [
 
-        {name: 'latlonPairs', type: 'array'},
+        {name: 'latLonPairs', type: 'array'},
         {name: 'fileType', type: 'object'},
         {name: 'documentFileName', type: 'string'},
         {name: 'score', type: 'int'},

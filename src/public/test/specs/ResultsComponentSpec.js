@@ -15,6 +15,10 @@ Ext.require('Savanna.search.view.searchComponent.searchBody.resultsComponent.Res
 Ext.require('Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsPanelToolbar');
 Ext.require('Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsDals');
 
+
+
+
+
 describe('Search Results', function () {
 
     var dalFixtures;
@@ -885,14 +889,13 @@ describe('Search Results', function () {
 
         beforeEach(function () {
 
-
-            resultsComponent = Ext.create('Savanna.search.view.searchComponent.searchBody.ResultsComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
+            searchController = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
 
             resultsController = Savanna.controller.Factory.getController('Savanna.search.controller.ResultsComponent');
 
             searchComponent = Ext.create('Savanna.search.view.SearchComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
 
-            searchController = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
+            resultsComponent = searchComponent.down('#searchresults');
 
             panel = resultsComponent.queryById('resultspanel');
 
@@ -940,6 +943,44 @@ describe('Search Results', function () {
 
         it('should have a store behind the sources panel', function () {
             expect(sources.store).toBeTruthy();
+        });
+
+
+        describe('populate map with results', function () {
+
+            var searchStore = null;
+            var fixtures = null;
+
+            beforeEach(function () {
+
+                fixtures = Ext.clone(ThetusTestHelpers.Fixtures.SearchResults);
+
+                searchStore = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.SearchResults', { autoLoad: false });
+
+                // now set up server to get store data
+                server = new ThetusTestHelpers.FakeServer(sinon);
+
+                var readMethod = 'POST',
+                    testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(searchStore.getProxy(), 'read', readMethod);
+
+                server.respondWith(readMethod, testUrl, fixtures.searchResults);
+
+                searchStore.load();
+
+                server.respond({
+                    errorOnInvalidRequest: true
+                });
+
+            });
+
+            it('should populate the map with search results', function () {
+                var scope = searchComponent.down('#resultsdals');
+                var resultsMap = searchComponent.down('#resultMapCanvas');
+                var results = {};
+                results.store = searchStore;
+                resultsController.loadPointsFromStore(results, scope);
+                expect(resultsMap.resultsLayer.features.length > 0).toBeTruthy();
+            });
         });
 
         it('should be able to compute the page for different previewIndexes', function () {
@@ -1207,8 +1248,12 @@ describe('Search Results', function () {
 
 
             it('should hide the preview window', function() {
+                var contentsView = searchComponent.queryById('resultspreviewwindow').down('#resultspreviewcontent');
+                var controller = contentsView.getController();
 
-                resultsController.onCloseItemPreview(searchComponent.queryById('resultspreviewwindow').down('#previewclosebutton'));
+                expect(controller).not.toBeNull();
+
+                controller.onCloseClick();
 
                 expect(searchComponent.queryById('resultspreviewwindow').isVisible()).toBeFalsy();
             });
