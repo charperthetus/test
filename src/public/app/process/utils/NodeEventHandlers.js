@@ -2,21 +2,15 @@ Ext.define('Savanna.process.utils.NodeEventHandlers', {
     singleton: true,
 
     requires: [
-        'Ext.ComponentQuery'
+        'Savanna.process.utils.ProcessUtils'
     ],
 
-    darkText: '#454545',
-    startColor: '#79C900',
-    mainColor: '#00A9C9',
-    endColor: '#DC3C00',
-    stepColor: '#FFFF88',
-
     onMouseEnter: function (e, obj) {
-        Savanna.process.utils.NodeEventHandlers.toggleButtons(obj, true);
+        Savanna.process.utils.ProcessUtils.toggleButtons(obj, true);
     },
 
     onMouseLeave: function (e, obj) {
-        Savanna.process.utils.NodeEventHandlers.toggleButtons(obj, false);
+        Savanna.process.utils.ProcessUtils.toggleButtons(obj, false);
     },
 
     onMouseDrop: function (e, obj) {
@@ -48,13 +42,6 @@ Ext.define('Savanna.process.utils.NodeEventHandlers', {
 
     onMouseDragLeave: function (e, grp, next) {
         //todo
-    },
-
-    toggleButtons: function(obj, show) {
-        var panel = obj.findObject('BUTTONS');
-        if (panel) {
-            panel.opacity = show ? 1.0 : 0.0;
-        }
     },
 
 
