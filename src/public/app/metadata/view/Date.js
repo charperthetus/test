@@ -37,8 +37,12 @@ Ext.define('Savanna.metadata.view.Date', {
 
         this.on('beforerender', Ext.bind(function() {
             this.down('#displayLabelItem').text = me.displayLabel;
-            var myDate = new Date(me.value);
-            this.down('#displayValue').text = Ext.Date.format(myDate,'F j, Y, g:i a');
+            if(null !== me.value) {
+                var myDate = new Date(me.value);
+                this.down('#displayValue').text = Ext.Date.format(myDate,'F j, Y, g:i a');
+            } else {
+                theLabel.html =  '&nbsp;';
+            }
         }, this));
     }
 

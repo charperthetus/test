@@ -133,7 +133,7 @@ var ThetusTestHelpers;
                 "displayLabel": "Original File Name"
             },
             {
-                "value": true,
+                "value": false,
                 "key": "document_interesting",
                 "type": "Boolean",
                 "visible": true,
@@ -205,7 +205,7 @@ var ThetusTestHelpers;
                 "displayLabel": "Important dates"
             },
             {
-                "value": [13609.60788447, 13.61960788447, 1362960788.447],
+                "value": [13609.60788447, 0, 1362960788.447],
                 "key": "important_numbers",
                 "type": "Double_List",
                 "visible": true,
@@ -213,7 +213,7 @@ var ThetusTestHelpers;
                 "displayLabel": "Big numbers"
             },
             {
-                "value": [1360960788447, 1361960788447, 1362960788447],
+                "value": [1360960788447, 0, 1362960788447],
                 "key": "important_values",
                 "type": "Integer_List",
                 "visible": true,

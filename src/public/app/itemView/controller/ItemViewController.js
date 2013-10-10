@@ -1,6 +1,8 @@
 Ext.define('Savanna.itemView.controller.ItemViewController', {
     extend: 'Ext.app.Controller',
 
+    // TODO: define stores for itemview subcomponents
+
     views: [
         'Savanna.itemView.view.ItemViewer',
         'Savanna.itemView.view.itemView.Header',
@@ -11,9 +13,17 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         'Savanna.itemView.view.itemView.ImagesGrid',
         'Savanna.itemView.view.itemView.Confusers',
         'Savanna.itemView.view.itemView.components.AutoCompleteWithTags',
+        'Savanna.itemView.view.itemView.ImageThumbnail',
         'Savanna.itemView.view.itemView.ItemProperties',
         'Savanna.itemView.view.itemView.components.LabeledFieldWithTags',
         'Savanna.itemView.view.itemView.Toolbar'
+    ],
+
+    refs: [
+        {
+            ref: 'itemview',
+            selector: 'itemview_itemviewer'
+        }
     ],
 
     constructor: function (options) {
@@ -22,7 +32,6 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     },
 
     init: function (app) {
-
         this.control({
             'itemview_itemviewer #auto_complete_box': {
                 keyup: this.handleAutoCompleteTextKeyUp
@@ -31,29 +40,31 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
             'itemview_itemviewer #removeTerm': {
                 click: this.handleRemoveTagClick
             },
+
             'itemview_itemviewer #addPropBtn': {
                 click: this.handleAddPropertyBtnClick
+            },
+
+            // Slideshow events
+            '#nav_left' : {
+                click: this.onNavLeft
+            },
+            '#nav_right' : {
+                click: this.onNavRight
             }
         });
 
         app.on('search:itemselected', this.showItemView, this);
-
-
         this.on("itemview:created", this.onItemViewCreated);
-
     },
 
     onItemViewCreated: function (tab) {
-
         var tabpanel = Ext.ComponentQuery.query('desktop_tabpanel')[0];
         var main = tabpanel.getActiveTab();
         tabpanel.add(tab);
-
     },
 
     showItemView: function (grid, record, item) {
-
-
         var bustCache = typeof this.opts.disableCaching === 'undefined' ? true : this.opts.disableCaching;
 
         Ext.Ajax.request({
@@ -63,7 +74,6 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
             headers: {
                 'Accept': 'application/json'
             },
-
 
             success: Ext.bind(this.handleRecordDataRequestSuccess, this, [record], true),
             failure: function (response) {
@@ -111,14 +121,14 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
         //Right Side
 
-//        //Images
-//        this.setupImages(data, view);
-//
-//        //Properties
-//        this.setupProperties(data, view);
-//
-//        //Confusers
-//        this.setupConfusers(data, view);
+        //Images
+        this.setupImages(data, view);
+
+        //Properties
+        this.setupProperties(data, view);
+
+        //Confusers
+        this.setupConfusers(data, view);
     },
 
     setupDisplayLabel: function (displayLabel, view) {
@@ -209,14 +219,59 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     },
 
     setupImages: function (data, view) {
-        var imagesGrid = view.queryById('imagesGrid'),
-            i;
+        var me = this,
+            thumbnail_list = view.queryById('thumbnail_list');
 
-        for (i = 0; i < data.relatedCharacteristics.length; i++) {
-            imagesGrid.store.add({
-                url: SavannaConfig.savannaUrlRoot + '/preview2/?filestoreUri=' + data.relatedCharacteristics[i] + '&width=80&height=80'
+        Ext.Array.each(data.observables, function(image, index) {
+            var imageSource = SavannaConfig.savannaUrlRoot + '/preview2/?filestoreUri=' + image.uri;
+            var thumbnail = Ext.create('Savanna.itemView.view.itemView.ImageThumbnail', {
+                title: image.displayLabel,
+                src: imageSource,
+                alt: image.comment,
+                listeners: {
+                    click: {
+                        element: 'el',
+                        fn: me.onChangeImage.bind(me)
+                    }
+                }
             });
-        }
+            thumbnail_list.add(thumbnail);
+        });
+    },
+
+    // Scroll Left Button
+    onNavLeft: function() {
+        var gallery = this.getItemview().queryById('thumbnail_list');
+        gallery.scrollBy(-450, 0, true);
+    },
+
+    // Scroll Right Button
+    onNavRight: function() {
+        var gallery = this.getItemview().queryById('thumbnail_list');
+        gallery.scrollBy(450, 0, true);
+    },
+
+    // Selecting an image to expand
+    onChangeImage: function(btn, image) {
+        var selectedImage = image.src,
+            title = (image.title) ? image.title : 'No title',
+            description = (image.alt) ? image.alt : 'No description',
+            jumboImage = this.getItemview().queryById('image_primary'),
+            jumboMeta = this.getItemview().queryById('image_text'),
+            imageWidth = image.naturalWidth,
+            imageHeight = image.naturalHeight;
+
+        var backgroundSize = (imageWidth < jumboImage.width && imageHeight < jumboImage.height) ? 'inherit' : 'contain';
+        
+        // In order to display text over an image, the image is used as a background image on a panel
+        jumboImage.setBodyStyle({
+            backgroundImage: 'url(' + selectedImage + ')',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center center',
+            backgroundSize: backgroundSize,
+            backgroundColor: 'transparent'
+        });
+        jumboMeta.update(description);
     },
 
     setupProperties: function (data, view) {
