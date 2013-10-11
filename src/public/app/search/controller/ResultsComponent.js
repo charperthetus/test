@@ -32,6 +32,13 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
                     me.component.on('Search:SortByChanged', this.onSortOrderChange, this);
                     me.component.on('search:changeSelectedStore', this.changeSelectedStore, this);
 
+                    //grid notifications
+                    me.component.on('search:grid:itemdblclick', this.onItemPreview, this);
+                    me.component.on('search:grid:itemclick', this.onItemClick, this);
+                    me.component.on('search:grid:itemmouseenter', this.onItemMouseEnter, this);
+                    me.component.on('search:grid:itemmouseleave', this.onItemMouseLeave, this);
+
+
                     //The exception is for popups....
                     //We can listen for events fired in  a popup this way (just like we did in Flex).
                     var dispatcher = this.previewWindow();
@@ -40,12 +47,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
                 }
             },
 
-            'search_resultscomponent #resultspanelgrid': {
-                'itemdblclick': this.onItemPreview,
-                'itemclick': this.onItemClick,
-                'itemmouseenter': this.onItemMouseEnter,
-                'itemmouseleave': this.onItemMouseLeave
-            },
+
             'search_resultscomponent #resultsFacetsReset': {
                 'click': this.onDalReset
             },
@@ -576,30 +578,30 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
     },
 
     changeResultView: function (button) {
-       var mapPanel = button.up('search_resultscomponent').down('#resultsmap');
-       var resultsGridPanel = button.up('search_resultscomponent').down('#resultspanelgrid');
-       switch (button.text){
-           case 'Map':
-               resultsGridPanel.hide();
-               mapPanel.show();
-               break;
-           case 'List':
-               mapPanel.hide();
-               resultsGridPanel.show();
-               break;
-       }
+        var mapPanel = button.up('search_resultscomponent').down('#resultsmap');
+        var resultsGridPanel = button.up('search_resultscomponent').down('#resultspanelgrid');
+        switch (button.text){
+            case 'Map':
+                resultsGridPanel.hide();
+                mapPanel.show();
+                break;
+            case 'List':
+                mapPanel.hide();
+                resultsGridPanel.show();
+                break;
+        }
 
     },
     addSearchPolygon: function (canvas) {
-      var searchLayer = canvas.searchLayer;
-      //modify resultmap searchLayer to match searchmap searchLayer
-      if(searchLayer.features.length > 0){
-          var resultMap = canvas.up('search_searchcomponent').down('#resultMapCanvas');
-          var layerFeatureArray = searchLayer.features;
-          resultMap.searchLayer.removeAllFeatures();
-          var cloneFeature = layerFeatureArray[0].clone();
-          resultMap.searchLayer.addFeatures(cloneFeature);
-      }
+        var searchLayer = canvas.searchLayer;
+        //modify resultmap searchLayer to match searchmap searchLayer
+        if(searchLayer.features.length > 0){
+            var resultMap = canvas.up('search_searchcomponent').down('#resultMapCanvas');
+            var layerFeatureArray = searchLayer.features;
+            resultMap.searchLayer.removeAllFeatures();
+            var cloneFeature = layerFeatureArray[0].clone();
+            resultMap.searchLayer.addFeatures(cloneFeature);
+        }
     },
 
     removeSearchPolygon: function (canvas) {
