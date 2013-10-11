@@ -23,6 +23,7 @@ Ext.define('Savanna.itemView.view.itemView.components.AutoCompleteWithTags', {
     listeners: {
         afterrender: function() {
             if (this.getTagValues()) {
+                var autoBox = this.queryById('auto_complete_box');
 
                 var autoStore = Ext.create('Ext.data.Store', {
                     fields: ['photo', 'title', 'description', 'isFeatured'],
@@ -77,7 +78,8 @@ Ext.define('Savanna.itemView.view.itemView.components.AutoCompleteWithTags', {
                 ]
                 });
 
-                this.queryById('auto_complete_box').store = autoStore;
+                autoBox.store = autoStore;
+                autoBox.pageSize = 10;
 
                 for (var i = 0; i < this.getTagValues().length; i++) {
                     this.addTerm(this.getTagValues()[i]);
@@ -106,7 +108,6 @@ Ext.define('Savanna.itemView.view.itemView.components.AutoCompleteWithTags', {
                 hideLabel: true,
                 hideTrigger: true,
                 anchor: '100%',
-                pageSize: 10,
                 width: '100%',
                 minChars: 1,
                 enableKeyEvents: true,

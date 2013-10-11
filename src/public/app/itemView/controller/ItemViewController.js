@@ -12,7 +12,9 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         'Savanna.itemView.view.itemView.ImageThumbnail',
         'Savanna.itemView.view.itemView.ItemProperties',
         'Savanna.itemView.view.itemView.components.LabeledFieldWithTags',
-        'Savanna.itemView.view.itemView.Toolbar'
+        'Savanna.itemView.view.itemView.Toolbar',
+        'Savanna.itemView.view.itemView.RelatedProcesses',
+        'Savanna.itemView.view.itemView.RelatedItems'
     ],
 
     refs: [
@@ -37,8 +39,8 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
                 click: this.handleRemoveTagClick
             },
 
-            'itemview_itemviewer #addPropBtn': {
-                click: this.handleAddPropertyBtnClick
+            'itemview_itemviewer #add_prop_auto_chooser': {
+                keyup: this.handleAddChosenProperty
             },
 
             // Slideshow events
@@ -213,10 +215,15 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         btn.up('auto_complete_with_tags').removeTerm(btn);
     },
 
-    handleAddPropertyBtnClick: function (btn) {
-        var valArray = new Array();
-        valArray[0] = "Red";
-        valArray[1] = "Blue";
-        btn.up('itemview_itemviewer').down('item_properties').addProp({propName: "Color" + Math.random(), propValue: valArray});
+    handleAddChosenProperty: function (field, evt) {
+        if (evt.keyCode === Ext.EventObject.ENTER) {
+            if (field.getValue().trim().length) {
+                var valArray = new Array();
+                valArray[0] = "Red";
+                valArray[1] = "Blue";
+                field.up('item_properties').addProp({propName: field.getValue(), propValue: valArray});
+                field.reset();
+            }
+        }
     }
 });
