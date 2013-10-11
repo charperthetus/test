@@ -52,6 +52,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "Ext.ux.CellDragDrop": [],
   "Savanna.upload.controller.UploadController": [],
   "Ext.ux.ajax.Simlet": [],
+  "Savanna.search.controller.resultsComponent.ResultsPreviewContentController": [],
   "Ext.ux.SlidingPager": [],
   "Ext.ux.TabReorderer": [],
   "Deft.mixin.Controllable": [],
@@ -89,7 +90,6 @@ Ext.ClassManager.addNameAlternateMappings({
   "Savanna.metadata.view.BooleanList": [],
   "Savanna.desktop.view.SavannaDesktop": [],
   "Ext.ux.dd.PanelFieldDragZone": [],
-  "Savanna.search.controller.ResultsPreviewContentController": [],
   "Savanna.search.model.dalSource.CustomSearchGroup": [
     "DalCustomSearchGroup"
   ],
@@ -102,6 +102,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineTerms": [],
   "Ext.ux.layout.Center": [],
   "Savanna.crumbnet.model.TemplateGroup": [],
+  "Savanna.search.controller.resultsComponent.ResultsPanelToolbarController": [],
   "Deft.InjectableComponent": [],
   "Savanna.process.view.part.Toolbar": [],
   "Savanna.upload.model.UploadItem": [],
@@ -206,8 +207,8 @@ Ext.ClassManager.addNameAlternateMappings({
   "Savanna.crumbnet.utils.ViewTemplates": [],
   "Savanna.search.store.SearchResults": [],
   "Ext.ux.grid.filter.Filter": [],
-  "Savanna.crumbnet.controller.CrumbnetController": [],
   "Ext.ux.GroupTabRenderer": [],
+  "Savanna.crumbnet.controller.CrumbnetController": [],
   "Deft.core.Class": [
     "Deft.Class"
   ],
@@ -215,6 +216,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "Savanna.metadata.view.Double": [],
   "ThetusUikit.ux.form.SearchField": [],
   "Savanna.process.model.TemplateGroup": [],
+  "Savanna.search.controller.resultsComponent.resultsDals.ResultsRefineSearchbarController": [],
   "Savanna.map.view.MapComponent": [],
   "Ext.ux.DataView.LabelEditor": [],
   "Savanna.search.view.searchComponent.SearchToolbar": [],
@@ -306,6 +308,7 @@ Ext.ClassManager.addNameAliasMappings({
   "Ext.ux.ajax.Simlet": [
     "simlet.basic"
   ],
+  "Savanna.search.controller.resultsComponent.ResultsPreviewContentController": [],
   "Ext.ux.SlidingPager": [],
   "Ext.ux.TabReorderer": [],
   "Deft.mixin.Controllable": [],
@@ -379,7 +382,6 @@ Ext.ClassManager.addNameAliasMappings({
     "widget.desktop_savannadesktop"
   ],
   "Ext.ux.dd.PanelFieldDragZone": [],
-  "Savanna.search.controller.ResultsPreviewContentController": [],
   "Savanna.search.model.dalSource.CustomSearchGroup": [],
   "Ext.ux.GMapPanel": [
     "widget.gmappanel"
@@ -396,6 +398,7 @@ Ext.ClassManager.addNameAliasMappings({
     "layout.ux.center"
   ],
   "Savanna.crumbnet.model.TemplateGroup": [],
+  "Savanna.search.controller.resultsComponent.ResultsPanelToolbarController": [],
   "Deft.InjectableComponent": [],
   "Savanna.process.view.part.Toolbar": [
     "widget.process_toolbar"
@@ -576,10 +579,10 @@ Ext.ClassManager.addNameAliasMappings({
   "Savanna.crumbnet.utils.ViewTemplates": [],
   "Savanna.search.store.SearchResults": [],
   "Ext.ux.grid.filter.Filter": [],
-  "Savanna.crumbnet.controller.CrumbnetController": [],
   "Ext.ux.GroupTabRenderer": [
     "plugin.grouptabrenderer"
   ],
+  "Savanna.crumbnet.controller.CrumbnetController": [],
   "Deft.core.Class": [],
   "Savanna.crumbnet.store.Templates": [],
   "Savanna.metadata.view.Double": [
@@ -589,6 +592,7 @@ Ext.ClassManager.addNameAliasMappings({
     "widget.searchfield"
   ],
   "Savanna.process.model.TemplateGroup": [],
+  "Savanna.search.controller.resultsComponent.resultsDals.ResultsRefineSearchbarController": [],
   "Savanna.map.view.MapComponent": [
     "widget.map_component"
   ],
