@@ -7,12 +7,39 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
 
     require: [
         'Ext.grid.property.Grid',
-        'Savanna.itemView.view.itemView.Toolbar'
     ],
 
     tbar: [
         {
-            xtype: 'itemview_toolbar'
+            xtype: 'splitbutton',
+            text: 'Options',
+            menu: new Ext.menu.Menu({
+                items: [
+                    {
+                        text: 'New Item...'
+                    },
+                    {
+                        text: 'Delete' 
+                    },
+                    {
+                        xtype: 'menuseparator'
+                    },
+                    {
+                        text: 'Workflow' 
+                    },
+                    {
+                        xtype: 'menuseparator'
+                    },
+                    {
+                        text: 'Search Intell'
+                    }
+                ]
+            })
+        },
+        '->',
+        {
+            xtype: 'button',
+            text: 'Edit'
         }
     ],
 
