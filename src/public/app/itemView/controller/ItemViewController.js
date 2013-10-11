@@ -11,8 +11,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         'Savanna.itemView.view.itemView.components.AutoCompleteWithTags',
         'Savanna.itemView.view.itemView.ImageThumbnail',
         'Savanna.itemView.view.itemView.ItemProperties',
-        'Savanna.itemView.view.itemView.components.LabeledFieldWithTags',
-        'Savanna.itemView.view.itemView.Toolbar'
+        'Savanna.itemView.view.itemView.components.LabeledFieldWithTags'
     ],
 
     refs: [
