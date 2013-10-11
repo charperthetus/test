@@ -6,7 +6,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
     cls: 'itemview',
 
     require: [
-        'Ext.grid.property.Grid',
+        'Ext.grid.property.Grid'
     ],
 
     tbar: [

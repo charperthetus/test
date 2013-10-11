@@ -221,12 +221,11 @@ Ext.ClassManager.addNameAlternateMappings({
   "Savanna.crumbnet.utils.ViewTemplates": [],
   "Savanna.search.store.SearchResults": [],
   "Ext.ux.grid.filter.Filter": [],
-  "Savanna.crumbnet.controller.CrumbnetController": [],
   "Ext.ux.GroupTabRenderer": [],
+  "Savanna.crumbnet.controller.CrumbnetController": [],
   "Deft.core.Class": [
     "Deft.Class"
   ],
-  "Savanna.itemView.view.itemView.Toolbar": [],
   "Savanna.crumbnet.store.Templates": [],
   "Savanna.metadata.view.Double": [],
   "ThetusUikit.ux.form.SearchField": [],
@@ -634,14 +633,11 @@ Ext.ClassManager.addNameAliasMappings({
   "Savanna.crumbnet.utils.ViewTemplates": [],
   "Savanna.search.store.SearchResults": [],
   "Ext.ux.grid.filter.Filter": [],
-  "Savanna.crumbnet.controller.CrumbnetController": [],
   "Ext.ux.GroupTabRenderer": [
     "plugin.grouptabrenderer"
   ],
+  "Savanna.crumbnet.controller.CrumbnetController": [],
   "Deft.core.Class": [],
-  "Savanna.itemView.view.itemView.Toolbar": [
-    "widget.itemview_toolbar"
-  ],
   "Savanna.crumbnet.store.Templates": [],
   "Savanna.metadata.view.Double": [
     "widget.metadata_double"
