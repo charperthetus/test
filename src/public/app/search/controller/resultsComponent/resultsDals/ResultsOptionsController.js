@@ -7,7 +7,7 @@ Ext.define('Savanna.search.controller.resultsComponent.resultsDals.ResultsOption
         extend: 'Deft.mvc.ViewController',
 
         onClick: function () {
-            this.getView().fireEvent('search:changeSelectedStore', {}, {}, this.getView()); //todo
+            this.getView().fireEvent('search:changeSelectedStore',  this.getView());
         },
 
         init: function () {

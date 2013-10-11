@@ -335,7 +335,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
      user selects from the left-hand panel, and triggers an update
      of the facets for the newly selected store.
      */
-    changeSelectedStore: function (evt, body, dal) {
+    changeSelectedStore: function ( dal) {
 
         var component = dal.findParentByType('search_resultscomponent');
 

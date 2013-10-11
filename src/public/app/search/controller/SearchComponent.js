@@ -498,13 +498,13 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             if (action === 'search') {
                 if (dalId === Ext.data.StoreManager.lookup('dalSources').defaultId) {
 
-                    searchResultsView.fireEvent('search:changeSelectedStore', {}, {}, resultsDal.queryById(dalId));
+                    searchResultsView.fireEvent('search:changeSelectedStore', resultsDal.queryById(dalId));
                 }
             } else {
                 /*
                  filtering, action set to 'filter'
                  */
-                searchResultsView.fireEvent('search:changeSelectedStore', {}, {},  resultsDal.queryById(dalId));
+                searchResultsView.fireEvent('search:changeSelectedStore',  resultsDal.queryById(dalId));
             }
         }
     },

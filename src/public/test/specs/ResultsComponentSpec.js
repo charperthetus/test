@@ -1142,12 +1142,7 @@ describe('Search Results', function () {
 
             });
 
-            it('should add a click handler', function () {
-
-                dalItem.removeListener('click');
-
-                resultsController.onDalRender(dalItem, {});
-
+            it('should have a click handler', function () {
                 expect(dalItem.hasListener('click')).toBeTruthy();
             });
 
@@ -1436,7 +1431,7 @@ describe('Search Results', function () {
                 /*
                  This call swaps the store behind the grid
                  */
-                resultsController.changeSelectedStore({}, {}, dalItem);
+                resultsController.changeSelectedStore(dalItem);
 
                 expect(resultsPanel.updateGridStore).toHaveBeenCalled();
             });
