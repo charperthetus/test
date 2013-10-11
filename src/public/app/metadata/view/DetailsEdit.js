@@ -5,6 +5,137 @@
  * Time: 7:01 AM
  * To change this template use File | Settings | File Templates.
  */
+
+Ext.define('DetailsViewOnlyTemplate', {
+    extend: 'Ext.XTemplate',
+
+    html:  [
+        '<tpl for=".">',
+            '<div class="detail-item">',
+                '<tpl if="values.visible">',
+                    '<tpl if="this.isListType(values.type)">',
+                        '<br/><span>{displayLabel}: </span>',
+                        '<tpl for="values.value">',
+                            '<br/><span>{[this.formatValue(parent.type,values)]}</span>',
+                        '</tpl></p>',
+                    '<tpl else>',
+                        '<br/><span>{displayLabel}: </span>',
+                        '<span>{[this.formatValue(values.type,values.value)]}</span>',
+                    '</tpl>',
+                '</tpl>',
+            '</div>',
+        '</tpl>',
+        {
+            formatValue: function(type, value) {
+                var formattedValue = '';
+                //console.log('type', type);
+                switch(type){
+                    case 'Integer_List':// fall through
+                    case 'Integer':     // fall through
+                    case 'Double_List': // fall through
+                    case 'Double':
+                        formattedValue = value.toLocaleString();
+                        break;
+                    case 'Boolean_List': // fall through
+                    case 'Boolean':
+                        formattedValue = value.toLocaleString();
+                        break;
+                    case 'Date_List':   // fall through
+                    case 'Date':
+                        var myDate = new Date(value);
+                        formattedValue = Ext.Date.format(myDate,'F j, Y, g:i a');
+                        break;
+                    case 'String_List': // fall through
+                    case 'String':      // fall through
+                    default:
+                        formattedValue = value;
+                        break
+                }
+                return formattedValue;
+            },
+            isListType: function(type) {
+                //console.log('type', type);
+                return 0 <= (['Boolean_List'
+                            , 'Date_List'
+                            , 'Double_List'
+                            , 'String_List'
+                            , "Integer_List"
+                            , "Uri_List"].indexOf(type));
+            }
+        }
+        ],
+
+    constructor: function() {
+        return this.callParent([this.html]);
+    }
+});
+
+Ext.define('DetailsEditTemplate', {
+    extend: 'Ext.XTemplate',
+
+    html:  [
+        '<tpl for=".">',
+            '<div class="detail-item">',
+                '<tpl if="values.visible">',
+                    '<br/><span>{displayLabel}</span>',
+                    '<input type="text" value="{value}" autocomplete="off" name="value" style="width: 100%;">',
+                    '<tpl if="this.isListType(values.type)">',
+                        '<tpl for="values.value">',
+                            '<br/><span>{[this.formatValue(parent.type,values)]}</span>',
+                        '</tpl></p>',
+                    '<tpl else>',
+                        '<br/><span>{[this.formatValue(values.type,values.value)]}</span>',
+                    '</tpl>',
+                '</tpl>',
+            '</div>',
+        '</tpl>',
+        {
+            formatValue: function(type, value) {
+                var formattedValue = '';
+                //console.log('type', type);
+                switch(type){
+                    case 'Integer_List':// fall through
+                    case 'Integer':     // fall through
+                    case 'Double_List': // fall through
+                    case 'Double':
+                        formattedValue = value.toLocaleString();
+                        break;
+                    case 'Boolean_List': // fall through
+                    case 'Boolean':
+                        formattedValue = value.toLocaleString();
+                        break;
+                    case 'Date_List':   // fall through
+                    case 'Date':
+                        var myDate = new Date(value);
+                        formattedValue = Ext.Date.format(myDate,'F j, Y, g:i a');
+                        break;
+                    case 'String_List': // fall through
+                    case 'String':      // fall through
+                    default:
+                        formattedValue = value;
+                        break
+                }
+                return formattedValue;
+            },
+            isListType: function(type) {
+                //console.log('type', type);
+                return 0 <= (['Boolean_List'
+                            , 'Date_List'
+                            , 'Double_List'
+                            , 'String_List'
+                            , "Integer_List"
+                            , "Uri_List"].indexOf(type));
+            }
+        }
+        ],
+
+    constructor: function() {
+        return this.callParent([this.html]);
+    }
+});
+
+
+
 Ext.define('Savanna.metadata.view.DetailsEdit', {
     extend: 'Ext.view.View',
     alias: 'widget.metadata_details_edit',
@@ -20,9 +151,15 @@ Ext.define('Savanna.metadata.view.DetailsEdit', {
         'Savanna.metadata.store.Metadata',
         'Savanna.controller.Factory'
     ],
+    width: '100%',
 
-    autoScroll: true,
-    editMode: false,
+    editMode: false, // considered private.  Use the setter function below.
+    setEditMode: function(inEditMode) {
+        if(inEditMode != this.editMode) {
+            this.editMode = inEditMode;
+            this.setTemplate();
+        }
+    },
 
     itemURI: '',
 
@@ -42,64 +179,18 @@ Ext.define('Savanna.metadata.view.DetailsEdit', {
         metadataStore.itemURI = config.itemURI;
         metadataStore.load();
 
-        var detailsItemTpl = new Ext.XTemplate(
-            '<tpl for=".">',
-                '<div class="detail-item">',
-                // if is visible
-                '<tpl if="values.visible">',
-                    '<br/><span>{displayLabel}</span>',
-                    //'<input type="text" value="{value}" autocomplete="off" name="value" style="width: 100%;">',
-                    '<tpl if="this.isListType(values.type)">',
-                        '<tpl for="values.value">',
-                            //'<br/><span>{.}</span>',
-                            '<br/><span>{[this.formatValue(parent.type,values)]}</span>',
-                        '</tpl></p>',
-                    '<tpl else>',
-                        '<br/><span>{[this.formatValue(values.type,values.value)]}</span>',
-                    '</tpl>',
-                '</tpl>',
-                '</div>',
-            '</tpl>',
-            {
-                formatValue: function(type, value) {
-                    var formattedValue = '';
-                    //console.log('type', type);
-                    switch(type){
-                        case 'Integer_List':// fall through
-                        case 'Integer':     // fall through
-                        case 'Double_List': // fall through
-                        case 'Double':
-                            formattedValue = value.toLocaleString();
-                            break;
-                        case 'Boolean_List': // fall through
-                        case 'Boolean':
-                            formattedValue = value.toLocaleString();
-                            break;
-                        case 'Date_List':   // fall through
-                        case 'Date':
-                            var myDate = new Date(value);
-                            formattedValue = Ext.Date.format(myDate,'F j, Y, g:i a');
-                            break;
-                        case 'String_List': // fall through
-                        case 'String':      // fall through
-                        default:
-                            formattedValue = value;
-                            break
-                    }
-                    return formattedValue;
-                },
-                isListType: function(type) {
-                    //console.log('type', type);
-                    return 0 <= (['Boolean_List'
-                                , 'Date_List'
-                                , 'Double_List'
-                                , 'String_List'
-                                , "Integer_List"
-                                , "Uri_List"].indexOf(type));
-                }
-            }
-        );
+        this.setTemplate();
+    },
+
+    setTemplate: function () {
+        var detailsItemTpl;
+        if(this.editMode) {
+            detailsItemTpl = new DetailsEditTemplate();
+        } else {
+            detailsItemTpl = new DetailsViewOnlyTemplate();
+        }
         this.tpl = detailsItemTpl;
     }
+
 
 });
