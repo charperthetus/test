@@ -1282,35 +1282,24 @@ describe('Search Results', function () {
 
                 resultsDals.createDalPanels(searchController.getSelectedDals(searchComponent));
 
-
-                spyOn(searchComponent.down('#refineterms'), 'removeTerm');
-
                 refineTerm = Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineTerm',     {
                     itemId:'term_apple'
                 });
                 refineTerm.setTerm('apple');
 
-
+                spyOn(refineTerm.getController(), 'onCloseButton');
 
             });
 
-            describe('onTermRender', function() {
-
-                it('should add an event listener when a term is rendered', function()  {
-                    searchComponent.down('#refineterms').queryById('termValues').add(refineTerm);
-
-                    expect(refineTerm.hasListener('click')).toBeTruthy();
-                });
-            });
 
             describe('handleRemoveTerm', function() {
                 it('should call removeTerm', function () {
 
                     searchComponent.down('#refineterms').queryById('termValues').add(refineTerm);
-
-                    resultsController.handleRemoveTerm(refineTerm.queryById('removeTerm'));
-
-                    expect(searchComponent.down('#refineterms').removeTerm).toHaveBeenCalled();
+                    expect(refineTerm).toBeTruthy();
+                    var closeButton = refineTerm.queryById('removeTerm');
+                    closeButton.fireEvent('click');
+                    expect(refineTerm.getController().onCloseButton).toHaveBeenCalled();
                 });
             });
         });
