@@ -21,6 +21,9 @@
     <!-- Config -->
     <script type="text/javascript" src="../config/Config.js" ></script>
 
+    <!-- deft.js must be declared after ext.js and before app.js, according to deft documentation -->
+    <script type="text/javascript" src="../resources/deft/deft-debug.js"></script>
+
     <!-- Thetus test helpers (and dependencies) -->
     <script type="text/javascript" src="lib/underscore.js"></script>
     <script type="text/javascript" src="helpers/FakeServer.js"></script>
@@ -54,6 +57,7 @@
 
     <!-- Insert tests here, note that node is regexing the parse comments below so do not change them -->
     <!--[#parserstart]-->
+    <script type="text/javascript" src="specs/GeospatialSearchSpec.js"></script>
     <script type="text/javascript" src="specs/SavannaPatchAbstractComponentSpec.js"></script>
     <script type="text/javascript" src="specs/MainSpec.js"></script>
     <script type="text/javascript" src="specs/ControllerFactorySpec.js"></script>
@@ -66,7 +70,6 @@
     <script type="text/javascript" src="specs/CrumbnetSpec.js"></script>
     <script type="text/javascript" src="specs/SearchComponentSpec.js"></script>
     <script type="text/javascript" src="specs/ResultsComponentSpec.js"></script>
-    <script type="text/javascript" src="specs/LocationSearchSpec.js"></script>
     <script type="text/javascript" src="specs/DesktopSpec.js"></script>
     <script type="text/javascript" src="specs/ProcessSpec.js"></script>
     <script type="text/javascript" src="specs/UploadSpec.js"></script>

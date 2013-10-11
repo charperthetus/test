@@ -15,6 +15,7 @@ Ext.require('Savanna.search.view.searchComponent.searchBody.resultsComponent.Res
 Ext.require('Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsPanelToolbar');
 Ext.require('Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsDals');
 
+
 describe('Search Results', function () {
 
     var dalFixtures;
@@ -841,7 +842,7 @@ describe('Search Results', function () {
 
             it('should have some data in it', function () {
                 var count = grid.store.snapshot ? grid.store.snapshot.length : grid.store.getCount();
-                expect( count ).toBeGreaterThan(0);
+                expect(count).toBeGreaterThan(0);
             });
 
             it('should have a view', function () {
@@ -850,8 +851,8 @@ describe('Search Results', function () {
 
 
             it('should stop being a hozer and let me select something', function () {
-                var sm =  grid.getSelectionModel();
-                expect( sm ).not.toBeNull();
+                var sm = grid.getSelectionModel();
+                expect(sm).not.toBeNull();
                 sm.clearSelections();
                 sm.select(0);
                 //expect( sm.hasSelection() ).toBeTruthy(); I commented this out because this EXTJS feature does not work the way one might expect.
@@ -885,14 +886,13 @@ describe('Search Results', function () {
 
         beforeEach(function () {
 
-
-            resultsComponent = Ext.create('Savanna.search.view.searchComponent.searchBody.ResultsComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
+            searchController = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
 
             resultsController = Savanna.controller.Factory.getController('Savanna.search.controller.ResultsComponent');
 
             searchComponent = Ext.create('Savanna.search.view.SearchComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
 
-            searchController = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
+            resultsComponent = searchComponent.down('#searchresults');
 
             panel = resultsComponent.queryById('resultspanel');
 
@@ -940,6 +940,44 @@ describe('Search Results', function () {
 
         it('should have a store behind the sources panel', function () {
             expect(sources.store).toBeTruthy();
+        });
+
+
+        describe('populate map with results', function () {
+
+            var searchStore = null;
+            var fixtures = null;
+
+            beforeEach(function () {
+
+                fixtures = Ext.clone(ThetusTestHelpers.Fixtures.SearchResults);
+
+                searchStore = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.SearchResults', { autoLoad: false });
+
+                // now set up server to get store data
+                server = new ThetusTestHelpers.FakeServer(sinon);
+
+                var readMethod = 'POST',
+                    testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(searchStore.getProxy(), 'read', readMethod);
+
+                server.respondWith(readMethod, testUrl, fixtures.searchResults);
+
+                searchStore.load();
+
+                server.respond({
+                    errorOnInvalidRequest: true
+                });
+
+            });
+
+            it('should populate the map with search results', function () {
+                var scope = searchComponent.down('#resultsdals');
+                var resultsMap = searchComponent.down('#resultMapCanvas');
+                var results = {};
+                results.store = searchStore;
+                resultsController.loadPointsFromStore(results, scope);
+                expect(resultsMap.resultsLayer.features.length > 0).toBeTruthy();
+            });
         });
 
         it('should be able to compute the page for different previewIndexes', function () {
@@ -1032,7 +1070,7 @@ describe('Search Results', function () {
 
                 it('should update the preview label for the first record', function () {
 
-                    var total =resultsController.getGridStore().totalCount;
+                    var total = resultsController.getGridStore().totalCount;
                     expect(resultsController.previewIndexAndTotalLabel().text).toBe('Preview Result 1 of ' + total);
 
 
@@ -1058,7 +1096,7 @@ describe('Search Results', function () {
 
                 it('should update the preview label for the second record', function () {
 
-                    var total =resultsController.getGridStore().totalCount;
+                    var total = resultsController.getGridStore().totalCount;
                     expect(resultsController.previewIndexAndTotalLabel().text).toBe('Preview Result 2 of ' + total);
 
 
@@ -1073,8 +1111,6 @@ describe('Search Results', function () {
                 });
             });
         });
-
-
 
 
         describe('onDalRender', function () {
@@ -1167,31 +1203,29 @@ describe('Search Results', function () {
                 searchComponent.down('#searchdals').queryById('mockDAL').query('checkbox')[0].setValue(true);
 
 
-
                 resultsDals.createDalPanels(searchController.getSelectedDals(searchComponent));
 
 
                 spyOn(searchComponent.down('#refineterms'), 'removeTerm');
 
-                refineTerm = Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineTerm',     {
-                    itemId:'term_apple'
+                refineTerm = Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineTerm', {
+                    itemId: 'term_apple'
                 });
                 refineTerm.setTerm('apple');
 
 
-
             });
 
-            describe('onTermRender', function() {
+            describe('onTermRender', function () {
 
-                it('should add an event listener when a term is rendered', function()  {
+                it('should add an event listener when a term is rendered', function () {
                     searchComponent.down('#refineterms').queryById('termValues').add(refineTerm);
 
                     expect(refineTerm.hasListener('click')).toBeTruthy();
                 });
             });
 
-            describe('handleRemoveTerm', function() {
+            describe('handleRemoveTerm', function () {
                 it('should call removeTerm', function () {
 
                     searchComponent.down('#refineterms').queryById('termValues').add(refineTerm);
@@ -1203,12 +1237,16 @@ describe('Search Results', function () {
             });
         });
 
-        describe('onCloseItemPreview', function()    {
+        describe('onCloseItemPreview', function () {
 
 
-            it('should hide the preview window', function() {
+            it('should hide the preview window', function () {
+                var contentsView = searchComponent.queryById('resultspreviewwindow').down('#resultspreviewcontent');
+                var controller = contentsView.getController();
 
-                resultsController.onCloseItemPreview(searchComponent.queryById('resultspreviewwindow').down('#previewclosebutton'));
+                expect(controller).not.toBeNull();
+
+                controller.onCloseClick();
 
                 expect(searchComponent.queryById('resultspreviewwindow').isVisible()).toBeFalsy();
             });
@@ -1266,7 +1304,6 @@ describe('Search Results', function () {
                 searchComponent.down('#searchdals').queryById('mockDAL').query('checkbox')[0].setValue(true);
 
 
-
                 resultsDals.createDalPanels(searchController.getSelectedDals(searchComponent));
 
                 /*
@@ -1282,7 +1319,6 @@ describe('Search Results', function () {
 
 
                 searchComponent.down('#resultsdals').createDalFacets('mockDAL');
-
 
 
             });
@@ -1304,8 +1340,8 @@ describe('Search Results', function () {
                 searchComponent.down('#resultsdals').queryById('resultsfacets').setActiveTab(0);
                 resultsController.onShowHideFacets(searchComponent.down('#resultsdals').queryById('resultsfacets').queryById('showHideFacets'));
                 var allExpanded = true;
-                Ext.each(resultsDals.queryById('resultsfacets').query('panel[cls=results-facet]'), function(facet) {
-                    if(facet.collapsed) {
+                Ext.each(resultsDals.queryById('resultsfacets').query('panel[cls=results-facet]'), function (facet) {
+                    if (facet.collapsed) {
                         allExpanded = false;
                     }
                 });
@@ -1353,7 +1389,7 @@ describe('Search Results', function () {
                 searchComponent.down('#resultsdals').createDalPanels(searchController.getSelectedDals(searchComponent));
 
 
-                resultsController.onPageComboChange(searchComponent.down('#resultsPageSizeCombobox'));
+                resultsController.onPageSizeChange(13);
 
                 expect(searchComponent.down('#resultsdals').updateDalStatus).toHaveBeenCalled();
             });
@@ -1407,7 +1443,7 @@ describe('Search Results', function () {
 
         });
 
-        describe('handleSearchTermKeyUp and handleSearchSubmit', function()    {
+        describe('handleSearchTermKeyUp and handleSearchSubmit', function () {
             var dalItem, resultsPanel;
 
             beforeEach(function () {
@@ -1438,24 +1474,31 @@ describe('Search Results', function () {
                 dalItem = null;
 
             });
-            it('handleSearchTermKeyUp should call doSearch', function()  {
+
+            it('handleSearchTermKeyUp should call doSearch', function () {
                 var field = sources.queryById('refinesearch').down('#refine_search_terms');
 
                 field.setValue('apples');
 
-                var success = resultsController.handleSearchTermKeyUp(field, {keyCode:Ext.EventObject.ENTER});
+                var controller = sources.queryById('refinesearch').getController();
+                expect(controller).not.toBeNull();
+
+                var success = controller.onKeyUp(field, {keyCode: Ext.EventObject.ENTER});
 
                 expect(success).toBeTruthy();
             });
 
-            it('handleSearchSubmit should call doSearch', function()  {
+            it('handleSearchSubmit should call doSearch', function () {
                 var field = sources.queryById('refinesearch').down('#refine_search_terms');
 
                 field.setValue('apples');
 
                 var btn = sources.queryById('refinesearch').down('#refine_search_submit');
 
-                var success = resultsController.handleSearchSubmit(btn);
+                var controller = sources.queryById('refinesearch').getController();
+                expect(controller).not.toBeNull();
+
+                var success = controller.onSubmitClick(btn);
 
                 expect(success).toBeTruthy();
             });

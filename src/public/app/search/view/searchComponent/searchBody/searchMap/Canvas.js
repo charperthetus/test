@@ -16,6 +16,8 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.searchMap.Canvas', {
 
     searchLayer: null,
 
+    resultsLayer: null,
+
     initComponent: function() {
 
         this.map = new OpenLayers.Map({

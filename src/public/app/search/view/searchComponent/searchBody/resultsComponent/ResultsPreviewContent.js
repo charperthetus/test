@@ -8,8 +8,10 @@
 
 Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsPreviewContent', {
     extend: 'Ext.panel.Panel',
+    controller: 'Savanna.search.controller.resultsComponent.ResultsPreviewContentController',
     alias: 'widget.search_resultspreviewcontent',
     header: false,
+    bubbleEvents: ['search:previewNextButton', 'search:previewPrevButton'],
     requires: [
 
     ],
@@ -87,7 +89,8 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
 
     initComponent: function () {
         this.callParent(arguments);
-        Savanna.controller.Factory.getController('Savanna.search.controller.ResultsComponent');
+        this.getController();
+        //Savanna.controller.Factory.getController('Savanna.search.controller.ResultsComponent');
     },
 
 

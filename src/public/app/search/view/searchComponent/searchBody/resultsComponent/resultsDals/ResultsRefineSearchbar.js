@@ -6,6 +6,8 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
         'Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineTerms'
     ],
 
+    controller: 'Savanna.search.controller.resultsComponent.resultsDals.ResultsRefineSearchbarController',
+
     border:false,
     width:'100%',
 
@@ -23,7 +25,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
             items: [
                 {
                     xtype: 'textfield',
-                    width: 197,
+                    width: 180,             //was making submit button below get clipped
                     fieldLabel: '',
                     name: 'refine_search_terms',
                     itemId: 'refine_search_terms',

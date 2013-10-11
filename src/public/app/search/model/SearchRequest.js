@@ -13,7 +13,7 @@ Ext.define('Savanna.search.model.SearchRequest', {
 
     fields: [
         {name: '_type', type: 'string', defaultValue: 'com.thetus.platforms.savanna.mdks.search.objects.SearchParamVO'},
-        {name: 'contentDataSource', type: 'string', defaultValue: SavannaConfig.defaultSearchDal},
+        {name: 'contentDataSource', type: 'string', defaultValue: 'SolrJdbc'},
         {name: 'desiredFacets', type: 'array', defaultValue: []},
         {name: 'displayLabel', type: 'string', defaultValue: ''},
         {name: 'resultsPerPage', type: 'int', defaultValue: 20},
@@ -28,6 +28,7 @@ Ext.define('Savanna.search.model.SearchRequest', {
                 'resultsStartIndex': 0
             }
         ]},
-        {name: 'textInputString', type: 'string', defaultValue: ''}
+        {name: 'textInputString', type: 'string', defaultValue: ''},
+        {name: 'polygonVo', type: 'object', defaultValue: null}
     ]
 });
