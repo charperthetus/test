@@ -8,6 +8,10 @@
 Ext.define('Savanna.metadata.model.Metadata', {
     extend: 'Ext.data.Model',
 
+    requires: [
+        'Savanna.proxy.Cors'
+    ],
+
     // NOTE: if you have a relationship, you need to be sure to require that model...
 
     fields: [
