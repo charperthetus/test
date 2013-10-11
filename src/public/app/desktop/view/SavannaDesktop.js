@@ -32,15 +32,15 @@ Ext.define('Savanna.desktop.view.SavannaDesktop', {
                 defaultMargins:'5'
             },
             items: [{
-                    itemId: 'searchbutton',
-                    cls:'searchButtonFramework',
-                    ui:'brand-header',
-                    scale: 'medium'
+                itemId: 'searchbutton',
+                cls:'searchButtonFramework',
+                ui:'brand-header',
+                scale: 'medium'
                 }, {
-                    itemId: 'uploadbutton',
-                    cls:'uploadButtonFramework',
-                    ui:'brand-header',
-                    scale: 'medium'
+                itemId: 'uploadbutton',
+                cls:'uploadButtonFramework',
+                ui:'brand-header',
+                scale: 'medium'
                 }]
         }, 
         {

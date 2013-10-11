@@ -35,9 +35,6 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
             'desktop_savannadesktop #uploadbutton': {
                 click: this.displayUploadDialog
             },
-            'desktop_savannadesktop #modelSearchButton': {
-                click: this.displayModelSearch
-            },
             'desktop_savannadesktop #helpbutton': {
                 click: this.launchHelp
             },
@@ -107,7 +104,6 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
     displayAccountSettings: function() {
         console.log('The user hit account settings');
     },
-
 
     launchHelp: function() {
         //todo: insert the help url here - get from config?
