@@ -21,6 +21,13 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
             case 'FinalResult':
                 uriType = 'ProcessItem';
                 break;
+            case 'ActionsGroup':
+            case 'ToolsGroup':
+            case 'InputsGroup':
+            case 'OutputsGroup':
+            case 'ByproductsGroup':
+                uriType = 'InternalGroup';
+                break;
             default:
                 console.log('Unknown category for getURI: ', category);
         }
@@ -90,15 +97,37 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
 
     addStep: function(e, obj) {
         obj.diagram.startTransaction('addStep');
+
         var step = {'category': 'Step', 'text': 'Description', 'isGroup': true, 'isSubGraphExpanded': true};
         step.key = Savanna.process.utils.ProcessUtils.getURI(step.category);
         obj.diagram.model.addNodeData(step);
-        var tobj = obj.panel.panel.part;
-        var action = {'category': 'Action', 'text': 'Action', 'group': step.key};
+
+        var toolsGroup = {'category': 'ToolsGroup', 'isGroup': true, 'group': step.key};
+        toolsGroup.key = Savanna.process.utils.ProcessUtils.getURI(toolsGroup.category);
+        obj.diagram.model.addNodeData(toolsGroup);
+
+        var inputsGroup = {'category': 'InputsGroup', 'isGroup': true, 'group': step.key};
+        inputsGroup.key = Savanna.process.utils.ProcessUtils.getURI(inputsGroup.category);
+        obj.diagram.model.addNodeData(inputsGroup);
+
+        var actionsGroup = {'category': 'ActionsGroup', 'isGroup': true, 'group': step.key};
+        actionsGroup.key = Savanna.process.utils.ProcessUtils.getURI(actionsGroup.category);
+        obj.diagram.model.addNodeData(actionsGroup);
+
+        var action = {'category': 'Action', 'text': 'Action', 'group': actionsGroup.key};
         action.key = Savanna.process.utils.ProcessUtils.getURI(action.category);
         obj.diagram.model.addNodeData(action);
 
-        newlink = { from: tobj.data.key, to: step.key };
+        var outputsGroup = {'category': 'OutputsGroup', 'isGroup': true, 'group': step.key};
+        outputsGroup.key = Savanna.process.utils.ProcessUtils.getURI(outputsGroup.category);
+        obj.diagram.model.addNodeData(outputsGroup);
+
+        var byproductsGroup = {'category': 'ByproductsGroup', 'isGroup': true, 'group': step.key};
+        byproductsGroup.key = Savanna.process.utils.ProcessUtils.getURI(byproductsGroup.category);
+        obj.diagram.model.addNodeData(byproductsGroup);
+
+        var tobj = obj.panel.panel.part;
+        var newlink = { from: tobj.data.key, to: step.key };
         if (tobj.category == 'Decision') {
             newlink.visible = true;
         }
