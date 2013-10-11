@@ -225,12 +225,7 @@ describe('Search Results', function () {
                         expect(panelView.queryById('termValues').queryById('term_apples')).toBeTruthy();
                     });
 
-                    it('should remove selected terms', function () {
-                        searchbarView.queryById('refine_search_terms').setValue('apples');
-                        panelView.addTerm(searchbarView.queryById('refine_search_terms'));
-                        panelView.removeTerm(panelView.queryById('termValues').queryById('term_apples').queryById('removeTerm'));
-                        expect(panelView.queryById('termValues').queryById('term_apples')).not.toBeTruthy();
-                    });
+                    //remove is tested elsewhere.
                 });
             });
 
