@@ -41,7 +41,7 @@ Ext.define('Savanna.desktop.view.SavannaDesktop', {
                 cls:'uploadButtonFramework',
                 ui:'brand-header',
                 scale: 'medium'
-                }]
+            }]
         }, 
         {
             xtype: 'toolbar',
