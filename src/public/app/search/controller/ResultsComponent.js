@@ -1,3 +1,5 @@
+/* global Ext: false, OpenLayers: false, SavannaConfig: false */
+
 /**
  * Created with IntelliJ IDEA.
  * User: ksonger
@@ -199,14 +201,10 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
             if(!recordMetadata) {
                 me.setIsWaitingForDocumentMetadata ( true );
             }
-        if (!record) {
-            setTimeout(this.updatePreviewHelper, 500);
-            this.setIsWaitingForPreviewResults(true);
-            return;
         }
 
         me.setIsWaitingForPreviewResults ( false );
-        this.setIsWaitingForPreviewResults(false);
+
 
         var win = me.previewWindow();
         //Show the contents
@@ -281,7 +279,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
 
         //Make sure the record is paged in.
         var containingPage = this.pageOfCurrentPreviewIndex();
-        if (this.resultsStore.currentPage != containingPage) {
+        if (this.resultsStore.currentPage !== containingPage) {
             this.resultsStore.currentPage = containingPage;
             this.getNewPreviewRecords();
         } else {
@@ -301,13 +299,13 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
 
     onItemMouseEnter: function (view, rec, node) {    // other parameters: , index, e, options
         if (node) {
-            node.querySelector("#hoverDiv").style.visibility = "visible";
+            node.querySelector('#hoverDiv').style.visibility = 'visible';
         }
     },
 
     onItemClick: function (view, rec, node, index, e) {  //other parameter options
         if (e && e.target && e.target.id) {
-            if (e.target.id == 'openButton') {
+            if (e.target.id === 'openButton') {
                 this.openUri(rec.data.uri);
             }
         }
@@ -315,7 +313,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
 
     onItemMouseLeave: function (view, rec, node) {  // other parameters: , index, e, options
         if (node) {
-            node.querySelector("#hoverDiv").style.visibility = "hidden";
+            node.querySelector('#hoverDiv').style.visibility = 'hidden';
         }
     },
 
@@ -349,6 +347,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
 
     onNextItemPreview: function () {
         if (this.previewIndex >= this.resultsStore.totalCount) {
+            return;
         } else {
             this.previewIndex++;
             this.updatePreview();
@@ -357,6 +356,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
 
     onPrevItemPreview: function () {
         if (this.previewIndex <= 0) {
+            return;
         } else {
             this.previewIndex--;
             this.updatePreview();
@@ -383,7 +383,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
         this.getApplication().fireEvent('results:dalreset', btn);
     },
 
-    onSortOrderChange: function (value) {
+    onSortOrderChange: function () {
         /*
          this is a placeholder at the moment - not sure what the available sort options
          will be, and only 'relevance' appears in the comps and flex client version.
@@ -489,19 +489,19 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
         ////////////////////////////////////////
         //Begin setting up style for result layer
         var colors = {
-            low: "rgb(181, 226, 140)",
-            middle: "rgb(241, 211, 87)",
-            high: "rgb(253, 156, 115)"
+            low: 'rgb(181, 226, 140)',
+            middle: 'rgb(241, 211, 87)',
+            high: 'rgb(253, 156, 115)'
         };
 
         var singleRule =  new OpenLayers.Rule({
             filter: new OpenLayers.Filter.Comparison({
                 type: OpenLayers.Filter.Comparison.EQUAL_TO,
-                property: "count",
+                property: 'count',
                 value: 1
             }),
             symbolizer: {
-                externalGraphic: "./resources/images/mapMarker.png",
+                externalGraphic: './resources/images/mapMarker.png',
                 graphicWidth: 32,
                 graphicHeight: 32,
                 fillOpacity: 1
@@ -512,7 +512,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
         var lowRule = new OpenLayers.Rule({
             filter: new OpenLayers.Filter.Comparison({
                 type: OpenLayers.Filter.Comparison.BETWEEN,
-                property: "count",
+                property: 'count',
                 lowerBoundary: 2,
                 upperBoundary: 15
             }),
@@ -523,17 +523,17 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
                 strokeOpacity: 0.5,
                 strokeWidth: 12,
                 pointRadius: 10,
-                label: "${count}",
+                label: '${count}',
                 labelOutlineWidth: 1,
-                fontColor: "#ffffff",
+                fontColor: '#ffffff',
                 fontOpacity: 0.8,
-                fontSize: "12px"
+                fontSize: '12px'
             }
         });
         var middleRule = new OpenLayers.Rule({
             filter: new OpenLayers.Filter.Comparison({
                 type: OpenLayers.Filter.Comparison.BETWEEN,
-                property: "count",
+                property: 'count',
                 lowerBoundary: 15,
                 upperBoundary: 50
             }),
@@ -544,17 +544,17 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
                 strokeOpacity: 0.5,
                 strokeWidth: 12,
                 pointRadius: 15,
-                label: "${count}",
+                label: '${count}',
                 labelOutlineWidth: 1,
-                fontColor: "#ffffff",
+                fontColor: '#ffffff',
                 fontOpacity: 0.8,
-                fontSize: "12px"
+                fontSize: '12px'
             }
         });
         var highRule = new OpenLayers.Rule({
             filter: new OpenLayers.Filter.Comparison({
                 type: OpenLayers.Filter.Comparison.GREATER_THAN,
-                property: "count",
+                property: 'count',
                 value: 50
             }),
             symbolizer: {
@@ -564,11 +564,11 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
                 strokeOpacity: 0.5,
                 strokeWidth: 12,
                 pointRadius: 20,
-                label: "${count}",
+                label: '${count}',
                 labelOutlineWidth: 1,
-                fontColor: "#ffffff",
+                fontColor: '#ffffff',
                 fontOpacity: 0.8,
-                fontSize: "12px"
+                fontSize: '12px'
             }
         });
 
@@ -581,7 +581,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
 
         var searchLayer = new OpenLayers.Layer.Vector('searchLayer');
         var strategy = new OpenLayers.Strategy.Cluster({distance: 50, threshold: null});
-        canvas.resultsLayer = new OpenLayers.Layer.Vector("resultsLayer", {
+        canvas.resultsLayer = new OpenLayers.Layer.Vector('resultsLayer', {
             strategies: [strategy],
             styleMap: new OpenLayers.StyleMap(style)
         });
@@ -608,7 +608,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
       var searchLayer = canvas.searchLayer;
       //modify resultmap searchLayer to match searchmap searchLayer
       if(searchLayer.features.length > 0){
-          var resultMap = canvas.up('search_searchcomponent').down('#resultMapCanvas')
+          var resultMap = canvas.up('search_searchcomponent').down('#resultMapCanvas');
           var layerFeatureArray = searchLayer.features;
           resultMap.searchLayer.removeAllFeatures();
           var cloneFeature = layerFeatureArray[0].clone();
@@ -633,7 +633,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
             attributes.previewString = searchResults[i].data.previewString;
             attributes.contentDocUri = searchResults[i].data.contentDocUri;
             var resultPoints = searchResults[i].data.latLonPairs;
-            if (resultPoints != null) {
+            if (resultPoints !== null) {
                 for (var j = 0; j < resultPoints.length; j++) {
                     attributes.name = resultPoints[j].name;
                     searchResultList.push(new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(resultPoints[j].longitude, resultPoints[j].latitude), attributes));
