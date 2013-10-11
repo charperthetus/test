@@ -1292,11 +1292,12 @@ describe('Search Results', function () {
             });
 
 
+            //I removed a test that is no longer relavant.
+
             describe('handleRemoveTerm', function() {
                 it('should call removeTerm', function () {
-
-                    searchComponent.down('#refineterms').queryById('termValues').add(refineTerm);
                     expect(refineTerm).toBeTruthy();
+                    searchComponent.down('#refineterms').queryById('termValues').add(refineTerm);
                     var closeButton = refineTerm.queryById('removeTerm');
                     closeButton.fireEvent('click');
                     expect(refineTerm.getController().onCloseButton).toHaveBeenCalled();
