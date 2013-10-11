@@ -11,7 +11,9 @@ Ext.define('Savanna.desktop.view.SavannaWorkspace', {
     requires: [
         'Savanna.desktop.view.SavannaTabPanel',
         'Savanna.crumbnet.view.CrumbnetComponent',
-        'Savanna.map.view.MapComponent'
+        'Savanna.map.view.MapComponent',
+        'Savanna.image.view.ImageComponent',
+        'Savanna.image2.view.ImageComponent'
     ],
     layout: 'hbox',
     currentView: 'single',
@@ -57,10 +59,17 @@ Ext.define('Savanna.desktop.view.SavannaWorkspace', {
         flex: 2,
         height: '100%',
         items: [{
+            title: 'Image',
+            xtype: 'image_imagecomponent',
+            imageSource: 'somePath'
+            },{
+            title: 'Simple Image',
+            xtype: 'image2_imagecomponent',
+            imageSource: 'somePath'
+            },{
             title: 'Crumbnet',
             xtype: 'go-graph'
-            },
-            {
+        },{
                 title: 'Map',
                 xtype: 'map_component',
                 itemId: 'MAP_ONE'
