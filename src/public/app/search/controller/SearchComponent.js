@@ -1,4 +1,4 @@
-/* global Ext: false, Savanna: false */
+/* global Ext: false, OpenLayers: false, SavannaConfig: false */
 /**
  * Created with IntelliJ IDEA.
  * User: ksonger
@@ -13,7 +13,10 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         'Savanna.search.model.SearchRequest',
         'Savanna.search.store.SearchResults',
         'Savanna.search.view.searchComponent.searchBody.searchMap.SearchLocationComboBox',
-        'Savanna.controller.Factory'
+        'Savanna.controller.Factory',
+        'Savanna.metadata.store.Metadata',
+        'Savanna.search.model.ResultMetadata',
+        'Savanna.search.store.ResultsMetadata'
     ],
     stores: [
         'Savanna.search.store.DalSources'
@@ -79,10 +82,10 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             'search_searchcomponent #mapZoomToMenu menu': {
                 click: this.zoomToSearchExtent
             },
-            'search_searchmap' : {
+            'search_searchmap': {
                 resize: this.onSearchMapResize
             },
-            'search_searchmap search_searchlocationcombobox' : {
+            'search_searchmap search_searchlocationcombobox': {
                 zoomButtonClick: this.zoomToLocation
             }
         });
@@ -97,14 +100,14 @@ Ext.define('Savanna.search.controller.SearchComponent', {
     // CUSTOM METHODS
 
     /*
-    with search now appearing within a window component, the advanced search terms menu
-    no longer works correctly as a menu. Converted it to a panel (which is a good thing), but
-    moving the window around with the menu open causes misalignment issues with the menu.  These event
-    listeners on the parent window seem to sort it out.
+     with search now appearing within a window component, the advanced search terms menu
+     no longer works correctly as a menu. Converted it to a panel (which is a good thing), but
+     moving the window around with the menu open causes misalignment issues with the menu.  These event
+     listeners on the parent window seem to sort it out.
      */
 
     onSearchRender: function (search) {
-        if(search.up('desktop_searchwindow'))   {
+        if (search.up('desktop_searchwindow')) {
             var advanced_menu = search.down('#searchadvanced_menu');
 
             search.up('desktop_searchwindow').header.getEl().on('mousedown', function () {
@@ -118,19 +121,22 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                 }
             });
         }
+        /*
+        hide Start New Search button
+         */
+        search.down('#search_reset_button').setVisible(false);
     },
 
     handleNewSearch: function (elem) {
         var component = this.getSearchComponent(elem);
 
-        if(component.down('search_resultsDals_resultsterms'))   {   // doesn't exist if results page has not yet been created
+        if (component.down('search_resultsDals_resultsterms')) {   // doesn't exist if results page has not yet been created
 
             component.down('search_resultsDals_resultsterms').queryById('termValues').removeAll();  // remove refine terms in results screen
         }
 
         var form = component.down('#search_form'),
             searchBar = component.down('#searchbar');
-
 
 
         searchBar.queryById('search_terms').setValue('');
@@ -143,7 +149,8 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             }
         });
 
-        var sources = this.getSelectedDals(this.getSearchComponent(elem));
+        var sources = this.getSelectedDals(this.getSearchComponent(elem)),
+            dals = component.down('#searchdals');
 
         Ext.each(sources, function (source) {
             /*
@@ -159,7 +166,13 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             if (source.get('dateTimeRanges').length) {
                 source.set('dateTimeRanges', []);
             }
+
+            if (dals.queryById(source.get('id')).query('checkbox')[0].getValue()) {
+                dals.queryById(source.get('id')).query('checkbox')[0].setValue(false);
+            }
         });
+
+        dals.queryById(dals.store.defaultId).query('checkbox')[0].setValue(true);
 
         component.down('#resultsdals').removeAll();
 
@@ -178,6 +191,11 @@ Ext.define('Savanna.search.controller.SearchComponent', {
          the search request has failed for one reason or another
          */
         component.down('#resultspanel').updateGridStore({store: Ext.create('Savanna.search.store.SearchResults')});
+
+        /*
+         hide Start New Search button
+         */
+        component.down('#search_reset_button').setVisible(false);
     },
 
     clearSearch: function (elem) {
@@ -215,9 +233,9 @@ Ext.define('Savanna.search.controller.SearchComponent', {
     showHideMenu: function (btn) {
         var adv_menu = btn.findParentByType('search_searchcomponent').down('#searchadvanced_menu');
 
-        if(adv_menu.isVisible())    {
+        if (adv_menu.isVisible()) {
             adv_menu.hide();
-        }   else    {
+        } else {
             adv_menu.showBy(btn.up('#search_form'));
         }
     },
@@ -409,12 +427,16 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         }, this);
 
 
-
         /*
          clear the grid - it's misleading in error states to see results in the grid, even though
          the search request has failed for one reason or another
          */
         component.down('#resultspanel').updateGridStore({store: Ext.create('Savanna.search.store.SearchResults')});
+
+        /*
+         show Start New Search button
+         */
+        component.down('#search_reset_button').setVisible(true);
 
 
         this.showResultsPage(component);
@@ -425,19 +447,19 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         var customSearchOptions = [],
             customInputs = currentDalPanel.query('[cls=customInputField]');
 
-        Ext.each(customInputs, function(input)  {
+        Ext.each(customInputs, function (input) {
             var customSearchInput = {},
                 type = input.xtype;
 
             customSearchInput.key = input.name;
             customSearchInput.value = input.value;
 
-            switch(type)  {
+            switch (type) {
                 case 'datefield':
                     customSearchInput.value = input.value.valueOf();
                     break;
                 case 'radiogroup':
-                    if(input.defaultType === 'radiofield')    {
+                    if (input.defaultType === 'radiofield') {
                         customSearchInput.value = input.getValue().options;
                     }
                     break;
@@ -465,15 +487,24 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             });
         } else {
 
-            var resultsObj = {id: dalId, store: store};
+            var resultsObj = {id: dalId, store: store, metadata: []};
+
+            /*
+             array of uri's to get the metadata for these results
+             */
+
+            var metadataArray = [];
+
+            Ext.each(records, function (record) {
+                metadataArray.push(record.data.uri);
+            });
+
 
             if (action === 'search') {
                 /*
                  add an object tying the dal and store together for referencing
                  */
                 resultsPanel.up('#searchresults').allResultSets.push(resultsObj);
-
-                this.mapGetSearchResults(resultsObj, resultsDal);
 
                 if (store.facetValueSummaries !== null) {
                     resultsDal.createDalFacets(dalId);
@@ -570,7 +601,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         canvas.searchLayer.removeAllFeatures();
         canvas.drawFeature.deactivate();
     },
-    zoomToLocation: function(comboBoxButton) {
+    zoomToLocation: function (comboBoxButton) {
         var viewBox = comboBoxButton.viewBox;
         var mapCanvas = comboBoxButton.parentComboBox.up('search_searchmap').down('search_map_canvas');
         var extent = new OpenLayers.Bounds(viewBox.west, viewBox.south, viewBox.east, viewBox.north);
@@ -583,10 +614,10 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         var menuButton = button.up('search_searchmap').down('#zoomToSelectedArea');
         //check if search layer is populated
         //if search layer has a feature enable zoom to selected area
-        if (mapCanvas.searchLayer.features.length > 0){
+        if (mapCanvas.searchLayer.features.length > 0) {
             menuButton.setDisabled(false);
         }
-        else{
+        else {
             menuButton.setDisabled(true);
         }
     },

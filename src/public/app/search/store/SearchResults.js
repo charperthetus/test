@@ -51,7 +51,6 @@ Ext.define('Savanna.search.store.SearchResults', {
             url: SavannaConfig.searchUrl,
             reader: new ReaderClass(),
 
-            // TODO: we should take one last stab at not having to monkey with the jsonData...
             modifyRequest:function(request) {
                 Ext.apply(request, {
                     jsonData: this.jsonData,

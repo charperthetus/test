@@ -12,15 +12,14 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
     alias: 'widget.search_resultspreviewcontent',
     header: false,
     bubbleEvents: ['search:previewNextButton', 'search:previewPrevButton'],
-    requires: [
 
-    ],
-    overflowY:'auto',
+    overflowY: 'auto',
 
-    items:  [
+    items: [
         {
-            xtype:'panel',
-            itemId: 'previewcontent'
+            xtype: 'panel',
+            itemId: 'previewcontent',
+            html: ''
         }
     ],
 
@@ -34,10 +33,10 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
                 anchor: '100%',
                 height: 27
             },
-            items : [
+            items: [
                 {
                     xtype: 'toolbar',
-                    width: 440,
+                    width: 620,
                     border: false,
                     itemId: 'results_preview_nav_text',
                     items: [
@@ -51,18 +50,19 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
                             xtype: 'button',
                             text: 'prev',
                             itemId: 'previewPrevButton',
-                            repeat  : true
+                            repeat: true
                         },
                         {
                             xtype: 'button',
                             text: 'next',
                             itemId: 'previewNextButton',
-                            repeat  : true
+                            repeat: true
                         }
                     ]
-                },{
+                },
+                {
                     xtype: 'toolbar',
-                    width: 440,
+                    width: 620,
                     border: false,
                     items: [
                         {
@@ -94,24 +94,85 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
     },
 
 
-    populate: function (record, index, totalResultsCount) {
-        /*
-        console.log(this);
-        console.log(record);
-        console.log('Preview index: ' + index);
-        console.log('Total results count: ' + totalResultsCount);
-        */
+    populate: function (record, metadata, index, totalResultsCount) {
 
-        if(record && record.title){
-            var win = this.findParentByType('search_resultspreviewwindow');
-            win.setTitle(record.title);
-            //this.setTitle(record.title);
-        }
-        var label =  this.getComponent('itemIndexAndTotalLabel');
-        if(label){
+        var capco = {'U': 'UNCLASSIFIED'},
+            metaHTML = '<table>',
+            row;
+
+        var primaryKeys = [
+            'docTitle',
+            'uri_DEBUG',
+            'classification',
+            'authors',
+            'abstract',
+            'document-description',
+            'published-date',
+            'publisher',
+            'pubName',
+            'producer',
+            'producer-category',
+            'distributor',
+            'document-organization',
+            'document-language',
+            'document-country',
+            'pageCount',
+            'ingest-date',
+            'modifiedDate',
+            'document-original-name',
+            'document-type',
+            'retrieval-url',
+            'relatedDocs',
+            'document_comments',
+            'ingest-state',
+            'keyCitationPlain',
+            'keyCitationHtml'
+        ];
+
+        var added = {};
+
+        /*
+        primary attributes display first
+         */
+        Ext.each(primaryKeys, function (key) {
+            Ext.each(metadata.data.items, function (item) {
+                if (item.data.key === key) {
+                    if(key === 'docTitle')    {
+                        row = '<tr><td class="doctitle-meta-value">' + item.data.value + '</td></tr>';
+                    } else  {
+                        row = '<tr><td class="meta-displaylabel">' + item.data.displayLabel + '</td></tr><tr><td class="meta-value">' + item.data.value + '</td></tr>';
+                    }
+
+                    metaHTML += row;
+                    added[item.data.key] = item.data.value;
+                }
+            });
+        });
+
+        /*
+        other dynamic attributes display below the primary attributes
+         */
+        Ext.each(metadata.data.items, function (item) {
+            if (!added[item.data.key]) {
+                if (item.data.key.toLowerCase().indexOf('date') !== -1) {
+                    item.data.value = Ext.Date.format(new Date(item.data.value), 'F d, Y');
+                }
+                if (item.data.key === 'classification') {
+                    item.data.value = capco[item.data.value];
+                }
+                row = '<tr><td class="meta-displaylabel">' + item.data.displayLabel + '</td></tr><tr><td class="meta-value">' + item.data.value + '</td></tr>';
+                metaHTML += row;
+            }
+        });
+
+        metaHTML += '</table>';
+
+        this.queryById('previewcontent').update(metaHTML);
+
+        var label = this.getComponent('itemIndexAndTotalLabel');
+        if (label) {
             label.text = 'Preview Results ' + index + ' of ' + totalResultsCount;
         }
 
     }
-
 });

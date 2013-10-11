@@ -26,6 +26,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
      here to get the panel to display for development.
      */
     width: 220,
+    height:'100%',
 
     layout: 'vbox',
     border: false,
