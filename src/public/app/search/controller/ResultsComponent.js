@@ -352,14 +352,6 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
         }
     },
 
-    /*
-     onItemPreview: function (grid, record) {
-     var win = grid.findParentByType('search_resultscomponent').queryById('resultspreviewwindow');
-     win.displayPreview(record);
-     },
-     */
-
-
     onDalRender: function (dal) {
         dal.body.on('click', this.changeSelectedStore, this, dal);
     },
