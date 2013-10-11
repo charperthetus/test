@@ -158,6 +158,12 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
                     name: facetobj.key,
                     inputValue: facetobj.key,
                     id: 'checkbox_' + facetobj.key + '_' + String(Ext.id()),
+                    /*
+                     added to resolve defect SAV-5380.  Needs design to assign a class.
+                     */
+                    style: {
+                        'white-space': 'nowrap'
+                    },
                     listeners: {
                         'change': Ext.bind(me.onFacetFilterChange, me)
                     }
@@ -310,34 +316,37 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
          check to see if this facet filter exists in the store already
          */
 
-        if (me.dal.get('facetFilterCriteria').length > 0) {
+        if (me.dal.get('facetFilterCriteria').length) {
 
             Ext.each(me.dal.get('facetFilterCriteria'), function (filter, index) {
 
-                var values = me.dal.get('facetFilterCriteria')[index].facetValues;
+                if (filter) {
 
-                if (filter.facetName === facet) { // if it already exists
+                    var values = filter.facetValues;
 
-                    filterExists = true;
+                    if (filter.facetName === facet) { // if it already exists
 
-                    if (btn.value) {   // if the checkbox has been selected, add the selection
+                        filterExists = true;
 
-                        values.push(btn.inputValue);
+                        if (btn.value) {   // if the checkbox has been selected, add the selection
 
-                    } else {       // if the checkbox has been deselected, remove the selection
+                            values.push(btn.inputValue);
 
-                        Ext.each(values, function (val, ind) {
-                            if (val === btn.inputValue) {
-                                Ext.Array.remove(values, values[ind]);
-                            }
-                        });
+                        } else {       // if the checkbox has been deselected, remove the selection
+
+                            Ext.each(values, function (val, ind) {
+                                if (val === btn.inputValue) {
+                                    Ext.Array.remove(values, values[ind]);
+                                }
+                            });
+                        }
                     }
-                }
 
-                if (values.length > 0) {
-                    me.dal.get('facetFilterCriteria')[index].facetValues = values;
-                } else {
-                    me.dal.get('facetFilterCriteria').splice(index, 1);   // remove the facetFilterCriteria entirely
+                    if (values.length > 0) {
+                        filter.facetValues = values;
+                    } else {
+                        me.dal.get('facetFilterCriteria').splice(index, 1);   // remove the facetFilterCriteria entirely
+                    }
                 }
 
             });
