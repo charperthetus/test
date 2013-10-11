@@ -14,6 +14,10 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
         'Ext.XTemplate'
     ],
 
+    mixins: {
+        storeable: 'Savanna.mixin.Storeable'
+    },
+
     sortableColumns: false,
 
     columns: [
@@ -34,7 +38,6 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
                     parseDate: function (v) {
                         return Ext.Date.format(new Date(v), 'F d, Y');
                     }
-
                 }
             )
         }
@@ -45,5 +48,21 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
 
     initComponent: function () {
         this.callParent(arguments);
+    },
+
+    onStoreLoad: function () {
+
+        var controller = Savanna.controller.Factory.getController('Savanna.search.controller.ResultsComponent'),
+            component = this.findParentByType('search_resultscomponent'),
+            metadataArray = [];
+
+        if (component.currentResultSet) {
+
+            Ext.each(component.currentResultSet.store.data.items, function (record) {
+                metadataArray.push(record.get('uri'));
+            });
+
+            controller.getDocumentMetadata(component.currentResultSet, metadataArray);
+        }
     }
 });

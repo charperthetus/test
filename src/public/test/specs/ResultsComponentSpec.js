@@ -16,9 +16,6 @@ Ext.require('Savanna.search.view.searchComponent.searchBody.resultsComponent.Res
 Ext.require('Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsDals');
 
 
-
-
-
 describe('Search Results', function () {
 
     var dalFixtures;
@@ -845,7 +842,7 @@ describe('Search Results', function () {
 
             it('should have some data in it', function () {
                 var count = grid.store.snapshot ? grid.store.snapshot.length : grid.store.getCount();
-                expect( count ).toBeGreaterThan(0);
+                expect(count).toBeGreaterThan(0);
             });
 
             it('should have a view', function () {
@@ -854,8 +851,8 @@ describe('Search Results', function () {
 
 
             it('should stop being a hozer and let me select something', function () {
-                var sm =  grid.getSelectionModel();
-                expect( sm ).not.toBeNull();
+                var sm = grid.getSelectionModel();
+                expect(sm).not.toBeNull();
                 sm.clearSelections();
                 sm.select(0);
                 //expect( sm.hasSelection() ).toBeTruthy(); I commented this out because this EXTJS feature does not work the way one might expect.
@@ -881,11 +878,12 @@ describe('Search Results', function () {
             grid = null,
             sources = null,
             store = null,
+            searchStore = null,
             server = null,
             origErrorHandler = null,
             errorRaised = false,
             fixtures = null,
-            searchStore = null;
+            metadataFixtures = null;
 
         beforeEach(function () {
 
@@ -920,10 +918,29 @@ describe('Search Results', function () {
             server.respond({
                 errorOnInvalidRequest: true
             });
+
+            fixtures = Ext.clone(ThetusTestHelpers.Fixtures.SearchResults);
+
+            searchStore = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.SearchResults', { autoLoad: false });
+
+            readMethod = 'POST';
+            testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(searchStore.getProxy(), 'read', readMethod);
+
+            server.respondWith(readMethod, testUrl, fixtures.searchResults);
+
+            searchStore.load();
+
+            server.respond({
+                errorOnInvalidRequest: true
+            });
+
+            metadataFixtures = Ext.clone(ThetusTestHelpers.Fixtures.ResultsMetadata);
+
+            resultsComponent.currentResultSet = {id: 'mockDAL', store: searchStore};
         });
 
         afterEach(function () {
-            var teardown = [resultsComponent, resultsController, searchComponent, searchController, panel, grid, sources, origErrorHandler, fixtures, searchStore];
+            var teardown = [resultsComponent, resultsController, searchComponent, searchController, panel, grid, sources, origErrorHandler, fixtures, metadataFixtures, store, searchStore];
 
             for (var i = 0; i < teardown; i++) {
                 if (teardown[i]) {
@@ -992,6 +1009,43 @@ describe('Search Results', function () {
 
             resultsController.previewIndex = 30;
             expect(resultsController.pageOfCurrentPreviewIndex()).toBe(2);
+
+        });
+
+        it('should retreive document metadata via getDocumentMetadata', function () {
+
+            var metadataArray = [];
+
+
+
+            Ext.each(resultsComponent.currentResultSet.store.data.items, function (record) {
+                metadataArray.push(record.get('uri'));
+            });
+
+            resultsController.getDocumentMetadata(resultsComponent.currentResultSet, metadataArray);
+
+            expect(Ext.data.StoreManager.lookup('searchMetadata_' + resultsComponent.currentResultSet.id)).toBeTruthy();
+
+        });
+
+        it('should set metadata for the current result set via metadataCallback', function()    {
+
+             resultsController.metadataCallback(metadataFixtures.resultsMetadataResponse, 'read', true, resultsComponent.currentResultSet);
+
+             expect(resultsComponent.currentResultSet.metadata).toBeTruthy();
+        });
+
+        it('should update preview window content with metadata html', function()    {
+            var contentView = Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsPreviewContent');
+            spyOn(contentView.queryById('previewcontent'), 'update');
+
+            var metadataStore = Ext.create('Savanna.search.store.ResultsMetadata');
+
+            metadataStore.data  = metadataFixtures.resultsMetadataResponse['SolrJdbc%2FText%2Fb963c8e9-a45e-4fd3-b4b7-5c3cf099195e'];
+
+            contentView.populate(searchStore.getAt(0), metadataStore, 0, 848);
+
+            expect(contentView.queryById('previewcontent').update).toHaveBeenCalled();
 
         });
 
@@ -1067,13 +1121,38 @@ describe('Search Results', function () {
             describe('Test Record Zero', function () {
 
                 beforeEach(function () {
+                    var metadataArray = [];
+
+                    resultsController.getResultsComponent().currentResultSet = {id: 'mockDAL', store: searchStore, metadata:Ext.create('Savanna.search.store.ResultsMetadata', {
+                        storeId: 'searchMetadata_' + 'mockDAL',
+                        pageSize: 20
+                    })};
+
+                    Ext.each(resultsController.getResultsComponent().currentResultSet.store.data.items, function (record) {
+                        metadataArray.push(record.get('uri'));
+                    });
+
+                    resultsController.getDocumentMetadata(resultsController.getResultsComponent().currentResultSet, metadataArray);
+
                     resultsController.previewIndex = 0;
+
+                    resultsController.setIsWaitingForDocumentMetadata ( false );
+                    resultsController.getIsWaitingForPreviewResults ( false );
+
+                    resultsController.getGrid().store = searchStore;
+
+                    resultsController.getResultsComponent().currentResultSet.metadata.add({id: 'SolrJdbc', datastore:{}});
+                    resultsController.getResultsComponent().currentResultSet.metadata.add({id: 'SolrJdbc%2FText%2F8eb9f8a1-3aca-4574-8217-8200f0627f90', datastore:{}});
+
+                    resultsController.getGridStore().getAt(0).set('uri', 'SolrJdbc');
+                    resultsController.getGridStore().getAt(1).set('uri', 'SolrJdbc%2FText%2F8eb9f8a1-3aca-4574-8217-8200f0627f90');
+
+
                     resultsController.updatePreview();
                 });
 
                 it('should update the preview label for the first record', function () {
-
-                    var total =resultsController.getGridStore().totalCount;
+                    var total = resultsController.getGridStore().totalCount;
                     expect(resultsController.previewIndexAndTotalLabel().text).toBe('Preview Result 1 of ' + total);
 
 
@@ -1088,34 +1167,31 @@ describe('Search Results', function () {
                 });
 
 
+
+                    it('should update the preview label for the second record', function () {
+
+                        var total = resultsController.getGridStore().totalCount;
+                        resultsController.onNextItemPreview();
+                        expect(resultsController.previewIndexAndTotalLabel().text).toBe('Preview Result 2 of ' + total);
+
+
+                    });
+
+                    it('should prev button disabled for second record', function () {
+                        resultsController.onNextItemPreview();
+                        expect(resultsController.previewPrevButton().disabled).not.toBeTruthy();
+                    });
+
+                    it('should next button enabled for second record', function () {
+                        resultsController.onNextItemPreview();
+                        expect(resultsController.previewNextButton().disabled).not.toBeTruthy();
+                    });
+
+
             });
 
-            describe('Test Record ONE', function () {
 
-                beforeEach(function () {
-                    resultsController.previewIndex = 1;
-                    resultsController.updatePreview();
-                });
-
-                it('should update the preview label for the second record', function () {
-
-                    var total =resultsController.getGridStore().totalCount;
-                    expect(resultsController.previewIndexAndTotalLabel().text).toBe('Preview Result 2 of ' + total);
-
-
-                });
-
-                it('should prev button disabled for second record', function () {
-                    expect(resultsController.previewPrevButton().disabled).not.toBeTruthy();
-                });
-
-                it('should next button enabled for second record', function () {
-                    expect(resultsController.previewNextButton().disabled).not.toBeTruthy();
-                });
-            });
         });
-
-
 
 
         describe('onDalRender', function () {
@@ -1247,7 +1323,7 @@ describe('Search Results', function () {
         describe('onCloseItemPreview', function()    {
 
 
-            it('should hide the preview window', function() {
+            it('should hide the preview window', function () {
                 var contentsView = searchComponent.queryById('resultspreviewwindow').down('#resultspreviewcontent');
                 var controller = contentsView.getController();
 
@@ -1398,7 +1474,7 @@ describe('Search Results', function () {
                 searchComponent.down('#resultsdals').createDalPanels(searchController.getSelectedDals(searchComponent));
 
 
-                resultsController.onPageComboChange(searchComponent.down('#resultsPageSizeCombobox'));
+                resultsController.onPageSizeChange(13);
 
                 expect(searchComponent.down('#resultsdals').updateDalStatus).toHaveBeenCalled();
             });
@@ -1488,7 +1564,7 @@ describe('Search Results', function () {
 
                 field.setValue('apples');
 
-                var success = resultsController.handleSearchTermKeyUp(field, {keyCode:Ext.EventObject.ENTER});
+                var success = resultsController.handleSearchTermKeyUp(field, {keyCode: Ext.EventObject.ENTER});
 
                 expect(success).toBeTruthy();
             });
@@ -1500,7 +1576,10 @@ describe('Search Results', function () {
 
                 var btn = sources.queryById('refinesearch').down('#refine_search_submit');
 
-                var success = resultsController.handleSearchSubmit(btn);
+                var controller = sources.queryById('refinesearch').getController();
+                expect(controller).not.toBeNull();
+
+                var success = controller.onSubmitClick(btn);
 
                 expect(success).toBeTruthy();
             });

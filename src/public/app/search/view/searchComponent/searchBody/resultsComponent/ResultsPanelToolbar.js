@@ -1,7 +1,8 @@
 Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsPanelToolbar', {
     extend: 'Ext.toolbar.Toolbar',
     alias: 'widget.search_resultspaneltoolbar',
-
+    controller: 'Savanna.search.controller.resultsComponent.ResultsPanelToolbarController',
+    bubbleEvents: ['Search:PageSizeChanged', "Search:SortByChanged"],
     requires: [
         'Savanna.controller.Factory',
         'Ext.form.field.ComboBox',
@@ -26,9 +27,9 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
         var countStore = Ext.create('Ext.data.Store', {
             fields: ['count', 'name'],
             data: [
-                {'count': '20', 'name': '20'},
-                {'count': '50', 'name': '50'},
-                {'count': '100', 'name': '100'}
+                {'count': 20, 'name': '20'},
+                {'count': 50, 'name': '50'},
+                {'count': 100, 'name': '100'}
             ]
         });
 

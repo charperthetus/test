@@ -11,6 +11,11 @@
       <directory>${project.basedir}/src/public/build/Savanna/production/</directory>
       <outputDirectory>/savanna/</outputDirectory>
     </fileSet>
+    <fileSet>
+      <directory>${project.basedir}/src/public/resources/</directory>
+      <outputDirectory>/savanna/resources</outputDirectory>
+   </fileSet>
+
   </fileSets>
   <moduleSets>
     <moduleSet>
