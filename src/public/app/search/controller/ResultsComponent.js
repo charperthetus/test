@@ -352,9 +352,6 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
         }
     },
 
-    onDalRender: function (dal) {
-        dal.body.on('click', this.changeSelectedStore, this, dal);
-    },
 
     onDalReset: function (btn) {
         var id = this.getCurrentDalId();
