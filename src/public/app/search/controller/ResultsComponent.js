@@ -26,6 +26,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
                     //Keelan asked that I use UI event bubbling...
                     me.component.on('Search:PageSizeChanged', this.onPageSizeChange, this);
                     me.component.on('Search:SortByChanged', this.onSortOrderChange, this);
+                    me.component.on('search:changeSelectedStore', this.changeSelectedStore, this);
 
                     //We can grab events in a popup this way
                     var dispatcher = this.previewWindow();
@@ -33,9 +34,6 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
                     dispatcher.on('search:previewNextButton', this.onNextItemPreview, this);
                     dispatcher.on('search:previewPrevButton', this.onPrevItemPreview, this);
                 }
-            },
-            'search_resultscomponent panel[cls=results-dal]': {
-                'render': this.onDalRender
             },
 
             'search_resultscomponent #resultspanelgrid': {
@@ -70,8 +68,6 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
             }
         });
 
-        //Use any kind of event system to tell this controller about big changes to the results view(s)
-        this.getApplication().on('search:changeSelectedStore', this.changeSelectedStore, this);
     },
 
 
@@ -289,17 +285,6 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
         }
     },
 
-    /*
-     onItemPreview: function (grid, record) {
-     var win = grid.findParentByType('search_resultscomponent').queryById('resultspreviewwindow');
-     win.displayPreview(record);
-     },
-     */
-
-
-    onDalRender: function (dal) {
-        dal.body.on('click', this.changeSelectedStore, this, dal);
-    },
 
     onDalReset: function (btn) {
         var id = this.getCurrentDalId();

@@ -1,0 +1,18 @@
+/**
+ * Created by jbarmettler on 10/8/13.
+ */
+
+Ext.define('Savanna.search.controller.resultsComponent.resultsDals.ResultsOptionsController',
+    {
+        extend: 'Deft.mvc.ViewController',
+
+        onClick: function () {
+            this.getView().fireEvent('search:changeSelectedStore', {}, {}, this.getView()); //todo
+        },
+
+        init: function () {
+            this.getView().body.on('click', this.onClick, this);
+        }
+
+    }
+);
