@@ -65,9 +65,18 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                     },
                     {
                         //ToDo: create related processes component here
+                        xtype: 'itemview_related_processes',
+                        itemId: 'relatedProcesses',
+                        collapsible: true,
+                        title: 'Participated in Process (#)',
+                        store: null
                     },
                     {
                         //Todo: create related items component here
+                        xtype: 'itemview_related_items',
+                        itemId: 'relatedItems',
+                        collapsible: true,
+                        title: 'Related Items (#)'
                     }
                 ]
             },
@@ -80,15 +89,11 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                         itemId: 'imagesGrid'
                     },
                     {
-                        xtype: 'button',
-                        text: 'Add Property',
-                        renderTo: Ext.getBody(),
-                        itemId: 'addPropBtn'
-                    },
-                    {
                         xtype: 'item_properties',
                         itemId: 'itemProperties',
-                        width: '100%'
+                        width: '100%',
+                        collapsible: true,
+                        title: 'Qualities (#)'
                     }
                 ]
             }

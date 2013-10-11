@@ -15,6 +15,30 @@ Ext.define('Savanna.itemView.view.itemView.ItemProperties', {
 
     width: '100%',
 
+    tbar: [
+        {
+            xtype: 'tbfill'
+        },
+        {
+            xtype: 'combo',
+            itemId: 'add_prop_auto_chooser',
+            displayField: 'title',
+            typeAhead: false,
+            hideLabel: true,
+            hideTrigger: true,
+            anchor: '100%',
+            pageSize: 10,
+            width: '35%',
+            minChars: 1,
+            enableKeyEvents: true,
+            emptyText: 'Click to Add a Property',
+            queryMode: 'local'
+        },
+        {
+            xtype: 'tbfill'
+        }
+    ],
+
     items: [],
 
     addProp: function (prop) {
@@ -24,7 +48,6 @@ Ext.define('Savanna.itemView.view.itemView.ItemProperties', {
                 propData: prop
             });
 
-//            newProp.setTerm(prop.propName);
             this.add(newProp);
         }
     },
