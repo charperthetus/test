@@ -1566,8 +1566,6 @@ describe('Search Results', function () {
 
                 var success = resultsController.handleSearchTermKeyUp(field, {keyCode: Ext.EventObject.ENTER});
 
-                var success = controller.onKeyUp(field, {keyCode: Ext.EventObject.ENTER});
-
                 expect(success).toBeTruthy();
             });
 
