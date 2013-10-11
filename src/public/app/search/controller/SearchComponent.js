@@ -39,7 +39,9 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                 click: this.showHideMenu
             },
             'search_searchcomponent #search_terms': {
-                keyup: this.handleSearchTermKeyUp
+                keyup: this.handleSearchTermKeyUp,
+                'onsearchclick': this.handleSearchSubmit,
+                'onclearclick' : this.clearSearch
             },
             'search_searchcomponent #searchadvanced_menu textfield': {
                 keyup: this.handleSearchTermKeyUp

@@ -24,18 +24,14 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
             border:false,
             items: [
                 {
-                    xtype: 'textfield',
-                    width: 180,             //was making submit button below get clipped
+                    // adding searchfield removes the necessity for a submit button.
+                    xtype: 'searchfield',
+                    width: 197,
                     fieldLabel: '',
                     name: 'refine_search_terms',
                     itemId: 'refine_search_terms',
                     enableKeyEvents: true,
                     emptyText: 'Search'
-                },
-                {
-                    xtype: 'button',
-                    itemId: 'refine_search_submit',
-                    glyph: 61808
                 }
             ]
         }

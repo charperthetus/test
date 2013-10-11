@@ -96,23 +96,13 @@ Ext.define('Savanna.search.view.searchComponent.searchBar.SearchForm', {
 
     tbar: [
         {
-            xtype: 'textfield',
+            xtype: 'searchfield',
             width: 400,
             fieldLabel: '',
             name: 'search_terms',
             itemId: 'search_terms',
             enableKeyEvents: true,
             emptyText: 'Search'
-        },
-        {
-            xtype: 'button',
-            itemId: 'search_clear',
-            glyph: 61731
-        },
-        {
-            xtype: 'button',
-            itemId: 'search_submit',
-            glyph: 61808
         },
         {
             text: 'Advanced',
