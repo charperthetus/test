@@ -24,13 +24,15 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
                     me.component = search;  // temporary measure, pending deft conversion next week
 
                     //Keelan asked that I use UI event bubbling...
+                    //The pattern I've been using is for the controller of the child to fire the event on it's controlled view.
+                    //Then we catch the event in all the "parent controllers" by listening to events on their controlled views. (See below)
                     me.component.on('Search:PageSizeChanged', this.onPageSizeChange, this);
                     me.component.on('Search:SortByChanged', this.onSortOrderChange, this);
                     me.component.on('search:changeSelectedStore', this.changeSelectedStore, this);
 
-                    //We can grab events in a popup this way
+                    //The exception is for popups....
+                    //We can listen for events fired in  a popup this way (just like we did in Flex).
                     var dispatcher = this.previewWindow();
-                   // this.relayEvents( dispatcher, ['search:previewNextButton', 'search:previewPrevButton']);
                     dispatcher.on('search:previewNextButton', this.onNextItemPreview, this);
                     dispatcher.on('search:previewPrevButton', this.onPrevItemPreview, this);
                 }
@@ -44,9 +46,6 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
             },
             'search_resultscomponent #resultsFacetsReset': {
                 'click': this.onDalReset
-            },
-            'search_resultscomponent panel[cls=refine-term]': {
-                'render': this.onTermRender
             },
             'search_resultscomponent #showHideFacets': {
                 'click': this.onShowHideFacets
@@ -245,13 +244,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
         console.log(uri);
     },
 
-    onTermRender: function (term) {
-        term.mon(term.queryById('removeTerm'), 'click', this.handleRemoveTerm, this, term);
-    },
 
-    handleRemoveTerm: function (term) {
-        term.findParentByType('search_searchcomponent').down('#refineterms').removeTerm(term);
-    },
 
     onShowHideFacets: function (btn) {
 
