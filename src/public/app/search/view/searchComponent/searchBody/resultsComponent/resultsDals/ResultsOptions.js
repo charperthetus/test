@@ -4,6 +4,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
 
     requires: [
         'Ext.form.field.Checkbox',
+        'Savanna.search.controller.resultsComponent.resultsDals.ResultsOptionsController',
         'Ext.draw.Text'
     ],
 
