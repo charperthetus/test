@@ -232,8 +232,8 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
         groupTemplateMap.add('Step',
             gmake(go.Group, go.Panel.Auto,
                 {
-//                    name: Savanna.process.utils.ViewTemplates.stepColor,
-//                    background: 'transparent',
+                    name: 'null',
+                    background: 'transparent',
                     mouseEnter: Savanna.process.utils.GroupEventHandlers.onMouseEnter,
                     mouseLeave: Savanna.process.utils.GroupEventHandlers.onMouseLeave,
 //                    // highlight when dragging into the Group
@@ -245,11 +245,11 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
 //                    mouseDrop: Savanna.process.utils.GroupEventHandlers.onMouseDrop,
 //                    memberValidation: Savanna.process.utils.GroupEventHandlers.memberValidation,
                     // define the group's internal layout
-                    layout: gmake(StepLayout),
+                    layout: gmake(go.LayeredDigraphLayout, { direction: 90, columnSpacing: 10 }),
                     // the group begins unexpanded;
                     isSubGraphExpanded: false
                 }, new go.Binding('isSubGraphExpanded', 'isSubGraphExpanded').makeTwoWay(),
-                gmake(go.Shape, 'RoundedRectangle', { fill: Savanna.process.utils.ViewTemplates.stepColor, name:'BACKGROUND', stroke: null}),
+                gmake(go.Shape, 'RoundedRectangle', { fill: null, name:'BACKGROUND', stroke: 'black'}),
                 gmake(go.Panel, go.Panel.Vertical,
                     { defaultAlignment: go.Spot.Center },
                     gmake(go.Panel, go.Panel.Horizontal,
@@ -276,7 +276,6 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                 {
                     name: '#88FFFF',
                     background: 'transparent',
-                    minSize: new go.Size(225, 75),
                     mouseEnter: Savanna.process.utils.GroupEventHandlers.onMouseEnter,
                     mouseLeave: Savanna.process.utils.GroupEventHandlers.onMouseLeave,
                     // highlight when dragging into the Group
@@ -294,144 +293,167 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                     isSubGraphExpanded: true
                 },
                 gmake(go.Shape, 'RoundedRectangle', { fill: '#88FFFF', name:'BACKGROUND', stroke: null}),
-                gmake(go.Panel, go.Panel.Vertical,
-                    { defaultAlignment: go.Spot.Left },
-                    gmake(go.TextBlock, 'Actions', Savanna.process.utils.ViewTemplates.uneditableNodeTextStyle()),
-                    // create a placeholder to represent the area where the contents of the group are
-                    gmake(go.Placeholder)
-                )  // end Vertical Panel
+                gmake(go.Panel, go.Panel.Horizontal, {defaultAlignment: go.Spot.Top},
+                    gmake(go.TextBlock, '+ Tools', {
+                                angle: 270,
+                                font: '9pt Helvetica, Arial, sans-serif',
+                                stroke: 'blue',
+                                isUnderline: true,
+                                margin: 2,
+                                editable: false,
+                                click: Savanna.process.utils.ProcessUtils.addTool
+                            }),
+
+                    gmake(go.Panel, go.Panel.Vertical,
+                        { defaultAlignment: go.Spot.Center },
+                        gmake(go.TextBlock, '+ Items', Savanna.process.utils.ViewTemplates.linkTextStyle(Savanna.process.utils.ProcessUtils.addInput)),
+                        // create a placeholder to represent the area where the contents of the group are
+                        gmake(go.Placeholder),
+                        gmake(go.TextBlock, '+ Actions', Savanna.process.utils.ViewTemplates.linkTextStyle(Savanna.process.utils.ProcessUtils.addAction))
+                    ),  // end Vertical Panel
+
+                    gmake(go.TextBlock, '+ Byproducts', {
+                                angle: 270,
+                                font: '9pt Helvetica, Arial, sans-serif',
+                                stroke: 'blue',
+                                isUnderline: true,
+                                margin: 2,
+                                editable: false,
+                                click: Savanna.process.utils.ProcessUtils.addByproduct
+                            })
+                )
             )
         );  // end Actions Group
 
-        // define the Tools Group template
-        groupTemplateMap.add('ToolsGroup',
-            gmake(go.Group, go.Panel.Auto,
-                {
-                    name: '#88FF88',
-                    background: 'transparent',
-                    minSize: new go.Size(100, 225),
-                    mouseEnter: Savanna.process.utils.GroupEventHandlers.onMouseEnter,
-                    mouseLeave: Savanna.process.utils.GroupEventHandlers.onMouseLeave,
-                    // highlight when dragging into the Group
-                    mouseDragEnter: Savanna.process.utils.GroupEventHandlers.onMouseDragEnter,
-                    mouseDragLeave: Savanna.process.utils.GroupEventHandlers.onMouseDragLeave,
-                    computesBoundsAfterDrag: false,
-                    // when the selection is dropped into a Group, add the selected Parts into that Group;
-                    // if it fails, cancel the tool, rolling back any changes
-                    mouseDrop: Savanna.process.utils.GroupEventHandlers.onNodeGroupMouseDrop,
-                    memberValidation: Savanna.process.utils.GroupEventHandlers.nodeGroupMemberValidation,
-                    // define the group's internal layout
-                    layout: gmake(go.TreeLayout, { angle: 0 }),
-                    // the group begins unexpanded;
-                    isSubGraphExpanded: true
-                },
-                gmake(go.Shape, 'RoundedRectangle', { fill: '#88FF88', name:'BACKGROUND', stroke: null}),
-                gmake(go.Panel, go.Panel.Vertical,
-                    { defaultAlignment: go.Spot.Left },
-                    gmake(go.TextBlock, 'Tools', Savanna.process.utils.ViewTemplates.uneditableNodeTextStyle()),
-                    // create a placeholder to represent the area where the contents of the group are
-                    gmake(go.Placeholder)
-                )  // end Vertical Panel
-            )
-        );  // end Tools Group
-
-        // define the Inputs Group template
-        groupTemplateMap.add('InputsGroup',
-            gmake(go.Group, go.Panel.Auto,
-                {
-                    name: '#8888FF',
-                    background: 'transparent',
-                    minSize: new go.Size(225, 75),
-                    mouseEnter: Savanna.process.utils.GroupEventHandlers.onMouseEnter,
-                    mouseLeave: Savanna.process.utils.GroupEventHandlers.onMouseLeave,
-                    // highlight when dragging into the Group
-                    mouseDragEnter: Savanna.process.utils.GroupEventHandlers.onMouseDragEnter,
-                    mouseDragLeave: Savanna.process.utils.GroupEventHandlers.onMouseDragLeave,
-                    computesBoundsAfterDrag: false,
-                    // when the selection is dropped into a Group, add the selected Parts into that Group;
-                    // if it fails, cancel the tool, rolling back any changes
-                    mouseDrop: Savanna.process.utils.GroupEventHandlers.onNodeGroupMouseDrop,
-                    memberValidation: Savanna.process.utils.GroupEventHandlers.nodeGroupMemberValidation,
-                    // define the group's internal layout
-                    layout: gmake(go.GridLayout,
-                                  { wrappingWidth: Infinity, alignment: go.GridLayout.Position, cellSize: new go.Size(1, 1) }),
-                    // the group begins unexpanded;
-                    isSubGraphExpanded: true
-                },
-                gmake(go.Shape, 'RoundedRectangle', { fill: '#8888FF', name:'BACKGROUND', stroke: null}),
-                gmake(go.Panel, go.Panel.Vertical,
-                    { defaultAlignment: go.Spot.Left },
-                    gmake(go.TextBlock, 'Inputs', Savanna.process.utils.ViewTemplates.uneditableNodeTextStyle()),
-                    // create a placeholder to represent the area where the contents of the group are
-                    gmake(go.Placeholder)
-                )  // end Vertical Panel
-            )
-        );  // end Inputs Group
-
-        // define the Inputs Group template
-        groupTemplateMap.add('OutputsGroup',
-            gmake(go.Group, go.Panel.Auto,
-                {
-                    name: '#FF8888',
-                    background: 'transparent',
-                    minSize: new go.Size(225, 75),
-                    mouseEnter: Savanna.process.utils.GroupEventHandlers.onMouseEnter,
-                    mouseLeave: Savanna.process.utils.GroupEventHandlers.onMouseLeave,
-                    // highlight when dragging into the Group
-                    mouseDragEnter: Savanna.process.utils.GroupEventHandlers.onMouseDragEnter,
-                    mouseDragLeave: Savanna.process.utils.GroupEventHandlers.onMouseDragLeave,
-                    computesBoundsAfterDrag: false,
-                    // when the selection is dropped into a Group, add the selected Parts into that Group;
-                    // if it fails, cancel the tool, rolling back any changes
-                    mouseDrop: Savanna.process.utils.GroupEventHandlers.onNodeGroupMouseDrop,
-                    memberValidation: Savanna.process.utils.GroupEventHandlers.nodeGroupMemberValidation,
-                    // define the group's internal layout
-                    layout: gmake(go.GridLayout,
-                                  { wrappingWidth: Infinity, alignment: go.GridLayout.Position, cellSize: new go.Size(1, 1) }),
-                    // the group begins unexpanded;
-                    isSubGraphExpanded: true
-                },
-                gmake(go.Shape, 'RoundedRectangle', { fill: '#FF8888', name:'BACKGROUND', stroke: null}),
-                gmake(go.Panel, go.Panel.Vertical,
-                    { defaultAlignment: go.Spot.Left },
-                    gmake(go.TextBlock, 'Outputs', Savanna.process.utils.ViewTemplates.uneditableNodeTextStyle()),
-                    // create a placeholder to represent the area where the contents of the group are
-                    gmake(go.Placeholder)
-                )  // end Vertical Panel
-            )
-        );  // end Outputs Group
-
-        // define the Tools Group template
-        groupTemplateMap.add('ByproductsGroup',
-            gmake(go.Group, go.Panel.Auto,
-                {
-                    name: '#CCCCCC',
-                    background: 'transparent',
-                    minSize: new go.Size(100, 225),
-                    mouseEnter: Savanna.process.utils.GroupEventHandlers.onMouseEnter,
-                    mouseLeave: Savanna.process.utils.GroupEventHandlers.onMouseLeave,
-                    // highlight when dragging into the Group
-                    mouseDragEnter: Savanna.process.utils.GroupEventHandlers.onMouseDragEnter,
-                    mouseDragLeave: Savanna.process.utils.GroupEventHandlers.onMouseDragLeave,
-                    computesBoundsAfterDrag: false,
-                    // when the selection is dropped into a Group, add the selected Parts into that Group;
-                    // if it fails, cancel the tool, rolling back any changes
-                    mouseDrop: Savanna.process.utils.GroupEventHandlers.onNodeGroupMouseDrop,
-                    memberValidation: Savanna.process.utils.GroupEventHandlers.nodeGroupMemberValidation,
-                    // define the group's internal layout
-                    layout: gmake(go.TreeLayout, { angle: 0 }),
-                    // the group begins unexpanded;
-                    isSubGraphExpanded: true
-                },
-                gmake(go.Shape, 'RoundedRectangle', { fill: '#CCCCCC', name:'BACKGROUND', stroke: null}),
-                gmake(go.Panel, go.Panel.Vertical,
-                    { defaultAlignment: go.Spot.Left },
-                    gmake(go.TextBlock, 'Byproducts', Savanna.process.utils.ViewTemplates.uneditableNodeTextStyle()),
-                    // create a placeholder to represent the area where the contents of the group are
-                    gmake(go.Placeholder)
-                )  // end Vertical Panel
-            )
-        );  // end Tools Group
+//        // define the Tools Group template
+//        groupTemplateMap.add('ToolsGroup',
+//            gmake(go.Group, go.Panel.Auto,
+//                {
+//                    name: '#88FF88',
+//                    background: 'transparent',
+//                    minSize: new go.Size(100, 225),
+//                    mouseEnter: Savanna.process.utils.GroupEventHandlers.onMouseEnter,
+//                    mouseLeave: Savanna.process.utils.GroupEventHandlers.onMouseLeave,
+//                    // highlight when dragging into the Group
+//                    mouseDragEnter: Savanna.process.utils.GroupEventHandlers.onMouseDragEnter,
+//                    mouseDragLeave: Savanna.process.utils.GroupEventHandlers.onMouseDragLeave,
+//                    computesBoundsAfterDrag: false,
+//                    // when the selection is dropped into a Group, add the selected Parts into that Group;
+//                    // if it fails, cancel the tool, rolling back any changes
+//                    mouseDrop: Savanna.process.utils.GroupEventHandlers.onNodeGroupMouseDrop,
+//                    memberValidation: Savanna.process.utils.GroupEventHandlers.nodeGroupMemberValidation,
+//                    // define the group's internal layout
+//                    layout: gmake(go.TreeLayout, { angle: 0 }),
+//                    // the group begins unexpanded;
+//                    isSubGraphExpanded: true
+//                },
+//                gmake(go.Shape, 'RoundedRectangle', { fill: '#88FF88', name:'BACKGROUND', stroke: null}),
+//                gmake(go.Panel, go.Panel.Vertical,
+//                    { defaultAlignment: go.Spot.Left },
+//                    gmake(go.TextBlock, 'Tools', Savanna.process.utils.ViewTemplates.uneditableNodeTextStyle()),
+//                    // create a placeholder to represent the area where the contents of the group are
+//                    gmake(go.Placeholder)
+//                )  // end Vertical Panel
+//            )
+//        );  // end Tools Group
+//
+//        // define the Inputs Group template
+//        groupTemplateMap.add('InputsGroup',
+//            gmake(go.Group, go.Panel.Auto,
+//                {
+//                    name: '#8888FF',
+//                    background: 'transparent',
+//                    minSize: new go.Size(225, 75),
+//                    mouseEnter: Savanna.process.utils.GroupEventHandlers.onMouseEnter,
+//                    mouseLeave: Savanna.process.utils.GroupEventHandlers.onMouseLeave,
+//                    // highlight when dragging into the Group
+//                    mouseDragEnter: Savanna.process.utils.GroupEventHandlers.onMouseDragEnter,
+//                    mouseDragLeave: Savanna.process.utils.GroupEventHandlers.onMouseDragLeave,
+//                    computesBoundsAfterDrag: false,
+//                    // when the selection is dropped into a Group, add the selected Parts into that Group;
+//                    // if it fails, cancel the tool, rolling back any changes
+//                    mouseDrop: Savanna.process.utils.GroupEventHandlers.onNodeGroupMouseDrop,
+//                    memberValidation: Savanna.process.utils.GroupEventHandlers.nodeGroupMemberValidation,
+//                    // define the group's internal layout
+//                    layout: gmake(go.GridLayout,
+//                                  { wrappingWidth: Infinity, alignment: go.GridLayout.Position, cellSize: new go.Size(1, 1) }),
+//                    // the group begins unexpanded;
+//                    isSubGraphExpanded: true
+//                },
+//                gmake(go.Shape, 'RoundedRectangle', { fill: '#8888FF', name:'BACKGROUND', stroke: null}),
+//                gmake(go.Panel, go.Panel.Vertical,
+//                    { defaultAlignment: go.Spot.Left },
+//                    gmake(go.TextBlock, 'Inputs', Savanna.process.utils.ViewTemplates.uneditableNodeTextStyle()),
+//                    // create a placeholder to represent the area where the contents of the group are
+//                    gmake(go.Placeholder)
+//                )  // end Vertical Panel
+//            )
+//        );  // end Inputs Group
+//
+//        // define the Inputs Group template
+//        groupTemplateMap.add('OutputsGroup',
+//            gmake(go.Group, go.Panel.Auto,
+//                {
+//                    name: '#FF8888',
+//                    background: 'transparent',
+//                    minSize: new go.Size(225, 75),
+//                    mouseEnter: Savanna.process.utils.GroupEventHandlers.onMouseEnter,
+//                    mouseLeave: Savanna.process.utils.GroupEventHandlers.onMouseLeave,
+//                    // highlight when dragging into the Group
+//                    mouseDragEnter: Savanna.process.utils.GroupEventHandlers.onMouseDragEnter,
+//                    mouseDragLeave: Savanna.process.utils.GroupEventHandlers.onMouseDragLeave,
+//                    computesBoundsAfterDrag: false,
+//                    // when the selection is dropped into a Group, add the selected Parts into that Group;
+//                    // if it fails, cancel the tool, rolling back any changes
+//                    mouseDrop: Savanna.process.utils.GroupEventHandlers.onNodeGroupMouseDrop,
+//                    memberValidation: Savanna.process.utils.GroupEventHandlers.nodeGroupMemberValidation,
+//                    // define the group's internal layout
+//                    layout: gmake(go.GridLayout,
+//                                  { wrappingWidth: Infinity, alignment: go.GridLayout.Position, cellSize: new go.Size(1, 1) }),
+//                    // the group begins unexpanded;
+//                    isSubGraphExpanded: true
+//                },
+//                gmake(go.Shape, 'RoundedRectangle', { fill: '#FF8888', name:'BACKGROUND', stroke: null}),
+//                gmake(go.Panel, go.Panel.Vertical,
+//                    { defaultAlignment: go.Spot.Left },
+//                    gmake(go.TextBlock, 'Outputs', Savanna.process.utils.ViewTemplates.uneditableNodeTextStyle()),
+//                    // create a placeholder to represent the area where the contents of the group are
+//                    gmake(go.Placeholder)
+//                )  // end Vertical Panel
+//            )
+//        );  // end Outputs Group
+//
+//        // define the Tools Group template
+//        groupTemplateMap.add('ByproductsGroup',
+//            gmake(go.Group, go.Panel.Auto,
+//                {
+//                    name: '#CCCCCC',
+//                    background: 'transparent',
+//                    minSize: new go.Size(100, 225),
+//                    mouseEnter: Savanna.process.utils.GroupEventHandlers.onMouseEnter,
+//                    mouseLeave: Savanna.process.utils.GroupEventHandlers.onMouseLeave,
+//                    // highlight when dragging into the Group
+//                    mouseDragEnter: Savanna.process.utils.GroupEventHandlers.onMouseDragEnter,
+//                    mouseDragLeave: Savanna.process.utils.GroupEventHandlers.onMouseDragLeave,
+//                    computesBoundsAfterDrag: false,
+//                    // when the selection is dropped into a Group, add the selected Parts into that Group;
+//                    // if it fails, cancel the tool, rolling back any changes
+//                    mouseDrop: Savanna.process.utils.GroupEventHandlers.onNodeGroupMouseDrop,
+//                    memberValidation: Savanna.process.utils.GroupEventHandlers.nodeGroupMemberValidation,
+//                    // define the group's internal layout
+//                    layout: gmake(go.TreeLayout, { angle: 0 }),
+//                    // the group begins unexpanded;
+//                    isSubGraphExpanded: true
+//                },
+//                gmake(go.Shape, 'RoundedRectangle', { fill: '#CCCCCC', name:'BACKGROUND', stroke: null}),
+//                gmake(go.Panel, go.Panel.Vertical,
+//                    { defaultAlignment: go.Spot.Left },
+//                    gmake(go.TextBlock, 'Byproducts', Savanna.process.utils.ViewTemplates.uneditableNodeTextStyle()),
+//                    // create a placeholder to represent the area where the contents of the group are
+//                    gmake(go.Placeholder)
+//                )  // end Vertical Panel
+//            )
+//        );  // end Tools Group
 
         return groupTemplateMap;
     }
