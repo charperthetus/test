@@ -51,9 +51,6 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
             'search_resultscomponent #resultsFacetsReset': {
                 'click': this.onDalReset
             },
-            'search_resultscomponent #showHideFacets': {
-                'click': this.onShowHideFacets
-            },
             'search_searchcomponent #resultMapCanvas': {
                 beforerender: this.loadDefaultLayer,
                 afterrender: this.loadVectorLayer,
@@ -316,24 +313,6 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
 
     openUri: function(){
         //todo open the uri...
-    },
-
-
-
-    onShowHideFacets: function (btn) {
-
-        Ext.each(btn.up('#resultsfacets').getActiveTab().query('panel[cls=results-facet]'), function (facet) {
-            if (facet) {
-                if (!btn.facetsExpanded) {
-                    btn.setText('Hide All');
-                    facet.expand();
-                } else {
-                    facet.collapse();
-                    btn.setText('Show All');
-                }
-            }
-        });
-        btn.facetsExpanded = !btn.facetsExpanded;
     },
 
     onNextItemPreview: function () {

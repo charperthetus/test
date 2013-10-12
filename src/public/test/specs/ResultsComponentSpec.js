@@ -1025,9 +1025,9 @@ describe('Search Results', function () {
 
         it('should set metadata for the current result set via metadataCallback', function()    {
 
-             resultsController.metadataCallback(metadataFixtures.resultsMetadataResponse, 'read', true, resultsComponent.currentResultSet);
+            resultsController.metadataCallback(metadataFixtures.resultsMetadataResponse, 'read', true, resultsComponent.currentResultSet);
 
-             expect(resultsComponent.currentResultSet.metadata).toBeTruthy();
+            expect(resultsComponent.currentResultSet.metadata).toBeTruthy();
         });
 
         it('should update preview window content with metadata html', function()    {
@@ -1072,7 +1072,7 @@ describe('Search Results', function () {
 
         });
 
-        describe('Preview functions', function () {
+        describe('Preview functions + controller', function () {
             beforeEach(function () {
 
                 origErrorHandler = Ext.Error.handle;
@@ -1112,6 +1112,53 @@ describe('Search Results', function () {
                     errorOnInvalidRequest: true
                 });
             });
+
+            describe('Test Results controller', function () {
+
+                beforeEach(function () {
+                    var metadataArray = [];
+
+                    resultsController.getResultsComponent().currentResultSet = {id: 'mockDAL', store: searchStore, metadata:Ext.create('Savanna.search.store.ResultsMetadata', {
+                        storeId: 'searchMetadata_' + 'mockDAL',
+                        pageSize: 20
+                    })};
+
+                    Ext.each(resultsController.getResultsComponent().currentResultSet.store.data.items, function (record) {
+                        metadataArray.push(record.get('uri'));
+                    });
+
+
+                });
+
+                spyOn(resultsController, 'onItemClick');
+                grid.fireEvent('itemdblclick', grid,  null, null, 0, null);
+                it('item clicks on the grid will fire function on results controller', function () {
+                    expect(resultsController.onItemClick).toHaveBeenCalled();
+                });
+
+                spyOn(resultsController, 'onItemPreview');
+                grid.fireEvent( 'itemclick', grid,  null, null, 0, null);
+                it('item double clicks on the grid will fire function on results controller', function () {
+                    expect(resultsController.onItemPreview).toHaveBeenCalled();
+                });
+
+                spyOn(resultsController, 'onItemMouseEnter');
+                grid.fireEvent( 'itemmouseenter', grid,  null, null, 0, null);
+                it('item hovers on the grid will fire function on results controller', function () {
+                    expect(resultsController.onItemMouseEnter).toHaveBeenCalled();
+                });
+
+                spyOn(resultsController, 'onItemMouseLeave');
+                grid.fireEvent( 'itemmouseleave', grid,  null, null, 0, null);
+                it('item rollouts on the grid will fire function on results controller', function () {
+                    expect(resultsController.onItemMouseLeave).toHaveBeenCalled();
+                });
+
+
+
+
+            });
+
 
             describe('Test Record Zero', function () {
 
@@ -1163,24 +1210,24 @@ describe('Search Results', function () {
 
 
 
-                    it('should update the preview label for the second record', function () {
+                it('should update the preview label for the second record', function () {
 
-                        var total = resultsController.getGridStore().totalCount;
-                        resultsController.onNextItemPreview();
-                        expect(resultsController.previewIndexAndTotalLabel().text).toBe('Preview Result 2 of ' + total);
+                    var total = resultsController.getGridStore().totalCount;
+                    resultsController.onNextItemPreview();
+                    expect(resultsController.previewIndexAndTotalLabel().text).toBe('Preview Result 2 of ' + total);
 
 
-                    });
+                });
 
-                    it('should prev button disabled for second record', function () {
-                        resultsController.onNextItemPreview();
-                        expect(resultsController.previewPrevButton().disabled).not.toBeTruthy();
-                    });
+                it('should prev button disabled for second record', function () {
+                    resultsController.onNextItemPreview();
+                    expect(resultsController.previewPrevButton().disabled).not.toBeTruthy();
+                });
 
-                    it('should next button enabled for second record', function () {
-                        resultsController.onNextItemPreview();
-                        expect(resultsController.previewNextButton().disabled).not.toBeTruthy();
-                    });
+                it('should next button enabled for second record', function () {
+                    resultsController.onNextItemPreview();
+                    expect(resultsController.previewNextButton().disabled).not.toBeTruthy();
+                });
 
 
             });
