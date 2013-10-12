@@ -3,7 +3,8 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
     alias: 'widget.search_resultsDals_resultsrefine',
 
     requires: [
-        'Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineTerms'
+        'Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineTerms',
+        'Savanna.search.controller.resultsComponent.resultsDals.ResultsRefineSearchbarController'
     ],
 
     controller: 'Savanna.search.controller.resultsComponent.resultsDals.ResultsRefineSearchbarController',
