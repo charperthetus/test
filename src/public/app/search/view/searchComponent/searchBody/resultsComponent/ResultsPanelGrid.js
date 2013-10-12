@@ -17,6 +17,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
     controller: 'Savanna.search.controller.resultsComponent.ResultsPanelGridController',
 
     requires: [
+        'Savanna.search.controller.resultsComponent.ResultsPanelGridController',
         'Ext.grid.column.Template',
         'Ext.XTemplate'
     ],

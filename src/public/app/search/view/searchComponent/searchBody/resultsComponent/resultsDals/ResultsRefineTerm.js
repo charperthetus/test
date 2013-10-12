@@ -10,6 +10,9 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
     extend: 'Ext.panel.Panel',
     alias: 'widget.search_resultsDals_resultsterm',
     bubbleEvents: ['Search:RemoveSearchTerm'],
+    requires: [
+        'Savanna.search.controller.resultsComponent.resultsDals.ResultsRefineTermController'
+    ],
     controller: 'Savanna.search.controller.resultsComponent.resultsDals.ResultsRefineTermController',
     minWidth:30,
     bodyPadding:2,
