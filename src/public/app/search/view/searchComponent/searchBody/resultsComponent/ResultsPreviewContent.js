@@ -13,6 +13,10 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
     header: false,
     bubbleEvents: ['search:previewNextButton', 'search:previewPrevButton'],
 
+    requires: [
+        'Savanna.search.controller.resultsComponent.ResultsPreviewContentController'
+    ],
+
     overflowY: 'auto',
 
     items: [

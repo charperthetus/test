@@ -14,6 +14,16 @@
 // DO NOT DELETE - this directive is required for Sencha Cmd packages to work.
 //@require @packageOverrides
 Ext.Loader.setConfig( {enabled: true, disableCaching: false} );
+//<debug>
+Ext.Loader.setPath({
+    'Deft': 'packages/deft/src/js',
+});
+Ext.syncRequire(['Deft.mixin.Injectable','Deft.mixin.Controllable']);
+//</debug>
+
+//@require Deft.mixin.Injectable
+//@require Deft.mixin.Controllable
+
 Ext.setGlyphFontFamily('SickFont');
 Ext.application({
     name: 'Savanna',
