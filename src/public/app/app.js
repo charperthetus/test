@@ -16,7 +16,7 @@
 Ext.Loader.setConfig( {enabled: true, disableCaching: false} );
 //<debug>
 Ext.Loader.setPath({
-    'Deft': 'packages/deft/src/js',
+    'Deft': 'packages/deft/src/js'
 });
 Ext.syncRequire(['Deft.mixin.Injectable','Deft.mixin.Controllable']);
 //</debug>
