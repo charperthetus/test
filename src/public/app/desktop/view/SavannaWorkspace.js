@@ -69,6 +69,12 @@ Ext.define('Savanna.desktop.view.SavannaWorkspace', {
             tabConfig: {
                 ui: 'dark'
             }
+        },{
+            title: 'Model Search',
+            xtype: 'modelsearch',
+            tabConfig: {
+                ui: 'dark'
+            }
         }]
     }]
 });

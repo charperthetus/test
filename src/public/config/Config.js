@@ -6,7 +6,7 @@
  */
 SavannaConfig = {
     // Root for all REST calls
-    savannaUrlRoot: 'http://c2aptsav1:8080/c2is2/',
+    savannaUrlRoot: 'https://c2devsav1:8443/c2is2/',
     //savannaUrlRoot: 'http://thedevsav1.thetuscorp.com:8080/SavannaX/',
 
     resourcesPathPrefix: '',

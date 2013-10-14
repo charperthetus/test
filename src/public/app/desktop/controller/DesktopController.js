@@ -59,9 +59,6 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
                 }
             }
         });
-        
-        // TODO: remove this since it's just a convenience
-        this.displayModelSearch();
     },
 
     displayAboutDialog: function() {
@@ -93,12 +90,6 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
             uploadWindow.height = appHeight - 50;
         }
         uploadWindow.show();
-    },
-    displayModelSearch: function() {
-        var savannaTabPanel = Ext.ComponentQuery.query('desktop_tabpanel')[0];
-        var modelSearchTab = Ext.create('Savanna.modelSearch.view.ModelSearch');
-        savannaTabPanel.add(modelSearchTab);
-        savannaTabPanel.doLayout();
     },
 
     displayAccountSettings: function() {
