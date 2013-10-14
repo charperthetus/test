@@ -5,15 +5,11 @@
  * This is where any globally available configuration information should be maintained
  */
 SavannaConfig = {
-
     // Root for all REST calls
     savannaUrlRoot: 'http://c2aptsav1:8080/c2is2/',
     //savannaUrlRoot: 'http://thedevsav1.thetuscorp.com:8080/SavannaX/',
 
     resourcesPathPrefix: '',
-
-    locationSearchUrl: 'http://thedevsav1.thetuscorp.com:8080/SavannaX/rest/map/search',
-//    locationSearchUrl: '../test/fixtures/LocationSources.js',
 
     // Map base layer
     mapBaseLayerUrl: 'http://demo.opengeo.org/geoserver/wms',
@@ -23,20 +19,3 @@ SavannaConfig = {
     mapDefaultZoom: 2
 };
 
-
-//TODO - This section needs to get moved to a different file
-// Urls for all the rest endpoints
-SavannaConfig.loginUrl = SavannaConfig.savannaUrlRoot + 'authcheck/loggedIn.html';
-SavannaConfig.searchUrl = SavannaConfig.savannaUrlRoot + 'rest/search'; // local dev version: 'app/assets/data/testSearchResults.json', 
-SavannaConfig.searchMetadataUrl = SavannaConfig.savannaUrlRoot + 'rest/metadata/get';
-SavannaConfig.itemViewUrl = SavannaConfig.savannaUrlRoot + 'rest/model/item/';
-SavannaConfig.modelSearchUrl = SavannaConfig.savannaUrlRoot + 'rest/model/search';
-SavannaConfig.dalSourcesUrl = SavannaConfig.savannaUrlRoot + 'rest/search/sources'; // local dev version: 'resources/data/testSearchDalsWithFormData.json',
-SavannaConfig.locationSearch = SavannaConfig.savannaUrlRoot + '/rest/map/search';   // local dev version: 'resources/data/testSearchLocationSearch.json',
-SavannaConfig.uploadUrl = SavannaConfig.savannaUrlRoot + 'rest/document/upload';
-SavannaConfig.metadataUrl = SavannaConfig.savannaUrlRoot + 'rest/metadata';
-SavannaConfig.resultsMetadataUrl = SavannaConfig.savannaUrlRoot + 'rest/metadata';
-// TODO: replace this test URL with real endpoint once we have one....
-SavannaConfig.crumbnetTemplatesUrl = 'resources/data/Crumbnet.json';
-SavannaConfig.processTemplatesUrl = 'resources/data/Process.json';
-SavannaConfig.metadataTestDataUrl = 'resources/data/Metadata.json';

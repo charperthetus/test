@@ -6,7 +6,8 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
     requires: [
         'Savanna.controller.Factory',
         'Ext.form.field.ComboBox',
-        'Ext.data.Store'
+        'Ext.data.Store',
+        'Savanna.search.controller.resultsComponent.ResultsPanelToolbarController'
     ],
 
     initComponent: function () {

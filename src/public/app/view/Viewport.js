@@ -6,7 +6,9 @@ Ext.define('Savanna.view.Viewport', {
 
     requires: [
         'Ext.tab.Panel',
-        'Savanna.view.Login'
+        'Savanna.view.Login',
+        "Deft.mixin.Controllable",
+        "Deft.mixin.Injectable"
     ],
 
     border: false,
