@@ -358,6 +358,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
     buildAndLoadResultsStore:function(dal, component, searchObj, action, pageSize) {
 
         //supposedly the best way to check for undefined
+        //Page size is undefined when view is first opened.
         if( typeof pageSize == 'undefined')     {
             pageSize = dal.get('resultsPerPage');
         }
@@ -524,16 +525,17 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             resultsDal.updateDalStatus(dalId, statusString);
 
 
+            var searchResultsView = resultsPanel.up('#searchresults');
             if (action === 'search') {
                 if (dalId === Ext.data.StoreManager.lookup('dalSources').defaultId) {
 
-                    this.getApplication().fireEvent('search:changeSelectedStore', {}, {}, resultsDal.queryById(dalId));
+                    searchResultsView.fireEvent('search:changeSelectedStore', resultsDal.queryById(dalId));
                 }
             } else {
                 /*
                  filtering, action set to 'filter'
                  */
-                this.getApplication().fireEvent('search:changeSelectedStore', {}, {}, resultsDal.queryById(dalId));
+                searchResultsView.fireEvent('search:changeSelectedStore',  resultsDal.queryById(dalId));
             }
         }
     },
