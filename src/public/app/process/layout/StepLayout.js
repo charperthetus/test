@@ -9,82 +9,61 @@ function StepLayout() {
 go.Diagram.inherit(StepLayout, go.Layout);
 
 StepLayout.prototype.doLayout = function(coll) {
+    var gmake = go.GraphObject.make;  // for conciseness in defining templates
+
     if (coll === this.group) {
         coll = this.group.memberParts;
     } else {
         return;
     }
+    var toolParts = new go.Set(go.Part);
+    var inputParts = new go.Set(go.Part);
+    var byproductParts = new go.Set(go.Part);
 
-    var toolsWidth = 0;
-    var inputsHeight = 0;
-    var actionsHeight = 0;
-    var outputsHeight = 0;
-    var middleWidth = 0;
-
-    var toolsGroup = null;
-    var inputsGroup = null;
-    var actionsGroup = null;
-    var outputsGroup = null;
-    var byproductsGroup = null;
-
-    var it = coll.iterator;
-    var node;
-    while (it.next()) {
-        node = it.value;
-        if (!(node instanceof go.Group)) {
-            continue;
-        }
-
-        switch (node.category) {
-            case 'ToolsGroup':
-                toolsWidth = node.actualBounds.width;
-                toolsGroup = node;
-                break;
-            case 'InputsGroup':
-                inputsHeight = node.actualBounds.height;
-                middleWidth = Math.max(middleWidth, node.actualBounds.width);
-                inputsGroup = node;
-                break;
-            case 'ActionsGroup':
-                actionsHeight = node.actualBounds.height;
-                middleWidth = Math.max(middleWidth, node.actualBounds.width);
-                actionsGroup = node;
-                break;
-            case 'OutputsGroup':
-                outputsHeight = node.actualBounds.height;
-                middleWidth = Math.max(middleWidth, node.actualBounds.width);
-                outputsGroup = node;
-                break;
-            case 'ByproductsGroup':
-                byproductsGroup = node;
-                break;
+    var iter = coll.iterator;
+    while (iter.next()) {
+        var part = iter.value;
+        if (part instanceof go.Link) {
+            switch (part.toNode.category) {
+                case 'Tool':
+                    toolParts.add(part);
+                    break;
+                case 'Item':
+                    inputParts.add(part);
+                    break;
+                case 'Byproduct':
+                    byproductParts.add(part);
+                    break;
+            }
+        } else {
+            switch (part.category) {
+                case 'Tool':
+                    toolParts.add(part);
+                    break;
+                case 'Item':
+                    inputParts.add(part);
+                    break;
+                case 'Byproduct':
+                    byproductParts.add(part);
+                    break;
+                case 'ActionsGroup':
+                    toolParts.add(part);
+                    inputParts.add(part);
+                    byproductParts.add(part);
+                    break;
+            }
         }
     }
 
-    // implementations of doLayout that do not make use of a LayoutNetwork
-    // need to perform their own transactions
-    this.diagram.startTransaction("StepLayout Layout");
+    this.diagram.startTransaction("StepLayout");
 
-    if (toolsGroup) {
-        toolsGroup.move(new go.Point(0, 0));
-//        toolsGroup.hieght = inputsHeight + actionsHeight + outputsHeight;
-    }
-    if (inputsGroup) {
-        inputsGroup.move(new go.Point(toolsWidth, 0));
-//        inputsGroup.width = middleWidth;
-    }
-    if (actionsGroup) {
-        actionsGroup.move(new go.Point(toolsWidth, inputsHeight));
-//        actionsGroup.width = middleWidth;
-    }
-    if (outputsGroup) {
-        outputsGroup.move(new go.Point(toolsWidth, inputsHeight + actionsHeight));
-//        outputsGroup.width = middleWidth;
-    }
-    if (byproductsGroup) {
-        byproductsGroup.move(new go.Point(toolsWidth + middleWidth, 0));
-//        byproductsGroup.hieght = inputsHeight + actionsHeight + outputsHeight;
-    }
+    var toolLayout = gmake(go.TreeLayout, {angle: 180, arrangement: go.TreeLayout.ArrangementFixedRoots});
+    var inputLayout = gmake(go.TreeLayout, {angle: 270, arrangement: go.TreeLayout.ArrangementFixedRoots});
+    var byproductLayout = gmake(go.TreeLayout, {angle: 0, arrangement: go.TreeLayout.ArrangementFixedRoots});
 
-    this.diagram.commitTransaction("StepLayout Layout");
+    toolLayout.doLayout(toolParts);
+    inputLayout.doLayout(inputParts);
+    byproductLayout.doLayout(byproductParts);
+
+    this.diagram.commitTransaction("StepLayout");
 };

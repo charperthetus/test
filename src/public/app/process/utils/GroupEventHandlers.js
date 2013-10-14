@@ -36,32 +36,16 @@ Ext.define('Savanna.process.utils.GroupEventHandlers', {
     onNodeGroupMouseDrop: function (e, grp) {
         var ok = grp.addMembers(grp.diagram.selection, true);
         if (ok) {
-            var linkToActions = true;
-            if (grp.category == "OutputsGroup") {
-                linkToActions = false;
-            }
             grp.expandSubGraph();
-            var actionGroup = null;
-            var parentGroup = grp.containingGroup;
-            var iter = parentGroup.memberParts;
-            while (iter.next()) {
-                if (iter.value.category == "ActionsGroup") {
-                    actionGroup = iter.value;
-                    break;
-                }
-            }
-            if (actionGroup) {
+            var actionsGroup = Savanna.process.utils.ProcessUtils.getActionsGroup(grp);
+            if (actionsGroup) {
                 grp.diagram.startTransaction("linkNodes");
-                iter = grp.diagram.selection.iterator;
+                var iter = grp.diagram.selection.iterator;
 
                 while (iter.next()) {
                     var node = iter.value;
                     var newlink;
-                    if (linkToActions) {
-                        newlink = { from: node.data.key, to: actionGroup.data.key };
-                    } else {
-                        newlink = { from: actionGroup.data.key, to: node.data.key };
-                    }
+                    newlink = { category: 'backLink', from: actionsGroup.data.key, to: node.data.key };
                     grp.diagram.model.addLinkData(newlink);
                 }
 
@@ -86,8 +70,8 @@ Ext.define('Savanna.process.utils.GroupEventHandlers', {
         }
     },
 
-    nodeGroupMemberValidation: function(grp, part) {
-        if (part.category == 'Item') {
+    memberValidation: function(grp, part) {
+        if (part.category == 'Item' || part.category == 'Tool' || part.category == 'Byproduct') {
             return true;
         }
     },

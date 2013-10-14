@@ -19,13 +19,11 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
                 break;
             case 'Item':
             case 'FinalResult':
+            case 'Tool':
+            case 'Byproduct':
                 uriType = 'ProcessItem';
                 break;
             case 'ActionsGroup':
-//            case 'ToolsGroup':
-//            case 'InputsGroup':
-//            case 'OutputsGroup':
-//            case 'ByproductsGroup':
                 uriType = 'InternalGroup';
                 break;
             default:
@@ -34,6 +32,18 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         var uuid = Ext.data.IdGenerator.get('uuid').generate();
         var uri = 'pub://' + uriType + '/' + uuid;
         return uri;
+    },
+
+    getActionsGroup: function(group) {
+        var actionsGroup = null;
+        var iter = group.memberParts;
+        while (iter.next()) {
+            if (iter.value.category == "ActionsGroup") {
+                actionsGroup = iter.value;
+                break;
+            }
+        }
+        return actionsGroup;
     },
 
     startTextEdit: function(diagram, nodeData) {
@@ -52,7 +62,7 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
 
     addNode: function(obj, category, description, fromObj) {
         obj.diagram.startTransaction('addNode');
-        var tobj = obj.panel.panel.part;
+        var tobj = obj.part;
         var nodeData = {'category': category, 'text': description};
         nodeData.key = Savanna.process.utils.ProcessUtils.getURI(category);
         if (tobj.data.group) {
@@ -79,49 +89,31 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         Savanna.process.utils.ProcessUtils.addNode(obj, 'Decision', 'Decision', true);
     },
 
-    addInput: function(e, obj) {
-        obj.diagram.startTransaction('addInput');
-        var tobj = obj.panel.panel.part;
-        var nodeData = {'category': 'Item', 'text': 'Input', 'group': tobj.containingGroup.data.key};
+    addStepPart: function(obj, category, label) {
+        obj.diagram.startTransaction('addStepPart');
+        var tobj = obj.part;
+        var nodeData = {'category': category, 'text': label, 'group': tobj.containingGroup.data.key};
         nodeData.key = Savanna.process.utils.ProcessUtils.getURI(nodeData.category);
 
         obj.diagram.model.addNodeData(nodeData);
 
         var linkData;
-        linkData = { from: nodeData.key, to: tobj.data.key };
+        linkData = { category: 'backLink', from: tobj.data.key, to: nodeData.key};
         obj.diagram.model.addLinkData(linkData);
-        obj.diagram.commitTransaction('addInput');
+        obj.diagram.commitTransaction('addStepPart');
         Savanna.process.utils.ProcessUtils.startTextEdit(obj.diagram, nodeData);
+    },
+
+    addInput: function(e, obj) {
+        Savanna.process.utils.ProcessUtils.addStepPart(obj, 'Item', 'Input');
     },
 
     addTool: function(e, obj) {
-        obj.diagram.startTransaction('addTool');
-        var tobj = obj.panel.panel.part;
-        var nodeData = {'category': 'Item', 'text': 'Tool', 'group': tobj.containingGroup.data.key};
-        nodeData.key = Savanna.process.utils.ProcessUtils.getURI(nodeData.category);
-
-        obj.diagram.model.addNodeData(nodeData);
-
-        var linkData;
-        linkData = { from: nodeData.key, to: tobj.data.key };
-        obj.diagram.model.addLinkData(linkData);
-        obj.diagram.commitTransaction('addTool');
-        Savanna.process.utils.ProcessUtils.startTextEdit(obj.diagram, nodeData);
+        Savanna.process.utils.ProcessUtils.addStepPart(obj, 'Tool', 'Tool');
     },
 
     addByproduct: function(e, obj) {
-        obj.diagram.startTransaction('addByproduct');
-        var tobj = obj.panel.panel.part;
-        var nodeData = {'category': 'Item', 'text': 'Byproduct', 'group': tobj.containingGroup.data.key};
-        nodeData.key = Savanna.process.utils.ProcessUtils.getURI(nodeData.category);
-
-        obj.diagram.model.addNodeData(nodeData);
-
-        var linkData;
-        linkData = { from: nodeData.key, to: tobj.data.key };
-        obj.diagram.model.addLinkData(linkData);
-        obj.diagram.commitTransaction('addByproduct');
-        Savanna.process.utils.ProcessUtils.startTextEdit(obj.diagram, nodeData);
+        Savanna.process.utils.ProcessUtils.addStepPart(obj, 'Byproduct', 'Byproduct');
     },
 
     addOutput: function(e, obj) {
@@ -156,14 +148,6 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         step.key = Savanna.process.utils.ProcessUtils.getURI(step.category);
         obj.diagram.model.addNodeData(step);
 
-//        var toolsGroup = {'category': 'ToolsGroup', 'isGroup': true, 'group': step.key};
-//        toolsGroup.key = Savanna.process.utils.ProcessUtils.getURI(toolsGroup.category);
-//        obj.diagram.model.addNodeData(toolsGroup);
-//
-//        var inputsGroup = {'category': 'InputsGroup', 'isGroup': true, 'group': step.key};
-//        inputsGroup.key = Savanna.process.utils.ProcessUtils.getURI(inputsGroup.category);
-//        obj.diagram.model.addNodeData(inputsGroup);
-//
         var actionsGroup = {'category': 'ActionsGroup', 'isGroup': true, 'group': step.key};
         actionsGroup.key = Savanna.process.utils.ProcessUtils.getURI(actionsGroup.category);
         obj.diagram.model.addNodeData(actionsGroup);
@@ -172,15 +156,7 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         action.key = Savanna.process.utils.ProcessUtils.getURI(action.category);
         obj.diagram.model.addNodeData(action);
 
-//        var outputsGroup = {'category': 'OutputsGroup', 'isGroup': true, 'group': step.key};
-//        outputsGroup.key = Savanna.process.utils.ProcessUtils.getURI(outputsGroup.category);
-//        obj.diagram.model.addNodeData(outputsGroup);
-//
-//        var byproductsGroup = {'category': 'ByproductsGroup', 'isGroup': true, 'group': step.key};
-//        byproductsGroup.key = Savanna.process.utils.ProcessUtils.getURI(byproductsGroup.category);
-//        obj.diagram.model.addNodeData(byproductsGroup);
-//
-        var tobj = obj.panel.panel.part;
+        var tobj = obj.part;
         var newlink = { from: tobj.data.key, to: step.key };
         if (tobj.category == 'Decision') {
             newlink.visible = true;
