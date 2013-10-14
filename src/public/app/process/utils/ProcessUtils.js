@@ -89,7 +89,7 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         Savanna.process.utils.ProcessUtils.addNode(obj, 'Decision', 'Decision', true);
     },
 
-    addStepPart: function(obj, category, label) {
+    addStepPart: function(obj, category, label, backLink) {
         obj.diagram.startTransaction('addStepPart');
         var tobj = obj.part;
         var nodeData = {'category': category, 'text': label, 'group': tobj.containingGroup.data.key};
@@ -98,22 +98,25 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         obj.diagram.model.addNodeData(nodeData);
 
         var linkData;
-        linkData = { category: 'backLink', from: tobj.data.key, to: nodeData.key};
+        linkData = {  from: tobj.data.key, to: nodeData.key};
+        if (backLink) {
+            linkData.category = 'backLink';
+        }
         obj.diagram.model.addLinkData(linkData);
         obj.diagram.commitTransaction('addStepPart');
         Savanna.process.utils.ProcessUtils.startTextEdit(obj.diagram, nodeData);
     },
 
     addInput: function(e, obj) {
-        Savanna.process.utils.ProcessUtils.addStepPart(obj, 'Item', 'Input');
+        Savanna.process.utils.ProcessUtils.addStepPart(obj, 'Item', 'Input', true);
     },
 
     addTool: function(e, obj) {
-        Savanna.process.utils.ProcessUtils.addStepPart(obj, 'Tool', 'Tool');
+        Savanna.process.utils.ProcessUtils.addStepPart(obj, 'Tool', 'Tool', true);
     },
 
     addByproduct: function(e, obj) {
-        Savanna.process.utils.ProcessUtils.addStepPart(obj, 'Byproduct', 'Byproduct');
+        Savanna.process.utils.ProcessUtils.addStepPart(obj, 'Byproduct', 'Byproduct', false);
     },
 
     addOutput: function(e, obj) {

@@ -46,14 +46,6 @@ var ThetusTestHelpers;
                         "text": "Thing"
                     },
                     {
-                        "category": "Tool",
-                        "text": "Tool"
-                    },
-                    {
-                        "category": "Byproduct",
-                        "text": "Byproduct"
-                    },
-                    {
                         "category": "Item",
                         "text": "Person"
                     },
