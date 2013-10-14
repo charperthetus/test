@@ -72,7 +72,8 @@ Ext.define('Savanna.controller.Main', {
         SavannaConfig.loginUrl = SavannaConfig.savannaUrlRoot + 'authcheck/loggedIn.html';
         SavannaConfig.searchUrl = SavannaConfig.savannaUrlRoot + 'rest/search'; // local dev version: 'app/assets/data/testSearchResults.json',
         SavannaConfig.searchMetadataUrl = SavannaConfig.savannaUrlRoot + 'rest/metadata/get';
-        SavannaConfig.itemViewUrl = SavannaConfig.savannaUrlRoot + 'rest/c2is2/model/item/';
+        SavannaConfig.itemViewUrl = SavannaConfig.savannaUrlRoot + 'rest/model/item/';
+        SavannaConfig.modelSearchUrl = SavannaConfig.savannaUrlRoot + 'rest/model/search';
         SavannaConfig.dalSourcesUrl = SavannaConfig.savannaUrlRoot + 'rest/search/sources'; // local dev version: 'resources/data/testSearchDalsWithFormData.json',
         SavannaConfig.locationSearch = SavannaConfig.savannaUrlRoot + '/rest/map/search';   // local dev version: 'resources/data/testSearchLocationSearch.json',
         SavannaConfig.uploadUrl = SavannaConfig.savannaUrlRoot + 'rest/document/upload';
