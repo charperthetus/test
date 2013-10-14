@@ -12,13 +12,12 @@ Ext.define('Savanna.view.Viewport', {
     ],
 
     border: false,
-    layout: {
-        type: 'fit'
-    },
+    layout: 'fit',
 
     items: [
         {
-            xtype: 'desktop_savannadesktop'
+            xtype: 'login',
+            itemId: 'login'
         }
     ]
 });
