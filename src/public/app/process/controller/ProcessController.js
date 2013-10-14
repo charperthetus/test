@@ -32,6 +32,18 @@ Ext.define('Savanna.process.controller.ProcessController', {
             boxready: 'loadJSONClick'
         },
         metadata: {
+        },
+        undo: {
+            click: 'handleUndo'
+        },
+        redo: {
+            click: 'handleRedo'
+        },
+        zoomin: {
+            click: 'zoomIn'
+        },
+        zoomout: {
+            click: 'zoomOut'
         }
     },
     toggleExpanded: function(expand) {
@@ -86,6 +98,31 @@ Ext.define('Savanna.process.controller.ProcessController', {
        diagram.model = go.Model.fromJson(str);
        textarea.setValue(str);
        diagram.undoManager.isEnabled = true;
+    },
+
+    handleUndo: function() {
+        var canvas = this.getCanvas();
+        var diagram = canvas.diagram;
+        diagram.undoManager.undo();
+    },
+
+    handleRedo: function() {
+        var canvas = this.getCanvas();
+        var diagram = canvas.diagram;
+        diagram.undoManager.redo();
+    },
+
+    zoomIn: function() {
+        var canvas = this.getCanvas();
+        var diagram = canvas.diagram;
+        diagram.scale = diagram.scale * Math.LOG2E;
+    },
+
+    zoomOut: function() {
+        var canvas = this.getCanvas();
+        var diagram = canvas.diagram;
+        diagram.scale = diagram.scale / Math.LOG2E;
     }
+
 
 });

@@ -105,7 +105,7 @@ Ext.define('Savanna.process.view.part.MetadataTabPanel', {
     '{"category":"Item", "text":"Sifted Flour", "key":-31, "group":"2"},\n' +
     '{"category":"Item", "text":"Semi-Sweet\\nChocolate\\nMorsels", "key":-33, "group":"3"},\n' +
     '{"category":"Tool", "text":"ungreased\\n15x10x1 pan", "key":-35, "group":"4"},\n' +
-    '{"category":"Decision", "text":"Available\\nChocolate", "key":-40},\n' +
+    '{"category":"Decision", "text":"Available\\nChocolate", "key":"pub://DecisionPoint/-40"},\n' +
     '{"category":"FinalResult", "text":"Chopped Chocolate", "key":-43},\n' +
     '{"category":"Item", "text":"Baker\'s\\nChocolate", "key":-46, "group":"-41"}\n' +
     '],\n' +
@@ -130,7 +130,7 @@ Ext.define('Savanna.process.view.part.MetadataTabPanel', {
     '{"from":-18, "to":6},\n' +
     '{"from":-19, "to":4},\n' +
     '{"from":-20, "to":2},\n' +
-    '{"from":-21, "to":-40},\n' +
+    '{"from":-21, "to":"pub://DecisionPoint/-40"},\n' +
     '{"from":10, "to":-22, "category":"backLink"},\n' +
     '{"from":11, "to":-4, "category":"backLink"},\n' +
     '{"from":11, "to":-24, "category":"backLink"},\n' +
@@ -141,8 +141,8 @@ Ext.define('Savanna.process.view.part.MetadataTabPanel', {
     '{"from":12, "to":-31, "category":"backLink"},\n' +
     '{"from":13, "to":-33, "category":"backLink"},\n' +
     '{"from":14, "to":-35, "category":"backLink"},\n' +
-    '{"from":-40, "to":3, "text":"Chocolate Chips", "visible":true},\n' +
-    '{"from":-40, "to":-41, "text":"Baker\'s Chocolate", "visible":true},\n' +
+    '{"from":"pub://DecisionPoint/-40", "to":3, "text":"Chocolate Chips", "visible":true},\n' +
+    '{"from":"pub://DecisionPoint/-40", "to":-41, "text":"Baker\'s Chocolate", "visible":true},\n' +
     '{"from":-41, "to":-43},\n' +
     '{"from":-43, "to":-42},\n' +
     '{"from":-42, "to":-19},\n' +

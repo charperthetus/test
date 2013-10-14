@@ -24,11 +24,7 @@ Ext.define('Savanna.process.view.ProcessEditorComponent', {
         type: 'border'
     },
 
-    tbar: [
-        {
-            xtype: 'process_toolbar'
-        }
-    ],
+    tbar: [],
     items: [],
 
     initComponent: function() {
@@ -47,6 +43,11 @@ Ext.define('Savanna.process.view.ProcessEditorComponent', {
                 layout: {
                     type: 'absolute'
                 },
+                tbar: [
+                    {
+                        xtype: 'process_toolbar'
+                    }
+                ],
                 items:[
                     {
                         xtype: 'process_canvas',
