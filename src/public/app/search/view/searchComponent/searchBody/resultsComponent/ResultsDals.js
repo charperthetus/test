@@ -20,7 +20,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
 
     title: 'Search Sources',
     region: 'west',
-
+    headerPosition: 'right',
     /*
      NOTE: to be replaced with a class attribute I'm sure - this just
      here to get the panel to display for development.

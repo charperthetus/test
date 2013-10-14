@@ -33,7 +33,8 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.ResultsComponent', {
     items: [
         {
             xtype: 'search_resultsdals',
-            itemId: 'resultsdals'
+            itemId: 'resultsdals',
+            split: false
         },
         {
             xtype: 'search_resultspanel',
