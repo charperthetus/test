@@ -11,7 +11,7 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
     statics: {
         aboutwindow: null,
         searchwindow: null,
-        uploadwindow: null,
+        uploadwindow: null
     },
     requires: [
         'Savanna.desktop.view.AboutWindow',
