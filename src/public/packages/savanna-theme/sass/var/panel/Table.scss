@@ -5,3 +5,13 @@
 //  */
 
 $grid-cell-title-padding-bottom: 5px !default;
+
+/* THESE SHOULD PROBABLY BE ADDED TO UIKIT */
+$grid-row-cell-focus-background-color : lighten($thetus-blue, 55) !default;
+$grid-row-cell-focus-border-color : transparent !default;
+$grid-row-cell-focus-border-style : none !default;
+$grid-row-cell-selected-background-color : $grid-row-cell-focus-background-color !default;
+$grid-row-cell-selected-border-color : transparent !default;
+$grid-row-cell-selected-border-style :  none !default;
+
+$grid-cell-word-wrap: true !default;

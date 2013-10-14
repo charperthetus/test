@@ -7,7 +7,20 @@
  *
  */
 
+
 .#{$prefix}grid-cell-inner {
+	/* These can be removed with new UIKit */
+	@if $grid-cell-word-wrap {
+		white-space: normal;
+		word-wrap: break-word;	
+	}
+	
+	tbody {
+		vertical-align: top;
+	}
+	/* END UIKIT styles */
+
+	/* This is specific to Savanna */
     @if $grid-cell-title-padding-bottom != null {
     	.grid-cell-title {
     		padding-bottom: $grid-cell-title-padding-bottom;
