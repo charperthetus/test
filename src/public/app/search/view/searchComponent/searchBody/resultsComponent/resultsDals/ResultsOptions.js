@@ -7,6 +7,10 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
         'Ext.draw.Text'
     ],
 
+    bubbleEvents: ['search:changeSelectedStore'],
+
+    controller: 'Savanna.search.controller.resultsComponent.resultsDals.ResultsOptionsController',
+
     header: false,
 
     width: '100%',
