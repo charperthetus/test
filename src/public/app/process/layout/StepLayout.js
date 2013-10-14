@@ -20,6 +20,9 @@ StepLayout.prototype.doLayout = function(coll) {
     var inputParts = new go.Set(go.Part);
     var byproductParts = new go.Set(go.Part);
 
+    var countToolNodes = 0;
+    var countByproductNodes = 0;
+
     var iter = coll.iterator;
     while (iter.next()) {
         var part = iter.value;
@@ -39,12 +42,14 @@ StepLayout.prototype.doLayout = function(coll) {
             switch (part.category) {
                 case 'Tool':
                     toolParts.add(part);
+                    countToolNodes += 1;
                     break;
                 case 'Item':
                     inputParts.add(part);
                     break;
                 case 'Byproduct':
                     byproductParts.add(part);
+                    countByproductNodes += 1;
                     break;
                 case 'ActionsGroup':
                     toolParts.add(part);
@@ -58,7 +63,9 @@ StepLayout.prototype.doLayout = function(coll) {
     this.diagram.startTransaction("StepLayout");
 
     var toolLayout = gmake(go.TreeLayout, {angle: 180, arrangement: go.TreeLayout.ArrangementFixedRoots});
-    var inputLayout = gmake(go.TreeLayout, {angle: 270, arrangement: go.TreeLayout.ArrangementFixedRoots});
+    var maxSideNodes = Math.max(countToolNodes, countByproductNodes);
+    var spacing = 50 + 25 * Math.max(maxSideNodes - 2, 0);
+    var inputLayout = gmake(go.TreeLayout, {angle: 270, arrangement: go.TreeLayout.ArrangementFixedRoots, layerSpacing:spacing});
     var byproductLayout = gmake(go.TreeLayout, {angle: 0, arrangement: go.TreeLayout.ArrangementFixedRoots});
 
     toolLayout.doLayout(toolParts);
