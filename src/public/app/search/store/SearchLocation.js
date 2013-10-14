@@ -25,7 +25,7 @@ Ext.define('Savanna.search.store.SearchLocation', {
         this.setProxy({
             type: 'savanna-cors',
 
-            url: SavannaConfig.locationSearchUrl,
+            url: SavannaConfig.locationSearch,
 
             reader: {
                 type: 'json',
