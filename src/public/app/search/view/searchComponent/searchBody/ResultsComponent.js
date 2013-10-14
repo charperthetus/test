@@ -8,7 +8,7 @@
 Ext.define('Savanna.search.view.searchComponent.searchBody.ResultsComponent', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.search_resultscomponent',
-    bubbleEvents: ['Search:PageSizeChanged', "Search:SortByChanged"],
+    bubbleEvents: ['Search:PageSizeChanged', "Search:SortByChanged", 'search:changeSelectedStore'],
     requires: [
         'Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsDals',
         'Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsPanel',

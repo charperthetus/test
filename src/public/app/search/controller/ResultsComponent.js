@@ -26,18 +26,18 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
                     me.component = search;  // temporary measure, pending deft conversion next week
 
                     //Keelan asked that I use UI event bubbling...
+                    //The pattern I've been using is for the controller of the child to fire the event on it's controlled view.
+                    //Then we catch the event in all the "parent controllers" by listening to events on their controlled views. (See below)
                     me.component.on('Search:PageSizeChanged', this.onPageSizeChange, this);
                     me.component.on('Search:SortByChanged', this.onSortOrderChange, this);
+                    me.component.on('search:changeSelectedStore', this.changeSelectedStore, this);
 
-                    //We can grab events in a popup this way
+                    //The exception is for popups....
+                    //We can listen for events fired in  a popup this way (just like we did in Flex).
                     var dispatcher = this.previewWindow();
-                   // this.relayEvents( dispatcher, ['search:previewNextButton', 'search:previewPrevButton']);
                     dispatcher.on('search:previewNextButton', this.onNextItemPreview, this);
                     dispatcher.on('search:previewPrevButton', this.onPrevItemPreview, this);
                 }
-            },
-            'search_resultscomponent panel[cls=results-dal]': {
-                'render': this.onDalRender
             },
 
             'search_resultscomponent #resultspanelgrid': {
@@ -48,9 +48,6 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
             },
             'search_resultscomponent #resultsFacetsReset': {
                 'click': this.onDalReset
-            },
-            'search_resultscomponent panel[cls=refine-term]': {
-                'render': this.onTermRender
             },
             'search_resultscomponent #showHideFacets': {
                 'click': this.onShowHideFacets
@@ -72,8 +69,6 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
             }
         });
 
-        //Use any kind of event system to tell this controller about big changes to the results view(s)
-        this.getApplication().on('search:changeSelectedStore', this.changeSelectedStore, this);
     },
 
 
@@ -321,13 +316,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
         //todo open the uri...
     },
 
-    onTermRender: function (term) {
-        term.mon(term.queryById('removeTerm'), 'click', this.handleRemoveTerm, this, term);
-    },
 
-    handleRemoveTerm: function (term) {
-        term.findParentByType('search_searchcomponent').down('#refineterms').removeTerm(term);
-    },
 
     onShowHideFacets: function (btn) {
 
@@ -416,7 +405,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
      user selects from the left-hand panel, and triggers an update
      of the facets for the newly selected store.
      */
-    changeSelectedStore: function (evt, body, dal) {
+    changeSelectedStore: function ( dal) {
 
         var component = dal.findParentByType('search_resultscomponent');
 
