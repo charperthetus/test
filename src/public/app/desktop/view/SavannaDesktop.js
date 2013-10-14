@@ -5,14 +5,14 @@ Ext.define('Savanna.desktop.view.SavannaDesktop', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.desktop_savannadesktop',
     requires:[
+        'Savanna.desktop.controller.DesktopController',
         'Savanna.desktop.view.SavannaWorkspace'
     ],
 
     controller: 'Savanna.desktop.controller.DesktopController',
 
-    layout: {
-        type: 'fit'
-    },
+    layout: 'fit',
+
     tbar: {
         ui:'brand-header',
         items: [{

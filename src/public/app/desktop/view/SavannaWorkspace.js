@@ -9,6 +9,7 @@ Ext.define('Savanna.desktop.view.SavannaWorkspace', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.desktop_savannaworkspace',
     requires: [
+        'Savanna.desktop.controller.WorkspaceController',
         'Savanna.desktop.view.SavannaTabPanel',
         'Savanna.crumbnet.view.CrumbnetComponent',
         'Savanna.map.view.MapComponent'
