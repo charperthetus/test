@@ -15,17 +15,6 @@ Ext.define('Savanna.metadata.view.Date', {
     ],
 
     items: [
-        {
-            xtype: 'label',
-            itemId: 'displayLabelItem',
-            text: '',
-            width: '100%'
-        },
-        {
-            xtype: 'label',
-            itemId: 'displayValue',
-            text: ''
-        }
     ],
 
     initComponent: function () {
@@ -34,15 +23,29 @@ Ext.define('Savanna.metadata.view.Date', {
         var config = this.initialConfig || {};
         this.initValues(config);
         var me = this;
+        this.makeItems();
 
         this.on('beforerender', Ext.bind(function() {
-            this.down('#displayLabelItem').text = me.displayLabel;
+            var displayValue = '&nbsp;';
             if(null !== me.value) {
                 var myDate = new Date(me.value);
-                this.down('#displayValue').text = Ext.Date.format(myDate,'F j, Y, g:i a');
-            } else {
-                theLabel.html =  '&nbsp;';
+                displayValue = Ext.Date.format(myDate,'F j, Y, g:i a')
             }
+
+            if(this.editMode) {
+                if(me.down('#displayValueEdit')) {
+                    me.down('#displayValueEdit').setValue(displayValue);
+                    me.down('#displayValueEdit').fieldLabel = me.displayLabel;
+                }
+            } else {
+                if(me.down('#displayLabelItem')) {
+                    me.down('#displayLabelItem').html = me.displayLabel + ':&nbsp;&nbsp;';
+                }
+                if(me.down('#displayValue')) {
+                    me.down('#displayValue').html = displayValue;
+                }
+            }
+
         }, this));
     }
 
