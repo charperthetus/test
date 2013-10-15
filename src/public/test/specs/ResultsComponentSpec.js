@@ -1554,12 +1554,10 @@ describe('Search Results', function () {
 
                 field.setValue('apples');
 
-                var btn = sources.queryById('refinesearch').down('#refine_search_submit');
-
                 var controller = sources.queryById('refinesearch').getController();
                 expect(controller).not.toBeNull();
 
-                var success = controller.onSubmitClick(btn);
+                var success = controller.onSubmitClick(field);
 
                 expect(success).toBeTruthy();
             });

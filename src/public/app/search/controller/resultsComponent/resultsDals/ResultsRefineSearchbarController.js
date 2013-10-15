@@ -11,10 +11,6 @@ Ext.define('Savanna.search.controller.resultsComponent.resultsDals.ResultsRefine
                 keyup: 'onKeyUp',
                 'onsearchclick': 'onSubmitClick'
             }
-            // ,
-            // refine_search_submit: {
-            //     click: 'onSubmitClick'
-            // }
         },
 
 
@@ -39,8 +35,9 @@ Ext.define('Savanna.search.controller.resultsComponent.resultsDals.ResultsRefine
         },
 
 
-        onSubmitClick: function (btn) {
-            var field = btn.findParentByType('search_resultscomponent').down('#refine_search_terms');
+        onSubmitClick: function (field) {
+            console.log(field);
+            var field = field.findParentByType('search_resultscomponent').down('#refine_search_terms');
             return this.onNewSearchTerm(field);
         },
 

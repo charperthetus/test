@@ -202,7 +202,6 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
     clearSearch: function (elem) {
         var form = elem.findParentByType('search_searchcomponent').down('#searchbar');
-        form.queryById('search_terms').setValue('');
 
         var formField = form.queryById('searchadvanced_menu').queryById('form_container');
 
