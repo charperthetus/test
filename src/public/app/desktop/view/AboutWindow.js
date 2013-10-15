@@ -12,6 +12,7 @@ Ext.define('Savanna.desktop.view.AboutWindow', {
     title: 'About Savanna',
     height: 200,
     width: 400,
+    ghost: false,
     resizable: false, //don't let resize...for now
     items: [{
         //todo: determine where the about dialog detailed information will originate from. different per impl?

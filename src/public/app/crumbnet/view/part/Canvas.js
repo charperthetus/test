@@ -4,7 +4,8 @@ Ext.define('Savanna.crumbnet.view.part.Canvas', {
     alias: 'widget.go-graph_canvas',
 
     requires: [
-        'Savanna.crumbnet.utils.ViewTemplates'
+        'Savanna.crumbnet.utils.ViewTemplates',
+        'Savanna.controller.Factory'
     ],
 
     mixins: {

@@ -6,28 +6,18 @@ Ext.define('Savanna.view.Viewport', {
 
     requires: [
         'Ext.tab.Panel',
-        'Savanna.view.Login'
+        'Savanna.view.Login',
+        "Deft.mixin.Controllable",
+        "Deft.mixin.Injectable"
     ],
 
     border: false,
-    layout: {
-        type: 'border'
-    },
+    layout: 'fit',
 
     items: [
         {
-            xtype:"panel",
-            region:"center",
-            layout:"fit",
-            itemId:"viewport_main",
-            border: false,
-            items:  [
-                {
-                    xtype: 'login',
-                    itemId: 'login'
-                }
-            ]
+            xtype: 'login',
+            itemId: 'login'
         }
-
     ]
 });

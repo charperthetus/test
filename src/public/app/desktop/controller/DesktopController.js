@@ -6,59 +6,45 @@
  * To change this template use File | Settings | File Templates.
  */
 Ext.define('Savanna.desktop.controller.DesktopController', {
-    extend: 'Ext.app.Controller',
-
-    statics: {
-        aboutwindow: null,
-        searchwindow: null,
-        uploadwindow: null,
-    },
+    extend: 'Deft.mvc.ViewController',
     requires: [
         'Savanna.desktop.view.AboutWindow',
         'Savanna.desktop.view.SearchWindow',
-        'Savanna.desktop.view.UploadWindow'
+        'Savanna.desktop.view.UploadWindow',
+        'Savanna.modelSearch.view.ModelSearch'
     ],
-    views: [
-        'Savanna.desktop.view.SavannaDesktop',
-        'Savanna.desktop.view.SearchWindow',
-        'Savanna.desktop.view.SavannaWorkspace'
-    ],
-    init: function () {
-        var me = this;
-        this.control({
-            'desktop_savannadesktop #logobutton': {
-                click: this.displayAboutDialog
-            },
-            'desktop_savannadesktop #searchbutton': {
-                click: this.displaySearch
-            },
-            'desktop_savannadesktop #uploadbutton': {
-                click: this.displayUploadDialog
-            },
-            'desktop_savannadesktop #helpbutton': {
-                click: this.launchHelp
-            },
-            'desktop_savannadesktop #accountsettings': {
-                click: this.displayAccountSettings
-            },
-            'desktop_savannadesktop #savannalogout': {
-                click: this.handleLogout
-            },
-            'desktop_savannaworkspace #singleviewbutton': {
-                toggle: function(button) {
-                    if (button.pressed) {
-                        me.setWorkspaceViewMode('single');
-                    }
-                }
-            },
-            'desktop_savannaworkspace #splitviewbutton': {
-                toggle: function(button) {
-                    if (button.pressed) {
-                        me.setWorkspaceViewMode('split');
-                    }
-                }
-            }
-        });
+    statics: {
+        aboutwindow: null,
+        searchwindow: null,
+        uploadwindow: null
+    },
+
+    control: {
+        logobutton: {
+            click: 'displayAboutDialog'
+        },
+        searchbutton: {
+            click: 'displaySearch'
+        },
+        uploadbutton: {
+            click: 'displayUploadDialog'
+        },
+        helpbutton: {
+            click: 'launchHelp'
+        },
+        accountsettings: {
+            click: 'displayAccountSettings'
+        },
+        savannalogout: {
+            click: 'handleLogout'
+        },
+        modelsearchbutton: {
+            click: 'displayModelSearch'
+        }
+    },
+
+    init: function() {
+        return this.callParent(arguments);
     },
 
     displayAboutDialog: function() {
@@ -68,14 +54,28 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
                 closeAction: 'hide'
             });
         }
-        this.statics().aboutwindow.show();
+        var aboutWindow =  this.statics().aboutwindow.show();
+        aboutWindow.show();
+        if(aboutWindow.height > Ext.getBody().getViewSize().height) {
+            aboutWindow.alignTo(Ext.getBody(), 't-t');
+        }
+        else {
+            aboutWindow.center();
+        }
     },
 
     displaySearch: function() {
         if (!this.statics().searchwindow) {
             this.statics().searchwindow = Ext.create('Savanna.desktop.view.SearchWindow', {closeAction: 'hide'});
         }
-        this.statics().searchwindow.show();
+        var searchWindow = this.statics().searchwindow;
+        searchWindow.show();
+        if(searchWindow.height > Ext.getBody().getViewSize().height) {
+            searchWindow.alignTo(Ext.getBody(), 't-t');
+        }
+        else {
+            searchWindow.center();
+        }
     },
 
     displayUploadDialog: function(button) {
@@ -83,13 +83,12 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
             this.statics().uploadwindow = Ext.create('Savanna.desktop.view.UploadWindow', { closeAction: 'hide'});
         }
         var uploadWindow = this.statics().uploadwindow;
-        var desktop = button.up('desktop_savannadesktop');
-//        var appHeight = window.innerHeight;
         var appHeight = document.height;
         if (appHeight < uploadWindow.height + 50){
             uploadWindow.height = appHeight - 50;
         }
         uploadWindow.show();
+        uploadWindow.center();
     },
 
     displayAccountSettings: function() {
@@ -97,54 +96,16 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
     },
 
     launchHelp: function() {
-        //todo: insert the help url here - get from config?
-        //todo: do we need to get the savanna item in the active+focused tab and take them to a specific help section?
-        window.open('http://www.google.com');
+        window.open(SavannaConfig.helpUrl);
     },
 
     handleLogout: function() {
         console.log('The user is trying to logout');
     },
 
-    //todo: this logic may change...this is the initial implementation for design interaction
-    setWorkspaceViewMode: function(mode) {
-        var savannaWorkspace = Ext.ComponentQuery.query('panel #savannaworkspace')[0];
-        if (savannaWorkspace) {
-            var mainTabPanel = savannaWorkspace.down('#maintabpanel');
-            if (mainTabPanel){
-                if ('split' === mode) {
-                    //create and add a second tab panel in the workspace (hbox)
-                    var newTabPanel = Ext.create('Savanna.desktop.view.SavannaTabPanel', {
-                        flex: 2,
-                        height: '100%',
-                        itemId: 'secondarytabpanel'
-                    });
-                    savannaWorkspace.add(newTabPanel);
-
-                    //loop through the tabs in the main panel from the end and add them to the new tab panel
-                    var activeIndex = mainTabPanel.items.indexOf(mainTabPanel.getActiveTab());
-                    var len = mainTabPanel.items.length-1;
-                    while(len > activeIndex) {
-                        newTabPanel.insert(0,mainTabPanel.items.getAt(len));
-                        len--;
-                    }
-                    newTabPanel.setActiveTab(newTabPanel.items.getAt(0)); //just set the first tab in the new panel as active
-                    newTabPanel.doLayout();
-                } else if ('single' === mode) {
-                    var secondaryTabPanel = savannaWorkspace.down('#secondarytabpanel');
-                    if (secondaryTabPanel) {
-                        //move all tabs from the second tabpanel into the main tabpanel - they get tacked on to the end
-                        while (0 < secondaryTabPanel.items.length) {
-                            mainTabPanel.add(secondaryTabPanel.items.getAt(0));
-                        }
-                        savannaWorkspace.remove(secondaryTabPanel, true); //remove the secondary tab panel and destroy it
-                        mainTabPanel.doLayout();
-                    }
-                } else {
-                    Ext.Error.raise({ msg: 'Unknown mode passed to DesktopController.setWorkspaceViewMode(): ' + mode });
-                }
-            }
-            savannaWorkspace.currentView = mode;
-        }
+    displayModelSearch: function() {
+        var modelSearch = Ext.create('Savanna.modelSearch.view.ModelSearch'),
+            savTabPanel = Ext.ComponentQuery.query('#maintabpanel')[0];
+        savTabPanel.add(modelSearch);
     }
 });

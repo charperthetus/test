@@ -225,12 +225,7 @@ describe('Search Results', function () {
                         expect(panelView.queryById('termValues').queryById('term_apples')).toBeTruthy();
                     });
 
-                    it('should remove selected terms', function () {
-                        searchbarView.queryById('refine_search_terms').setValue('apples');
-                        panelView.addTerm(searchbarView.queryById('refine_search_terms'));
-                        panelView.removeTerm(panelView.queryById('termValues').queryById('term_apples').queryById('removeTerm'));
-                        expect(panelView.queryById('termValues').queryById('term_apples')).not.toBeTruthy();
-                    });
+                    //remove is tested elsewhere.
                 });
             });
 
@@ -1030,9 +1025,9 @@ describe('Search Results', function () {
 
         it('should set metadata for the current result set via metadataCallback', function()    {
 
-             resultsController.metadataCallback(metadataFixtures.resultsMetadataResponse, 'read', true, resultsComponent.currentResultSet);
+            resultsController.metadataCallback(metadataFixtures.resultsMetadataResponse, 'read', true, resultsComponent.currentResultSet);
 
-             expect(resultsComponent.currentResultSet.metadata).toBeTruthy();
+            expect(resultsComponent.currentResultSet.metadata).toBeTruthy();
         });
 
         it('should update preview window content with metadata html', function()    {
@@ -1077,7 +1072,7 @@ describe('Search Results', function () {
 
         });
 
-        describe('Preview functions', function () {
+        describe('Preview functions + controller', function () {
             beforeEach(function () {
 
                 origErrorHandler = Ext.Error.handle;
@@ -1117,6 +1112,8 @@ describe('Search Results', function () {
                     errorOnInvalidRequest: true
                 });
             });
+
+
 
             describe('Test Record Zero', function () {
 
@@ -1168,24 +1165,24 @@ describe('Search Results', function () {
 
 
 
-                    it('should update the preview label for the second record', function () {
+                it('should update the preview label for the second record', function () {
 
-                        var total = resultsController.getGridStore().totalCount;
-                        resultsController.onNextItemPreview();
-                        expect(resultsController.previewIndexAndTotalLabel().text).toBe('Preview Result 2 of ' + total);
+                    var total = resultsController.getGridStore().totalCount;
+                    resultsController.onNextItemPreview();
+                    expect(resultsController.previewIndexAndTotalLabel().text).toBe('Preview Result 2 of ' + total);
 
 
-                    });
+                });
 
-                    it('should prev button disabled for second record', function () {
-                        resultsController.onNextItemPreview();
-                        expect(resultsController.previewPrevButton().disabled).not.toBeTruthy();
-                    });
+                it('should prev button disabled for second record', function () {
+                    resultsController.onNextItemPreview();
+                    expect(resultsController.previewPrevButton().disabled).not.toBeTruthy();
+                });
 
-                    it('should next button enabled for second record', function () {
-                        resultsController.onNextItemPreview();
-                        expect(resultsController.previewNextButton().disabled).not.toBeTruthy();
-                    });
+                it('should next button enabled for second record', function () {
+                    resultsController.onNextItemPreview();
+                    expect(resultsController.previewNextButton().disabled).not.toBeTruthy();
+                });
 
 
             });
@@ -1223,12 +1220,7 @@ describe('Search Results', function () {
 
             });
 
-            it('should add a click handler', function () {
-
-                dalItem.removeListener('click');
-
-                resultsController.onDalRender(dalItem, {});
-
+            it('should have a click handler', function () {
                 expect(dalItem.hasListener('click')).toBeTruthy();
             });
 
@@ -1287,35 +1279,25 @@ describe('Search Results', function () {
 
                 resultsDals.createDalPanels(searchController.getSelectedDals(searchComponent));
 
-
-                spyOn(searchComponent.down('#refineterms'), 'removeTerm');
-
                 refineTerm = Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineTerm',     {
                     itemId:'term_apple'
                 });
                 refineTerm.setTerm('apple');
 
-
+                spyOn(refineTerm.getController(), 'onCloseButton');
 
             });
 
-            describe('onTermRender', function() {
 
-                it('should add an event listener when a term is rendered', function()  {
-                    searchComponent.down('#refineterms').queryById('termValues').add(refineTerm);
-
-                    expect(refineTerm.hasListener('click')).toBeTruthy();
-                });
-            });
+            //I removed a test that is no longer relavant.
 
             describe('handleRemoveTerm', function() {
                 it('should call removeTerm', function () {
-
+                    expect(refineTerm).toBeTruthy();
                     searchComponent.down('#refineterms').queryById('termValues').add(refineTerm);
-
-                    resultsController.handleRemoveTerm(refineTerm.queryById('removeTerm'));
-
-                    expect(searchComponent.down('#refineterms').removeTerm).toHaveBeenCalled();
+                    var closeButton = refineTerm.queryById('removeTerm');
+                    closeButton.fireEvent('click');
+                    expect(refineTerm.getController().onCloseButton).toHaveBeenCalled();
                 });
             });
         });
@@ -1423,7 +1405,10 @@ describe('Search Results', function () {
 
             it('should expand all facets"', function () {
                 searchComponent.down('#resultsdals').queryById('resultsfacets').setActiveTab(0);
-                resultsController.onShowHideFacets(searchComponent.down('#resultsdals').queryById('resultsfacets').queryById('showHideFacets'));
+                var facets =  searchComponent.down('#resultsdals').queryById('resultsfacets');
+                var controller = facets.getController();
+                var btn = searchComponent.down('#resultsdals').queryById('resultsfacets').queryById('showHideFacets');
+                controller.onHideShowFacetsClick(btn);
                 var allExpanded = true;
                 Ext.each(resultsDals.queryById('resultsfacets').query('panel[cls=results-facet]'), function(facet) {
                     if(facet.collapsed) {
@@ -1521,7 +1506,7 @@ describe('Search Results', function () {
                 /*
                  This call swaps the store behind the grid
                  */
-                resultsController.changeSelectedStore({}, {}, dalItem);
+                resultsController.changeSelectedStore(dalItem);
 
                 expect(resultsPanel.updateGridStore).toHaveBeenCalled();
             });

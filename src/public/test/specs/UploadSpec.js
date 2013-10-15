@@ -2,6 +2,7 @@
           beforeEach: false, afterEach: false, it: false, expect: false, spyOn: false, runs: false, sinon: false, waitsFor: false,
           ThetusTestHelpers: false, Savanna: false,
           go: false */
+Ext.require('Savanna.Config');
 Ext.require('Savanna.upload.controller.UploadController');
 Ext.require('Savanna.upload.view.UploadComponent');
 

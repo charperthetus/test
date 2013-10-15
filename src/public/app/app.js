@@ -14,6 +14,16 @@
 // DO NOT DELETE - this directive is required for Sencha Cmd packages to work.
 //@require @packageOverrides
 Ext.Loader.setConfig( {enabled: true, disableCaching: false} );
+//<debug>
+Ext.Loader.setPath({
+    'Deft': 'packages/deft/src/js'
+});
+Ext.syncRequire(['Deft.mixin.Injectable','Deft.mixin.Controllable']);
+//</debug>
+
+//@require Deft.mixin.Injectable
+//@require Deft.mixin.Controllable
+
 Ext.setGlyphFontFamily('SickFont');
 Ext.application({
     name: 'Savanna',
@@ -29,10 +39,10 @@ Ext.application({
 
     requires: [
         'Savanna.patch.AbstractComponent',
-        'Ext.draw.Component', // NOTE: this is here because we are drawing some shapes which I believe are temporary
         'Ext.layout.container.Border',
         //Main
         'Savanna.controller.Factory',
+        'Savanna.Config',
         //Desktop
         'Savanna.desktop.controller.DesktopController',
         //Flexpaper
@@ -43,7 +53,11 @@ Ext.application({
         'Savanna.crumbnet.controller.CrumbnetController',
         //Map
         'Savanna.map.controller.MapController',
-        //Map
+        //ItemView
+        'Savanna.itemView.controller.ItemViewController',
+        //Model Search
+        'Savanna.modelSearch.controller.ModelSearchController',
+        //Upload
         'Savanna.upload.controller.UploadController'
     ],
 
