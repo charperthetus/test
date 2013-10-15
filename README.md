@@ -3,6 +3,16 @@ savanna-4
 
 HTML client interface for Savanna 4
 
+## Prerequisites
+1. Git
+2. Ruby (gems)
+3. Sencha CMD
+4. Maven (and a settings.xml from [Artifactory](http://artifactory))
+5. Node.js
+6. Phantom.js (optional)
+
+For Mac users, a bulk of this can be aquired by downloading X-Code and installing Developer Tools. Things like git, ruby and maven will be added.
+
 ## Installation
 
 Once you have cloned this repos, you will need to go into `src/` and run `npm install` which will get everything set up for you to be able to use [Node.js](http://nodejs.org/) as your server (of course this assumes you have Node.js](http://nodejs.org/) installed).  If you are using Idea12 you should have the Node.js plug-in already available.  If not, it is a standard IntelliJ plugin.
@@ -35,4 +45,21 @@ NOTE: you should only have to do this after quitting your browser, so even if yo
 
 ## Theme updates
 
-In order to pull in any changes made to the theme, you will need to run the `sencha app build` command again to pull in said changes (see above for information about Sencha Cmd).
+In order to pull in any changes made to the theme, you will need to run the `mvn clean package` command in the root of the project to pull in said changes.
+
+## Troubleshooting
+
+Q: I'm getting 404's in my project looking for `thetus-uikit`, what gives?
+A: UIKit is a separate resource that is a Maven dependency in this project. Run `mvn clean package` in the root of the project to download it (it's not under git).
+
+Q: My `mvn` is failing on UIKit, saying the resource is unavailable.
+A: You need a `settings.xml` in the `.m2` of your machine. Typically this is in your home (~) folder on Mac/Unix machines and IS HIDDEN! Visit [Artifactory](http://artifactory) to generate one.
+
+Q: The `mvn` build is failing saying that it can't resolve or find phantom.js
+A: You need to export it in your `.bash_profile` (or equivalent) on your machine. This might look like: `export PATH:/Users/your-name/bin/Sencha/Cmd/3.1.2.342/phantomjs/phantomjs`
+
+Q: My build is warning me that the deft.js dependency isn't being resolved.
+A: This should now be fixed, but you'll likely need to run `sencha repo add -address http://packages.deftjs.org/ -name deftjs`
+
+Q: My theme isn't working properly, or my JavaScrip override isn't working.
+A: Currently, `mvn clean package` and `sencha app build` don't update the bootstrap.js manifest (which organizes the javascript class-path mapping). Run `sencha app refresh && sencha app build` to resolve.
