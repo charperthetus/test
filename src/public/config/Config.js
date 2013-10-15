@@ -20,4 +20,3 @@ SavannaConfig = {
     mapDefaultCenter: '0,0',
     mapDefaultZoom: 2
 };
-
