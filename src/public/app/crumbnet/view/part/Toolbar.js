@@ -312,15 +312,15 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
     // helpers
 
     buildToolbarButton: function(options) {
-        var includeLabel = options.includeLabel,
-            buttonOptions = {};
+        var includeLabel = options.includeLabel;
 
         delete options.includeLabel;
 
+
         if (includeLabel) {
-            buttonOptions.text = buttonOptions.tooltip;
+            options.text = options.tooltip;
         }
 
-        return buttonOptions;
+        return options;
     }
 });
