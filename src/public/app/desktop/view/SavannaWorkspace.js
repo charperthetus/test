@@ -9,10 +9,13 @@ Ext.define('Savanna.desktop.view.SavannaWorkspace', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.desktop_savannaworkspace',
     requires: [
+        'Savanna.desktop.controller.WorkspaceController',
         'Savanna.desktop.view.SavannaTabPanel',
         'Savanna.crumbnet.view.CrumbnetComponent',
         'Savanna.map.view.MapComponent'
     ],
+
+    controller: "Savanna.desktop.controller.WorkspaceController",
     layout: 'hbox',
     currentView: 'single',
     tbar: {
@@ -39,8 +42,8 @@ Ext.define('Savanna.desktop.view.SavannaWorkspace', {
                 allowDepress: false,
                 pressed: true,
                 toggleGroup: 'tabviewgroup'
-                },
-                {
+            },
+            {
                 xtype: 'button',
                 ui:'workspace-header',
                 itemId: 'splitviewbutton',
@@ -48,7 +51,7 @@ Ext.define('Savanna.desktop.view.SavannaWorkspace', {
                 enableToggle: true,
                 allowDepress: false,
                 toggleGroup: 'tabviewgroup'
-                }]
+            }]
         }]
     },
     items: [{
