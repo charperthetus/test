@@ -13,28 +13,26 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
         {
             xtype: 'splitbutton',
             text: 'Options',
-            menu: new Ext.menu.Menu({
-                items: [
-                    {
-                        text: 'New Item...'
-                    },
-                    {
-                        text: 'Delete' 
-                    },
-                    {
-                        xtype: 'menuseparator'
-                    },
-                    {
-                        text: 'Workflow' 
-                    },
-                    {
-                        xtype: 'menuseparator'
-                    },
-                    {
-                        text: 'Search Intell'
-                    }
-                ]
-            })
+            menu: [
+                {
+                    text: 'New Item...'
+                },
+                {
+                    text: 'Delete' 
+                },
+                {
+                    xtype: 'menuseparator'
+                },
+                {
+                    text: 'Workflow' 
+                },
+                {
+                    xtype: 'menuseparator'
+                },
+                {
+                    text: 'Search Intell'
+                }
+            ]
         },
         '->',
         {

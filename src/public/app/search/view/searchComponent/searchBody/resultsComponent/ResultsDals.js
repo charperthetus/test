@@ -8,6 +8,7 @@
 Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsDals', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.search_resultsdals',
+    bubbleEvents: ['search:changeSelectedStore'],
     requires: [
         'Savanna.controller.Factory',
         'Ext.form.Label',
@@ -25,6 +26,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
      here to get the panel to display for development.
      */
     width: 220,
+    height:'100%',
 
     layout: 'vbox',
     border: false,

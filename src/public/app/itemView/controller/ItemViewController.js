@@ -16,13 +16,6 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         'Savanna.itemView.view.itemView.RelatedItems'
     ],
 
-    refs: [
-        {
-            ref: 'itemview',
-            selector: 'itemview_itemviewer'
-        }
-    ],
-
     requires: [
         'Savanna.itemView.view.itemView.store.MainItemStore'
     ],
@@ -137,7 +130,6 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     },
 
     setupRelatedProcesses: function (data, view) {
-        console.log('TODO: figure out how to source "relatedProcesses" data and render it');
     },
 
     setupImages: function (data, view) {
@@ -163,13 +155,13 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
     // Scroll Left Button
     onNavLeft: function() {
-        var gallery = this.getItemview().queryById('thumbnail_list');
+        var gallery = Ext.ComponentQuery.query('#thumbnail_list')[0];
         gallery.scrollBy(-450, 0, true);
     },
 
     // Scroll Right Button
     onNavRight: function() {
-        var gallery = this.getItemview().queryById('thumbnail_list');
+        var gallery = Ext.ComponentQuery.query('#thumbnail_list')[0];
         gallery.scrollBy(450, 0, true);
     },
 
@@ -178,8 +170,8 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         var selectedImage = image.src,
             title = (image.title) ? image.title : 'No title',
             description = (image.alt) ? image.alt : 'No description',
-            jumboImage = this.getItemview().queryById('image_primary'),
-            jumboMeta = this.getItemview().queryById('image_text'),
+            jumboImage = Ext.ComponentQuery.query('#image_primary')[0],
+            jumboMeta = Ext.ComponentQuery.query('#image_text')[0],
             imageWidth = image.naturalWidth,
             imageHeight = image.naturalHeight;
 
