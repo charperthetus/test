@@ -39,10 +39,10 @@ Ext.application({
 
     requires: [
         'Savanna.patch.AbstractComponent',
-        'Ext.draw.Component', // NOTE: this is here because we are drawing some shapes which I believe are temporary
         'Ext.layout.container.Border',
         //Main
         'Savanna.controller.Factory',
+        'Savanna.Config',
         //Desktop
         'Savanna.desktop.controller.DesktopController',
         //Flexpaper
@@ -53,7 +53,11 @@ Ext.application({
         'Savanna.crumbnet.controller.CrumbnetController',
         //Map
         'Savanna.map.controller.MapController',
-        //Map
+        //ItemView
+        'Savanna.itemView.controller.ItemViewController',
+        //Model Search
+        'Savanna.modelSearch.controller.ModelSearchController',
+        //Upload
         'Savanna.upload.controller.UploadController'
     ],
 

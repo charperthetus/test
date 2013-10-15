@@ -5,6 +5,7 @@
  * metadata-driven class system features 
  */
 Ext.Loader.addClassPathMappings({
+  "Savanna-Theme": "packages/savanna-theme/overrides",
   "Deft.Component": "packages/deft/src/js/event/LiveEventBus.js",
   "Deft.InjectableComponent": "packages/deft/src/js/ioc/Injector.js",
   "Savanna.metadata.view.Details": "app/metadata/view/details.js",
@@ -139,6 +140,7 @@ Ext.ClassManager.addNameAlternateMappings({
   ],
   "Ext.ux.Spotlight": [],
   "Ext.ux.grid.FiltersFeature": [],
+  "Savanna-Theme.panel.Panel": [],
   "Savanna.utils.CorsAjax": [],
   "Ext.ux.grid.TransformGrid": [],
   "Ext.ux.ajax.DataSimlet": [],
@@ -173,7 +175,6 @@ Ext.ClassManager.addNameAlternateMappings({
   "Savanna.search.store.DalSources": [],
   "Savanna.search.model.SearchLocation": [],
   "Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacet": [],
-  "Savanna.search.view.searchComponent.searchBody.searchMap.SearchLocationComboBox": [],
   "Deft.event.LiveEventListener": [
     "Deft.LiveEventListener"
   ],
@@ -470,6 +471,7 @@ Ext.ClassManager.addNameAliasMappings({
   "Ext.ux.grid.FiltersFeature": [
     "feature.filters"
   ],
+  "Savanna-Theme.panel.Panel": [],
   "Savanna.utils.CorsAjax": [],
   "Ext.ux.grid.TransformGrid": [],
   "Ext.ux.ajax.DataSimlet": [],
@@ -529,6 +531,7 @@ Ext.ClassManager.addNameAliasMappings({
   "Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacet": [
     "widget.search_resultsDals_resultsfacet"
   ],
+  "Deft.event.LiveEventListener": [],
   "Savanna.search.view.searchComponent.searchBody.searchMap.SearchLocationComboBox": [
     "widget.search_searchlocationcombobox"
   ],
@@ -668,6 +671,7 @@ Ext.ClassManager.addNameAliasMappings({
   ]
 });
 Ext.Loader.loadScript("packages/thetus-uikit/overrides/tip/QuickTip.js");
+Ext.Loader.loadScript("packages/savanna-theme/overrides/panel/Panel.js");
 Ext.Loader.loadScript("packages/thetus-uikit/overrides/panel/Panel.js");
 Ext.Loader.loadScript("packages/thetus-uikit/overrides/panel/Header.js");
 Ext.Loader.loadScript("packages/thetus-uikit/overrides/layout/component/Dock.js");
