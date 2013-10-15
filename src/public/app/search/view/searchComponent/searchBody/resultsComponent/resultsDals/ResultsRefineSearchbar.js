@@ -28,7 +28,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
                 {
                     // adding searchfield removes the necessity for a submit button.
                     xtype: 'searchfield',
-                    width: 197,
+                    width: 183,
                     fieldLabel: '',
                     name: 'refine_search_terms',
                     itemId: 'refine_search_terms',
