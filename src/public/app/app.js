@@ -53,7 +53,11 @@ Ext.application({
         'Savanna.crumbnet.controller.CrumbnetController',
         //Map
         'Savanna.map.controller.MapController',
-        //Map
+        //ItemView
+        'Savanna.itemView.controller.ItemViewController',
+        //Model Search
+        'Savanna.modelSearch.controller.ModelSearchController',
+        //Upload
         'Savanna.upload.controller.UploadController'
     ],
 

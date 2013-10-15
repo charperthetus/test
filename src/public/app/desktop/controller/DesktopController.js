@@ -10,7 +10,8 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
     requires: [
         'Savanna.desktop.view.AboutWindow',
         'Savanna.desktop.view.SearchWindow',
-        'Savanna.desktop.view.UploadWindow'
+        'Savanna.desktop.view.UploadWindow',
+        'Savanna.modelSearch.view.ModelSearch'
     ],
     statics: {
         aboutwindow: null,
@@ -36,6 +37,9 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
         },
         savannalogout: {
             click: 'handleLogout'
+        },
+        modelsearchbutton: {
+            click: 'displayModelSearch'
         }
     },
 
@@ -97,5 +101,11 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
 
     handleLogout: function() {
         console.log('The user is trying to logout');
+    },
+
+    displayModelSearch: function() {
+        var modelSearch = Ext.create('Savanna.modelSearch.view.ModelSearch'),
+            savTabPanel = Ext.ComponentQuery.query('#maintabpanel')[0];
+        savTabPanel.add(modelSearch);
     }
 });
