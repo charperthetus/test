@@ -74,10 +74,9 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         });
     },
 
-    handleRecordDataRequestSuccess: function (response, options, record) {
-        var itemData = Ext.decode(response.responseText),
-            itemView = Ext.create('Savanna.itemView.view.ItemViewer', {
-                title: 'TODO: Build Title Here',
+    handleRecordDataRequestSuccess: function (record, operation, success) {
+        var itemView = Ext.create('Savanna.itemView.view.ItemViewer', {
+                title: record[0].data.label,
                 closable: true,
                 autoScroll: true
             });
