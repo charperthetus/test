@@ -23,6 +23,16 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         }
     ],
 
+    requires: [
+        'Savanna.itemView.view.itemView.store.MainItemStore'
+    ],
+
+    store: 'Savanna.itemView.view.itemView.store.MainItemStore',
+
+    mixins: {
+        storeable: 'Savanna.mixin.Storeable'
+    },
+
     constructor: function (options) {
         this.opts = options || {};
         this.callParent(arguments);
@@ -62,21 +72,16 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     },
 
     showItemView: function (grid, record, item) {
-        var bustCache = typeof this.opts.disableCaching === 'undefined' ? true : this.opts.disableCaching;
-
-        Ext.Ajax.request({
-            url: this.buildItemDataFetchUrl(record.data.uri),
-            method: 'GET',
-            disableCaching: bustCache,
-            headers: {
-                'Accept': 'application/json'
-            },
-
-            success: Ext.bind(this.handleRecordDataRequestSuccess, this, [record], true),
-            failure: function (response) {
-
-                // TODO: abstract out
-                console.log('server-side failure with status code ' + response.status);
+        this.mixins.storeable.initStore.call(this);
+        var tmpStore = Ext.data.StoreManager.lookup(this.store);
+        tmpStore.getProxy().url = this.buildItemDataFetchUrl(record.data.uri) + ';jsessionid=' + Savanna.jsessionid;
+        tmpStore.load({
+            scope: this,
+            callback: function(record, operation, success) {
+                console.log(record);
+                //do something whether the load succeeded or failed
+                //if operation is unsuccessful, record is null
+                //the record can also be referenced from tmpStore.getAt(0)
             }
         });
     },

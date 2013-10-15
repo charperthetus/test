@@ -10,7 +10,7 @@ SavannaConfig = {
 //    savannaUrlRoot: 'http://localhost:8080/C2is2/',
     savannaUrlRoot: 'https://c2devsav1:8443/c2is2/',
 //    savannaUrlRoot: 'https://c2astsav1.thetuscorp.com:8443/c2is2/',
-    //savannaUrlRoot: 'http://thedevsav1.thetuscorp.com:8080/SavannaX/',
+//    savannaUrlRoot: 'http://thedevsav1.thetuscorp.com:8080/SavannaX/',
 
     resourcesPathPrefix: '',
 
