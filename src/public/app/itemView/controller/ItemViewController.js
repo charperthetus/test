@@ -78,7 +78,10 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         var itemView = Ext.create('Savanna.itemView.view.ItemViewer', {
                 title: record[0].data.label,
                 closable: true,
-                autoScroll: true
+                autoScroll: true,
+                tabConfig: {
+                    ui: 'dark'
+                }
             });
         this.itemView = itemView;
         // this.setData(itemData, itemView);
