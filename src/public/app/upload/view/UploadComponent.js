@@ -32,6 +32,7 @@ Ext.define('Savanna.upload.view.UploadComponent', {
                 xtype: 'upload_part_newupload',
                 itemId: 'newUploadView',
                 flex:1,
+                height: 140,
                 width: '100%'
             },
             {

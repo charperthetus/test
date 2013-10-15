@@ -26,7 +26,7 @@ Ext.define('Savanna.upload.view.part.CurrentUploadsView', {
             {
                 xtype:'panel',
                 layout:{
-                    type:'hbox'
+                    type: 'hbox'
                 },
                 defaults:{
                     margin:'0 20 0 0'
@@ -34,10 +34,8 @@ Ext.define('Savanna.upload.view.part.CurrentUploadsView', {
                 width:'100%',
                 items:[{
                     xtype: 'label',
-                    text: 'My Uploads'
-                },{
-                    xtype: 'label',
-                    text: '@'
+                    text: 'My Uploads',
+                    cls: ['h1', 'dark']
                 },{
                     xtype: 'label',
                     itemId: 'uploadProgressLabel'
@@ -55,6 +53,8 @@ Ext.define('Savanna.upload.view.part.CurrentUploadsView', {
             {
                 xtype: 'grid',
                 itemId: 'uploadsDataGrid',
+                border: false,
+                ignoreHeaderBorderManagement: true,
                 store: Ext.create('Savanna.upload.store.UploadGridStore'),
                 flex:1,
                 width: '100%',
@@ -64,6 +64,7 @@ Ext.define('Savanna.upload.view.part.CurrentUploadsView', {
                 columns: [{
                     text: ' ',
                     dataIndex: 'status',
+                    borderWidth: 0,
                     sortable: false,
                     align:'center',
                     resizable:false,
@@ -80,12 +81,14 @@ Ext.define('Savanna.upload.view.part.CurrentUploadsView', {
 
                 },{
                     text: 'File Name',
+                    borderWidth: 0,
                     dataIndex: 'fileName',
                     sortable: false,
                     hideable: false,
                     flex: 1
                 },{
                     text: 'Size',
+                    borderWidth: 0,
                     dataIndex: 'fileSize',
                     resizable:false,
                     sortable: false,
@@ -94,6 +97,7 @@ Ext.define('Savanna.upload.view.part.CurrentUploadsView', {
                     renderer : Savanna.upload.controller.UploadController.formatFileSize
                 },{
                     text: 'Progress',
+                    borderWidth: 0,
                     dataIndex: 'progress',
                     sortable: false,
                     hideable: false,
