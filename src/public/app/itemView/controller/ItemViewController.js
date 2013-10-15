@@ -70,24 +70,19 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         tmpStore.getProxy().url = this.buildItemDataFetchUrl(record.data.uri) + ';jsessionid=' + Savanna.jsessionid;
         tmpStore.load({
             scope: this,
-            callback: function(record, operation, success) {
-                console.log(record);
-                //do something whether the load succeeded or failed
-                //if operation is unsuccessful, record is null
-                //the record can also be referenced from tmpStore.getAt(0)
-            }
+            callback: this.handleRecordDataRequestSuccess
         });
     },
 
     handleRecordDataRequestSuccess: function (response, options, record) {
         var itemData = Ext.decode(response.responseText),
             itemView = Ext.create('Savanna.itemView.view.ItemViewer', {
-                title: record.data.referenceName,
+                title: 'TODO: Build Title Here',
                 closable: true,
                 autoScroll: true
             });
         this.itemView = itemView;
-        this.setData(itemData, itemView);
+        // this.setData(itemData, itemView);
 
         this.fireEvent('itemview:created', itemView);
     },
