@@ -63,3 +63,6 @@ A: This should now be fixed, but you'll likely need to run `sencha repo add -add
 
 Q: My theme isn't working properly, or my JavaScrip override isn't working.
 A: Currently, `mvn clean package` and `sencha app build` don't update the bootstrap.js manifest (which organizes the javascript class-path mapping). Run `sencha app refresh && sencha app build` to resolve.
+
+Q: I'm getting an Express error when I access 'http://localhost:3000/tests', what gives?
+A: You have node running the server from the wrong directory. If you're in Idea, ensure your `Working Directory` is set to `src` and `Path to Node App JS File` is set to `server.js`.
