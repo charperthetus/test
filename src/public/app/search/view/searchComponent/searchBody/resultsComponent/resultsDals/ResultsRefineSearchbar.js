@@ -4,7 +4,8 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
 
     requires: [
         'Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineTerms',
-        'Savanna.search.controller.resultsComponent.resultsDals.ResultsRefineSearchbarController'
+        'Savanna.search.controller.resultsComponent.resultsDals.ResultsRefineSearchbarController',
+        'Ext.ux.form.SearchField'
     ],
 
     controller: 'Savanna.search.controller.resultsComponent.resultsDals.ResultsRefineSearchbarController',
