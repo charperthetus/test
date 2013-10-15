@@ -58,7 +58,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                 flex: 1,
                 items: [
                     {
-                        xtype: 'itemview_header',
+                        xtype: 'itemview_edit_header',
                         itemId: 'itemHeader'
                     },
                     {

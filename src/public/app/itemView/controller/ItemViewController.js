@@ -5,7 +5,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
     views: [
         'Savanna.itemView.view.ItemViewer',
-        'Savanna.itemView.view.itemView.Header',
+        'Savanna.itemView.view.itemView.EditHeader',
         'Savanna.itemView.view.itemView.header.DisplayLabel',
         'Savanna.itemView.view.itemView.ImagesGrid',
         'Savanna.itemView.view.itemView.components.AutoCompleteWithTags',
