@@ -41,6 +41,13 @@ Ext.define('Savanna.desktop.view.SavannaDesktop', {
                 cls:'uploadButtonFramework',
                 ui:'brand-header',
                 scale: 'medium'
+                },{
+                // TODO: Change this out to a button or remove it depending on where MS lives         
+                itemId: 'modelsearchbutton',
+                cls:'modelSearchButtonFramework',
+                ui:'brand-header',
+                scale: 'medium',
+                text: 'Model Search'
             }]
         }, 
         {
