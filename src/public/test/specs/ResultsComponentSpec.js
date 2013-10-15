@@ -1113,51 +1113,6 @@ describe('Search Results', function () {
                 });
             });
 
-            describe('Test Results controller', function () {
-
-                beforeEach(function () {
-                    var metadataArray = [];
-
-                    resultsController.getResultsComponent().currentResultSet = {id: 'mockDAL', store: searchStore, metadata:Ext.create('Savanna.search.store.ResultsMetadata', {
-                        storeId: 'searchMetadata_' + 'mockDAL',
-                        pageSize: 20
-                    })};
-
-                    Ext.each(resultsController.getResultsComponent().currentResultSet.store.data.items, function (record) {
-                        metadataArray.push(record.get('uri'));
-                    });
-
-
-                });
-
-                spyOn(resultsController, 'onItemClick');
-                grid.fireEvent('itemdblclick', grid,  null, null, 0, null);
-                it('item clicks on the grid will fire function on results controller', function () {
-                    expect(resultsController.onItemClick).toHaveBeenCalled();
-                });
-
-                spyOn(resultsController, 'onItemPreview');
-                grid.fireEvent( 'itemclick', grid,  null, null, 0, null);
-                it('item double clicks on the grid will fire function on results controller', function () {
-                    expect(resultsController.onItemPreview).toHaveBeenCalled();
-                });
-
-                spyOn(resultsController, 'onItemMouseEnter');
-                grid.fireEvent( 'itemmouseenter', grid,  null, null, 0, null);
-                it('item hovers on the grid will fire function on results controller', function () {
-                    expect(resultsController.onItemMouseEnter).toHaveBeenCalled();
-                });
-
-                spyOn(resultsController, 'onItemMouseLeave');
-                grid.fireEvent( 'itemmouseleave', grid,  null, null, 0, null);
-                it('item rollouts on the grid will fire function on results controller', function () {
-                    expect(resultsController.onItemMouseLeave).toHaveBeenCalled();
-                });
-
-
-
-
-            });
 
 
             describe('Test Record Zero', function () {
@@ -1450,7 +1405,10 @@ describe('Search Results', function () {
 
             it('should expand all facets"', function () {
                 searchComponent.down('#resultsdals').queryById('resultsfacets').setActiveTab(0);
-                resultsController.onShowHideFacets(searchComponent.down('#resultsdals').queryById('resultsfacets').queryById('showHideFacets'));
+                var facets =  searchComponent.down('#resultsdals').queryById('resultsfacets');
+                var controller = facets.getController();
+                var btn = searchComponent.down('#resultsdals').queryById('resultsfacets').queryById('showHideFacets');
+                controller.onHideShowFacetsClick(btn);
                 var allExpanded = true;
                 Ext.each(resultsDals.queryById('resultsfacets').query('panel[cls=results-facet]'), function(facet) {
                     if(facet.collapsed) {
