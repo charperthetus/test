@@ -1,6 +1,11 @@
 Ext.define('Savanna.desktop.controller.WorkspaceController', {
     extend: 'Deft.mvc.ViewController',
 
+    requires: [
+        'Savanna.process.view.ProcessEditorComponent',
+        'Savanna.metadata.view.Details'
+    ],
+
     control: {
         singleviewbutton: {
             toggle: 'onSingleViewToggle'
@@ -122,8 +127,6 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
         var tab = tabpanel.add(panel);
         tabpanel.doLayout();
         tabpanel.setActiveTab(tab);
-
-        return panel;
     },
 
     createProcess: function(tabpanel) {
@@ -138,8 +141,6 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
         var tab = tabpanel.add(process);
         tabpanel.doLayout();
         tabpanel.setActiveTab(tab);
-
-        return process;
     },
 
     createDetails: function(tabpanel) {
@@ -154,8 +155,6 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
         var tab = tabpanel.add(details);
         tabpanel.doLayout();
         tabpanel.setActiveTab(tab);
-
-        return details;
     },
 
     onBeforeTabCloseMenu: function(tabpanel, menu) {

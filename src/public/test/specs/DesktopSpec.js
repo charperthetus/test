@@ -259,42 +259,5 @@ describe('Savanna.desktop', function () {
                 expect(nBefore).toEqual(nAfter);
             });
         });
-
-        describe('createDetails()', function() {
-
-            it('the item added should be of the correct type', function() {
-                var tabpanel = controller.getMaintabpanel();
-                expect(controller.createDetails(tabpanel) instanceof Savanna.metadata.view.Details).toBeTruthy();
-            });
-        });
-
-        describe('createProcess()', function() {
-            it('the item added should be of the correct type', function() {
-                var tabpanel = controller.getMaintabpanel();
-                expect(controller.createProcess(tabpanel) instanceof Savanna.process.view.ProcessEditorComponent).toBeTruthy();
-            });
-        });
-
-        describe('createItem()', function() {
-            it('the item added should be of the correct type', function() {
-                var tabpanel = controller.getMaintabpanel();
-                expect(controller.createProcess(tabpanel) instanceof Ext.panel.Panel).toBeTruthy();
-            });
-        });
-
-        describe('onTabClose()', function() {
-
-            beforeEach(function() {
-                controller.getSplitviewbutton().toggle();
-            });
-
-            it('closing the last tab in the secondary tab panel should remove the secondary tab panel', function() {
-                var item = controller.createItem(controller.getSecondarytabpanel());
-                item.close();
-                expect(controller.getSecondarytabpanel()).toBeNull();
-            });
-        });
-
     });
-
 });
