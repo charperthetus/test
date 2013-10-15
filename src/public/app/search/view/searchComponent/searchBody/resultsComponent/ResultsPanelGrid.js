@@ -8,8 +8,16 @@
 Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsPanelGrid', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.search_resultspanelgrid',
+    bubbleEvents: [
+        'search:grid:itemdblclick',
+        'search:grid:itemclick',
+        'search:grid:itemmouseenter',
+        'search:grid:itemmouseleave'
+    ],
+    controller: 'Savanna.search.controller.resultsComponent.ResultsPanelGridController',
 
     requires: [
+        'Savanna.search.controller.resultsComponent.ResultsPanelGridController',
         'Ext.grid.column.Template',
         'Ext.XTemplate'
     ],

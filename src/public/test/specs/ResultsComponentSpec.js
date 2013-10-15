@@ -1025,9 +1025,9 @@ describe('Search Results', function () {
 
         it('should set metadata for the current result set via metadataCallback', function()    {
 
-             resultsController.metadataCallback(metadataFixtures.resultsMetadataResponse, 'read', true, resultsComponent.currentResultSet);
+            resultsController.metadataCallback(metadataFixtures.resultsMetadataResponse, 'read', true, resultsComponent.currentResultSet);
 
-             expect(resultsComponent.currentResultSet.metadata).toBeTruthy();
+            expect(resultsComponent.currentResultSet.metadata).toBeTruthy();
         });
 
         it('should update preview window content with metadata html', function()    {
@@ -1072,7 +1072,7 @@ describe('Search Results', function () {
 
         });
 
-        describe('Preview functions', function () {
+        describe('Preview functions + controller', function () {
             beforeEach(function () {
 
                 origErrorHandler = Ext.Error.handle;
@@ -1112,6 +1112,8 @@ describe('Search Results', function () {
                     errorOnInvalidRequest: true
                 });
             });
+
+
 
             describe('Test Record Zero', function () {
 
@@ -1163,24 +1165,24 @@ describe('Search Results', function () {
 
 
 
-                    it('should update the preview label for the second record', function () {
+                it('should update the preview label for the second record', function () {
 
-                        var total = resultsController.getGridStore().totalCount;
-                        resultsController.onNextItemPreview();
-                        expect(resultsController.previewIndexAndTotalLabel().text).toBe('Preview Result 2 of ' + total);
+                    var total = resultsController.getGridStore().totalCount;
+                    resultsController.onNextItemPreview();
+                    expect(resultsController.previewIndexAndTotalLabel().text).toBe('Preview Result 2 of ' + total);
 
 
-                    });
+                });
 
-                    it('should prev button disabled for second record', function () {
-                        resultsController.onNextItemPreview();
-                        expect(resultsController.previewPrevButton().disabled).not.toBeTruthy();
-                    });
+                it('should prev button disabled for second record', function () {
+                    resultsController.onNextItemPreview();
+                    expect(resultsController.previewPrevButton().disabled).not.toBeTruthy();
+                });
 
-                    it('should next button enabled for second record', function () {
-                        resultsController.onNextItemPreview();
-                        expect(resultsController.previewNextButton().disabled).not.toBeTruthy();
-                    });
+                it('should next button enabled for second record', function () {
+                    resultsController.onNextItemPreview();
+                    expect(resultsController.previewNextButton().disabled).not.toBeTruthy();
+                });
 
 
             });
@@ -1403,7 +1405,10 @@ describe('Search Results', function () {
 
             it('should expand all facets"', function () {
                 searchComponent.down('#resultsdals').queryById('resultsfacets').setActiveTab(0);
-                resultsController.onShowHideFacets(searchComponent.down('#resultsdals').queryById('resultsfacets').queryById('showHideFacets'));
+                var facets =  searchComponent.down('#resultsdals').queryById('resultsfacets');
+                var controller = facets.getController();
+                var btn = searchComponent.down('#resultsdals').queryById('resultsfacets').queryById('showHideFacets');
+                controller.onHideShowFacetsClick(btn);
                 var allExpanded = true;
                 Ext.each(resultsDals.queryById('resultsfacets').query('panel[cls=results-facet]'), function(facet) {
                     if(facet.collapsed) {

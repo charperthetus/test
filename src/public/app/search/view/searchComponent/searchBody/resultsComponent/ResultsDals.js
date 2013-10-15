@@ -70,13 +70,15 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
             this.add(facetTabs);    // ...but only add if doesn't exist
         }
 
-        this.store.each(function (record) {
+/*      this just seems to be trying to delete strings I'm commenting it out in case it is needed.
+
+  this.store.each(function (record) {
             var dalId = record.get('id'),
                 checked = searchPanelDals.queryById(dalId).query('checkbox')[0].getValue();
             if (!checked && this.queryById(record.get('id')) !== undefined) {
                 this.remove(record.get('id'));
             }
-        }, this);
+        }, this);*/
 
         /*
          create any DALs in the list of sources that do not already
