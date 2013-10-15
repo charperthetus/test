@@ -15,18 +15,6 @@ Ext.define('Savanna.metadata.view.String', {
     ],
 
     items: [
-        {
-            xtype: 'label',
-            itemId: 'displayLabelItem',
-            text: '',
-            width: '100%'
-        },
-        {
-            xtype: 'label',
-            itemId: 'displayValue',
-            text: '',
-            width: '100%'
-        }
     ],
 
     initComponent: function () {
@@ -35,10 +23,23 @@ Ext.define('Savanna.metadata.view.String', {
         var config = this.initialConfig || {};
         this.initValues(config);
         var me = this;
+        this.makeItems();
 
         this.on('beforerender', Ext.bind(function() {
-            me.down('#displayLabelItem').text = me.displayLabel;
-            me.down('#displayValue').html = (null === me.value) ? '&nbsp;' : me.value;
+                if(this.editMode) {
+                    if(me.down('#displayValueEdit')) {
+                        me.down('#displayValueEdit').setValue(me.value);
+                        me.down('#displayValueEdit').fieldLabel = me.displayLabel;
+                    }
+                } else {
+                    if(me.down('#displayLabelItem')) {
+                        me.down('#displayLabelItem').html = me.displayLabel + ':&nbsp;&nbsp;';
+                    }
+                    if(me.down('#displayValue')) {
+                        me.down('#displayValue').html = (null === me.value) ? '&nbsp;' : me.value;
+                    }
+                }
+
         }, this));
     }
 

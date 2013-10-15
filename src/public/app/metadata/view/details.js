@@ -6,7 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 Ext.define('Savanna.metadata.view.Details', {
-    extend: 'Ext.panel.Panel',
+    extend: 'Ext.form.Panel',
     alias: 'widget.metadata_details',
 
     mixins: {
@@ -40,27 +40,31 @@ Ext.define('Savanna.metadata.view.Details', {
     autoScroll: true,
     editMode: false,
 
+    setEditMode: function(inEditMode) {
+        var me = this;
+        if(inEditMode != this.editMode) {
+            me.editMode = inEditMode;
+            me.removeAll(); // this is only ok if all of our display items are created via createMetadataFields.
+            me.createMetadataFields();
+        }
+    },
+
     itemURI: '',
 
     tbar: [
-      {
+        {
           xtype:    'button',
           text:     'Edit',
           itemId:   'metadata_edit_button'
-      }
+        },
+        {
+            xtype:    'button',
+            text:     'Save',
+            itemId:   'metadata_save_button'
+        }
     ],
 
     items: [
-        {
-            // this should be replaced by a Classification bar or something of the sort
-            xtype: 'label',
-            itemId: 'classification',
-            text: 'UnClassified'
-        },
-        {
-            xtype: 'label',
-            itemId: 'docTitle'
-        }
     ],
 
     initComponent: function () {
@@ -83,6 +87,8 @@ Ext.define('Savanna.metadata.view.Details', {
     createMetadataFields: function() {
         var me = this;
 
+        // TODO: need to create and add a classification thing.
+
         Ext.Array.each(this.store.data.items, function(metadata) {
             var typeToAdd = me.getTypeFromName(metadata.data.type);
 
@@ -92,7 +98,9 @@ Ext.define('Savanna.metadata.view.Details', {
                     value:          metadata.data.value,
                     displayLabel:   metadata.data.displayLabel,
                     visible:        metadata.data.visible !== undefined ? metadata.data.visible : false,
-                    editable:       metadata.data.editable !== undefined ? metadata.data.editable : false
+                    editable:       metadata.data.editable !== undefined ? metadata.data.editable : false,
+                    editMode:       me.editMode,
+                    type:           metadata.data.type
                 };
                 var metadataView = me.createViewForType(typeToAdd, valueObject );
                 if (metadataView) {
@@ -146,7 +154,7 @@ Ext.define('Savanna.metadata.view.Details', {
                 typeToAdd = 'Savanna.metadata.view.UriList';
                 break;
             default:
-                console.log('Unknown metadata type', name);
+                //console.log('Unknown metadata type', name);
                 typeToAdd = '';
                 break;
         }
@@ -157,11 +165,13 @@ Ext.define('Savanna.metadata.view.Details', {
         var fieldView = null;
         if(fieldType) {
             fieldView = Ext.create(fieldType, {
-                value: valueObject.value,
-                key: valueObject.key,
-                displayLabel: valueObject.displayLabel,
-                editable: valueObject.editable,
-                visible: valueObject.visible
+                value:          valueObject.value,
+                key:            valueObject.key,
+                displayLabel:   valueObject.displayLabel,
+                editable:       valueObject.editable,
+                visible:        valueObject.visible,
+                editMode:       valueObject.editMode,
+                type:           valueObject.type
             })
         }
         return fieldView;
