@@ -39,8 +39,8 @@ Ext.define('Savanna.controller.Main', {
     },
 
     swapLogin: function(sessionId) {
-        if (this.app && this.app.viewport && this.app.viewport.queryById) {
-            var mainViewport = this.app.viewport.queryById('viewport_main');
+        if (this.app && this.app.viewport) {
+            var mainViewport = this.app.viewport;
             var login = this.app.viewport.queryById('login');
             if (mainViewport && login) {
                 Savanna.jsessionid = sessionId;
