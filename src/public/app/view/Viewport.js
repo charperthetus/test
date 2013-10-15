@@ -12,24 +12,12 @@ Ext.define('Savanna.view.Viewport', {
     ],
 
     border: false,
-    layout: {
-        type: 'border'
-    },
+    layout: 'fit',
 
     items: [
         {
-            xtype:"panel",
-            region:"center",
-            layout:"fit",
-            itemId:"viewport_main",
-            border: false,
-            items:  [
-                {
-                    xtype: 'login',
-                    itemId: 'login'
-                }
-            ]
+            xtype: 'login',
+            itemId: 'login'
         }
-
     ]
 });
