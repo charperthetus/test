@@ -29,7 +29,7 @@ Ext.define('Savanna.process.controller.ProcessController', {
             click: 'clearJSONClick'
         },
         canvas: {
-            boxready: 'loadJSONClick'
+            boxready: 'loadInitialJSON'
         },
         metadata: {
         },
@@ -122,7 +122,23 @@ Ext.define('Savanna.process.controller.ProcessController', {
         var canvas = this.getCanvas();
         var diagram = canvas.diagram;
         diagram.scale = diagram.scale / Math.LOG2E;
-    }
+    },
 
+    loadInitialJSON: function () {
+        var canvas = this.getCanvas();
+        var diagram = canvas.diagram;
+        var metadata = this.getMetadata();
+        var textarea = metadata.down('#JSONtextarea');
+
+        Ext.Ajax.request({
+            url:SavannaConfig.ureaProcessDataUrl,
+            success : function(response) {
+                var bytes = response.responseText;
+                diagram.model = go.Model.fromJson(bytes);
+                textarea.setValue(bytes);
+                diagram.undoManager.isEnabled = true;
+            }
+        });
+    }
 
 });

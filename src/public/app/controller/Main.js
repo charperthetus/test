@@ -82,5 +82,6 @@ Ext.define('Savanna.controller.Main', {
         SavannaConfig.crumbnetTemplatesUrl = 'resources/data/Crumbnet.json';
         SavannaConfig.processTemplatesUrl = 'resources/data/Process.json';
         SavannaConfig.metadataTestDataUrl = 'resources/data/Metadata.json';
+        SavannaConfig.ureaProcessDataUrl = 'resources/data/UreaProcess.json';
     }
 });
