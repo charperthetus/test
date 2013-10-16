@@ -27,31 +27,25 @@ StepLayout.prototype.doLayout = function(coll) {
     while (iter.next()) {
         var part = iter.value;
         if (part instanceof go.Link) {
-            switch (part.toNode.category) {
-                case 'Tool':
+            switch (part.category) {
+                case 'ToolLink':
                     toolParts.add(part);
+                    toolParts.add(part.toNode);
+                    countToolNodes += 1;
                     break;
-                case 'Item':
+                case 'InputLink':
                     inputParts.add(part);
+                    inputParts.add(part.toNode);
                     break;
-                case 'Byproduct':
+                case 'ByproductLink':
                     byproductParts.add(part);
+                    byproductParts.add(part.toNode);
+                    countByproductNodes += 1;
                     break;
             }
         } else {
             switch (part.category) {
-                case 'Tool':
-                    toolParts.add(part);
-                    countToolNodes += 1;
-                    break;
-                case 'Item':
-                    inputParts.add(part);
-                    break;
-                case 'Byproduct':
-                    byproductParts.add(part);
-                    countByproductNodes += 1;
-                    break;
-                case 'ActionsGroup':
+                case 'InternalGroup':
                     toolParts.add(part);
                     inputParts.add(part);
                     byproductParts.add(part);
