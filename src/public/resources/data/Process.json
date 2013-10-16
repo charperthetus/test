@@ -7,33 +7,27 @@
             "templates": [
                 {
                     "category": "ProcessAction",
-                    "title": "Mix",
-                    "figure": "Circle"
+                    "text": "Mix"
                 },
                 {
                     "category": "ProcessAction",
-                    "title": "Stir",
-                    "figure": "Circle"
+                    "text": "Stir"
                 },
                 {
                     "category": "ProcessAction",
-                    "title": "Dissolve",
-                    "figure": "Circle"
+                    "text": "Dissolve"
                 },
                 {
                     "category": "ProcessAction",
-                    "title": "Heat",
-                    "figure": "Circle"
+                    "text": "Heat"
                 },
                 {
                     "category": "ProcessAction",
-                    "title": "Filter",
-                    "figure": "Circle"
+                    "text": "Filter"
                 },
                 {
                     "category": "ProcessAction",
-                    "title": "Rinse",
-                    "figure": "Circle"
+                    "text": "Rinse"
                 }
 
             ]
@@ -44,18 +38,15 @@
             "templates": [
                 {
                     "category": "ProcessItem",
-                    "title": "Thing",
-                    "figure": "Square"
+                    "text": "Thing"
                 },
                 {
                     "category": "ProcessItem",
-                    "title": "Person",
-                    "figure": "Square"
+                    "text": "Person"
                 },
                 {
                     "category": "ProcessItem",
-                    "title": "Place",
-                    "figure": "Square"
+                    "text": "Place"
                 }
             ]
         },
@@ -65,13 +56,11 @@
             "templates": [
                 {
                     "category": "DecisionPoint",
-                    "title": "Branch",
-                    "figure": "Diamond"
+                    "text": "Branch"
                 },
                 {
                     "category": "DecisionPoint",
-                    "title": "Merge",
-                    "figure": "Diamond"
+                    "text": "Merge"
                 }
             ]
         }
