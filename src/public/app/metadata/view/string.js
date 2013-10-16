@@ -19,26 +19,22 @@ Ext.define('Savanna.metadata.view.String', {
 
     initComponent: function () {
         this.callParent(arguments);
-        Savanna.controller.Factory.getController('Savanna.metadata.controller.FieldTypes');
-        var config = this.initialConfig || {};
-        this.initValues(config);
         var me = this;
-        this.makeItems();
 
-        this.on('beforerender', Ext.bind(function() {
-                if(this.editMode) {
-                    if(me.down('#displayValueEdit')) {
-                        me.down('#displayValueEdit').setValue(me.value);
-                        me.down('#displayValueEdit').fieldLabel = me.displayLabel;
-                    }
-                } else {
-                    if(me.down('#displayLabelItem')) {
-                        me.down('#displayLabelItem').html = me.displayLabel + ':&nbsp;&nbsp;';
-                    }
-                    if(me.down('#displayValue')) {
-                        me.down('#displayValue').html = (null === me.value) ? '&nbsp;' : me.value;
-                    }
+        me.on('beforerender', Ext.bind(function() {
+            if(me.getEditable() && me.getEditMode()) {
+                if(me.down('#displayValueEdit')) {
+                    me.down('#displayValueEdit').setValue(me.getValue());
+                    me.down('#displayValueEdit').fieldLabel = me.getDisplayLabel();
                 }
+            } else {
+                if(me.down('#displayLabelItem')) {
+                    me.down('#displayLabelItem').html = me.getDisplayLabel() + ':&nbsp;&nbsp;';
+                }
+                if(me.down('#displayValue')) {
+                    me.down('#displayValue').html = (null === me.getValue()) ? '&nbsp;' : me.getValue();
+                }
+            }
 
         }, this));
     }

@@ -6,7 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 Ext.define('Savanna.metadata.view.Details', {
-    extend: 'Ext.form.Panel',
+    extend: 'Ext.panel.Panel',
     alias: 'widget.metadata_details',
 
     mixins: {
@@ -29,29 +29,12 @@ Ext.define('Savanna.metadata.view.Details', {
         'Savanna.metadata.view.IntegerList',
         'Savanna.metadata.view.DoubleList',
         'Savanna.metadata.view.UriList',
-        'Savanna.metadata.controller.FieldTypes',
-        'Savanna.metadata.store.Metadata',
-        'Savanna.controller.Factory'
+        'Savanna.metadata.controller.MetadataViewController',
+        'Savanna.metadata.store.Metadata'
+        //'Savanna.controller.Factory'
     ],
 
-    layout: 'vbox',
-    collapsible: true,
-
-    autoScroll: true,
-    editMode: false,
-    overflowY: 'auto',
-    
-
-    setEditMode: function(inEditMode) {
-        var me = this;
-        if(inEditMode != this.editMode) {
-            me.editMode = inEditMode;
-            me.removeAll(); // this is only ok if all of our display items are created via createMetadataFields.
-            me.createMetadataFields();
-        }
-    },
-
-    itemURI: '',
+    controller: 'Savanna.metadata.controller.MetadataViewController',
 
     tbar: [
         {
@@ -63,19 +46,42 @@ Ext.define('Savanna.metadata.view.Details', {
             xtype:    'button',
             text:     'Save',
             itemId:   'metadata_save_button'
+        },
+        {
+            xtype:    'button',
+            text:     'Cancel',
+            itemId:   'metadata_cancel_button'
         }
     ],
 
     items: [
     ],
 
+    layout: 'vbox',
+    collapsible: true,
+
+    overflowY: 'auto',
+    autoScroll: true,
+
+    config: {
+        editMode: false,
+        itemURI: ''
+    },
+
+    updateEditMode: function(newEditMode, oldEditMode) {
+        var me = this;
+        if(undefined != oldEditMode ) { // don't want to do this on init
+            me.removeAll(); // this is only ok if all of our display items are created via createMetadataFields.
+            me.createMetadataFields();
+        }
+    },
+
     initComponent: function () {
         this.mixins.storeable.initStore.call(this);
         this.callParent(arguments);
-        Savanna.controller.Factory.getController('Savanna.metadata.controller.FieldTypes');
 
         var config = this.initialConfig || {};
-        this.itemURI = config.itemURI;
+        this.setItemURI( config.itemURI );
 
         var metadataStore = Ext.data.StoreManager.lookup('metadata');
         metadataStore.itemURI = config.itemURI;
@@ -101,11 +107,12 @@ Ext.define('Savanna.metadata.view.Details', {
                     displayLabel:   metadata.data.displayLabel,
                     visible:        metadata.data.visible !== undefined ? metadata.data.visible : false,
                     editable:       metadata.data.editable !== undefined ? metadata.data.editable : false,
-                    editMode:       me.editMode,
+                    editMode:       me.getEditMode(),
                     type:           metadata.data.type
                 };
                 var metadataView = me.createViewForType(typeToAdd, valueObject );
                 if (metadataView) {
+                    //me.add( metadataView );
                     me.add( metadataView );
                 }
             }

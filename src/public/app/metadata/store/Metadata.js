@@ -21,11 +21,26 @@ Ext.define('Savanna.metadata.store.Metadata', {
 
     itemURI: '',
 
+    constructor: function() {
+        var me = this,
+            ReaderClass;
+
+        this.callParent(arguments);
+
+        this.setProxy({
+            type: 'savanna-cors'
+
+//            writer: {
+//                type: 'json'
+//            }
+        });
+    },
+
     load: function() {
         // Take this line out to use the Provided URI below.
-        this.getProxy().url = SavannaConfig.metadataTestDataUrl;
+        //this.getProxy().url = SavannaConfig.metadataTestDataUrl;
         // Put this line back in to use the URI set in the constructor.
-        //this.getProxy().url = SavannaConfig.metadataUrl + '/' + this.itemURI;
+        this.getProxy().url = SavannaConfig.metadataUrl + '/' + this.itemURI;
 
         this.callParent(arguments);
     }

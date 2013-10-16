@@ -15,56 +15,75 @@ Ext.define('Savanna.metadata.view.MetadataItemView', {
     width: "100%",
     border: false,
 
-    editMode: false,
-//    setEditMode: function(inEditMode) {
-//        console.log('this.editMode', this.editMode);
-//        console.log('inEditMode', inEditMode);
-//
-//        if(inEditMode != this.editMode) {
-//            this.editMode = inEditMode;
-//            console.log('this.editMode', this.editMode);
-//            this.makeItems();
-//            //this.refresh();
-//        }
-//    },
+    id: '',
 
-    // metadata values
-    key: '',
-    value: null,
-    displayLabel: '',
-    visible: true,
-    editable: true,
-    type: '',
+    config: {
+        editMode: false,
+
+        // metadata values
+        key: '',
+        value: null,
+        displayLabel: '',
+        visible: true,
+        editable: true,
+        type: ''
+    },
+
+    applyEditMode: function(editMode) {
+        if(this.getEditable())
+            return editMode;
+        else
+            return undefined;
+    },
+
+
 
     initValues: function(config) {
-        this.key = config.key;
-        this.value = config.value;
-        this.displayLabel = config.displayLabel;
-        this.visible = config.visible;
-        this.editable = config.editable;
-        this.editMode = config.editMode;
-        this.type = config.type;
+        id = config.key;
+        this.setKey( config.key );
+        this.setValue( config.value );
+        this.setDisplayLabel( config.displayLabel );
+        this.setVisible( config.visible );
+        this.setEditable( config.editable );
+        this.setEditMode( config.editMode );
+        this.setType( config.type );
+    },
+
+    initComponent: function () {
+        this.callParent(arguments);
+        var config = this.initialConfig || {};
+        this.initValues(config);
+        this.makeItems();
     },
 
     makeItems: function () {
         this.removeAll();
-        if(this.editMode) {
+        var me = this;
+        if(this.getEditable() && this.getEditMode()) {
             this.add(Ext.create('Ext.form.field.Text', {
                 fieldLabel: '',
                 itemId: 'displayValueEdit',
                 allowBlank: true,
                 width: '100%',
-                labelWidth: '15%'
+                labelWidth: 200,
+                listeners: {
+                            blur: function(d) {
+                                var newVal = d.getValue().trim();
+                                //console.log('newValue', newVal);
+                                me.setValue(newVal);
+                            }
+                        }
             }));
         } else {
             this.add(Ext.create('Ext.form.Label', {
                 itemId: 'displayLabelItem',
-                width: '15%',
+                width: 200,
+                minWidth: 200,
                 height: 25
             }));
             this.add(Ext.create('Ext.form.Label', {
                 itemId: 'displayValue',
-                width: '85%'
+                width: '100%'
 
             }));
         }

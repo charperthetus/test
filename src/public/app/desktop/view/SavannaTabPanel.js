@@ -13,7 +13,6 @@ Ext.define('Savanna.desktop.view.SavannaTabPanel', {
         'Ext.ux.TabCloseMenu',
         'Savanna.crumbnet.view.CrumbnetComponent',
         'Savanna.metadata.view.Details',
-        'Savanna.metadata.view.DetailsEdit',
         'Savanna.process.view.ProcessEditorComponent'
     ],
     ui: 'dark',
