@@ -3,510 +3,536 @@
   "nodeDataArray":[
       {
    		  "category":"Start",
-   		  "key":"blah:0"
+   		  "key":"x00/Start"
    	  },
       {
-   		  "category":"Decision",
-   		  "key":"blah:10",
+   		  "category":"DecisionPoint",
+   		  "key":"x10/DecisionPoint",
    		  "text":"Use UAN or Urea Fertilizer"
    	  },
       {
-   		  "category":"Step",
-   		  "key":"blah:11",
+   		  "category":"ProcessModel",
+   		  "key":"x11/ProcessModel",
    		  "text":"Mix UAN with a Strong Acid",
    		  "isGroup":"true"
    	  },
       {
-   		  "category":"ActionsGroup",
-   		  "key":"blah:51",
-   		  "group":"blah:11",
+   		  "category":"InternalGroup",
+   		  "key":"x51/InternalGroup",
+   		  "group":"x11/ProcessModel",
    		  "isGroup":"true"
    	  },
       {
-   		  "category":"Action",
-   		  "key":"blah:12",
+   		  "category":"ProcessAction",
+   		  "key":"x12/ProcessAction",
    		  "text":"Mix",
-   		  "group":"blah:51"
+   		  "group":"x51/InternalGroup"
    	  },
       {
-   		  "category":"Item",
-   		  "key":"blah:14",
+   		  "category":"ProcessItem",
+   		  "key":"x14/ProcessItem",
    		  "text":"Urea Ammonium Nitrate",
-   		  "group":"blah:11"
+   		  "group":"x11/ProcessModel"
    	  },
       {
-   		  "category":"Item",
-   		  "key":"blah:13",
+   		  "category":"ProcessItem",
+   		  "key":"x13/ProcessItem",
    		  "text":"Strong Acid",
-   		  "group":"blah:11"
+   		  "group":"x11/ProcessModel"
    	  },
       {
-          "category":"FinalResult",
+          "category":"ProcessItem",
           "text":"Urea Nitrate",
-          "key":"blah:43"
+          "key":"x43/ProcessItem"
       },
       {
-   		  "category":"Step",
-   		  "key":"blah:2",
+   		  "category":"ProcessModel",
+   		  "key":"x02/ProcessModel",
    		  "text":"Dissolve Urea in Water",
    		  "isGroup":"true"
    	  },
       {
-   		  "category":"ActionsGroup",
-   		  "key":"blah:52",
-   		  "group":"blah:2",
+   		  "category":"InternalGroup",
+   		  "key":"x52/InternalGroup",
+   		  "group":"x02/ProcessModel",
    		  "isGroup":"true"
    	  },
       {
-   		  "category":"Action",
-   		  "key":"blah:1",
+   		  "category":"ProcessAction",
+   		  "key":"x01/ProcessAction",
    		  "text":"Dissolve",
-   		  "group":"blah:52"
+   		  "group":"x52/InternalGroup"
    	  },
 	  {
-		  "category":"Tool",
-		  "key":"blah:3",
+		  "category":"ProcessItem",
+		  "key":"x03/ProcessItem",
 		  "text":"Heat Source",
-		  "group":"blah:2"
+		  "group":"x02/ProcessModel"
 	  },
 	  {
-		  "category":"Item",
-		  "key":"blah:4",
+		  "category":"ProcessItem",
+		  "key":"x04/ProcessItem",
 		  "text":"Water",
-		  "group":"blah:2"
+		  "group":"x02/ProcessModel"
 	  },
 	  {
-		  "category":"Item",
-		  "key":"blah:5",
+		  "category":"ProcessItem",
+		  "key":"x05/ProcessItem",
 		  "text":"Urea Fertilizer",
-		  "group":"blah:2"
+		  "group":"x02/ProcessModel"
 	  },
 	  {
-		  "category":"FinalResult",
-		  "key":"blah:6",
+		  "category":"ProcessItem",
+		  "key":"x06/ProcessItem",
 		  "text":"Solution"
 	  },
 	  {
-		  "category":"Decision",
-		  "key":"blah:7",
+		  "category":"DecisionPoint",
+		  "key":"x07/DecisionPoint",
 		  "text":"Is NitricAcid available?"
 	  },
 	  {
-		  "category":"Step",
-		  "key":"blah:15",
+		  "category":"ProcessModel",
+		  "key":"x15/ProcessModel",
 		  "text":"Mix in Nitric Acid",
 		  "isGroup":"true"
 	  },
       {
-   		  "category":"ActionsGroup",
-   		  "key":"blah:55",
-   		  "group":"blah:15",
+   		  "category":"InternalGroup",
+   		  "key":"x55/InternalGroup",
+   		  "group":"x15/ProcessModel",
    		  "isGroup":"true"
    	  },
       {
-   		  "category":"Action",
-   		  "key":"blah:8",
+   		  "category":"ProcessAction",
+   		  "key":"x08/ProcessAction",
    		  "text":"Mix",
-   		  "group":"blah:55"
+   		  "group":"x55/InternalGroup"
    	  },
 	  {
-		  "category":"Item",
-		  "key":"blah:16",
+		  "category":"ProcessItem",
+		  "key":"x16/ProcessItem",
 		  "text":"Nitric Acid",
-		  "group":"blah:15"
+		  "group":"x15/ProcessModel"
 	  },
       {
-   		  "category":"Tool",
-   		  "key":"blah:17",
+   		  "category":"ProcessItem",
+   		  "key":"x17/ProcessItem",
    		  "text":"Stirrer Rod",
-   		  "group":"blah:15"
+   		  "group":"x15/ProcessModel"
    	  },
       {
-   		  "category":"FinalResult",
-   		  "key":"blah:44",
+   		  "category":"ProcessItem",
+   		  "key":"x44/ProcessItem",
    		  "text":"Urea Nitrate"
    	  },
 	  {
-		  "category":"Step",
-		  "key":"blah:18",
+		  "category":"ProcessModel",
+		  "key":"x18/ProcessModel",
 		  "text":"Dissolve Nitrate Salt",
 		  "isGroup":"true"
 	  },
       {
-   		  "category":"ActionsGroup",
-   		  "key":"blah:58",
-   		  "group":"blah:18",
+   		  "category":"InternalGroup",
+   		  "key":"x58/InternalGroup",
+   		  "group":"x18/ProcessModel",
    		  "isGroup":"true"
    	  },
 	  {
-		  "category":"Action",
-		  "key":"blah:19",
+		  "category":"ProcessAction",
+		  "key":"x19/ProcessAction",
 		  "text":"Dissolve",
-		  "group":"blah:58"
+		  "group":"x58/InternalGroup"
 	  },
 	  {
-		  "category":"Tool",
-		  "key":"blah:20",
+		  "category":"ProcessItem",
+		  "key":"x20/ProcessItem",
 		  "text":"Mixing Container",
-		  "group":"blah:18"
+		  "group":"x18/ProcessModel"
 	  },
 	  {
-		  "category":"Item",
-		  "key":"blah:21",
+		  "category":"ProcessItem",
+		  "key":"x21/ProcessItem",
 		  "text":"Water",
-		  "group":"blah:18"
+		  "group":"x18/ProcessModel"
 	  },
 	  {
-		  "category":"Item",
-		  "key":"blah:22",
+		  "category":"ProcessItem",
+		  "key":"x22/ProcessItem",
 		  "text":"Nitrate Salt",
-		  "group":"blah:18"
+		  "group":"x18/ProcessModel"
 	  },
 	  {
-		  "category":"FinalResult",
-		  "key":"blah:23",
+		  "category":"ProcessItem",
+		  "key":"x23/ProcessItem",
 		  "text":"Nitrate Salt"
 	  },
 	  {
-		  "category":"Step",
-		  "key":"blah:24",
+		  "category":"ProcessModel",
+		  "key":"x24/ProcessModel",
 		  "text":"Mix Urea, Nitrate Salt, and Acid",
 		  "isGroup":"true"
 	  },
       {
-   		  "category":"ActionsGroup",
-   		  "key":"blah:54",
-   		  "group":"blah:24",
+   		  "category":"InternalGroup",
+   		  "key":"x54/InternalGroup",
+   		  "group":"x24/ProcessModel",
    		  "isGroup":"true"
    	  },
 	  {
-		  "category":"Action",
-		  "key":"blah:9",
+		  "category":"ProcessAction",
+		  "key":"x09/ProcessAction",
 		  "text":"Mix",
-		  "group":"blah:54"
+		  "group":"x54/InternalGroup"
 	  },
 	  {
-		  "category":"Item",
-		  "key":"blah:25",
+		  "category":"ProcessItem",
+		  "key":"x25/ProcessItem",
 		  "text":"Strong Acid",
-		  "group":"blah:24"
+		  "group":"x24/ProcessModel"
 	  },
 	  {
-		  "category":"Tool",
-		  "key":"blah:26",
+		  "category":"ProcessItem",
+		  "key":"x26/ProcessItem",
 		  "text":"Stirrer Rod",
-		  "group":"blah:24"
+		  "group":"x24/ProcessModel"
 	  },
       {
-   		  "category":"FinalResult",
-   		  "key":"blah:27",
+   		  "category":"ProcessItem",
+   		  "key":"x27/ProcessItem",
    		  "text":"Urea Nitrate"
    	  },
 	  {
-		  "category":"FinalResult",
-		  "key":"blah:28",
+		  "category":"ProcessItem",
+		  "key":"x28/ProcessItem",
 		  "text":"Urea Nitrate"
 	  },
 	  {
-		  "category":"Step",
-		  "key":"blah:29",
+		  "category":"ProcessModel",
+		  "key":"x29/ProcessModel",
 		  "text":"Filter out urea Nitrate Precipitate",
 		  "isGroup":"true"
 	  },
       {
-   		  "category":"ActionsGroup",
-   		  "key":"blah:59",
-   		  "group":"blah:29",
+   		  "category":"InternalGroup",
+   		  "key":"x59/InternalGroup",
+   		  "group":"x29/ProcessModel",
    		  "isGroup":"true"
    	  },
 	  {
-		  "category":"Action",
-		  "key":"blah:30",
+		  "category":"ProcessAction",
+		  "key":"x30/ProcessAction",
 		  "text":"Filter",
-		  "group":"blah:59"
+		  "group":"x59/InternalGroup"
 	  },
 	  {
-		  "category":"Tool",
-		  "key":"blah:31",
+		  "category":"ProcessItem",
+		  "key":"x31/ProcessItem",
 		  "text":"Filter",
-		  "group":"blah:29"
+		  "group":"x29/ProcessModel"
 	  },
 	  {
-		  "category":"Byproduct",
-		  "key":"blah:32",
+		  "category":"ProcessItem",
+		  "key":"x32/ProcessItem",
 		  "text":"Filtrate",
-		  "group":"blah:29"
+		  "group":"x29/ProcessModel"
 	  },
 	  {
-		  "category":"FinalResult",
-		  "key":"blah:33",
+		  "category":"ProcessItem",
+		  "key":"x33/ProcessItem",
 		  "text":"Urea Nitrate"
 	  },
 	  {
-		  "category":"Decision",
-		  "key":"blah:34",
+		  "category":"DecisionPoint",
+		  "key":"x34/DecisionPoint",
 		  "text":"Dry Indoors or Out"
 	  },
 	  {
-		  "category":"Step",
-		  "key":"blah:35",
+		  "category":"ProcessModel",
+		  "key":"x35/ProcessModel",
 		  "text":"Dry Outdoors",
 		  "isGroup":"true"
 	  },
       {
-   		  "category":"ActionsGroup",
-   		  "key":"blah:65",
-   		  "group":"blah:35",
+   		  "category":"InternalGroup",
+   		  "key":"x65/InternalGroup",
+   		  "group":"x35/ProcessModel",
    		  "isGroup":"true"
    	  },
 	  {
-		  "category":"Action",
-		  "key":"blah:36",
+		  "category":"ProcessAction",
+		  "key":"x36/ProcessAction",
 		  "text":"Dry",
-		  "group":"blah:65"
+		  "group":"x65/InternalGroup"
 	  },
 	  {
-		  "category":"Tool",
-		  "key":"blah:37",
+		  "category":"ProcessItem",
+		  "key":"x37/ProcessItem",
 		  "text":"Drying Surface",
-		  "group":"blah:35"
+		  "group":"x35/ProcessModel"
 	  },
 	  {
-		  "category":"Step",
-		  "key":"blah:38",
+		  "category":"ProcessModel",
+		  "key":"x38/ProcessModel",
 		  "text":"Dry Indoors",
 		  "isGroup":"true"
 	  },
       {
-   		  "category":"ActionsGroup",
-   		  "key":"blah:68",
-   		  "group":"blah:38",
+   		  "category":"InternalGroup",
+   		  "key":"x68/InternalGroup",
+   		  "group":"x38/ProcessModel",
    		  "isGroup":"true"
    	  },
 	  {
-		  "category":"Action",
-		  "key":"blah:39",
+		  "category":"ProcessAction",
+		  "key":"x39/ProcessAction",
 		  "text":"Dry",
-		  "group":"blah:68"
+		  "group":"x68/InternalGroup"
 	  },
 	  {
-		  "category":"Tool",
-		  "key":"blah:40",
+		  "category":"ProcessItem",
+		  "key":"x40/ProcessItem",
 		  "text":"Drying Source",
-		  "group":"blah:38"
+		  "group":"x38/ProcessModel"
 	  },
 	  {
-          "category":"FinalResult",
-		  "key":"blah:41",
+          "category":"ProcessItem",
+		  "key":"x41/ProcessItem",
           "text":"Urea Nitrate"
 	  },
       {
-   		  "category":"FinalResult",
-   		  "key":"blah:42",
+   		  "category":"ProcessItem",
+   		  "key":"x42/ProcessItem",
    		  "text":"Urea Nitrate"
    	  },
       {
-   		  "category":"FinalResult",
-   		  "key":"blah:45",
+   		  "category":"ProcessItem",
+   		  "key":"x45/ProcessItem",
    		  "text":"Urea Nitrate"
    	  },
       {
    		  "category":"End",
-   		  "key":"blah:46"
+   		  "key":"x99/End"
    	  }
 
   ],
   "linkDataArray":[
       {
-   		  "from":"blah:0",
-   		  "to":"blah:10"
+   		  "from":"x00/Start",
+   		  "to":"x10/DecisionPoint",
+          "category":"ProcessLink"
    	  },
       {
-   		  "from":"blah:10",
-   		  "to":"blah:11",
+   		  "from":"x10/DecisionPoint",
+   		  "to":"x11/ProcessModel",
+          "category":"ProcessLink",
    		  "text":"Use UAN",
    		  "visible":true
    	  },
       {
-   		  "from":"blah:51",
-   		  "to":"blah:14",
-          "category":"backLink"
+   		  "from":"x51/InternalGroup",
+   		  "to":"x14/ProcessItem",
+          "category":"InputLink"
    	  },
       {
-   		  "from":"blah:51",
-   		  "to":"blah:13",
-          "category":"backLink"
+   		  "from":"x51/InternalGroup",
+   		  "to":"x13/ProcessItem",
+          "category":"InputLink"
    	  },
       {
-   		  "from":"blah:11",
-   		  "to":"blah:43"
+   		  "from":"x11/ProcessModel",
+   		  "to":"x43/ProcessItem",
+          "category":"ProcessLink"
    	  },
       {
-   		  "from":"blah:52",
-   		  "to":"blah:3",
-          "category":"backLink"
+   		  "from":"x52/InternalGroup",
+   		  "to":"x03/ProcessItem",
+          "category":"ToolLink"
    	  },
 	  {
-		  "from":"blah:52",
-		  "to":"blah:4",
-          "category":"backLink"
+		  "from":"x52/InternalGroup",
+		  "to":"x04/ProcessItem",
+          "category":"InputLink"
 	  },
 	  {
-		  "from":"blah:52",
-		  "to":"blah:5",
-          "category":"backLink"
+		  "from":"x52/InternalGroup",
+		  "to":"x05/ProcessItem",
+          "category":"InputLink"
 	  },
 	  {
-		  "from":"blah:2",
-		  "to":"blah:6"
+		  "from":"x02/ProcessModel",
+		  "to":"x06/ProcessItem",
+          "category":"ProcessLink"
 	  },
 	  {
-		  "from":"blah:6",
-		  "to":"blah:7"
+		  "from":"x06/ProcessItem",
+		  "to":"x07/DecisionPoint",
+          "category":"ProcessLink"
 	  },
 	  {
-		  "from":"blah:7",
-		  "to":"blah:15",
+		  "from":"x07/DecisionPoint",
+		  "to":"x15/ProcessModel",
+          "category":"ProcessLink",
 		  "text":"Nitric Acid is Available.",
 		  "visible":true
 	  },
 	  {
-		  "from":"blah:10",
-		  "to":"blah:2",
+		  "from":"x10/DecisionPoint",
+		  "to":"x02/ProcessModel",
+          "category":"ProcessLink",
 		  "text":"Use Urea Fertilizer",
 		  "visible":true
 	  },
 	  {
-		  "from":"blah:55",
-		  "to":"blah:16",
-          "category":"backLink"
+		  "from":"x55/InternalGroup",
+		  "to":"x16/ProcessItem",
+          "category":"InputLink"
 	  },
 	  {
-		  "from":"blah:55",
-		  "to":"blah:17",
-          "category":"backLink"
+		  "from":"x55/InternalGroup",
+		  "to":"x17/ProcessItem",
+          "category":"ToolLink"
 	  },
       {
-   		  "from":"blah:15",
-   		  "to":"blah:44"
+   		  "from":"x15/ProcessModel",
+   		  "to":"x44/ProcessItem",
+          "category":"ProcessLink"
    	  },
 	  {
-		  "from":"blah:58",
-		  "to":"blah:20",
-          "category":"backLink"
+		  "from":"x58/InternalGroup",
+		  "to":"x20/ProcessItem",
+          "category":"ToolLink"
 	  },
 	  {
-		  "from":"blah:58",
-		  "to":"blah:21",
-          "category":"backLink"
+		  "from":"x58/InternalGroup",
+		  "to":"x21/ProcessItem",
+          "category":"InputLink"
 	  },
 	  {
-		  "from":"blah:58",
-		  "to":"blah:22",
-          "category":"backLink"
+		  "from":"x58/InternalGroup",
+		  "to":"x22/ProcessItem",
+          "category":"InputLink"
 	  },
 	  {
-		  "from":"blah:18",
-		  "to":"blah:23"
+		  "from":"x18/ProcessModel",
+		  "to":"x23/ProcessItem",
+          "category":"ProcessLink"
 	  },
 	  {
-		  "from":"blah:7",
-		  "to":"blah:18",
+		  "from":"x07/DecisionPoint",
+		  "to":"x18/ProcessModel",
+          "category":"ProcessLink",
 		  "text":"Nitric Acid is NOT Available.",
 		  "visible":true
 	  },
 	  {
-		  "from":"blah:54",
-		  "to":"blah:25",
-          "category":"backLink"
+		  "from":"x54/InternalGroup",
+		  "to":"x25/ProcessItem",
+          "category":"InputLink"
 	  },
 	  {
-		  "from":"blah:54",
-		  "to":"blah:26",
-          "category":"backLink"
+		  "from":"x54/InternalGroup",
+		  "to":"x26/ProcessItem",
+          "category":"ToolLink"
 	  },
 	  {
-		  "from":"blah:23",
-		  "to":"blah:24"
-	  },
-      {
-   		  "from":"blah:43",
-   		  "to":"blah:28"
-   	  },
-      {
-   		  "from":"blah:44",
-   		  "to":"blah:28"
-   	  },
-	  {
-		  "from":"blah:24",
-		  "to":"blah:27"
-	  },
-	  {
-		  "from":"blah:28",
-		  "to":"blah:29"
-	  },
-	  {
-		  "from":"blah:59",
-		  "to":"blah:31",
-          "category":"backLink"
-	  },
-	  {
-		  "from":"blah:59",
-		  "to":"blah:32"
-	  },
-	  {
-		  "from":"blah:29",
-		  "to":"blah:33"
+		  "from":"x23/ProcessItem",
+		  "to":"x24/ProcessModel",
+          "category":"ProcessLink"
 	  },
       {
-   		  "from":"blah:33",
-   		  "to":"blah:34"
+   		  "from":"x43/ProcessItem",
+   		  "to":"x28/ProcessItem",
+          "category":"ProcessLink"
+   	  },
+      {
+   		  "from":"x44/ProcessItem",
+   		  "to":"x28/ProcessItem",
+          "category":"ProcessLink"
    	  },
 	  {
-		  "from":"blah:65",
-		  "to":"blah:37",
-          "category":"backLink"
+		  "from":"x24/ProcessModel",
+		  "to":"x27/ProcessItem",
+          "category":"ProcessLink"
 	  },
 	  {
-		  "from":"blah:34",
-		  "to":"blah:35",
+		  "from":"x28/ProcessItem",
+		  "to":"x29/ProcessModel",
+          "category":"ProcessLink"
+	  },
+	  {
+		  "from":"x59/InternalGroup",
+		  "to":"x31/ProcessItem",
+          "category":"ToolLink"
+	  },
+	  {
+		  "from":"x59/InternalGroup",
+		  "to":"x32/ProcessItem",
+          "category":"ByproductLink"
+	  },
+	  {
+		  "from":"x29/ProcessModel",
+		  "to":"x33/ProcessItem",
+          "category":"ProcessLink"
+	  },
+      {
+   		  "from":"x33/ProcessItem",
+   		  "to":"x34/DecisionPoint",
+          "category":"ProcessLink"
+   	  },
+	  {
+		  "from":"x65/InternalGroup",
+		  "to":"x37/ProcessItem",
+          "category":"ToolLink"
+	  },
+	  {
+		  "from":"x34/DecisionPoint",
+		  "to":"x35/ProcessModel",
+          "category":"ProcessLink",
           "text":"Outdoors",
           "visible":true
 	  },
 	  {
-		  "from":"blah:68",
-		  "to":"blah:40",
-          "category":"backLink"
+		  "from":"x68/InternalGroup",
+		  "to":"x40/ProcessItem",
+          "category":"ToolLink"
 	  },
 	  {
-		  "from":"blah:34",
-		  "to":"blah:38",
+		  "from":"x34/DecisionPoint",
+		  "to":"x38/ProcessModel",
+          "category":"ProcessLink",
           "text":"Indoors",
           "visible":true
 	  },
 	  {
-		  "from":"blah:38",
-		  "to":"blah:41"
+		  "from":"x38/ProcessModel",
+		  "to":"x41/ProcessItem",
+          "category":"ProcessLink"
 	  },
 	  {
-		  "from":"blah:35",
-		  "to":"blah:42"
+		  "from":"x35/ProcessModel",
+		  "to":"x42/ProcessItem",
+          "category":"ProcessLink"
 	  },
       {
-   		  "from":"blah:41",
-   		  "to":"blah:45"
+   		  "from":"x41/ProcessItem",
+   		  "to":"x45/ProcessItem",
+          "category":"ProcessLink"
    	  },
       {
-   		  "from":"blah:42",
-   		  "to":"blah:45"
+   		  "from":"x42/ProcessItem",
+   		  "to":"x45/ProcessItem",
+          "category":"ProcessLink"
    	  },
       {
-   		  "from":"blah:45",
-   		  "to":"blah:46"
+   		  "from":"x45/ProcessItem",
+   		  "to":"x99/End",
+          "category":"ProcessLink"
    	  },
 	  {
-		  "from":"blah:27",
-		  "to":"blah:28"
+		  "from":"x27/ProcessItem",
+		  "to":"x28/ProcessItem",
+          "category":"ProcessLink"
 	  }
   ]
 }
