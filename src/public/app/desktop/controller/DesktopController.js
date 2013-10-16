@@ -6,17 +6,13 @@
  * To change this template use File | Settings | File Templates.
  */
 Ext.define('Savanna.desktop.controller.DesktopController', {
-<<<<<<< HEAD
     extend: 'Deft.mvc.ViewController',
-=======
-    extend: 'Ext.app.Controller',
 
     statics: {
         aboutwindow: null,
         searchwindow: null,
         uploadwindow: null
     },
->>>>>>> 39ac9e064658bace0ea6d8d176a02cef2673d8ef
     requires: [
         'Savanna.desktop.view.AboutWindow',
         'Savanna.desktop.view.SearchWindow',
