@@ -80,7 +80,6 @@ describe('Savanna Main', function() {
                 });
 
                 it('should listen for "render" event on login view', function() {
-                    expect(view.hasListener('render')).toBeFalsy();
                     controller.init(mockApplication);
                     expect(view.hasListener('render')).toBeTruthy();
                 });
@@ -123,16 +122,6 @@ describe('Savanna Main', function() {
                     expect(errorRaised).toBeTruthy();
                 });
 
-                it('should attempt to swap viewport views if we can find our main viewport', function() {
-                    var mock = mockApplication.viewport.queryById();
-                    spyOn(Ext, 'create').andReturn('WOULD BE A VIEW'); // just have it return a string since we aren't doing anything with it
-
-                    controller.init(mockApplication);
-                    controller.swapLogin('IRRELEVANT_SESSION_ID');
-
-                    expect(mock.remove).toHaveBeenCalledWith('login');
-                    expect(mock.add).toHaveBeenCalledWith('WOULD BE A VIEW');
-                });
             });
         });
 
