@@ -1,40 +1,40 @@
 {
-    success: true,
-    groups: [
+    "success": true,
+    "groups": [
         {
             "id": "PROCESS_ACTION_PALETTE",
             "title": "Actions",
             "templates": [
                 {
-                    "category": "action",
+                    "category": "ProcessAction",
                     "title": "Mix",
                     "figure": "Circle"
                 },
                 {
-                    "category": "action",
+                    "category": "ProcessAction",
                     "title": "Stir",
                     "figure": "Circle"
                 },
                 {
-                    "category": "action",
+                    "category": "ProcessAction",
                     "title": "Dissolve",
                     "figure": "Circle"
                 },
                 {
-                    "category": "action",
+                    "category": "ProcessAction",
                     "title": "Heat",
                     "figure": "Circle"
                 },
                 {
-                    "category": "action",
+                    "category": "ProcessAction",
                     "title": "Filter",
                     "figure": "Circle"
                 },
                 {
-                    "category": "action",
+                    "category": "ProcessAction",
                     "title": "Rinse",
                     "figure": "Circle"
-                },
+                }
 
             ]
         },
@@ -43,20 +43,20 @@
             "title": "Items",
             "templates": [
                 {
-                    "category": "item",
+                    "category": "ProcessItem",
                     "title": "Thing",
                     "figure": "Square"
                 },
                 {
-                    "category": "item",
+                    "category": "ProcessItem",
                     "title": "Person",
                     "figure": "Square"
                 },
                 {
-                    "category": "item",
+                    "category": "ProcessItem",
                     "title": "Place",
                     "figure": "Square"
-                },
+                }
             ]
         },
         {
@@ -64,12 +64,12 @@
             "title": "Decisions",
             "templates": [
                 {
-                    "category": "decision",
+                    "category": "DecisionPoint",
                     "title": "Branch",
                     "figure": "Diamond"
                 },
                 {
-                    "category": "decision",
+                    "category": "DecisionPoint",
                     "title": "Merge",
                     "figure": "Diamond"
                 }

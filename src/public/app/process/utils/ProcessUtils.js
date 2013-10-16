@@ -5,40 +5,22 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         'Ext.data.IdGenerator'
     ],
 
+    knownUriTypes: ['DecisionPoint', 'ProcessModel', 'ProcessAction', 'ProcessItem', 'InternalGroup'],
+
     getURI: function(category) {
-        var uriType;
-        switch(category) {
-            case 'Decision':
-                uriType = 'DecisionPoint';
-                break;
-            case 'Step':
-                uriType = 'Process';
-                break;
-            case 'Action':
-                uriType = 'ProcessAction';
-                break;
-            case 'Item':
-            case 'FinalResult':
-            case 'Tool':
-            case 'Byproduct':
-                uriType = 'ProcessItem';
-                break;
-            case 'ActionsGroup':
-                uriType = 'InternalGroup';
-                break;
-            default:
-                console.log('Unknown category for getURI: ', category);
+        // by convention, category names are the same as the URI type
+        if (this.knownUriTypes.indexOf(category) < 0) {
+            console.log('Unknown uriType in getURI: ', category);
         }
         var uuid = Ext.data.IdGenerator.get('uuid').generate();
-        var uri = 'pub://' + uriType + '/' + uuid;
-        return uri;
+        return 'x' + uuid  + '/' + category;
     },
 
     getActionsGroup: function(group) {
         var actionsGroup = null;
         var iter = group.memberParts;
         while (iter.next()) {
-            if (iter.value.category == "ActionsGroup") {
+            if (iter.value.category == "InternalGroup") {
                 actionsGroup = iter.value;
                 break;
             }
@@ -61,7 +43,8 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
     },
 
     addNode: function(obj, category, description, fromObj) {
-        obj.diagram.startTransaction('addNode');
+        var diagram = obj.diagram;
+        diagram.startTransaction('addNode');
         var tobj = obj.part;
         var nodeData = {'category': category, 'text': description};
         nodeData.key = Savanna.process.utils.ProcessUtils.getURI(category);
@@ -69,62 +52,55 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
             nodeData.group = tobj.data.group;
         }
 
-        obj.diagram.model.addNodeData(nodeData);
+        diagram.model.addNodeData(nodeData);
 
         var linkData;
         if (fromObj) {
-            linkData = { from: tobj.data.key, to: nodeData.key };
+            linkData = { category: 'ProcessLink', from: tobj.data.key, to: nodeData.key };
         } else {
-            linkData = { from: nodeData.key, to: tobj.data.key };
+            linkData = { category: 'ProcessLink', from: nodeData.key, to: tobj.data.key };
         }
-        if (tobj.category == 'Decision') {
+        if (tobj.category == 'DecisionPoint') {
             linkData.visible = true;
         }
-        obj.diagram.model.addLinkData(linkData);
-        obj.diagram.commitTransaction('addNode');
-        Savanna.process.utils.ProcessUtils.startTextEdit(obj.diagram, nodeData);
+        diagram.model.addLinkData(linkData);
+        diagram.commitTransaction('addNode');
+        Savanna.process.utils.ProcessUtils.startTextEdit(diagram, nodeData);
     },
 
     addDecision: function(e, obj) {
-        Savanna.process.utils.ProcessUtils.addNode(obj, 'Decision', 'Decision', true);
+        Savanna.process.utils.ProcessUtils.addNode(obj, 'DecisionPoint', 'Decision', true);
     },
 
-    addStepPart: function(obj, category, label, backLink) {
-        obj.diagram.startTransaction('addStepPart');
+    addStepPart: function(obj, category, label, linkType) {
+        var diagram = obj.diagram;
+        diagram.startTransaction('addStepPart');
         var tobj = obj.part;
         var nodeData = {'category': category, 'text': label, 'group': tobj.containingGroup.data.key};
         nodeData.key = Savanna.process.utils.ProcessUtils.getURI(nodeData.category);
 
-        obj.diagram.model.addNodeData(nodeData);
+        diagram.model.addNodeData(nodeData);
 
-        var linkData;
-        linkData = {  from: tobj.data.key, to: nodeData.key};
-        if (backLink) {
-            linkData.category = 'backLink';
-        }
-        obj.diagram.model.addLinkData(linkData);
-        obj.diagram.commitTransaction('addStepPart');
-        Savanna.process.utils.ProcessUtils.startTextEdit(obj.diagram, nodeData);
+        var linkData = {  category: linkType, from: tobj.data.key, to: nodeData.key };
+        diagram.model.addLinkData(linkData);
+        diagram.commitTransaction('addStepPart');
+        Savanna.process.utils.ProcessUtils.startTextEdit(diagram, nodeData);
     },
 
     addInput: function(e, obj) {
-        Savanna.process.utils.ProcessUtils.addStepPart(obj, 'Item', 'Input', true);
+        Savanna.process.utils.ProcessUtils.addStepPart(obj, 'ProcessItem', 'Input', 'InputLink');
     },
 
     addTool: function(e, obj) {
-        Savanna.process.utils.ProcessUtils.addStepPart(obj, 'Tool', 'Tool', true);
+        Savanna.process.utils.ProcessUtils.addStepPart(obj, 'ProcessItem', 'Tool', 'ToolLink');
     },
 
     addByproduct: function(e, obj) {
-        Savanna.process.utils.ProcessUtils.addStepPart(obj, 'Byproduct', 'Byproduct', false);
-    },
-
-    addOutput: function(e, obj) {
-        Savanna.process.utils.ProcessUtils.addNode(obj, 'Item', 'Output', true);
+        Savanna.process.utils.ProcessUtils.addStepPart(obj, 'ProcessItem', 'Byproduct', 'ByproductLink');
     },
 
     addFinalResult: function(e, obj) {
-        Savanna.process.utils.ProcessUtils.addNode(obj, 'FinalResult', 'Result', true);
+        Savanna.process.utils.ProcessUtils.addNode(obj, 'ProcessItem', 'Result', true);
     },
 
     addEnd: function(e, obj) {
@@ -132,41 +108,43 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
     },
 
     addAction: function(e, obj) {
-        obj.diagram.startTransaction('addAction');
+        var diagram = obj.diagram;
+        diagram.startTransaction('addAction');
 
         var tobj = obj.panel.panel.part;
-        var nodeData = {'category': 'Action', 'text': 'Action', 'group':tobj.data.key};
+        var nodeData = {'category': 'ProcessAction', 'text': 'Action', 'group':tobj.data.key};
         nodeData.key = Savanna.process.utils.ProcessUtils.getURI(nodeData.category);
-        obj.diagram.model.addNodeData(nodeData);
+        diagram.model.addNodeData(nodeData);
 
-        obj.diagram.commitTransaction('addAction');
-        Savanna.process.utils.ProcessUtils.startTextEdit(obj.diagram, nodeData);
+        diagram.commitTransaction('addAction');
+        Savanna.process.utils.ProcessUtils.startTextEdit(diagram, nodeData);
 
     },
 
     addStep: function(e, obj) {
-        obj.diagram.startTransaction('addStep');
+        var diagram = obj.diagram;
+        diagram.startTransaction('addStep');
 
-        var step = {'category': 'Step', 'text': 'Description', 'isGroup': true, 'isSubGraphExpanded': true};
+        var step = {'category': 'ProcessModel', 'text': 'Description', 'isGroup': true, 'isSubGraphExpanded': true};
         step.key = Savanna.process.utils.ProcessUtils.getURI(step.category);
-        obj.diagram.model.addNodeData(step);
+        diagram.model.addNodeData(step);
 
-        var actionsGroup = {'category': 'ActionsGroup', 'isGroup': true, 'group': step.key};
+        var actionsGroup = {'category': 'InternalGroup', 'isGroup': true, 'group': step.key};
         actionsGroup.key = Savanna.process.utils.ProcessUtils.getURI(actionsGroup.category);
-        obj.diagram.model.addNodeData(actionsGroup);
+        diagram.model.addNodeData(actionsGroup);
 
-        var action = {'category': 'Action', 'text': 'Action', 'group': actionsGroup.key};
+        var action = {'category': 'ProcessAction', 'text': 'Action', 'group': actionsGroup.key};
         action.key = Savanna.process.utils.ProcessUtils.getURI(action.category);
-        obj.diagram.model.addNodeData(action);
+        diagram.model.addNodeData(action);
 
         var tobj = obj.part;
-        var newlink = { from: tobj.data.key, to: step.key };
-        if (tobj.category == 'Decision') {
-            newlink.visible = true;
+        var newLink = { category: 'ProcessLink', from: tobj.data.key, to: step.key };
+        if (tobj.category == 'DecisionPoint') {
+            newLink.visible = true;
         }
-        obj.diagram.model.addLinkData(newlink);
-        obj.diagram.commitTransaction('addStep');
-        Savanna.process.utils.ProcessUtils.startTextEdit(obj.diagram, step);
+        diagram.model.addLinkData(newLink);
+        diagram.commitTransaction('addStep');
+        Savanna.process.utils.ProcessUtils.startTextEdit(diagram, step);
     }
 
 
