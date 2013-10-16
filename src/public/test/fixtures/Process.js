@@ -11,34 +11,28 @@ var ThetusTestHelpers;
                 "title": "Actions",
                 "templates": [
                     {
-                        "category": "action",
-                        "title": "Mix",
-                        "figure": "Circle"
+                        "category": "Action",
+                        "text": "Mix"
                     },
                     {
-                        "category": "action",
-                        "title": "Stir",
-                        "figure": "Circle"
+                        "category": "Action",
+                        "text": "Stir"
                     },
                     {
-                        "category": "action",
-                        "title": "Dissolve",
-                        "figure": "Circle"
+                        "category": "Action",
+                        "text": "Dissolve"
                     },
                     {
-                        "category": "action",
-                        "title": "Heat",
-                        "figure": "Circle"
+                        "category": "Action",
+                        "text": "Heat"
                     },
                     {
-                        "category": "action",
-                        "title": "Filter",
-                        "figure": "Circle"
+                        "category": "Action",
+                        "text": "Filter"
                     },
                     {
-                        "category": "action",
-                        "title": "Rinse",
-                        "figure": "Circle"
+                        "category": "Action",
+                        "text": "Rinse"
                     },
 
                 ]
@@ -48,20 +42,17 @@ var ThetusTestHelpers;
                 "title": "Items",
                 "templates": [
                     {
-                        "category": "item",
-                        "title": "Thing",
-                        "figure": "Square"
+                        "category": "Item",
+                        "text": "Thing"
                     },
                     {
-                        "category": "item",
-                        "title": "Person",
-                        "figure": "Square"
+                        "category": "Item",
+                        "text": "Person"
                     },
                     {
-                        "category": "item",
-                        "title": "Place",
-                        "figure": "Square"
-                    },
+                        "category": "Item",
+                        "text": "Place"
+                    }
                 ]
             },
             {
@@ -69,14 +60,12 @@ var ThetusTestHelpers;
                 "title": "Decisions",
                 "templates": [
                     {
-                        "category": "decision",
-                        "title": "Branch",
-                        "figure": "Diamond"
+                        "category": "Decision",
+                        "text": "Branch"
                     },
                     {
-                        "category": "decision",
-                        "title": "Merge",
-                        "figure": "Diamond"
+                        "category": "Decision",
+                        "text": "Merge"
                     }
                 ]
             }

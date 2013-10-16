@@ -9,6 +9,10 @@ Ext.define('Savanna.process.view.part.Palette', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.process_palette',
 
+    requires: [
+        'Savanna.process.utils.ViewTemplates'
+    ],
+
     model: null,
     palette: null,
 
@@ -31,13 +35,7 @@ Ext.define('Savanna.process.view.part.Palette', {
         this.palette = new go.Palette(domElem);
         this.palette.initialAutoScale = go.Diagram.None;
 
-        this.palette.nodeTemplate =
-            go.GraphObject.make(go.Node, "Vertical",
-                go.GraphObject.make(go.Shape,
-                    { width: 25, height: 25, fill: "white" }, new go.Binding("figure", "figure")),
-                go.GraphObject.make(go.TextBlock, {alignment: go.Spot.Center, margin: 7 },
-                    new go.Binding("text", "title"))
-            );
+        this.palette.nodeTemplateMap = Savanna.process.utils.ViewTemplates.generatePaletteTemplateMap();
         this.palette.model.nodeDataArray = this.model.templatesAsJson();
 
         //palette extends diagram so it has many of the same tools enabled by default.
