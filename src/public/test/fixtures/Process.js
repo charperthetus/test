@@ -11,29 +11,29 @@ var ThetusTestHelpers;
                 "title": "Actions",
                 "templates": [
                     {
-                        "category": "Action",
+                        "category": "ProcessAction",
                         "text": "Mix"
                     },
                     {
-                        "category": "Action",
+                        "category": "ProcessAction",
                         "text": "Stir"
                     },
                     {
-                        "category": "Action",
+                        "category": "ProcessAction",
                         "text": "Dissolve"
                     },
                     {
-                        "category": "Action",
+                        "category": "ProcessAction",
                         "text": "Heat"
                     },
                     {
-                        "category": "Action",
+                        "category": "ProcessAction",
                         "text": "Filter"
                     },
                     {
-                        "category": "Action",
+                        "category": "ProcessAction",
                         "text": "Rinse"
-                    },
+                    }
 
                 ]
             },
@@ -42,15 +42,15 @@ var ThetusTestHelpers;
                 "title": "Items",
                 "templates": [
                     {
-                        "category": "Item",
+                        "category": "ProcessItem",
                         "text": "Thing"
                     },
                     {
-                        "category": "Item",
+                        "category": "ProcessItem",
                         "text": "Person"
                     },
                     {
-                        "category": "Item",
+                        "category": "ProcessItem",
                         "text": "Place"
                     }
                 ]
@@ -60,11 +60,11 @@ var ThetusTestHelpers;
                 "title": "Decisions",
                 "templates": [
                     {
-                        "category": "Decision",
+                        "category": "DecisionPoint",
                         "text": "Branch"
                     },
                     {
-                        "category": "Decision",
+                        "category": "DecisionPoint",
                         "text": "Merge"
                     }
                 ]
