@@ -93,14 +93,20 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                         itemId: 'relatedProcesses',
                         collapsible: true,
                         title: 'Participated in Process (#)',
-                        store: null
+                        store: null,
+                        header:{
+                            ui:'light-blue'
+                        }
                     },
                     {
                         //Todo: create related items component here
                         xtype: 'itemview_view_related_items',
                         itemId: 'relatedItems',
                         collapsible: true,
-                        title: 'Related Items (#)'
+                        title: 'Related Items (#)',
+                        header:{
+                            ui:'light-blue'
+                        }
                     }
                 ]
             },
@@ -117,7 +123,10 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                         itemId: 'itemProperties',
                         width: '100%',
                         collapsible: true,
-                        title: 'Qualities (#)'
+                        title: 'Qualities (#)',
+                        header:{
+                            ui:'light-blue'
+                        }
                     }
                 ]
             }
