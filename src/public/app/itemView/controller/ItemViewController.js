@@ -16,20 +16,6 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     },
 
     control: {
-        autoCompleteBox: {
-            live: true,
-            listeners: {
-                keyup: 'handleAutoCompleteTextKeyUp'
-            }
-        },
-
-        removeTerm: {
-            live: true,
-            listeners: {
-                click: 'handleRemoveTagClick'
-            }
-        },
-
         addPropAutoChooser: {
             keyup: 'handleAddChosenProperty'
         },
@@ -181,26 +167,13 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         return SavannaConfig.itemViewUrl + uri + ';jsessionid=' + Savanna.jsessionid;
     },
 
-    handleAutoCompleteTextKeyUp: function (field, evt) {
-        if (evt.keyCode === Ext.EventObject.ENTER) {
-            if (field.getValue().trim().length) {
-                field.findParentByType('auto_complete_with_tags').addTerm(field.getValue());
-                field.reset();
-            }
-        }
-    },
-
-    handleRemoveTagClick: function (btn) {
-        btn.up('auto_complete_with_tags').removeTerm(btn);
-    },
-
     handleAddChosenProperty: function (field, evt) {
         if (evt.keyCode === Ext.EventObject.ENTER) {
             if (field.getValue().trim().length) {
                 var valArray = new Array();
                 valArray[0] = "Red";
                 valArray[1] = "Blue";
-                field.up('item_properties').addProp({propName: field.getValue(), propValue: valArray});
+                field.up('item_edit_qualities').addProp({propName: field.getValue(), propValue: valArray});
                 field.reset();
             }
         }

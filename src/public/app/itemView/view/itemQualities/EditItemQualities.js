@@ -43,7 +43,7 @@ Ext.define('Savanna.itemView.view.itemQualities.EditItemQualities', {
 
     addProp: function (prop) {
         if (this.queryById('prop_' + prop.propName.replace(/[\s']/g, "_")) === null) {
-            var newProp = Ext.create('Savanna.itemView.view.itemView.components.LabeledFieldWithTags', {
+            var newProp = Ext.create('Savanna.itemView.view.components.LabeledFieldWithTags', {
                 itemId: 'prop_' + prop.propName.replace(/[\s']/g, "_"),
                 propData: prop
             });

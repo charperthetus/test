@@ -20,6 +20,8 @@ Ext.define('Savanna.itemView.view.components.AutoCompleteWithTags', {
         tagValues: null
     },
 
+    controller: 'Savanna.itemView.controller.AutoCompleteController',
+
     listeners: {
         afterrender: function() {
             if (this.getTagValues()) {
@@ -135,8 +137,8 @@ Ext.define('Savanna.itemView.view.components.AutoCompleteWithTags', {
         }
     },
 
-    removeTerm: function (closeButton) {
-        var myTag = this.queryById(closeButton.up('search_resultsDals_resultsterm').itemId);
+    removeTerm: function (view) {
+        var myTag = view.itemId;
         this.queryById('tagsList').remove(myTag);
     }
 });
