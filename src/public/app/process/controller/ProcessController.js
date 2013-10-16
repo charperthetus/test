@@ -13,12 +13,6 @@ Ext.define('Savanna.process.controller.ProcessController', {
     ],
 
     control: {
-//        addstepbutton: {
-//            click: 'addStepClick'
-//        },
-//        adddecisionbutton: {
-//            click: 'addDecisionClick'
-//        },
         expandsteps: {
             click: 'expandStepsClick'
         },
@@ -34,18 +28,23 @@ Ext.define('Savanna.process.controller.ProcessController', {
         clearJSON: {
             click: 'clearJSONClick'
         },
-        canvas: {},
-        metadata: {}
-    },
-    init: function() {
-        return this.callParent(arguments);
-    },
-
-    addStepClick: function() {
-        console.log('add step'); //todo: remove console log statement and do something useful
-    },
-    addDecisionClick: function() {
-        console.log('add decision'); //todo: remove console log statement and do something useful
+        canvas: {
+            boxready: 'loadInitialJSON'
+        },
+        metadata: {
+        },
+        undo: {
+            click: 'handleUndo'
+        },
+        redo: {
+            click: 'handleRedo'
+        },
+        zoomin: {
+            click: 'zoomIn'
+        },
+        zoomout: {
+            click: 'zoomOut'
+        }
     },
     toggleExpanded: function(expand) {
         var canvas = this.getCanvas();
@@ -69,16 +68,77 @@ Ext.define('Savanna.process.controller.ProcessController', {
     loadJSONClick: function() {
         var canvas = this.getCanvas();
         var metadata = this.getMetadata();
-        Savanna.process.utils.ViewTemplates.load(canvas.diagram, metadata.down('#JSONtextarea'));
+        this.load(canvas.diagram, metadata.down('#JSONtextarea'));
     },
     saveJSONClick: function() {
         var canvas = this.getCanvas();
         var metadata = this.getMetadata();
-        Savanna.process.utils.ViewTemplates.save(canvas.diagram, metadata.down('#JSONtextarea'));
+        this.save(canvas.diagram, metadata.down('#JSONtextarea'));
     },
     clearJSONClick: function() {
         var canvas = this.getCanvas();
         var metadata = this.getMetadata();
-        Savanna.process.utils.ViewTemplates.clear(canvas.diagram, metadata.down('#JSONtextarea'));
+        this.clear(canvas.diagram, metadata.down('#JSONtextarea'));
+    },
+
+        // Show the diagram's model in JSON format that the user may have edited
+    save: function(diagram, textarea) {
+        var str = diagram.model.toJson();
+        textarea.setValue(str);
+    },
+
+    load: function(diagram, textarea) {
+       var str = textarea.value;
+       diagram.model = go.Model.fromJson(str);
+       diagram.undoManager.isEnabled = true;
+    },
+
+    clear: function(diagram, textarea) {
+       var str = '{ "class": "go.GraphLinksModel", "nodeDataArray": [ {"key":-1, "category":"Start"} ], "linkDataArray": [ ]}';
+       diagram.model = go.Model.fromJson(str);
+       textarea.setValue(str);
+       diagram.undoManager.isEnabled = true;
+    },
+
+    handleUndo: function() {
+        var canvas = this.getCanvas();
+        var diagram = canvas.diagram;
+        diagram.undoManager.undo();
+    },
+
+    handleRedo: function() {
+        var canvas = this.getCanvas();
+        var diagram = canvas.diagram;
+        diagram.undoManager.redo();
+    },
+
+    zoomIn: function() {
+        var canvas = this.getCanvas();
+        var diagram = canvas.diagram;
+        diagram.scale = diagram.scale * Math.LOG2E;
+    },
+
+    zoomOut: function() {
+        var canvas = this.getCanvas();
+        var diagram = canvas.diagram;
+        diagram.scale = diagram.scale / Math.LOG2E;
+    },
+
+    loadInitialJSON: function () {
+        var canvas = this.getCanvas();
+        var diagram = canvas.diagram;
+        var metadata = this.getMetadata();
+        var textarea = metadata.down('#JSONtextarea');
+
+        Ext.Ajax.request({
+            url:SavannaConfig.ureaProcessDataUrl,
+            success : function(response) {
+                var bytes = response.responseText;
+                diagram.model = go.Model.fromJson(bytes);
+                textarea.setValue(bytes);
+                diagram.undoManager.isEnabled = true;
+            }
+        });
     }
+
 });

@@ -8,8 +8,10 @@
 Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacets', {
     extend: 'Ext.tab.Panel',
     alias: 'widget.search_resultsDals_resultsfacets',
+    controller: 'Savanna.search.controller.resultsComponent.resultsDals.ResultsFacetsController',
     requires:   [
-       'Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacet'
+        'Savanna.search.controller.resultsComponent.resultsDals.ResultsFacetsController',
+        'Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacet'
     ],
     header: false,
     width: '100%',

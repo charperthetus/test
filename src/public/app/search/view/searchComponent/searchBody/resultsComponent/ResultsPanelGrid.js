@@ -8,8 +8,16 @@
 Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsPanelGrid', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.search_resultspanelgrid',
+    bubbleEvents: [
+        'search:grid:itemdblclick',
+        'search:grid:itemclick',
+        'search:grid:itemmouseenter',
+        'search:grid:itemmouseleave'
+    ],
+    controller: 'Savanna.search.controller.resultsComponent.ResultsPanelGridController',
 
     requires: [
+        'Savanna.search.controller.resultsComponent.ResultsPanelGridController',
         'Ext.grid.column.Template',
         'Ext.XTemplate'
     ],
@@ -29,7 +37,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
                 '<div style="position: relative" >',
                 '<div id="hoverDiv" style="visibility: hidden; right: 0;  top: 5; position: absolute;" ><button class="openButtonClass">Open</button></div>',
                 '<table>',
-                '<tr><td colspan="2"><b>{title}</b></td></tr>',
+                '<tr><td colspan="2" class="grid-cell-title"><strong>{title}</strong></td></tr>',
                 '<td><img src="{documentSource}" width="80px" height="60px" /></td>',
                 '<td>({composite}) - {[this.parseDate(new Date(values.publishedDate))]} - {documentFileName}<br />{previewString}</td>',
                 '</table>',
