@@ -6,7 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 
-Ext.define('Savanna.itemView.view.itemView.store.MainItemStore', {
+Ext.define('Savanna.itemView.store.MainItemStore', {
     extend: 'Ext.data.JsonStore',
 
     requires: [
@@ -14,7 +14,7 @@ Ext.define('Savanna.itemView.view.itemView.store.MainItemStore', {
         'Savanna.proxy.Cors'
     ],
 
-    model: 'Savanna.itemView.view.itemView.model.MainItemModel',
+    model: 'Savanna.itemView.model.MainItemModel',
 
     storeId: 'mainItem',
 

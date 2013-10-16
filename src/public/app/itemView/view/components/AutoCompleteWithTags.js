@@ -6,7 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 
-Ext.define('Savanna.itemView.view.itemView.components.AutoCompleteWithTags', {
+Ext.define('Savanna.itemView.view.components.AutoCompleteWithTags', {
     extend: 'Ext.container.Container',
 
     alias: 'widget.auto_complete_with_tags',
@@ -23,7 +23,7 @@ Ext.define('Savanna.itemView.view.itemView.components.AutoCompleteWithTags', {
     listeners: {
         afterrender: function() {
             if (this.getTagValues()) {
-                var autoBox = this.queryById('auto_complete_box');
+                var autoBox = this.queryById('autoCompleteBox');
 
                 var autoStore = Ext.create('Ext.data.Store', {
                     fields: ['photo', 'title', 'description', 'isFeatured'],
@@ -102,7 +102,7 @@ Ext.define('Savanna.itemView.view.itemView.components.AutoCompleteWithTags', {
         return [
             {
                 xtype: 'combo',
-                itemId: 'auto_complete_box',
+                itemId: 'autoCompleteBox',
                 displayField: 'title',
                 typeAhead: false,
                 hideLabel: true,

@@ -6,7 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 
-Ext.define('Savanna.itemView.view.itemView.model.KVPairGroupModel', {
+Ext.define('Savanna.itemView.model.KVPairGroupModel', {
     extend: 'Ext.data.Model',
 
     fields: [

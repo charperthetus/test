@@ -1,61 +1,66 @@
 Ext.define('Savanna.itemView.controller.ItemViewController', {
-    extend: 'Ext.app.Controller',
-
-    // TODO: define stores for itemview subcomponents
+    extend: 'Deft.mvc.ViewController',
 
     views: [
-        'Savanna.itemView.view.ItemViewer',
-        'Savanna.itemView.view.itemView.EditHeader',
-        'Savanna.itemView.view.itemView.header.DisplayLabel',
-        'Savanna.itemView.view.itemView.ImagesGrid',
-        'Savanna.itemView.view.itemView.components.AutoCompleteWithTags',
-        'Savanna.itemView.view.itemView.ImageThumbnail',
-        'Savanna.itemView.view.itemView.ItemProperties',
-        'Savanna.itemView.view.itemView.components.LabeledFieldWithTags',
-        'Savanna.itemView.view.itemView.RelatedProcesses',
-        'Savanna.itemView.view.itemView.RelatedItems'
+        'Savanna.itemView.view.ItemViewer'
     ],
 
     requires: [
-        'Savanna.itemView.view.itemView.store.MainItemStore'
+        'Savanna.itemView.store.MainItemStore'
     ],
 
-    store: 'Savanna.itemView.view.itemView.store.MainItemStore',
+    store: 'Savanna.itemView.store.MainItemStore',
 
     mixins: {
         storeable: 'Savanna.mixin.Storeable'
     },
 
+    control: {
+        autoCompleteBox: {
+            live: true,
+            listeners: {
+                keyup: 'handleAutoCompleteTextKeyUp'
+            }
+        },
+
+        removeTerm: {
+            live: true,
+            listeners: {
+                click: 'handleRemoveTagClick'
+            }
+        },
+
+        addPropAutoChooser: {
+            keyup: 'handleAddChosenProperty'
+        },
+
+        nav_left: {
+            click:'onNavLeft'
+        },
+
+        nav_right: {
+            click: 'onNavRight'
+        }
+    },
+
     constructor: function (options) {
         this.opts = options || {};
+        this.mixins.storeable.initStore.call(this);
         this.callParent(arguments);
     },
 
     init: function (app) {
-        this.control({
-            'itemview_itemviewer #auto_complete_box': {
-                keyup: this.handleAutoCompleteTextKeyUp
-            },
+        this.getItemViewData();
+        return this.callParent(arguments);
+    },
 
-            'itemview_itemviewer #removeTerm': {
-                click: this.handleRemoveTagClick
-            },
-
-            'itemview_itemviewer #add_prop_auto_chooser': {
-                keyup: this.handleAddChosenProperty
-            },
-
-            // Slideshow events
-            '#nav_left' : {
-                click: this.onNavLeft
-            },
-            '#nav_right' : {
-                click: this.onNavRight
-            }
+    getItemViewData: function () {
+        var tmpStore = Ext.data.StoreManager.lookup(this.store);
+        tmpStore.getProxy().url = this.buildItemDataFetchUrl(this.getView().itemUri);
+        tmpStore.load({
+            scope: this,
+            callback: this.handleRecordDataRequestSuccess
         });
-
-        app.on('search:itemselected', this.showItemView, this);
-        this.on("itemview:created", this.onItemViewCreated);
     },
 
     onItemViewCreated: function (tab) {
@@ -64,29 +69,10 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         tabpanel.add(tab);
     },
 
-    showItemView: function (grid, record, item) {
-        this.mixins.storeable.initStore.call(this);
-        var tmpStore = Ext.data.StoreManager.lookup(this.store);
-        tmpStore.getProxy().url = this.buildItemDataFetchUrl(record.data.uri) + ';jsessionid=' + Savanna.jsessionid;
-        tmpStore.load({
-            scope: this,
-            callback: this.handleRecordDataRequestSuccess
-        });
-    },
-
     handleRecordDataRequestSuccess: function (record, operation, success) {
-        var itemView = Ext.create('Savanna.itemView.view.ItemViewer', {
-                title: record[0].data.label,
-                closable: true,
-                autoScroll: true,
-                tabConfig: {
-                    ui: 'dark'
-                }
-            });
-        this.itemView = itemView;
-        // this.setData(itemData, itemView);
-
-        this.fireEvent('itemview:created', itemView);
+        var headerComponent = this.getView().queryById('itemViewHeader');
+        headerComponent.title = record[0].data.label;
+        headerComponent.reconfigure(record[0].propertyGroupsStore.getAt(0).valuesStore);
     },
 
     setData: function (data, view) {

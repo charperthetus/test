@@ -40,7 +40,13 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
     },
 
     init: function() {
+        Savanna.app.on('search:itemselected', this.showItemView, this);
         return this.callParent(arguments);
+    },
+
+    showItemView: function (itemView) {
+        this.getMaintabpanel().add(itemView);
+        this.getMaintabpanel().setActiveTab(itemView)
     },
 
     setupSecondaryTabPanel: function() {

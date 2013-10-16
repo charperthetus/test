@@ -6,14 +6,10 @@
  * To change this template use File | Settings | File Templates.
  */
 
-Ext.define('Savanna.itemView.view.itemView.EditHeader', {
+Ext.define('Savanna.itemView.view.header.EditHeader', {
     extend: 'Ext.Panel',
 
     alias: 'widget.itemview_edit_header',
-
-    require: [
-        'Savanna.itemView.view.itemView.header.ItemDescription'
-    ],
 
     cls: 'itemview',
 

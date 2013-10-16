@@ -6,23 +6,23 @@
  * To change this template use File | Settings | File Templates.
  */
 
-Ext.define('Savanna.itemView.view.itemView.model.PropertyGroupValueModel', {
+Ext.define('Savanna.itemView.model.PropertyGroupModel', {
     extend: 'Ext.data.Model',
 
     requires: [
-        'Savanna.itemView.view.itemView.model.PropertyGroupValueValueModel'
+        'Savanna.itemView.model.PropertyGroupValueModel'
     ],
 
     fields: [
         { name: 'label'},
-        { name: 'predicateUri'},
+        { name: 'layoutType'},
         { name: 'values'}
     ],
 
     associations: [
         {
             type: 'hasMany',
-            model: 'Savanna.itemView.view.itemView.model.PropertyGroupValueValueModel',
+            model: 'Savanna.itemView.model.PropertyGroupValueModel',
             name: 'values',
             associationKey:'values'
         }

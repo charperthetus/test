@@ -6,7 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 
-Ext.define('Savanna.itemView.view.itemView.components.LabeledFieldWithTags', {
+Ext.define('Savanna.itemView.view.components.LabeledFieldWithTags', {
     extend: 'Ext.Panel',
 
     alias: 'widget.labeled_field_with_tags',

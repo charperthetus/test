@@ -1,4 +1,4 @@
-Ext.define('Savanna.itemView.view.itemView.ImagesGrid', {
+Ext.define('Savanna.itemView.view.imageBrowser.ImagesGrid', {
     extend: 'Ext.container.Container',
     alias: 'widget.itemview_imagesgrid',
     items: [{

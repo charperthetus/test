@@ -6,12 +6,12 @@
  * To change this template use File | Settings | File Templates.
  */
 
-Ext.define('Savanna.itemView.view.itemView.model.MainItemModel', {
+Ext.define('Savanna.itemView.model.MainItemModel', {
     extend: 'Ext.data.Model',
 
     requires: [
-        'Savanna.itemView.view.itemView.model.KVPairGroupModel',
-        'Savanna.itemView.view.itemView.model.PropertyGroupModel'
+        'Savanna.itemView.model.KVPairGroupModel',
+        'Savanna.itemView.model.PropertyGroupModel'
     ],
 
     fields: [
@@ -29,13 +29,13 @@ Ext.define('Savanna.itemView.view.itemView.model.MainItemModel', {
     associations: [
         {
             type: 'hasMany',
-            model: 'Savanna.itemView.view.itemView.model.KVPairGroupModel',
+            model: 'Savanna.itemView.model.KVPairGroupModel',
             name: 'kvPairGroups',
             associationKey:'kvPairGroups'
         },
         {
             type: 'hasMany',
-            model: 'Savanna.itemView.view.itemView.model.PropertyGroupModel',
+            model: 'Savanna.itemView.model.PropertyGroupModel',
             name: 'propertyGroups',
             associationKey:'propertyGroups'
         }
