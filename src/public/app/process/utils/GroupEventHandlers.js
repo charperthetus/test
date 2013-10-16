@@ -14,11 +14,11 @@ Ext.define('Savanna.process.utils.GroupEventHandlers', {
     },
 
     // highlight when dragging into the Group
-    onMouseDragEnter: function (e, grp, prev) {
+    onMouseDragEnter: function (e, grp) {
         Savanna.process.utils.GroupEventHandlers.highlightGroup(grp, true);
     },
 
-    onMouseDragLeave: function (e, grp, next) {
+    onMouseDragLeave: function (e, grp) {
         Savanna.process.utils.GroupEventHandlers.highlightGroup(grp, false);
     },
 
@@ -44,9 +44,8 @@ Ext.define('Savanna.process.utils.GroupEventHandlers', {
 
                 while (iter.next()) {
                     var node = iter.value;
-                    var newlink;
-                    newlink = { category: 'backLink', from: actionsGroup.data.key, to: node.data.key };
-                    grp.diagram.model.addLinkData(newlink);
+                    var newLink = { category: 'InputLink', from: actionsGroup.data.key, to: node.data.key };
+                    grp.diagram.model.addLinkData(newLink);
                 }
 
                 grp.diagram.commitTransaction('linkNodes');
@@ -71,15 +70,43 @@ Ext.define('Savanna.process.utils.GroupEventHandlers', {
     },
 
     memberValidation: function(grp, part) {
-        if (part.category == 'Item' || part.category == 'Tool' || part.category == 'Byproduct') {
-            return true;
-        }
+        return (part.category == 'ProcessItem');
     },
 
     actionsGroupMemberValidation: function(grp, part) {
-        if (part.category == 'Action') {
-            return true;
+        return (part.category == 'ProcessAction');
+    },
+
+    onActionMouseDragEnter:function(e, obj) {
+        obj.areaBackground = '#00FF00';
+
+    },
+
+    onActionMouseDragLeave:function(e, obj) {
+        obj.areaBackground = null;
+    },
+
+    onActionMouseDrop:function(e, obj) {
+        var diagram = obj.diagram;
+        var actionsGroup = obj.part;
+        var stepGroup = actionsGroup ? actionsGroup.containingGroup : null;
+        var ok = stepGroup && stepGroup.addMembers(diagram.selection, true);
+        if (ok) {
+            diagram.startTransaction("linkNodes");
+
+            var iter = diagram.selection.iterator;
+
+            while (iter.next()) {
+                var node = iter.value;
+                var newLink = { category: 'ToolLink', from: actionsGroup.data.key, to: node.data.key };
+                diagram.model.addLinkData(newLink);
+            }
+
+            diagram.commitTransaction('linkNodes');
+        } else {
+            diagram.currentTool.doCancel();
         }
+
     }
 
 });
