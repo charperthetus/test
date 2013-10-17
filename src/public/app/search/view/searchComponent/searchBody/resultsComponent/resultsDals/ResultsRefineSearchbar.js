@@ -5,7 +5,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
     requires: [
         'Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineTerms',
         'Savanna.search.controller.resultsComponent.resultsDals.ResultsRefineSearchbarController',
-        'Ext.ux.form.SearchField'
+        'ThetusUikit.ux.form.SearchField'
     ],
 
     controller: 'Savanna.search.controller.resultsComponent.resultsDals.ResultsRefineSearchbarController',
@@ -26,8 +26,8 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
             border:false,
             items: [
                 {
-                    // adding searchfield removes the necessity for a submit button.
-                    xtype: 'searchfield',
+                    // adding thetus-searchfield removes the necessity for a submit button.
+                    xtype: 'thetus-searchfield',
                     width: 183,
                     fieldLabel: '',
                     name: 'refine_search_terms',
