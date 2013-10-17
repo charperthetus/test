@@ -26,12 +26,14 @@ Ext.define('Savanna.upload.view.part.NewUploadView', {
             {
                 xtype: 'label',
                 text: 'Start New Upload',
-                height:30
+                cls: ['dark', 'h1'],
+                height: 35
             },
             {
                 xtype: 'panel',
                 alias:'widget.upload_part_newupload_filedropzone',
                 itemId: 'fileDropZone',
+                ui: 'dropzone',
                 flex:1,
                 width: '100%',
                 layout: {
@@ -41,12 +43,16 @@ Ext.define('Savanna.upload.view.part.NewUploadView', {
                 },
                 items:[{
                     xtype: 'label',
-                    text: 'DRAG AND DROP FILES HERE'
+                    text: 'Drag & Drop Files Here',
+                    cls: ['sub', 'h1', 'bold', 'drag-and-drop']
                 },{
                     xtype: 'label',
-                    text: 'or'
+                    text: 'or',
+                    height: 33,
+                    cls: ['sub', 'h1']
                 },{
                     xtype: 'button',
+                    ui: 'commit',
                     itemId: 'chooseFilesButton',
                     text:'Choose Files'
                 },{
