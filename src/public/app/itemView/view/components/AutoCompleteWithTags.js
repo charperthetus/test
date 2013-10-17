@@ -24,6 +24,8 @@ Ext.define('Savanna.itemView.view.components.AutoCompleteWithTags', {
 
     controller: 'Savanna.itemView.controller.AutoCompleteController',
 
+    requires: 'Savanna.itemView.controller.AutoCompleteController',
+
     listeners: {
         afterrender: function() {
             if (this.getTagValues()) {

@@ -59,6 +59,10 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         var headerComponent = this.getView().queryById('itemViewHeader');
         headerComponent.setTitle(record[0].data.label);
         headerComponent.reconfigure(record[0].propertyGroupsStore.getAt(0).valuesStore);
+
+        var processComponent = this.getView().queryById('relatedProcesses');
+        processComponent.setTitle('Participated in Process (' + record[0].kvPairGroupsStore.getAt(0).pairsStore.data.length + ')');
+        processComponent.reconfigure(record[0].kvPairGroupsStore.getAt(0).pairsStore);
     },
 
     setData: function (data, view) {

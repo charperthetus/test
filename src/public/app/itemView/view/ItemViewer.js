@@ -82,21 +82,22 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                 cls: 'BoilerPlatePropertyGrid',
                 flex: 1,
                 items: [
-                    {
-                        xtype: 'itemview_edit_header',
-                        itemId: 'itemEditHeader'
-                    },
+//                    {
+//                        xtype: 'itemview_edit_header',
+//                        itemId: 'itemEditHeader'
+//                    },
                     {
                         xtype: 'itemview_view_header',
-                        itemId: 'itemViewHeader'
+                        itemId: 'itemViewHeader',
+                        header:{
+                            ui:'white'
+                        }
                     },
                     {
                         //ToDo: create related processes component here
                         xtype: 'itemview_related_processes',
                         itemId: 'relatedProcesses',
                         collapsible: true,
-                        title: 'Participated in Process (#)',
-                        store: null,
                         header:{
                             ui:'light-blue'
                         }

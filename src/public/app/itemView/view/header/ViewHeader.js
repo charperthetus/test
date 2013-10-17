@@ -15,13 +15,11 @@ Ext.define('Savanna.itemView.view.header.HeaderView', {
 
     store: 'Savanna.itemView.store.MainItemStore',
 
-    parentItem: null,
-
     hideHeaders: true,
 
     listeners: {
         'itemclick': function( grid, record, item, index, e, eOpts) {
-            if (e.target.value == "ParentClass") {
+            if (e.target.id == "openParentItem") {
                 var itemView = Ext.create('Savanna.itemView.view.ItemViewer', {
                     title: e.target.value,
                     itemUri: e.target.name,
