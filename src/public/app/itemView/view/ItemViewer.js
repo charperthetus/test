@@ -58,7 +58,10 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
         }
     ],
 
-    layout: 'hbox',
+    layout:{
+        type: 'hbox',
+        align: 'stretch'
+    },
     overflowY: 'auto',
     autoScroll: true,
 

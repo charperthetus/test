@@ -20,6 +20,8 @@ Ext.define('Savanna.itemView.view.components.AutoCompleteWithTags', {
         tagValues: null
     },
 
+    attachedStore: null,
+
     controller: 'Savanna.itemView.controller.AutoCompleteController',
 
     listeners: {
@@ -27,7 +29,7 @@ Ext.define('Savanna.itemView.view.components.AutoCompleteWithTags', {
             if (this.getTagValues()) {
                 var autoBox = this.queryById('autoCompleteBox');
 
-                var autoStore = Ext.create('Ext.data.Store', {
+                attachedStore = Ext.create('Ext.data.Store', {
                     fields: ['photo', 'title', 'description', 'isFeatured'],
 
                     data: [
@@ -80,7 +82,7 @@ Ext.define('Savanna.itemView.view.components.AutoCompleteWithTags', {
                 ]
                 });
 
-                autoBox.store = autoStore;
+                autoBox.bindStore(attachedStore);
                 autoBox.pageSize = 10;
 
                 for (var i = 0; i < this.getTagValues().length; i++) {

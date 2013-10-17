@@ -57,7 +57,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
     handleRecordDataRequestSuccess: function (record, operation, success) {
         var headerComponent = this.getView().queryById('itemViewHeader');
-        headerComponent.title = record[0].data.label;
+        headerComponent.setTitle(record[0].data.label);
         headerComponent.reconfigure(record[0].propertyGroupsStore.getAt(0).valuesStore);
     },
 

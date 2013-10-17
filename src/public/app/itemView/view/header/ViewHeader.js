@@ -17,35 +17,49 @@ Ext.define('Savanna.itemView.view.header.HeaderView', {
 
     parentItem: null,
 
+    hideHeaders: true,
+
+    listeners: {
+        'itemclick': function( grid, record, item, index, e, eOpts) {
+            if (e.target.value == "ParentClass") {
+                var itemView = Ext.create('Savanna.itemView.view.ItemViewer', {
+                    title: e.target.value,
+                    itemUri: e.target.name,
+                    closable: true,
+                    autoScroll: true,
+                    tabConfig: {
+                        ui: 'dark'
+                    }
+                });
+
+                Savanna.app.fireEvent('search:itemSelected', itemView);
+            }
+        }
+    },
+
     columns: [
-        {
-            dataIndex: 'label',
-            sortable: false
-        },
         {
             xtype: 'templatecolumn',
             dataIndex: 'values',
+            tpl: Ext.create('Ext.XTemplate',
+                '<tpl if="label == \'Parent\'">',
+                    '<b>{label}&nbsp;&nbsp;</b>',
+                    '<tpl for="values">',
+                        '<input type="button" name="{value}" value="{label}" id="openParentItem" />',
+                    '</tpl>',
+                '<tpl elseif="label == \'Description\'">',
+                    '<tpl for="values">',
+                        '{value}',
+                    '</tpl>',
+                '<tpl else>',
+                    '<b>{label}&nbsp;&nbsp;</b>',
+                    '<tpl for="values">',
+                        '{value},&nbsp;&nbsp;',
+                    '</tpl>',
+                '</tpl>'),
             flex: 1,
-            tpl: '',
-            renderer: function(value, metaData, record, row, col, store, gridView) {
-                return this.renderValues(value, record);
-            },
+            rowLines: false,
             sortable: false
         }
-    ],
-
-    renderValues: function(value, record) {
-        var returnStr = '';
-
-        if (record.data.label == 'Parent') {
-            returnStr = value[0].label;
-        }
-        else {
-            Ext.each(value, function(val) {
-                returnStr += val.value + ', ';
-            });
-        }
-
-        return returnStr.replace(/,\s$/, '');
-    }
+    ]
 });
