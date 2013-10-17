@@ -1,6 +1,7 @@
 Ext.define('Savanna.itemView.view.imageBrowser.ImagesGrid', {
     extend: 'Ext.container.Container',
     alias: 'widget.itemview_imagesgrid',
+    controller: 'Savanna.itemView.controller.ImageBrowserController',
     items: [{
 
         // The expanded image
