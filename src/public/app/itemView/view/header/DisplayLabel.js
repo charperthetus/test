@@ -1,4 +1,4 @@
-Ext.define('Savanna.itemView.view.itemView.header.DisplayLabel', {
+Ext.define('Savanna.itemView.view.header.DisplayLabel', {
     extend: 'Ext.Component',
 
     alias: 'widget.itemview_displaylabel',

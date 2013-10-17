@@ -1,4 +1,4 @@
-Ext.define('Savanna.itemView.view.itemView.ImagesGrid', {
+Ext.define('Savanna.itemView.view.imageBrowser.ImagesGrid', {
     extend: 'Ext.container.Container',
     alias: 'widget.itemview_imagesgrid',
     items: [{
@@ -28,7 +28,7 @@ Ext.define('Savanna.itemView.view.itemView.ImagesGrid', {
             xtype: 'button',
             itemId: 'nav_left',
             height: 100,
-            text: '<'
+            glyph: 'arrowNavLeft'
         }, {
             
             // Thumbnails get put here
@@ -39,7 +39,7 @@ Ext.define('Savanna.itemView.view.itemView.ImagesGrid', {
             overflowX: 'auto'
         }, {
             xtype: 'button',
-            text: '>',
+            glyph:"arrowNavRight",
             itemId: 'nav_right',
             height: 100
         }]
