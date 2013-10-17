@@ -3,7 +3,9 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
     alias: 'widget.search_resultsDals_resultsrefine',
 
     requires: [
-        'Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineTerms'
+        'Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineTerms',
+        'Savanna.search.controller.resultsComponent.resultsDals.ResultsRefineSearchbarController',
+        'Ext.ux.form.SearchField'
     ],
 
     controller: 'Savanna.search.controller.resultsComponent.resultsDals.ResultsRefineSearchbarController',
@@ -24,18 +26,14 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
             border:false,
             items: [
                 {
-                    xtype: 'textfield',
-                    width: 180,             //was making submit button below get clipped
+                    // adding searchfield removes the necessity for a submit button.
+                    xtype: 'searchfield',
+                    width: 183,
                     fieldLabel: '',
                     name: 'refine_search_terms',
                     itemId: 'refine_search_terms',
                     enableKeyEvents: true,
                     emptyText: 'Search'
-                },
-                {
-                    xtype: 'button',
-                    itemId: 'refine_search_submit',
-                    glyph: 61808
                 }
             ]
         }

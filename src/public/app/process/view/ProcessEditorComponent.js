@@ -13,8 +13,9 @@ Ext.define('Savanna.process.view.ProcessEditorComponent', {
         'Ext.layout.container.Border',
         'Savanna.process.view.part.PaletteWindow',
         'Savanna.process.view.part.Toolbar',
-        'Savanna.process.view.part.Canvas', //todo: do we refactor this code?
-        'Savanna.process.view.part.MetadataTabPanel'
+        'Savanna.process.view.part.Canvas',
+        'Savanna.process.view.part.MetadataTabPanel',
+        'Savanna.process.controller.ProcessController'
     ],
 
     controller: 'Savanna.process.controller.ProcessController',
@@ -23,11 +24,8 @@ Ext.define('Savanna.process.view.ProcessEditorComponent', {
         type: 'border'
     },
 
-    tbar: [
-        {
-            xtype: 'process_toolbar'
-        }
-    ],
+    tbar: [],
+    items: [],
 
     initComponent: function() {
         this.items = this.setupItems();
@@ -45,9 +43,14 @@ Ext.define('Savanna.process.view.ProcessEditorComponent', {
                 layout: {
                     type: 'absolute'
                 },
+                tbar: [
+                    {
+                        xtype: 'process_toolbar'
+                    }
+                ],
                 items:[
                     {
-                        xtype: 'process_canvas', //todo: refactor graph canvas
+                        xtype: 'process_canvas',
                         itemId: 'canvas',
                         width: '100%',
                         height: '100%'
@@ -55,7 +58,7 @@ Ext.define('Savanna.process.view.ProcessEditorComponent', {
                     {
                         xtype: 'process_palettewindow',
                         autoShow: true,
-                        x: 50 //DI needs to position this window correctly
+                        x: 0 //DI needs to position this window correctly
                     }
                 ]
             },

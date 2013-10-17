@@ -9,9 +9,10 @@
 Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineTerms', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.search_resultsDals_resultsterms',
-
+    controller: 'Savanna.search.controller.resultsComponent.resultsDals.ResultsRefineTermsController',
     requires: [
-        'Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineTerm'
+        'Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineTerm',
+        'Savanna.search.controller.resultsComponent.resultsDals.ResultsRefineTermsController'
     ],
 
     minHeight: 5,
@@ -53,19 +54,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
             refineTerm.setWidth(termWidth);
         }
         field.setValue('');
-    },
-
-    removeTerm: function (closeButton) {
-        var myTerm = this.queryById(closeButton.up('panel[cls=refine-term]').itemId),
-            myValue = myTerm.queryById('termValue').text + ' AND ';
-
-        this.findParentByType('search_searchcomponent').refineSearchString = this.findParentByType('search_searchcomponent').refineSearchString.replace(myValue, '');
-        this.queryById('termValues').remove(myTerm);
-
-        var searchController = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
-
-        if (searchController !== undefined) {
-            searchController.doSearch(this);
-        }
     }
+
+
 });
