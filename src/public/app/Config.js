@@ -7,7 +7,7 @@ Ext.define('Savanna.Config', {
         SavannaConfig.searchUrl = SavannaConfig.savannaUrlRoot + 'rest/search'; // local dev version: 'app/assets/data/testSearchResults.json',
         SavannaConfig.searchMetadataUrl = SavannaConfig.savannaUrlRoot + 'rest/metadata/get';
         SavannaConfig.itemViewUrl = SavannaConfig.savannaUrlRoot + 'rest/model/item/';
-        SavannaConfig.modelSearchUrl = SavannaConfig.savannaUrlRoot + 'rest/model/search';
+        SavannaConfig.modelSearchUrl = SavannaConfig.savannaUrlRoot + 'rest/mockModelSearch/keyword/item';
         SavannaConfig.dalSourcesUrl = SavannaConfig.savannaUrlRoot + 'rest/search/sources'; // local dev version: 'resources/data/testSearchDalsWithFormData.json',
         SavannaConfig.locationSearch = SavannaConfig.savannaUrlRoot + '/rest/map/search';   // local dev version: 'resources/data/testSearchLocationSearch.json',
         SavannaConfig.uploadUrl = SavannaConfig.savannaUrlRoot + 'rest/document/upload';
