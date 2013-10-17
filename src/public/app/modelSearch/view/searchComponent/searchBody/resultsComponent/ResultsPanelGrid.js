@@ -69,6 +69,15 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
         }
     ],
 
+    viewConfig: {
+        plugins: {
+            dragGroup: 'RNRM-ITEMS',
+            ptype: 'gridviewdragdrop',
+            enableDrop: false,
+            enableDrag: true
+        }
+    },
+
     header: false,
     forceFit: true,
 
