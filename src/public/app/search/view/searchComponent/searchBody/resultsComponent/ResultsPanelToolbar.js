@@ -40,7 +40,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
                 store: sortStore,
                 displayField: 'name',
                 valueField: 'sortby',
-                value: 'relevance'
+                value: 'relevance',
                 editable: false,
                 ui: 'combo-button'
             }, {
