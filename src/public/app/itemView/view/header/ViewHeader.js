@@ -19,21 +19,25 @@ Ext.define('Savanna.itemView.view.header.HeaderView', {
 
     hideHeaders: true,
 
-    columnTpl: Ext.create('Ext.XTemplate',
-        '<tpl if="label == \"Parent\"">',
-            '<b>{label}</b><p>{value[0].label}</p>',
-        '<tpl else>',
-            '<b>{label}</b>',
-            '<tpl for="values">',
-                '<p>{value}</p>',
-            '</tpl>',
-        '</tpl>'),
+    listeners: {
+        'itemclick': function( grid, record, item, index, e, eOpts) {
+            if (e.target.value == "ParentClass") {
+                var itemView = Ext.create('Savanna.itemView.view.ItemViewer', {
+                    title: e.target.value,
+                    itemUri: e.target.name,
+                    closable: true,
+                    autoScroll: true,
+                    tabConfig: {
+                        ui: 'dark'
+                    }
+                });
+
+                Savanna.app.fireEvent('search:itemSelected', itemView);
+            }
+        }
+    },
 
     columns: [
-//        {
-//            dataIndex: 'label',
-//            sortable: false
-//        },
         {
             xtype: 'templatecolumn',
             dataIndex: 'values',
@@ -41,7 +45,7 @@ Ext.define('Savanna.itemView.view.header.HeaderView', {
                 '<tpl if="label == \'Parent\'">',
                     '<b>{label}&nbsp;&nbsp;</b>',
                     '<tpl for="values">',
-                        '{label}',
+                        '<input type="button" name="{value}" value="{label}" id="openParentItem" />',
                     '</tpl>',
                 '<tpl elseif="label == \'Description\'">',
                     '<tpl for="values">',
@@ -55,30 +59,7 @@ Ext.define('Savanna.itemView.view.header.HeaderView', {
                 '</tpl>'),
             flex: 1,
             rowLines: false,
-//            renderer: function(value, metaData, record, row, col, store, gridView) {
-//                return this.renderValues(value, record);
-//            },
             sortable: false
         }
-    ],
-
-    renderValues: function(value, record) {
-        var returnStr = '';
-
-        if (record.data.label == 'Parent') {
-            returnStr = record.data.label + '\t' + value[0].label;
-        }
-        else if (record.data.label == 'Description') {
-            returnStr = value[0].value;
-        }
-        else {
-            returnStr = record.data.label + "          ";
-
-            Ext.each(value, function(val) {
-                returnStr += val.value + ', ';
-            });
-        }
-
-        return returnStr.replace(/,\s$/, '');
-    }
+    ]
 });
