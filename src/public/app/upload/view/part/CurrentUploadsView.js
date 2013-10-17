@@ -35,10 +35,12 @@ Ext.define('Savanna.upload.view.part.CurrentUploadsView', {
                 items:[{
                     xtype: 'label',
                     text: 'My Uploads',
+                    style: 'line-height:37px;',
                     cls: ['h1', 'dark']
                 },{
                     xtype: 'label',
-                    itemId: 'uploadProgressLabel'
+                    itemId: 'uploadProgressLabel',
+                    style: 'line-height:40px;'
                 },{
                    xtype:'tbfill'
                 },{
@@ -46,6 +48,7 @@ Ext.define('Savanna.upload.view.part.CurrentUploadsView', {
                     itemId: 'clearFinishedButton',
                     width: 100,
                     text:'Clear Finished',
+                    height: 40,
                     margin:'0 0 0 0'
                 }]
             }
@@ -53,11 +56,10 @@ Ext.define('Savanna.upload.view.part.CurrentUploadsView', {
             {
                 xtype: 'grid',
                 itemId: 'uploadsDataGrid',
-                border: false,
-                ignoreHeaderBorderManagement: true,
                 store: Ext.create('Savanna.upload.store.UploadGridStore'),
                 flex:1,
                 width: '100%',
+                borderWidth: 0,
                 viewConfig: {
                     preserveScrollOnRefresh: true
                 },
@@ -69,7 +71,7 @@ Ext.define('Savanna.upload.view.part.CurrentUploadsView', {
                     align:'center',
                     resizable:false,
                     hideable: false,
-                    width: 75,
+                    width: 80,
                     renderer : function(val) {
                         if (val > 0) {
                             return '<span style="color:' + '#73b51e' + '">' + val + '%</span>';
