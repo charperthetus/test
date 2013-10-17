@@ -6,10 +6,10 @@
  * To change this template use File | Settings | File Templates.
  */
 
-Ext.define('Savanna.itemView.view.itemView.ItemProperties', {
+Ext.define('Savanna.itemView.view.itemQualities.EditItemQualities', {
     extend: 'Ext.Panel',
 
-    alias: 'widget.item_properties',
+    alias: 'widget.item_edit_qualities',
 
     layout: 'vbox',
 
@@ -21,7 +21,7 @@ Ext.define('Savanna.itemView.view.itemView.ItemProperties', {
         },
         {
             xtype: 'combo',
-            itemId: 'add_prop_auto_chooser',
+            itemId: 'addPropAutoChooser',
             displayField: 'title',
             typeAhead: false,
             hideLabel: true,
@@ -43,7 +43,7 @@ Ext.define('Savanna.itemView.view.itemView.ItemProperties', {
 
     addProp: function (prop) {
         if (this.queryById('prop_' + prop.propName.replace(/[\s']/g, "_")) === null) {
-            var newProp = Ext.create('Savanna.itemView.view.itemView.components.LabeledFieldWithTags', {
+            var newProp = Ext.create('Savanna.itemView.view.components.LabeledFieldWithTags', {
                 itemId: 'prop_' + prop.propName.replace(/[\s']/g, "_"),
                 propData: prop
             });
