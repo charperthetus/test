@@ -26,6 +26,14 @@ Ext.define('Savanna.metadata.view.Integer', {
                 if(me.down('#displayValueEdit')) {
                     me.down('#displayValueEdit').setValue(me.getValue());
                     me.down('#displayValueEdit').fieldLabel = me.getDisplayLabel();
+                    me.down('#displayValueEdit').regex = /^[0-9]*$/;
+                    me.down('#displayValueEdit').maskRe = /\d/i;
+                    me.down('#displayValueEdit').listeners = {
+                        blur: function(d) {
+                            var newVal = parseInt(d.getValue(), 10);
+                            me.setValue(newVal);
+                        }
+                    };
                 }
             } else {
                 if(me.down('#displayLabelItem')) {
@@ -37,5 +45,4 @@ Ext.define('Savanna.metadata.view.Integer', {
             }
         }, this));
     }
-
 });

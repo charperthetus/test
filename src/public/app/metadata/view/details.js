@@ -37,6 +37,7 @@ Ext.define('Savanna.metadata.view.Details', {
     controller: 'Savanna.metadata.controller.MetadataViewController',
 
     tbar: [
+        '->',
         {
           xtype:    'button',
           text:     'Edit',
