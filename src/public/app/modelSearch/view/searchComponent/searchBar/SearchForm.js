@@ -115,6 +115,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBar.SearchForm', {
             glyph: 61808
         },
         {
+            hidden: true,
             text: 'Advanced',
             itemId: 'searchadvanced_btn'
 

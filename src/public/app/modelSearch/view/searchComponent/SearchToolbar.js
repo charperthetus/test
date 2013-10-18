@@ -10,12 +10,6 @@ Ext.define('Savanna.modelSearch.view.searchComponent.SearchToolbar', {
     items: [
         {
             xtype: 'tbfill'
-        },
-        {
-            glyph: 61786
-        },
-        {
-            glyph: 61746
         }
     ]
 

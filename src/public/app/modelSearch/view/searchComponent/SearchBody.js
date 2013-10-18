@@ -44,7 +44,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.SearchBody', {
                     region: 'center',
                     items: [
                         {
-                            title: 'Search Sources',
+                            title: 'Refine Search',
                             autoScroll: true,
                             cls: 'search-dal',
                             itemId:'searchdals',
@@ -70,7 +70,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.SearchBody', {
     dockedItems: [
         {
             xtype: 'toolbar',
-            visible: false,
+            hidden: true,
             width: '100%',
             itemId: 'searchbodytoolbar',
             items: [

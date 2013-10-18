@@ -18,7 +18,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
         'Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineSearchbar'
     ],
 
-    title: 'Search Sources',
+    title: 'Refine Search',
     region: 'west',
 
     /*
@@ -66,20 +66,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
             this.add(facetTabs);    // ...but only add if doesn't exist
         }
 
-/*      this just seems to be trying to delete strings I'm commenting it out in case it is needed.
 
-  this.store.each(function (record) {
-            var dalId = record.get('id'),
-                checked = searchPanelDals.queryById(dalId).query('checkbox')[0].getValue();
-            if (!checked && this.queryById(record.get('id')) !== undefined) {
-                this.remove(record.get('id'));
-            }
-        }, this);*/
-
-        /*
-         create any DALs in the list of sources that do not already
-         have a corresponding DAL in the panel
-         */
         var startingItemsLength = this.items.length; // determine where to insert the dals, above facets
 
         Ext.each(sources, function (record) {
@@ -103,6 +90,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
     createDalPanel: function (myRecord) {
         return Ext.create('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsOptions', {
             itemId: myRecord.get('id'),
+            hidden: true,
             dalName: myRecord.get('displayName')
         });
     },
@@ -172,6 +160,10 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
     },
 
     createDalFacets: function (id) {
+
+        //big freeking todo
+        return;
+
         var dalRecord = this.store.getById(id),
             descriptions = dalRecord.get('facetDescriptions'),
             facets = this.queryById('resultsfacets').queryById('tab_' + id),

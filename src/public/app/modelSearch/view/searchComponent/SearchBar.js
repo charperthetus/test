@@ -35,6 +35,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.SearchBar', {
                     minHeight:25,
                     items: [
                         {
+                            hidden: true,
                             xtype: 'button',
                             itemId:'search_reset_button',
                             text: 'Start New Search'

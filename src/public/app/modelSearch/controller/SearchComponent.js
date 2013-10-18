@@ -130,11 +130,10 @@ Ext.define('Savanna.modelSearch.controller.SearchComponent', {
          */
         search.down('#search_reset_button').setVisible(false);
 
-        //jwb move to the results tab.
+        //jwb force a move to the results tab.
         var resultsButton = search.queryById('resultsbutton');
         resultsButton.fireEvent('click', resultsButton);
 
-        //probably want to do a search
     },
 
     handleNewSearch: function (elem) {
@@ -376,7 +375,10 @@ Ext.define('Savanna.modelSearch.controller.SearchComponent', {
 
         var resultsStore = Ext.create('Savanna.modelSearch.store.SearchResults', {
             storeId: 'searchResults_' + dal.get('id'),
-            pageSize: pageSize
+            pageSize: pageSize,
+            limitParam: undefined,
+            pageParam: undefined,
+            startParam: undefined
         });
 
         var resultsDal = component.down('#resultsdals'),
@@ -386,10 +388,9 @@ Ext.define('Savanna.modelSearch.controller.SearchComponent', {
         //TODO todo
         searchObj.data = {
             //queryId: "asdlfkja2349",
-            start:0,
-            limit: 200,
+            startPage:0,
+            pageSize: pageSize,
             keywords: "simian" // EDISMAX query language (for now)
-
          } ;
         resultsStore.proxy.jsonData = Ext.JSON.encode(searchObj.data);  // attach the search request object
         resultsStore.load({
@@ -445,18 +446,6 @@ Ext.define('Savanna.modelSearch.controller.SearchComponent', {
             }
 
         }, this);
-
-
-        /*
-         clear the grid - it's misleading in error states to see results in the grid, even though
-         the search request has failed for one reason or another
-         */
-        component.down('#resultspanel').updateGridStore({store: Ext.create('Savanna.modelSearch.store.SearchResults')});
-
-        /*
-         show Start New Search button
-         */
-        component.down('#search_reset_button').setVisible(true);
 
 
         this.showResultsPage(component);

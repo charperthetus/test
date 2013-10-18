@@ -43,18 +43,18 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
                    '{[this.conditionallyRenderImage(values.primaryImageUrl)]}',
                 '</div>',
 
-                '<!-- column two -->',
+                '<!-- column two values.modifiedDate-->',
                 '<div style="margin-left: 216px" >',
-                '<b>{label}</b><br>Modified: {modifiedDate},&nbsp;&nbsp;{modifiedBy}',
+                '<b>{label}</b><br>Modified: {[this.formatDate(new Date(1382071008238))]},&nbsp;&nbsp;{modifiedBy}',
                 '<br>Workflow state: {workflowState}&nbsp;&nbsp;Classification: {classification}',
                 '<br>',
-                '<div style="height: 40px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"> {preview}</div>',
+                '<div style="width: 100%;height: 70px;white-space: normal;line-break: normal">{preview}</div>',
                 '</div>',
                 '</div>',
 
                 {
                     formatDate: function (v) {
-                        return Ext.Date.format(new Date(v), 'F d, Y');
+                        return Ext.Date.format(v, 'F d, Y');
                     },
 
                     conditionallyRenderImage: function (url) {

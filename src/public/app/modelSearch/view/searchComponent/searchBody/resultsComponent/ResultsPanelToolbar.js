@@ -65,17 +65,9 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
             },
             {
                 xtype: 'tbfill'
-            },
-
-            {
-                text:'Imgs'
-            },
-            {
-                text:'List'
-            },
-            {
-                text:'Map'
             }
+
+
         ]
     }
 

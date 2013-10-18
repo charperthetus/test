@@ -31,7 +31,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
                     name: 'refine_search_terms',
                     itemId: 'refine_search_terms',
                     enableKeyEvents: true,
-                    emptyText: 'Search'
+                    emptyText: 'Refine Search'
                 },
                 {
                     xtype: 'button',
@@ -44,7 +44,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
     tbar:   [
         {
             xtype: 'tbtext',
-            text: 'Refine Search'
+            text: '' //jwb was Refine Search
         },
         {
             xtype: 'tbfill'
