@@ -40,12 +40,6 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         });
     },
 
-    onItemViewCreated: function (tab) {
-        var tabpanel = Ext.ComponentQuery.query('desktop_tabpanel')[0];
-        var main = tabpanel.getActiveTab();
-        tabpanel.add(tab);
-    },
-
     handleRecordDataRequestSuccess: function (record, operation, success) {
         var headerComponent = this.getView().queryById('itemViewHeader');
         headerComponent.setTitle(record[0].data.label);
@@ -105,34 +99,14 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
         }
     },
-
-    setData: function (data, view) {
-
-        //Left Side
-
-        //Display Label
-        this.setupDisplayLabel(data.displayLabel, view);
-
-        //Aliases
-        this.setupAliases(data.aliases, view);
-
-        //Related Processes
-        this.setupRelatedProcesses(data, view);
-
-        //Right Side
-
-        //Images
-        this.setupImages(data, view);
-
-        //Properties
-        this.setupProperties(data, view);
-    },
-
+    
+    // TODO: Keeping for now in order to pull later into own controller
     setupDisplayLabel: function (displayLabel, view) {
         var displayLabelComponent = view.queryById('itemDisplayLabel');
         displayLabelComponent.update({displayLabel: displayLabel});
     },
-
+    
+    // TODO: Keeping for now in order to pull later into own controller
     setupAliases: function (aliasList, view) {
         if (aliasList != null && aliasList.length > 0) {
             var aliasTags = view.down('#itemAlias > auto_complete_with_tags');
@@ -143,19 +117,13 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         }
     },
 
-    setupRelatedProcesses: function (data, view) {
-    },
-
-    setupProperties: function (data, view) {
-        //ToDo: set up to load current incoming properties
-    },
-
     buildItemDataFetchUrl: function (uri) {
         //uri = Ext.JSON.decode(uri);
        uri = encodeURI(uri);
         return SavannaConfig.itemViewUrl + uri + ';jsessionid=' + Savanna.jsessionid;
     },
 
+    // TODO: Move to it's own controller for Edit Qualities along with it's handler above
     handleAddChosenProperty: function (field, evt) {
         if (evt.keyCode === Ext.EventObject.ENTER) {
             if (field.getValue().trim().length) {
