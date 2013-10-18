@@ -2,7 +2,8 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
     singleton: true,
 
     requires: [
-        'Ext.data.IdGenerator'
+        'Ext.data.IdGenerator',
+        'Ext.data.UuidGenerator'
     ],
 
     knownUriTypes: ['DecisionPoint', 'ProcessModel', 'ProcessAction', 'ProcessItem', 'InternalGroup'],

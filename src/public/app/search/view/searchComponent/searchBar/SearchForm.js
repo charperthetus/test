@@ -5,7 +5,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBar.SearchForm', {
 
     requires:   [
         'Savanna.search.view.searchComponent.searchBar.SearchAdvancedTextfield',
-        'Ext.ux.form.SearchField'
+        'ThetusUikit.ux.form.SearchField'
     ],
 
     border: false,
@@ -97,7 +97,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBar.SearchForm', {
 
     tbar: [
         {
-            xtype: 'searchfield',
+            xtype: 'thetus-searchfield',
             width: 400,
             fieldLabel: '',
             name: 'search_terms',

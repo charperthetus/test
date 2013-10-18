@@ -341,6 +341,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
             resultsTerms = resultsDals.down('search_resultsDals_resultsterms');
 
         dalRecord.set('facetFilterCriteria', []);
+        dalRecord.set('dateTimeRanges', []);
         resultsDals.queryById('resultsfacets').removeAll();
         resultsDals.createFacetsTabPanel();
         btn.findParentByType('search_searchcomponent').refineSearchString = '';
