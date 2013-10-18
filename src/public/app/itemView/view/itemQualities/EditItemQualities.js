@@ -9,7 +9,7 @@
 Ext.define('Savanna.itemView.view.itemQualities.EditItemQualities', {
     extend: 'Ext.Panel',
 
-    alias: 'widget.item_edit_qualities',
+    alias: 'widget.itemview_edit_qualities',
 
     layout: 'vbox',
 

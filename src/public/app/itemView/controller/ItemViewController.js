@@ -14,7 +14,6 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     mixins: {
         storeable: 'Savanna.mixin.Storeable'
     },
-
     control: {
         addPropAutoChooser: {
             keyup: 'handleAddChosenProperty'
@@ -55,6 +54,56 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         var processComponent = this.getView().queryById('relatedProcesses');
         processComponent.setTitle('Participated in Process (' + record[0].kvPairGroupsStore.getAt(0).pairsStore.data.length + ')');
         processComponent.reconfigure(record[0].kvPairGroupsStore.getAt(0).pairsStore);
+
+        var qualitiesComponent = this.getView().queryById('itemViewProperties');
+        qualitiesComponent.setTitle('Qualities (' + record[0].propertyGroupsStore.getAt(3).valuesStore.data.length + ')');
+        qualitiesComponent.reconfigure(record[0].propertyGroupsStore.getAt(3).valuesStore);
+
+        var relatedItemView = this.getView().queryById('relatedItems'),
+            me = this;
+
+        Ext.each(record[0].propertyGroupsStore.getAt(2).valuesStore.data.items, function (relatedItemsGroup) {
+
+            var grid = Ext.create('Ext.grid.Panel', {
+                store: relatedItemsGroup.valuesStore,
+                columns: [
+                    {
+                        xtype: 'templatecolumn',
+                        tpl: Ext.create('Ext.XTemplate',
+                            '<input type="button" name="{value}" value="{label}" id="openRelatedItem" />'
+                        ),
+                        text: relatedItemsGroup.get('label'),
+                        flex: 1,
+                        sortable: false
+                    }
+                ],
+                listeners: {
+                    itemclick: me.onRelatedItemClick
+                }
+            });
+
+            relatedItemView.add(grid);
+
+        });
+    },
+
+    onRelatedItemClick: function (grid, record, item, index, e, eOpts) {
+
+        if (e.target.id == "openRelatedItem") {
+
+            var itemView = Ext.create('Savanna.itemView.view.ItemViewer', {
+                title: e.target.value,
+                itemUri: e.target.name,
+                closable: true,
+                autoScroll: true,
+                tabConfig: {
+                    ui: 'dark'
+                }
+            });
+
+            Savanna.app.fireEvent('search:itemSelected', itemView);
+
+        }
     },
 
     setData: function (data, view) {

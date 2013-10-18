@@ -155,6 +155,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "Ext.ux.TabCloseMenu": [],
   "Savanna.itemView.controller.ImageBrowserController": [],
   "Savanna.search.controller.resultsComponent.resultsDals.ResultsRefineTermController": [],
+  "Savanna.itemView.view.itemQualities.ViewItemQualities": [],
   "Savanna.search.controller.resultsComponent.ResultsPanelGridController": [],
   "Ext.ux.grid.filter.DateTimeFilter": [],
   "Ext.ux.form.ItemSelector": [
@@ -529,6 +530,9 @@ Ext.ClassManager.addNameAliasMappings({
   ],
   "Savanna.itemView.controller.ImageBrowserController": [],
   "Savanna.search.controller.resultsComponent.resultsDals.ResultsRefineTermController": [],
+  "Savanna.itemView.view.itemQualities.ViewItemQualities": [
+    "widget.itemview_view_qualities"
+  ],
   "Savanna.search.controller.resultsComponent.ResultsPanelGridController": [],
   "Ext.ux.grid.filter.DateTimeFilter": [
     "gridfilter.datetime"
@@ -608,7 +612,7 @@ Ext.ClassManager.addNameAliasMappings({
     "widget.search_resultsDals_resultsfacet"
   ],
   "Savanna.itemView.view.itemQualities.EditItemQualities": [
-    "widget.item_edit_qualities"
+    "widget.itemview_edit_qualities"
   ],
   "Deft.event.LiveEventListener": [],
   "Savanna.search.view.searchComponent.searchBody.searchMap.SearchLocationComboBox": [
