@@ -277,21 +277,21 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
             {
                 alignment: alignmentSpot,
                 alignmentFocus: go.Spot.Center,
-                width:48, height:48
+                width:72, height:72
             },
             gmake(go.Shape, 'HalfEllipse', {
                     background: 'transparent',
                     fill: null,
                     stroke: null,
                     angle: gooAngle,
-                    width:24, height:48,
+                    width:36, height:72,
                     position: gooPoint,
                     isActionable: true,
                     mouseEnter: function(e, obj) {
                         obj.fill = 'lightblue';
                     },
                     mouseLeave: function(e, obj) {
-                       obj.fill = null;
+                        obj.fill = null;
                     }
                 }
             ),
@@ -301,20 +301,28 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                     stroke: 'white',
                     strokeWidth:3,
                     width:24, height:24,
-                    position: new go.Point(12, 12),
+                    position: new go.Point(24, 24),
                     click: clickHandler,
                     actionDown: function(e, obj) {
                         obj.fill = 'dodgerblue';
                     },
                     actionUp: function(e, obj) {
                         obj.fill = 'lightblue';
+                    },
+                    mouseEnter: function(e, obj) {
+                        obj.fill = 'skyblue';
+                    },
+                    mouseLeave: function(e, obj) {
+                        // should only change the hover color if we are moving outside, not if we are moving over the glyph
+                        // todo: not yet sure how to implement this
+                        obj.fill = 'lightblue';
                     }
                 }
             ),
-            gmake(go.TextBlock, glyph,{ font: "10pt SickFont", stroke: 'blue', position: new go.Point(19, 20) } ),
-            gmake(go.TextBlock, "\uf100",{ font: "7pt SickFont", stroke: 'blue', position: new go.Point(30, 14) } ),
+            gmake(go.TextBlock, glyph,{ font: '10pt SickFont', stroke: 'blue', position: new go.Point(31, 32) } ),
+            gmake(go.TextBlock, '\uf100',{ font: '7pt SickFont', stroke: 'blue', position: new go.Point(42, 26) } ),
             gmake(go.TextBlock, labelStr,
-                { font: "bold 6pt sans-serif", background: 'white', position: labelPoint }
+                { font: 'bold 6pt sans-serif', background: 'white', position: labelPoint }
             )
         );
     },
@@ -394,13 +402,13 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                     selectionAdornmentTemplate:
                         gmake(go.Adornment, go.Panel.Spot,
                             gmake(go.Panel, go.Panel.Auto,
-                                gmake(go.Shape, { fill: null, stroke: "dodgerblue", strokeWidth: 3 }),
+                                gmake(go.Shape, { fill: null, stroke: 'dodgerblue', strokeWidth: 3 }),
                                 gmake(go.Placeholder)
                             ),
-                            this.makeAdornment(go.Spot.Left, new go.Point(0, 0), 180, Savanna.process.utils.ProcessUtils.addParticipant, "\uf116", "Participants", new go.Point(2, 38)),
-                            this.makeAdornment(go.Spot.Top, new go.Point(0, 0), 270, Savanna.process.utils.ProcessUtils.addInput, "\uf124", "Inputs", new go.Point(14, 4)),
-                            this.makeAdornment(go.Spot.Right, new go.Point(24, 0), 0, Savanna.process.utils.ProcessUtils.addByproduct, "\uf13d", "Byproducts", new go.Point(2, 38)),
-                            this.makeAdornment(go.Spot.Bottom, new go.Point(0, 24), 90, Savanna.process.utils.ProcessUtils.addResult, "\uf16d", "Results", new go.Point(12, 38))
+                            this.makeAdornment(go.Spot.Left, new go.Point(0, 0), 180, Savanna.process.utils.ProcessUtils.addParticipant, '\uf116', 'Participants', new go.Point(14, 50)),
+                            this.makeAdornment(go.Spot.Top, new go.Point(0, 0), 270, Savanna.process.utils.ProcessUtils.addInput, '\uf124', 'Inputs', new go.Point(26, 16)),
+                            this.makeAdornment(go.Spot.Right, new go.Point(36, 0), 0, Savanna.process.utils.ProcessUtils.addByproduct, '\uf13d', 'Byproducts', new go.Point(14, 50)),
+                            this.makeAdornment(go.Spot.Bottom, new go.Point(0, 36), 90, Savanna.process.utils.ProcessUtils.addResult, '\uf16d', 'Results', new go.Point(24, 50))
                         )  // end Adornment
                 }
             )
