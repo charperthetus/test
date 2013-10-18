@@ -80,12 +80,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
     initComponent: function() {
 
         this.items = this.buildItems();
-
-        try {
-            this.callParent(arguments);
-        }   catch(err) {
-
-        }
+        this.callParent(arguments);
     },
 
     buildItems: function() {
