@@ -7,6 +7,7 @@
 Ext.Loader.addClassPathMappings({
   "ThetusUikit.form": "packages/thetus-uikit/overrides/form",
   "Deft.Component": "packages/deft/src/js/event/LiveEventBus.js",
+  "Savanna.itemView.view.header.HeaderView": "app/itemView/view/header/ViewHeader.js",
   "ThetusUikit.panel": "packages/thetus-uikit/overrides/panel",
   "Ext.rtl.EventObjectImpl": "ext/src/rtl/EventObject.js",
   "ThetusUikit.layout": "packages/thetus-uikit/overrides/layout",
@@ -19,6 +20,7 @@ Ext.Loader.addClassPathMappings({
   "Savanna.metadata.view.Details": "app/metadata/view/details.js",
   "Ext": "ext/src",
   "Savanna.metadata.view.LongString": "app/metadata/view/longString.js",
+  "Savanna.itemView.view.itemView.ViewRelatedItems": "app/itemView/view/relatedItems/ViewRelatedItems.js",
   "ThetusUikit": "packages/thetus-uikit/src",
   "ThemeDemoApp": "packages/thetus-uikit/overrides",
   "Savanna": "app",
@@ -39,7 +41,10 @@ Ext.ClassManager.addNameAlternateMappings({
   "Savanna.metadata.view.Uri": [],
   "Savanna.process.view.ProcessEditorComponent": [],
   "Savanna.modelSearch.controller.resultsComponent.resultsDals.ResultsOptionsController": [],
+<<<<<<< HEAD
   "Savanna.itemView.view.header.ViewHeader": [],
+=======
+>>>>>>> SAV-5414
   "Savanna.desktop.view.ModelSearchWindow": [],
   "Savanna.search.model.SearchRequest": [],
   "Savanna.crumbnet.view.part.PaletteGroup": [],
@@ -158,6 +163,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "Savanna.metadata.view.Boolean": [],
   "Deft.Component": [],
   "ThetusUikit.layout.component.Dock": [],
+  "Savanna.itemView.view.header.HeaderView": [],
   "Ext.ux.statusbar.StatusBar": [
     "Ext.ux.StatusBar"
   ],
@@ -187,7 +193,10 @@ Ext.ClassManager.addNameAlternateMappings({
   "Ext.ux.TabCloseMenu": [],
   "Savanna.itemView.controller.ImageBrowserController": [],
   "Savanna.search.controller.resultsComponent.resultsDals.ResultsRefineTermController": [],
+<<<<<<< HEAD
   "Savanna.itemView.view.itemQualities.ViewItemQualities": [],
+=======
+>>>>>>> SAV-5414
   "Savanna.modelSearch.controller.resultsComponent.resultsDals.ResultsRefineTermController": [],
   "Savanna.search.controller.resultsComponent.ResultsPanelGridController": [],
   "Ext.ux.grid.filter.DateTimeFilter": [],
@@ -274,6 +283,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "Deft.mvc.Application": [
     "Deft.Application"
   ],
+  "Savanna.itemView.view.itemView.ViewRelatedItems": [],
   "Savanna.process.view.part.Canvas": [],
   "ThetusUikit.button.Button": [],
   "Savanna.modelSearch.controller.resultsComponent.ResultsPanelToolbarController": [],
@@ -386,9 +396,12 @@ Ext.ClassManager.addNameAliasMappings({
     "widget.process_component"
   ],
   "Savanna.modelSearch.controller.resultsComponent.resultsDals.ResultsOptionsController": [],
+<<<<<<< HEAD
   "Savanna.itemView.view.header.ViewHeader": [
     "widget.itemview_view_header"
   ],
+=======
+>>>>>>> SAV-5414
   "Savanna.desktop.view.ModelSearchWindow": [
     "widget.model_desktop_searchwindow"
   ],
@@ -587,6 +600,9 @@ Ext.ClassManager.addNameAliasMappings({
   ],
   "Deft.Component": [],
   "ThetusUikit.layout.component.Dock": [],
+  "Savanna.itemView.view.header.HeaderView": [
+    "widget.itemview_view_header"
+  ],
   "Ext.ux.statusbar.StatusBar": [
     "widget.statusbar"
   ],
@@ -644,9 +660,12 @@ Ext.ClassManager.addNameAliasMappings({
   ],
   "Savanna.itemView.controller.ImageBrowserController": [],
   "Savanna.search.controller.resultsComponent.resultsDals.ResultsRefineTermController": [],
+<<<<<<< HEAD
   "Savanna.itemView.view.itemQualities.ViewItemQualities": [
     "widget.itemview_view_qualities"
   ],
+=======
+>>>>>>> SAV-5414
   "Savanna.modelSearch.controller.resultsComponent.resultsDals.ResultsRefineTermController": [],
   "Savanna.search.controller.resultsComponent.ResultsPanelGridController": [],
   "Ext.ux.grid.filter.DateTimeFilter": [
@@ -740,7 +759,11 @@ Ext.ClassManager.addNameAliasMappings({
     "widget.search_resultsDals_resultsfacet"
   ],
   "Savanna.itemView.view.itemQualities.EditItemQualities": [
+<<<<<<< HEAD
     "widget.itemview_edit_qualities"
+=======
+    "widget.item_edit_qualities"
+>>>>>>> SAV-5414
   ],
   "Deft.event.LiveEventListener": [],
   "Savanna.search.view.searchComponent.searchBody.searchMap.SearchLocationComboBox": [
@@ -799,6 +822,9 @@ Ext.ClassManager.addNameAliasMappings({
     "widget.metadata_longstring"
   ],
   "Deft.mvc.Application": [],
+  "Savanna.itemView.view.itemView.ViewRelatedItems": [
+    "widget.itemview_view_related_items"
+  ],
   "Savanna.process.view.part.Canvas": [
     "widget.process_canvas"
   ],

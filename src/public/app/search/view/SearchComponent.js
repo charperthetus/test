@@ -25,7 +25,6 @@ Ext.define('Savanna.search.view.SearchComponent', {
     closable:false,
     border:false,
 
-
     items: [
         {
             xtype: 'search_searchbar',
@@ -39,7 +38,7 @@ Ext.define('Savanna.search.view.SearchComponent', {
         }
     ],
 
-    /* commenting this out because it is not in the most recent comps.
+    /* // commenting this out because it is not in the most recent comps.
     dockedItems: [{
         xtype: 'search_searchtoolbar',
         itemId: 'searchtoolbar'
