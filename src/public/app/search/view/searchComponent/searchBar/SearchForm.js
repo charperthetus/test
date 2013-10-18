@@ -109,6 +109,6 @@ Ext.define('Savanna.search.view.searchComponent.searchBar.SearchForm', {
             text: 'Advanced',
             itemId: 'searchadvanced_btn',
             ui: 'white'
-        }]
- 
+        }
+    ]
 });
