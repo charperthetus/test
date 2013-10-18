@@ -6,7 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 
-Ext.define('Savanna.itemView.view.header.HeaderView', {
+Ext.define('Savanna.itemView.view.header.ViewHeader', {
     extend: 'Ext.grid.Panel',
 
     alias: 'widget.itemview_view_header',

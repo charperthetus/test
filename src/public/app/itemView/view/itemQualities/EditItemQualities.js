@@ -7,7 +7,7 @@
  */
 
 Ext.define('Savanna.itemView.view.itemQualities.EditItemQualities', {
-    extend: 'Ext.Panel',
+    extend: 'Ext.panel.Panel',
 
     alias: 'widget.itemview_edit_qualities',
 

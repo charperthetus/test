@@ -1,5 +1,5 @@
 Ext.define('Savanna.itemView.view.ItemViewer', {
-    extend: 'Ext.Panel',
+    extend: 'Ext.panel.Panel',
 
     alias: 'widget.itemview_itemviewer',
 
@@ -78,8 +78,14 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
     },
 
     initComponent: function() {
+
         this.items = this.buildItems();
-        this.callParent(arguments);
+
+        try {
+            this.callParent(arguments);
+        }   catch(err) {
+
+        }
     },
 
     buildItems: function() {
