@@ -22,7 +22,7 @@ Ext.define('Savanna.metadata.view.StringList', {
         var me = this;
 
         me.on('beforerender', Ext.bind(function() {
-//            me.down('#displayLabelItem').text = me.displayLabel;
+            me.down('#displayLabelItem').text = me.displayLabel + ':';
 //            if(null !== me.value && 0 != me.value.length) {
 //                Ext.Array.each(me.value, function(stringElement) {
 //                    var theLabel = Ext.create('Ext.form.Label', {
@@ -42,29 +42,37 @@ Ext.define('Savanna.metadata.view.StringList', {
         }, this));
     },
 
-    makeItems: function () {
-        this.removeAll();
-        if(this.getEditable() && this.getEditMode()) {
-            this.add(Ext.create('Ext.form.field.Text', {
-                fieldLabel: '',
-                itemId: 'displayValueEdit',
-                allowBlank: true,
-                width: '100%',
-                labelWidth: 200
-            }));
-        } else {
-            this.add(Ext.create('Ext.form.Label', {
-                itemId: 'displayLabelItem',
-                width: 200,
-                minWidth: 200,
-                height: 25
-            }));
-            this.add(Ext.create('Ext.form.Label', {
-                itemId: 'displayValue',
-                width: '100%'
+    makeEditViewItems: function() {
+        this.makeViewViewItems(); // for now, until we get the edit mode figured out.
+    },
 
-            }));
+    makeViewViewItems: function() {
+        var me = this;
+        this.add(Ext.create('Ext.form.Label', {
+            itemId: 'displayLabelItem',
+            width: 200,
+            minWidth: 200,
+            height: 25
+        }));
+
+        var contains = Ext.create('Ext.container.Container', {
+            layout: 'vbox',
+            width: "100%",
+            border: false
+        });
+        if(null !== me.value && 0 != me.value.length) {
+            Ext.Array.each(me.value, function(stringElement) {
+                var theLabel = Ext.create('Ext.form.Label', {
+                    text: '',
+                    width: "100%",
+                    height: 25
+                });
+                theLabel.setText( stringElement );
+                contains.add( theLabel );
+            });
         }
+        me.add(contains);
+
     }
 
 });
