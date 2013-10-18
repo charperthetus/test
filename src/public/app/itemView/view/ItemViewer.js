@@ -27,12 +27,18 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
         itemUri: null
     },
 
-    tbar: [
-        {
-            xtype: 'label',
-            text: 'CLASSIFICATION'
-        }
-    ],
+    dockedItems: [{
+        xtype: 'toolbar',
+        dock: 'top',
+        items: [
+            '->',
+            {
+                xtype: 'label',
+                text: 'CLASSIFICATION'
+            },
+            '->'
+        ]
+    }],
 
     tbar: [
         {
@@ -43,13 +49,13 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                     text: 'New Item...'
                 },
                 {
-                    text: 'Delete' 
+                    text: 'Delete'
                 },
                 {
                     xtype: 'menuseparator'
                 },
                 {
-                    text: 'Workflow' 
+                    text: 'Workflow'
                 },
                 {
                     xtype: 'menuseparator'

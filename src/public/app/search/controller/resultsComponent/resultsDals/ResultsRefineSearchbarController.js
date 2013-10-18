@@ -36,7 +36,6 @@ Ext.define('Savanna.search.controller.resultsComponent.resultsDals.ResultsRefine
 
 
         onSubmitClick: function (field) {
-            console.log(field);
             var field = field.findParentByType('search_resultscomponent').down('#refine_search_terms');
             return this.onNewSearchTerm(field);
         },
