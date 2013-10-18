@@ -18,14 +18,6 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     control: {
         addPropAutoChooser: {
             keyup: 'handleAddChosenProperty'
-        },
-
-        nav_left: {
-            click:'onNavLeft'
-        },
-
-        nav_right: {
-            click: 'onNavRight'
         }
     },
 
@@ -103,27 +95,6 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     },
 
     setupRelatedProcesses: function (data, view) {
-    },
-
-    setupImages: function (data, view) {
-        var me = this,
-            thumbnail_list = view.queryById('thumbnail_list');
-
-        Ext.Array.each(data.observables, function(image, index) {
-            var imageSource = SavannaConfig.savannaUrlRoot + '/preview2/?filestoreUri=' + image.uri;
-            var thumbnail = Ext.create('Savanna.itemView.view.itemView.ImageThumbnail', {
-                title: image.displayLabel,
-                src: imageSource,
-                alt: image.comment,
-                listeners: {
-                    click: {
-                        element: 'el',
-                        fn: me.onChangeImage.bind(me)
-                    }
-                }
-            });
-            thumbnail_list.add(thumbnail);
-        });
     },
 
     setupProperties: function (data, view) {

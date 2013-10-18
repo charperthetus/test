@@ -4,7 +4,6 @@
  * Description
  */
 Ext.define('Savanna.itemView.controller.ImageBrowserController', {
-    
     extend: 'Deft.mvc.ViewController',
     
     views: [
