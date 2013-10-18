@@ -224,22 +224,6 @@
 * Logic  
 */ 
 
-// .#{$prefix}btn-brand-header-toolbar-small .#{$prefix}btn-arrow {
-//   background-image: none;
-//   &:before{
-//     content:"arrowDDdown";
-//     right: -17px;
-//     top: 16px;
-//     font-size: 1.5em;
-//     position: absolute;
-//     color:#808080;
-//   }
-//   text-shadow:0 1px #999999;
-//   &:hover, &:active, &:focus{
-//     color:#999999;
-//     text-shadow:0 1px #808080;
-//   }
-// }
 
 .logoButtonFramework {
     background-image: $brand-header-logo-image;
@@ -257,14 +241,14 @@
 @mixin thetus-header-icon-button{
   padding: 0;
   .#{$prefix}btn-glyph{
-    color:#808080;
+    color:#777777;
     font-size:20px;
-    line-height:32px;
+    line-height:27px;
     text-align:center;
-    text-shadow:0 1px #999999;
+    width: 100%;
+    text-shadow:0 1px #808080;
     &:hover, &:active, &:focus{
-      colore:#999999;
-      text-shadow:0 1px #808080;
+      color:#808080;
     }
   }
 
@@ -292,11 +276,13 @@
 .userButtonFramework{
   .#{$prefix}btn-arrow {
     background-image: none;
+    padding-left: 5px;
+    padding-right: 0px;
     &:before{
       content:"arrowDDdown";
       right: 0;
-      top: 16px;
-      font-size: 1.5em;
+      top: 11px;
+      font-size: 16px;
       position: absolute;
       color:#808080;
     }
@@ -307,7 +293,7 @@
     }
   }
   .#{$prefix}btn-glyph{
-     text-align: left;
+    text-align: left;
   }
 }
 
