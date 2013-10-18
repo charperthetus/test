@@ -453,7 +453,7 @@ describe('Search Component', function () {
             });
 
             it('should clear the search text input', function () {
-                controller.clearSearch(searchbar.down('searchbar_form').down('searchfield'));
+                controller.clearSearch(searchbar.down('searchbar_form').down('thetus-searchfield'));
                 var form = searchbar.queryById('search_form');
                 expect(formFields.queryById('all_words').getValue()).toEqual('');
                 expect(formFields.queryById('exact_phrase').getValue()).toEqual('');
@@ -770,7 +770,7 @@ describe('Search Component', function () {
 
                 spyOn(controller, 'showResultsPage');
 
-                controller.doSearch(component.down('searchfield'));
+                controller.doSearch(component.down('thetus-searchfield'));
 
                 expect(controller.showResultsPage).toHaveBeenCalled();
             });
