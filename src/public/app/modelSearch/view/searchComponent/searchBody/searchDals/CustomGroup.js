@@ -1,6 +1,6 @@
-Ext.define('Savanna.search.view.searchComponent.searchBody.searchDals.CustomGroup', {
+Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.searchDals.CustomGroup', {
     extend: 'Ext.form.Panel',
-    alias: 'widget.searchDals_custom-group',
+    alias: 'widget.model_searchDals_custom-group',
     cls: 'search-dal-group',
     requires: [
         'Ext.form.field.ComboBox',
@@ -106,7 +106,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.searchDals.CustomGrou
                 config.bbar = {
                     xtype: 'button',
                     text: 'Add Key Value Pair Option',
-                    handler: Ext.bind(this.addKeyValueInput, this)
+                    handler: Ext.bind(this.addKeyValueInput, this),
                     // ui: 'link'
                 };
                 break;
