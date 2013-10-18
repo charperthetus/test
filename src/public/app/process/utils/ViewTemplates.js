@@ -271,6 +271,54 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
         return linkTemplateMap;
     },
 
+    makeAdornment: function(alignmentSpot, gooPoint, gooAngle, clickHandler, glyph, labelStr, labelPoint) {
+        var gmake = go.GraphObject.make;
+        return gmake(go.Panel, go.Panel.Position,
+            {
+                alignment: alignmentSpot,
+                alignmentFocus: go.Spot.Center,
+                width:48, height:48
+            },
+            gmake(go.Shape, 'HalfEllipse', {
+                    background: 'transparent',
+                    fill: null,
+                    stroke: null,
+                    angle: gooAngle,
+                    width:24, height:48,
+                    position: gooPoint,
+                    isActionable: true,
+                    mouseEnter: function(e, obj) {
+                        obj.fill = 'lightblue';
+                    },
+                    mouseLeave: function(e, obj) {
+                       obj.fill = null;
+                    }
+                }
+            ),
+            gmake(go.Shape, 'Circle', {
+                    isActionable: true,
+                    fill: 'lightblue',
+                    stroke: 'white',
+                    strokeWidth:3,
+                    width:24, height:24,
+                    position: new go.Point(12, 12),
+                    click: clickHandler,
+                    actionDown: function(e, obj) {
+                        obj.fill = 'dodgerblue';
+                    },
+                    actionUp: function(e, obj) {
+                        obj.fill = 'lightblue';
+                    }
+                }
+            ),
+            gmake(go.TextBlock, glyph,{ font: "10pt SickFont", stroke: 'blue', position: new go.Point(19, 20) } ),
+            gmake(go.TextBlock, "\uf100",{ font: "7pt SickFont", stroke: 'blue', position: new go.Point(30, 14) } ),
+            gmake(go.TextBlock, labelStr,
+                { font: "bold 6pt sans-serif", background: 'white', position: labelPoint }
+            )
+        );
+    },
+
     generateGroupTemplateMap: function() {
         var gmake = go.GraphObject.make;
         var groupTemplateMap = new go.Map();
@@ -341,39 +389,20 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                     wasSubGraphExpanded: true
                 },
                 gmake(go.Shape, 'RoundedRectangle', { fill: '#88FFFF', name:'BACKGROUND', stroke: null}),
-                gmake(go.Panel, go.Panel.Horizontal, {defaultAlignment: go.Spot.Top},
-                    gmake(go.TextBlock, '+ Tools', {
-                                angle: 270,
-                                alignment: go.Spot.Center,
-                                font: '9pt Helvetica, Arial, sans-serif',
-                                stroke: 'blue',
-                                isUnderline: true,
-                                margin: 2,
-                                editable: false,
-                                click: Savanna.process.utils.ProcessUtils.addTool,
-                                mouseDragEnter: Savanna.process.utils.GroupEventHandlers.onActionMouseDragEnter,
-                                mouseDragLeave: Savanna.process.utils.GroupEventHandlers.onActionMouseDragLeave,
-                                mouseDrop: Savanna.process.utils.GroupEventHandlers.onActionMouseDrop
-                            }),
-
-                    gmake(go.Panel, go.Panel.Vertical,
-                        { defaultAlignment: go.Spot.Center },
-                        gmake(go.TextBlock, '+ Items', Savanna.process.utils.ViewTemplates.linkTextStyle(Savanna.process.utils.ProcessUtils.addInput)),
-                        // create a placeholder to represent the area where the contents of the group are
-                        gmake(go.Placeholder, { padding: new go.Margin(5, 5) }),
-                        gmake(go.TextBlock, '+ Actions', Savanna.process.utils.ViewTemplates.linkTextStyle(Savanna.process.utils.ProcessUtils.addAction))
-                    ),  // end Vertical Panel
-
-                    gmake(go.TextBlock, '+ Byproducts', {
-                                angle: 270,
-                                font: '9pt Helvetica, Arial, sans-serif',
-                                stroke: 'blue',
-                                isUnderline: true,
-                                margin: 2,
-                                editable: false,
-                                click: Savanna.process.utils.ProcessUtils.addByproduct
-                            })
-                )
+                gmake(go.Placeholder, { padding: new go.Margin(16, 16) }),
+                {
+                    selectionAdornmentTemplate:
+                        gmake(go.Adornment, go.Panel.Spot,
+                            gmake(go.Panel, go.Panel.Auto,
+                                gmake(go.Shape, { fill: null, stroke: "dodgerblue", strokeWidth: 3 }),
+                                gmake(go.Placeholder)
+                            ),
+                            this.makeAdornment(go.Spot.Left, new go.Point(0, 0), 180, Savanna.process.utils.ProcessUtils.addParticipant, "\uf116", "Participants", new go.Point(2, 38)),
+                            this.makeAdornment(go.Spot.Top, new go.Point(0, 0), 270, Savanna.process.utils.ProcessUtils.addInput, "\uf124", "Inputs", new go.Point(14, 4)),
+                            this.makeAdornment(go.Spot.Right, new go.Point(24, 0), 0, Savanna.process.utils.ProcessUtils.addByproduct, "\uf13d", "Byproducts", new go.Point(2, 38)),
+                            this.makeAdornment(go.Spot.Bottom, new go.Point(0, 24), 90, Savanna.process.utils.ProcessUtils.addResult, "\uf16d", "Results", new go.Point(12, 38))
+                        )  // end Adornment
+                }
             )
         );  // end Actions Group
 

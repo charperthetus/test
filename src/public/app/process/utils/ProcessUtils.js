@@ -76,13 +76,15 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
     addStepPart: function(obj, category, label, linkType) {
         var diagram = obj.diagram;
         diagram.startTransaction('addStepPart');
-        var tobj = obj.part;
-        var nodeData = {'category': category, 'text': label, 'group': tobj.containingGroup.data.key};
+        var adornmentGroup = obj.part;
+        var actionGroup = adornmentGroup.adornedObject;
+        var stepGroup = actionGroup.containingGroup;
+        var nodeData = {'category': category, 'text': label, 'group': stepGroup.data.key};
         nodeData.key = Savanna.process.utils.ProcessUtils.getURI(nodeData.category);
 
         diagram.model.addNodeData(nodeData);
 
-        var linkData = {  category: linkType, from: tobj.data.key, to: nodeData.key };
+        var linkData = {  category: linkType, from: actionGroup.data.key, to: nodeData.key };
         diagram.model.addLinkData(linkData);
         diagram.commitTransaction('addStepPart');
         Savanna.process.utils.ProcessUtils.startTextEdit(diagram, nodeData);
@@ -92,12 +94,32 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         Savanna.process.utils.ProcessUtils.addStepPart(obj, 'ProcessItem', 'Input', 'InputLink');
     },
 
-    addTool: function(e, obj) {
-        Savanna.process.utils.ProcessUtils.addStepPart(obj, 'ProcessItem', 'Tool', 'ToolLink');
+    addParticipant: function(e, obj) {
+        Savanna.process.utils.ProcessUtils.addStepPart(obj, 'ProcessItem', 'Participant', 'ToolLink');
     },
 
     addByproduct: function(e, obj) {
         Savanna.process.utils.ProcessUtils.addStepPart(obj, 'ProcessItem', 'Byproduct', 'ByproductLink');
+    },
+
+    addResult: function(e, obj) {
+        var category = 'ProcessItem';
+        var label = 'Result';
+        var linkType = 'ProcessLink';
+        var diagram = obj.diagram;
+        diagram.startTransaction('addResult');
+        var adornmentGroup = obj.part;
+        var actionGroup = adornmentGroup.adornedObject;
+        var stepGroup = actionGroup.containingGroup;
+        var nodeData = {'category': category, 'text': label};
+        nodeData.key = Savanna.process.utils.ProcessUtils.getURI(nodeData.category);
+
+        diagram.model.addNodeData(nodeData);
+
+        var linkData = {  category: linkType, from: stepGroup.data.key, to: nodeData.key };
+        diagram.model.addLinkData(linkData);
+        diagram.commitTransaction('addResult');
+        Savanna.process.utils.ProcessUtils.startTextEdit(diagram, nodeData);
     },
 
     addFinalResult: function(e, obj) {
