@@ -288,7 +288,8 @@ Ext.define('Savanna.modelSearch.controller.ResultsComponent', {
         //gaaaahhh    the index passed in does not include all the pages that have come before.
         //gaaaahhh*10 the current page is 1-based.
         this.previewIndex = index + (this.resultsStore.currentPage - 1) * (this.resultsStore.pageSize);
-        this.updatePreview();
+        //We don't need this feature in this release.  Uncomment to restore function.
+        //this.updatePreview();
     },
 
     onItemMouseEnter: function (view, rec, node) {    // other parameters: , index, e, options

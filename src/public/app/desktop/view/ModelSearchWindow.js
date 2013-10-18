@@ -13,6 +13,9 @@ Ext.define('Savanna.desktop.view.ModelSearchWindow', {
         'Savanna.modelSearch.view.SearchComponent'
     ],
 
+
+
+    maximizable: true,
     title: 'Model Search',
     layout: 'fit',
     height: 600, //todo: get design input on initial size and minimum size
