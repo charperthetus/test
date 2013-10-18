@@ -17,7 +17,8 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
         'Savanna.itemView.view.itemQualities.EditItemQualities',
         'Savanna.itemView.view.components.LabeledFieldWithTags',
         'Savanna.itemView.view.relatedProcesses.RelatedProcesses',
-        'Savanna.itemView.view.relatedItems.ViewRelatedItems'
+        'Savanna.itemView.view.relatedItems.ViewRelatedItems',
+        'Savanna.itemView.view.itemQualities.ViewItemQualities'
     ],
 
     controller: 'Savanna.itemView.controller.ItemViewController',
@@ -25,6 +26,13 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
     config: {
         itemUri: null
     },
+
+    tbar: [
+        {
+            xtype: 'label',
+            text: 'CLASSIFICATION'
+        }
+    ],
 
     tbar: [
         {
@@ -118,16 +126,24 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                 xtype: 'panel',
                 flex: 1,
                 items: [
+//                    {
+//                        xtype: 'itemview_imagesgrid',
+//                        itemId: 'imagesGrid'
+//                    },
+//                    {
+//                        xtype: 'itemview_edit_qualities',
+//                        itemId: 'itemEditProperties',
+//                        width: '100%',
+//                        collapsible: true,
+//                        title: 'Qualities (#)',
+//                        header:{
+//                            ui:'light-blue'
+//                        }
+//                    }
                     {
-                        xtype: 'itemview_imagesgrid',
-                        itemId: 'imagesGrid'
-                    },
-                    {
-                        xtype: 'item_edit_qualities',
-                        itemId: 'itemProperties',
-                        width: '100%',
+                        xtype: 'itemview_view_qualities',
+                        itemId: 'itemViewProperties',
                         collapsible: true,
-                        title: 'Qualities (#)',
                         header:{
                             ui:'light-blue'
                         }

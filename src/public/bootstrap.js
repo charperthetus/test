@@ -148,11 +148,13 @@ Ext.ClassManager.addNameAlternateMappings({
   "Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsOptions": [],
   "ThetusUikit.toolbar.Separator": [],
   "Ext.ux.ToolbarDroppable": [],
+  "Savanna.itemView.controller.AutoCompleteController": [],
   "Savanna.process.view.part.PaletteWindow": [],
   "Savanna.desktop.controller.DesktopController": [],
   "Ext.ux.DataView.Draggable": [],
   "Ext.ux.TabCloseMenu": [],
   "Savanna.search.controller.resultsComponent.resultsDals.ResultsRefineTermController": [],
+  "Savanna.itemView.view.itemQualities.ViewItemQualities": [],
   "Savanna.search.controller.resultsComponent.ResultsPanelGridController": [],
   "Ext.ux.grid.filter.DateTimeFilter": [],
   "Ext.ux.form.ItemSelector": [
@@ -516,6 +518,7 @@ Ext.ClassManager.addNameAliasMappings({
   ],
   "ThetusUikit.toolbar.Separator": [],
   "Ext.ux.ToolbarDroppable": [],
+  "Savanna.itemView.controller.AutoCompleteController": [],
   "Savanna.process.view.part.PaletteWindow": [
     "widget.process_palettewindow"
   ],
@@ -525,6 +528,9 @@ Ext.ClassManager.addNameAliasMappings({
     "plugin.tabclosemenu"
   ],
   "Savanna.search.controller.resultsComponent.resultsDals.ResultsRefineTermController": [],
+  "Savanna.itemView.view.itemQualities.ViewItemQualities": [
+    "widget.itemview_view_qualities"
+  ],
   "Savanna.search.controller.resultsComponent.ResultsPanelGridController": [],
   "Ext.ux.grid.filter.DateTimeFilter": [
     "gridfilter.datetime"
@@ -604,7 +610,7 @@ Ext.ClassManager.addNameAliasMappings({
     "widget.search_resultsDals_resultsfacet"
   ],
   "Savanna.itemView.view.itemQualities.EditItemQualities": [
-    "widget.item_edit_qualities"
+    "widget.itemview_edit_qualities"
   ],
   "Deft.event.LiveEventListener": [],
   "Savanna.search.view.searchComponent.searchBody.searchMap.SearchLocationComboBox": [
