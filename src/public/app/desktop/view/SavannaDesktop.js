@@ -35,12 +35,16 @@ Ext.define('Savanna.desktop.view.SavannaDesktop', {
                 itemId: 'searchbutton',
                 cls:'searchButtonFramework',
                 ui:'brand-header',
-                scale: 'medium'
+                width: 29,
+                height:32,
+                glyph:'search',
                 }, {
                 itemId: 'uploadbutton',
                 cls:'uploadButtonFramework',
                 ui:'brand-header',
-                scale: 'medium'
+                width: 29,
+                height:32,
+                glyph:'upload',
                 },{
                 // TODO: Change this out to a button or remove it depending on where MS lives         
                 itemId: 'modelsearchbutton',
@@ -69,12 +73,16 @@ Ext.define('Savanna.desktop.view.SavannaDesktop', {
                 itemId: 'helpbutton',
                 cls:'helpButtonFramework',
                 ui:'brand-header',
-                scale: 'medium'
+                width: 29,
+                height:32,
+                glyph:'help',
             }, {
                 itemId: 'userbutton',
                 cls:'userButtonFramework',
                 ui:'brand-header',
-                scale: 'medium',
+                width: 29,
+                height:32,
+                glyph:'silhouette',
                 menu: {
                     items: [{
                         text: 'Current Username here',

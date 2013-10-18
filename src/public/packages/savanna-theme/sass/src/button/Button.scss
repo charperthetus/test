@@ -224,10 +224,21 @@
 * Logic  
 */ 
 
-.#{$prefix}btn-brand-header-toolbar-medium .#{$prefix}btn-arrow {
-  background-image: url(images/button/brand-header-toolbar-medium-arrow.png);
-  padding-left: 4px;
-  padding-right: 14px;
+.#{$prefix}btn-brand-header-toolbar-small .#{$prefix}btn-arrow {
+  background-image: none;
+  &:before{
+    content:"arrowDDdown";
+    right: -17px;
+    top: 16px;
+    font-size: 1.5em;
+    position: absolute;
+    color:#808080;
+  }
+  text-shadow:0 1px #999999;
+  &:hover, &:active, &:focus{
+    colore:#999999;
+    text-shadow:0 1px #808080;
+  }
 }
 
 .logoButtonFramework {
@@ -243,62 +254,34 @@
         @include opacity(0.85);
     }
 }
+@mixin thetus-header-icon-button{
+  padding: 0;
+  .#{$prefix}btn-glyph{
+    color:#808080;
+    font-size:29px;
+    line-height:32px;
+    text-align:center;
+    text-shadow:0 1px #999999;
+    &:hover, &:active, &:focus{
+      colore:#999999;
+      text-shadow:0 1px #808080;
+    }
+  }
 
+}
 .searchButtonFramework,
 .uploadButtonFramework,
 .errorButtonFramework, 
 .helpButtonFramework, 
 .userButtonFramework {
-    background-repeat: no-repeat;
-    background-position: center;
     display:inline-block;
+    @include thetus-header-icon-button;
 }
 
-.searchButtonFramework {
-    background-image: $brand-header-search-image;
-    &:hover, &:active, &:focus, 
-    .searchButtonFramework.#{$prefix}btn-brand-header-toolbar-medium-focus, {
-        background-image: $brand-header-search-image-hover;
-    }
+.#{$prefix}tab-icon-el{
+  @include thetus-icons;
 }
 
-.uploadButtonFramework {
-    background-image: $brand-header-upload-image;
-    &:hover, &:active, &:focus, 
-    .uploadButtonFramework.#{$prefix}btn-brand-header-toolbar-medium-focus {
-        background-image: $brand-header-upload-image-hover;
-    }
-}
-
-.errorButtonFramework {
-    background-image: $brand-header-error-image;
-    &:hover, &:active, &:focus, 
-    .errorButtonFramework.#{$prefix}btn-brand-header-toolbar-medium-focus {
-        background-image: $brand-header-error-image-hover;
-    }
-}
-
-.helpButtonFramework {
-    background-image: $brand-header-help-image;
-    &:hover, &:active, &:focus, 
-    .helpButtonFramework.#{$prefix}btn-brand-header-toolbar-medium-focus {
-        background-image: $brand-header-help-image-hover;
-    }
-}
-
-.userButtonFramework {
-    background-image: $brand-header-user-image;
-    background-position: center left;
-
-    &:hover, 
-    &:active, 
-    &:focus, 
-    .userButtonFramework.#{$prefix}btn-brand-header-toolbar-medium-focus,
-    .userButtonFramework.#{$prefix}btn-brand-header-toolbar-medium-menu-active,
-    .userButtonFramework.#{$prefix}btn-brand-header-toolbar-medium-pressed {
-        background-image: $brand-header-user-image-hover;
-    }
-}
 
 .singleViewButtonFramework, 
 .singleViewButtonFramework:hover, 
