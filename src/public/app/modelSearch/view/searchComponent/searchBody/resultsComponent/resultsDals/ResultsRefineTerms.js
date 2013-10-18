@@ -11,7 +11,8 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
     alias: 'widget.model_search_resultsDals_resultsterms',
     controller: 'Savanna.modelSearch.controller.resultsComponent.resultsDals.ResultsRefineTermsController',
     requires: [
-        'Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineTerm'
+        'Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineTerm',
+        'Savanna.modelSearch.controller.resultsComponent.resultsDals.ResultsRefineTermsController'
     ],
 
     minHeight: 5,
