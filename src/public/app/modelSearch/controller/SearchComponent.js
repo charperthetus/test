@@ -405,6 +405,10 @@ Ext.define('Savanna.modelSearch.controller.SearchComponent', {
         var component = this.getSearchComponent(elem),
             sources = this.getSelectedDals(component);
 
+        //The body is hidden when the view first opens.
+        var searchBody =  component.queryById('searchbody');
+        searchBody.show();
+
         this.hideMenu(component);
 
         var searchString = component.queryById('searchbar').buildSearchString(),
