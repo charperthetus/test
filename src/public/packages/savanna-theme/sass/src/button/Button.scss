@@ -9,237 +9,237 @@
 * Runtime
 */  
 @if $include-ext-toolbar-toolbar {
-    @include extjs-button-ui(
-        $ui: 'brand-header-toolbar-small',
+    @include uikit-button(
+        $uikit-ui: 'brand-header-toolbar-small',
 
-        $padding: $brand-header-button-padding,
+        $uikit-padding: $brand-header-button-padding,
 
-        $border-radius: $brand-header-button-border-radius,
-        $border-width: 0px,
+        $uikit-border-radius: $brand-header-button-border-radius,
+        $uikit-border-width: 0px,
 
-        $glyph-color: $brand-header-glyph-color,
-        $glyph-opacity: $brand-header-glyph-opacity,
+        $uikit-glyph-color: $brand-header-glyph-color,
+        $uikit-glyph-opacity: $brand-header-glyph-opacity,
 
-        $color: $brand-header-button-color,
-        $color-over: $brand-header-button-color-over,
-        $color-focus: $brand-header-button-color-over,
-        $color-pressed: $brand-header-button-color-pressed,
-        $color-disabled: $brand-header-button-color-disabled,
+        $uikit-color: $brand-header-button-color,
+        $uikit-color-over: $brand-header-button-color-over,
+        $uikit-color-focus: $brand-header-button-color-over,
+        $uikit-color-pressed: $brand-header-button-color-pressed,
+        $uikit-color-disabled: $brand-header-button-color-disabled,
 
-        $border-color: $brand-header-button-border-color,
-        $border-color-over: $brand-header-button-border-color-over,
-        $border-color-focus: $brand-header-button-border-color-focus,
-        $border-color-pressed: $brand-header-button-border-color-pressed,
-        $border-color-disabled: $brand-header-button-border-color-disabled,
+        $uikit-border-color: $brand-header-button-border-color,
+        $uikit-border-color-over: $brand-header-button-border-color-over,
+        $uikit-border-color-focus: $brand-header-button-border-color-focus,
+        $uikit-border-color-pressed: $brand-header-button-border-color-pressed,
+        $uikit-border-color-disabled: $brand-header-button-border-color-disabled,
 
-        $background-color: $brand-header-button-background-color,
-        $background-color-over: $brand-header-button-background-color-over,
-        $background-color-focus: $brand-header-button-background-color-focus,
-        $background-color-pressed: $brand-header-button-background-color-pressed,
-        $background-color-disabled: $brand-header-button-background-color-disabled,
+        $uikit-background-color: $brand-header-button-background-color,
+        $uikit-background-color-over: $brand-header-button-background-color-over,
+        $uikit-background-color-focus: $brand-header-button-background-color-focus,
+        $uikit-background-color-pressed: $brand-header-button-background-color-pressed,
+        $uikit-background-color-disabled: $brand-header-button-background-color-disabled,
 
-        $background-gradient: $brand-header-button-background-gradient,
-        $background-gradient-over: $brand-header-button-background-gradient-over,
-        $background-gradient-focus: $brand-header-button-background-gradient-focus,
-        $background-gradient-pressed: $brand-header-button-background-gradient-pressed,
-        $background-gradient-disabled: $brand-header-button-background-gradient-disabled
+        $uikit-background-gradient: $brand-header-button-background-gradient,
+        $uikit-background-gradient-over: $brand-header-button-background-gradient-over,
+        $uikit-background-gradient-focus: $brand-header-button-background-gradient-focus,
+        $uikit-background-gradient-pressed: $brand-header-button-background-gradient-pressed,
+        $uikit-background-gradient-disabled: $brand-header-button-background-gradient-disabled
     );
-    @include extjs-button-ui(
-        $ui: 'brand-header-toolbar-medium',
+    @include uikit-button(
+        $uikit-ui: 'brand-header-toolbar-medium',
 
-        $padding: $brand-header-button-padding,
+        $uikit-padding: $brand-header-button-padding,
 
-        $border-radius: $brand-header-button-border-radius,
-        $border-width: 0px,
+        $uikit-border-radius: $brand-header-button-border-radius,
+        $uikit-border-width: 0px,
 
-        $glyph-color: $brand-header-glyph-color,
-        $glyph-opacity: $brand-header-glyph-opacity,
+        $uikit-glyph-color: $brand-header-glyph-color,
+        $uikit-glyph-opacity: $brand-header-glyph-opacity,
 
-        $color: $brand-header-button-color,
-        $color-over: $brand-header-button-color-over,
-        $color-focus: $brand-header-button-color-over,
-        $color-pressed: $brand-header-button-color-pressed,
-        $color-disabled: $brand-header-button-color-disabled,
+        $uikit-color: $brand-header-button-color,
+        $uikit-color-over: $brand-header-button-color-over,
+        $uikit-color-focus: $brand-header-button-color-over,
+        $uikit-color-pressed: $brand-header-button-color-pressed,
+        $uikit-color-disabled: $brand-header-button-color-disabled,
 
-        $border-color: $brand-header-button-border-color,
-        $border-color-over: $brand-header-button-border-color-over,
-        $border-color-focus: $brand-header-button-border-color-focus,
-        $border-color-pressed: $brand-header-button-border-color-pressed,
-        $border-color-disabled: $brand-header-button-border-color-disabled,
+        $uikit-border-color: $brand-header-button-border-color,
+        $uikit-border-color-over: $brand-header-button-border-color-over,
+        $uikit-border-color-focus: $brand-header-button-border-color-focus,
+        $uikit-border-color-pressed: $brand-header-button-border-color-pressed,
+        $uikit-border-color-disabled: $brand-header-button-border-color-disabled,
 
-        $background-color: $brand-header-button-background-color,
-        $background-color-over: $brand-header-button-background-color-over,
-        $background-color-focus: $brand-header-button-background-color-focus,
-        $background-color-pressed: $brand-header-button-background-color-pressed,
-        $background-color-disabled: $brand-header-button-background-color-disabled,
+        $uikit-background-color: $brand-header-button-background-color,
+        $uikit-background-color-over: $brand-header-button-background-color-over,
+        $uikit-background-color-focus: $brand-header-button-background-color-focus,
+        $uikit-background-color-pressed: $brand-header-button-background-color-pressed,
+        $uikit-background-color-disabled: $brand-header-button-background-color-disabled,
 
-        $background-gradient: $brand-header-button-background-gradient,
-        $background-gradient-over: $brand-header-button-background-gradient-over,
-        $background-gradient-focus: $brand-header-button-background-gradient-focus,
-        $background-gradient-pressed: $brand-header-button-background-gradient-pressed,
-        $background-gradient-disabled: $brand-header-button-background-gradient-disabled
+        $uikit-background-gradient: $brand-header-button-background-gradient,
+        $uikit-background-gradient-over: $brand-header-button-background-gradient-over,
+        $uikit-background-gradient-focus: $brand-header-button-background-gradient-focus,
+        $uikit-background-gradient-pressed: $brand-header-button-background-gradient-pressed,
+        $uikit-background-gradient-disabled: $brand-header-button-background-gradient-disabled
     );
-    @include extjs-button-ui(
-        $ui: 'brand-header-toolbar-large',
+    @include uikit-button(
+        $uikit-ui: 'brand-header-toolbar-large',
 
-        $padding: $brand-header-large-toolbar-button-padding,
+        $uikit-padding: $brand-header-large-toolbar-button-padding,
 
-        $border-radius: $brand-header-button-border-radius,
-        $border-width: 0px,
+        $uikit-border-radius: $brand-header-button-border-radius,
+        $uikit-border-width: 0px,
 
-        $glyph-color: $brand-header-glyph-color,
-        $glyph-opacity: $brand-header-glyph-opacity,
+        $uikit-glyph-color: $brand-header-glyph-color,
+        $uikit-glyph-opacity: $brand-header-glyph-opacity,
 
-        $color: $brand-header-button-color,
-        $color-over: $brand-header-button-color-over,
-        $color-focus: $brand-header-button-color-over,
-        $color-pressed: $brand-header-button-color-pressed,
-        $color-disabled: $brand-header-button-color-disabled,
+        $uikit-color: $brand-header-button-color,
+        $uikit-color-over: $brand-header-button-color-over,
+        $uikit-color-focus: $brand-header-button-color-over,
+        $uikit-color-pressed: $brand-header-button-color-pressed,
+        $uikit-color-disabled: $brand-header-button-color-disabled,
 
-        $border-color: $brand-header-button-border-color,
-        $border-color-over: $brand-header-button-border-color-over,
-        $border-color-focus: $brand-header-button-border-color-focus,
-        $border-color-pressed: $brand-header-button-border-color-pressed,
-        $border-color-disabled: $brand-header-button-border-color-disabled,
+        $uikit-border-color: $brand-header-button-border-color,
+        $uikit-border-color-over: $brand-header-button-border-color-over,
+        $uikit-border-color-focus: $brand-header-button-border-color-focus,
+        $uikit-border-color-pressed: $brand-header-button-border-color-pressed,
+        $uikit-border-color-disabled: $brand-header-button-border-color-disabled,
 
-        $background-color: $brand-header-button-background-color,
-        $background-color-over: $brand-header-button-background-color-over,
-        $background-color-focus: $brand-header-button-background-color-focus,
-        $background-color-pressed: $brand-header-button-background-color-pressed,
-        $background-color-disabled: $brand-header-button-background-color-disabled,
+        $uikit-background-color: $brand-header-button-background-color,
+        $uikit-background-color-over: $brand-header-button-background-color-over,
+        $uikit-background-color-focus: $brand-header-button-background-color-focus,
+        $uikit-background-color-pressed: $brand-header-button-background-color-pressed,
+        $uikit-background-color-disabled: $brand-header-button-background-color-disabled,
 
-        $background-gradient: $brand-header-button-background-gradient,
-        $background-gradient-over: $brand-header-button-background-gradient-over,
-        $background-gradient-focus: $brand-header-button-background-gradient-focus,
-        $background-gradient-pressed: $brand-header-button-background-gradient-pressed,
-        $background-gradient-disabled: $brand-header-button-background-gradient-disabled
+        $uikit-background-gradient: $brand-header-button-background-gradient,
+        $uikit-background-gradient-over: $brand-header-button-background-gradient-over,
+        $uikit-background-gradient-focus: $brand-header-button-background-gradient-focus,
+        $uikit-background-gradient-pressed: $brand-header-button-background-gradient-pressed,
+        $uikit-background-gradient-disabled: $brand-header-button-background-gradient-disabled
     );
-    @include extjs-button-ui(
-        $ui: 'workspace-header-toolbar-small',
+    @include uikit-button(
+        $uikit-ui: 'workspace-header-toolbar-small',
 
-        $padding: $workspace-header-small-toolbar-button-padding,
+        $uikit-padding: $workspace-header-small-toolbar-button-padding,
 
-        $border-radius: $workspace-header-button-border-radius,
-        $border-width: $workspace-header-button-border-width,
+        $uikit-border-radius: $workspace-header-button-border-radius,
+        $uikit-border-width: $workspace-header-button-border-width,
 
-        $glyph-color: $workspace-header-glyph-color,
-        $glyph-opacity: $workspace-header-glyph-opacity,
+        $uikit-glyph-color: $workspace-header-glyph-color,
+        $uikit-glyph-opacity: $workspace-header-glyph-opacity,
 
-        $color: $workspace-header-button-color,
-        $color-over: $workspace-header-button-color-over,
-        $color-focus: $workspace-header-button-color-over,
-        $color-pressed: $workspace-header-button-color-pressed,
-        $color-disabled: $workspace-header-button-color-disabled,
+        $uikit-color: $workspace-header-button-color,
+        $uikit-color-over: $workspace-header-button-color-over,
+        $uikit-color-focus: $workspace-header-button-color-over,
+        $uikit-color-pressed: $workspace-header-button-color-pressed,
+        $uikit-color-disabled: $workspace-header-button-color-disabled,
 
-        $border-color: $workspace-header-button-border-color,
-        $border-color-over: $workspace-header-button-border-color-over,
-        $border-color-focus: $workspace-header-button-border-color-focus,
-        $border-color-pressed: $workspace-header-button-border-color-pressed,
-        $border-color-disabled: $workspace-header-button-border-color-disabled,
+        $uikit-border-color: $workspace-header-button-border-color,
+        $uikit-border-color-over: $workspace-header-button-border-color-over,
+        $uikit-border-color-focus: $workspace-header-button-border-color-focus,
+        $uikit-border-color-pressed: $workspace-header-button-border-color-pressed,
+        $uikit-border-color-disabled: $workspace-header-button-border-color-disabled,
 
-        $background-color: $workspace-header-button-background-color,
-        $background-color-over: $workspace-header-button-background-color-over,
-        $background-color-focus: $workspace-header-button-background-color-focus,
-        $background-color-pressed: $workspace-header-button-background-color-pressed,
-        $background-color-disabled: $workspace-header-button-background-color-disabled,
+        $uikit-background-color: $workspace-header-button-background-color,
+        $uikit-background-color-over: $workspace-header-button-background-color-over,
+        $uikit-background-color-focus: $workspace-header-button-background-color-focus,
+        $uikit-background-color-pressed: $workspace-header-button-background-color-pressed,
+        $uikit-background-color-disabled: $workspace-header-button-background-color-disabled,
 
-        $background-gradient: $workspace-header-button-background-gradient,
-        $background-gradient-over: $workspace-header-button-background-gradient-over,
-        $background-gradient-focus: $workspace-header-button-background-gradient-focus,
-        $background-gradient-pressed: $workspace-header-button-background-gradient-pressed,
-        $background-gradient-disabled: $workspace-header-button-background-gradient-disabled
+        $uikit-background-gradient: $workspace-header-button-background-gradient,
+        $uikit-background-gradient-over: $workspace-header-button-background-gradient-over,
+        $uikit-background-gradient-focus: $workspace-header-button-background-gradient-focus,
+        $uikit-background-gradient-pressed: $workspace-header-button-background-gradient-pressed,
+        $uikit-background-gradient-disabled: $workspace-header-button-background-gradient-disabled
     );
-    @include extjs-button-ui(
-        $ui: 'workspace-header-toolbar-medium',
+    @include uikit-button(
+        $uikit-ui: 'workspace-header-toolbar-medium',
 
-        $padding: $workspace-header-button-padding,
+        $uikit-padding: $workspace-header-button-padding,
 
-        $border-radius: $workspace-header-button-border-radius,
-        $border-width: $workspace-header-button-border-width,
+        $uikit-border-radius: $workspace-header-button-border-radius,
+        $uikit-border-width: $workspace-header-button-border-width,
 
-        $glyph-color: $workspace-header-glyph-color,
-        $glyph-opacity: $workspace-header-glyph-opacity,
+        $uikit-glyph-color: $workspace-header-glyph-color,
+        $uikit-glyph-opacity: $workspace-header-glyph-opacity,
 
-        $color: $workspace-header-button-color,
-        $color-over: $workspace-header-button-color-over,
-        $color-focus: $workspace-header-button-color-over,
-        $color-pressed: $workspace-header-button-color-pressed,
-        $color-disabled: $workspace-header-button-color-disabled,
+        $uikit-color: $workspace-header-button-color,
+        $uikit-color-over: $workspace-header-button-color-over,
+        $uikit-color-focus: $workspace-header-button-color-over,
+        $uikit-color-pressed: $workspace-header-button-color-pressed,
+        $uikit-color-disabled: $workspace-header-button-color-disabled,
 
-        $border-color: $workspace-header-button-border-color,
-        $border-color-over: $workspace-header-button-border-color-over,
-        $border-color-focus: $workspace-header-button-border-color-focus,
-        $border-color-pressed: $workspace-header-button-border-color-pressed,
-        $border-color-disabled: $workspace-header-button-border-color-disabled,
+        $uikit-border-color: $workspace-header-button-border-color,
+        $uikit-border-color-over: $workspace-header-button-border-color-over,
+        $uikit-border-color-focus: $workspace-header-button-border-color-focus,
+        $uikit-border-color-pressed: $workspace-header-button-border-color-pressed,
+        $uikit-border-color-disabled: $workspace-header-button-border-color-disabled,
 
-        $background-color: $workspace-header-button-background-color,
-        $background-color-over: $workspace-header-button-background-color-over,
-        $background-color-focus: $workspace-header-button-background-color-focus,
-        $background-color-pressed: $workspace-header-button-background-color-pressed,
-        $background-color-disabled: $workspace-header-button-background-color-disabled,
+        $uikit-background-color: $workspace-header-button-background-color,
+        $uikit-background-color-over: $workspace-header-button-background-color-over,
+        $uikit-background-color-focus: $workspace-header-button-background-color-focus,
+        $uikit-background-color-pressed: $workspace-header-button-background-color-pressed,
+        $uikit-background-color-disabled: $workspace-header-button-background-color-disabled,
 
-        $background-gradient: $workspace-header-button-background-gradient,
-        $background-gradient-over: $workspace-header-button-background-gradient-over,
-        $background-gradient-focus: $workspace-header-button-background-gradient-focus,
-        $background-gradient-pressed: $workspace-header-button-background-gradient-pressed,
-        $background-gradient-disabled: $workspace-header-button-background-gradient-disabled
+        $uikit-background-gradient: $workspace-header-button-background-gradient,
+        $uikit-background-gradient-over: $workspace-header-button-background-gradient-over,
+        $uikit-background-gradient-focus: $workspace-header-button-background-gradient-focus,
+        $uikit-background-gradient-pressed: $workspace-header-button-background-gradient-pressed,
+        $uikit-background-gradient-disabled: $workspace-header-button-background-gradient-disabled
     );
-    @include extjs-button-ui(
-        $ui: 'workspace-header-toolbar-large',
+    @include uikit-button(
+        $uikit-ui: 'workspace-header-toolbar-large',
 
-        $padding: $workspace-header-button-padding,
+        $uikit-padding: $workspace-header-button-padding,
 
-        $border-radius: $workspace-header-button-border-radius,
-        $border-width: $workspace-header-button-border-width,
+        $uikit-border-radius: $workspace-header-button-border-radius,
+        $uikit-border-width: $workspace-header-button-border-width,
 
-        $glyph-color: $workspace-header-glyph-color,
-        $glyph-opacity: $workspace-header-glyph-opacity,
+        $uikit-glyph-color: $workspace-header-glyph-color,
+        $uikit-glyph-opacity: $workspace-header-glyph-opacity,
 
-        $color: $workspace-header-button-color,
-        $color-over: $workspace-header-button-color-over,
-        $color-focus: $workspace-header-button-color-over,
-        $color-pressed: $workspace-header-button-color-pressed,
-        $color-disabled: $workspace-header-button-color-disabled,
+        $uikit-color: $workspace-header-button-color,
+        $uikit-color-over: $workspace-header-button-color-over,
+        $uikit-color-focus: $workspace-header-button-color-over,
+        $uikit-color-pressed: $workspace-header-button-color-pressed,
+        $uikit-color-disabled: $workspace-header-button-color-disabled,
 
-        $border-color: $workspace-header-button-border-color,
-        $border-color-over: $workspace-header-button-border-color-over,
-        $border-color-focus: $workspace-header-button-border-color-focus,
-        $border-color-pressed: $workspace-header-button-border-color-pressed,
-        $border-color-disabled: $workspace-header-button-border-color-disabled,
+        $uikit-border-color: $workspace-header-button-border-color,
+        $uikit-border-color-over: $workspace-header-button-border-color-over,
+        $uikit-border-color-focus: $workspace-header-button-border-color-focus,
+        $uikit-border-color-pressed: $workspace-header-button-border-color-pressed,
+        $uikit-border-color-disabled: $workspace-header-button-border-color-disabled,
 
-        $background-color: $workspace-header-button-background-color,
-        $background-color-over: $workspace-header-button-background-color-over,
-        $background-color-focus: $workspace-header-button-background-color-focus,
-        $background-color-pressed: $workspace-header-button-background-color-pressed,
-        $background-color-disabled: $workspace-header-button-background-color-disabled,
+        $uikit-background-color: $workspace-header-button-background-color,
+        $uikit-background-color-over: $workspace-header-button-background-color-over,
+        $uikit-background-color-focus: $workspace-header-button-background-color-focus,
+        $uikit-background-color-pressed: $workspace-header-button-background-color-pressed,
+        $uikit-background-color-disabled: $workspace-header-button-background-color-disabled,
 
-        $background-gradient: $workspace-header-button-background-gradient,
-        $background-gradient-over: $workspace-header-button-background-gradient-over,
-        $background-gradient-focus: $workspace-header-button-background-gradient-focus,
-        $background-gradient-pressed: $workspace-header-button-background-gradient-pressed,
-        $background-gradient-disabled: $workspace-header-button-background-gradient-disabled
+        $uikit-background-gradient: $workspace-header-button-background-gradient,
+        $uikit-background-gradient-over: $workspace-header-button-background-gradient-over,
+        $uikit-background-gradient-focus: $workspace-header-button-background-gradient-focus,
+        $uikit-background-gradient-pressed: $workspace-header-button-background-gradient-pressed,
+        $uikit-background-gradient-disabled: $workspace-header-button-background-gradient-disabled
     );
 }
 /*
 * Logic  
 */ 
 
-.#{$prefix}btn-brand-header-toolbar-small .#{$prefix}btn-arrow {
-  background-image: none;
-  &:before{
-    content:"arrowDDdown";
-    right: -17px;
-    top: 16px;
-    font-size: 1.5em;
-    position: absolute;
-    color:#808080;
-  }
-  text-shadow:0 1px #999999;
-  &:hover, &:active, &:focus{
-    colore:#999999;
-    text-shadow:0 1px #808080;
-  }
-}
+// .#{$prefix}btn-brand-header-toolbar-small .#{$prefix}btn-arrow {
+//   background-image: none;
+//   &:before{
+//     content:"arrowDDdown";
+//     right: -17px;
+//     top: 16px;
+//     font-size: 1.5em;
+//     position: absolute;
+//     color:#808080;
+//   }
+//   text-shadow:0 1px #999999;
+//   &:hover, &:active, &:focus{
+//     color:#999999;
+//     text-shadow:0 1px #808080;
+//   }
+// }
 
 .logoButtonFramework {
     background-image: $brand-header-logo-image;
@@ -258,7 +258,7 @@
   padding: 0;
   .#{$prefix}btn-glyph{
     color:#808080;
-    font-size:29px;
+    font-size:20px;
     line-height:32px;
     text-align:center;
     text-shadow:0 1px #999999;
@@ -276,6 +276,39 @@
 .userButtonFramework {
     display:inline-block;
     @include thetus-header-icon-button;
+    &:hover, &:active, &:focus{
+      background-color: rgba(36, 36, 36, 0.35);
+    }
+}
+
+.errorButtonFramework,
+.helpButtonFramework,
+.userButtonFramework {
+  .#{$prefix}btn-glyph{
+    font-size:16px;
+  }
+}
+
+.userButtonFramework{
+  .#{$prefix}btn-arrow {
+    background-image: none;
+    &:before{
+      content:"arrowDDdown";
+      right: 0;
+      top: 16px;
+      font-size: 1.5em;
+      position: absolute;
+      color:#808080;
+    }
+    text-shadow:0 1px #999999;
+    &:hover, &:active, &:focus{
+      colore:#999999;
+      text-shadow:0 1px #808080;
+    }
+  }
+  .#{$prefix}btn-glyph{
+     text-align: left;
+  }
 }
 
 .#{$prefix}tab-icon-el{

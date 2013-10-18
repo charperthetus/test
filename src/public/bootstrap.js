@@ -5,17 +5,24 @@
  * metadata-driven class system features 
  */
 Ext.Loader.addClassPathMappings({
+  "ThetusUikit.form": "packages/thetus-uikit/overrides/form",
   "Deft.Component": "packages/deft/src/js/event/LiveEventBus.js",
   "Savanna.itemView.view.header.HeaderView": "app/itemView/view/header/ViewHeader.js",
+  "ThetusUikit.panel": "packages/thetus-uikit/overrides/panel",
+  "ThetusUikit.menu": "packages/thetus-uikit/overrides/menu",
   "Ext.rtl.EventObjectImpl": "ext/src/rtl/EventObject.js",
+  "ThetusUikit.layout": "packages/thetus-uikit/overrides/layout",
   "Savanna.metadata.view.String": "app/metadata/view/string.js",
   "Savanna-Theme": "packages/savanna-theme/overrides",
+  "ThetusUikit.toolbar": "packages/thetus-uikit/overrides/toolbar",
+  "ThetusUikit.tip": "packages/thetus-uikit/overrides/tip",
   "Deft.InjectableComponent": "packages/deft/src/js/ioc/Injector.js",
+  "ThetusUikit.button": "packages/thetus-uikit/overrides/button",
   "Savanna.metadata.view.Details": "app/metadata/view/details.js",
   "Ext": "ext/src",
   "Savanna.metadata.view.LongString": "app/metadata/view/longString.js",
   "Savanna.itemView.view.itemView.ViewRelatedItems": "app/itemView/view/relatedItems/ViewRelatedItems.js",
-  "ThetusUikit": "packages/thetus-uikit/overrides",
+  "ThetusUikit": "packages/thetus-uikit/src",
   "ThemeDemoApp": "packages/thetus-uikit/overrides",
   "Savanna": "app",
   "Deft": "packages/deft/src/js"
@@ -193,6 +200,7 @@ Ext.ClassManager.addNameAlternateMappings({
     "Ext.ux.Multiselect"
   ],
   "Savanna.crumbnet.store.Graph": [],
+  "ThetusUikit.menu.Item": [],
   "Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacets": [],
   "Savanna.modelSearch.store.ModelSearchStore": [],
   "Ext.ux.event.RecorderManager": [],
@@ -592,6 +600,7 @@ Ext.ClassManager.addNameAliasMappings({
     "widget.multiselectfield"
   ],
   "Savanna.crumbnet.store.Graph": [],
+  "ThetusUikit.menu.Item": [],
   "Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacets": [
     "widget.search_resultsDals_resultsfacets"
   ],
@@ -689,7 +698,7 @@ Ext.ClassManager.addNameAliasMappings({
     "widget.metadata_double"
   ],
   "ThetusUikit.ux.form.SearchField": [
-    "widget.searchfield"
+    "widget.thetus-searchfield"
   ],
   "Savanna.process.model.TemplateGroup": [],
   "Savanna.process.layout.StepLayout": [],
@@ -787,5 +796,5 @@ Ext.Loader.loadScript("packages/thetus-uikit/overrides/button/Button.js");
 Ext.Loader.loadScript("packages/thetus-uikit/overrides/toolbar/Separator.js");
 Ext.Loader.loadScript("packages/thetus-uikit/overrides/form/field/Number.js");
 Ext.Loader.loadScript("packages/thetus-uikit/overrides/picker/Month.js");
+Ext.Loader.loadScript("packages/thetus-uikit/overrides/menu/Item.js");
 Ext.Loader.loadScript("packages/thetus-uikit/overrides/panel/Tool.js");
-Ext.Loader.loadScript("packages/thetus-uikit/overrides/ux/form/SearchField.js");
