@@ -37,9 +37,9 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
         };
     },
 
-    nodeTextStyle: function(fontsize) {
+    nodeTextStyle: function(fontSize) {
         return {
-            font: fontsize? fontsize.toString() + 'pt Helvetica, Arial, sans-serif' : '10pt Helvetica, Arial, sans-serif',
+            font: fontSize? fontSize.toString() + 'pt Helvetica, Arial, sans-serif' : '10pt Helvetica, Arial, sans-serif',
             stroke: this.darkText,
             margin: 4,
             maxSize: new go.Size(160, NaN),

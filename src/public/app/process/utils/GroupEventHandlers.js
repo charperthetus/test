@@ -22,11 +22,11 @@ Ext.define('Savanna.process.utils.GroupEventHandlers', {
         }
     },
 
-    onMouseDragLeave: function (e, grp) {
+    onMouseDragLeave: function () {
         var timeoutId = Savanna.process.utils.GroupEventHandlers.timeoutId;
         if (timeoutId) {
             clearTimeout(timeoutId);
-            timeoutId = 0;
+            Savanna.process.utils.GroupEventHandlers.timeoutId = 0;
         }
     },
 
@@ -43,46 +43,10 @@ Ext.define('Savanna.process.utils.GroupEventHandlers', {
         }
     },
 
-    onStepGroupMouseDrop: function (e, grp) {
-        var ok = grp.addMembers(grp.diagram.selection, true);
-        if (ok) {
-            grp.expandSubGraph();
-            var actionsGroup = Savanna.process.utils.ProcessUtils.getActionsGroup(grp);
-            if (actionsGroup) {
-                grp.diagram.startTransaction("linkNodes");
-                var iter = grp.diagram.selection.iterator;
-
-                while (iter.next()) {
-                    var node = iter.value;
-                    var newLink = { category: 'InputLink', from: actionsGroup.data.key, to: node.data.key };
-                    grp.diagram.model.addLinkData(newLink);
-                }
-
-                grp.diagram.commitTransaction('linkNodes');
-            }
-        } else {
-            grp.diagram.currentTool.doCancel();
-        }
-    },
-
     onMouseHold: function(e, group) {
         var diagram = group.diagram;
         group.expandSubGraph();
         diagram.layout.doLayout(diagram);
-    },
-
-    // this function is used to highlight a Group that the selection may be dropped into
-    highlightGroup: function(group, show) {
-        if (!group)
-            return;
-        var background = group.findObject('BACKGROUND');
-        if (background) {
-            if (show) {
-                background.fill = group.canAddMembers(group.diagram.selection) ? '#00FF00' : group.name;
-            } else {
-                background.fill = group.name;
-            }
-        }
     },
 
     memberValidation: function(grp, part) {
