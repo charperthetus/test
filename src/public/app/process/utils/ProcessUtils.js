@@ -76,8 +76,7 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
     addStepPart: function(obj, category, label, linkType) {
         var diagram = obj.diagram;
         diagram.startTransaction('addStepPart');
-        var adornmentGroup = obj.part;
-        var actionGroup = adornmentGroup.adornedObject;
+        var actionGroup = obj.part;
         var stepGroup = actionGroup.containingGroup;
         var nodeData = {'category': category, 'text': label, 'group': stepGroup.data.key};
         nodeData.key = Savanna.process.utils.ProcessUtils.getURI(nodeData.category);
@@ -108,8 +107,7 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         var linkType = 'ProcessLink';
         var diagram = obj.diagram;
         diagram.startTransaction('addResult');
-        var adornmentGroup = obj.part;
-        var actionGroup = adornmentGroup.adornedObject;
+        var actionGroup = obj.part;
         var stepGroup = actionGroup.containingGroup;
         var nodeData = {'category': category, 'text': label};
         nodeData.key = Savanna.process.utils.ProcessUtils.getURI(nodeData.category);

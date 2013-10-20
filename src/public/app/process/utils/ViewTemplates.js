@@ -271,7 +271,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
         return linkTemplateMap;
     },
 
-    makeAdornment: function(alignmentSpot, gooPoint, gooAngle, clickHandler, glyph, labelStr, labelPoint) {
+    makeAdornment: function(alignmentSpot, gooPoint, gooAngle, dropHandler, clickHandler, glyph, labelStr, labelPoint) {
         var gmake = go.GraphObject.make;
         return gmake(go.Panel, go.Panel.Position,
             {
@@ -287,40 +287,52 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                     width:36, height:72,
                     position: gooPoint,
                     isActionable: true,
-                    mouseEnter: function(e, obj) {
+                    mouseDragEnter: function(e, obj) {
                         obj.fill = 'lightblue';
                     },
-                    mouseLeave: function(e, obj) {
+                    mouseDragLeave: function(e, obj) {
                         obj.fill = null;
-                    }
+                    },
+                    mouseDrop: dropHandler
                 }
             ),
-            gmake(go.Shape, 'Circle', {
+            gmake(go.Panel, go.Panel.Position, {
                     isActionable: true,
-                    fill: 'lightblue',
-                    stroke: 'white',
-                    strokeWidth:3,
-                    width:24, height:24,
                     position: new go.Point(24, 24),
                     click: clickHandler,
                     actionDown: function(e, obj) {
-                        obj.fill = 'dodgerblue';
+                        obj.elt(0).fill = 'dodgerblue';
                     },
                     actionUp: function(e, obj) {
-                        obj.fill = 'lightblue';
+                        obj.elt(0).fill = 'lightblue';
                     },
                     mouseEnter: function(e, obj) {
-                        obj.fill = 'skyblue';
+                        obj.elt(0).fill = 'skyblue';
                     },
                     mouseLeave: function(e, obj) {
                         // should only change the hover color if we are moving outside, not if we are moving over the glyph
                         // todo: not yet sure how to implement this
-                        obj.fill = 'lightblue';
+                        obj.elt(0).fill = 'lightblue';
+                    },
+                    mouseDragEnter: function(e, obj) {
+                        obj.elt(0).fill = 'skyblue';
+                    },
+                    mouseDragLeave: function(e, obj) {
+                        obj.elt(0).fill = 'lightblue';
+                    },
+                    mouseDrop: dropHandler
+                },
+                gmake(go.Shape, 'Circle', {
+                        fill: 'lightblue',
+                        stroke: 'white',
+                        strokeWidth:3,
+                        width:24, height:24,
+                        position: new go.Point(0, 0)
                     }
-                }
+                ),
+                gmake(go.TextBlock, glyph,{ font: '10pt SickFont', stroke: 'blue', position: new go.Point(6, 7) } ),
+                gmake(go.TextBlock, '\uf100',{ font: '7pt SickFont', stroke: 'blue', position: new go.Point(18, 0) } )
             ),
-            gmake(go.TextBlock, glyph,{ font: '10pt SickFont', stroke: 'blue', position: new go.Point(31, 32) } ),
-            gmake(go.TextBlock, '\uf100',{ font: '7pt SickFont', stroke: 'blue', position: new go.Point(42, 26) } ),
             gmake(go.TextBlock, labelStr,
                 { font: 'bold 6pt sans-serif', background: 'white', position: labelPoint }
             )
@@ -342,10 +354,10 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                     // highlight when dragging into the Group
                     mouseDragEnter: Savanna.process.utils.GroupEventHandlers.onMouseDragEnter,
                     mouseDragLeave: Savanna.process.utils.GroupEventHandlers.onMouseDragLeave,
+                    mouseHold: Savanna.process.utils.GroupEventHandlers.onMouseHold,
                     computesBoundsAfterDrag: true,
                     // when the selection is dropped into a Group, add the selected Parts into that Group;
                     // if it fails, cancel the tool, rolling back any changes
-                    mouseDrop: Savanna.process.utils.GroupEventHandlers.onNodeGroupMouseDrop,
                     memberValidation: Savanna.process.utils.GroupEventHandlers.memberValidation,
                     // define the group's internal layout
                     layout: gmake(StepLayout),
@@ -375,7 +387,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
 
         // define the Actions Group template
         groupTemplateMap.add('InternalGroup',
-            gmake(go.Group, go.Panel.Auto,
+            gmake(go.Group, go.Panel.Spot,
                 {
                     name: '#88FFFF',
                     background: 'transparent',
@@ -385,32 +397,33 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                     // highlight when dragging into the Group
                     mouseDragEnter: Savanna.process.utils.GroupEventHandlers.onMouseDragEnter,
                     mouseDragLeave: Savanna.process.utils.GroupEventHandlers.onMouseDragLeave,
-                    // when the selection is dropped into a Group, add the selected Parts into that Group;
-                    // if it fails, cancel the tool, rolling back any changes
-                    mouseDrop: Savanna.process.utils.GroupEventHandlers.onActionGroupMouseDrop,
                     memberValidation: Savanna.process.utils.GroupEventHandlers.actionsGroupMemberValidation,
                     // define the group's internal layout
                     layout: gmake(go.GridLayout,
-                                  { wrappingWidth: Infinity, alignment: go.GridLayout.Position, cellSize: new go.Size(1, 1) }),
+                                  { wrappingWidth: 1, alignment: go.GridLayout.Position, cellSize: new go.Size(1, 1) }),
                     // the group begins expanded
                     isSubGraphExpanded: true,
                     wasSubGraphExpanded: true
                 },
-                gmake(go.Shape, 'RoundedRectangle', { fill: '#88FFFF', name:'BACKGROUND', stroke: null}),
-                gmake(go.Placeholder, { padding: new go.Margin(16, 16) }),
-                {
-                    selectionAdornmentTemplate:
-                        gmake(go.Adornment, go.Panel.Spot,
-                            gmake(go.Panel, go.Panel.Auto,
-                                gmake(go.Shape, { fill: null, stroke: 'dodgerblue', strokeWidth: 3 }),
-                                gmake(go.Placeholder)
-                            ),
-                            this.makeAdornment(go.Spot.Left, new go.Point(0, 0), 180, Savanna.process.utils.ProcessUtils.addParticipant, '\uf116', 'Participants', new go.Point(14, 50)),
-                            this.makeAdornment(go.Spot.Top, new go.Point(0, 0), 270, Savanna.process.utils.ProcessUtils.addInput, '\uf124', 'Inputs', new go.Point(26, 16)),
-                            this.makeAdornment(go.Spot.Right, new go.Point(36, 0), 0, Savanna.process.utils.ProcessUtils.addByproduct, '\uf13d', 'Byproducts', new go.Point(14, 50)),
-                            this.makeAdornment(go.Spot.Bottom, new go.Point(0, 36), 90, Savanna.process.utils.ProcessUtils.addResult, '\uf16d', 'Results', new go.Point(24, 50))
-                        )  // end Adornment
-                }
+                gmake(go.Panel, go.Panel.Auto,
+                    gmake(go.Shape, 'RoundedRectangle', { fill: '#88FFFF', name:'BACKGROUND', stroke: null}),
+                    gmake(go.Placeholder, {
+                            padding: new go.Margin(16, 16),
+                            background: 'transparent',
+                            mouseDragEnter: function(e, obj) {
+                                obj.background = 'orange';
+                            },
+                            mouseDragLeave: function(e, obj) {
+                                obj.background = 'transparent';
+                            },
+                            mouseDrop: Savanna.process.utils.GroupEventHandlers.onActionGroupMouseDrop
+                        }
+                    )
+                ),
+                this.makeAdornment(go.Spot.Left, new go.Point(0, 0), 180, Savanna.process.utils.GroupEventHandlers.onParticipantMouseDrop, Savanna.process.utils.ProcessUtils.addParticipant, '\uf116', 'Participants', new go.Point(14, 50)),
+                this.makeAdornment(go.Spot.Top, new go.Point(0, 0), 270, Savanna.process.utils.GroupEventHandlers.onInputMouseDrop, Savanna.process.utils.ProcessUtils.addInput, '\uf124', 'Inputs', new go.Point(26, 15)),
+                this.makeAdornment(go.Spot.Right, new go.Point(36, 0), 0, Savanna.process.utils.GroupEventHandlers.onByproductMouseDrop, Savanna.process.utils.ProcessUtils.addByproduct, '\uf13d', 'Byproducts', new go.Point(14, 50)),
+                this.makeAdornment(go.Spot.Bottom, new go.Point(0, 36), 90, Savanna.process.utils.GroupEventHandlers.onResultMouseDrop, Savanna.process.utils.ProcessUtils.addResult, '\uf16d', 'Results', new go.Point(24, 50))
             )
         );  // end Actions Group
 
