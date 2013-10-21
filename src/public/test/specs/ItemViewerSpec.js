@@ -24,6 +24,10 @@ Ext.require('Savanna.itemView.view.itemQualities.ViewItemQualities');
 Ext.require('Savanna.itemView.controller.AutoCompleteController');
 Ext.require('Savanna.itemView.controller.ItemViewController');
 
+
+
+
+
 describe('Item Viewer', function () {
 
     var itemviewComponent = null,
@@ -41,22 +45,25 @@ describe('Item Viewer', function () {
         // now set up server to get store data
         server = new ThetusTestHelpers.FakeServer(sinon);
 
-        var testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(store.getProxy(), 'read', readMethod);
+        var readMethod = 'GET',
+            testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(store.getProxy(), 'read', readMethod);
 
-        server.respondWith('GET', testUrl, fixtures.itemsData);
+        server.respondWith(readMethod, testUrl, fixtures.itemsData);
 
         store.load();
-
-        console.log(testUrl);
 
         server.respond({
             errorOnInvalidRequest: true
         });
 
+        console.log(store);
+
         itemviewComponent = Ext.create('Savanna.itemView.view.ItemViewer', {
             renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID,
             itemUri: 'x84385f20051847dd70c1874fb17799458db6498e%252FItem'
         });
+
+
     });
 
     afterEach(function () {
