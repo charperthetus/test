@@ -30,6 +30,8 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
 
     columns: [
         {
+            hideable: false,
+            hidden: false,
             text: ' ',
             xtype: 'templatecolumn',
             tpl: new Ext.XTemplate(
@@ -40,7 +42,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
                 '<!-- column one -->',
 
                 '<div style="float: left; height: 102px; width: 202px;outline: solid 1px #cccccc;" >',
-                   '{[this.conditionallyRenderImage(values.primaryImageUrl)]}',
+                '{[this.conditionallyRenderImage(values.primaryImageUrl)]}',
                 '</div>',
 
                 '<!-- column two values.modifiedDate-->',
@@ -48,7 +50,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
                 '<b>{label}</b><br>Modified: {[this.formatDate(new Date(1382071008238))]},&nbsp;&nbsp;{modifiedBy}',
                 '<br>Workflow state: {workflowState}&nbsp;&nbsp;Classification: {classification}',
                 '<br>',
-                '<div style="width: 100%;height: 70px;white-space: normal;line-break: normal">{preview}</div>',
+                '<div style="width: 100%;height: 70px;white-space: normal;line-break: normal" >{preview}</div>',
                 '</div>',
                 '</div>',
 

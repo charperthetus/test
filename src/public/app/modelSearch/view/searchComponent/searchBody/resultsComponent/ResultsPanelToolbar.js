@@ -2,7 +2,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
     extend: 'Ext.toolbar.Toolbar',
     alias: 'widget.model_search_resultspaneltoolbar',
     controller: 'Savanna.modelSearch.controller.resultsComponent.ResultsPanelToolbarController',
-    bubbleEvents: ['Search:PageSizeChanged', "Search:SortByChanged"],
+    bubbleEvents: ['Search:PageSizeChanged', "Search:SortByChanged", 'search:multiColumnGridView', 'search:singleColumnGridView'],
     requires: [
         'Savanna.controller.Factory',
         'Ext.form.field.ComboBox',
@@ -65,9 +65,22 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
             },
             {
                 xtype: 'tbfill'
+            },
+            {
+                xtype: 'button',    //thumb
+                enableToggle: true,
+                pressed: true,
+                ui: 'basic',
+                glyph: 61442,
+                itemId: 'singleColumnGridView'
+            },
+            {
+                xtype: 'button',    //grid
+                enableToggle: true,
+                ui: 'basic',
+                glyph: 61808,
+                itemId: 'multiColumnGridView'
             }
-
-
         ]
     }
 

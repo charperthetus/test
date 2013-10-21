@@ -32,6 +32,9 @@ Ext.define('Savanna.modelSearch.controller.SearchComponent', {
             'model_search_searchcomponent': {
                 render: this.onSearchRender
             },
+            'model_search_searchcomponent #toolbarsearchbutton': {
+                click: this.doSearch
+            },
             'model_search_searchcomponent #search_reset_button': {
                 click: this.handleNewSearch
             },
@@ -334,19 +337,6 @@ Ext.define('Savanna.modelSearch.controller.SearchComponent', {
                 'customSearchSelections': this.getCustomSearchSelections(currentDalPanel)
             }
         ]);
-
-        /*
-         build the 'desiredFacets' array for the request, by iterating over
-         facetValueSummaries in the DAL sources json
-         */
-        var desiredFacets = [];
-
-        Ext.each(dal.get('facetDescriptions'), function (description) {
-            desiredFacets.push(description.facetId);
-        });
-
-        searchObj.set('desiredFacets', desiredFacets);
-
 
         /*
          set the facet filters, if any

@@ -10,11 +10,30 @@ Ext.define('Savanna.modelSearch.controller.resultsComponent.ResultsPanelToolbarC
         },
         resultsSortByCombobox: {
             select: 'onSortByChange'
+        },
+        multiColumnGridView: {
+            click: 'onMultiColumnGridViewClicked'
+        },
+        singleColumnGridView: {
+            click: 'onSingleColumnGridViewClicked'
         }
 
 
     },
 
+
+
+    onMultiColumnGridViewClicked: function (button) {
+        button.pressed = true;
+        this.getView().fireEvent("search:multiColumnGridView", button );
+        this.getSingleColumnGridView().pressed = false;
+    },
+
+    onSingleColumnGridViewClicked: function (button) {
+        button.pressed = true;
+        this.getView().fireEvent("search:singleColumnGridView", button );
+        this.getMultiColumnGridView().pressed = false;
+    },
 
     onPageSizeChange: function (box, record, index) {
         this.getView().fireEvent("Search:PageSizeChanged", record[0].data.count);

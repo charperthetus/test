@@ -32,6 +32,10 @@ Ext.define('Savanna.modelSearch.controller.ResultsComponent', {
                     me.component.on('Search:SortByChanged', this.onSortOrderChange, this);
                     me.component.on('search:changeSelectedStore', this.changeSelectedStore, this);
 
+                    me.component.on('search:multiColumnGridView', this.onMultiColumnGridView, this);
+                    me.component.on('search:singleColumnGridView', this.onSingleColumnGridView, this);
+
+
                     //grid notifications
                     me.component.on('search:grid:itemdblclick', this.onItemPreview, this);
                     me.component.on('search:grid:itemclick', this.onItemClick, this);
@@ -97,6 +101,11 @@ Ext.define('Savanna.modelSearch.controller.ResultsComponent', {
         return  this.getResultsComponent().down('model_search_resultspanelgrid');
     },
 
+    // Get the grid component.
+    getMultiGrid: function () {
+        return  this.getResultsComponent().down('model_search_resultspanelgrid_multi_column');
+    },
+
     // Get the grid's store.
     getGridStore: function () {
         return  this.getGrid().store;
@@ -121,6 +130,16 @@ Ext.define('Savanna.modelSearch.controller.ResultsComponent', {
     // The 'Preview Results 1 of xxx' label
     previewIndexAndTotalLabel: function () {
         return this.previewWindow().down('#itemIndexAndTotalLabel');
+    },
+
+    // Get button that displays the single column grid
+    getSingleColumnGridButton: function () {
+        return  this.getResultsComponent().down('multiColumnGridView');
+    },
+
+    // Get the button that displays the multicolumn grid
+    getMultiColumnGridButton: function () {
+        return  this.getResultsComponent().down('singleColumnGridView');
     },
 
     getCurrentDalId: function () {
@@ -294,7 +313,11 @@ Ext.define('Savanna.modelSearch.controller.ResultsComponent', {
 
     onItemMouseEnter: function (view, rec, node) {    // other parameters: , index, e, options
         if (node) {
-            node.querySelector('#hoverDiv').style.visibility = 'visible';
+            var div = node.querySelector('#hoverDiv');
+            //Not all grids have this div.
+            if(div){
+                div.style.visibility = 'visible';
+            }
         }
     },
 
@@ -308,7 +331,11 @@ Ext.define('Savanna.modelSearch.controller.ResultsComponent', {
 
     onItemMouseLeave: function (view, rec, node) {  // other parameters: , index, e, options
         if (node) {
-            node.querySelector('#hoverDiv').style.visibility = 'hidden';
+            var div = node.querySelector('#hoverDiv');
+            //Not all grids have this div.
+            if(div){
+                div.style.visibility = 'hidden';
+            }
         }
     },
 
@@ -377,6 +404,42 @@ Ext.define('Savanna.modelSearch.controller.ResultsComponent', {
 
         this.getApplication().fireEvent('model_results:buildAndLoadResultsStore', dalRecord, searchComponent, searchObj, 'filter', newSize);
 
+    },
+
+    onSingleColumnGridView: function (button) {
+        var grid = this.getGrid();
+        var multiGrid = this.getMultiGrid();
+        grid.show();
+        multiGrid.hide();
+        /*        var cols = grid.columns;
+         var i;
+         for (i=0; i<cols.length; i++){
+         if(i>0){
+         grid.columns[i].setVisible(false);
+         } else {
+         grid.columns[i].setVisible(true);
+         }
+         }*/
+
+        console.log("single col");
+    },
+
+    onMultiColumnGridView: function (button) {
+        var grid = this.getGrid();
+        var multiGrid = this.getMultiGrid();
+        grid.hide();
+        multiGrid.show();
+        /*        var cols = grid.columns;
+         var i;
+         for (i=0; i<cols.length; i++){
+         if(i>0){
+         grid.columns[i].setVisible(true);
+         } else {
+         grid.columns[i].setVisible(false);
+         }
+         }*/
+
+        console.log("multi col");
     },
 
     /*

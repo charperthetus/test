@@ -29,7 +29,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
 
     initComponent: function () {
 
-        this.title = this.facet.displayValue;
+        this.title = this.facet.label;
         this.items = this.buildFacetOptions();
         this.callParent(arguments);
 
@@ -43,7 +43,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
          to get dynamically from the services side as well.
 
          */
-        if (this.facet.facetDataType === 'STRING') {
+        if (this.facet.facetType === 'string') {
             this.buildFacetFilterGroup();
         }
     },
@@ -52,14 +52,18 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
 
         var content;
 
-        switch (this.facet.facetDataType) {
+        switch (this.facet.facetType) {
 
-            case 'DATE' :
-                var facetID = this.facet.facetId;
+            case 'double' :
+                content = [
+                ];
+                break;
+            case 'date' :
+                var facetID = this.facet.key;
                 content = [
                     {
                         xtype: 'form',
-                        itemId: 'facets_' + this.facet.facetId,
+                        itemId: 'facets_' + this.facet.key,
                         items: [
                             {
                                 xtype: 'radiogroup',
@@ -115,12 +119,12 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
                 ];
                 break;
 
-            case 'STRING' :
+            case 'string' :
 
                 content = [
                     {
                         xtype: 'form',
-                        itemId: 'facets_' + this.facet.facetId,
+                        itemId: 'facets_' + this.facet.key,
                         items: [
                             {
                                 xtype: 'checkboxgroup',
@@ -137,7 +141,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
             default:
                 content = [];
                 Ext.Error.raise({
-                    msg: 'Unknown facet type: ' + this.facet.facetDataType
+                    msg: 'Unknown facet type: ' + this.facet.faceType
                 });
                 break;
         }
@@ -148,16 +152,15 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
     buildFacetFilterGroup: function () {
 
         var searchResults = this.searchResults,
-            facet = this.facet.facetId,
             me = this;
         if (searchResults.store.facetValueSummaries) {
-            Ext.each(searchResults.store.facetValueSummaries[facet].facetValues, function (facetobj) {
+            Ext.each(this.facet.facetValues, function (facetobj) {
 
                 var checkbox = {
-                    boxLabel: facetobj.key + ' (' + facetobj.value + ')',
+                    boxLabel: facetobj.value + ' (' + facetobj.count + ')',
                     name: facetobj.key,
-                    inputValue: facetobj.key,
-                    id: 'checkbox_' + facetobj.key + '_' + String(Ext.id()),
+                    inputValue: me.facet.key,
+                    id: 'checkbox_' + me.facet.key + '_' + String(Ext.id()),
                     /*
                      added to resolve defect SAV-5380.  Needs design to assign a class.
                      */
@@ -222,7 +225,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
             rangeName = btn.lastValue[fieldName],
             me = btn.findParentByType('model_search_resultsDals_resultsfacet'),
             dateRange = me.getFormattedDateRange(rangeName),
-            customDates = btn.up('#facets_' + me.facet.facetId).queryById('customDatesPanel'),
+            customDates = btn.up('#facets_' + me.facet.key).queryById('customDatesPanel'),
             updateExisting = false;
 
         if (rangeName !== 'custom') {
@@ -310,7 +313,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
     onFacetFilterChange: function (btn) {
 
         var filterExists = false,
-            facet = this.facet.facetId,
+            facet = this.facet.key,
             me = this;
         /*
          check to see if this facet filter exists in the store already
