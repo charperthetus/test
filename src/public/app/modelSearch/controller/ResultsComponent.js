@@ -344,18 +344,14 @@ Ext.define('Savanna.modelSearch.controller.ResultsComponent', {
     },
 
     onNextItemPreview: function () {
-        if (this.previewIndex >= this.resultsStore.totalCount) {
-            return;
-        } else {
+        if (this.previewIndex < this.resultsStore.totalCount) {
             this.previewIndex++;
             this.updatePreview();
         }
     },
 
     onPrevItemPreview: function () {
-        if (this.previewIndex <= 0) {
-            return;
-        } else {
+        if (this.previewIndex > 0)  {
             this.previewIndex--;
             this.updatePreview();
         }
@@ -366,14 +362,16 @@ Ext.define('Savanna.modelSearch.controller.ResultsComponent', {
         var id = this.getCurrentDalId();
         var dalRecord = Ext.data.StoreManager.lookup('dalSources').getById(id),
             resultsDals = btn.up('#resultsdals'),
-            resultsTerms = resultsDals.down('model_model_search_resultsDals_resultsterms');
+            resultsTerms = resultsDals.down('model_search_resultsDals_resultsterms');
 
         dalRecord.set('facetFilterCriteria', []);
         resultsDals.queryById('resultsfacets').removeAll();
         resultsDals.createFacetsTabPanel();
         btn.findParentByType('model_search_searchcomponent').refineSearchString = '';
 
-        resultsTerms.queryById('termValues').removeAll();
+        if(resultsTerms){
+            resultsTerms.queryById('termValues').removeAll();
+        }
 
         this.getApplication().fireEvent('model_results:dalreset', btn);
     },
@@ -411,17 +409,6 @@ Ext.define('Savanna.modelSearch.controller.ResultsComponent', {
         var multiGrid = this.getMultiGrid();
         grid.show();
         multiGrid.hide();
-        /*        var cols = grid.columns;
-         var i;
-         for (i=0; i<cols.length; i++){
-         if(i>0){
-         grid.columns[i].setVisible(false);
-         } else {
-         grid.columns[i].setVisible(true);
-         }
-         }*/
-
-        console.log("single col");
     },
 
     onMultiColumnGridView: function (button) {
@@ -429,17 +416,6 @@ Ext.define('Savanna.modelSearch.controller.ResultsComponent', {
         var multiGrid = this.getMultiGrid();
         grid.hide();
         multiGrid.show();
-        /*        var cols = grid.columns;
-         var i;
-         for (i=0; i<cols.length; i++){
-         if(i>0){
-         grid.columns[i].setVisible(true);
-         } else {
-         grid.columns[i].setVisible(false);
-         }
-         }*/
-
-        console.log("multi col");
     },
 
     /*

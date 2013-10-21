@@ -42,6 +42,7 @@ Ext.define('Savanna.modelSearch.controller.SearchComponent', {
                 click: this.showHideMenu
             },
             'model_search_searchcomponent #search_terms': {
+                onsearchclick: this.doSearch,
                 keyup: this.handleSearchTermKeyUp
             },
             'model_search_searchcomponent #searchadvanced_menu textfield': {
@@ -129,7 +130,7 @@ Ext.define('Savanna.modelSearch.controller.SearchComponent', {
 
         }
         /*
-        hide Start New Search button
+         hide Start New Search button
          */
         search.down('#search_reset_button').setVisible(false);
 
@@ -193,11 +194,11 @@ Ext.define('Savanna.modelSearch.controller.SearchComponent', {
          return to the options screen if we're not already there
          */
 
-/* jwb we don't have this pannel in modelSearch
-   if (component.down('#searchbody').currentPanel !== 'searchoptions') {
-            var optionsBtn = component.queryById('optionsbutton');
-            optionsBtn.fireEvent('click', optionsBtn);
-        }*/
+        /* jwb we don't have this pannel in modelSearch
+         if (component.down('#searchbody').currentPanel !== 'searchoptions') {
+         var optionsBtn = component.queryById('optionsbutton');
+         optionsBtn.fireEvent('click', optionsBtn);
+         }*/
 
         /*
          clear the grid - it's misleading in error states to see results in the grid, even though
@@ -381,7 +382,7 @@ Ext.define('Savanna.modelSearch.controller.SearchComponent', {
             startPage:0,
             pageSize: pageSize,
             keywords: "simian" // EDISMAX query language (for now)
-         } ;
+        } ;
         resultsStore.proxy.jsonData = Ext.JSON.encode(searchObj.data);  // attach the search request object
         resultsStore.load({
             callback: Ext.bind(this.searchCallback, this, [resultsDal, resultsPanel, dal.get('id'), resultsStore, action], true)
@@ -503,11 +504,11 @@ Ext.define('Savanna.modelSearch.controller.SearchComponent', {
             });
 
 
-            if (action === 'search') {
+            if (action === 'search') {        //was action === 'search'
                 /*
                  add an object tying the dal and store together for referencing
                  */
-                resultsPanel.up('#searchresults').allResultSets.push(resultsObj);
+                resultsPanel.up('#searchresults').allResultSets = [resultsObj];
 
                 if (store.facetValueSummaries !== null) {
                     resultsDal.createDalFacets(dalId);
@@ -529,7 +530,7 @@ Ext.define('Savanna.modelSearch.controller.SearchComponent', {
 
 
             var searchResultsView = resultsPanel.up('#searchresults');
-            if (action === 'search') {
+            if ( action === 'search' ) {  //action === 'search'
                 if (dalId === Ext.data.StoreManager.lookup('dalSources').defaultId) {
 
                     searchResultsView.fireEvent('search:changeSelectedStore', resultsDal.queryById(dalId));

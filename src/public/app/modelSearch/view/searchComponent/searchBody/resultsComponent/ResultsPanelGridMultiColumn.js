@@ -44,7 +44,18 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
         { text: 'Item Name',  dataIndex: 'label', flex: 1,  hideable: false },
         { text: 'Classification', dataIndex: 'classification', flex: 1,             hideable: false   },
         { text: 'Workflow state', dataIndex: 'workflowState', flex: 1,             hideable: false   },
-        { text: 'Modified date', dataIndex: 'lastModifiedDate', flex: 1,           hideable: false   },
+        { text: 'Modified date', dataIndex: 'lastModifiedDate', flex: 1,           hideable: false,
+            renderer: function (value, metaData, record, row, col, store, gridView) {
+                var dateTime = parseInt(record.data.modifiedDate, 10);
+                var dateValue = new Date(dateTime);
+                if( isNaN(dateValue.getTime() ) ){
+                    return "--";
+                }
+                return Ext.Date.format(dateValue, 'F d, Y');
+
+            }
+
+        },
         { text: 'Modified by', dataIndex: 'modifiedBy', flex: 1,      hideable: false   }
     ],
 
