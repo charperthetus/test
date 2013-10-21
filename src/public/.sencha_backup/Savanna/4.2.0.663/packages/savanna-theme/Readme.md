@@ -1,2 +1,0 @@
-# savanna-theme - Read Me
-
