@@ -9,36 +9,23 @@
 Ext.define('Savanna.itemView.view.header.ViewHeader', {
     extend: 'Ext.grid.Panel',
 
+    require: ['Savanna.itemView.controller.ViewHeaderController'],
+
     alias: 'widget.itemview_view_header',
 
     title: 'Header',
 
     store: 'Savanna.itemView.store.MainItemStore',
 
+    controller: 'Savanna.itemView.controller.ViewHeaderController',
+
     hideHeaders: true,
-
-    listeners: {
-        'itemclick': function( grid, record, item, index, e, eOpts) {
-            if (e.target.id == "openParentItem") {
-                var itemView = Ext.create('Savanna.itemView.view.ItemViewer', {
-                    title: e.target.value,
-                    itemUri: e.target.name,
-                    closable: true,
-                    autoScroll: true,
-                    tabConfig: {
-                        ui: 'dark'
-                    }
-                });
-
-                Savanna.app.fireEvent('search:itemSelected', itemView);
-            }
-        }
-    },
 
     columns: [
         {
             xtype: 'templatecolumn',
             dataIndex: 'values',
+            itemId: 'headerColumn',
             tpl: Ext.create('Ext.XTemplate',
                 '<tpl if="label == \'Parent\'">',
                     '<b>{label}&nbsp;&nbsp;</b>',

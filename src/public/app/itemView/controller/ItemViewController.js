@@ -15,10 +15,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         storeable: 'Savanna.mixin.Storeable'
     },
     control: {
-        // TODO: Uncomment when edit mode comments in
-        // addPropAutoChooser: {
-        //     keyup: 'handleAddChosenProperty'
-        // }
+        
     },
 
     constructor: function (options) {
@@ -42,7 +39,6 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     },
 
     handleRecordDataRequestSuccess: function (record, operation, success) {
-        console.log(record[0].propertyGroupsStore);
         var headerComponent = this.getView().queryById('itemViewHeader');
         headerComponent.setTitle(record[0].data.label);
         headerComponent.reconfigure(record[0].propertyGroupsStore.getAt(0).valuesStore);

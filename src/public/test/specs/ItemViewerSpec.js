@@ -100,7 +100,7 @@ describe('Item Viewer', function () {
         expect(itemviewComponent.down('itemview_view_qualities') instanceof Savanna.itemView.view.itemQualities.ViewItemQualities).toBeTruthy();
     });
 
-    // TODO: Test image browser component view
+    // TODO: Test image browser component view when it's built
 
     describe('Controllers', function() {
         // TODO: Update this when edit mode is in place
@@ -108,6 +108,17 @@ describe('Item Viewer', function () {
         //     itemviewController.setupDisplayLabel('Title', itemviewComponent.down('itemview_view_header'));
         //     expect(itemviewComponent.down('#itemDisplayLabel').data.displayLabel).toEqual('Title');
         // });
+        var relatedItems = null;
+
+        beforeEach(function() {
+            relatedItems = itemviewController.getView().queryById('relatedItems');
+            spyOn(relatedItems, 'add');
+            itemviewController.handleRecordDataRequestSuccess(store.data.items, 'read', true);
+        });
+
+        afterEach(function() {
+            relatedItems = null;
+        });
 
         it('should build a properly formatted item view URL', function() {
             var expected = SavannaConfig.itemViewUrl + 'x84385f20051847dd70c1874fb17799458db6498e%252FItem' + ';jsessionid=' + Savanna.jsessionid;
@@ -121,8 +132,36 @@ describe('Item Viewer', function () {
             expect(tmpStore.load).toHaveBeenCalled();
         });
 
-        it('should push our data into the view', function() {
-            itemviewController.handleRecordDataRequestSuccess(store.data.items, 'read', true);
+        describe('Loads in Header Data in Controller', function() {
+            it('should load in data to the header component', function() {
+                expect(itemviewComponent.down('itemview_view_header').title).toEqual(store.data.items[0].data.label);
+            });
+        });
+
+        describe('Loads data into the Related Processes component', function() {
+            it('should load in the number of related processes into the component', function(){
+                expect(itemviewComponent.down('itemview_related_processes').title).toEqual('Participated in Process (' + store.data.items[0].kvPairGroupsStore.getAt(0).pairsStore.data.length + ')');
+            });
+        });
+
+        describe('Loads data into the Qualities component', function() {
+            it('should load in the number of related qualities into the component', function(){
+                expect(itemviewComponent.down('itemview_view_qualities').title).toEqual('Qualities (' + store.data.items[0].propertyGroupsStore.getAt(3).valuesStore.data.length + ')');
+            });
+        });
+
+        describe('Builds a grid component for each relationship, type, and data', function() {
+            it('should call add for each element in the values store', function() {
+                var expected = store.data.items[0].propertyGroupsStore.getAt(2).valuesStore.data.items.length;
+                expect(relatedItems.add.callCount).toBe(expected);
+            });
+
+            it('should fire an "open" event when clicking a related item', function() {
+                var clickEvent = { target: { value: 'title', name: 'uristring', id: 'openRelatedItem' } };
+                spyOn(Savanna.app, 'fireEvent');
+                itemviewController.onRelatedItemClick(null, null, null, null, clickEvent);
+                expect(Savanna.app.fireEvent).toHaveBeenCalled();
+            });
         });
     });
 });
