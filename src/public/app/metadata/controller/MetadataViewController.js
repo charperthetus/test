@@ -50,7 +50,10 @@ Ext.define('Savanna.metadata.controller.MetadataViewController', {
             var thing = theStore.data.get(key); // if this would work (we have an actual key set on the store data items) then we wouldn't need the loop below.
             Ext.Array.each(theStore.data.items, function(storeData) {
                 if(storeData.get('key') == key) {
-                    if(storeData.get('value') !== metadata.value) {
+                    //var storeValue = storeData.get('value');
+                    console.log('storeValue', storeData.get('value'));
+                    console.log('metadata.value', metadata.value);
+                    if(storeData.get('value') !== metadata.value || ( Ext.isArray(metadata.value) /*&& !Ext.Array.equals(metadata.value, storeValue)*/  )) {
                         storeData.set('value', metadata.value);
                         stuffChanged = true;
                     }

@@ -27,39 +27,20 @@ Ext.define('Savanna.metadata.view.StringList', {
             } else {
                 me.down('#displayLabelItem').text = me.displayLabel + ':';
             }
-//            if(null !== me.value && 0 != me.value.length) {
-//                Ext.Array.each(me.value, function(stringElement) {
-//                    var theLabel = Ext.create('Ext.form.Label', {
-//                        text: '',
-//                        width: "100%"
-//                    });
-//                    theLabel.setText( stringElement );
-//                    me.add( theLabel );
-//                });
-//            } else {
-//                me.add( Ext.create('Ext.form.Label', {
-//                                    html: '&nbsp;',
-//                                    width: "100%"
-//                                })
-//                );
-//            }
         }, this));
     },
 
     makeEditViewItems: function() {
-        //this.makeViewViewItems(); // for now, until we get the edit mode figured out.
-
         var me = this;
         if(null !== me.value && 0 != me.value.length) {
             var fieldLabelValue = me.displayLabel;
-            //console.log('me.value',me.value);
             var contains = Ext.create('Ext.container.Container', {
                layout: 'vbox',
                width: "100%",
                border: false
             });
-            Ext.Array.each(me.value, function(stringElement) {
-                //console.log('in loop', stringElement);
+            var cloneArray = Ext.Array.clone(me.value);
+            Ext.Array.each(cloneArray, function(stringElement, index, allItems) {
                 var textField = Ext.create('Ext.form.field.Text', {
                     allowBlank: true,
                     width: '100%',
@@ -67,10 +48,8 @@ Ext.define('Savanna.metadata.view.StringList', {
                     value: stringElement,
                     listeners: {
                         blur: function(d) {
-                            //console.log('Item Blur');
-
-//                            var newVal = d.getValue().trim();
-//                            me.setValue(newVal);
+                            allItems[index] = d.getValue().trim();
+                            me.setValue(allItems);
                         }
                     }
                 });
