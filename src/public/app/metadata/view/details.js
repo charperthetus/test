@@ -29,47 +29,60 @@ Ext.define('Savanna.metadata.view.Details', {
         'Savanna.metadata.view.IntegerList',
         'Savanna.metadata.view.DoubleList',
         'Savanna.metadata.view.UriList',
-        'Savanna.metadata.controller.FieldTypes',
-        'Savanna.metadata.store.Metadata',
-        'Savanna.controller.Factory'
+        'Savanna.metadata.controller.MetadataViewController',
+        'Savanna.metadata.store.Metadata'
+        //'Savanna.controller.Factory'
     ],
 
-    layout: 'vbox',
-    collapsible: 'true',
-
-    autoScroll: true,
-    editMode: false,
-
-    itemURI: '',
+    controller: 'Savanna.metadata.controller.MetadataViewController',
 
     tbar: [
-      {
+        '->',
+        {
           xtype:    'button',
           text:     'Edit',
           itemId:   'metadata_edit_button'
-      }
+        },
+        {
+            xtype:    'button',
+            text:     'Save',
+            itemId:   'metadata_save_button'
+        },
+        {
+            xtype:    'button',
+            text:     'Cancel',
+            itemId:   'metadata_cancel_button'
+        }
     ],
 
     items: [
-        {
-            // this should be replaced by a Classification bar or something of the sort
-            xtype: 'label',
-            itemId: 'classification',
-            text: 'UnClassified'
-        },
-        {
-            xtype: 'label',
-            itemId: 'docTitle'
-        }
     ],
+
+    layout: 'vbox',
+    collapsible: true,
+
+    overflowY: 'auto',
+    autoScroll: true,
+
+    config: {
+        editMode: false,
+        itemURI: ''
+    },
+
+    updateEditMode: function(newEditMode, oldEditMode) {
+        var me = this;
+        if(undefined != oldEditMode ) { // don't want to do this on init
+            me.removeAll(); // this is only ok if all of our display items are created via createMetadataFields.
+            me.createMetadataFields();
+        }
+    },
 
     initComponent: function () {
         this.mixins.storeable.initStore.call(this);
         this.callParent(arguments);
-        Savanna.controller.Factory.getController('Savanna.metadata.controller.FieldTypes');
 
         var config = this.initialConfig || {};
-        this.itemURI = config.itemURI;
+        this.setItemURI( config.itemURI );
 
         var metadataStore = Ext.data.StoreManager.lookup('metadata');
         metadataStore.itemURI = config.itemURI;
@@ -83,6 +96,8 @@ Ext.define('Savanna.metadata.view.Details', {
     createMetadataFields: function() {
         var me = this;
 
+        // TODO: need to create and add a classification thing.
+
         Ext.Array.each(this.store.data.items, function(metadata) {
             var typeToAdd = me.getTypeFromName(metadata.data.type);
 
@@ -92,10 +107,13 @@ Ext.define('Savanna.metadata.view.Details', {
                     value:          metadata.data.value,
                     displayLabel:   metadata.data.displayLabel,
                     visible:        metadata.data.visible !== undefined ? metadata.data.visible : false,
-                    editable:       metadata.data.editable !== undefined ? metadata.data.editable : false
+                    editable:       metadata.data.editable !== undefined ? metadata.data.editable : false,
+                    editMode:       me.getEditMode(),
+                    type:           metadata.data.type
                 };
                 var metadataView = me.createViewForType(typeToAdd, valueObject );
                 if (metadataView) {
+                    //me.add( metadataView );
                     me.add( metadataView );
                 }
             }
@@ -146,7 +164,7 @@ Ext.define('Savanna.metadata.view.Details', {
                 typeToAdd = 'Savanna.metadata.view.UriList';
                 break;
             default:
-                console.log('Unknown metadata type', name);
+                //console.log('Unknown metadata type', name);
                 typeToAdd = '';
                 break;
         }
@@ -157,11 +175,13 @@ Ext.define('Savanna.metadata.view.Details', {
         var fieldView = null;
         if(fieldType) {
             fieldView = Ext.create(fieldType, {
-                value: valueObject.value,
-                key: valueObject.key,
-                displayLabel: valueObject.displayLabel,
-                editable: valueObject.editable,
-                visible: valueObject.visible
+                value:          valueObject.value,
+                key:            valueObject.key,
+                displayLabel:   valueObject.displayLabel,
+                editable:       valueObject.editable,
+                visible:        valueObject.visible,
+                editMode:       valueObject.editMode,
+                type:           valueObject.type
             })
         }
         return fieldView;
