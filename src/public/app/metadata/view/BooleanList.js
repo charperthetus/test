@@ -15,39 +15,64 @@ Ext.define('Savanna.metadata.view.BooleanList', {
     ],
 
     items: [
-        {
-            xtype: 'label',
-            itemId: 'displayLabelItem',
-            text: '',
-            width: '100%'
-        }
     ],
+
     initComponent: function () {
         this.callParent(arguments);
-        Savanna.controller.Factory.getController('Savanna.metadata.controller.FieldTypes');
-        var config = this.initialConfig || {};
-        this.initValues(config);
         var me = this;
 
-        this.on('beforerender', Ext.bind(function() {
-            me.down('#displayLabelItem').text = me.displayLabel;
-            if(null !== me.value && 0 != me.value.length) {
-                Ext.Array.each(me.value, function(stringElement) {
-                    var theLabel = Ext.create('Ext.form.Label', {
-                        text: '',
-                        width: "100%"
-                    });
-                    theLabel.setText( stringElement.toString() );
-                    me.add( theLabel );
-                });
-            } else {
-                me.add( Ext.create('Ext.form.Label', {
-                                    html: '&nbsp;',
-                                    width: "100%"
-                                })
-                );
-            }
+        me.on('beforerender', Ext.bind(function() {
+            me.down('#displayLabelItem').text = me.displayLabel + ':';
+//            if(null !== me.value && 0 != me.value.length) {
+//                Ext.Array.each(me.value, function(stringElement) {
+//                    var theLabel = Ext.create('Ext.form.Label', {
+//                        text: '',
+//                        width: "100%"
+//                    });
+//                    theLabel.setText( stringElement.toString() );
+//                    me.add( theLabel );
+//                });
+//            } else {
+//                me.add( Ext.create('Ext.form.Label', {
+//                                    html: '&nbsp;',
+//                                    width: "100%"
+//                                })
+//                );
+//            }
         }, this));
+    },
+
+    makeEditViewItems: function() {
+        this.makeViewViewItems(); // for now, until we get the edit mode figured out.
+    },
+
+    makeViewViewItems: function() {
+        var me = this;
+        this.add(Ext.create('Ext.form.Label', {
+            itemId: 'displayLabelItem',
+            width: 200,
+            minWidth: 200,
+            height: 25
+        }));
+
+        var contains = Ext.create('Ext.container.Container', {
+            layout: 'vbox',
+            width: "100%",
+            border: false
+        });
+        if(null !== me.value && 0 != me.value.length) {
+            Ext.Array.each(me.value, function(stringElement) {
+                var theLabel = Ext.create('Ext.form.Label', {
+                    text: '',
+                    width: "100%",
+                    height: 25
+                });
+                theLabel.setText( stringElement.toString() );
+                contains.add( theLabel );
+            });
+        }
+        me.add(contains);
+
     }
 
 });

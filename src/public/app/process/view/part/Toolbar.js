@@ -52,9 +52,16 @@ Ext.define('Savanna.process.view.part.Toolbar', {
                 glyph: 61807,
                 tooltip: 'Zoom Out',
                 itemId: 'zoomout'
+            },
+            '->',
+            {
+                text: 'Cancel',
+                itemId: 'cancelprocess'
+            },
+            {
+                text: 'Save',
+                itemId: 'saveprocess'
             }
-
-
         ];
     }
 });
