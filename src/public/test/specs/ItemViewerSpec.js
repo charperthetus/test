@@ -4,26 +4,12 @@
  ThetusTestHelpers: false,
  Savanna: false
  */
-Ext.require('Savanna.controller.Factory');
-Ext.require('Savanna.itemView.view.ItemViewer');
-Ext.require('Savanna.proxy.Cors');
 Ext.require('Savanna.Config');
-Ext.require('Savanna.itemView.store.MainItemStore');
-Ext.require('Ext.grid.Panel');
-Ext.require('Savanna.mixin.Storeable');
-Ext.require('Savanna.itemView.view.header.EditHeader');
-Ext.require('Savanna.itemView.view.header.DisplayLabel');
+Ext.require('Savanna.itemView.view.ItemViewer');
 Ext.require('Savanna.itemView.view.header.ViewHeader');
-Ext.require('Savanna.itemView.view.imageBrowser.ImagesGrid');
-Ext.require('Savanna.itemView.view.components.AutoCompleteWithTags');
-Ext.require('Savanna.itemView.view.imageBrowser.ImageThumbnail');
-Ext.require('Savanna.itemView.view.itemQualities.EditItemQualities');
-Ext.require('Savanna.itemView.view.components.LabeledFieldWithTags');
 Ext.require('Savanna.itemView.view.relatedProcesses.RelatedProcesses');
 Ext.require('Savanna.itemView.view.relatedItems.ViewRelatedItems');
 Ext.require('Savanna.itemView.view.itemQualities.ViewItemQualities');
-Ext.require('Savanna.itemView.controller.AutoCompleteController');
-Ext.require('Savanna.itemView.controller.ItemViewController');
 
 describe('Item Viewer', function () {
 
