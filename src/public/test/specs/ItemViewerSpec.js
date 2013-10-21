@@ -35,11 +35,6 @@ describe('Item Viewer', function () {
     beforeEach(function () {
         ThetusTestHelpers.ExtHelpers.createTestDom();
 
-        itemviewComponent = Ext.create('Savanna.itemView.view.ItemViewer', {
-            renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID,
-            itemUri: 'x84385f20051847dd70c1874fb17799458db6498e%252FItem'
-        });
-
         fixtures = Ext.clone(ThetusTestHelpers.Fixtures.ItemViewer);
 
         store = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.itemView.store.MainItemStore', { autoLoad: false });
@@ -47,18 +42,25 @@ describe('Item Viewer', function () {
         // now set up server to get store data
         server = new ThetusTestHelpers.FakeServer(sinon);
 
-        var readMethod = 'POST',
+        var readMethod = 'GET',
             testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(store.getProxy(), 'read', readMethod);
 
-        console.log(fixtures.rmItems);
+        server.respondWith(readMethod, testUrl, fixtures.itemsData);
 
-        //server.respondWith(readMethod, testUrl, fixtures.rmItems);
-
-        //store.load();
+        store.load();
 
         server.respond({
             errorOnInvalidRequest: true
         });
+
+        console.log(store);
+
+        itemviewComponent = Ext.create('Savanna.itemView.view.ItemViewer', {
+            renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID,
+            itemUri: 'x84385f20051847dd70c1874fb17799458db6498e%252FItem'
+        });
+
+
     });
 
     afterEach(function () {
