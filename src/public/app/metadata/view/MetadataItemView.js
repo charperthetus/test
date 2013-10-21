@@ -11,25 +11,89 @@ Ext.define('Savanna.metadata.view.MetadataItemView', {
     extend: 'Ext.container.Container',
     alias: 'widget.metadata_itemview',
 
-    layout: 'vbox',
+    layout: 'hbox',
     width: "100%",
     border: false,
 
-    editMode: false,
+    id: '',
 
-    // metadata values
-    key: '',
-    value: null,
-    displayLabel: '',
-    visible: true,
-    editable: true,
+    config: {
+        editMode: false,
+
+        // metadata values
+        key: '',
+        value: null,
+        displayLabel: '',
+        visible: true,
+        editable: true,
+        type: ''
+    },
+
+    applyEditMode: function(editMode) {
+        if(this.getEditable())
+            return editMode;
+        else
+            return undefined;
+    },
+
+
 
     initValues: function(config) {
-        this.key = config.key;
-        this.value = config.value;
-        this.displayLabel = config.displayLabel;
-        this.visible = config.visible;
-        this.editable = config.editable;
-    }
+        id = config.key;
+        this.setKey( config.key );
+        this.setValue( config.value );
+        this.setDisplayLabel( config.displayLabel );
+        this.setVisible( config.visible );
+        this.setEditable( config.editable );
+        this.setEditMode( config.editMode );
+        this.setType( config.type );
+    },
 
+    initComponent: function () {
+        this.callParent(arguments);
+        var config = this.initialConfig || {};
+        this.initValues(config);
+        this.makeItems();
+    },
+
+    makeItems: function () {
+        this.removeAll();
+        if(this.getEditable() && this.getEditMode()) {
+            this.makeEditViewItems();
+        } else {
+            this.makeViewViewItems();
+        }
+    },
+
+    makeEditViewItems: function() {
+        var me = this;
+        this.add(Ext.create('Ext.form.field.Text', {
+            fieldLabel: '',
+            itemId: 'displayValueEdit',
+            allowBlank: true,
+            width: '100%',
+            labelWidth: 200,
+            listeners: {
+                blur: function(d) {
+                    //console.log('Item Blur');
+                    var newVal = d.getValue().trim();
+                    me.setValue(newVal);
+                }
+            }
+        }));
+    },
+
+    makeViewViewItems: function() {
+        this.add(Ext.create('Ext.form.Label', {
+            itemId: 'displayLabelItem',
+            width: 200,
+            minWidth: 200,
+            height: 25
+        }));
+        this.add(Ext.create('Ext.form.Label', {
+            itemId: 'displayValue',
+            width: '100%'
+
+        }));
+    }
 });
