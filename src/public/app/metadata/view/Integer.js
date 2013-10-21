@@ -15,32 +15,34 @@ Ext.define('Savanna.metadata.view.Integer', {
     ],
 
     items: [
-        {
-            xtype: 'label',
-            itemId: 'displayLabelItem',
-            text: '',
-            width: '100%'
-        },
-        {
-            xtype: 'label',
-            itemId: 'displayValue',
-            text: '',
-            width: '100%'
-        }
     ],
 
     initComponent: function () {
         this.callParent(arguments);
-        Savanna.controller.Factory.getController('Savanna.metadata.controller.FieldTypes');
-        var config = this.initialConfig || {};
-        this.initValues(config);
         var me = this;
 
-        this.on('beforerender', Ext.bind(function() {
-            me.down('#displayLabelItem').text = me.displayLabel;
-            me.down('#displayValue').html = (null === me.value) ? '&nbsp;' : me.value.toLocaleString();
-
+        me.on('beforerender', Ext.bind(function() {
+            if(me.getEditable() && me.getEditMode()) {
+                if(me.down('#displayValueEdit')) {
+                    me.down('#displayValueEdit').setValue(me.getValue());
+                    me.down('#displayValueEdit').fieldLabel = me.getDisplayLabel();
+                    me.down('#displayValueEdit').regex = /^[0-9]*$/;
+                    me.down('#displayValueEdit').maskRe = /\d/i;
+                    me.down('#displayValueEdit').listeners = {
+                        blur: function(d) {
+                            var newVal = parseInt(d.getValue(), 10);
+                            me.setValue(newVal);
+                        }
+                    };
+                }
+            } else {
+                if(me.down('#displayLabelItem')) {
+                    me.down('#displayLabelItem').html = me.getDisplayLabel() + ':&nbsp;&nbsp;';
+                }
+                if(me.down('#displayValue')) {
+                    me.down('#displayValue').html = (null === me.getValue()) ? '&nbsp;' : me.getValue().toLocaleString();
+                }
+            }
         }, this));
     }
-
 });
