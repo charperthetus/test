@@ -446,8 +446,6 @@ describe('Search Component', function () {
                 formFields.queryById('exact_phrase').setValue('other text');
                 formFields.queryById('any_words').setValue('more and more text');
                 formFields.queryById('none_words').setValue('bad terms');
-
-                searchbar.queryById('search_terms').setValue('search bar terms');
             });
 
             afterEach(function () {
@@ -455,9 +453,8 @@ describe('Search Component', function () {
             });
 
             it('should clear the search text input', function () {
-                controller.clearSearch(searchbar.queryById('search_clear'));
+                controller.clearSearch(searchbar.down('searchbar_form').down('thetus-searchfield'));
                 var form = searchbar.queryById('search_form');
-                expect(form.queryById('search_terms').getValue()).toEqual('');
                 expect(formFields.queryById('all_words').getValue()).toEqual('');
                 expect(formFields.queryById('exact_phrase').getValue()).toEqual('');
                 expect(formFields.queryById('any_words').getValue()).toEqual('');
@@ -773,7 +770,7 @@ describe('Search Component', function () {
 
                 spyOn(controller, 'showResultsPage');
 
-                controller.doSearch(component.down('#search_submit'));
+                controller.doSearch(component.down('thetus-searchfield'));
 
                 expect(controller.showResultsPage).toHaveBeenCalled();
             });

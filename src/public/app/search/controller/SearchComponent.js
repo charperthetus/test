@@ -39,7 +39,9 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                 click: this.showHideMenu
             },
             'search_searchcomponent #search_terms': {
-                keyup: this.handleSearchTermKeyUp
+                keyup: this.handleSearchTermKeyUp,
+                'onsearchclick': this.handleSearchSubmit,
+                'onclearclick' : this.clearSearch
             },
             'search_searchcomponent #searchadvanced_menu textfield': {
                 keyup: this.handleSearchTermKeyUp
@@ -174,6 +176,8 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
         dals.queryById(dals.store.defaultId).query('checkbox')[0].setValue(true);
 
+        this.resetCustomSearchOptions(component);
+
         component.down('#resultsdals').removeAll();
 
 
@@ -200,7 +204,6 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
     clearSearch: function (elem) {
         var form = elem.findParentByType('search_searchcomponent').down('#searchbar');
-        form.queryById('search_terms').setValue('');
 
         var formField = form.queryById('searchadvanced_menu').queryById('form_container');
 
@@ -210,6 +213,12 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             }
         });
 
+    },
+
+    resetCustomSearchOptions:function(component) {
+        var dalsView = component.down('search_searchdals');
+        dalsView.createDalPanels(dalsView);
+        dalsView.down('#selectAllDals').setText('Select All');
     },
 
     handleSearchSubmit: function (btn) {

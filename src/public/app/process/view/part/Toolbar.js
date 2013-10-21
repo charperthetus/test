@@ -22,14 +22,6 @@ Ext.define('Savanna.process.view.part.Toolbar', {
 
     setupItems: function() {
         return [
-//            {
-//                text: '+ Add Step',
-//                itemId: 'addstepbutton'
-//            },
-//            {
-//                text: '+ Add Decision',
-//                itemId: 'adddecisionbutton'
-//            },
             {
                 text: 'View',
                 menu: [{
@@ -39,6 +31,36 @@ Ext.define('Savanna.process.view.part.Toolbar', {
                     text: 'Collapse All Steps',
                     itemId: 'collapsesteps'
                 }]
+            },
+            {
+                glyph: 61800,
+                tooltip: 'Undo',
+                itemId: 'undo'
+            },
+            {
+                glyph: 61777,
+                tooltip: 'Redo',
+                itemId: 'redo'
+            },
+            '->',
+            {
+                glyph: 61806,
+                tooltip: 'Zoom In',
+                itemId: 'zoomin'
+            },
+            {
+                glyph: 61807,
+                tooltip: 'Zoom Out',
+                itemId: 'zoomout'
+            },
+            '->',
+            {
+                text: 'Cancel',
+                itemId: 'cancelprocess'
+            },
+            {
+                text: 'Save',
+                itemId: 'saveprocess'
             }
         ];
     }

@@ -8,10 +8,8 @@ Ext.define('Savanna.search.controller.resultsComponent.resultsDals.ResultsRefine
 
         control: {
             refine_search_terms: {
-                keyup: 'onKeyUp'
-            },
-            refine_search_submit: {
-                click: 'onSubmitClick'
+                keyup: 'onKeyUp',
+                'onsearchclick': 'onSubmitClick'
             }
         },
 
@@ -37,8 +35,8 @@ Ext.define('Savanna.search.controller.resultsComponent.resultsDals.ResultsRefine
         },
 
 
-        onSubmitClick: function (btn) {
-            var field = btn.findParentByType('search_resultscomponent').down('#refine_search_terms');
+        onSubmitClick: function (field) {
+            var field = field.findParentByType('search_resultscomponent').down('#refine_search_terms');
             return this.onNewSearchTerm(field);
         },
 

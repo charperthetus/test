@@ -1,0 +1,20 @@
+// /*
+//  *   @author astump 10/9/2013 - added custom var for logic in thetus-uikit/sass/src/panel/Table.scss
+//	*								$grid-cell-title
+//  *
+//  */
+
+$grid-cell-title-padding-bottom: 5px !default;
+
+/* THESE SHOULD PROBABLY BE ADDED TO UIKIT */
+$grid-row-cell-focus-background-color : $item-hover !default;
+$grid-row-cell-focus-border-color : $item-hover !default;
+$grid-row-cell-focus-border-style : none !default;
+$grid-row-cell-over-background-color: $item-hover !default;
+$grid-row-cell-over-border-color: $item-hover !default;
+$grid-row-cell-selected-background-color : $item-select !default;
+$grid-row-cell-selected-border-color : $item-select !default;
+$grid-row-cell-selected-border-style :  none !default;
+$grid-row-body-padding: 0px !default;
+
+$grid-cell-word-wrap: true !default;

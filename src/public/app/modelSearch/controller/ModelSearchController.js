@@ -21,7 +21,7 @@ Ext.define('Savanna.modelSearch.controller.ModelSearchController', {
         'Savanna.modelSearch.view.ModelSearchPagingToolbar'
     ],
     init: function() {
-        Savanna.controller.Factory.getController('Savanna.itemView.controller.ItemViewController');
+
         this.control({
             'modelsearch_searchHeader #gobutton': {
                 click: this.handleModelSearch
@@ -55,6 +55,16 @@ Ext.define('Savanna.modelSearch.controller.ModelSearchController', {
         store.loadPage(1);        
     },
     handleModelClick: function(grid, record, item) {
-        this.getApplication().fireEvent('search:itemSelected', grid, record, item);
+        var itemView = Ext.create('Savanna.itemView.view.ItemViewer', {
+            title: record.data.referenceName,
+            itemUri: record.data.uri,
+            closable: true,
+            autoScroll: true,
+            tabConfig: {
+                ui: 'dark'
+            }
+        });
+
+        this.getApplication().fireEvent('search:itemSelected', itemView);
     }
 });

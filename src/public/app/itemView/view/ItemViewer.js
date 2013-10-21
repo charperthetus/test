@@ -6,8 +6,25 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
     cls: 'itemview',
 
     require: [
-        'Ext.grid.property.Grid'
+        'Ext.grid.Panel',
+        'Savanna.itemView.controller.ItemViewController',
+        'Savanna.itemView.view.header.EditHeader',
+        'Savanna.itemView.view.header.DisplayLabel',
+        'Savanna.itemView.view.header.ViewHeader',
+        'Savanna.itemView.view.imageBrowser.ImagesGrid',
+        'Savanna.itemView.view.components.AutoCompleteWithTags',
+        'Savanna.itemView.view.imageBrowser.ImageThumbnail',
+        'Savanna.itemView.view.itemQualities.EditItemQualities',
+        'Savanna.itemView.view.components.LabeledFieldWithTags',
+        'Savanna.itemView.view.relatedProcesses.RelatedProcesses',
+        'Savanna.itemView.view.relatedItems.ViewRelatedItems'
     ],
+
+    controller: 'Savanna.itemView.controller.ItemViewController',
+
+    config: {
+        itemUri: null
+    },
 
     tbar: [
         {
@@ -45,6 +62,11 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
     overflowY: 'auto',
     autoScroll: true,
 
+    constructor: function(configs) {
+        this.initConfig(configs);  //initializes configs passed in constructor
+        this.callParent(arguments);
+    },
+
     initComponent: function() {
         this.items = this.buildItems();
         this.callParent(arguments);
@@ -58,8 +80,12 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                 flex: 1,
                 items: [
                     {
-                        xtype: 'itemview_header',
-                        itemId: 'itemHeader'
+                        xtype: 'itemview_edit_header',
+                        itemId: 'itemEditHeader'
+                    },
+                    {
+                        xtype: 'itemview_view_header',
+                        itemId: 'itemViewHeader'
                     },
                     {
                         //ToDo: create related processes component here
@@ -67,14 +93,20 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                         itemId: 'relatedProcesses',
                         collapsible: true,
                         title: 'Participated in Process (#)',
-                        store: null
+                        store: null,
+                        header:{
+                            ui:'light-blue'
+                        }
                     },
                     {
                         //Todo: create related items component here
-                        xtype: 'itemview_related_items',
+                        xtype: 'itemview_view_related_items',
                         itemId: 'relatedItems',
                         collapsible: true,
-                        title: 'Related Items (#)'
+                        title: 'Related Items (#)',
+                        header:{
+                            ui:'light-blue'
+                        }
                     }
                 ]
             },
@@ -87,11 +119,14 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                         itemId: 'imagesGrid'
                     },
                     {
-                        xtype: 'item_properties',
+                        xtype: 'item_edit_qualities',
                         itemId: 'itemProperties',
                         width: '100%',
                         collapsible: true,
-                        title: 'Qualities (#)'
+                        title: 'Qualities (#)',
+                        header:{
+                            ui:'light-blue'
+                        }
                     }
                 ]
             }

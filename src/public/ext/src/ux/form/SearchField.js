@@ -20,6 +20,12 @@ Ext.define('Ext.ux.form.SearchField', {
             }
         });
 
+        /*
+        *   These are commented out because the Ext.formfield is unfinished
+        *   and causes unit tests to break. We are overriding this class in
+        *   Thetus-uikit/overrides/ux/form/SearchField.js
+        *   You can call it with xtype: 'searchfield' and still use 'Ext.ux.form.SearcField'
+        */
         // We're going to use filtering
         me.store.remoteFilter = true;
 
@@ -31,7 +37,7 @@ Ext.define('Ext.ux.form.SearchField', {
         }
         me.store.proxy.encodeFilters = function(filters) {
             return filters[0].value;
-        }
+        };
     },
 
     afterRender: function(){

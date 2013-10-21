@@ -32,6 +32,13 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
                     me.component.on('Search:SortByChanged', this.onSortOrderChange, this);
                     me.component.on('search:changeSelectedStore', this.changeSelectedStore, this);
 
+                    //grid notifications
+                    me.component.on('search:grid:itemdblclick', this.onItemPreview, this);
+                    me.component.on('search:grid:itemclick', this.onItemClick, this);
+                    me.component.on('search:grid:itemmouseenter', this.onItemMouseEnter, this);
+                    me.component.on('search:grid:itemmouseleave', this.onItemMouseLeave, this);
+
+
                     //The exception is for popups....
                     //We can listen for events fired in  a popup this way (just like we did in Flex).
                     var dispatcher = this.previewWindow();
@@ -40,17 +47,9 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
                 }
             },
 
-            'search_resultscomponent #resultspanelgrid': {
-                'itemdblclick': this.onItemPreview,
-                'itemclick': this.onItemClick,
-                'itemmouseenter': this.onItemMouseEnter,
-                'itemmouseleave': this.onItemMouseLeave
-            },
+
             'search_resultscomponent #resultsFacetsReset': {
                 'click': this.onDalReset
-            },
-            'search_resultscomponent #showHideFacets': {
-                'click': this.onShowHideFacets
             },
             'search_searchcomponent #resultMapCanvas': {
                 beforerender: this.loadDefaultLayer,
@@ -316,24 +315,6 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
         //todo open the uri...
     },
 
-
-
-    onShowHideFacets: function (btn) {
-
-        Ext.each(btn.up('#resultsfacets').getActiveTab().query('panel[cls=results-facet]'), function (facet) {
-            if (facet) {
-                if (!btn.facetsExpanded) {
-                    btn.setText('Hide All');
-                    facet.expand();
-                } else {
-                    facet.collapse();
-                    btn.setText('Show All');
-                }
-            }
-        });
-        btn.facetsExpanded = !btn.facetsExpanded;
-    },
-
     onNextItemPreview: function () {
         if (this.previewIndex >= this.resultsStore.totalCount) {
             return;
@@ -352,9 +333,6 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
         }
     },
 
-    onDalRender: function (dal) {
-        dal.body.on('click', this.changeSelectedStore, this, dal);
-    },
 
     onDalReset: function (btn) {
         var id = this.getCurrentDalId();
@@ -363,6 +341,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
             resultsTerms = resultsDals.down('search_resultsDals_resultsterms');
 
         dalRecord.set('facetFilterCriteria', []);
+        dalRecord.set('dateTimeRanges', []);
         resultsDals.queryById('resultsfacets').removeAll();
         resultsDals.createFacetsTabPanel();
         btn.findParentByType('search_searchcomponent').refineSearchString = '';
@@ -579,30 +558,30 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
     },
 
     changeResultView: function (button) {
-       var mapPanel = button.up('search_resultscomponent').down('#resultsmap');
-       var resultsGridPanel = button.up('search_resultscomponent').down('#resultspanelgrid');
-       switch (button.text){
-           case 'Map':
-               resultsGridPanel.hide();
-               mapPanel.show();
-               break;
-           case 'List':
-               mapPanel.hide();
-               resultsGridPanel.show();
-               break;
-       }
+        var mapPanel = button.up('search_resultscomponent').down('#resultsmap');
+        var resultsGridPanel = button.up('search_resultscomponent').down('#resultspanelgrid');
+        switch (button.text){
+            case 'Map':
+                resultsGridPanel.hide();
+                mapPanel.show();
+                break;
+            case 'List':
+                mapPanel.hide();
+                resultsGridPanel.show();
+                break;
+        }
 
     },
     addSearchPolygon: function (canvas) {
-      var searchLayer = canvas.searchLayer;
-      //modify resultmap searchLayer to match searchmap searchLayer
-      if(searchLayer.features.length > 0){
-          var resultMap = canvas.up('search_searchcomponent').down('#resultMapCanvas');
-          var layerFeatureArray = searchLayer.features;
-          resultMap.searchLayer.removeAllFeatures();
-          var cloneFeature = layerFeatureArray[0].clone();
-          resultMap.searchLayer.addFeatures(cloneFeature);
-      }
+        var searchLayer = canvas.searchLayer;
+        //modify resultmap searchLayer to match searchmap searchLayer
+        if(searchLayer.features.length > 0){
+            var resultMap = canvas.up('search_searchcomponent').down('#resultMapCanvas');
+            var layerFeatureArray = searchLayer.features;
+            resultMap.searchLayer.removeAllFeatures();
+            var cloneFeature = layerFeatureArray[0].clone();
+            resultMap.searchLayer.addFeatures(cloneFeature);
+        }
     },
 
     removeSearchPolygon: function (canvas) {

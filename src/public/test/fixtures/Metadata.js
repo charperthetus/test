@@ -177,7 +177,7 @@ var ThetusTestHelpers;
                 "key": "classification",
                 "type": "String",
                 "visible": true,
-                "editable": true,
+                "editable": false,
                 "displayLabel": "Classification"
             },
             {

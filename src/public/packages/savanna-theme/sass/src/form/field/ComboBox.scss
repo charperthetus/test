@@ -1,0 +1,33 @@
+/*
+ *	Savanna Combo Box
+ *	@author astump 10/16/2013
+ *
+ *
+*/
+
+.#{$prefix}field-combo-button-toolbar {
+	
+	background-color: $button-basic-background-color;
+	@include background-gradient($button-basic-background-color, $button-basic-background-gradient, top);
+	
+	
+	.#{$prefix}form-trigger-wrap{
+		border-width:  $button-basic-border-width;
+		border-color: $button-basic-border-color;
+		@include border-radius($combobox-border-radius);
+		padding: $boundlist-item-padding;
+		
+		.#{$prefix}form-text{
+			border-width: 0;
+			border-color: transparent;
+		}
+	}
+
+	input, .#{$prefix}trigger-cell {
+		color: $button-basic-color;
+		padding: 0;
+		background-color: transparent;
+		border-width: 0;
+		border-color: transparent;
+	}
+}

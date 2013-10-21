@@ -15,12 +15,14 @@ Ext.define('Savanna.desktop.view.UploadWindow', {
 
     title: 'Upload',
     layout:'fit',
-    height: 640,
-    width: 570,
-    minWidth: 200,
-    minHeight: 100,
+    height: 570,
+    width: 640,
+    minWidth: 430,
+    minHeight: 325,
     ghost: false,
-    items: [{
-        xtype: 'upload_uploadcomponent'
-    }]
+    items: [
+        {
+            xtype: 'upload_uploadcomponent'
+        }
+    ]
 });
