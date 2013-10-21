@@ -141,7 +141,7 @@ Ext.define('Savanna.upload.controller.UploadController', {
             headers: {
                 'Accept': 'application/json'
             },
-            jsonData: this.buildJSONStringArray(this.currentPollingIds) ,
+            jsonData: this.currentPollingIds ,
             success: Ext.bind(this.onBatchPollingRequestLoad, this , [uploadGrid], true ),
             failure: function (response, opts) {
                 console.log('server-side failure with status code ' + response.status);

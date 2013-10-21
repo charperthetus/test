@@ -12,7 +12,8 @@ Ext.define('Savanna.desktop.view.SavannaWorkspace', {
         'Savanna.desktop.controller.WorkspaceController',
         'Savanna.desktop.view.SavannaTabPanel',
         'Savanna.crumbnet.view.CrumbnetComponent',
-        'Savanna.map.view.MapComponent'
+        'Savanna.map.view.MapComponent',
+        'Savanna.image.view.ImageComponent'
     ],
 
     controller: "Savanna.desktop.controller.WorkspaceController",
@@ -60,6 +61,10 @@ Ext.define('Savanna.desktop.view.SavannaWorkspace', {
         flex: 2,
         height: '100%',
         items: [{
+            title: 'Image',
+            xtype: 'image_imagecomponent',
+            imageSource: 'somePath'
+        },{
             title: 'Process',
             xtype: 'process_component',
             tabConfig: {
