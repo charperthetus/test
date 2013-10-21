@@ -8,11 +8,12 @@
 Ext.define('Savanna.desktop.controller.DesktopController', {
     extend: 'Deft.mvc.ViewController',
 
-    statics: {
-        aboutwindow: null,
-        searchwindow: null,
-        uploadwindow: null
+    inject: ['application'],
+
+    config: {
+        application: null
     },
+
     requires: [
         'Savanna.desktop.view.AboutWindow',
         'Savanna.desktop.view.SearchWindow',
@@ -23,103 +24,105 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
         aboutwindow: null,
         searchwindow: null,
         uploadwindow: null
-            },
+    },
 
-            control: {
-                logobutton: {
-                    click: 'displayAboutDialog'
-                },
-                searchbutton: {
-                    click: 'displaySearch'
-                },
-                uploadbutton: {
-                    click: 'displayUploadDialog'
-                },
-                helpbutton: {
-                    click: 'launchHelp'
-                },
-                accountsettings: {
-                    click: 'displayAccountSettings'
-                },
-                savannalogout: {
-                    click: 'handleLogout'
-                },
-                modelsearchbutton: {
-                    click: 'displayModelSearch'
-                }
-            },
+    control: {
+        logobutton: {
+            click: 'displayAboutDialog'
+        },
+        searchbutton: {
+            click: 'displaySearch'
+        },
+        uploadbutton: {
+            click: 'displayUploadDialog'
+        },
+        helpbutton: {
+            click: 'launchHelp'
+        },
+        accountsettings: {
+            click: 'displayAccountSettings'
+        },
+        savannalogout: {
+            click: 'handleLogout'
+        },
+        modelsearchbutton: {
+            click: 'displayModelSearch'
+        }
+    },
 
-            init: function() {
-                return this.callParent(arguments);
-            },
+    init: function() {
+        this.getApplication().on('initModelSearch', this.displayModelSearch);
 
-            displayAboutDialog: function() {
-                if (!this.statics().aboutwindow) {
-                    this.statics().aboutwindow = Ext.create('Savanna.desktop.view.AboutWindow', {
-                        modal: 'true',
-                        closeAction: 'hide'
-                    });
-                }
-                var aboutWindow =  this.statics().aboutwindow.show();
-                aboutWindow.show();
-                if(aboutWindow.height > Ext.getBody().getViewSize().height) {
-                    aboutWindow.alignTo(Ext.getBody(), 't-t');
-                }
-                else {
-                    aboutWindow.center();
-                }
-            },
+        return this.callParent(arguments);
+    },
 
-            displaySearch: function() {
-                if (!this.statics().searchwindow) {
-                    this.statics().searchwindow = Ext.create('Savanna.desktop.view.SearchWindow', {closeAction: 'hide'});
-                }
-                var searchWindow = this.statics().searchwindow;
-                searchWindow.show();
-                if(searchWindow.height > Ext.getBody().getViewSize().height) {
-                    searchWindow.alignTo(Ext.getBody(), 't-t');
-                }
-                else {
-                    searchWindow.center();
-                }
-            },
+    displayAboutDialog: function() {
+        if (!this.statics().aboutwindow) {
+            this.statics().aboutwindow = Ext.create('Savanna.desktop.view.AboutWindow', {
+                modal: 'true',
+                closeAction: 'hide'
+            });
+        }
+        var aboutWindow =  this.statics().aboutwindow.show();
+        aboutWindow.show();
+        if(aboutWindow.height > Ext.getBody().getViewSize().height) {
+            aboutWindow.alignTo(Ext.getBody(), 't-t');
+        }
+        else {
+            aboutWindow.center();
+        }
+    },
 
-            displayUploadDialog: function(button) {
-                if (!this.statics().uploadwindow) {
-                    this.statics().uploadwindow = Ext.create('Savanna.desktop.view.UploadWindow', { closeAction: 'hide'});
-                }
-                var uploadWindow = this.statics().uploadwindow;
-                var appHeight = document.height;
-                if (appHeight < uploadWindow.height + 50){
-                    uploadWindow.height = appHeight - 50;
-                }
-                uploadWindow.show();
-                uploadWindow.center();
-            },
+    displaySearch: function() {
+        if (!this.statics().searchwindow) {
+            this.statics().searchwindow = Ext.create('Savanna.desktop.view.SearchWindow', {closeAction: 'hide'});
+        }
+        var searchWindow = this.statics().searchwindow;
+        searchWindow.show();
+        if(searchWindow.height > Ext.getBody().getViewSize().height) {
+            searchWindow.alignTo(Ext.getBody(), 't-t');
+        }
+        else {
+            searchWindow.center();
+        }
+    },
 
-            displayAccountSettings: function() {
-                console.log('The user hit account settings');
-            },
+    displayUploadDialog: function() {
+        if (!this.statics().uploadwindow) {
+            this.statics().uploadwindow = Ext.create('Savanna.desktop.view.UploadWindow', { closeAction: 'hide'});
+        }
+        var uploadWindow = this.statics().uploadwindow;
+        var appHeight = document.height;
+        if (appHeight < uploadWindow.height + 50){
+            uploadWindow.height = appHeight - 50;
+        }
+        uploadWindow.show();
+        uploadWindow.center();
+    },
 
-            launchHelp: function() {
-                window.open(SavannaConfig.helpUrl);
-            },
+    displayAccountSettings: function() {
+        console.log('The user hit account settings');
+    },
 
-            handleLogout: function() {
-                console.log('The user is trying to logout');
-            },
+    launchHelp: function() {
+        window.open(SavannaConfig.helpUrl);
+    },
 
-            displayModelSearch: function() {
-                if (!this.statics().modelSearchWindow) {
-                    this.statics().modelSearchWindow = Ext.create('Savanna.desktop.view.ModelSearchWindow', {closeAction: 'hide'});
-                }
-                var searchWindow = this.statics().modelSearchWindow;
-                searchWindow.show();
-                if(searchWindow.height > Ext.getBody().getViewSize().height) {
-                    searchWindow.alignTo(Ext.getBody(), 't-t');
-                }
-                else {
-                    searchWindow.center();
-                }
-            }
-        });
+    handleLogout: function() {
+        console.log('The user is trying to logout');
+    },
+
+    displayModelSearch: function() {
+        if (!this.statics().modelSearchWindow) {
+            this.statics().modelSearchWindow = Ext.create('Savanna.desktop.view.ModelSearchWindow', {closeAction: 'hide'});
+        }
+        var searchWindow = this.statics().modelSearchWindow;
+        searchWindow.show();
+        if(searchWindow.height > Ext.getBody().getViewSize().height) {
+            searchWindow.alignTo(Ext.getBody(), 't-t');
+        }
+        else {
+            searchWindow.center();
+        }
+    }
+});

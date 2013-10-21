@@ -210,5 +210,4 @@ Ext.define('Savanna.process.controller.ProcessController', {
             }
         });
     }
-
 });
