@@ -27,17 +27,17 @@ Ext.define('Ext.ux.form.SearchField', {
         *   You can call it with xtype: 'searchfield' and still use 'Ext.ux.form.SearcField'
         */
         // We're going to use filtering
-        // me.store.remoteFilter = true;
+        me.store.remoteFilter = true;
 
         // Set up the proxy to encode the filter in the simplest way as a name/value pair
 
         // If the Store has not been *configured* with a filterParam property, then use our filter parameter name
-        // if (!me.store.proxy.hasOwnProperty('filterParam')) {
-        //     me.store.proxy.filterParam = me.paramName;
-        // }
-        // me.store.proxy.encodeFilters = function(filters) {
-        //     return filters[0].value;
-        // }
+        if (!me.store.proxy.hasOwnProperty('filterParam')) {
+            me.store.proxy.filterParam = me.paramName;
+        }
+        me.store.proxy.encodeFilters = function(filters) {
+            return filters[0].value;
+        };
     },
 
     afterRender: function(){

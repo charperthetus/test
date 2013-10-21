@@ -1,5 +1,5 @@
 Ext.define('Savanna.itemView.view.ItemViewer', {
-    extend: 'Ext.Panel',
+    extend: 'Ext.panel.Panel',
 
     alias: 'widget.itemview_itemviewer',
 
@@ -27,12 +27,18 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
         itemUri: null
     },
 
-    tbar: [
-        {
-            xtype: 'label',
-            text: 'CLASSIFICATION'
-        }
-    ],
+    dockedItems: [{
+        xtype: 'toolbar',
+        dock: 'top',
+        items: [
+            '->',
+            {
+                xtype: 'label',
+                text: 'CLASSIFICATION'
+            },
+            '->'
+        ]
+    }],
 
     tbar: [
         {
@@ -43,13 +49,13 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                     text: 'New Item...'
                 },
                 {
-                    text: 'Delete' 
+                    text: 'Delete'
                 },
                 {
                     xtype: 'menuseparator'
                 },
                 {
-                    text: 'Workflow' 
+                    text: 'Workflow'
                 },
                 {
                     xtype: 'menuseparator'
@@ -78,6 +84,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
     },
 
     initComponent: function() {
+
         this.items = this.buildItems();
         this.callParent(arguments);
     },

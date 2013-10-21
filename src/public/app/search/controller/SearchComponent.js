@@ -176,6 +176,8 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
         dals.queryById(dals.store.defaultId).query('checkbox')[0].setValue(true);
 
+        this.resetCustomSearchOptions(component);
+
         component.down('#resultsdals').removeAll();
 
 
@@ -211,6 +213,12 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             }
         });
 
+    },
+
+    resetCustomSearchOptions:function(component) {
+        var dalsView = component.down('search_searchdals');
+        dalsView.createDalPanels(dalsView);
+        dalsView.down('#selectAllDals').setText('Select All');
     },
 
     handleSearchSubmit: function (btn) {
