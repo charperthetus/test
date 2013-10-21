@@ -22,7 +22,11 @@ Ext.define('Savanna.metadata.view.StringList', {
         var me = this;
 
         me.on('beforerender', Ext.bind(function() {
-            me.down('#displayLabelItem').text = me.displayLabel + ':';
+            if(me.getEditable() && me.getEditMode()) {
+                //me.down('#displayLabelItem').text = me.displayLabel + ':';
+            } else {
+                me.down('#displayLabelItem').text = me.displayLabel + ':';
+            }
 //            if(null !== me.value && 0 != me.value.length) {
 //                Ext.Array.each(me.value, function(stringElement) {
 //                    var theLabel = Ext.create('Ext.form.Label', {
@@ -43,7 +47,42 @@ Ext.define('Savanna.metadata.view.StringList', {
     },
 
     makeEditViewItems: function() {
-        this.makeViewViewItems(); // for now, until we get the edit mode figured out.
+        //this.makeViewViewItems(); // for now, until we get the edit mode figured out.
+
+        var me = this;
+        if(null !== me.value && 0 != me.value.length) {
+            var fieldLabelValue = me.displayLabel;
+            //console.log('me.value',me.value);
+            var contains = Ext.create('Ext.container.Container', {
+               layout: 'vbox',
+               width: "100%",
+               border: false
+            });
+            Ext.Array.each(me.value, function(stringElement) {
+                //console.log('in loop', stringElement);
+                var textField = Ext.create('Ext.form.field.Text', {
+                    allowBlank: true,
+                    width: '100%',
+                    labelWidth: 200,
+                    value: stringElement,
+                    listeners: {
+                        blur: function(d) {
+                            //console.log('Item Blur');
+
+//                            var newVal = d.getValue().trim();
+//                            me.setValue(newVal);
+                        }
+                    }
+                });
+                textField.fieldLabel = fieldLabelValue;
+                contains.add(textField);
+                if(fieldLabelValue == '&nbsp;') {
+                    textField.labelSeparator = '';
+                }
+                fieldLabelValue = '&nbsp;';
+            });
+            me.add(contains);
+        }
     },
 
     makeViewViewItems: function() {
