@@ -214,7 +214,7 @@ var ThetusTestHelpers;
             },
             {
                 "value": [1360960788447, 0, 1362960788447],
-                "key": "important_values",
+                "key": "important_values_list",
                 "type": "Integer_List",
                 "visible": true,
                 "editable": true,
@@ -222,7 +222,7 @@ var ThetusTestHelpers;
             },
             {
                 "value": 1360960788447,
-                "key": "important_value",
+                "key": "a_value",
                 "type": "Integer",
                 "visible": true,
                 "editable": true,
@@ -230,7 +230,7 @@ var ThetusTestHelpers;
             },
             {
                 "value": 13609607884.47,
-                "key": "important_values",
+                "key": "important_double",
                 "type": "Double",
                 "visible": true,
                 "editable": true,

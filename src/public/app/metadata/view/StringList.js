@@ -46,6 +46,8 @@ Ext.define('Savanna.metadata.view.StringList', {
                     width: '100%',
                     labelWidth: 200,
                     value: stringElement,
+
+
                     listeners: {
                         blur: function(d) {
                             allItems[index] = d.getValue().trim();

@@ -36,6 +36,42 @@ Ext.define('Savanna.metadata.view.Boolean', {
                 }
             }
         }, this));
+    },
+
+    makeEditViewItems: function() {
+        var me = this;
+        this.add(Ext.create('Ext.form.RadioGroup', {
+            fieldLabel: '',
+            itemId: 'displayValueEdit',
+            width: 350,
+            labelWidth: 200,
+            items: [{
+                        boxLabel: 'True',
+                        checked: me.value == true,
+                        name: 'radios',
+                        listeners: {
+                            change: function(d) {
+                                if(d.getValue()) {
+                                    me.setValue(true);
+                                }
+                            }
+                        }
+
+                    }, {
+                        boxLabel: 'False',
+                        checked: me.value == false,
+                        name: 'radios',
+                        listeners: {
+                            change: function(d) {
+                                if(d.getValue()) {
+                                    me.setValue(false);
+                                }
+                            }
+                        }
+
+                    }]
+        }));
     }
+
 
 });

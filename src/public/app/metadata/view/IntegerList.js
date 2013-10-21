@@ -34,8 +34,7 @@ Ext.define('Savanna.metadata.view.IntegerList', {
         var me = this;
         if(null !== me.value && 0 != me.value.length) {
             var fieldLabelValue = me.displayLabel;
-            //console.log('me.value',me.value);
-            var contains = Ext.create('Ext.container.Container', {
+            var container = Ext.create('Ext.container.Container', {
                layout: 'vbox',
                width: "100%",
                border: false
@@ -57,13 +56,13 @@ Ext.define('Savanna.metadata.view.IntegerList', {
                     }
                 });
                 textField.fieldLabel = fieldLabelValue;
-                contains.add(textField);
+                container.add(textField);
                 if(fieldLabelValue == '&nbsp;') {
                     textField.labelSeparator = '';
                 }
                 fieldLabelValue = '&nbsp;';
             });
-            me.add(contains);
+            me.add(container);
         }
     },
 
