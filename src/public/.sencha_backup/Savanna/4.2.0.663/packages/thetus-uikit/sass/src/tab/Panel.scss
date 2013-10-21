@@ -1,0 +1,27 @@
+/*
+ *  Sets custom tab panel styles by reusing ExtJS (or UIKit) mixins.
+ *  Refer to _uikit-tab.scss for the constructor of the UIKit mixin
+ *
+ *  @author eirby
+ *	@edit   astump 8/26/2013
+ *  @edit   astump 8/30/2013 - added notes, active border settings.
+ *
+ */
+
+/* IMPORTS */
+// @import '_uikit-tab';
+
+// @include uikit-tab(
+//     $uikit-ui: 'default'
+// );
+// @include extjs-tab-panel-ui(
+//     $uikit-ui: 'dark'
+// );
+
+//Ext.tab.Bar
+@import 'uikit-tab';
+
+.#{$prefix}tab-bar-body{
+	overflow:$tabbar-overflow;
+}
+

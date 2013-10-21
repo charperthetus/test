@@ -1,0 +1,17 @@
+/*
+ *  Sets custom form.filed.HTMLEditor styles 
+ *
+ *	@author eirby
+ *	@edit 	astump 8/30/2013 - added notes
+ *	@edit	astump 9/16/2013 - added html editor container from Neptune
+ *
+ */
+
+.#{$prefix}html-editor-input {
+    padding: $html-editor-padding;
+}
+
+.#{$prefix}html-editor-container {
+    border: $html-editor-border-width solid;
+    border-color: $html-editor-border-color;
+}

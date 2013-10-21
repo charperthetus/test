@@ -1,0 +1,182 @@
+/*
+ * Styles buttons globally (including parts tabs and toolbars).
+ *
+ * @author jgriffith
+ *	@edits astump 8/12/2013
+ *		ADDED
+ *		- $button-default-base-color: #008bb9
+ *		- $button-default-background-color-focus: #1a6385
+ *		CHANGED
+ *		- $button-default-padding: 3px 5px => 8px 14px
+ *		- $button-default-background-color-over: #72b3cc => #5ab6cc
+ *		- $button-default-background-color-pressed: #355f86 => #1a6385	
+ *	@edits jgriffith 8/21/13
+ *		- Updated button colors, Kelvin and I noticed they aren't 1:1 from the PSD file
+ *		- Set gradients to `null` for toolbar buttons since they should be flat
+ *	@edits astump 8/26/2013
+ *		- Updated button colors, Kelvin and I met and he emailed me over the approved bgcolors
+  *  @edits astump 9/13/2013 - added Vars to set styles without Neptune
+ *
+ *  @edits eirby 9/16/2013- added vars for btn-button 
+ */
+
+/* ----- Buttons ----- */
+// 
+//	Default Button Variables
+// 
+/**
+ * @class Ext.button.Button
+*/
+
+//
+// /*  DEFAULT BUTTON */
+// 
+$button-base-color: $base-color !default;
+$button-default-base-color: #008bb9 !default;
+$button-default-base-color-over: #5ab6cc !default;
+$button-default-base-color-focus: #1a6385 !default;
+$button-default-base-color-pressed: #1a6385 !default;
+
+$button-default-border-radius: 0px !default;
+$button-default-border-width: 0 !default;
+$button-default-border-color: transparent !default;
+$button-default-border-color-over: $button-default-border-color !default;
+$button-default-border-color-focus: $button-default-border-color !default;
+$button-default-border-color-pressed: $button-default-border-color !default;
+$button-default-border-color-disabled: $button-default-border-color !default;
+
+$button-default-padding: 0px !default;
+$button-default-text-padding: 0px !default;
+
+$button-default-background-color: transparent !default;
+$button-default-background-color-over: transparent !default;
+$button-default-background-color-focus: transparent !default;
+$button-default-background-color-pressed: transparent !default;
+$button-default-background-color-disabled: transparent !default;
+    
+$button-default-background-gradient: transparent !default;
+$button-default-background-gradient-over: transparent !default;
+$button-default-background-gradient-focus: transparent !default;
+$button-default-background-gradient-pressed: transparent !default;
+$button-default-background-gradient-disabled: transparent !default;
+ 
+$button-default-color: $button-base-color !default;
+$button-default-color-over: $button-base-color !default;
+$button-default-color-focus: $button-base-color !default;
+$button-default-color-pressed: $button-base-color !default;
+$button-default-color-disabled: $button-base-color !default;
+    
+$button-default-icon-size: 16px !default;
+
+$button-default-glyph-color: $color !default;
+$button-default-glyph-opacity: 1 !default;
+
+$button-icon-spacing: 10px !default;
+
+$button-arrow-width: 16px !default;
+$button-arrow-height: 16px !default;
+$button-split-width: 18px !default;
+$button-split-height: 18px !default;
+
+$button-include-ui-menu-arrows: true !default;
+$button-include-ui-split-arrows: true !default;
+$button-toolbar-include-split-noline-arrows: false !default;
+$button-include-split-over-arrows: false !default;
+$button-opacity-disabled: .5 !default;
+$button-inner-opacity-disabled: .9 !default;
+$button-default-text-decoration: underline !default;
+
+
+//
+// /*  MULTISIZE BUTTON */
+// 
+	// small
+$button-small-arrow-width: 18px !default;
+$button-small-arrow-height: 18px !default;
+$button-small-split-width: 24px !default;
+$button-small-split-height: 24px !default;
+$button-small-padding: 5px 0px !default;
+
+	// medium
+$button-medium-split-width: 34px !default;
+$button-medium-split-height: 34px !default;
+$button-medium-font-size: 14px !default;
+$button-medium-font-weight: bold !default;
+$button-medium-text-padding: 3px !default;
+$button-medium-arrow-width: 30px !default;
+$button-medium-arrow-height: 30px !default;
+	
+	// large
+$button-large-font-size: 16px !default;
+$button-large-font-weight: bold !default;
+$button-large-text-padding: 5px !default;
+$button-large-arrow-width: 36px !default;
+$button-large-arrow-height: 36px !default;
+$button-large-split-width: 40px !default;
+$button-large-split-height: 40px !default;
+
+// 
+//  /*   WHITE BUTTON    */
+// 
+$button-white-color: #fff !default;
+
+// 
+//  /*   BASIC BUTTON (GRAY GRADIENT)   */
+//	This is the button on which other buttons that look like 'real buttons' are based.
+// 
+$button-basic-border-radius: 5px !default;
+$button-basic-border-width: 1px !default;
+$button-basic-border-color: #c2c2c2 !default;
+$button-basic-border-color-over: $button-basic-border-color !default;
+$button-basic-border-color-focus: $button-basic-border-color !default;
+$button-basic-border-color-pressed: $button-basic-border-color !default;
+$button-basic-border-color-disabled: $button-basic-border-color !default;
+
+$button-basic-background-color: #fff !default;
+$button-basic-background-color-over:  #ededed !default;
+$button-basic-background-color-focus: #dbdbdb !default;
+$button-basic-background-color-pressed: #dbdbdb !default;
+$button-basic-background-color-disabled: #fff !default;
+
+$button-basic-background-gradient: #fff #f0f0f0 !default;
+
+$button-basic-color: #5d5d5d !default;
+$button-basic-color-over: $button-basic-color !default;
+$button-basic-color-focus: $button-basic-color !default;
+$button-basic-color-pressed: $button-basic-color !default;
+$button-basic-color-disabled: $button-basic-color!default;
+
+$button-basic-glyph-color: $button-basic-color !default;
+$button-basic-glyph-opacity: .5 !default;
+
+$button-basic-text-decoration: none !default;
+
+// 
+//  /*   COMMIT BUTTON    */
+// 
+$button-commit-border-color: $base-color !default;
+$button-commit-border-color-over: $button-default-base-color-over !default;
+$button-commit-border-color-focus: $button-default-base-color-focus !default;
+$button-commit-border-color-pressed: $base-color !default;
+$button-commit-border-color-disabled: $base-color !default;
+
+$button-commit-background-color: $button-default-base-color !default;
+$button-commit-background-color-over:  $button-default-base-color-over !default;
+$button-commit-background-color-focus: $button-default-base-color-focus !default;
+$button-commit-background-color-pressed: $button-default-base-color-pressed !default;
+$button-commit-background-color-disabled: null !default;
+
+$button-commit-color: #fff !default;
+$button-commit-color-over: $button-commit-color !default;
+$button-commit-color-focus: $button-commit-color !default;
+$button-commit-color-pressed: $button-commit-color !default;
+$button-commit-color-disabled: $button-commit-color!default;
+
+$button-commit-glyph-color: $button-commit-color !default;
+$button-commit-glyph-opacity: .5 !default;
+$button-commit-text-decoration: none !default;
+
+$button-group-bordered-border-width:1px !default;
+$button-group-bordered-border-color: #cccccc !default;
+
+

@@ -1,0 +1,150 @@
+/*
+ *	Responsible for globaly styling tabs.
+ *
+ *	@author jgriffith
+ *	@edits astump 8/14/2013
+ *	@edits eirby
+ *	@edits astump 8/26/2013
+ *		added $tabbar-strip-background-color which is a usable variable but it is not listed in the ExtJS 4.2.0 docs.
+ *	@edits astump 8/30/2013 - refactored tab borders and colors
+ */
+
+/*
+ *	@variables
+ */
+// Tab button base colors
+$tab-base-color: #999999 !default;
+$tab-base-color-over: mix(#fff, $tab-base-color, 20%) !default;
+$tab-base-color-active: #f1f1f1 !default;
+
+// Font colors and Metrics
+$tab-color: #333333 !default;
+$tab-color-active: $font-color !default;
+$tab-color-over: $tab-color !default;
+$tab-color-disabled: $tab-color !default;
+$tab-line-height: 16px !default;
+$tab-font-size: 11px !default;
+$tab-font-weight: normal !default;
+
+// Backgrounds (note gradient must be null to use bg-color)
+$tab-background-gradient: null !default;
+$tab-background-gradient-over: null !default;
+$tab-background-gradient-active: null !default;
+$tab-background-gradient-disabled: null !default;
+
+// Tab Dimensions
+$tab-border-color: $tab-base-color !default;
+$tab-border-color-active: #ffffff !default;
+$tab-border-radius: 0 !default;
+$tab-border-width: 0 !default;
+$tab-inner-border-width: 0 !default;
+$tab-padding: 3px 12px 4px !default;
+$tab-margin: 0 1px 0 0 !default;
+
+// The tabbar (the strip underneath the tabs)
+$tabbar-background-gradient: #005b7d !default;
+$tabbar-strip-height: 0px !default;
+//$tabbar-strip-border-width: 1px !default;
+$tabbar-strip-border-color: $tab-color !default;
+$tabbar-border-width: 0 !default;
+$tabbar-strip-background-color: $tab-border-color-active !default;
+$tabbar-strip-border-width: 0 0 !default;
+$tabbar-strip-plain-border-width: $tabbar-strip-border-width !default;
+$tabbar-strip-border-width: 0 !default;
+$tabbar-scroller-width: 19px !default;
+$tabbar-base-color: #999999 !default;
+
+// The scrolling properties when tabs overflow
+$tabbar-scroller-width: 24px !default;
+$tabbar-scroller-opacity: .5 !default;
+$tabbar-scroller-opacity-over: .6 !default;
+$tabbar-scroller-opacity-pressed: .7 !default;
+$tabbar-scroller-opacity-disabled: .25 !default;
+$tabbar-scroller-include-hover-background-position: false !default;
+$tabbar-scroller-include-plain-icon: true !default;
+
+
+// Icon tab metrics
+$tab-icon-width: 16px !default;
+$tab-icon-height: 16px !default;
+$tab-icon-spacing: 6px !default;
+
+//Tab glyph
+$tab-glyph-color: $tab-color !default;
+$tab-glyph-color-over: $tab-color-over !default;
+$tab-glyph-color-active: $tab-color-active !default;
+$tab-glyph-color-disabled: $tab-color-disabled !default;
+$tab-glyph-opacity: .5 !default;
+$tab-glyph-opacity-disabled: .3 !default;
+
+
+// The (X) Close icon
+$tab-closable-icon-top: 5px !default;
+$tab-closable-icon-right: 5px !default;
+$tab-closable-icon-width: 12px !default;
+$tab-closable-icon-height: 12px !default;
+
+$tabbar-closable-icon-include-hover-background-position: true !default;
+$tabbar-closable-icon-include-pressed-background-position: true !default;
+
+$tab-text-opacity-disabled: .3 !default;
+$tab-closable-icon-opacity-disabled: $tab-text-opacity-disabled !default;
+
+
+
+// 	Custom variables
+$tab-border: 1px solid $tab-base-color !default;
+$tab-close-image-active:'tab/tab-active-close' !default;
+$tab-border-active: 1px solid #999 !default;
+$tab-border-active-noborder: 1px solid $tab-border-color-active !default;
+
+$tabbar-overflow:visible !default;
+
+//Light Stylings
+//Tab button grey base colors
+$tab-light-base-color-active:#f1f1f1 !default;
+
+//Tab Dimensions
+$tab-light-border-color-active:$tab-light-base-color-active;
+
+//Custom 
+$tab-light-border-active-noborder: 1px solid $tab-light-border-color-active !default;
+
+//Grey Stylings
+//Tab button grey base colors
+$tab-grey-base-color-active:#f2f2f2 !default;
+
+//Tab Dimensions
+$tab-grey-border-color-active:$tab-grey-base-color-active;
+
+//Custom
+$tab-grey-border-active-noborder: 1px solid $tab-grey-border-color-active !default;
+
+//Dark stlyings
+// Tab button dark base colors
+$tab-dark-base-color: #4c4c4c !default;
+$tab-dark-base-color-over: mix(#fff, $tab-dark-base-color, 20%) !default;
+$tab-dark-base-color-active: #fff !default;
+
+// Font colors and Metrics
+$tab-dark-color: #8c8c8c !default;
+$tab-dark-color-active: $font-color !default;
+
+// Tab Dimensions
+$tab-dark-border-color: $tab-dark-base-color !default;
+$tab-dark-border-color-active: #ffffff !default;
+
+// The tabbar (the strip underneath the tabs)
+$tabbar-dark-background-gradient: #005b7d !default;
+
+$tabbar-dark-strip-border-color: $tab-dark-color !default;
+
+$tabbar-dark-strip-background-color: $tab-dark-border-color-active !default;
+
+$tabbar-dark-base-color: #262626 !default;
+
+// 	Custom variables
+
+$tab-dark-border: 1px solid $tab-dark-base-color !default;
+$tab-dark-border-active-noborder: 1px solid $tab-border-color-active !default;
+$tab-dark-border-active: 1px solid #999 !default;

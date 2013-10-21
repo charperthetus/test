@@ -1,0 +1,24 @@
+/*
+ *	Styles progress bar globally
+ *
+ *	@author jgriffith
+ *	@edit	eirby	08/28/13
+ */
+
+/*
+ *	@variables
+ */
+
+
+$progress-background-color: #5ab6cc !default;
+$progress-bar-background-color: #008bb9 !default;
+$progress-border-color: $progress-background-color !default;
+$progress-border-radius: 0px !default;
+$progress-border-radius: 0px !default;
+$progress-height: 21px !default;
+$progress-text-color-front: $light !default;
+$progress-text-color-back: $light !default;
+$progress-text-font-weight: normal !default;
+$progress-text-font-size: 12px !default;
+
+$progress-text-uppercase:uppercase !default;

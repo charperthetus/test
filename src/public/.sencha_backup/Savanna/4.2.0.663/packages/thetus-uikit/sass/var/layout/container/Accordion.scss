@@ -1,0 +1,27 @@
+/*
+ *	Styles accordians globally
+ *
+ *	@author jgriffith
+ *	@edits astump 8/13/2013, 8/19/2013, 
+ *				  9/13/2013 - added vars for support of non neptune based theme.
+ *				  9/27/2013 - added different sprite sheet.				
+ */
+
+ /*
+  *	@variables
+  */
+$accordion-header-background-color: #c6e0ed !default;
+$accordion-header-over-background-color: #c6e0ed !default;
+$accordion-header-pressed-background-color: #c6e0ed !default;
+$accordion-header-font-family: $sans-serif !default;
+$accordion-header-color: #1a6385 !default;
+$accordion-header-font-weight: bold !default;
+$accordion-header-text-transform: uppercase !default;
+$accordion-header-padding: 8px 15px 8px 15px !default;
+$accordion-header-tool-size: 16px !default;
+$accordion-tool-background-image: 'tools/tool-sprites-dark' !default;
+
+/*
+ * @custom variables
+ */
+$accordion-item-padding: 0px !default;

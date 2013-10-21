@@ -1,0 +1,293 @@
+/*
+ *  This file is responsible for wrapping the panel mixin with our own uikit functionality
+ *  No edits to this file should be made that you DO NOT want propogated to other buttons!
+ *  To use this mixin, please refer to the panel.scss as you can instantiate it there, think
+ *  of this file as a panel constructor in that it doesn't do anything explicitly without being
+ *  @included prior.
+ *
+ *  @author eirby & astump
+ */
+
+/*
+ *  @variables
+ */
+@mixin uikit-tab(
+  /* Start ExtJS Mixin mapping, 
+   *      note that these are all of them and are uikit prefixed!
+  */
+  
+  /* Shared Variables (with Sencha mixins) */
+  $uikit-ui,
+
+  $uikit-tab-background-color: $tab-base-color,
+  $uikit-tab-background-color-over: $tab-base-color-over,
+  $uikit-tab-background-color-active: $tab-base-color-active,
+  $uikit-tab-background-color-disabled: $tab-base-color,
+  $uikit-tab-border-radius: $tab-border-radius,
+  $uikit-tab-border-width: $tab-border-width,
+  $uikit-tab-margin: $tab-margin,
+  $uikit-tab-padding: $tab-padding,
+  
+  $uikit-tab-border-color: $tab-border-color,
+  
+  $uikit-tab-border-color-active: $tab-border-color-active,
+  
+  $uikit-tab-font-size: $tab-font-size,
+
+  $uikit-tab-font-weight: $tab-font-weight,
+
+  $uikit-tab-font-family: $font-family,
+  $uikit-tab-font-family-over: $font-family,
+  $uikit-tab-font-family-active: $font-family,
+  $uikit-tab-font-family-disabled: $font-family,
+  $uikit-tab-line-height: $tab-line-height,
+  $uikit-tab-color: $tab-color,
+  
+  $uikit-tab-color-active: $tab-color-active,
+  
+  $uikit-tab-background-gradient: $tab-background-gradient,
+  $uikit-tab-background-gradient-over: $tab-background-gradient-over,
+  $uikit-tab-background-gradient-active: $tab-background-gradient-active,
+  $uikit-tab-background-gradient-disabled: $tab-background-gradient-disabled,
+
+  $uikit-tab-inner-border-width:$tab-inner-border-width,
+  
+
+  $uikit-tab-icon-width: $tab-icon-width,
+  $uikit-tab-icon-height: $tab-icon-height,
+  $uikit-tab-icon-spacing: $tab-icon-spacing,
+  
+
+  $uikit-tab-glyph-color: $tab-glyph-color,
+  $uikit-tab-glyph-color-over: $tab-glyph-color-over,
+  $uikit-tab-glyph-color-active: $tab-glyph-color-active,
+  $uikit-tab-glyph-color-disabled: $tab-glyph-color-disabled,
+  $uikit-tab-glyph-opacity: $tab-glyph-opacity,
+  $uikit-tab-glyph-opacity-disabled: $tab-glyph-opacity-disabled,
+
+  $uikit-tab-opacity-disabled: $tab-opacity-disabled,
+  $uikit-tab-text-opacity-disabled: $tab-text-opacity-disabled,
+  $uikit-tab-icon-opacity-disabled: $tab-icon-opacity-disabled,
+
+  $uikit-strip-height: $tabbar-strip-height,
+  $uikit-strip-border-width: $tabbar-strip-border-width,
+  $uikit-strip-plain-border-width: $tabbar-strip-plain-border-width,
+  $uikit-strip-border-color: $tabbar-strip-border-color,
+  $uikit-strip-background-color: $tabbar-strip-background-color,
+
+  $uikit-bar-border-width: $tabbar-border-width,
+ 
+  $uikit-bar-background-color: $tabbar-base-color,
+  $uikit-bar-background-gradient: $tabbar-background-gradient,
+  $uikit-bar-scroller-width: $tabbar-scroller-width,
+
+
+  $uikit-bar-scroller-opacity: $tabbar-scroller-opacity,
+  $uikit-bar-scroller-opacity-over: $tabbar-scroller-opacity-over,
+  $uikit-bar-scroller-opacity-pressed: $tabbar-scroller-opacity-pressed,
+  $uikit-bar-scroller-opacity-disabled: $tabbar-scroller-opacity-disabled,
+
+  $uikit-tab-closable-icon-width: $tab-closable-icon-width,
+  $uikit-tab-closable-icon-height: $tab-closable-icon-height,
+  $uikit-tab-closable-icon-top: $tab-closable-icon-top,
+  $uikit-tab-closable-icon-right: $tab-closable-icon-right, 
+
+  //Custome variables
+  $uikit-tab-border: $tab-border,
+  $uikit-tab-close-image-active: $tab-close-image-active,
+  $uikit-tab-border-active:$tab-border-active,
+  $uikit-tab-border-active-noborder:$tab-border-active-noborder
+
+
+){
+  /* MIXIN WRAPPER */
+  @include extjs-tab-panel-ui(
+    $ui: $uikit-ui,
+    
+    $ui-tab-background-color: $uikit-tab-background-color,
+    $ui-tab-background-color-over: $uikit-tab-background-color-over,
+    $ui-tab-background-color-active:  $uikit-tab-background-color-active,
+    $ui-tab-background-color-disabled: $uikit-tab-background-color-disabled,
+    $ui-tab-border-radius: $uikit-tab-border-radius,
+    $ui-tab-border-width: $uikit-tab-border-width,
+    $ui-tab-margin: $uikit-tab-margin,
+    $ui-tab-padding: $uikit-tab-padding,
+    
+    $ui-tab-border-color: $uikit-tab-border-color,
+    
+    $ui-tab-border-color-active: $uikit-tab-border-color-active,
+
+    $ui-tab-font-size: $uikit-tab-font-size,
+ 
+    $ui-tab-font-weight: $uikit-tab-font-weight,
+  
+    $ui-tab-font-family: $uikit-tab-font-family,
+    $ui-tab-font-family-over: $uikit-tab-font-family-over,
+    $ui-tab-font-family-active: $uikit-tab-font-family-active,
+    $ui-tab-font-family-disabled: $uikit-tab-font-family-disabled,
+    $ui-tab-line-height: $uikit-tab-line-height,
+    $ui-tab-color: $uikit-tab-color,
+    
+    $ui-tab-color-active: $uikit-tab-color-active,
+    
+    $ui-tab-background-gradient: $uikit-tab-background-gradient,
+    $ui-tab-background-gradient-over: $uikit-tab-background-gradient-over,
+    $ui-tab-background-gradient-active: $uikit-tab-background-gradient-active,
+    $ui-tab-background-gradient-disabled: $uikit-tab-background-gradient-disabled,
+
+    $ui-tab-inner-border-width: $uikit-tab-inner-border-width,
+    
+    $ui-tab-icon-width: $uikit-tab-icon-width,
+    $ui-tab-icon-height: $uikit-tab-icon-height,
+    $ui-tab-icon-spacing: $uikit-tab-icon-spacing,
+    
+    $ui-tab-glyph-color: $uikit-tab-glyph-color,
+    $ui-tab-glyph-color-over: $uikit-tab-glyph-color-over,
+    $ui-tab-glyph-color-active: $uikit-tab-glyph-color-active,
+    $ui-tab-glyph-color-disabled: $uikit-tab-glyph-color-disabled,
+    $ui-tab-glyph-opacity: $uikit-tab-glyph-opacity,
+    $ui-tab-glyph-opacity-disabled: $uikit-tab-glyph-opacity-disabled,
+
+    $ui-tab-opacity-disabled: $uikit-tab-opacity-disabled,
+    $ui-tab-text-opacity-disabled: $uikit-tab-text-opacity-disabled,
+    $ui-tab-icon-opacity-disabled: $uikit-tab-icon-opacity-disabled,
+
+    $ui-strip-height: $uikit-strip-height,
+    $ui-strip-border-width: $uikit-strip-border-width,
+    $ui-strip-plain-border-width: $uikit-strip-plain-border-width,
+    $ui-strip-border-color: $uikit-strip-border-color,
+    $ui-strip-background-color: $uikit-strip-background-color,
+
+    $ui-bar-border-width: $uikit-bar-border-width,
+  
+    $ui-bar-background-color: $uikit-bar-background-color,
+    $ui-bar-background-gradient: $uikit-bar-background-gradient,
+    $ui-bar-scroller-width: $uikit-bar-scroller-width,
+
+    $ui-bar-scroller-opacity: $uikit-bar-scroller-opacity,
+    $ui-bar-scroller-opacity-over: $uikit-bar-scroller-opacity-over,
+    $ui-bar-scroller-opacity-pressed: $uikit-bar-scroller-opacity-pressed,
+    $ui-bar-scroller-opacity-disabled: $uikit-bar-scroller-opacity-disabled,
+
+    $ui-tab-closable-icon-width: $uikit-tab-closable-icon-width,
+    $ui-tab-closable-icon-height: $uikit-tab-closable-icon-height,
+    $ui-tab-closable-icon-top: $uikit-tab-closable-icon-top,
+    $ui-tab-closable-icon-right: $uikit-tab-closable-icon-right   
+  );
+
+  // Start Custom Logic.
+  .#{$prefix}tab-#{$uikit-ui}-top{
+   border-top: $uikit-tab-border;
+   border-bottom: $uikit-tab-border;
+    }
+
+  .#{$prefix}tab-#{$uikit-ui}-active {
+     .#{$prefix}tab-close-btn {
+        background-image: theme-background-image($uikit-tab-close-image-active);
+     }  
+      border-top: $uikit-tab-border-active;
+      border-bottom: $uikit-tab-border-active-noborder;
+      border-left: $uikit-tab-border-active;
+      border-right: $uikit-tab-border-active-noborder;
+  }
+
+  .#{$prefix}tabbed-window{
+    .#{$prefix}tab-#{$uikit-ui}-active {
+      border-top: $uikit-tab-border-active-noborder;
+      border-bottom: $uikit-tab-border-active-noborder;
+      border-left: $uikit-tab-border-active-noborder;
+      border-right: $uikit-tab-border-active-noborder;
+    }
+  }
+}
+
+@include uikit-tab(
+  $uikit-ui :"light",
+
+  $uikit-tab-background-color: $tab-base-color,
+  $uikit-tab-background-color-over: $tab-base-color-over,
+  $uikit-tab-background-color-active: $tab-light-base-color-active,
+
+  
+  $uikit-tab-border-color: $tab-border-color,
+  
+  $uikit-tab-border-color-active: $tab-light-border-color-active,
+  
+
+  $uikit-tab-color: $tab-color,
+  
+  $uikit-tab-color-active: $tab-color-active,
+  
+
+  $uikit-strip-border-color: $tabbar-strip-border-color,
+  $uikit-strip-background-color: $tabbar-strip-background-color,
+
+  $uikit-bar-background-gradient: $tabbar-background-gradient,
+
+  $uikit-tab-border: $tab-border,
+  $uikit-tab-border-active:$tab-border-active,
+  $uikit-tab-border-active-noborder:$tab-light-border-active-noborder
+
+
+);
+
+@include uikit-tab(
+  $uikit-ui :"grey",
+
+  $uikit-tab-background-color: $tab-base-color,
+  $uikit-tab-background-color-over: $tab-base-color-over,
+  $uikit-tab-background-color-active: $tab-grey-base-color-active,
+
+  
+  $uikit-tab-border-color: $tab-border-color,
+  
+  $uikit-tab-border-color-active: $tab-grey-border-color-active,
+  
+
+  $uikit-tab-color: $tab-color,
+  
+  $uikit-tab-color-active: $tab-color-active,
+  
+
+  $uikit-strip-border-color: $tabbar-strip-border-color,
+  $uikit-strip-background-color: $tabbar-strip-background-color,
+
+  $uikit-bar-background-gradient: $tabbar-background-gradient,
+
+  $uikit-tab-border: $tab-border,
+  $uikit-tab-border-active: $tab-border-active,
+  $uikit-tab-border-active-noborder: $tab-grey-border-active-noborder
+
+
+);
+
+@include uikit-tab(
+  $uikit-ui :"dark",
+
+  $uikit-tab-background-color: $tab-dark-base-color,
+  $uikit-tab-background-color-over: $tab-dark-base-color-over,
+  $uikit-tab-background-color-active: $tab-dark-base-color-active,
+
+  
+  $uikit-tab-border-color: $tab-dark-border-color,
+  
+  $uikit-tab-border-color-active: $tab-dark-border-color-active,
+  
+
+  $uikit-tab-color: $tab-dark-color,
+  
+  $uikit-tab-color-active: $tab-dark-color-active,
+  
+
+  $uikit-strip-border-color: $tabbar-dark-strip-border-color,
+  $uikit-strip-background-color: $tabbar-dark-strip-background-color,
+
+  $uikit-bar-background-gradient: $tabbar-dark-background-gradient,
+  $uikit-bar-background-color: $tabbar-dark-base-color,
+
+  $uikit-tab-border: $tab-dark-border,
+  $uikit-tab-border-active: $tab-dark-border-active,
+  $uikit-tab-border-active-noborder: $tab-dark-border-active-noborder
+
+
+);
