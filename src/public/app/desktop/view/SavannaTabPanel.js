@@ -87,7 +87,17 @@ Ext.define('Savanna.desktop.view.SavannaTabPanel', {
      *  Dispatch events off of this view so they can be caught by the deft controller.
      */
     itemHandler: function() {
-        this.fireEvent('createitem', this);
+        var itemView = Ext.create('Savanna.itemView.view.ItemViewer', {
+            title: "Model Item",
+            itemUri: "x012f931fec769ca941e8de4f7a674bec2a290937%2FItem",
+            closable: true,
+            autoScroll: true,
+            tabConfig: {
+                ui: 'dark'
+            }
+        });
+
+        Savanna.app.fireEvent('search:itemSelected', itemView);
     },
 
     processHandler: function() {

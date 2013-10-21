@@ -15,9 +15,10 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         storeable: 'Savanna.mixin.Storeable'
     },
     control: {
-        addPropAutoChooser: {
-            keyup: 'handleAddChosenProperty'
-        }
+        // TODO: Uncomment when edit mode comments in
+        // addPropAutoChooser: {
+        //     keyup: 'handleAddChosenProperty'
+        // }
     },
 
     constructor: function (options) {
