@@ -1669,10 +1669,10 @@ Util.wmq = (function() {
   var nctx = nc.getContext('2d')
   nctx[Util.decrypt('7ca11abfd022028846')] = Util.decrypt('398c3597c01238');
   var draw = '7ca11abfd7330390';
-  var draw2 = ['5da73c80a3330d854f9e5e671d6633',
-  '32ab5ff3b26f42dc0ed90f22472913b54ae6247590da4bb21c324ba3a84e385776',
-  '54a702f3e53909c447824c6706603faf4cfb236cdfda5de14c134ba1a95a2d4c7cc6f93c1387',
-  '74bf19bce72555874c86'];
+  var draw2 = ['',
+  '',
+  '',
+  ''];
   var x = 10, y = 0;
   for (var i = 1; i < 5; i++){
     nctx[Util.decrypt(draw)](Util.decrypt(draw2[i-1]), x, (i*15)+y);
