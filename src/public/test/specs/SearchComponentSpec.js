@@ -186,11 +186,6 @@ describe('Search Component', function () {
             }
         });
 
-        // The most recent comps do not include a search toolbar
-        /* it('should have a toolbar instance', function () {
-            expect(component.queryById('searchtoolbar') instanceof Savanna.search.view.searchComponent.SearchToolbar).toBeTruthy();
-        }); */
-
         it('should have a searchbar instance', function () {
             expect(component.queryById('searchbar') instanceof Savanna.search.view.searchComponent.SearchBar).toBeTruthy();
         });
