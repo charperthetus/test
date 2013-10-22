@@ -18,24 +18,34 @@ Ext.define('Savanna.search.view.searchComponent.searchBar.SearchForm', {
         {
             xtype: 'panel',
             cls: 'advanced-search-panel',
+            margin: 15,
             floating: true,
             border: false,
             itemId: 'searchadvanced_menu',
             minWidth: 400,
             items: [
                 {
-                    xtype: 'button',
-                    border: false,
-                    text: 'Close',
-                    itemId: 'close_panel'
-                },
-                {
-                    xtype: 'box',
-                    html: '<p class="instructions">Enter advanced keyword searches.</p>' +
-                        '<p class="instructions italic"> Note: Not all search sources may support all advanced options.</p>'
+                    xtype:'panel',
+                    layout:{
+                        type: 'hbox'
+                    },
+                    width:'100%',
+                    items:[
+                        {
+                            xtype: 'box',
+                            html: '<p class="instructions">Enter advanced keyword searches.</p>' +
+                                '<p class="instructions italic"> Note: Not all search sources may support all advanced options.</p>'
+                        }, {
+                            xtype: 'button',
+                            border: false,
+                            text: 'Close',
+                            height: 40,
+                            itemId: 'close_panel'
+                        }]
                 },
                 {
                     xtype: 'container',
+                    width: '100%',
                     itemId:'form_container',
                     items: [
                         {

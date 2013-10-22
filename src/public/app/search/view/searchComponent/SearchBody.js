@@ -81,7 +81,7 @@ Ext.define('Savanna.search.view.searchComponent.SearchBody', {
                 },
                 {
                     xtype: 'button',
-                    text: 'Results',
+                    text: 'Search Results',
                     itemId: 'resultsbutton'
                 }
             ]
@@ -92,7 +92,6 @@ Ext.define('Savanna.search.view.searchComponent.SearchBody', {
         {
             xtype: 'button',
             ui: 'commit',
-            scale: 'large',
             text: 'Search',
             itemId: 'toolbarsearchbutton'
         }
