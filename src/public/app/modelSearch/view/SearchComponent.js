@@ -33,6 +33,7 @@ Ext.define('Savanna.modelSearch.view.SearchComponent', {
             region: 'north'
         },
         {
+            hidden: true,
             xtype: 'model_searchbody',
             itemId: 'searchbody',
             region: 'center'
