@@ -9,7 +9,7 @@
 Ext.define('Savanna.itemView.view.header.ViewHeader', {
     extend: 'Ext.grid.Panel',
 
-    require: ['Savanna.itemView.controller.ViewHeaderController'],
+    requires: ['Savanna.itemView.controller.ViewHeaderController'],
 
     alias: 'widget.itemview_view_header',
 

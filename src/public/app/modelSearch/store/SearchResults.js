@@ -1,5 +1,7 @@
 /* global Ext: false, Savanna: false */
-/*Ext.define('Savanna.modelSearch.store.SearchResults', {
+
+/*
+Ext.define('Savanna.modelSearch.store.SearchResults', {
  extend: 'Ext.data.Store',
 
  requires: [
@@ -40,8 +42,8 @@
  data:    [
  {
  uri: "uid:sadflkajsdf",
- label: "Nitric Acid",
- type: "Item",  // Process
+ label: "Nitric Acid Process",
+ type: "Process",  // Process
  modifiedBy: "cmason",
  modifiedDate: '12-Dec-2012',
  preview: "blah blah <b>acid</b> we could highlight search terms",  // may not have bold.  may be blank
@@ -70,13 +72,621 @@
  primaryImageUrl: "http://cdn.c.photoshelter.com/img-get/I0000iYGCbLfYh6s/s/860/860/Fphoto-67551208C-6ES.jpg",
  workflowState: "DRAFT",  //one of "DRAFT", "SUBMITTED", "APPROVED", "REJECTED"
  classification: "U//FOUO"
+ } ,
+ {
+ uri: "uid:sadflkajsdf",
+ label: "Hydrochloric Acid (HCl)",
+ type: "Item",  // Process
+ modifiedBy: "cmason",
+ modifiedDate: '12-Dec-2012',
+ preview: '<b>Hydrochloric acid</b> is a clear, colorless, highly <a href="/wiki/Pungency" title="Pungency">pungent</a> <a href="/wiki/Solution" title="Solution">solution</a> of <a href="/wiki/Hydrogen_chloride" title="Hydrogen chloride">hydrogen chloride</a> (<a href="/wiki/Hydrogen" title="Hydrogen">H</a><a href="/wiki/Chlorine" title="Chlorine">Cl</a>) in water. It is a highly <a href="/wiki/Corrosive" title="Corrosive" class="mw-redirect">corrosive</a>, <a href="/wiki/Strong_acid" title="Strong acid" class="mw-redirect">strong</a> <a href="/wiki/Mineral_acid" title="Mineral acid">mineral acid</a> with many industrial uses. Hydrochloric acid is found naturally in <a href="/wiki/Gastric_acid" title="Gastric acid">gastric acid</a>.',
+ primaryImageUrl: "http://cdn.c.photoshelter.com/img-get/I0000iYGCbLfYh6s/s/860/860/Fphoto-67551208C-6ES.jpg",
+ workflowState: "DRAFT",  //one of "DRAFT", "SUBMITTED", "APPROVED", "REJECTED"
+ classification: "U//FOUO"
+ } ,
+ {
+ uri: "uid:sadflkajsdf",
+ label: "Hydrochloric Acid (HCl)",
+ type: "Item",  // Process
+ modifiedBy: "cmason",
+ modifiedDate: '12-Dec-2012',
+ preview: '<b>Hydrochloric acid</b> is a clear, colorless, highly <a href="/wiki/Pungency" title="Pungency">pungent</a> <a href="/wiki/Solution" title="Solution">solution</a> of <a href="/wiki/Hydrogen_chloride" title="Hydrogen chloride">hydrogen chloride</a> (<a href="/wiki/Hydrogen" title="Hydrogen">H</a><a href="/wiki/Chlorine" title="Chlorine">Cl</a>) in water. It is a highly <a href="/wiki/Corrosive" title="Corrosive" class="mw-redirect">corrosive</a>, <a href="/wiki/Strong_acid" title="Strong acid" class="mw-redirect">strong</a> <a href="/wiki/Mineral_acid" title="Mineral acid">mineral acid</a> with many industrial uses. Hydrochloric acid is found naturally in <a href="/wiki/Gastric_acid" title="Gastric acid">gastric acid</a>.',
+ primaryImageUrl: "http://cdn.c.photoshelter.com/img-get/I0000iYGCbLfYh6s/s/860/860/Fphoto-67551208C-6ES.jpg",
+ workflowState: "DRAFT",  //one of "DRAFT", "SUBMITTED", "APPROVED", "REJECTED"
+ classification: "U//FOUO"
+ } ,
+ {
+ uri: "uid:sadflkajsdf",
+ label: "Hydrochloric Acid (HCl)",
+ type: "Item",  // Process
+ modifiedBy: "cmason",
+ modifiedDate: '12-Dec-2012',
+ preview: '<b>Hydrochloric acid</b> is a clear, colorless, highly <a href="/wiki/Pungency" title="Pungency">pungent</a> <a href="/wiki/Solution" title="Solution">solution</a> of <a href="/wiki/Hydrogen_chloride" title="Hydrogen chloride">hydrogen chloride</a> (<a href="/wiki/Hydrogen" title="Hydrogen">H</a><a href="/wiki/Chlorine" title="Chlorine">Cl</a>) in water. It is a highly <a href="/wiki/Corrosive" title="Corrosive" class="mw-redirect">corrosive</a>, <a href="/wiki/Strong_acid" title="Strong acid" class="mw-redirect">strong</a> <a href="/wiki/Mineral_acid" title="Mineral acid">mineral acid</a> with many industrial uses. Hydrochloric acid is found naturally in <a href="/wiki/Gastric_acid" title="Gastric acid">gastric acid</a>.',
+ primaryImageUrl: "http://cdn.c.photoshelter.com/img-get/I0000iYGCbLfYh6s/s/860/860/Fphoto-67551208C-6ES.jpg",
+ workflowState: "DRAFT",  //one of "DRAFT", "SUBMITTED", "APPROVED", "REJECTED"
+ classification: "U//FOUO"
+ } ,
+ {
+ uri: "uid:sadflkajsdf",
+ label: "Hydrochloric Acid (HCl)",
+ type: "Item",  // Process
+ modifiedBy: "cmason",
+ modifiedDate: '12-Dec-2012',
+ preview: '<b>Hydrochloric acid</b> is a clear, colorless, highly <a href="/wiki/Pungency" title="Pungency">pungent</a> <a href="/wiki/Solution" title="Solution">solution</a> of <a href="/wiki/Hydrogen_chloride" title="Hydrogen chloride">hydrogen chloride</a> (<a href="/wiki/Hydrogen" title="Hydrogen">H</a><a href="/wiki/Chlorine" title="Chlorine">Cl</a>) in water. It is a highly <a href="/wiki/Corrosive" title="Corrosive" class="mw-redirect">corrosive</a>, <a href="/wiki/Strong_acid" title="Strong acid" class="mw-redirect">strong</a> <a href="/wiki/Mineral_acid" title="Mineral acid">mineral acid</a> with many industrial uses. Hydrochloric acid is found naturally in <a href="/wiki/Gastric_acid" title="Gastric acid">gastric acid</a>.',
+ primaryImageUrl: "http://cdn.c.photoshelter.com/img-get/I0000iYGCbLfYh6s/s/860/860/Fphoto-67551208C-6ES.jpg",
+ workflowState: "DRAFT",  //one of "DRAFT", "SUBMITTED", "APPROVED", "REJECTED"
+ classification: "U//FOUO"
+ } ,
+ {
+ uri: "uid:sadflkajsdf",
+ label: "Hydrochloric Acid (HCl)",
+ type: "Item",  // Process
+ modifiedBy: "cmason",
+ modifiedDate: '12-Dec-2012',
+ preview: '<b>Hydrochloric acid</b> is a clear, colorless, highly <a href="/wiki/Pungency" title="Pungency">pungent</a> <a href="/wiki/Solution" title="Solution">solution</a> of <a href="/wiki/Hydrogen_chloride" title="Hydrogen chloride">hydrogen chloride</a> (<a href="/wiki/Hydrogen" title="Hydrogen">H</a><a href="/wiki/Chlorine" title="Chlorine">Cl</a>) in water. It is a highly <a href="/wiki/Corrosive" title="Corrosive" class="mw-redirect">corrosive</a>, <a href="/wiki/Strong_acid" title="Strong acid" class="mw-redirect">strong</a> <a href="/wiki/Mineral_acid" title="Mineral acid">mineral acid</a> with many industrial uses. Hydrochloric acid is found naturally in <a href="/wiki/Gastric_acid" title="Gastric acid">gastric acid</a>.',
+ primaryImageUrl: "http://cdn.c.photoshelter.com/img-get/I0000iYGCbLfYh6s/s/860/860/Fphoto-67551208C-6ES.jpg",
+ workflowState: "DRAFT",  //one of "DRAFT", "SUBMITTED", "APPROVED", "REJECTED"
+ classification: "U//FOUO"
+ } ,
+ {
+ uri: "uid:sadflkajsdf",
+ label: "Hydrochloric Acid (HCl)",
+ type: "Item",  // Process
+ modifiedBy: "cmason",
+ modifiedDate: '12-Dec-2012',
+ preview: '<b>Hydrochloric acid</b> is a clear, colorless, highly <a href="/wiki/Pungency" title="Pungency">pungent</a> <a href="/wiki/Solution" title="Solution">solution</a> of <a href="/wiki/Hydrogen_chloride" title="Hydrogen chloride">hydrogen chloride</a> (<a href="/wiki/Hydrogen" title="Hydrogen">H</a><a href="/wiki/Chlorine" title="Chlorine">Cl</a>) in water. It is a highly <a href="/wiki/Corrosive" title="Corrosive" class="mw-redirect">corrosive</a>, <a href="/wiki/Strong_acid" title="Strong acid" class="mw-redirect">strong</a> <a href="/wiki/Mineral_acid" title="Mineral acid">mineral acid</a> with many industrial uses. Hydrochloric acid is found naturally in <a href="/wiki/Gastric_acid" title="Gastric acid">gastric acid</a>.',
+ primaryImageUrl: "http://cdn.c.photoshelter.com/img-get/I0000iYGCbLfYh6s/s/860/860/Fphoto-67551208C-6ES.jpg",
+ workflowState: "DRAFT",  //one of "DRAFT", "SUBMITTED", "APPROVED", "REJECTED"
+ classification: "U//FOUO"
+ } ,
+ {
+ uri: "uid:sadflkajsdf",
+ label: "Hydrochloric Acid (HCl)",
+ type: "Item",  // Process
+ modifiedBy: "cmason",
+ modifiedDate: '12-Dec-2012',
+ preview: '<b>Hydrochloric acid</b> is a clear, colorless, highly <a href="/wiki/Pungency" title="Pungency">pungent</a> <a href="/wiki/Solution" title="Solution">solution</a> of <a href="/wiki/Hydrogen_chloride" title="Hydrogen chloride">hydrogen chloride</a> (<a href="/wiki/Hydrogen" title="Hydrogen">H</a><a href="/wiki/Chlorine" title="Chlorine">Cl</a>) in water. It is a highly <a href="/wiki/Corrosive" title="Corrosive" class="mw-redirect">corrosive</a>, <a href="/wiki/Strong_acid" title="Strong acid" class="mw-redirect">strong</a> <a href="/wiki/Mineral_acid" title="Mineral acid">mineral acid</a> with many industrial uses. Hydrochloric acid is found naturally in <a href="/wiki/Gastric_acid" title="Gastric acid">gastric acid</a>.',
+ primaryImageUrl: "http://cdn.c.photoshelter.com/img-get/I0000iYGCbLfYh6s/s/860/860/Fphoto-67551208C-6ES.jpg",
+ workflowState: "DRAFT",  //one of "DRAFT", "SUBMITTED", "APPROVED", "REJECTED"
+ classification: "U//FOUO"
+ } ,
+ {
+ uri: "uid:sadflkajsdf",
+ label: "Hydrochloric Acid (HCl)",
+ type: "Item",  // Process
+ modifiedBy: "cmason",
+ modifiedDate: '12-Dec-2012',
+ preview: '<b>Hydrochloric acid</b> is a clear, colorless, highly <a href="/wiki/Pungency" title="Pungency">pungent</a> <a href="/wiki/Solution" title="Solution">solution</a> of <a href="/wiki/Hydrogen_chloride" title="Hydrogen chloride">hydrogen chloride</a> (<a href="/wiki/Hydrogen" title="Hydrogen">H</a><a href="/wiki/Chlorine" title="Chlorine">Cl</a>) in water. It is a highly <a href="/wiki/Corrosive" title="Corrosive" class="mw-redirect">corrosive</a>, <a href="/wiki/Strong_acid" title="Strong acid" class="mw-redirect">strong</a> <a href="/wiki/Mineral_acid" title="Mineral acid">mineral acid</a> with many industrial uses. Hydrochloric acid is found naturally in <a href="/wiki/Gastric_acid" title="Gastric acid">gastric acid</a>.',
+ primaryImageUrl: "http://cdn.c.photoshelter.com/img-get/I0000iYGCbLfYh6s/s/860/860/Fphoto-67551208C-6ES.jpg",
+ workflowState: "DRAFT",  //one of "DRAFT", "SUBMITTED", "APPROVED", "REJECTED"
+ classification: "U//FOUO"
+ } ,
+ {
+ uri: "uid:sadflkajsdf",
+ label: "Hydrochloric Acid (HCl)",
+ type: "Item",  // Process
+ modifiedBy: "cmason",
+ modifiedDate: '12-Dec-2012',
+ preview: '<b>Hydrochloric acid</b> is a clear, colorless, highly <a href="/wiki/Pungency" title="Pungency">pungent</a> <a href="/wiki/Solution" title="Solution">solution</a> of <a href="/wiki/Hydrogen_chloride" title="Hydrogen chloride">hydrogen chloride</a> (<a href="/wiki/Hydrogen" title="Hydrogen">H</a><a href="/wiki/Chlorine" title="Chlorine">Cl</a>) in water. It is a highly <a href="/wiki/Corrosive" title="Corrosive" class="mw-redirect">corrosive</a>, <a href="/wiki/Strong_acid" title="Strong acid" class="mw-redirect">strong</a> <a href="/wiki/Mineral_acid" title="Mineral acid">mineral acid</a> with many industrial uses. Hydrochloric acid is found naturally in <a href="/wiki/Gastric_acid" title="Gastric acid">gastric acid</a>.',
+ primaryImageUrl: "http://cdn.c.photoshelter.com/img-get/I0000iYGCbLfYh6s/s/860/860/Fphoto-67551208C-6ES.jpg",
+ workflowState: "DRAFT",  //one of "DRAFT", "SUBMITTED", "APPROVED", "REJECTED"
+ classification: "U//FOUO"
+ } ,
+ {
+ uri: "uid:sadflkajsdf",
+ label: "Hydrochloric Acid (HCl)",
+ type: "Item",  // Process
+ modifiedBy: "cmason",
+ modifiedDate: '12-Dec-2012',
+ preview: '<b>Hydrochloric acid</b> is a clear, colorless, highly <a href="/wiki/Pungency" title="Pungency">pungent</a> <a href="/wiki/Solution" title="Solution">solution</a> of <a href="/wiki/Hydrogen_chloride" title="Hydrogen chloride">hydrogen chloride</a> (<a href="/wiki/Hydrogen" title="Hydrogen">H</a><a href="/wiki/Chlorine" title="Chlorine">Cl</a>) in water. It is a highly <a href="/wiki/Corrosive" title="Corrosive" class="mw-redirect">corrosive</a>, <a href="/wiki/Strong_acid" title="Strong acid" class="mw-redirect">strong</a> <a href="/wiki/Mineral_acid" title="Mineral acid">mineral acid</a> with many industrial uses. Hydrochloric acid is found naturally in <a href="/wiki/Gastric_acid" title="Gastric acid">gastric acid</a>.',
+ primaryImageUrl: "http://cdn.c.photoshelter.com/img-get/I0000iYGCbLfYh6s/s/860/860/Fphoto-67551208C-6ES.jpg",
+ workflowState: "DRAFT",  //one of "DRAFT", "SUBMITTED", "APPROVED", "REJECTED"
+ classification: "U//FOUO"
+ } ,
+ {
+ uri: "uid:sadflkajsdf",
+ label: "Hydrochloric Acid (HCl)",
+ type: "Item",  // Process
+ modifiedBy: "cmason",
+ modifiedDate: '12-Dec-2012',
+ preview: '<b>Hydrochloric acid</b> is a clear, colorless, highly <a href="/wiki/Pungency" title="Pungency">pungent</a> <a href="/wiki/Solution" title="Solution">solution</a> of <a href="/wiki/Hydrogen_chloride" title="Hydrogen chloride">hydrogen chloride</a> (<a href="/wiki/Hydrogen" title="Hydrogen">H</a><a href="/wiki/Chlorine" title="Chlorine">Cl</a>) in water. It is a highly <a href="/wiki/Corrosive" title="Corrosive" class="mw-redirect">corrosive</a>, <a href="/wiki/Strong_acid" title="Strong acid" class="mw-redirect">strong</a> <a href="/wiki/Mineral_acid" title="Mineral acid">mineral acid</a> with many industrial uses. Hydrochloric acid is found naturally in <a href="/wiki/Gastric_acid" title="Gastric acid">gastric acid</a>.',
+ primaryImageUrl: "http://cdn.c.photoshelter.com/img-get/I0000iYGCbLfYh6s/s/860/860/Fphoto-67551208C-6ES.jpg",
+ workflowState: "DRAFT",  //one of "DRAFT", "SUBMITTED", "APPROVED", "REJECTED"
+ classification: "U//FOUO"
+ } ,
+ {
+ uri: "uid:sadflkajsdf",
+ label: "Hydrochloric Acid (HCl)",
+ type: "Item",  // Process
+ modifiedBy: "cmason",
+ modifiedDate: '12-Dec-2012',
+ preview: '<b>Hydrochloric acid</b> is a clear, colorless, highly <a href="/wiki/Pungency" title="Pungency">pungent</a> <a href="/wiki/Solution" title="Solution">solution</a> of <a href="/wiki/Hydrogen_chloride" title="Hydrogen chloride">hydrogen chloride</a> (<a href="/wiki/Hydrogen" title="Hydrogen">H</a><a href="/wiki/Chlorine" title="Chlorine">Cl</a>) in water. It is a highly <a href="/wiki/Corrosive" title="Corrosive" class="mw-redirect">corrosive</a>, <a href="/wiki/Strong_acid" title="Strong acid" class="mw-redirect">strong</a> <a href="/wiki/Mineral_acid" title="Mineral acid">mineral acid</a> with many industrial uses. Hydrochloric acid is found naturally in <a href="/wiki/Gastric_acid" title="Gastric acid">gastric acid</a>.',
+ primaryImageUrl: "http://cdn.c.photoshelter.com/img-get/I0000iYGCbLfYh6s/s/860/860/Fphoto-67551208C-6ES.jpg",
+ workflowState: "DRAFT",  //one of "DRAFT", "SUBMITTED", "APPROVED", "REJECTED"
+ classification: "U//FOUO"
+ } ,
+ {
+ uri: "uid:sadflkajsdf",
+ label: "Hydrochloric Acid (HCl)",
+ type: "Item",  // Process
+ modifiedBy: "cmason",
+ modifiedDate: '12-Dec-2012',
+ preview: '<b>Hydrochloric acid</b> is a clear, colorless, highly <a href="/wiki/Pungency" title="Pungency">pungent</a> <a href="/wiki/Solution" title="Solution">solution</a> of <a href="/wiki/Hydrogen_chloride" title="Hydrogen chloride">hydrogen chloride</a> (<a href="/wiki/Hydrogen" title="Hydrogen">H</a><a href="/wiki/Chlorine" title="Chlorine">Cl</a>) in water. It is a highly <a href="/wiki/Corrosive" title="Corrosive" class="mw-redirect">corrosive</a>, <a href="/wiki/Strong_acid" title="Strong acid" class="mw-redirect">strong</a> <a href="/wiki/Mineral_acid" title="Mineral acid">mineral acid</a> with many industrial uses. Hydrochloric acid is found naturally in <a href="/wiki/Gastric_acid" title="Gastric acid">gastric acid</a>.',
+ primaryImageUrl: "http://cdn.c.photoshelter.com/img-get/I0000iYGCbLfYh6s/s/860/860/Fphoto-67551208C-6ES.jpg",
+ workflowState: "DRAFT",  //one of "DRAFT", "SUBMITTED", "APPROVED", "REJECTED"
+ classification: "U//FOUO"
+ } ,
+ {
+ uri: "uid:sadflkajsdf",
+ label: "Hydrochloric Acid (HCl)",
+ type: "Item",  // Process
+ modifiedBy: "cmason",
+ modifiedDate: '12-Dec-2012',
+ preview: '<b>Hydrochloric acid</b> is a clear, colorless, highly <a href="/wiki/Pungency" title="Pungency">pungent</a> <a href="/wiki/Solution" title="Solution">solution</a> of <a href="/wiki/Hydrogen_chloride" title="Hydrogen chloride">hydrogen chloride</a> (<a href="/wiki/Hydrogen" title="Hydrogen">H</a><a href="/wiki/Chlorine" title="Chlorine">Cl</a>) in water. It is a highly <a href="/wiki/Corrosive" title="Corrosive" class="mw-redirect">corrosive</a>, <a href="/wiki/Strong_acid" title="Strong acid" class="mw-redirect">strong</a> <a href="/wiki/Mineral_acid" title="Mineral acid">mineral acid</a> with many industrial uses. Hydrochloric acid is found naturally in <a href="/wiki/Gastric_acid" title="Gastric acid">gastric acid</a>.',
+ primaryImageUrl: "http://cdn.c.photoshelter.com/img-get/I0000iYGCbLfYh6s/s/860/860/Fphoto-67551208C-6ES.jpg",
+ workflowState: "DRAFT",  //one of "DRAFT", "SUBMITTED", "APPROVED", "REJECTED"
+ classification: "U//FOUO"
+ } ,
+ {
+ uri: "uid:sadflkajsdf",
+ label: "Hydrochloric Acid (HCl)",
+ type: "Item",  // Process
+ modifiedBy: "cmason",
+ modifiedDate: '12-Dec-2012',
+ preview: '<b>Hydrochloric acid</b> is a clear, colorless, highly <a href="/wiki/Pungency" title="Pungency">pungent</a> <a href="/wiki/Solution" title="Solution">solution</a> of <a href="/wiki/Hydrogen_chloride" title="Hydrogen chloride">hydrogen chloride</a> (<a href="/wiki/Hydrogen" title="Hydrogen">H</a><a href="/wiki/Chlorine" title="Chlorine">Cl</a>) in water. It is a highly <a href="/wiki/Corrosive" title="Corrosive" class="mw-redirect">corrosive</a>, <a href="/wiki/Strong_acid" title="Strong acid" class="mw-redirect">strong</a> <a href="/wiki/Mineral_acid" title="Mineral acid">mineral acid</a> with many industrial uses. Hydrochloric acid is found naturally in <a href="/wiki/Gastric_acid" title="Gastric acid">gastric acid</a>.',
+ primaryImageUrl: "http://cdn.c.photoshelter.com/img-get/I0000iYGCbLfYh6s/s/860/860/Fphoto-67551208C-6ES.jpg",
+ workflowState: "DRAFT",  //one of "DRAFT", "SUBMITTED", "APPROVED", "REJECTED"
+ classification: "U//FOUO"
+ } ,
+ {
+ uri: "uid:sadflkajsdf",
+ label: "Hydrochloric Acid (HCl)",
+ type: "Item",  // Process
+ modifiedBy: "cmason",
+ modifiedDate: '12-Dec-2012',
+ preview: '<b>Hydrochloric acid</b> is a clear, colorless, highly <a href="/wiki/Pungency" title="Pungency">pungent</a> <a href="/wiki/Solution" title="Solution">solution</a> of <a href="/wiki/Hydrogen_chloride" title="Hydrogen chloride">hydrogen chloride</a> (<a href="/wiki/Hydrogen" title="Hydrogen">H</a><a href="/wiki/Chlorine" title="Chlorine">Cl</a>) in water. It is a highly <a href="/wiki/Corrosive" title="Corrosive" class="mw-redirect">corrosive</a>, <a href="/wiki/Strong_acid" title="Strong acid" class="mw-redirect">strong</a> <a href="/wiki/Mineral_acid" title="Mineral acid">mineral acid</a> with many industrial uses. Hydrochloric acid is found naturally in <a href="/wiki/Gastric_acid" title="Gastric acid">gastric acid</a>.',
+ primaryImageUrl: "http://cdn.c.photoshelter.com/img-get/I0000iYGCbLfYh6s/s/860/860/Fphoto-67551208C-6ES.jpg",
+ workflowState: "DRAFT",  //one of "DRAFT", "SUBMITTED", "APPROVED", "REJECTED"
+ classification: "U//FOUO"
+ } ,
+ {
+ uri: "uid:sadflkajsdf",
+ label: "Hydrochloric Acid (HCl)",
+ type: "Item",  // Process
+ modifiedBy: "cmason",
+ modifiedDate: '12-Dec-2012',
+ preview: '<b>Hydrochloric acid</b> is a clear, colorless, highly <a href="/wiki/Pungency" title="Pungency">pungent</a> <a href="/wiki/Solution" title="Solution">solution</a> of <a href="/wiki/Hydrogen_chloride" title="Hydrogen chloride">hydrogen chloride</a> (<a href="/wiki/Hydrogen" title="Hydrogen">H</a><a href="/wiki/Chlorine" title="Chlorine">Cl</a>) in water. It is a highly <a href="/wiki/Corrosive" title="Corrosive" class="mw-redirect">corrosive</a>, <a href="/wiki/Strong_acid" title="Strong acid" class="mw-redirect">strong</a> <a href="/wiki/Mineral_acid" title="Mineral acid">mineral acid</a> with many industrial uses. Hydrochloric acid is found naturally in <a href="/wiki/Gastric_acid" title="Gastric acid">gastric acid</a>.',
+ primaryImageUrl: "http://cdn.c.photoshelter.com/img-get/I0000iYGCbLfYh6s/s/860/860/Fphoto-67551208C-6ES.jpg",
+ workflowState: "DRAFT",  //one of "DRAFT", "SUBMITTED", "APPROVED", "REJECTED"
+ classification: "U//FOUO"
+ } ,
+ {
+ uri: "uid:sadflkajsdf",
+ label: "Hydrochloric Acid (HCl)",
+ type: "Item",  // Process
+ modifiedBy: "cmason",
+ modifiedDate: '12-Dec-2012',
+ preview: '<b>Hydrochloric acid</b> is a clear, colorless, highly <a href="/wiki/Pungency" title="Pungency">pungent</a> <a href="/wiki/Solution" title="Solution">solution</a> of <a href="/wiki/Hydrogen_chloride" title="Hydrogen chloride">hydrogen chloride</a> (<a href="/wiki/Hydrogen" title="Hydrogen">H</a><a href="/wiki/Chlorine" title="Chlorine">Cl</a>) in water. It is a highly <a href="/wiki/Corrosive" title="Corrosive" class="mw-redirect">corrosive</a>, <a href="/wiki/Strong_acid" title="Strong acid" class="mw-redirect">strong</a> <a href="/wiki/Mineral_acid" title="Mineral acid">mineral acid</a> with many industrial uses. Hydrochloric acid is found naturally in <a href="/wiki/Gastric_acid" title="Gastric acid">gastric acid</a>.',
+ primaryImageUrl: "http://cdn.c.photoshelter.com/img-get/I0000iYGCbLfYh6s/s/860/860/Fphoto-67551208C-6ES.jpg",
+ workflowState: "DRAFT",  //one of "DRAFT", "SUBMITTED", "APPROVED", "REJECTED"
+ classification: "U//FOUO"
+ } ,
+ {
+ uri: "uid:sadflkajsdf",
+ label: "Hydrochloric Acid (HCl)",
+ type: "Item",  // Process
+ modifiedBy: "cmason",
+ modifiedDate: '12-Dec-2012',
+ preview: '<b>Hydrochloric acid</b> is a clear, colorless, highly <a href="/wiki/Pungency" title="Pungency">pungent</a> <a href="/wiki/Solution" title="Solution">solution</a> of <a href="/wiki/Hydrogen_chloride" title="Hydrogen chloride">hydrogen chloride</a> (<a href="/wiki/Hydrogen" title="Hydrogen">H</a><a href="/wiki/Chlorine" title="Chlorine">Cl</a>) in water. It is a highly <a href="/wiki/Corrosive" title="Corrosive" class="mw-redirect">corrosive</a>, <a href="/wiki/Strong_acid" title="Strong acid" class="mw-redirect">strong</a> <a href="/wiki/Mineral_acid" title="Mineral acid">mineral acid</a> with many industrial uses. Hydrochloric acid is found naturally in <a href="/wiki/Gastric_acid" title="Gastric acid">gastric acid</a>.',
+ primaryImageUrl: "http://cdn.c.photoshelter.com/img-get/I0000iYGCbLfYh6s/s/860/860/Fphoto-67551208C-6ES.jpg",
+ workflowState: "DRAFT",  //one of "DRAFT", "SUBMITTED", "APPROVED", "REJECTED"
+ classification: "U//FOUO"
+ } ,
+ {
+ uri: "uid:sadflkajsdf",
+ label: "Hydrochloric Acid (HCl)",
+ type: "Item",  // Process
+ modifiedBy: "cmason",
+ modifiedDate: '12-Dec-2012',
+ preview: '<b>Hydrochloric acid</b> is a clear, colorless, highly <a href="/wiki/Pungency" title="Pungency">pungent</a> <a href="/wiki/Solution" title="Solution">solution</a> of <a href="/wiki/Hydrogen_chloride" title="Hydrogen chloride">hydrogen chloride</a> (<a href="/wiki/Hydrogen" title="Hydrogen">H</a><a href="/wiki/Chlorine" title="Chlorine">Cl</a>) in water. It is a highly <a href="/wiki/Corrosive" title="Corrosive" class="mw-redirect">corrosive</a>, <a href="/wiki/Strong_acid" title="Strong acid" class="mw-redirect">strong</a> <a href="/wiki/Mineral_acid" title="Mineral acid">mineral acid</a> with many industrial uses. Hydrochloric acid is found naturally in <a href="/wiki/Gastric_acid" title="Gastric acid">gastric acid</a>.',
+ primaryImageUrl: "http://cdn.c.photoshelter.com/img-get/I0000iYGCbLfYh6s/s/860/860/Fphoto-67551208C-6ES.jpg",
+ workflowState: "DRAFT",  //one of "DRAFT", "SUBMITTED", "APPROVED", "REJECTED"
+ classification: "U//FOUO"
+ } ,
+ {
+ uri: "uid:sadflkajsdf",
+ label: "Hydrochloric Acid (HCl)",
+ type: "Item",  // Process
+ modifiedBy: "cmason",
+ modifiedDate: '12-Dec-2012',
+ preview: '<b>Hydrochloric acid</b> is a clear, colorless, highly <a href="/wiki/Pungency" title="Pungency">pungent</a> <a href="/wiki/Solution" title="Solution">solution</a> of <a href="/wiki/Hydrogen_chloride" title="Hydrogen chloride">hydrogen chloride</a> (<a href="/wiki/Hydrogen" title="Hydrogen">H</a><a href="/wiki/Chlorine" title="Chlorine">Cl</a>) in water. It is a highly <a href="/wiki/Corrosive" title="Corrosive" class="mw-redirect">corrosive</a>, <a href="/wiki/Strong_acid" title="Strong acid" class="mw-redirect">strong</a> <a href="/wiki/Mineral_acid" title="Mineral acid">mineral acid</a> with many industrial uses. Hydrochloric acid is found naturally in <a href="/wiki/Gastric_acid" title="Gastric acid">gastric acid</a>.',
+ primaryImageUrl: "http://cdn.c.photoshelter.com/img-get/I0000iYGCbLfYh6s/s/860/860/Fphoto-67551208C-6ES.jpg",
+ workflowState: "DRAFT",  //one of "DRAFT", "SUBMITTED", "APPROVED", "REJECTED"
+ classification: "U//FOUO"
+ } ,
+ {
+ uri: "uid:sadflkajsdf",
+ label: "Hydrochloric Acid (HCl)",
+ type: "Item",  // Process
+ modifiedBy: "cmason",
+ modifiedDate: '12-Dec-2012',
+ preview: '<b>Hydrochloric acid</b> is a clear, colorless, highly <a href="/wiki/Pungency" title="Pungency">pungent</a> <a href="/wiki/Solution" title="Solution">solution</a> of <a href="/wiki/Hydrogen_chloride" title="Hydrogen chloride">hydrogen chloride</a> (<a href="/wiki/Hydrogen" title="Hydrogen">H</a><a href="/wiki/Chlorine" title="Chlorine">Cl</a>) in water. It is a highly <a href="/wiki/Corrosive" title="Corrosive" class="mw-redirect">corrosive</a>, <a href="/wiki/Strong_acid" title="Strong acid" class="mw-redirect">strong</a> <a href="/wiki/Mineral_acid" title="Mineral acid">mineral acid</a> with many industrial uses. Hydrochloric acid is found naturally in <a href="/wiki/Gastric_acid" title="Gastric acid">gastric acid</a>.',
+ primaryImageUrl: "http://cdn.c.photoshelter.com/img-get/I0000iYGCbLfYh6s/s/860/860/Fphoto-67551208C-6ES.jpg",
+ workflowState: "DRAFT",  //one of "DRAFT", "SUBMITTED", "APPROVED", "REJECTED"
+ classification: "U//FOUO"
+ } ,
+ {
+ uri: "uid:sadflkajsdf",
+ label: "Hydrochloric Acid (HCl)",
+ type: "Item",  // Process
+ modifiedBy: "cmason",
+ modifiedDate: '12-Dec-2012',
+ preview: '<b>Hydrochloric acid</b> is a clear, colorless, highly <a href="/wiki/Pungency" title="Pungency">pungent</a> <a href="/wiki/Solution" title="Solution">solution</a> of <a href="/wiki/Hydrogen_chloride" title="Hydrogen chloride">hydrogen chloride</a> (<a href="/wiki/Hydrogen" title="Hydrogen">H</a><a href="/wiki/Chlorine" title="Chlorine">Cl</a>) in water. It is a highly <a href="/wiki/Corrosive" title="Corrosive" class="mw-redirect">corrosive</a>, <a href="/wiki/Strong_acid" title="Strong acid" class="mw-redirect">strong</a> <a href="/wiki/Mineral_acid" title="Mineral acid">mineral acid</a> with many industrial uses. Hydrochloric acid is found naturally in <a href="/wiki/Gastric_acid" title="Gastric acid">gastric acid</a>.',
+ primaryImageUrl: "http://cdn.c.photoshelter.com/img-get/I0000iYGCbLfYh6s/s/860/860/Fphoto-67551208C-6ES.jpg",
+ workflowState: "DRAFT",  //one of "DRAFT", "SUBMITTED", "APPROVED", "REJECTED"
+ classification: "U//FOUO"
+ } ,
+ {
+ uri: "uid:sadflkajsdf",
+ label: "Hydrochloric Acid (HCl)",
+ type: "Item",  // Process
+ modifiedBy: "cmason",
+ modifiedDate: '12-Dec-2012',
+ preview: '<b>Hydrochloric acid</b> is a clear, colorless, highly <a href="/wiki/Pungency" title="Pungency">pungent</a> <a href="/wiki/Solution" title="Solution">solution</a> of <a href="/wiki/Hydrogen_chloride" title="Hydrogen chloride">hydrogen chloride</a> (<a href="/wiki/Hydrogen" title="Hydrogen">H</a><a href="/wiki/Chlorine" title="Chlorine">Cl</a>) in water. It is a highly <a href="/wiki/Corrosive" title="Corrosive" class="mw-redirect">corrosive</a>, <a href="/wiki/Strong_acid" title="Strong acid" class="mw-redirect">strong</a> <a href="/wiki/Mineral_acid" title="Mineral acid">mineral acid</a> with many industrial uses. Hydrochloric acid is found naturally in <a href="/wiki/Gastric_acid" title="Gastric acid">gastric acid</a>.',
+ primaryImageUrl: "http://cdn.c.photoshelter.com/img-get/I0000iYGCbLfYh6s/s/860/860/Fphoto-67551208C-6ES.jpg",
+ workflowState: "DRAFT",  //one of "DRAFT", "SUBMITTED", "APPROVED", "REJECTED"
+ classification: "U//FOUO"
+ } ,
+ {
+ uri: "uid:sadflkajsdf",
+ label: "Hydrochloric Acid (HCl)",
+ type: "Item",  // Process
+ modifiedBy: "cmason",
+ modifiedDate: '12-Dec-2012',
+ preview: '<b>Hydrochloric acid</b> is a clear, colorless, highly <a href="/wiki/Pungency" title="Pungency">pungent</a> <a href="/wiki/Solution" title="Solution">solution</a> of <a href="/wiki/Hydrogen_chloride" title="Hydrogen chloride">hydrogen chloride</a> (<a href="/wiki/Hydrogen" title="Hydrogen">H</a><a href="/wiki/Chlorine" title="Chlorine">Cl</a>) in water. It is a highly <a href="/wiki/Corrosive" title="Corrosive" class="mw-redirect">corrosive</a>, <a href="/wiki/Strong_acid" title="Strong acid" class="mw-redirect">strong</a> <a href="/wiki/Mineral_acid" title="Mineral acid">mineral acid</a> with many industrial uses. Hydrochloric acid is found naturally in <a href="/wiki/Gastric_acid" title="Gastric acid">gastric acid</a>.',
+ primaryImageUrl: "http://cdn.c.photoshelter.com/img-get/I0000iYGCbLfYh6s/s/860/860/Fphoto-67551208C-6ES.jpg",
+ workflowState: "DRAFT",  //one of "DRAFT", "SUBMITTED", "APPROVED", "REJECTED"
+ classification: "U//FOUO"
+ } ,
+ {
+ uri: "uid:sadflkajsdf",
+ label: "Hydrochloric Acid (HCl)",
+ type: "Item",  // Process
+ modifiedBy: "cmason",
+ modifiedDate: '12-Dec-2012',
+ preview: '<b>Hydrochloric acid</b> is a clear, colorless, highly <a href="/wiki/Pungency" title="Pungency">pungent</a> <a href="/wiki/Solution" title="Solution">solution</a> of <a href="/wiki/Hydrogen_chloride" title="Hydrogen chloride">hydrogen chloride</a> (<a href="/wiki/Hydrogen" title="Hydrogen">H</a><a href="/wiki/Chlorine" title="Chlorine">Cl</a>) in water. It is a highly <a href="/wiki/Corrosive" title="Corrosive" class="mw-redirect">corrosive</a>, <a href="/wiki/Strong_acid" title="Strong acid" class="mw-redirect">strong</a> <a href="/wiki/Mineral_acid" title="Mineral acid">mineral acid</a> with many industrial uses. Hydrochloric acid is found naturally in <a href="/wiki/Gastric_acid" title="Gastric acid">gastric acid</a>.',
+ primaryImageUrl: "http://cdn.c.photoshelter.com/img-get/I0000iYGCbLfYh6s/s/860/860/Fphoto-67551208C-6ES.jpg",
+ workflowState: "DRAFT",  //one of "DRAFT", "SUBMITTED", "APPROVED", "REJECTED"
+ classification: "U//FOUO"
+ } ,
+ {
+ uri: "uid:sadflkajsdf",
+ label: "Hydrochloric Acid (HCl)",
+ type: "Item",  // Process
+ modifiedBy: "cmason",
+ modifiedDate: '12-Dec-2012',
+ preview: '<b>Hydrochloric acid</b> is a clear, colorless, highly <a href="/wiki/Pungency" title="Pungency">pungent</a> <a href="/wiki/Solution" title="Solution">solution</a> of <a href="/wiki/Hydrogen_chloride" title="Hydrogen chloride">hydrogen chloride</a> (<a href="/wiki/Hydrogen" title="Hydrogen">H</a><a href="/wiki/Chlorine" title="Chlorine">Cl</a>) in water. It is a highly <a href="/wiki/Corrosive" title="Corrosive" class="mw-redirect">corrosive</a>, <a href="/wiki/Strong_acid" title="Strong acid" class="mw-redirect">strong</a> <a href="/wiki/Mineral_acid" title="Mineral acid">mineral acid</a> with many industrial uses. Hydrochloric acid is found naturally in <a href="/wiki/Gastric_acid" title="Gastric acid">gastric acid</a>.',
+ primaryImageUrl: "http://cdn.c.photoshelter.com/img-get/I0000iYGCbLfYh6s/s/860/860/Fphoto-67551208C-6ES.jpg",
+ workflowState: "DRAFT",  //one of "DRAFT", "SUBMITTED", "APPROVED", "REJECTED"
+ classification: "U//FOUO"
+ } ,
+ {
+ uri: "uid:sadflkajsdf",
+ label: "Hydrochloric Acid (HCl)",
+ type: "Item",  // Process
+ modifiedBy: "cmason",
+ modifiedDate: '12-Dec-2012',
+ preview: '<b>Hydrochloric acid</b> is a clear, colorless, highly <a href="/wiki/Pungency" title="Pungency">pungent</a> <a href="/wiki/Solution" title="Solution">solution</a> of <a href="/wiki/Hydrogen_chloride" title="Hydrogen chloride">hydrogen chloride</a> (<a href="/wiki/Hydrogen" title="Hydrogen">H</a><a href="/wiki/Chlorine" title="Chlorine">Cl</a>) in water. It is a highly <a href="/wiki/Corrosive" title="Corrosive" class="mw-redirect">corrosive</a>, <a href="/wiki/Strong_acid" title="Strong acid" class="mw-redirect">strong</a> <a href="/wiki/Mineral_acid" title="Mineral acid">mineral acid</a> with many industrial uses. Hydrochloric acid is found naturally in <a href="/wiki/Gastric_acid" title="Gastric acid">gastric acid</a>.',
+ primaryImageUrl: "http://cdn.c.photoshelter.com/img-get/I0000iYGCbLfYh6s/s/860/860/Fphoto-67551208C-6ES.jpg",
+ workflowState: "DRAFT",  //one of "DRAFT", "SUBMITTED", "APPROVED", "REJECTED"
+ classification: "U//FOUO"
+ } ,
+ {
+ uri: "uid:sadflkajsdf",
+ label: "Hydrochloric Acid (HCl)",
+ type: "Item",  // Process
+ modifiedBy: "cmason",
+ modifiedDate: '12-Dec-2012',
+ preview: '<b>Hydrochloric acid</b> is a clear, colorless, highly <a href="/wiki/Pungency" title="Pungency">pungent</a> <a href="/wiki/Solution" title="Solution">solution</a> of <a href="/wiki/Hydrogen_chloride" title="Hydrogen chloride">hydrogen chloride</a> (<a href="/wiki/Hydrogen" title="Hydrogen">H</a><a href="/wiki/Chlorine" title="Chlorine">Cl</a>) in water. It is a highly <a href="/wiki/Corrosive" title="Corrosive" class="mw-redirect">corrosive</a>, <a href="/wiki/Strong_acid" title="Strong acid" class="mw-redirect">strong</a> <a href="/wiki/Mineral_acid" title="Mineral acid">mineral acid</a> with many industrial uses. Hydrochloric acid is found naturally in <a href="/wiki/Gastric_acid" title="Gastric acid">gastric acid</a>.',
+ primaryImageUrl: "http://cdn.c.photoshelter.com/img-get/I0000iYGCbLfYh6s/s/860/860/Fphoto-67551208C-6ES.jpg",
+ workflowState: "DRAFT",  //one of "DRAFT", "SUBMITTED", "APPROVED", "REJECTED"
+ classification: "U//FOUO"
+ } ,
+ {
+ uri: "uid:sadflkajsdf",
+ label: "Hydrochloric Acid (HCl)",
+ type: "Item",  // Process
+ modifiedBy: "cmason",
+ modifiedDate: '12-Dec-2012',
+ preview: '<b>Hydrochloric acid</b> is a clear, colorless, highly <a href="/wiki/Pungency" title="Pungency">pungent</a> <a href="/wiki/Solution" title="Solution">solution</a> of <a href="/wiki/Hydrogen_chloride" title="Hydrogen chloride">hydrogen chloride</a> (<a href="/wiki/Hydrogen" title="Hydrogen">H</a><a href="/wiki/Chlorine" title="Chlorine">Cl</a>) in water. It is a highly <a href="/wiki/Corrosive" title="Corrosive" class="mw-redirect">corrosive</a>, <a href="/wiki/Strong_acid" title="Strong acid" class="mw-redirect">strong</a> <a href="/wiki/Mineral_acid" title="Mineral acid">mineral acid</a> with many industrial uses. Hydrochloric acid is found naturally in <a href="/wiki/Gastric_acid" title="Gastric acid">gastric acid</a>.',
+ primaryImageUrl: "http://cdn.c.photoshelter.com/img-get/I0000iYGCbLfYh6s/s/860/860/Fphoto-67551208C-6ES.jpg",
+ workflowState: "DRAFT",  //one of "DRAFT", "SUBMITTED", "APPROVED", "REJECTED"
+ classification: "U//FOUO"
+ } ,
+ {
+ uri: "uid:sadflkajsdf",
+ label: "Hydrochloric Acid (HCl)",
+ type: "Item",  // Process
+ modifiedBy: "cmason",
+ modifiedDate: '12-Dec-2012',
+ preview: '<b>Hydrochloric acid</b> is a clear, colorless, highly <a href="/wiki/Pungency" title="Pungency">pungent</a> <a href="/wiki/Solution" title="Solution">solution</a> of <a href="/wiki/Hydrogen_chloride" title="Hydrogen chloride">hydrogen chloride</a> (<a href="/wiki/Hydrogen" title="Hydrogen">H</a><a href="/wiki/Chlorine" title="Chlorine">Cl</a>) in water. It is a highly <a href="/wiki/Corrosive" title="Corrosive" class="mw-redirect">corrosive</a>, <a href="/wiki/Strong_acid" title="Strong acid" class="mw-redirect">strong</a> <a href="/wiki/Mineral_acid" title="Mineral acid">mineral acid</a> with many industrial uses. Hydrochloric acid is found naturally in <a href="/wiki/Gastric_acid" title="Gastric acid">gastric acid</a>.',
+ primaryImageUrl: "http://cdn.c.photoshelter.com/img-get/I0000iYGCbLfYh6s/s/860/860/Fphoto-67551208C-6ES.jpg",
+ workflowState: "DRAFT",  //one of "DRAFT", "SUBMITTED", "APPROVED", "REJECTED"
+ classification: "U//FOUO"
+ } ,
+ {
+ uri: "uid:sadflkajsdf",
+ label: "Hydrochloric Acid (HCl)",
+ type: "Item",  // Process
+ modifiedBy: "cmason",
+ modifiedDate: '12-Dec-2012',
+ preview: '<b>Hydrochloric acid</b> is a clear, colorless, highly <a href="/wiki/Pungency" title="Pungency">pungent</a> <a href="/wiki/Solution" title="Solution">solution</a> of <a href="/wiki/Hydrogen_chloride" title="Hydrogen chloride">hydrogen chloride</a> (<a href="/wiki/Hydrogen" title="Hydrogen">H</a><a href="/wiki/Chlorine" title="Chlorine">Cl</a>) in water. It is a highly <a href="/wiki/Corrosive" title="Corrosive" class="mw-redirect">corrosive</a>, <a href="/wiki/Strong_acid" title="Strong acid" class="mw-redirect">strong</a> <a href="/wiki/Mineral_acid" title="Mineral acid">mineral acid</a> with many industrial uses. Hydrochloric acid is found naturally in <a href="/wiki/Gastric_acid" title="Gastric acid">gastric acid</a>.',
+ primaryImageUrl: "http://cdn.c.photoshelter.com/img-get/I0000iYGCbLfYh6s/s/860/860/Fphoto-67551208C-6ES.jpg",
+ workflowState: "DRAFT",  //one of "DRAFT", "SUBMITTED", "APPROVED", "REJECTED"
+ classification: "U//FOUO"
+ } ,
+ {
+ uri: "uid:sadflkajsdf",
+ label: "Hydrochloric Acid (HCl)",
+ type: "Item",  // Process
+ modifiedBy: "cmason",
+ modifiedDate: '12-Dec-2012',
+ preview: '<b>Hydrochloric acid</b> is a clear, colorless, highly <a href="/wiki/Pungency" title="Pungency">pungent</a> <a href="/wiki/Solution" title="Solution">solution</a> of <a href="/wiki/Hydrogen_chloride" title="Hydrogen chloride">hydrogen chloride</a> (<a href="/wiki/Hydrogen" title="Hydrogen">H</a><a href="/wiki/Chlorine" title="Chlorine">Cl</a>) in water. It is a highly <a href="/wiki/Corrosive" title="Corrosive" class="mw-redirect">corrosive</a>, <a href="/wiki/Strong_acid" title="Strong acid" class="mw-redirect">strong</a> <a href="/wiki/Mineral_acid" title="Mineral acid">mineral acid</a> with many industrial uses. Hydrochloric acid is found naturally in <a href="/wiki/Gastric_acid" title="Gastric acid">gastric acid</a>.',
+ primaryImageUrl: "http://cdn.c.photoshelter.com/img-get/I0000iYGCbLfYh6s/s/860/860/Fphoto-67551208C-6ES.jpg",
+ workflowState: "DRAFT",  //one of "DRAFT", "SUBMITTED", "APPROVED", "REJECTED"
+ classification: "U//FOUO"
+ } ,
+ {
+ uri: "uid:sadflkajsdf",
+ label: "Hydrochloric Acid (HCl)",
+ type: "Item",  // Process
+ modifiedBy: "cmason",
+ modifiedDate: '12-Dec-2012',
+ preview: '<b>Hydrochloric acid</b> is a clear, colorless, highly <a href="/wiki/Pungency" title="Pungency">pungent</a> <a href="/wiki/Solution" title="Solution">solution</a> of <a href="/wiki/Hydrogen_chloride" title="Hydrogen chloride">hydrogen chloride</a> (<a href="/wiki/Hydrogen" title="Hydrogen">H</a><a href="/wiki/Chlorine" title="Chlorine">Cl</a>) in water. It is a highly <a href="/wiki/Corrosive" title="Corrosive" class="mw-redirect">corrosive</a>, <a href="/wiki/Strong_acid" title="Strong acid" class="mw-redirect">strong</a> <a href="/wiki/Mineral_acid" title="Mineral acid">mineral acid</a> with many industrial uses. Hydrochloric acid is found naturally in <a href="/wiki/Gastric_acid" title="Gastric acid">gastric acid</a>.',
+ primaryImageUrl: "http://cdn.c.photoshelter.com/img-get/I0000iYGCbLfYh6s/s/860/860/Fphoto-67551208C-6ES.jpg",
+ workflowState: "DRAFT",  //one of "DRAFT", "SUBMITTED", "APPROVED", "REJECTED"
+ classification: "U//FOUO"
+ } ,
+ {
+ uri: "uid:sadflkajsdf",
+ label: "Hydrochloric Acid (HCl)",
+ type: "Item",  // Process
+ modifiedBy: "cmason",
+ modifiedDate: '12-Dec-2012',
+ preview: '<b>Hydrochloric acid</b> is a clear, colorless, highly <a href="/wiki/Pungency" title="Pungency">pungent</a> <a href="/wiki/Solution" title="Solution">solution</a> of <a href="/wiki/Hydrogen_chloride" title="Hydrogen chloride">hydrogen chloride</a> (<a href="/wiki/Hydrogen" title="Hydrogen">H</a><a href="/wiki/Chlorine" title="Chlorine">Cl</a>) in water. It is a highly <a href="/wiki/Corrosive" title="Corrosive" class="mw-redirect">corrosive</a>, <a href="/wiki/Strong_acid" title="Strong acid" class="mw-redirect">strong</a> <a href="/wiki/Mineral_acid" title="Mineral acid">mineral acid</a> with many industrial uses. Hydrochloric acid is found naturally in <a href="/wiki/Gastric_acid" title="Gastric acid">gastric acid</a>.',
+ primaryImageUrl: "http://cdn.c.photoshelter.com/img-get/I0000iYGCbLfYh6s/s/860/860/Fphoto-67551208C-6ES.jpg",
+ workflowState: "DRAFT",  //one of "DRAFT", "SUBMITTED", "APPROVED", "REJECTED"
+ classification: "U//FOUO"
+ } ,
+ {
+ uri: "uid:sadflkajsdf",
+ label: "Hydrochloric Acid (HCl)",
+ type: "Item",  // Process
+ modifiedBy: "cmason",
+ modifiedDate: '12-Dec-2012',
+ preview: '<b>Hydrochloric acid</b> is a clear, colorless, highly <a href="/wiki/Pungency" title="Pungency">pungent</a> <a href="/wiki/Solution" title="Solution">solution</a> of <a href="/wiki/Hydrogen_chloride" title="Hydrogen chloride">hydrogen chloride</a> (<a href="/wiki/Hydrogen" title="Hydrogen">H</a><a href="/wiki/Chlorine" title="Chlorine">Cl</a>) in water. It is a highly <a href="/wiki/Corrosive" title="Corrosive" class="mw-redirect">corrosive</a>, <a href="/wiki/Strong_acid" title="Strong acid" class="mw-redirect">strong</a> <a href="/wiki/Mineral_acid" title="Mineral acid">mineral acid</a> with many industrial uses. Hydrochloric acid is found naturally in <a href="/wiki/Gastric_acid" title="Gastric acid">gastric acid</a>.',
+ primaryImageUrl: "http://cdn.c.photoshelter.com/img-get/I0000iYGCbLfYh6s/s/860/860/Fphoto-67551208C-6ES.jpg",
+ workflowState: "DRAFT",  //one of "DRAFT", "SUBMITTED", "APPROVED", "REJECTED"
+ classification: "U//FOUO"
+ } ,
+ {
+ uri: "uid:sadflkajsdf",
+ label: "Hydrochloric Acid (HCl)",
+ type: "Item",  // Process
+ modifiedBy: "cmason",
+ modifiedDate: '12-Dec-2012',
+ preview: '<b>Hydrochloric acid</b> is a clear, colorless, highly <a href="/wiki/Pungency" title="Pungency">pungent</a> <a href="/wiki/Solution" title="Solution">solution</a> of <a href="/wiki/Hydrogen_chloride" title="Hydrogen chloride">hydrogen chloride</a> (<a href="/wiki/Hydrogen" title="Hydrogen">H</a><a href="/wiki/Chlorine" title="Chlorine">Cl</a>) in water. It is a highly <a href="/wiki/Corrosive" title="Corrosive" class="mw-redirect">corrosive</a>, <a href="/wiki/Strong_acid" title="Strong acid" class="mw-redirect">strong</a> <a href="/wiki/Mineral_acid" title="Mineral acid">mineral acid</a> with many industrial uses. Hydrochloric acid is found naturally in <a href="/wiki/Gastric_acid" title="Gastric acid">gastric acid</a>.',
+ primaryImageUrl: "http://cdn.c.photoshelter.com/img-get/I0000iYGCbLfYh6s/s/860/860/Fphoto-67551208C-6ES.jpg",
+ workflowState: "DRAFT",  //one of "DRAFT", "SUBMITTED", "APPROVED", "REJECTED"
+ classification: "U//FOUO"
+ } ,
+ {
+ uri: "uid:sadflkajsdf",
+ label: "Hydrochloric Acid (HCl)",
+ type: "Item",  // Process
+ modifiedBy: "cmason",
+ modifiedDate: '12-Dec-2012',
+ preview: '<b>Hydrochloric acid</b> is a clear, colorless, highly <a href="/wiki/Pungency" title="Pungency">pungent</a> <a href="/wiki/Solution" title="Solution">solution</a> of <a href="/wiki/Hydrogen_chloride" title="Hydrogen chloride">hydrogen chloride</a> (<a href="/wiki/Hydrogen" title="Hydrogen">H</a><a href="/wiki/Chlorine" title="Chlorine">Cl</a>) in water. It is a highly <a href="/wiki/Corrosive" title="Corrosive" class="mw-redirect">corrosive</a>, <a href="/wiki/Strong_acid" title="Strong acid" class="mw-redirect">strong</a> <a href="/wiki/Mineral_acid" title="Mineral acid">mineral acid</a> with many industrial uses. Hydrochloric acid is found naturally in <a href="/wiki/Gastric_acid" title="Gastric acid">gastric acid</a>.',
+ primaryImageUrl: "http://cdn.c.photoshelter.com/img-get/I0000iYGCbLfYh6s/s/860/860/Fphoto-67551208C-6ES.jpg",
+ workflowState: "DRAFT",  //one of "DRAFT", "SUBMITTED", "APPROVED", "REJECTED"
+ classification: "U//FOUO"
+ } ,
+ {
+ uri: "uid:sadflkajsdf",
+ label: "Hydrochloric Acid (HCl)",
+ type: "Item",  // Process
+ modifiedBy: "cmason",
+ modifiedDate: '12-Dec-2012',
+ preview: '<b>Hydrochloric acid</b> is a clear, colorless, highly <a href="/wiki/Pungency" title="Pungency">pungent</a> <a href="/wiki/Solution" title="Solution">solution</a> of <a href="/wiki/Hydrogen_chloride" title="Hydrogen chloride">hydrogen chloride</a> (<a href="/wiki/Hydrogen" title="Hydrogen">H</a><a href="/wiki/Chlorine" title="Chlorine">Cl</a>) in water. It is a highly <a href="/wiki/Corrosive" title="Corrosive" class="mw-redirect">corrosive</a>, <a href="/wiki/Strong_acid" title="Strong acid" class="mw-redirect">strong</a> <a href="/wiki/Mineral_acid" title="Mineral acid">mineral acid</a> with many industrial uses. Hydrochloric acid is found naturally in <a href="/wiki/Gastric_acid" title="Gastric acid">gastric acid</a>.',
+ primaryImageUrl: "http://cdn.c.photoshelter.com/img-get/I0000iYGCbLfYh6s/s/860/860/Fphoto-67551208C-6ES.jpg",
+ workflowState: "DRAFT",  //one of "DRAFT", "SUBMITTED", "APPROVED", "REJECTED"
+ classification: "U//FOUO"
+ } ,
+ {
+ uri: "uid:sadflkajsdf",
+ label: "Hydrochloric Acid (HCl)",
+ type: "Item",  // Process
+ modifiedBy: "cmason",
+ modifiedDate: '12-Dec-2012',
+ preview: '<b>Hydrochloric acid</b> is a clear, colorless, highly <a href="/wiki/Pungency" title="Pungency">pungent</a> <a href="/wiki/Solution" title="Solution">solution</a> of <a href="/wiki/Hydrogen_chloride" title="Hydrogen chloride">hydrogen chloride</a> (<a href="/wiki/Hydrogen" title="Hydrogen">H</a><a href="/wiki/Chlorine" title="Chlorine">Cl</a>) in water. It is a highly <a href="/wiki/Corrosive" title="Corrosive" class="mw-redirect">corrosive</a>, <a href="/wiki/Strong_acid" title="Strong acid" class="mw-redirect">strong</a> <a href="/wiki/Mineral_acid" title="Mineral acid">mineral acid</a> with many industrial uses. Hydrochloric acid is found naturally in <a href="/wiki/Gastric_acid" title="Gastric acid">gastric acid</a>.',
+ primaryImageUrl: "http://cdn.c.photoshelter.com/img-get/I0000iYGCbLfYh6s/s/860/860/Fphoto-67551208C-6ES.jpg",
+ workflowState: "DRAFT",  //one of "DRAFT", "SUBMITTED", "APPROVED", "REJECTED"
+ classification: "U//FOUO"
+ } ,
+ {
+ uri: "uid:sadflkajsdf",
+ label: "Hydrochloric Acid (HCl)",
+ type: "Item",  // Process
+ modifiedBy: "cmason",
+ modifiedDate: '12-Dec-2012',
+ preview: '<b>Hydrochloric acid</b> is a clear, colorless, highly <a href="/wiki/Pungency" title="Pungency">pungent</a> <a href="/wiki/Solution" title="Solution">solution</a> of <a href="/wiki/Hydrogen_chloride" title="Hydrogen chloride">hydrogen chloride</a> (<a href="/wiki/Hydrogen" title="Hydrogen">H</a><a href="/wiki/Chlorine" title="Chlorine">Cl</a>) in water. It is a highly <a href="/wiki/Corrosive" title="Corrosive" class="mw-redirect">corrosive</a>, <a href="/wiki/Strong_acid" title="Strong acid" class="mw-redirect">strong</a> <a href="/wiki/Mineral_acid" title="Mineral acid">mineral acid</a> with many industrial uses. Hydrochloric acid is found naturally in <a href="/wiki/Gastric_acid" title="Gastric acid">gastric acid</a>.',
+ primaryImageUrl: "http://cdn.c.photoshelter.com/img-get/I0000iYGCbLfYh6s/s/860/860/Fphoto-67551208C-6ES.jpg",
+ workflowState: "DRAFT",  //one of "DRAFT", "SUBMITTED", "APPROVED", "REJECTED"
+ classification: "U//FOUO"
+ } ,
+ {
+ uri: "uid:sadflkajsdf",
+ label: "Hydrochloric Acid (HCl)",
+ type: "Item",  // Process
+ modifiedBy: "cmason",
+ modifiedDate: '12-Dec-2012',
+ preview: '<b>Hydrochloric acid</b> is a clear, colorless, highly <a href="/wiki/Pungency" title="Pungency">pungent</a> <a href="/wiki/Solution" title="Solution">solution</a> of <a href="/wiki/Hydrogen_chloride" title="Hydrogen chloride">hydrogen chloride</a> (<a href="/wiki/Hydrogen" title="Hydrogen">H</a><a href="/wiki/Chlorine" title="Chlorine">Cl</a>) in water. It is a highly <a href="/wiki/Corrosive" title="Corrosive" class="mw-redirect">corrosive</a>, <a href="/wiki/Strong_acid" title="Strong acid" class="mw-redirect">strong</a> <a href="/wiki/Mineral_acid" title="Mineral acid">mineral acid</a> with many industrial uses. Hydrochloric acid is found naturally in <a href="/wiki/Gastric_acid" title="Gastric acid">gastric acid</a>.',
+ primaryImageUrl: "http://cdn.c.photoshelter.com/img-get/I0000iYGCbLfYh6s/s/860/860/Fphoto-67551208C-6ES.jpg",
+ workflowState: "DRAFT",  //one of "DRAFT", "SUBMITTED", "APPROVED", "REJECTED"
+ classification: "U//FOUO"
+ } ,
+ {
+ uri: "uid:sadflkajsdf",
+ label: "Hydrochloric Acid (HCl)",
+ type: "Item",  // Process
+ modifiedBy: "cmason",
+ modifiedDate: '12-Dec-2012',
+ preview: '<b>Hydrochloric acid</b> is a clear, colorless, highly <a href="/wiki/Pungency" title="Pungency">pungent</a> <a href="/wiki/Solution" title="Solution">solution</a> of <a href="/wiki/Hydrogen_chloride" title="Hydrogen chloride">hydrogen chloride</a> (<a href="/wiki/Hydrogen" title="Hydrogen">H</a><a href="/wiki/Chlorine" title="Chlorine">Cl</a>) in water. It is a highly <a href="/wiki/Corrosive" title="Corrosive" class="mw-redirect">corrosive</a>, <a href="/wiki/Strong_acid" title="Strong acid" class="mw-redirect">strong</a> <a href="/wiki/Mineral_acid" title="Mineral acid">mineral acid</a> with many industrial uses. Hydrochloric acid is found naturally in <a href="/wiki/Gastric_acid" title="Gastric acid">gastric acid</a>.',
+ primaryImageUrl: "http://cdn.c.photoshelter.com/img-get/I0000iYGCbLfYh6s/s/860/860/Fphoto-67551208C-6ES.jpg",
+ workflowState: "DRAFT",  //one of "DRAFT", "SUBMITTED", "APPROVED", "REJECTED"
+ classification: "U//FOUO"
+ } ,
+ {
+ uri: "uid:sadflkajsdf",
+ label: "Hydrochloric Acid (HCl)",
+ type: "Item",  // Process
+ modifiedBy: "cmason",
+ modifiedDate: '12-Dec-2012',
+ preview: '<b>Hydrochloric acid</b> is a clear, colorless, highly <a href="/wiki/Pungency" title="Pungency">pungent</a> <a href="/wiki/Solution" title="Solution">solution</a> of <a href="/wiki/Hydrogen_chloride" title="Hydrogen chloride">hydrogen chloride</a> (<a href="/wiki/Hydrogen" title="Hydrogen">H</a><a href="/wiki/Chlorine" title="Chlorine">Cl</a>) in water. It is a highly <a href="/wiki/Corrosive" title="Corrosive" class="mw-redirect">corrosive</a>, <a href="/wiki/Strong_acid" title="Strong acid" class="mw-redirect">strong</a> <a href="/wiki/Mineral_acid" title="Mineral acid">mineral acid</a> with many industrial uses. Hydrochloric acid is found naturally in <a href="/wiki/Gastric_acid" title="Gastric acid">gastric acid</a>.',
+ primaryImageUrl: "http://cdn.c.photoshelter.com/img-get/I0000iYGCbLfYh6s/s/860/860/Fphoto-67551208C-6ES.jpg",
+ workflowState: "DRAFT",  //one of "DRAFT", "SUBMITTED", "APPROVED", "REJECTED"
+ classification: "U//FOUO"
+ } ,
+ {
+ uri: "uid:sadflkajsdf",
+ label: "Hydrochloric Acid (HCl)",
+ type: "Item",  // Process
+ modifiedBy: "cmason",
+ modifiedDate: '12-Dec-2012',
+ preview: '<b>Hydrochloric acid</b> is a clear, colorless, highly <a href="/wiki/Pungency" title="Pungency">pungent</a> <a href="/wiki/Solution" title="Solution">solution</a> of <a href="/wiki/Hydrogen_chloride" title="Hydrogen chloride">hydrogen chloride</a> (<a href="/wiki/Hydrogen" title="Hydrogen">H</a><a href="/wiki/Chlorine" title="Chlorine">Cl</a>) in water. It is a highly <a href="/wiki/Corrosive" title="Corrosive" class="mw-redirect">corrosive</a>, <a href="/wiki/Strong_acid" title="Strong acid" class="mw-redirect">strong</a> <a href="/wiki/Mineral_acid" title="Mineral acid">mineral acid</a> with many industrial uses. Hydrochloric acid is found naturally in <a href="/wiki/Gastric_acid" title="Gastric acid">gastric acid</a>.',
+ primaryImageUrl: "http://cdn.c.photoshelter.com/img-get/I0000iYGCbLfYh6s/s/860/860/Fphoto-67551208C-6ES.jpg",
+ workflowState: "DRAFT",  //one of "DRAFT", "SUBMITTED", "APPROVED", "REJECTED"
+ classification: "U//FOUO"
+ } ,
+ {
+ uri: "uid:sadflkajsdf",
+ label: "Hydrochloric Acid (HCl)",
+ type: "Item",  // Process
+ modifiedBy: "cmason",
+ modifiedDate: '12-Dec-2012',
+ preview: '<b>Hydrochloric acid</b> is a clear, colorless, highly <a href="/wiki/Pungency" title="Pungency">pungent</a> <a href="/wiki/Solution" title="Solution">solution</a> of <a href="/wiki/Hydrogen_chloride" title="Hydrogen chloride">hydrogen chloride</a> (<a href="/wiki/Hydrogen" title="Hydrogen">H</a><a href="/wiki/Chlorine" title="Chlorine">Cl</a>) in water. It is a highly <a href="/wiki/Corrosive" title="Corrosive" class="mw-redirect">corrosive</a>, <a href="/wiki/Strong_acid" title="Strong acid" class="mw-redirect">strong</a> <a href="/wiki/Mineral_acid" title="Mineral acid">mineral acid</a> with many industrial uses. Hydrochloric acid is found naturally in <a href="/wiki/Gastric_acid" title="Gastric acid">gastric acid</a>.',
+ primaryImageUrl: "http://cdn.c.photoshelter.com/img-get/I0000iYGCbLfYh6s/s/860/860/Fphoto-67551208C-6ES.jpg",
+ workflowState: "DRAFT",  //one of "DRAFT", "SUBMITTED", "APPROVED", "REJECTED"
+ classification: "U//FOUO"
+ } ,
+ {
+ uri: "uid:sadflkajsdf",
+ label: "Hydrochloric Acid (HCl)",
+ type: "Item",  // Process
+ modifiedBy: "cmason",
+ modifiedDate: '12-Dec-2012',
+ preview: '<b>Hydrochloric acid</b> is a clear, colorless, highly <a href="/wiki/Pungency" title="Pungency">pungent</a> <a href="/wiki/Solution" title="Solution">solution</a> of <a href="/wiki/Hydrogen_chloride" title="Hydrogen chloride">hydrogen chloride</a> (<a href="/wiki/Hydrogen" title="Hydrogen">H</a><a href="/wiki/Chlorine" title="Chlorine">Cl</a>) in water. It is a highly <a href="/wiki/Corrosive" title="Corrosive" class="mw-redirect">corrosive</a>, <a href="/wiki/Strong_acid" title="Strong acid" class="mw-redirect">strong</a> <a href="/wiki/Mineral_acid" title="Mineral acid">mineral acid</a> with many industrial uses. Hydrochloric acid is found naturally in <a href="/wiki/Gastric_acid" title="Gastric acid">gastric acid</a>.',
+ primaryImageUrl: "http://cdn.c.photoshelter.com/img-get/I0000iYGCbLfYh6s/s/860/860/Fphoto-67551208C-6ES.jpg",
+ workflowState: "DRAFT",  //one of "DRAFT", "SUBMITTED", "APPROVED", "REJECTED"
+ classification: "U//FOUO"
+ } ,
+ {
+ uri: "uid:sadflkajsdf",
+ label: "Hydrochloric Acid (HCl)",
+ type: "Item",  // Process
+ modifiedBy: "cmason",
+ modifiedDate: '12-Dec-2012',
+ preview: '<b>Hydrochloric acid</b> is a clear, colorless, highly <a href="/wiki/Pungency" title="Pungency">pungent</a> <a href="/wiki/Solution" title="Solution">solution</a> of <a href="/wiki/Hydrogen_chloride" title="Hydrogen chloride">hydrogen chloride</a> (<a href="/wiki/Hydrogen" title="Hydrogen">H</a><a href="/wiki/Chlorine" title="Chlorine">Cl</a>) in water. It is a highly <a href="/wiki/Corrosive" title="Corrosive" class="mw-redirect">corrosive</a>, <a href="/wiki/Strong_acid" title="Strong acid" class="mw-redirect">strong</a> <a href="/wiki/Mineral_acid" title="Mineral acid">mineral acid</a> with many industrial uses. Hydrochloric acid is found naturally in <a href="/wiki/Gastric_acid" title="Gastric acid">gastric acid</a>.',
+ primaryImageUrl: "http://cdn.c.photoshelter.com/img-get/I0000iYGCbLfYh6s/s/860/860/Fphoto-67551208C-6ES.jpg",
+ workflowState: "DRAFT",  //one of "DRAFT", "SUBMITTED", "APPROVED", "REJECTED"
+ classification: "U//FOUO"
+ } ,
+ {
+ uri: "uid:sadflkajsdf",
+ label: "Hydrochloric Acid (HCl)",
+ type: "Item",  // Process
+ modifiedBy: "cmason",
+ modifiedDate: '12-Dec-2012',
+ preview: '<b>Hydrochloric acid</b> is a clear, colorless, highly <a href="/wiki/Pungency" title="Pungency">pungent</a> <a href="/wiki/Solution" title="Solution">solution</a> of <a href="/wiki/Hydrogen_chloride" title="Hydrogen chloride">hydrogen chloride</a> (<a href="/wiki/Hydrogen" title="Hydrogen">H</a><a href="/wiki/Chlorine" title="Chlorine">Cl</a>) in water. It is a highly <a href="/wiki/Corrosive" title="Corrosive" class="mw-redirect">corrosive</a>, <a href="/wiki/Strong_acid" title="Strong acid" class="mw-redirect">strong</a> <a href="/wiki/Mineral_acid" title="Mineral acid">mineral acid</a> with many industrial uses. Hydrochloric acid is found naturally in <a href="/wiki/Gastric_acid" title="Gastric acid">gastric acid</a>.',
+ primaryImageUrl: "http://cdn.c.photoshelter.com/img-get/I0000iYGCbLfYh6s/s/860/860/Fphoto-67551208C-6ES.jpg",
+ workflowState: "DRAFT",  //one of "DRAFT", "SUBMITTED", "APPROVED", "REJECTED"
+ classification: "U//FOUO"
+ } ,
+ {
+ uri: "uid:sadflkajsdf",
+ label: "Hydrochloric Acid (HCl)",
+ type: "Item",  // Process
+ modifiedBy: "cmason",
+ modifiedDate: '12-Dec-2012',
+ preview: '<b>Hydrochloric acid</b> is a clear, colorless, highly <a href="/wiki/Pungency" title="Pungency">pungent</a> <a href="/wiki/Solution" title="Solution">solution</a> of <a href="/wiki/Hydrogen_chloride" title="Hydrogen chloride">hydrogen chloride</a> (<a href="/wiki/Hydrogen" title="Hydrogen">H</a><a href="/wiki/Chlorine" title="Chlorine">Cl</a>) in water. It is a highly <a href="/wiki/Corrosive" title="Corrosive" class="mw-redirect">corrosive</a>, <a href="/wiki/Strong_acid" title="Strong acid" class="mw-redirect">strong</a> <a href="/wiki/Mineral_acid" title="Mineral acid">mineral acid</a> with many industrial uses. Hydrochloric acid is found naturally in <a href="/wiki/Gastric_acid" title="Gastric acid">gastric acid</a>.',
+ primaryImageUrl: "http://cdn.c.photoshelter.com/img-get/I0000iYGCbLfYh6s/s/860/860/Fphoto-67551208C-6ES.jpg",
+ workflowState: "DRAFT",  //one of "DRAFT", "SUBMITTED", "APPROVED", "REJECTED"
+ classification: "U//FOUO"
+ } ,
+ {
+ uri: "uid:sadflkajsdf",
+ label: "Hydrochloric Acid (HCl)",
+ type: "Item",  // Process
+ modifiedBy: "cmason",
+ modifiedDate: '12-Dec-2012',
+ preview: '<b>Hydrochloric acid</b> is a clear, colorless, highly <a href="/wiki/Pungency" title="Pungency">pungent</a> <a href="/wiki/Solution" title="Solution">solution</a> of <a href="/wiki/Hydrogen_chloride" title="Hydrogen chloride">hydrogen chloride</a> (<a href="/wiki/Hydrogen" title="Hydrogen">H</a><a href="/wiki/Chlorine" title="Chlorine">Cl</a>) in water. It is a highly <a href="/wiki/Corrosive" title="Corrosive" class="mw-redirect">corrosive</a>, <a href="/wiki/Strong_acid" title="Strong acid" class="mw-redirect">strong</a> <a href="/wiki/Mineral_acid" title="Mineral acid">mineral acid</a> with many industrial uses. Hydrochloric acid is found naturally in <a href="/wiki/Gastric_acid" title="Gastric acid">gastric acid</a>.',
+ primaryImageUrl: "http://cdn.c.photoshelter.com/img-get/I0000iYGCbLfYh6s/s/860/860/Fphoto-67551208C-6ES.jpg",
+ workflowState: "DRAFT",  //one of "DRAFT", "SUBMITTED", "APPROVED", "REJECTED"
+ classification: "U//FOUO"
+ } ,
+ {
+ uri: "uid:sadflkajsdf",
+ label: "Hydrochloric Acid (HCl)",
+ type: "Item",  // Process
+ modifiedBy: "cmason",
+ modifiedDate: '12-Dec-2012',
+ preview: '<b>Hydrochloric acid</b> is a clear, colorless, highly <a href="/wiki/Pungency" title="Pungency">pungent</a> <a href="/wiki/Solution" title="Solution">solution</a> of <a href="/wiki/Hydrogen_chloride" title="Hydrogen chloride">hydrogen chloride</a> (<a href="/wiki/Hydrogen" title="Hydrogen">H</a><a href="/wiki/Chlorine" title="Chlorine">Cl</a>) in water. It is a highly <a href="/wiki/Corrosive" title="Corrosive" class="mw-redirect">corrosive</a>, <a href="/wiki/Strong_acid" title="Strong acid" class="mw-redirect">strong</a> <a href="/wiki/Mineral_acid" title="Mineral acid">mineral acid</a> with many industrial uses. Hydrochloric acid is found naturally in <a href="/wiki/Gastric_acid" title="Gastric acid">gastric acid</a>.',
+ primaryImageUrl: "http://cdn.c.photoshelter.com/img-get/I0000iYGCbLfYh6s/s/860/860/Fphoto-67551208C-6ES.jpg",
+ workflowState: "DRAFT",  //one of "DRAFT", "SUBMITTED", "APPROVED", "REJECTED"
+ classification: "U//FOUO"
+ } ,
+ {
+ uri: "uid:sadflkajsdf",
+ label: "Hydrochloric Acid (HCl)",
+ type: "Item",  // Process
+ modifiedBy: "cmason",
+ modifiedDate: '12-Dec-2012',
+ preview: '<b>Hydrochloric acid</b> is a clear, colorless, highly <a href="/wiki/Pungency" title="Pungency">pungent</a> <a href="/wiki/Solution" title="Solution">solution</a> of <a href="/wiki/Hydrogen_chloride" title="Hydrogen chloride">hydrogen chloride</a> (<a href="/wiki/Hydrogen" title="Hydrogen">H</a><a href="/wiki/Chlorine" title="Chlorine">Cl</a>) in water. It is a highly <a href="/wiki/Corrosive" title="Corrosive" class="mw-redirect">corrosive</a>, <a href="/wiki/Strong_acid" title="Strong acid" class="mw-redirect">strong</a> <a href="/wiki/Mineral_acid" title="Mineral acid">mineral acid</a> with many industrial uses. Hydrochloric acid is found naturally in <a href="/wiki/Gastric_acid" title="Gastric acid">gastric acid</a>.',
+ primaryImageUrl: "http://cdn.c.photoshelter.com/img-get/I0000iYGCbLfYh6s/s/860/860/Fphoto-67551208C-6ES.jpg",
+ workflowState: "DRAFT",  //one of "DRAFT", "SUBMITTED", "APPROVED", "REJECTED"
+ classification: "U//FOUO"
+ } ,
+ {
+ uri: "uid:sadflkajsdf",
+ label: "Hydrochloric Acid (HCl)",
+ type: "Item",  // Process
+ modifiedBy: "cmason",
+ modifiedDate: '12-Dec-2012',
+ preview: '<b>Hydrochloric acid</b> is a clear, colorless, highly <a href="/wiki/Pungency" title="Pungency">pungent</a> <a href="/wiki/Solution" title="Solution">solution</a> of <a href="/wiki/Hydrogen_chloride" title="Hydrogen chloride">hydrogen chloride</a> (<a href="/wiki/Hydrogen" title="Hydrogen">H</a><a href="/wiki/Chlorine" title="Chlorine">Cl</a>) in water. It is a highly <a href="/wiki/Corrosive" title="Corrosive" class="mw-redirect">corrosive</a>, <a href="/wiki/Strong_acid" title="Strong acid" class="mw-redirect">strong</a> <a href="/wiki/Mineral_acid" title="Mineral acid">mineral acid</a> with many industrial uses. Hydrochloric acid is found naturally in <a href="/wiki/Gastric_acid" title="Gastric acid">gastric acid</a>.',
+ primaryImageUrl: "http://cdn.c.photoshelter.com/img-get/I0000iYGCbLfYh6s/s/860/860/Fphoto-67551208C-6ES.jpg",
+ workflowState: "DRAFT",  //one of "DRAFT", "SUBMITTED", "APPROVED", "REJECTED"
+ classification: "U//FOUO"
+ } ,
+ {
+ uri: "uid:sadflkajsdf",
+ label: "Hydrochloric Acid (HCl)",
+ type: "Item",  // Process
+ modifiedBy: "cmason",
+ modifiedDate: '12-Dec-2012',
+ preview: '<b>Hydrochloric acid</b> is a clear, colorless, highly <a href="/wiki/Pungency" title="Pungency">pungent</a> <a href="/wiki/Solution" title="Solution">solution</a> of <a href="/wiki/Hydrogen_chloride" title="Hydrogen chloride">hydrogen chloride</a> (<a href="/wiki/Hydrogen" title="Hydrogen">H</a><a href="/wiki/Chlorine" title="Chlorine">Cl</a>) in water. It is a highly <a href="/wiki/Corrosive" title="Corrosive" class="mw-redirect">corrosive</a>, <a href="/wiki/Strong_acid" title="Strong acid" class="mw-redirect">strong</a> <a href="/wiki/Mineral_acid" title="Mineral acid">mineral acid</a> with many industrial uses. Hydrochloric acid is found naturally in <a href="/wiki/Gastric_acid" title="Gastric acid">gastric acid</a>.',
+ primaryImageUrl: "http://cdn.c.photoshelter.com/img-get/I0000iYGCbLfYh6s/s/860/860/Fphoto-67551208C-6ES.jpg",
+ workflowState: "DRAFT",  //one of "DRAFT", "SUBMITTED", "APPROVED", "REJECTED"
+ classification: "U//FOUO"
  }
 
  ]
- }); */
+ });
 
+*/
 
 /* global Ext: false, Savanna: false */
+
+
 Ext.define('Savanna.modelSearch.store.SearchResults', {
     extend: 'Ext.data.JsonStore',
 
@@ -116,18 +726,18 @@ Ext.define('Savanna.modelSearch.store.SearchResults', {
         this.callParent(arguments);
 
 
-        /*
-        Must set totalProperty on the reader for our paging toolbar to work.  Because
-        base elements are all on the same level in a json object with no key, the only way
-        appears to be to modify the json object in readRecords to have a key value,
-        which is set to 'data' in this case.  Allows then for 'data.totalResults', etc...
-         */
+
+        //Must set totalProperty on the reader for our paging toolbar to work.  Because
+        //base elements are all on the same level in a json object with no key, the only way
+        //appears to be to modify the json object in readRecords to have a key value,
+        //which is set to 'data' in this case.  Allows then for 'data.totalResults', etc...
+
         ReaderClass = Ext.extend(Ext.data.JsonReader, {
             type:'json',
             root: 'results',
             totalProperty:'totalResults',
             readRecords: function(data) {
-                me.facetValueSummaries = data.facetValueSummaries;
+                me.facetValueSummaries = data.facets;
                 return this.callParent([data]);
             }
 
