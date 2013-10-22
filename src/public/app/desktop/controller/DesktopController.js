@@ -19,7 +19,7 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
         aboutwindow: null,
         searchwindow: null,
         uploadwindow: null
-    },
+            },
 
     control: {
         logobutton: {
@@ -102,7 +102,20 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
     },
 
     handleLogout: function() {
-        console.log('The user is trying to logout');
+        //POST to the logout url, and refresh the page on a response to trigger the login page
+        Ext.Ajax.request({
+            url: SavannaConfig.logoutUrl + ';jsessionid=' + Savanna.jsessionid,
+            cors: true,
+            method: 'POST',
+            success: function(response){
+                //Refresh the page
+                location.href = location.href;
+            },
+            failure: function(response){
+                location.href = location.href;
+            }
+        })
+
     },
 
     displayModelSearch: function() {

@@ -17,6 +17,6 @@ Ext.define('Savanna.desktop.view.AboutWindow', {
     items: [{
         //todo: determine where the about dialog detailed information will originate from. different per impl?
         xtype: 'label',
-        text: 'This is all about Savanna'
+        text: SavannaConfig.version
     }]
 });
