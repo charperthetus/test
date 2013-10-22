@@ -37,9 +37,9 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
         };
     },
 
-    nodeTextStyle: function(fontsize) {
+    nodeTextStyle: function(fontSize) {
         return {
-            font: fontsize? fontsize.toString() + 'pt Helvetica, Arial, sans-serif' : '10pt Helvetica, Arial, sans-serif',
+            font: fontSize? fontSize.toString() + 'pt Helvetica, Arial, sans-serif' : '10pt Helvetica, Arial, sans-serif',
             stroke: this.darkText,
             margin: 4,
             maxSize: new go.Size(160, NaN),
@@ -181,8 +181,8 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                     curve: go.Link.JumpOver,
                     corner: 5,
                     toShortLength: 4,
-                    relinkableFrom: true,
-                    relinkableTo: true,
+                    relinkableFrom: false,
+                    relinkableTo: false,
                     reshapable: false },
                 gmake(go.Shape,  // the link path shape
                     { isPanelMain: true,
@@ -245,6 +245,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                 gmake(go.Shape,  // the arrowhead
                     { toArrow: 'none',
                         fromArrow: 'backward',
+                        stroke: null,
                         fill: 'gray'})
             )
         );
@@ -271,6 +272,74 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
         return linkTemplateMap;
     },
 
+    makeAdornment: function(alignmentSpot, gooPoint, gooAngle, dropHandler, clickHandler, glyph, labelStr, labelPoint) {
+        var gmake = go.GraphObject.make;
+        return gmake(go.Panel, go.Panel.Position,
+            {
+                alignment: alignmentSpot,
+                alignmentFocus: go.Spot.Center,
+                width:72, height:72
+            },
+            gmake(go.Shape, 'HalfEllipse', {
+                    background: 'transparent',
+                    fill: null,
+                    stroke: null,
+                    angle: gooAngle,
+                    width:36, height:72,
+                    position: gooPoint,
+                    isActionable: true,
+                    mouseDragEnter: function(e, obj) {
+                        obj.fill = 'lightblue';
+                    },
+                    mouseDragLeave: function(e, obj) {
+                        obj.fill = null;
+                    },
+                    mouseDrop: dropHandler
+                }
+            ),
+            gmake(go.Panel, go.Panel.Position, {
+                    isActionable: true,
+                    position: new go.Point(24, 24),
+                    click: clickHandler,
+                    actionDown: function(e, obj) {
+                        obj.elt(0).fill = 'dodgerblue';
+                    },
+                    actionUp: function(e, obj) {
+                        obj.elt(0).fill = 'lightblue';
+                    },
+                    mouseEnter: function(e, obj) {
+                        obj.elt(0).fill = 'skyblue';
+                    },
+                    mouseLeave: function(e, obj) {
+                        // should only change the hover color if we are moving outside, not if we are moving over the glyph
+                        // todo: not yet sure how to implement this
+                        obj.elt(0).fill = 'lightblue';
+                    },
+                    mouseDragEnter: function(e, obj) {
+                        obj.elt(0).fill = 'skyblue';
+                    },
+                    mouseDragLeave: function(e, obj) {
+                        obj.elt(0).fill = 'lightblue';
+                    },
+                    mouseDrop: dropHandler
+                },
+                gmake(go.Shape, 'Circle', {
+                        fill: 'lightblue',
+                        stroke: 'white',
+                        strokeWidth:3,
+                        width:24, height:24,
+                        position: new go.Point(0, 0)
+                    }
+                ),
+                gmake(go.TextBlock, glyph,{ font: '10pt SickFont', stroke: 'blue', position: new go.Point(6, 7) } ),
+                gmake(go.TextBlock, '\uf100',{ font: '7pt SickFont', stroke: 'blue', position: new go.Point(18, 0) } )
+            ),
+            gmake(go.TextBlock, labelStr,
+                { font: 'bold 6pt sans-serif', background: 'white', position: labelPoint }
+            )
+        );
+    },
+
     generateGroupTemplateMap: function() {
         var gmake = go.GraphObject.make;
         var groupTemplateMap = new go.Map();
@@ -286,10 +355,10 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                     // highlight when dragging into the Group
                     mouseDragEnter: Savanna.process.utils.GroupEventHandlers.onMouseDragEnter,
                     mouseDragLeave: Savanna.process.utils.GroupEventHandlers.onMouseDragLeave,
+                    mouseHold: Savanna.process.utils.GroupEventHandlers.onMouseHold,
                     computesBoundsAfterDrag: true,
                     // when the selection is dropped into a Group, add the selected Parts into that Group;
                     // if it fails, cancel the tool, rolling back any changes
-                    mouseDrop: Savanna.process.utils.GroupEventHandlers.onNodeGroupMouseDrop,
                     memberValidation: Savanna.process.utils.GroupEventHandlers.memberValidation,
                     // define the group's internal layout
                     layout: gmake(StepLayout),
@@ -319,7 +388,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
 
         // define the Actions Group template
         groupTemplateMap.add('InternalGroup',
-            gmake(go.Group, go.Panel.Auto,
+            gmake(go.Group, go.Panel.Spot,
                 {
                     name: '#88FFFF',
                     background: 'transparent',
@@ -329,51 +398,33 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                     // highlight when dragging into the Group
                     mouseDragEnter: Savanna.process.utils.GroupEventHandlers.onMouseDragEnter,
                     mouseDragLeave: Savanna.process.utils.GroupEventHandlers.onMouseDragLeave,
-                    // when the selection is dropped into a Group, add the selected Parts into that Group;
-                    // if it fails, cancel the tool, rolling back any changes
-                    mouseDrop: Savanna.process.utils.GroupEventHandlers.onActionGroupMouseDrop,
                     memberValidation: Savanna.process.utils.GroupEventHandlers.actionsGroupMemberValidation,
                     // define the group's internal layout
                     layout: gmake(go.GridLayout,
-                                  { wrappingWidth: Infinity, alignment: go.GridLayout.Position, cellSize: new go.Size(1, 1) }),
+                                  { wrappingWidth: 1, alignment: go.GridLayout.Position, cellSize: new go.Size(1, 1) }),
                     // the group begins expanded
                     isSubGraphExpanded: true,
                     wasSubGraphExpanded: true
                 },
-                gmake(go.Shape, 'RoundedRectangle', { fill: '#88FFFF', name:'BACKGROUND', stroke: null}),
-                gmake(go.Panel, go.Panel.Horizontal, {defaultAlignment: go.Spot.Top},
-                    gmake(go.TextBlock, '+ Tools', {
-                                angle: 270,
-                                alignment: go.Spot.Center,
-                                font: '9pt Helvetica, Arial, sans-serif',
-                                stroke: 'blue',
-                                isUnderline: true,
-                                margin: 2,
-                                editable: false,
-                                click: Savanna.process.utils.ProcessUtils.addTool,
-                                mouseDragEnter: Savanna.process.utils.GroupEventHandlers.onActionMouseDragEnter,
-                                mouseDragLeave: Savanna.process.utils.GroupEventHandlers.onActionMouseDragLeave,
-                                mouseDrop: Savanna.process.utils.GroupEventHandlers.onActionMouseDrop
-                            }),
-
-                    gmake(go.Panel, go.Panel.Vertical,
-                        { defaultAlignment: go.Spot.Center },
-                        gmake(go.TextBlock, '+ Items', Savanna.process.utils.ViewTemplates.linkTextStyle(Savanna.process.utils.ProcessUtils.addInput)),
-                        // create a placeholder to represent the area where the contents of the group are
-                        gmake(go.Placeholder, { padding: new go.Margin(5, 5) }),
-                        gmake(go.TextBlock, '+ Actions', Savanna.process.utils.ViewTemplates.linkTextStyle(Savanna.process.utils.ProcessUtils.addAction))
-                    ),  // end Vertical Panel
-
-                    gmake(go.TextBlock, '+ Byproducts', {
-                                angle: 270,
-                                font: '9pt Helvetica, Arial, sans-serif',
-                                stroke: 'blue',
-                                isUnderline: true,
-                                margin: 2,
-                                editable: false,
-                                click: Savanna.process.utils.ProcessUtils.addByproduct
-                            })
-                )
+                gmake(go.Panel, go.Panel.Auto,
+                    gmake(go.Shape, 'RoundedRectangle', { fill: '#88FFFF', name:'BACKGROUND', stroke: null}),
+                    gmake(go.Placeholder, {
+                            padding: new go.Margin(16, 16),
+                            background: 'transparent',
+                            mouseDragEnter: function(e, obj) {
+                                obj.background = 'orange';
+                            },
+                            mouseDragLeave: function(e, obj) {
+                                obj.background = 'transparent';
+                            },
+                            mouseDrop: Savanna.process.utils.GroupEventHandlers.onActionGroupMouseDrop
+                        }
+                    )
+                ),
+                this.makeAdornment(go.Spot.Left, new go.Point(0, 0), 180, Savanna.process.utils.GroupEventHandlers.onParticipantMouseDrop, Savanna.process.utils.ProcessUtils.addParticipant, '\uf116', 'Participants', new go.Point(14, 50)),
+                this.makeAdornment(go.Spot.Top, new go.Point(0, 0), 270, Savanna.process.utils.GroupEventHandlers.onInputMouseDrop, Savanna.process.utils.ProcessUtils.addInput, '\uf124', 'Inputs', new go.Point(26, 15)),
+                this.makeAdornment(go.Spot.Right, new go.Point(36, 0), 0, Savanna.process.utils.GroupEventHandlers.onByproductMouseDrop, Savanna.process.utils.ProcessUtils.addByproduct, '\uf13d', 'Byproducts', new go.Point(14, 50)),
+                this.makeAdornment(go.Spot.Bottom, new go.Point(0, 36), 90, Savanna.process.utils.GroupEventHandlers.onResultMouseDrop, Savanna.process.utils.ProcessUtils.addResult, '\uf16d', 'Results', new go.Point(24, 50))
             )
         );  // end Actions Group
 
