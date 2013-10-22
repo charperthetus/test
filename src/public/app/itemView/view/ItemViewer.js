@@ -1,5 +1,5 @@
 Ext.define('Savanna.itemView.view.ItemViewer', {
-    extend: 'Ext.Panel',
+    extend: 'Ext.panel.Panel',
 
     alias: 'widget.itemview_itemviewer',
 
@@ -17,7 +17,8 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
         'Savanna.itemView.view.itemQualities.EditItemQualities',
         'Savanna.itemView.view.components.LabeledFieldWithTags',
         'Savanna.itemView.view.relatedProcesses.RelatedProcesses',
-        'Savanna.itemView.view.relatedItems.ViewRelatedItems'
+        'Savanna.itemView.view.relatedItems.ViewRelatedItems',
+        'Savanna.itemView.view.itemQualities.ViewItemQualities'
     ],
 
     controller: 'Savanna.itemView.controller.ItemViewController',
@@ -25,6 +26,19 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
     config: {
         itemUri: null
     },
+
+    dockedItems: [{
+        xtype: 'toolbar',
+        dock: 'top',
+        items: [
+            '->',
+            {
+                xtype: 'label',
+                text: 'CLASSIFICATION'
+            },
+            '->'
+        ]
+    }],
 
     tbar: [
         {
@@ -35,13 +49,13 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                     text: 'New Item...'
                 },
                 {
-                    text: 'Delete' 
+                    text: 'Delete'
                 },
                 {
                     xtype: 'menuseparator'
                 },
                 {
-                    text: 'Workflow' 
+                    text: 'Workflow'
                 },
                 {
                     xtype: 'menuseparator'
@@ -58,7 +72,9 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
         }
     ],
 
-    layout: 'hbox',
+    layout:{
+        type: 'hbox'
+    },
     overflowY: 'auto',
     autoScroll: true,
 
@@ -68,6 +84,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
     },
 
     initComponent: function() {
+
         this.items = this.buildItems();
         this.callParent(arguments);
     },
@@ -80,20 +97,17 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                 flex: 1,
                 items: [
                     {
-                        xtype: 'itemview_edit_header',
-                        itemId: 'itemEditHeader'
-                    },
-                    {
                         xtype: 'itemview_view_header',
-                        itemId: 'itemViewHeader'
+                        itemId: 'itemViewHeader',
+                        header:{
+                            ui:'white'
+                        }
                     },
                     {
                         //ToDo: create related processes component here
                         xtype: 'itemview_related_processes',
                         itemId: 'relatedProcesses',
                         collapsible: true,
-                        title: 'Participated in Process (#)',
-                        store: null,
                         header:{
                             ui:'light-blue'
                         }
@@ -115,15 +129,9 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                 flex: 1,
                 items: [
                     {
-                        xtype: 'itemview_imagesgrid',
-                        itemId: 'imagesGrid'
-                    },
-                    {
-                        xtype: 'item_edit_qualities',
-                        itemId: 'itemProperties',
-                        width: '100%',
+                        xtype: 'itemview_view_qualities',
+                        itemId: 'itemViewProperties',
                         collapsible: true,
-                        title: 'Qualities (#)',
                         header:{
                             ui:'light-blue'
                         }
