@@ -25,6 +25,7 @@ Ext.define('Savanna.search.view.searchComponent.SearchBody', {
     border: false,
     currentPanel: 'searchoptions',
 
+    ui: 'search-prime',
     items: [
         {
             xtype: 'panel',
