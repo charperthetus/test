@@ -31,6 +31,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
     columns: [
         {
             text: ' ',
+            hideable: false, //No hide menu for a single column
             xtype: 'templatecolumn',
             tpl: new Ext.XTemplate(
 
