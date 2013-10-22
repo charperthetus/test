@@ -12,7 +12,6 @@ Ext.define('Savanna.Config', {
         SavannaConfig.locationSearch = SavannaConfig.savannaUrlRoot + '/rest/map/search';   // local dev version: 'resources/data/testSearchLocationSearch.json',
         SavannaConfig.uploadUrl = SavannaConfig.savannaUrlRoot + 'rest/document/upload';
         SavannaConfig.metadataUrl = SavannaConfig.savannaUrlRoot + 'rest/metadata';
-        SavannaConfig.resultsMetadataUrl = SavannaConfig.savannaUrlRoot + 'rest/metadata';
         // TODO: replace this test URL with real endpoint once we have one....
         SavannaConfig.crumbnetTemplatesUrl = 'resources/data/Crumbnet.json';
         SavannaConfig.processTemplatesUrl = 'resources/data/Process.json';
