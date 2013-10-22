@@ -32,7 +32,7 @@ Ext.define('Savanna.itemView.view.relatedProcesses.RelatedProcesses', {
             }
         }
     },
-
+    cls:'item-view-panel',
     columns: [
         {
             xtype: 'templatecolumn',

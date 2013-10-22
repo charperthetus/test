@@ -9,6 +9,8 @@
 Ext.define('Savanna.itemView.view.itemView.ViewRelatedItems', {
     extend: 'Ext.Panel',
 
-    alias: 'widget.itemview_view_related_items'
+    alias: 'widget.itemview_view_related_items',
+
+    cls:'item-view-panel'
 
 });

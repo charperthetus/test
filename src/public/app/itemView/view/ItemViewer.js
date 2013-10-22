@@ -40,10 +40,13 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
         ]
     }],
 
-    tbar: [
+    tbar:{
+        ui:'item-view',
+        items:[
         {
             xtype: 'splitbutton',
             text: 'Options',
+            ui:'basic',
             menu: [
                 {
                     text: 'New Item...'
@@ -70,7 +73,8 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
             xtype: 'button',
             text: 'Edit'
         }
-    ],
+        ]
+    },
 
     layout:{
         type: 'hbox'
@@ -92,7 +96,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
         return [
             {
                 xtype: 'panel',
-                cls: 'BoilerPlatePropertyGrid',
+                cls: 'item-view-left-column',
                 flex: 1,
                 items: [
 //                    {
@@ -102,8 +106,10 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                     {
                         xtype: 'itemview_view_header',
                         itemId: 'itemViewHeader',
+                        cls:'item-view-panel',
                         header:{
-                            ui:'white'
+                            ui:'item-view',
+                            height:48
                         }
                     },
                     {

@@ -1,0 +1,45 @@
+/*
+*
+*
+* @author Eirby 10/21/2013
+*
+*
+*/
+
+@include uikit-panel (
+  $uikit-ui: 'item-view',
+  $uikit-header-color: $font-color,
+  $uikit-header-font-family: $panel-header-font-family,
+  $uikit-header-font-size: $item-view-panel-header-font-size,
+  $uikit-header-font-weight: $panel-body-font-weight,
+  $uikit-header-line-height: $item-view-panel-header-line-height,
+  $uikit-header-border-color: $item-view-panel-header-border-color,
+  $uikit-header-border-width: $panel-header-border-width,
+  $uikit-header-border-style: $panel-header-border-style,
+  $uikit-header-background-color: $item-view-panel-header-background-color
+);
+
+.item-view-left-column{
+    border-right-width:$item-view-left-column-border-width;
+    border-right-style: $item-view-left-column-border-style;
+}
+
+
+.item-view-panel{
+  input[type="button"]{
+    border: 0;
+    background: transparent;
+    color: #2694be;
+    cursor: pointer;
+    &:hover, &:active, &:focus{
+        text-decoration: underline;
+    }
+  }
+  .#{$prefix}column-header, .#{$prefix}grid-header-ct{
+            background:none;
+            border-color:transparent;
+  }
+  td, tr, table, .#{$prefix}grid-cell {
+    border-color:transparent;
+  }
+}
