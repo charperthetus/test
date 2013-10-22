@@ -9,6 +9,8 @@
 Ext.define('Savanna.itemView.view.relatedProcesses.RelatedProcesses', {
     extend: 'Ext.grid.Panel',
 
+    require: ['Savanna.itemView.controller.RelatedProcessesController'],
+
     alias: 'widget.itemview_related_processes',
 
     store: 'Savanna.itemView.store.MainItemStore',
