@@ -44,7 +44,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
         ui:'item-view',
         items:[
         {
-            xtype: 'splitbutton',
+            xtype: 'button',
             text: 'Options',
             ui:'basic',
             menu: [

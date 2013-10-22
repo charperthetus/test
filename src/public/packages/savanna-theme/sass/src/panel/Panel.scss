@@ -31,6 +31,7 @@
     background: transparent;
     color: #2694be;
     cursor: pointer;
+    padding-left: 0px;
     &:hover, &:active, &:focus{
         text-decoration: underline;
     }
@@ -41,5 +42,16 @@
   }
   td, tr, table, .#{$prefix}grid-cell {
     border-color:transparent;
+  }
+  .#{$prefix}grid-row{
+    .#{$prefix}grid-cell-inner{
+      line-height: 17px;
+      padding: 0 6px 0 12px;
+    }
+    &:last-child{
+      .#{$prefix}grid-cell-inner{
+        padding: 0 6px 18px 12px;
+      }
+    }
   }
 }
