@@ -35,6 +35,9 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             'search_searchcomponent #search_reset_button': {
                 click: this.handleNewSearch
             },
+            'search_searchcomponent #toolbarsearchbutton': {
+                click: this.doSearch
+            },
             'search_searchcomponent #searchadvanced_btn': {
                 click: this.showHideMenu
             },
@@ -190,6 +193,8 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             optionsBtn.fireEvent('click', optionsBtn);
         }
 
+        component.down('#searchbodybbar').setVisible(true);
+
         /*
          clear the grid - it's misleading in error states to see results in the grid, even though
          the search request has failed for one reason or another
@@ -261,12 +266,14 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             options.show();
             results.hide();
             body.currentPanel = 'searchoptions';
+            component.down('#searchbodybbar').setVisible(true);
         }
 
         if (body.currentPanel !== 'results' && button === results_button) {
             options.hide();
             results.show();
             body.currentPanel = 'results';
+            component.down('#searchbodybbar').setVisible(false);
         }
     },
 
@@ -550,8 +557,8 @@ Ext.define('Savanna.search.controller.SearchComponent', {
     },
 
     showResultsPage: function (component) {
+        component.down('#searchbodybbar').setVisible(false);
         var resultsBtn = component.down('#resultsbutton');
-
         resultsBtn.fireEvent('click', resultsBtn);
     },
 

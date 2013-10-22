@@ -65,9 +65,15 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
             },
             {
                 xtype: 'tbfill'
+            },
+            {
+                glyph: 61786,
+                itemId: 'results_listViewButton'
+            },
+            {
+                glyph: 61746,
+                itemId: 'results_mapViewButton'
             }
-
-
         ]
     }
 

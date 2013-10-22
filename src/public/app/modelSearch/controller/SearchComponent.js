@@ -35,6 +35,9 @@ Ext.define('Savanna.modelSearch.controller.SearchComponent', {
             'model_search_searchcomponent #search_reset_button': {
                 click: this.handleNewSearch
             },
+            'model_search_searchcomponent #toolbarmodelsearchbutton': {
+                click: this.doSearch
+            },
             'model_search_searchcomponent #searchadvanced_btn': {
                 click: this.showHideMenu
             },
@@ -550,8 +553,8 @@ Ext.define('Savanna.modelSearch.controller.SearchComponent', {
     },
 
     showResultsPage: function (component) {
-        var resultsBtn = component.down('#resultsbutton');
 
+        var resultsBtn = component.down('#resultsbutton');
         resultsBtn.fireEvent('click', resultsBtn);
     },
 
