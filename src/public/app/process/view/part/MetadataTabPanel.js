@@ -10,12 +10,17 @@ Ext.define('Savanna.process.view.part.MetadataTabPanel', {
     alias: 'widget.process_metadata',
 
     requires: [
-        'Ext.tab.Panel'
+        'Ext.tab.Panel',
+        'Savanna.metadata.view.Details'
     ],
 
     enableTabScroll: true,
     items: [
-        { title: 'Details' }, //todo: fill in details
+        {
+            title: 'Details',
+            xtype: 'metadata_details',
+            itemURI: 'SolrJdbc%252FText%252F9d62ad60-f453-4215-b8bc-c4c1398b84a4'
+        },
         { title: 'Comments' },
         { title: 'Selection' },
         { title: 'JSON',
