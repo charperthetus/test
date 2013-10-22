@@ -14,19 +14,8 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     mixins: {
         storeable: 'Savanna.mixin.Storeable'
     },
-
     control: {
-        addPropAutoChooser: {
-            keyup: 'handleAddChosenProperty'
-        },
-
-        nav_left: {
-            click:'onNavLeft'
-        },
-
-        nav_right: {
-            click: 'onNavRight'
-        }
+        
     },
 
     constructor: function (options) {
@@ -49,45 +38,73 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         });
     },
 
-    onItemViewCreated: function (tab) {
-        var tabpanel = Ext.ComponentQuery.query('desktop_tabpanel')[0];
-        var main = tabpanel.getActiveTab();
-        tabpanel.add(tab);
-    },
-
     handleRecordDataRequestSuccess: function (record, operation, success) {
         var headerComponent = this.getView().queryById('itemViewHeader');
-        headerComponent.title = record[0].data.label;
+        headerComponent.setTitle(record[0].data.label);
         headerComponent.reconfigure(record[0].propertyGroupsStore.getAt(0).valuesStore);
+
+        var processComponent = this.getView().queryById('relatedProcesses');
+        processComponent.setTitle('Participated in Process (' + record[0].kvPairGroupsStore.getAt(0).pairsStore.data.length + ')');
+        processComponent.reconfigure(record[0].kvPairGroupsStore.getAt(0).pairsStore);
+
+        var qualitiesComponent = this.getView().queryById('itemViewProperties');
+        qualitiesComponent.setTitle('Qualities (' + record[0].propertyGroupsStore.getAt(3).valuesStore.data.length + ')');
+        qualitiesComponent.reconfigure(record[0].propertyGroupsStore.getAt(3).valuesStore);
+
+        var relatedItemView = this.getView().queryById('relatedItems'),
+            me = this;
+
+        Ext.each(record[0].propertyGroupsStore.getAt(2).valuesStore.data.items, function (relatedItemsGroup) {
+
+            var grid = Ext.create('Ext.grid.Panel', {
+                store: relatedItemsGroup.valuesStore,
+                columns: [
+                    {
+                        xtype: 'templatecolumn',
+                        tpl: Ext.create('Ext.XTemplate',
+                            '<input type="button" name="{value}" value="{label}" id="openRelatedItem" />'
+                        ),
+                        text: relatedItemsGroup.get('label'),
+                        flex: 1,
+                        sortable: false
+                    }
+                ],
+                listeners: {
+                    itemclick: me.onRelatedItemClick
+                }
+            });
+
+            relatedItemView.add(grid);
+
+        });
     },
 
-    setData: function (data, view) {
+    onRelatedItemClick: function (grid, record, item, index, e, eOpts) {
 
-        //Left Side
+        if (e.target.id == "openRelatedItem") {
 
-        //Display Label
-        this.setupDisplayLabel(data.displayLabel, view);
+            var itemView = Ext.create('Savanna.itemView.view.ItemViewer', {
+                title: e.target.value,
+                itemUri: e.target.name,
+                closable: true,
+                autoScroll: true,
+                tabConfig: {
+                    ui: 'dark'
+                }
+            });
 
-        //Aliases
-        this.setupAliases(data.aliases, view);
+            Savanna.app.fireEvent('search:itemSelected', itemView);
 
-        //Related Processes
-        this.setupRelatedProcesses(data, view);
-
-        //Right Side
-
-        //Images
-        this.setupImages(data, view);
-
-        //Properties
-        this.setupProperties(data, view);
+        }
     },
-
+    
+    // TODO: Keeping for now in order to pull later into own controller
     setupDisplayLabel: function (displayLabel, view) {
         var displayLabelComponent = view.queryById('itemDisplayLabel');
         displayLabelComponent.update({displayLabel: displayLabel});
     },
-
+    
+    // TODO: Keeping for now in order to pull later into own controller
     setupAliases: function (aliasList, view) {
         if (aliasList != null && aliasList.length > 0) {
             var aliasTags = view.down('#itemAlias > auto_complete_with_tags');
@@ -98,75 +115,13 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         }
     },
 
-    setupRelatedProcesses: function (data, view) {
-    },
-
-    setupImages: function (data, view) {
-        var me = this,
-            thumbnail_list = view.queryById('thumbnail_list');
-
-        Ext.Array.each(data.observables, function(image, index) {
-            var imageSource = SavannaConfig.savannaUrlRoot + '/preview2/?filestoreUri=' + image.uri;
-            var thumbnail = Ext.create('Savanna.itemView.view.itemView.ImageThumbnail', {
-                title: image.displayLabel,
-                src: imageSource,
-                alt: image.comment,
-                listeners: {
-                    click: {
-                        element: 'el',
-                        fn: me.onChangeImage.bind(me)
-                    }
-                }
-            });
-            thumbnail_list.add(thumbnail);
-        });
-    },
-
-    // Scroll Left Button
-    onNavLeft: function() {
-        var gallery = Ext.ComponentQuery.query('#thumbnail_list')[0];
-        gallery.scrollBy(-450, 0, true);
-    },
-
-    // Scroll Right Button
-    onNavRight: function() {
-        var gallery = Ext.ComponentQuery.query('#thumbnail_list')[0];
-        gallery.scrollBy(450, 0, true);
-    },
-
-    // Selecting an image to expand
-    onChangeImage: function(btn, image) {
-        var selectedImage = image.src,
-            title = (image.title) ? image.title : 'No title',
-            description = (image.alt) ? image.alt : 'No description',
-            jumboImage = Ext.ComponentQuery.query('#image_primary')[0],
-            jumboMeta = Ext.ComponentQuery.query('#image_text')[0],
-            imageWidth = image.naturalWidth,
-            imageHeight = image.naturalHeight;
-
-        var backgroundSize = (imageWidth < jumboImage.width && imageHeight < jumboImage.height) ? 'inherit' : 'contain';
-        
-        // In order to display text over an image, the image is used as a background image on a panel
-        jumboImage.setBodyStyle({
-            backgroundImage: 'url(' + selectedImage + ')',
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'center center',
-            backgroundSize: backgroundSize,
-            backgroundColor: 'transparent'
-        });
-        jumboMeta.update(description);
-    },
-
-    setupProperties: function (data, view) {
-        //ToDo: set up to load current incoming properties
-    },
-
     buildItemDataFetchUrl: function (uri) {
         //uri = Ext.JSON.decode(uri);
        uri = encodeURI(uri);
         return SavannaConfig.itemViewUrl + uri + ';jsessionid=' + Savanna.jsessionid;
     },
 
+    // TODO: Move to it's own controller for Edit Qualities along with it's handler above
     handleAddChosenProperty: function (field, evt) {
         if (evt.keyCode === Ext.EventObject.ENTER) {
             if (field.getValue().trim().length) {
