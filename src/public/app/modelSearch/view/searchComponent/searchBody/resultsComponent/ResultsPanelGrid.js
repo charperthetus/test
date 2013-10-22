@@ -30,38 +30,41 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
 
     columns: [
         {
+            hideable: false,
+            hidden: false,
             text: ' ',
             xtype: 'templatecolumn',
             tpl: new Ext.XTemplate(
 
                 '<div style="position: relative" >',
-                '<div id="hoverDiv" style="visibility: hidden; right: 0;  top: 5; position: absolute;" ><button class="openButtonClass">Open</button></div>',
+                '<div id="hoverDiv" style="visibility: hidden; right: 0;  top: 5px; position: absolute;" ><button class="openButtonClass">Open</button></div>',
 
                 '<!-- column one -->',
 
                 '<div style="float: left; height: 102px; width: 202px;outline: solid 1px #cccccc;" >',
-                   '{[this.conditionallyRenderImage(values.primaryImageUrl)]}',
+                '{[this.conditionallyRenderImage(values.primaryImageUrl)]}',
                 '</div>',
 
                 '<!-- column two values.modifiedDate-->',
                 '<div style="margin-left: 216px" >',
-                '<b>{label}</b><br>Modified: {[this.formatDate(new Date(1382071008238))]},&nbsp;&nbsp;{modifiedBy}',
+                '<b>{label}</b><br>Modified: {[this.formatDate(values.modifiedDate)]},&nbsp;&nbsp;{modifiedBy}',
                 '<br>Workflow state: {workflowState}&nbsp;&nbsp;Classification: {classification}',
                 '<br>',
-                '<div style="width: 100%;height: 70px;white-space: normal;line-break: normal">{preview}</div>',
+                '<div style="width: 100%;height: 70px;white-space: normal;line-break: normal" >{preview}</div>',
                 '</div>',
                 '</div>',
 
                 {
-                    formatDate: function (v) {
-                        return Ext.Date.format(v, 'F d, Y');
+                    formatDate: function (dateTime) {
+                        var dateValue = new Date(parseInt(dateTime, 10));
+                        return Ext.Date.format(dateValue, 'F d, Y');
                     },
 
                     conditionallyRenderImage: function (url) {
                         if(url && url.length > 0){
                             return '<div  style="background-image: url(\'' + url + '\');width:200px;height:100px;background-position:center;background-size:cover;left: 1;top: 1;" ></div>';
                         }
-                        return '<div style="width: 100%; height: 100%;text-align:center;line-height: 100px;background-color:  #eeeeee;left: 1;top: 1;" >No Image</div>';
+                        return '<div style="width: 100%; height: 100%;text-align:center;line-height: 100px;background-color:  #eeeeee;left: 1px;top: 1px;" >No Image</div>';
                     }
 
                 }
