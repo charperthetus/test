@@ -181,8 +181,8 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                     curve: go.Link.JumpOver,
                     corner: 5,
                     toShortLength: 4,
-                    relinkableFrom: true,
-                    relinkableTo: true,
+                    relinkableFrom: false,
+                    relinkableTo: false,
                     reshapable: false },
                 gmake(go.Shape,  // the link path shape
                     { isPanelMain: true,
@@ -245,6 +245,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                 gmake(go.Shape,  // the arrowhead
                     { toArrow: 'none',
                         fromArrow: 'backward',
+                        stroke: null,
                         fill: 'gray'})
             )
         );
