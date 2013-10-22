@@ -367,6 +367,8 @@ Ext.define('Savanna.modelSearch.controller.SearchComponent', {
         var resultsStore = Ext.create('Savanna.modelSearch.store.SearchResults', {
             storeId: 'searchResults_' + dal.get('id'),
             pageSize: pageSize,
+            //This keeps the parameters below from being added to the query string.
+            //They are only in the json body of the request.
             limitParam: undefined,
             pageParam: undefined,
             startParam: undefined
