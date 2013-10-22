@@ -134,7 +134,7 @@ Ext.define('Savanna.process.utils.Styler', {
                 return processModel;
             } else if (tag === 'internalGroup'){
                 return internalGroup;
-            } else if (tag === 'paletteCirle'){
+            } else if (tag === 'paletteCircle'){
                 return circlePalette;
             } else if (tag === 'paletteRectangle'){
                 return rectanglePalette;
@@ -142,7 +142,7 @@ Ext.define('Savanna.process.utils.Styler', {
                 return diamondPalette;
             } else {
                 //Returns back in the log you are not passing a tag that exisit.
-                alert('Process Editor: AddTo Function: Not a Valid JSON');
+                return null;
             }
         }
 
