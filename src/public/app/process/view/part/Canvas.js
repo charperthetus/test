@@ -55,7 +55,7 @@ Ext.define('Savanna.process.view.part.Canvas', {
 
 
         // replace the default Link template in the linkTemplateMap
-        this.diagram.linkTemplate =  this.diagram.linkTemplateMap.getValue('');
+        this.diagram.linkTemplate =  this.diagram.linkTemplateMap.getValue('ProcessLink');
 
         // temporary links used by LinkingTool and RelinkingTool are also orthogonal:
         this.diagram.toolManager.linkingTool.temporaryLink.routing = go.Link.Orthogonal;

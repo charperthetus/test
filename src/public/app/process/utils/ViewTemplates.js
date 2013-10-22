@@ -57,6 +57,48 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
         };
     },
 
+    makePort: function (name, spot, angle) {
+        var triangle = go.Geometry.parse('M 0,0 L 12,0 12,12 0,0 12,0', true);
+
+        return go.GraphObject.make(go.Panel, {
+                alignment: spot,
+                alignmentFocus: go.Spot.Top
+            }, new go.Binding('visible', 'group', function(group) { return !group; } ),
+            go.GraphObject.make(go.Shape, {
+                    geometry: triangle,
+                    stroke: 'black',
+                    fill: 'red',
+                    angle: angle
+                },
+                {
+                    name: name,
+                    fromLinkable: true
+                }
+            )
+        );
+    },
+
+    makeGroupPort: function (name, spot, angle) {
+        var triangle = go.Geometry.parse('M 0,0 L 12,0 12,12 0,0 12,0', true);
+
+        return go.GraphObject.make(go.Panel, {
+                alignment: spot,
+                alignmentFocus: go.Spot.Top
+            },
+            go.GraphObject.make(go.Shape, {
+                    geometry: triangle,
+                    stroke: 'black',
+                    fill: 'red',
+                    angle: angle
+                },
+                {
+                    name: name,
+                    fromLinkable: true
+                }
+            )
+        );
+    },
+
     generateNodeTemplateMap: function() {
         var gmake = go.GraphObject.make;
         var nodeTemplateMap = new go.Map();
@@ -64,7 +106,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                 // define the Node templates for regular nodes
 
         nodeTemplateMap.add('ProcessItem',
-            gmake(go.Node, go.Panel.Spot, Savanna.process.utils.ViewTemplates.nodeStyle(),
+            gmake(go.Node, go.Panel.Spot, Savanna.process.utils.ViewTemplates.nodeStyle(), {fromLinkable:true, toLinkable:true},
                 // the main object is a Panel that surrounds a TextBlock with a rectangular Shape
                 gmake(go.Panel, go.Panel.Horizontal,
                     gmake(go.Shape, 'Rectangle', { width: 24, height: 32, fill: Savanna.process.utils.ViewTemplates.mainColor, stroke: null }),
@@ -77,7 +119,8 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                             gmake(go.TextBlock, '+End', Savanna.process.utils.ViewTemplates.linkTextStyle(Savanna.process.utils.ProcessUtils.addEnd))
                         )
                     )
-                )
+                ),
+                this.makePort('BC', go.Spot.Bottom, 135)
             )
         );
 
@@ -109,7 +152,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
         );
 
         nodeTemplateMap.add('DecisionPoint', // Category must match the uri type
-            gmake(go.Node, go.Panel.Spot, Savanna.process.utils.ViewTemplates.nodeStyle(),
+            gmake(go.Node, go.Panel.Spot, Savanna.process.utils.ViewTemplates.nodeStyle(), {toLinkable: true},
                     gmake(go.Panel, go.Panel.Horizontal, { defaultAlignment: go.Spot.Top },
                         gmake(go.Shape, 'Diamond', { width: 32, height: 32, fill: Savanna.process.utils.ViewTemplates.mainColor, stroke: null }),
                         gmake(go.Panel, go.Panel.Vertical, { defaultAlignment: go.Spot.Left },
@@ -281,6 +324,8 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                 {
                     name: 'null',
                     background: 'transparent',
+                    fromLinkable: true,
+                    toLinkable: true,
                     mouseEnter: Savanna.process.utils.GroupEventHandlers.onMouseEnter,
                     mouseLeave: Savanna.process.utils.GroupEventHandlers.onMouseLeave,
                     // highlight when dragging into the Group
@@ -313,7 +358,8 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                         gmake(go.TextBlock, '+Step', Savanna.process.utils.ViewTemplates.linkTextStyle(Savanna.process.utils.ProcessUtils.addStep)),
                         gmake(go.TextBlock, '+Decision', Savanna.process.utils.ViewTemplates.linkTextStyle(Savanna.process.utils.ProcessUtils.addDecision))
                     )
-                )  // end Vertical Panel
+                ),  // end Vertical Panel
+                this.makeGroupPort('BC', go.Spot.Bottom, 135)
             )
         );  // end Group
 
