@@ -62,8 +62,11 @@ Ext.define('Savanna.desktop.view.SavannaWorkspace', {
         height: '100%',
         items: [{
             title: 'Image',
-            xtype: 'image_imagecomponent',
-            imageSource: 'somePath'
+            xtype: 'image_component',
+            itemId: 'workspaceImage',
+            tabConfig: {
+                ui: 'dark'
+            }
         },{
             title: 'Process',
             xtype: 'process_component',

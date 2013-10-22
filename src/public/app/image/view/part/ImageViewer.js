@@ -45,43 +45,36 @@ Ext.define('Savanna.image.view.part.ImageViewer', {
                 xtype: 'button',
                 tooltip: me.tooltips.stretchHorizontally,
                 text: 'fit wide',
-//                icon: 'resources/images/imageviewer/stretch_horizontally.png',
                 listeners: { click: me.stretchHorizontally, scope: me }
             }, {
                 xtype: 'button',
                 tooltip: me.tooltips.stretchVertically,
                 text: 'fit high',
-//                icon: 'resources/images/imageviewer/stretch_vertically.png',
                 listeners: { click: me.stretchVertically, scope: me }
             }, {
                 xtype: 'button',
                 tooltip: me.tooltips.stretchOptimally,
                 text: 'fit right',
-//                icon: 'resources/images/imageviewer/stretch_optimally.png',
                 listeners: { click: me.stretchOptimally, scope: me }
             }, {
                 xtype: 'button',
                 tooltip: me.tooltips.zoomIn,
                 text: 'zoom in',
-//                icon: 'resources/images/imageviewer/zoom_in.png',
                 listeners: { click: me.zoomIn, scope: me }
             }, {
                 xtype: 'button',
                 tooltip: me.tooltips.zoomOut,
                 text: 'zoom out',
-//                icon: 'resources/images/imageviewer/zoom_out.png',
                 listeners: { click: me.zoomOut, scope: me }
             }, {
                 xtype: 'button',
                 tooltip: me.tooltips.rotateClockwise,
                 text: 'rotate clockwise',
-//                icon: 'resources/images/imageviewer/arrow_rotate_clockwise.png',
                 listeners: { click: me.rotateClockwise, scope: me }
             }, {
                 xtype: 'button',
                 tooltip: me.tooltips.rotateAntiClockwise,
                 text: 'rotate counterclockwise',
-//                icon: 'resources/images/imageviewer/arrow_rotate_anticlockwise.png',
                 listeners: { click: me.rotateAntiClockwise, scope: me }
             }]
         }, {
@@ -127,6 +120,7 @@ Ext.define('Savanna.image.view.part.ImageViewer', {
             mouseup: me.mouseup,
             mousedown: me.mousedown,
             mousemove: me.mousemove,
+            mousewheel: me.mousewheel,
             scope: me
         });
 
@@ -214,6 +208,16 @@ Ext.define('Savanna.image.view.part.ImageViewer', {
             me.setLastMarginX(null);
             me.setLastMarginY(null);
             me.setIsMoving(false);
+        }
+    },
+
+    mousewheel: function (event) {
+        var me = this;
+        var wheelDelta = event.browserEvent.wheelDelta;
+        if (wheelDelta >= 0 ){
+            me.zoomIn(null, event, null);
+        }else{
+            me.zoomOut(null, event, null);
         }
     },
 
@@ -395,6 +399,35 @@ Ext.define('Savanna.image.view.part.ImageViewer', {
             me.setImageHeight(size.height);
         }
     },
+
+//  TODO: remove
+//    setImageSizeTesting: function (size) {
+//        var me = this,
+//            rotation = me.getRotation(),
+//            newHeight,
+//            newWidth;
+//
+//        if (rotation === 90 || rotation === 270) {
+//            newWidth = size.height;
+//            newHeight = size.width;
+//        } else {
+//            newWidth = size.width;
+//            newHeight = size.height;
+//        }
+//
+//        me.getImage().animate({
+//            duration: 50,
+//            to:{
+//                width: newWidth
+//            }
+//        }).animate({
+//                duration: 50,
+//                to:{
+//                    height: newHeight
+//                }
+//            });
+//    },
+//
 
     applyImageWidth: function (width) {
         var me = this;
