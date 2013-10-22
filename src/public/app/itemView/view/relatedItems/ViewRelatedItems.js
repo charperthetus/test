@@ -6,8 +6,8 @@
  * To change this template use File | Settings | File Templates.
  */
 
-Ext.define('Savanna.itemView.view.itemView.ViewRelatedItems', {
-    extend: 'Ext.Panel',
+Ext.define('Savanna.itemView.view.relatedItems.ViewRelatedItems', {
+    extend: 'Ext.panel.Panel',
 
     alias: 'widget.itemview_view_related_items'
 

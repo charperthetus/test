@@ -6,8 +6,10 @@
  * To change this template use File | Settings | File Templates.
  */
 
-Ext.define('Savanna.itemView.view.header.HeaderView', {
+Ext.define('Savanna.itemView.view.header.ViewHeader', {
     extend: 'Ext.grid.Panel',
+
+    require: ['Savanna.itemView.controller.ViewHeaderController'],
 
     alias: 'widget.itemview_view_header',
 
@@ -15,37 +17,34 @@ Ext.define('Savanna.itemView.view.header.HeaderView', {
 
     store: 'Savanna.itemView.store.MainItemStore',
 
-    parentItem: null,
+    controller: 'Savanna.itemView.controller.ViewHeaderController',
+
+    hideHeaders: true,
 
     columns: [
         {
-            dataIndex: 'label',
-            sortable: false
-        },
-        {
             xtype: 'templatecolumn',
             dataIndex: 'values',
+            itemId: 'headerColumn',
+            tpl: Ext.create('Ext.XTemplate',
+                '<tpl if="label == \'Parent\'">',
+                    '<b>{label}&nbsp;&nbsp;</b>',
+                    '<tpl for="values">',
+                        '<input type="button" name="{value}" value="{label}" id="openParentItem" />',
+                    '</tpl>',
+                '<tpl elseif="label == \'Description\'">',
+                    '<tpl for="values">',
+                        '{value}',
+                    '</tpl>',
+                '<tpl else>',
+                    '<b>{label}&nbsp;&nbsp;</b>',
+                    '<tpl for="values" between=",&nbsp;&nbsp;">',
+                        '{value}',
+                    '</tpl>',
+                '</tpl>'),
             flex: 1,
-            tpl: '',
-            renderer: function(value, metaData, record, row, col, store, gridView) {
-                return this.renderValues(value, record);
-            },
+            rowLines: false,
             sortable: false
         }
-    ],
-
-    renderValues: function(value, record) {
-        var returnStr = '';
-
-        if (record.data.label == 'Parent') {
-            returnStr = value[0].label;
-        }
-        else {
-            Ext.each(value, function(val) {
-                returnStr += val.value + ', ';
-            });
-        }
-
-        return returnStr.replace(/,\s$/, '');
-    }
+    ]
 });

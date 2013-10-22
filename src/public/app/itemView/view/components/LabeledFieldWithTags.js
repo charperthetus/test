@@ -7,7 +7,7 @@
  */
 
 Ext.define('Savanna.itemView.view.components.LabeledFieldWithTags', {
-    extend: 'Ext.Panel',
+    extend: 'Ext.panel.Panel',
 
     alias: 'widget.labeled_field_with_tags',
 

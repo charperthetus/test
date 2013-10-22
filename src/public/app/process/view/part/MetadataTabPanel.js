@@ -22,7 +22,6 @@ Ext.define('Savanna.process.view.part.MetadataTabPanel', {
             itemURI: 'SolrJdbc%252FText%252F9d62ad60-f453-4215-b8bc-c4c1398b84a4'
         },
         { title: 'Comments' },
-        { title: 'Selection' },
         { title: 'JSON',
             xtype:'panel',
             layout:'vbox',
