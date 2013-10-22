@@ -117,7 +117,7 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
         else {
             searchWindow.center();
         }
-    }
+    },
     // TODO: Remove this once Model search can find and select actual items
     displayDummyItem: function() {
         var itemView = Ext.create('Savanna.itemView.view.ItemViewer', {
