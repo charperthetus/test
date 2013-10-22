@@ -106,17 +106,6 @@ Ext.define('Savanna.search.view.searchComponent.searchBar.SearchForm', {
             emptyText: 'Search'
         },
         {
-            xtype: 'button',
-            itemId: 'search_clear',
-            glyph: 61731
-        },
-        {
-            xtype: 'button',
-            itemId: 'search_submit',
-            glyph: 61808
-        },
-        {
-            hidden: true,
             text: 'Advanced',
             itemId: 'searchadvanced_btn'
 
