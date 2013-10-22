@@ -6,14 +6,11 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
         'Savanna.process.layout.StepLayout',
         'Savanna.process.utils.GroupEventHandlers',
         'Savanna.process.utils.NodeEventHandlers',
-        'Savanna.process.utils.ProcessUtils'
+        'Savanna.process.utils.ProcessUtils',
+        'Savanna.process.utils.Styler'
     ],
-
-    darkText: '#454545',
-    startColor: '#79C900',
-    mainColor: '#00A9C9',
-    endColor: '#DC3C00',
-    stepColor: '#FFFF88',
+    
+    styler: Ext.create('Savanna.process.utils.Styler'),
 
     nodeStyle:function(){
         return {
@@ -109,31 +106,31 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
             gmake(go.Node, go.Panel.Spot, Savanna.process.utils.ViewTemplates.nodeStyle(), {fromLinkable:true, toLinkable:true},
                 // the main object is a Panel that surrounds a TextBlock with a rectangular Shape
                 gmake(go.Panel, go.Panel.Horizontal,
-                    gmake(go.Shape, 'Rectangle', { width: 24, height: 32, fill: Savanna.process.utils.ViewTemplates.mainColor, stroke: null }),
+                    gmake(go.Shape, 'Rectangle', this.styler.rectangle().outline),
                     gmake(go.Panel, go.Panel.Vertical, { defaultAlignment: go.Spot.Left },
-                        gmake(go.TextBlock, Savanna.process.utils.ViewTemplates.nodeTextStyle(), new go.Binding('text', 'text').makeTwoWay()),
+                        gmake(go.TextBlock, this.styler.rectangle().textblock , new go.Binding('text', 'text').makeTwoWay()),
                         // define a Horizontal panel to place the node's three buttons side by side
                         gmake(go.Panel, go.Panel.Horizontal, {opacity: 0.0, name: 'BUTTONS'},
-                            gmake(go.TextBlock, '+Step', Savanna.process.utils.ViewTemplates.linkTextStyle(Savanna.process.utils.ProcessUtils.addStep)),
-                            gmake(go.TextBlock, '+Decision', Savanna.process.utils.ViewTemplates.linkTextStyle(Savanna.process.utils.ProcessUtils.addDecision)),
-                            gmake(go.TextBlock, '+End', Savanna.process.utils.ViewTemplates.linkTextStyle(Savanna.process.utils.ProcessUtils.addEnd))
+                            gmake(go.TextBlock, '+Step', this.styler.linker({"click":Savanna.process.utils.ProcessUtils.addStep}).handler),
+                            gmake(go.TextBlock, '+Decision', this.styler.linker({"click":Savanna.process.utils.ProcessUtils.addDecision}).handler),
+                            gmake(go.TextBlock, '+End', this.styler.linker({"click":Savanna.process.utils.ProcessUtils.addEnd}).handler)
                         )
                     )
                 ),
                 this.makePort('BC', go.Spot.Bottom, 135)
             )
         );
-
+        
         nodeTemplateMap.add('Start',
             gmake(go.Node, go.Panel.Spot, Savanna.process.utils.ViewTemplates.nodeStyle(),
                 gmake(go.Panel, go.Panel.Horizontal, { defaultAlignment: go.Spot.Top },
-                    gmake(go.Shape, 'Start', { width: 32, height: 16, fill: Savanna.process.utils.ViewTemplates.startColor, stroke: null }),
+                    gmake(go.Shape, 'Start', this.styler.start().outline),
                     gmake(go.Panel, go.Panel.Vertical, { defaultAlignment: go.Spot.Left },
-                        gmake(go.TextBlock, 'Start', Savanna.process.utils.ViewTemplates.uneditableNodeTextStyle()),
+                        gmake(go.TextBlock, 'Start', this.styler.start().textblock),
                         // define a Horizontal panel to place the node's two buttons side by side
                         gmake(go.Panel, go.Panel.Horizontal, {opacity: 0.0, name: 'BUTTONS'},
-                                gmake(go.TextBlock, '+Step', Savanna.process.utils.ViewTemplates.linkTextStyle(Savanna.process.utils.ProcessUtils.addStep)),
-                                gmake(go.TextBlock, '+Decision', Savanna.process.utils.ViewTemplates.linkTextStyle(Savanna.process.utils.ProcessUtils.addDecision))
+                                gmake(go.TextBlock, '+Step', this.styler.linker({"click":Savanna.process.utils.ProcessUtils.addStep}).handler),
+                                gmake(go.TextBlock, '+Decision', this.styler.linker({"click":Savanna.process.utils.ProcessUtils.addDecision}).handler)
                         )
                     )
                 )
@@ -143,9 +140,9 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
         nodeTemplateMap.add('ProcessAction',
             gmake(go.Node, go.Panel.Spot, Savanna.process.utils.ViewTemplates.nodeStyle(),
                 gmake(go.Panel, go.Panel.Horizontal, { defaultAlignment: go.Spot.Top },
-                    gmake(go.Shape, 'Circle', { width: 32, height: 32, fill: Savanna.process.utils.ViewTemplates.mainColor, stroke: null }),
+                    gmake(go.Shape, 'Circle', this.styler.circle().outline),
                     gmake(go.Panel, go.Panel.Vertical, { defaultAlignment: go.Spot.Left },
-                        gmake(go.TextBlock, Savanna.process.utils.ViewTemplates.nodeTextStyle(), new go.Binding('text', 'text').makeTwoWay())
+                        gmake(go.TextBlock, this.styler.circle().textblock, new go.Binding('text', 'text').makeTwoWay())
                     )
                 )
             )
@@ -154,13 +151,13 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
         nodeTemplateMap.add('DecisionPoint', // Category must match the uri type
             gmake(go.Node, go.Panel.Spot, Savanna.process.utils.ViewTemplates.nodeStyle(), {toLinkable: true},
                     gmake(go.Panel, go.Panel.Horizontal, { defaultAlignment: go.Spot.Top },
-                        gmake(go.Shape, 'Diamond', { width: 32, height: 32, fill: Savanna.process.utils.ViewTemplates.mainColor, stroke: null }),
+                        gmake(go.Shape, 'Diamond', this.styler.diamond().outline),
                         gmake(go.Panel, go.Panel.Vertical, { defaultAlignment: go.Spot.Left },
-                            gmake(go.TextBlock, Savanna.process.utils.ViewTemplates.nodeTextStyle(), new go.Binding('text', 'text').makeTwoWay()),
+                            gmake(go.TextBlock,this.styler.diamond().textblock, new go.Binding('text', 'text').makeTwoWay()),
                             // define a Horizontal panel to place the node's two buttons side by side
                             gmake(go.Panel, go.Panel.Horizontal, {opacity: 0.0, name: 'BUTTONS'},
-                                gmake(go.TextBlock, '+Step', Savanna.process.utils.ViewTemplates.linkTextStyle(Savanna.process.utils.ProcessUtils.addStep)),
-                                gmake(go.TextBlock, '+Decision', Savanna.process.utils.ViewTemplates.linkTextStyle(Savanna.process.utils.ProcessUtils.addDecision))
+                                gmake(go.TextBlock, '+Step', this.styler.linker({"click":Savanna.process.utils.ProcessUtils.addStep}).handler),
+                                gmake(go.TextBlock, '+Decision', this.styler.linker({"click":Savanna.process.utils.ProcessUtils.addDecision}).handler)
                             )
                         )  // end Horizontal Panel
                     )
@@ -170,8 +167,8 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
         nodeTemplateMap.add('End',
             gmake(go.Node, go.Panel.Spot, Savanna.process.utils.ViewTemplates.nodeStyle(),
                 gmake(go.Panel, go.Panel.Horizontal,
-                    gmake(go.Shape, 'StopSign', { width: 32, height: 32, fill: Savanna.process.utils.ViewTemplates.endColor, stroke: null }),
-                    gmake(go.TextBlock, 'End', Savanna.process.utils.ViewTemplates.uneditableNodeTextStyle())
+                    gmake(go.Shape, 'StopSign', this.styler.end().outline),
+                    gmake(go.TextBlock, 'End', this.styler.end().textblock)
                 )
             )
         );
@@ -186,8 +183,8 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
         paletteTemplateMap.add('ProcessAction',
             gmake(go.Node, go.Panel.Spot, Savanna.process.utils.ViewTemplates.nodeStyle(),
                 gmake(go.Panel, go.Panel.Vertical, { defaultAlignment: go.Spot.Center },
-                    gmake(go.Shape, 'Circle', { width: 16, height: 16, fill: Savanna.process.utils.ViewTemplates.mainColor, stroke: null }),
-                    gmake(go.TextBlock, Savanna.process.utils.ViewTemplates.nodeTextStyle(8), new go.Binding('text', 'text').makeTwoWay())
+                    gmake(go.Shape, 'Circle', this.styler.paletteCircle().outline),
+                    gmake(go.TextBlock, this.styler.paletteCircle().textblock, new go.Binding('text', 'text').makeTwoWay())
                 )
             )
         );
@@ -196,8 +193,8 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
             gmake(go.Node, go.Panel.Spot, Savanna.process.utils.ViewTemplates.nodeStyle(),
                 // the main object is a Panel that surrounds a TextBlock with a rectangular Shape
                 gmake(go.Panel, go.Panel.Vertical, { defaultAlignment: go.Spot.Center },
-                    gmake(go.Shape, 'Rectangle', { width: 12, height: 16, fill: Savanna.process.utils.ViewTemplates.mainColor, stroke: null }),
-                    gmake(go.TextBlock, Savanna.process.utils.ViewTemplates.nodeTextStyle(8), new go.Binding('text', 'text').makeTwoWay())
+                    gmake(go.Shape, 'Rectangle', this.styler.paletteRectangle().outline),
+                    gmake(go.TextBlock, this.styler.paletteRectangle().textblock, new go.Binding('text', 'text').makeTwoWay())
                 )
             )
         );
@@ -205,8 +202,8 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
         paletteTemplateMap.add('DecisionPoint',
             gmake(go.Node, go.Panel.Spot, Savanna.process.utils.ViewTemplates.nodeStyle(),
                     gmake(go.Panel, go.Panel.Vertical, { defaultAlignment: go.Spot.Center },
-                        gmake(go.Shape, 'Diamond', { width: 16, height: 16, fill: Savanna.process.utils.ViewTemplates.mainColor, stroke: null }),
-                        gmake(go.TextBlock, Savanna.process.utils.ViewTemplates.nodeTextStyle(8), new go.Binding('text', 'text').makeTwoWay())
+                        gmake(go.Shape, 'Diamond', this.styler.paletteDiamond().outline),
+                        gmake(go.TextBlock, this.styler.paletteDiamond().textblock, new go.Binding('text', 'text').makeTwoWay())
                     )
             )
         );
@@ -228,24 +225,16 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                     relinkableTo: false,
                     reshapable: false },
                 gmake(go.Shape,  // the link path shape
-                    { isPanelMain: true,
-                        stroke: 'gray',
-                        strokeWidth: 2 }),
+                    this.styler.addTo('linker','linkpathProcess', 'isPanelMain', true).linker().linkpathProcess),
                 gmake(go.Shape,  // the arrowhead
-                    { toArrow: 'standard',
-                        stroke: null,
-                        fill: 'gray'}),
+                    this.styler.linker().arrowheadProcess),
                 gmake(go.Panel, 'Auto',
                     { visible: false,
                         name: 'LABEL'},
                     new go.Binding('visible', 'visible').makeTwoWay(),
-                    gmake(go.Shape, 'RoundedRectangle', { fill: '#F8F8F8', stroke: null }),
+                    gmake(go.Shape, 'RoundedRectangle', this.styler.linker().roundedRectangle),
                     gmake(go.TextBlock, 'Choice',  // the label
-                        { textAlign: 'center',
-                            font: '9pt helvetica, arial, sans-serif',
-                            stroke: '#919191',
-                            margin: 2,
-                            editable: true},
+                        this.styler.linker().textblockProcess,
                         new go.Binding('text', 'text').makeTwoWay())
                 )
             )
@@ -261,14 +250,11 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                     relinkableTo: false,
                     reshapable: false },
                 gmake(go.Shape,  // the link path shape
-                    { isPanelMain: true,
-                        stroke: 'gray',
-                        strokeWidth: 2 }),
+                      this.styler.addTo('linker','linkpathTool', 'isPanelMain', true).linker().linkpathTool
+                   ),
                 gmake(go.Shape,  // the arrowhead
-                    { toArrow: 'none',
-                        fromArrow: 'backward',
-                        stroke: null,
-                        fill: 'gray'})
+                      this.styler.linker().arrowheadTool
+                    )
             )
         );
 
@@ -282,9 +268,8 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                     relinkableTo: false,
                     reshapable: false },
                 gmake(go.Shape,  // the link path shape
-                    { isPanelMain: true,
-                        stroke: 'gray',
-                        strokeWidth: 2 }),
+                      this.styler.addTo('linker','linkpathInput', 'isPanelMain', true).linker().linkpathInput
+                    ),
                 gmake(go.Shape,  // the arrowhead
                     { toArrow: 'none',
                         fromArrow: 'backward',
@@ -303,14 +288,11 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                     relinkableTo: false,
                     reshapable: false },
                 gmake(go.Shape,  // the link path shape
-                    { isPanelMain: true,
-                        stroke: 'gray',
-                        strokeWidth: 2 }),
+                      this.styler.addTo('linker','linkpathByProduct', 'isPanelMain', true).linker().linkpathByProduct),
                 gmake(go.Shape,  // the arrowhead
-                    { toArrow: 'standard',
-                        stroke: null,
-                        fill: 'gray'})
+                      this.styler.linker().arrowheadByProduct
             )
+                 )
         );
         return linkTemplateMap;
     },
@@ -410,22 +392,23 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                     // the group begins unexpanded;
                     isSubGraphExpanded: false
                 }, new go.Binding('isSubGraphExpanded', 'isSubGraphExpanded').makeTwoWay(),
-                gmake(go.Shape, 'RoundedRectangle', { fill: null, name:'BACKGROUND', stroke: 'black'}),
+                gmake(go.Shape, 'RoundedRectangle', this.styler.addTo('processModel', 'roundedRectangle', 'name', 'BACKGROUND').processModel().roundedRectangle),
                 gmake(go.Panel, go.Panel.Vertical,
                     { defaultAlignment: go.Spot.Center },
                     gmake(go.Panel, go.Panel.Horizontal,
                         { defaultAlignment: go.Spot.Top, stretch: go.GraphObject.Horizontal, background: 'transparent' },
                         // the SubGraphExpanderButton is a panel that functions as a button to expand or collapse the subGraph
                         gmake('SubGraphExpanderButton'),
-                        gmake(go.TextBlock, Savanna.process.utils.ViewTemplates.nodeTextStyle(), new go.Binding('text', 'text').makeTwoWay())
+                        gmake(go.TextBlock, this.styler.processModel().textblock, new go.Binding('text', 'text').makeTwoWay())
                     ),
                     // create a placeholder to represent the area where the contents of the group are
                     gmake(go.Placeholder, { padding: new go.Margin(0, 10) }),
                     gmake(go.Panel, go.Panel.Horizontal,
                         { defaultAlignment: go.Spot.Center, opacity: 0.0, name: 'BUTTONS'},
-                        gmake(go.TextBlock, '+Result', Savanna.process.utils.ViewTemplates.linkTextStyle(Savanna.process.utils.ProcessUtils.addFinalResult)),
-                        gmake(go.TextBlock, '+Step', Savanna.process.utils.ViewTemplates.linkTextStyle(Savanna.process.utils.ProcessUtils.addStep)),
-                        gmake(go.TextBlock, '+Decision', Savanna.process.utils.ViewTemplates.linkTextStyle(Savanna.process.utils.ProcessUtils.addDecision))
+                                                    
+                        gmake(go.TextBlock, '+Result', this.styler.linker({"click":Savanna.process.utils.ProcessUtils.addFinalResult}).handler),
+                        gmake(go.TextBlock, '+Step', this.styler.linker({"click":Savanna.process.utils.ProcessUtils.addStep}).handler),
+                        gmake(go.TextBlock, '+Decision', this.styler.linker({"click":Savanna.process.utils.ProcessUtils.addDecision}).handler)
                     )
                 ),  // end Vertical Panel
                 this.makeGroupPort('BC', go.Spot.Bottom, 135)
