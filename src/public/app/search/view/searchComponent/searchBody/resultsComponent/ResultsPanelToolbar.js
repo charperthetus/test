@@ -58,9 +58,11 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
             }, {
                 text:'Imgs'
             }, {
-                text:'List'
+                text:'List',
+                itemId:'results_listViewButton'
             }, {
-                text:'Map'
+                text:'Map',
+                itemId:'results_mapViewButton'
         }]
     }
 
