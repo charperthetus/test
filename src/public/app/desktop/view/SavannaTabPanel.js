@@ -91,7 +91,7 @@ Ext.define('Savanna.desktop.view.SavannaTabPanel', {
     itemHandler: function() {
         var itemView = Ext.create('Savanna.itemView.view.ItemViewer', {
             title: "Model Item",
-            itemUri: "x012f931fec769ca941e8de4f7a674bec2a290937%2FItem",
+            itemUri: "x84385f20051847dd70c1874fb17799458db6498e%2FItem",
             closable: true,
             autoScroll: true,
             tabConfig: {
