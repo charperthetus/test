@@ -67,6 +67,18 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                 },
                 {
                     text: 'Search Intell'
+                },
+                {
+                    xtype: 'menuseparator'
+                },
+                {
+                    text: 'Relationship Picker',
+                    handler: function(){
+                        Ext.create('Savanna.itemView.view.relatedItems.AddRelationships', {
+                            width: 400,
+                            height: 300
+                        });
+                    }
                 }
             ]
         },
