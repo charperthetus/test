@@ -7,7 +7,7 @@
 Ext.require('Savanna.Config');
 Ext.require('Savanna.itemView.view.ItemViewer');
 Ext.require('Savanna.itemView.view.header.ViewHeader');
-Ext.require('Savanna.itemView.view.relatedProcesses.RelatedProcesses');
+Ext.require('Savanna.itemView.view.relatedProcesses.ViewRelatedProcesses');
 Ext.require('Savanna.itemView.view.relatedItems.ViewRelatedItems');
 Ext.require('Savanna.itemView.view.itemQualities.ViewItemQualities');
 
@@ -75,7 +75,7 @@ describe('Item Viewer', function () {
     });
 
     it('should have a related processes instance', function() {
-        expect(itemviewComponent.down('itemview_related_processes') instanceof Savanna.itemView.view.relatedProcesses.RelatedProcesses).toBeTruthy();
+        expect(itemviewComponent.down('itemview_view_related_processes') instanceof Savanna.itemView.view.relatedProcesses.ViewRelatedProcesses).toBeTruthy();
     });
 
     it('should have a related items instance', function() {
@@ -97,7 +97,7 @@ describe('Item Viewer', function () {
         var relatedItems = null;
 
         beforeEach(function() {
-            relatedItems = itemviewController.getView().queryById('relatedItems');
+            relatedItems = itemviewController.getView().queryById('relatedItemsView');
             spyOn(relatedItems, 'add');
             itemviewController.handleRecordDataRequestSuccess(store.data.items, 'read', true);
         });
@@ -126,7 +126,7 @@ describe('Item Viewer', function () {
 
         describe('Loads data into the Related Processes component', function() {
             it('should load in the number of related processes into the component', function(){
-                expect(itemviewComponent.down('itemview_related_processes').title).toEqual('Participated in Process (' + store.data.items[0].kvPairGroupsStore.getAt(0).pairsStore.data.length + ')');
+                expect(itemviewComponent.down('itemview_view_related_processes').title).toEqual('Participated in Process (' + store.data.items[0].kvPairGroupsStore.getAt(0).pairsStore.data.length + ')');
             });
         });
 
@@ -164,7 +164,7 @@ describe('Item Viewer', function () {
         it('should fire an "open" event when clicking a process', function() {
             var clickEvent = { target: { value: 'title', name: 'uristring', id: 'openProcess' } };
             spyOn(Savanna.app, 'fireEvent');
-            itemviewComponent.down('itemview_related_processes').getController().openRelatedProcesses(null, null, null, null, clickEvent);
+            itemviewComponent.down('itemview_view_related_processes').getController().openRelatedProcesses(null, null, null, null, clickEvent);
             expect(Savanna.app.fireEvent).toHaveBeenCalled();
         });
 
