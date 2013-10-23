@@ -136,7 +136,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                                 }
                             },
                             {
-                                xtype: 'itemview_view_related_processes',
+                                xtype: 'itemview_related_processes',
                                 itemId: 'relatedProcessesView',
                                 cls:'white-grid-view-panel',
                                 collapsible: true,
@@ -196,7 +196,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                                 }
                             },
                             {
-                                xtype: 'itemview_view_related_processes',
+                                xtype: 'itemview_related_processes',
                                 itemId: 'relatedProcessesView',
                                 collapsible: true,
                                 header:{
