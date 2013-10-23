@@ -8,12 +8,6 @@
 Ext.define('Savanna.desktop.controller.DesktopController', {
     extend: 'Deft.mvc.ViewController',
 
-    inject: ['application'],
-
-    config: {
-        application: null
-    },
-
     requires: [
         'Savanna.desktop.view.AboutWindow',
         'Savanna.desktop.view.SearchWindow',
@@ -51,7 +45,7 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
     },
 
     init: function() {
-        this.getApplication().on('initModelSearch', this.displayModelSearch);
+        Savanna.app.on('initModelSearch', this.displayModelSearch);
 
         return this.callParent(arguments);
     },

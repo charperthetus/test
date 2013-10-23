@@ -60,6 +60,7 @@ Ext.application({
         //Upload
         'Savanna.upload.controller.UploadController',
         //Process Stores
+        'Savanna.process.store.Processes',
         'Savanna.process.store.ProcessItemStore',
         'Savanna.process.store.ProcessActionStore'
     ],
@@ -71,6 +72,7 @@ Ext.application({
             'application': {
                 value: this
             },
+            processStore: 'Savanna.process.store.Processes',
             processItemStore: 'Savanna.process.store.ProcessItemStore',
             processActionStore: 'Savanna.process.store.ProcessActionStore'
         });
