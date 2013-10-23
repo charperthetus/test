@@ -1,21 +1,27 @@
 //Config for internal urls and other global settings that do not get altered by a administrator.
 Ext.define('Savanna.Config', {
     singleton: true,
-    constructor: function(config) {
+    constructor: function() {
+        var sc = SavannaConfig;
+        var rUrl = sc.savannaUrlRoot;
         // Urls for all the rest endpoints
-        SavannaConfig.loginUrl = SavannaConfig.savannaUrlRoot + 'authcheck/loggedIn.html';
-        SavannaConfig.searchUrl = SavannaConfig.savannaUrlRoot + 'rest/search'; // local dev version: 'app/assets/data/testSearchResults.json',
-        SavannaConfig.searchMetadataUrl = SavannaConfig.savannaUrlRoot + 'rest/metadata/get';
-        SavannaConfig.itemViewUrl = SavannaConfig.savannaUrlRoot + 'rest/model/item/';
-        SavannaConfig.modelSearchUrl = SavannaConfig.savannaUrlRoot + 'rest/mockModelSearch/keyword/item';
-        SavannaConfig.dalSourcesUrl = SavannaConfig.savannaUrlRoot + 'rest/search/sources'; // local dev version: 'resources/data/testSearchDalsWithFormData.json',
-        SavannaConfig.locationSearch = SavannaConfig.savannaUrlRoot + '/rest/map/search';   // local dev version: 'resources/data/testSearchLocationSearch.json',
-        SavannaConfig.uploadUrl = SavannaConfig.savannaUrlRoot + 'rest/document/upload';
-        SavannaConfig.metadataUrl = SavannaConfig.savannaUrlRoot + 'rest/metadata';
+        sc.loginUrl = rUrl + 'authcheck/loggedIn.html';
+        sc.logoutUrl = rUrl + 'j_spring_security_logout';
+        sc.pingUrl = rUrl + 'public/ping';
+        sc.searchUrl = rUrl + 'rest/search'; // local dev version: 'app/assets/data/testSearchResults.json',
+        sc.searchMetadataUrl = rUrl + 'rest/metadata/get';
+        sc.itemViewUrl = rUrl + 'rest/model/item/';
+        sc.modelSearchUrl = rUrl + 'rest/mockModelSearch/keyword/item';
+        sc.dalSourcesUrl = rUrl + 'rest/search/sources'; // local dev version: 'resources/data/testSearchDalsWithFormData.json',
+        sc.locationSearch = rUrl + '/rest/map/search';   // local dev version: 'resources/data/testSearchLocationSearch.json',
+        sc.uploadUrl = rUrl + 'rest/document/upload';
+        sc.metadataUrl = rUrl + 'rest/metadata';
+        sc.resultsMetadataUrl = rUrl + 'rest/metadata';
         // TODO: replace this test URL with real endpoint once we have one....
-        SavannaConfig.crumbnetTemplatesUrl = 'resources/data/Crumbnet.json';
-        SavannaConfig.processTemplatesUrl = 'resources/data/Process.json';
-        SavannaConfig.metadataTestDataUrl = 'resources/data/Metadata.json';
-        SavannaConfig.ureaProcessDataUrl = 'resources/data/UreaProcess.json';
+        sc.processTemplatesUrl = 'resources/data/Process.json';
+        sc.metadataTestDataUrl = 'resources/data/Metadata.json';
+        sc.ureaProcessDataUrl = 'resources/data/UreaProcess.json';
+        //Version number of the build - This is replaced in the build process
+        sc.version = 'Developer Build';
     }
 });

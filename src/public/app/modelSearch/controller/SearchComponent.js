@@ -32,6 +32,9 @@ Ext.define('Savanna.modelSearch.controller.SearchComponent', {
             'model_search_searchcomponent': {
                 render: this.onSearchRender
             },
+            'model_search_searchcomponent #toolbarsearchbutton': {
+                click: this.doSearch
+            },
             'model_search_searchcomponent #search_reset_button': {
                 click: this.handleNewSearch
             },
@@ -39,6 +42,7 @@ Ext.define('Savanna.modelSearch.controller.SearchComponent', {
                 click: this.showHideMenu
             },
             'model_search_searchcomponent #search_terms': {
+                onsearchclick: this.doSearch,
                 keyup: this.handleSearchTermKeyUp
             },
             'model_search_searchcomponent #searchadvanced_menu textfield': {
@@ -126,7 +130,7 @@ Ext.define('Savanna.modelSearch.controller.SearchComponent', {
 
         }
         /*
-        hide Start New Search button
+         hide Start New Search button
          */
         search.down('#search_reset_button').setVisible(false);
 
@@ -186,17 +190,7 @@ Ext.define('Savanna.modelSearch.controller.SearchComponent', {
         component.down('#resultsdals').removeAll();
 
 
-        /*
-         return to the options screen if we're not already there
-         */
-
-/* jwb we don't have this pannel in modelSearch
-   if (component.down('#searchbody').currentPanel !== 'searchoptions') {
-            var optionsBtn = component.queryById('optionsbutton');
-            optionsBtn.fireEvent('click', optionsBtn);
-        }*/
-
-        /*
+         /*
          clear the grid - it's misleading in error states to see results in the grid, even though
          the search request has failed for one reason or another
          */
@@ -336,19 +330,6 @@ Ext.define('Savanna.modelSearch.controller.SearchComponent', {
         ]);
 
         /*
-         build the 'desiredFacets' array for the request, by iterating over
-         facetValueSummaries in the DAL sources json
-         */
-        var desiredFacets = [];
-
-        Ext.each(dal.get('facetDescriptions'), function (description) {
-            desiredFacets.push(description.facetId);
-        });
-
-        searchObj.set('desiredFacets', desiredFacets);
-
-
-        /*
          set the facet filters, if any
          */
         if (dal.get('facetFilterCriteria').length) {
@@ -376,6 +357,8 @@ Ext.define('Savanna.modelSearch.controller.SearchComponent', {
         var resultsStore = Ext.create('Savanna.modelSearch.store.SearchResults', {
             storeId: 'searchResults_' + dal.get('id'),
             pageSize: pageSize,
+            //This keeps the parameters below from being added to the query string.
+            //They are only in the json body of the request.
             limitParam: undefined,
             pageParam: undefined,
             startParam: undefined
@@ -391,7 +374,7 @@ Ext.define('Savanna.modelSearch.controller.SearchComponent', {
             startPage:0,
             pageSize: pageSize,
             keywords: "simian" // EDISMAX query language (for now)
-         } ;
+        } ;
         resultsStore.proxy.jsonData = Ext.JSON.encode(searchObj.data);  // attach the search request object
         resultsStore.load({
             callback: Ext.bind(this.searchCallback, this, [resultsDal, resultsPanel, dal.get('id'), resultsStore, action], true)
@@ -404,6 +387,10 @@ Ext.define('Savanna.modelSearch.controller.SearchComponent', {
 
         var component = this.getSearchComponent(elem),
             sources = this.getSelectedDals(component);
+
+        //The body is hidden when the view first opens.
+        var searchBody =  component.queryById('searchbody');
+        searchBody.show();
 
         this.hideMenu(component);
 
@@ -509,11 +496,11 @@ Ext.define('Savanna.modelSearch.controller.SearchComponent', {
             });
 
 
-            if (action === 'search') {
+            if (action === 'search') {        //was action === 'search'
                 /*
                  add an object tying the dal and store together for referencing
                  */
-                resultsPanel.up('#searchresults').allResultSets.push(resultsObj);
+                resultsPanel.up('#searchresults').allResultSets = [resultsObj];
 
                 if (store.facetValueSummaries !== null) {
                     resultsDal.createDalFacets(dalId);
@@ -535,7 +522,7 @@ Ext.define('Savanna.modelSearch.controller.SearchComponent', {
 
 
             var searchResultsView = resultsPanel.up('#searchresults');
-            if (action === 'search') {
+            if ( action === 'search' ) {  //action === 'search'
                 if (dalId === Ext.data.StoreManager.lookup('dalSources').defaultId) {
 
                     searchResultsView.fireEvent('search:changeSelectedStore', resultsDal.queryById(dalId));
