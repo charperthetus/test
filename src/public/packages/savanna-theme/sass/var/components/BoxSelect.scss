@@ -48,6 +48,11 @@ ul.x-boxselect-list.x-boxselect-singleselect {
 }
 .x-boxselect-item-close {
 	cursor: pointer;
+    top: 2px;
+    right: 2px;
+    height: 11px;
+    width: 11px;
+    background-image: url(http://cdn.sencha.io/extjs-4.1.1-gpl/resources/themes/images/default/tab/tab-default-close.gif) !important;
 }
 .x-boxselect-hideselections .x-boundlist-selected {
     display: none;
