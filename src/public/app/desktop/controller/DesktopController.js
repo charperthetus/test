@@ -42,6 +42,9 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
         },
         modelsearchbutton: {
             click: 'displayModelSearch'
+        },
+        itemviewbutton: {
+            click: 'displayDummyItem'
         }
     },
 
