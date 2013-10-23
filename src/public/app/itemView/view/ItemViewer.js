@@ -107,7 +107,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                     {
                         xtype: 'itemview_view_header',
                         itemId: 'itemViewHeader',
-                        cls:'item-view-panel',
+                        cls:'white-grid-view-panel',
                         header:{
                             ui:'item-view',
                             height:48
@@ -117,6 +117,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                         //ToDo: create related processes component here
                         xtype: 'itemview_related_processes',
                         itemId: 'relatedProcesses',
+                        cls:'white-grid-view-panel',
                         collapsible: true,
                         header:{
                             ui:'light-blue'
@@ -126,6 +127,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                         //Todo: create related items component here
                         xtype: 'itemview_view_related_items',
                         itemId: 'relatedItems',
+                        cls:'white-grid-view-panel',
                         collapsible: true,
                         title: 'Related Items (#)',
                         header:{
@@ -155,6 +157,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                     {
                         xtype: 'itemview_view_qualities',
                         itemId: 'itemViewProperties',
+                        cls:'white-grid-view-panel',
                         collapsible: true,
                         header:{
                             ui:'light-blue'

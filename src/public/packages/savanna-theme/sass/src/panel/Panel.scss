@@ -25,7 +25,7 @@
 }
 
 
-.item-view-panel{
+.white-grid-view-panel{
   input[type="button"]{
     border: 0;
     background: transparent;
@@ -53,5 +53,10 @@
         padding: 0 6px 18px 12px;
       }
     }
+  }
+  .#{$prefix}column-header-over,
+  .#{$prefix}column-header-sort-ASC,
+  .#{$prefix}column-header-sort-DESC {
+    background:none;
   }
 }
