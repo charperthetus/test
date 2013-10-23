@@ -11,12 +11,13 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
 
     requires: [
         'Savanna.controller.Factory',
-        'Savanna.search.view.searchComponent.searchBody.searchMap.Canvas'
+        'Savanna.search.view.searchComponent.searchBody.searchMap.Canvas',
+        'Savanna.search.view.searchComponent.searchBody.searchMap.FeaturePopUp'
     ],
 
     region: 'center',
     header: false,
-    layout:'fit',
+    layout:'absolute',
 
     items:[
         {
@@ -25,6 +26,10 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
             width: '100%',
             itemId: 'resultMapCanvas',
             flex: 1
+        },
+        {
+            xtype: 'search_featurepopup',
+            itemId: 'featurePopUp'
         }
     ],
 

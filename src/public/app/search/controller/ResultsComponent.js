@@ -65,6 +65,9 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
             },
             'search_searchcomponent search_resultsdals': {
                 mapNewSearchResults: this.loadPointsFromStore
+            },
+            'search_searchcomponent search_featurepopup button': {
+                'click': this.navigateMapResult
             }
         });
 
@@ -469,7 +472,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
                 value: 1
             }),
             symbolizer: {
-                externalGraphic: './resources/images/mapMarker.png',
+                externalGraphic: './resources/OpenLayers-2.13.1/img/mapMarker.png',
                 graphicWidth: 32,
                 graphicHeight: 32,
                 fillOpacity: 1
@@ -555,33 +558,44 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
         });
         canvas.searchLayer = searchLayer;
         canvas.map.addLayers([searchLayer, canvas.resultsLayer]);
+
+        canvas.controls = {
+            selectFeature : new OpenLayers.Control.SelectFeature(
+                canvas.resultsLayer, {hover: true}
+            )
+        };
+
+        // Add controls to map
+        for(var key in canvas.controls) {
+            canvas.map.addControl(canvas.controls[key])
+        }
     },
 
     changeResultView: function (button) {
-        var mapPanel = button.up('search_resultscomponent').down('#resultsmap');
-        var resultsGridPanel = button.up('search_resultscomponent').down('#resultspanelgrid');
-        switch (button.text){
-            case 'Map':
-                resultsGridPanel.hide();
-                mapPanel.show();
-                break;
-            case 'List':
-                mapPanel.hide();
-                resultsGridPanel.show();
-                break;
-        }
+       var mapPanel = button.up('search_resultscomponent').down('#resultsmap');
+       var resultsGridPanel = button.up('search_resultscomponent').down('#resultspanelgrid');
+       switch (button.text){
+           case 'Map':
+               resultsGridPanel.hide();
+               mapPanel.show();
+               break;
+           case 'List':
+               mapPanel.hide();
+               resultsGridPanel.show();
+               break;
+       }
 
     },
     addSearchPolygon: function (canvas) {
-        var searchLayer = canvas.searchLayer;
-        //modify resultmap searchLayer to match searchmap searchLayer
-        if(searchLayer.features.length > 0){
-            var resultMap = canvas.up('search_searchcomponent').down('#resultMapCanvas');
-            var layerFeatureArray = searchLayer.features;
-            resultMap.searchLayer.removeAllFeatures();
-            var cloneFeature = layerFeatureArray[0].clone();
-            resultMap.searchLayer.addFeatures(cloneFeature);
-        }
+      var searchLayer = canvas.searchLayer;
+      //modify resultmap searchLayer to match searchmap searchLayer
+      if(searchLayer.features.length > 0){
+          var resultMap = canvas.up('search_searchcomponent').down('#resultMapCanvas');
+          var layerFeatureArray = searchLayer.features;
+          resultMap.searchLayer.removeAllFeatures();
+          var cloneFeature = layerFeatureArray[0].clone();
+          resultMap.searchLayer.addFeatures(cloneFeature);
+      }
     },
 
     removeSearchPolygon: function (canvas) {
@@ -595,11 +609,15 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
     loadPointsFromStore: function (results, scope) {
         var searchResults = results.store.data.items;
         var searchResultList = [];
+        var mapCanvas = scope.up('search_searchcomponent').down('#resultMapCanvas');
         for (var i = 0; i < searchResults.length; i++) {
             var attributes = {};
             attributes.title = searchResults[i].data.title;
             attributes.previewString = searchResults[i].data.previewString;
-            attributes.contentDocUri = searchResults[i].data.contentDocUri;
+            attributes.uri = searchResults[i].data.uri;
+            attributes.composite = searchResults[i].data.composite;
+            attributes.publishedDate = searchResults[i].data.publishedDate;
+            attributes.fileType = searchResults[i].data.fileType;
             var resultPoints = searchResults[i].data.latLonPairs;
             if (resultPoints !== null) {
                 for (var j = 0; j < resultPoints.length; j++) {
@@ -608,12 +626,132 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
                 }
             }
         }
-        var mapCanvas = scope.up('search_searchcomponent').down('#resultMapCanvas');
         if (mapCanvas.resultsLayer.features.length > 0) {
             mapCanvas.resultsLayer.removeAllFeatures();
         }
         mapCanvas.resultsLayer.addFeatures(searchResultList);
+        mapCanvas.controls.selectFeature.activate();
+        mapCanvas.resultsLayer.events.register("featureselected", event, this.displayMapPopUp);
+        mapCanvas.resultsLayer.events.register("featureunselected", event, this.destroyPopUp);
 
+    },
+
+    displayMapPopUp: function(event) {
+        console.log(arguments);
+        var resultsController = Savanna.app.getController('Savanna.search.controller.ResultsComponent');
+        var resultsMap = Ext.ComponentQuery.query('search_resultscomponent')[0].down('search_resultsmap');
+        var mapCanvas = resultsMap.down('#resultMapCanvas');
+        var featurePopUp = resultsMap.down('#featurePopUp');
+        var featureLocation = event.feature.geometry;
+        resultsController.setPopUpTemplate(event, featurePopUp);
+        featurePopUp.show();
+        resultsController.position(featurePopUp, mapCanvas, featureLocation);
+    },
+
+    destroyPopUp: function () {
+        var featurePopUp = Ext.ComponentQuery.query('search_resultscomponent')[0].down('#featurePopUp');
+        var prevButton = featurePopUp.down('#mapResultPrev');
+        var nextButton = featurePopUp.down('#mapResultNext');
+        prevButton.disable();
+        nextButton.disable();
+        featurePopUp.hide();
+    },
+
+    setPopUpTemplate: function (event, featurePopUp){
+        featurePopUp.removeAll(true);
+        var tempData = event.feature.cluster;
+        var uniqueResults = {};
+        var uriCount = 0;
+        //pivot the cluster feature data to group by uri & location
+        for (var i = 0; i < tempData.length; i++) {
+            var uri = tempData[i].data.uri + "_" + tempData[i].data.name;
+            if (uniqueResults[uri]) {
+                uniqueResults[uri].count += 1;
+            } else {
+                uriCount += 1;
+                uniqueResults[uri] = {
+                    'count' : 1,
+                    'title' : tempData[i].data.title,
+                    'uri' : uri,
+                    'previewString' : tempData[i].data.previewString,
+                    'name' : tempData[i].data.name,
+                    'publishedDate' : tempData[i].data.publishedDate,
+                    'composite' : tempData[i].data.composite,
+                    'fileType' : tempData[i].data.fileType
+                }
+            }
+        }
+
+        (uriCount > 1) ? featurePopUp.down('#mapResultNext').enable() : featurePopUp.down('#mapResultNext').disable();
+        //create "cards" of each cluster location for the popup
+        var items = [];
+        for (var key in uniqueResults){
+            if (uniqueResults.hasOwnProperty(key)){
+                var title =  (uniqueResults[key].title.length > 40) ? uniqueResults[key].title.substring(0,40) + "..." : uniqueResults[key].title;
+                var item = {
+                    id: uniqueResults[key].uri,
+                    html: '<div style="position: relative" >' +
+                    '<div id="hoverDivTop" style=" right: 0;  top: 5; position: absolute;" ><button class="openButtonClass">TN</button><button class="openButtonClass">AU</button><button class="openButtonClass">OF</button></div>' +
+                    '<table>' +
+                    '<tr><td colspan="2" class="map-popup-title"><strong>' + title + '</strong></td></tr>'+
+                    '<tr><td colspan="2" class="map-popup-text">Location: ' + uniqueResults[key].name + '</td></tr>'+
+                    '<tr><td colspan="2" class="map-popup-text">Mentions: ' + uniqueResults[key].count + '</td></tr>'+
+                    '<td>(' + uniqueResults[key].composite + ') - ' +  Ext.Date.format(new Date(uniqueResults[key].publishedDate), 'F d, Y') +' - ['+ uniqueResults[key].fileType + ']<br />' +uniqueResults[key].previewString + '</td>'+
+                    '</table>'+
+                    '</div>'+
+                    '<div id="hoverDivBottom" style=" right: 0;  bottom: 5; position: absolute;" ><button class="openButtonClass">Preview</button></div>'
+                }
+                items.push(item);
+            }
+        }
+        featurePopUp.add(items)
+    },
+
+    position: function(featurePopUp, mapCanvas, featureLocation) {
+        //define the position that the popup window and assign class to popup anchor
+        var locationPx = mapCanvas.map.getPixelFromLonLat(new OpenLayers.LonLat(featureLocation.x, featureLocation.y));
+        var dom = Ext.dom.Query.select('.popUpAnchor');
+        var popUpAnchor = Ext.get(dom[0]);
+        popUpAnchor.removeCls("top left right bottom");
+        var mapBox = mapCanvas.getBox(true);
+        var top = null;
+        var left = null;
+        var ancLeft = null;
+        var ancTop = null;
+        var elSize = featurePopUp.el.getSize();
+
+        var horizontalOffset = (locationPx.x > mapBox.width / 2) ? 'right' : 'left';
+        var verticalOffset = (locationPx.y > mapBox.height / 2) ? 'bottom' : 'top';
+        popUpAnchor.addCls(horizontalOffset);
+        popUpAnchor.addCls(verticalOffset);
+        var anchorSize = popUpAnchor.getSize();
+
+        if (horizontalOffset == 'right') {
+            left = locationPx.x - elSize.width;
+            ancLeft = elSize.width - anchorSize.width;
+        } else {
+            left = locationPx.x;
+            ancLeft = 0;
+        }
+        if (verticalOffset == 'bottom') {
+            top = locationPx.y - (elSize.height + anchorSize.height);
+            ancTop = elSize.height;
+        } else {
+            top = locationPx.y + anchorSize.height;
+            ancTop -= anchorSize.height;
+        }
+        //Set the position of the feature popup panel and the popup anchor
+        featurePopUp.setPosition(left, top);
+        popUpAnchor.setLeftTop(ancLeft, ancTop);
+
+    },
+
+    navigateMapResult: function (button) {
+        var featurePopUp = button.up('search_featurepopup');
+        var buttonDirection = button.direction;
+        var layout = featurePopUp.getLayout();
+        layout[buttonDirection]();
+        Ext.getCmp('mapResultPrev').setDisabled(!layout.getPrev());
+        Ext.getCmp('mapResultNext').setDisabled(!layout.getNext());
     }
-
 });
