@@ -44,7 +44,7 @@ Ext.define('Savanna.metadata.view.IntegerList', {
                 var textField = Ext.create('Ext.form.field.Text', {
                     allowBlank: true,
                     width: '100%',
-                    labelWidth: 200,
+                    labelWidth: 180,
                     value: stringElement,
                     regex: /^[0-9]*$/,
                     maskRe: /\d/i,
@@ -70,8 +70,8 @@ Ext.define('Savanna.metadata.view.IntegerList', {
         var me = this;
         this.add(Ext.create('Ext.form.Label', {
             itemId: 'displayLabelItem',
-            width: 200,
-            minWidth: 200,
+            width: 180,
+            minWidth: 180,
             height: 25
         }));
 

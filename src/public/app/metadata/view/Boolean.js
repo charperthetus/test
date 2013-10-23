@@ -44,7 +44,7 @@ Ext.define('Savanna.metadata.view.Boolean', {
             fieldLabel: '',
             itemId: 'displayValueEdit',
             width: 350,
-            labelWidth: 200,
+            labelWidth: 180,
             items: [{
                         boxLabel: 'True',
                         checked: me.value == true,

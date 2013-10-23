@@ -54,7 +54,7 @@ Ext.define('Savanna.metadata.view.Date', {
             itemId: 'displayValueEdit',
             allowBlank: true,
             width: '100%',
-            labelWidth: 200,
+            labelWidth: 180,
             dateFormat: 'Y-m-d\\TH:i:s.m\\Z',
             listeners: {
                 blur: function(d) {

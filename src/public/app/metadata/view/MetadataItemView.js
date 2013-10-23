@@ -72,7 +72,7 @@ Ext.define('Savanna.metadata.view.MetadataItemView', {
             itemId: 'displayValueEdit',
             allowBlank: true,
             width: '100%',
-            labelWidth: 200,
+            labelWidth: 180,
             grow: true,
             growAppend: '',
             rows: 0,
@@ -91,8 +91,8 @@ Ext.define('Savanna.metadata.view.MetadataItemView', {
     makeViewViewItems: function() {
         this.add(Ext.create('Ext.form.Label', {
             itemId: 'displayLabelItem',
-            width: 200,
-            minWidth: 200,
+            width: 180,
+            minWidth: 180,
             height: 25
         }));
         this.add(Ext.create('Ext.form.Label', {
