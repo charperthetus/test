@@ -1,12 +1,18 @@
 Ext.define('Savanna.itemView.view.imageBrowser.ImagesGrid', {
+    
     extend: 'Ext.container.Container',
-    alias: 'widget.itemview_imagesgrid',
+
+    require: 'Savanna.itemView.controller.ImageBrowserController',
+    
     controller: 'Savanna.itemView.controller.ImageBrowserController',
+    
+    alias: 'widget.itemview_imagesgrid',
+    
     items: [{
 
         // The expanded image
         xtype: 'panel',
-        itemId: 'image_primary',
+        itemId: 'imagePrimary',
         layout: 'border',
         height: 300,
         width: 450,
@@ -15,33 +21,34 @@ Ext.define('Savanna.itemView.view.imageBrowser.ImagesGrid', {
         items: [{
             xtype: 'panel',
             region: 'south',
-            itemId: 'image_text'
+            itemId: 'imageText'
         }]
     }, {
 
         // Thumbnail browser
         xtype: 'panel',
+        itemId: 'thumbnailGallery',
         layout: 'hbox',
         height: 100,
         margin: 10,
         overflowX: 'auto',
         items: [{
             xtype: 'button',
-            itemId: 'nav_left',
+            itemId: 'navLeft',
             height: 100,
             glyph: 'arrowNavLeft'
         }, {
             
             // Thumbnails get put here
             xtype: 'panel',
-            itemId: 'thumbnail_list',
+            itemId: 'thumbnailList',
             layout: 'hbox',
             flex: 1,
             overflowX: 'auto'
         }, {
             xtype: 'button',
-            glyph:"arrowNavRight",
-            itemId: 'nav_right',
+            glyph: 'arrowNavRight',
+            itemId: 'navRight',
             height: 100
         }]
     }]

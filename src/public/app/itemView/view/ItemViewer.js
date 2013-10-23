@@ -129,6 +129,10 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                 flex: 1,
                 items: [
                     {
+                        xtype: 'itemview_imagesgrid',
+                        itemId: 'itemViewImagesGrid'
+                    },
+                    {
                         xtype: 'itemview_view_qualities',
                         itemId: 'itemViewProperties',
                         collapsible: true,
