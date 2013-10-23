@@ -19,8 +19,8 @@ Ext.define('Savanna.itemView.view.header.EditHeader', {
 
     items: [
         {
-            xtype: 'itemview_displaylabel',
-            itemId: 'itemDisplayLabel'
+            xtype: 'itemview_displaylabel_view',
+            itemId: 'itemDisplayLabelView'
         },
         {
             xtype: 'container',

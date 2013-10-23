@@ -1,30 +1,35 @@
 Ext.define('Savanna.itemView.view.ItemViewer', {
-    extend: 'Ext.panel.Panel',
+    extend: 'Ext.tab.Panel',
 
     alias: 'widget.itemview_itemviewer',
 
     cls: 'itemview',
 
-    require: [
+    requires: [
         'Ext.grid.Panel',
         'Savanna.itemView.controller.ItemViewController',
-        'Savanna.itemView.view.header.EditHeader',
-        'Savanna.itemView.view.header.DisplayLabel',
         'Savanna.itemView.view.header.ViewHeader',
+        'Savanna.itemView.view.header.EditHeader',
+        'Savanna.itemView.view.itemQualities.EditItemQualities',
+        'Savanna.itemView.view.itemQualities.EditItemQualities',
+        'Savanna.itemView.view.header.DisplayLabelView',
+        'Savanna.itemView.view.relatedProcesses.ViewRelatedProcesses',
+        'Savanna.itemView.view.relatedItems.ViewRelatedItems',
+        'Savanna.itemView.view.relatedItems.EditRelatedItems',
+        'Savanna.itemView.view.itemQualities.ViewItemQualities',
+        'Savanna.itemView.view.itemQualities.EditItemQualities',
         'Savanna.itemView.view.imageBrowser.ImagesGrid',
         'Savanna.itemView.view.components.AutoCompleteWithTags',
         'Savanna.itemView.view.imageBrowser.ImageThumbnail',
-        'Savanna.itemView.view.itemQualities.EditItemQualities',
         'Savanna.itemView.view.components.LabeledFieldWithTags',
-        'Savanna.itemView.view.relatedProcesses.RelatedProcesses',
-        'Savanna.itemView.view.relatedItems.ViewRelatedItems',
-        'Savanna.itemView.view.itemQualities.ViewItemQualities'
+        'Savanna.components.boxSelect.AutoCompleteBox'
     ],
 
     controller: 'Savanna.itemView.controller.ItemViewController',
 
     config: {
-        itemUri: null
+        itemUri: null,
+        editMode:false
     },
 
     dockedItems: [{
@@ -68,15 +73,12 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
         '->',
         {
             xtype: 'button',
+            itemId: 'editModeButton',
             text: 'Edit'
         }
     ],
 
-    layout:{
-        type: 'hbox'
-    },
-    overflowY: 'auto',
-    autoScroll: true,
+
 
     constructor: function(configs) {
         this.initConfig(configs);  //initializes configs passed in constructor
@@ -86,55 +88,127 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
     initComponent: function() {
 
         this.items = this.buildItems();
+
         this.callParent(arguments);
+
+        this.tabBar.hide();
+        this.componentLayout.childrenChanged = true;
+        this.doComponentLayout();
     },
 
     buildItems: function() {
         return [
             {
-                xtype: 'panel',
-                cls: 'BoilerPlatePropertyGrid',
-                flex: 1,
-                items: [
+                xtype:'panel',
+                itemId:'itemviewer_viewtab',
+                layout:{
+                    type: 'hbox'
+                },
+                overflowY: 'auto',
+                autoScroll: true,
+                items:  [
                     {
-                        xtype: 'itemview_view_header',
-                        itemId: 'itemViewHeader',
-                        header:{
-                            ui:'white'
-                        }
+                        xtype: 'panel',
+                        cls: 'BoilerPlatePropertyGrid',
+                        flex: 1,
+                        items: [
+                            {
+                                xtype: 'itemview_view_header',
+                                itemId: 'itemViewHeaderView',
+                                header:{
+                                    ui:'white'
+                                }
+                            },
+                            {
+                                xtype: 'itemview_view_related_processes',
+                                itemId: 'relatedProcessesView',
+                                collapsible: true,
+                                header:{
+                                    ui:'light-blue'
+                                }
+                            },
+                            {
+                                //Todo: create related items component here
+                                xtype: 'itemview_view_related_items',
+                                itemId: 'relatedItemsView',
+                                collapsible: true,
+                                title: 'Related Items (#)',
+                                header:{
+                                    ui:'light-blue'
+                                }
+                            }
+                        ]
                     },
                     {
-                        //ToDo: create related processes component here
-                        xtype: 'itemview_related_processes',
-                        itemId: 'relatedProcesses',
-                        collapsible: true,
-                        header:{
-                            ui:'light-blue'
-                        }
-                    },
-                    {
-                        //Todo: create related items component here
-                        xtype: 'itemview_view_related_items',
-                        itemId: 'relatedItems',
-                        collapsible: true,
-                        title: 'Related Items (#)',
-                        header:{
-                            ui:'light-blue'
-                        }
+                        xtype: 'panel',
+                        flex: 1,
+                        items: [
+                            {
+                                xtype: 'itemview_view_qualities',
+                                itemId: 'itemViewPropertiesView',
+                                collapsible: true,
+                                header:{
+                                    ui:'light-blue'
+                                }
+                            }
+                        ]
                     }
                 ]
             },
             {
-                xtype: 'panel',
-                flex: 1,
-                items: [
+                xtype:'panel',
+                itemId:'itemviewer_edittab',
+                layout:{
+                    type: 'hbox'
+                },
+                overflowY: 'auto',
+                autoScroll: true,
+                items:  [
                     {
-                        xtype: 'itemview_view_qualities',
-                        itemId: 'itemViewProperties',
-                        collapsible: true,
-                        header:{
-                            ui:'light-blue'
-                        }
+                        xtype: 'panel',
+                        cls: 'BoilerPlatePropertyGrid',
+                        flex: 1,
+                        items: [
+                            {
+                                xtype: 'itemview_edit_header',
+                                itemId: 'itemViewHeaderEdit',
+                                header:{
+                                    ui:'white'
+                                }
+                            },
+                            {
+                                xtype: 'itemview_view_related_processes',
+                                itemId: 'relatedProcessesView',
+                                collapsible: true,
+                                header:{
+                                    ui:'light-blue'
+                                }
+                            },
+                            {
+                                //Todo: create related items component here
+                                xtype: 'itemview_edit_related_items',
+                                itemId: 'relatedItemsEdit',
+                                collapsible: true,
+                                title: 'Related Items (#)',
+                                header:{
+                                    ui:'light-blue'
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        xtype: 'panel',
+                        flex: 1,
+                        items: [
+                            {
+                                xtype: 'itemview_edit_qualities',
+                                itemId: 'itemViewPropertiesEdit',
+                                collapsible: true,
+                                header:{
+                                    ui:'light-blue'
+                                }
+                            }
+                        ]
                     }
                 ]
             }

@@ -15,7 +15,9 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         storeable: 'Savanna.mixin.Storeable'
     },
     control: {
-        
+        editModeButton: {
+            click: 'toggleEditMode'
+        }
     },
 
     constructor: function (options) {
@@ -29,6 +31,18 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         return this.callParent(arguments);
     },
 
+    toggleEditMode: function (btn) {
+        if (!this.getView().getEditMode()) {
+            this.getView().setActiveTab(1);
+            btn.setText('View');
+        } else {
+            this.getView().setActiveTab(0);
+            btn.setText('Edit');
+        }
+
+        this.getView().setEditMode(!this.getView().getEditMode());
+    },
+
     getItemViewData: function () {
         var tmpStore = Ext.data.StoreManager.lookup(this.store);
         tmpStore.getProxy().url = this.buildItemDataFetchUrl(this.getView().itemUri);
@@ -39,44 +53,79 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     },
 
     handleRecordDataRequestSuccess: function (record, operation, success) {
-        var headerComponent = this.getView().queryById('itemViewHeader');
-        headerComponent.setTitle(record[0].data.label);
-        headerComponent.reconfigure(record[0].propertyGroupsStore.getAt(0).valuesStore);
 
-        var processComponent = this.getView().queryById('relatedProcesses');
-        processComponent.setTitle('Participated in Process (' + record[0].kvPairGroupsStore.getAt(0).pairsStore.data.length + ')');
-        processComponent.reconfigure(record[0].kvPairGroupsStore.getAt(0).pairsStore);
+        if (success) {
 
-        var qualitiesComponent = this.getView().queryById('itemViewProperties');
-        qualitiesComponent.setTitle('Qualities (' + record[0].propertyGroupsStore.getAt(3).valuesStore.data.length + ')');
-        qualitiesComponent.reconfigure(record[0].propertyGroupsStore.getAt(3).valuesStore);
+            var me = this;
 
-        var relatedItemView = this.getView().queryById('relatedItems'),
-            me = this;
-
-        Ext.each(record[0].propertyGroupsStore.getAt(2).valuesStore.data.items, function (relatedItemsGroup) {
-
-            var grid = Ext.create('Ext.grid.Panel', {
-                store: relatedItemsGroup.valuesStore,
-                columns: [
-                    {
-                        xtype: 'templatecolumn',
-                        tpl: Ext.create('Ext.XTemplate',
-                            '<input type="button" name="{value}" value="{label}" id="openRelatedItem" />'
-                        ),
-                        text: relatedItemsGroup.get('label'),
-                        flex: 1,
-                        sortable: false
-                    }
-                ],
-                listeners: {
-                    itemclick: me.onRelatedItemClick
+            /*
+            Header View
+             */
+            Ext.each(['itemViewHeaderView', 'itemViewHeaderEdit'], function (id) {
+                var headerComponent = me.getView().queryById(id);
+                headerComponent.setTitle(record[0].data.label);
+                if (me.getView().getEditMode()) {
+                    headerComponent.reconfigure(record[0].propertyGroupsStore.getAt(0).valuesStore);
                 }
             });
 
-            relatedItemView.add(grid);
+            /*
+            Process View
+             */
+            var processComponent = me.getView().queryById('relatedProcessesView');
+            processComponent.setTitle('Participated in Process (' + record[0].kvPairGroupsStore.getAt(0).pairsStore.data.length + ')');
+            processComponent.reconfigure(record[0].kvPairGroupsStore.getAt(0).pairsStore);
 
-        });
+            /*
+            Properties View
+             */
+            Ext.each(['itemViewPropertiesView', 'itemViewPropertiesEdit'], function (id) {
+                var qualitiesComponent = me.getView().queryById(id);
+                qualitiesComponent.setTitle('Qualities (' + record[0].propertyGroupsStore.getAt(3).valuesStore.data.length + ')');
+                if (me.getView().getEditMode()) {
+                    qualitiesComponent.reconfigure(record[0].propertyGroupsStore.getAt(3).valuesStore);
+                }
+            });
+
+            /*
+            Related Items View
+             */
+            Ext.each(['relatedItemsView', 'relatedItemsEdit'], function (id) {
+                var relatedItemView = me.getView().queryById(id);
+
+                Ext.each(record[0].propertyGroupsStore.getAt(2).valuesStore.data.items, function (relatedItemsGroup) {
+
+                    var grid = Ext.create('Ext.grid.Panel', {
+                        store: relatedItemsGroup.valuesStore,
+                        columns: [
+                            {
+                                xtype: 'templatecolumn',
+                                tpl: Ext.create('Ext.XTemplate',
+                                    '<input type="button" name="{value}" value="{label}" id="openRelatedItem" />'
+                                ),
+                                text: relatedItemsGroup.get('label'),
+                                flex: 1,
+                                sortable: false
+                            }
+                        ],
+                        listeners: {
+                            itemclick: me.onRelatedItemClick
+                        }
+                    });
+
+                    relatedItemView.add(grid);
+
+                });
+
+            });
+        } else {
+            /*
+            Server down..?
+             */
+            Ext.Error.raise({
+                msg: 'No record return for item URI.'
+            })
+        }
     },
 
     onRelatedItemClick: function (grid, record, item, index, e, eOpts) {
@@ -97,13 +146,13 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
         }
     },
-    
+
     // TODO: Keeping for now in order to pull later into own controller
     setupDisplayLabel: function (displayLabel, view) {
-        var displayLabelComponent = view.queryById('itemDisplayLabel');
+        var displayLabelComponent = view.queryById('itemDisplayLabelView');
         displayLabelComponent.update({displayLabel: displayLabel});
     },
-    
+
     // TODO: Keeping for now in order to pull later into own controller
     setupAliases: function (aliasList, view) {
         if (aliasList != null && aliasList.length > 0) {
@@ -117,7 +166,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
     buildItemDataFetchUrl: function (uri) {
         //uri = Ext.JSON.decode(uri);
-       uri = encodeURI(uri);
+        uri = encodeURI(uri);
         return SavannaConfig.itemViewUrl + uri + ';jsessionid=' + Savanna.jsessionid;
     },
 
