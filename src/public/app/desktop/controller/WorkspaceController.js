@@ -41,6 +41,7 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
 
     init: function() {
         Savanna.app.on('search:itemselected', this.showItemView, this);
+        Savanna.app.on('itemview:createitem', this.createItem, this);
         return this.callParent(arguments);
     },
 
@@ -122,17 +123,19 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
         }
     },
 
-    createItem: function(tabpanel) {
-        var panel = Ext.create('Ext.panel.Panel', {
-            title: 'Untitled Item',
+    createItem: function() {
+
+        var itemView = Ext.create('Savanna.itemView.view.ItemViewer', {
+            title: 'Model Item',
+            itemUri: 'x012f931fec769ca941e8de4f7a674bec2a290937%2FItem',
+            editMode: true,
             closable: true,
+            autoScroll: true,
             tabConfig: {
                 ui: 'dark'
             }
         });
-        var tab = tabpanel.add(panel);
-        tabpanel.doLayout();
-        tabpanel.setActiveTab(tab);
+        Savanna.app.fireEvent('search:itemSelected', itemView);
     },
 
     createProcess: function(tabpanel) {

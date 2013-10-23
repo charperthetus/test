@@ -17,6 +17,9 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     control: {
         editModeButton: {
             click: 'toggleEditMode'
+        },
+        newItemButton:  {
+            click: 'onNewItemClick'
         }
     },
 
@@ -64,7 +67,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
             Ext.each(['itemViewHeaderView', 'itemViewHeaderEdit'], function (id) {
                 var headerComponent = me.getView().queryById(id);
                 headerComponent.setTitle(record[0].data.label);
-                if (me.getView().getEditMode()) {
+                if (id === 'itemViewHeaderView') {
                     headerComponent.reconfigure(record[0].propertyGroupsStore.getAt(0).valuesStore);
                 }
             });
@@ -82,7 +85,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
             Ext.each(['itemViewPropertiesView', 'itemViewPropertiesEdit'], function (id) {
                 var qualitiesComponent = me.getView().queryById(id);
                 qualitiesComponent.setTitle('Qualities (' + record[0].propertyGroupsStore.getAt(3).valuesStore.data.length + ')');
-                if (me.getView().getEditMode()) {
+                if (id === 'itemViewPropertiesView') {
                     qualitiesComponent.reconfigure(record[0].propertyGroupsStore.getAt(3).valuesStore);
                 }
             });
@@ -118,6 +121,15 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
                 });
 
             });
+
+            /*
+            are we creating a new item?
+             */
+            if(me.getView().getEditMode())  {
+                me.getView().setActiveTab(1);
+                me.getView().queryById('editModeButton').setText('View');
+            }
+
         } else {
             /*
             Server down..?
@@ -126,6 +138,10 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
                 msg: 'No record return for item URI.'
             })
         }
+    },
+
+    onNewItemClick: function(btn)  {
+        Savanna.app.fireEvent('itemview:createitem', btn);
     },
 
     onRelatedItemClick: function (grid, record, item, index, e, eOpts) {
