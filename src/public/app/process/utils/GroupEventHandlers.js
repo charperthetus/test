@@ -8,11 +8,15 @@ Ext.define('Savanna.process.utils.GroupEventHandlers', {
     ],
 
     onMouseEnter: function (e, obj) {
-        Savanna.process.utils.ProcessUtils.toggleButtons(obj, true);
+        Savanna.process.utils.ProcessUtils.toggleGadgets(obj, true);
     },
 
     onMouseLeave: function (e, obj) {
-        Savanna.process.utils.ProcessUtils.toggleButtons(obj, false);
+        Savanna.process.utils.ProcessUtils.toggleGadgets(obj, false);
+    },
+
+    onSelectionChange: function(obj) {
+        Savanna.process.utils.ProcessUtils.toggleGadgets(obj, false);
     },
 
     // highlight when dragging into the Group

@@ -14,85 +14,87 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
 
     nodeStyle:function(){
         return {
-            // the Node.location is at the center of each node
-            locationSpot: go.Spot.Center,
-            // handle mouse enter/leave events to show/hide the ports
+            // handle mouse enter/leave events to show/hide the gadgets
             mouseEnter: Savanna.process.utils.NodeEventHandlers.onMouseEnter,
             mouseLeave: Savanna.process.utils.NodeEventHandlers.onMouseLeave,
-            mouseDrop: Savanna.process.utils.NodeEventHandlers.onMouseDrop
+            mouseDrop: Savanna.process.utils.NodeEventHandlers.onMouseDrop,
+            selectionChanged: Savanna.process.utils.NodeEventHandlers.onSelectionChange
         };
     },
 
-    linkTextStyle: function(clickHandler) {
-        return {
-            font: '9pt Helvetica, Arial, sans-serif',
-            stroke: 'blue',
-            isUnderline: true,
-            margin: 2,
-            editable: false,
-            click: clickHandler
-        };
+    makeTopPort: function () {
+
+        return go.GraphObject.make(go.Shape, {
+                    alignment: go.Spot.Top,
+                    desiredSize: new go.Size(0,0),
+                    fromSpot: go.Spot.Bottom,
+                    toSpot: go.Spot.Top,
+                    toLinkable: true,
+                    portId: "Top"
+                }
+        );
     },
 
-    nodeTextStyle: function(fontSize) {
-        return {
-            font: fontSize? fontSize.toString() + 'pt Helvetica, Arial, sans-serif' : '10pt Helvetica, Arial, sans-serif',
-            stroke: this.darkText,
-            margin: 4,
-            maxSize: new go.Size(160, NaN),
-            wrap: go.TextBlock.WrapFit,
-            editable: true,
-            name: 'TEXT'
-        };
-    },
-
-    uneditableNodeTextStyle: function() {
-        return {
-            font: '10pt Helvetica, Arial, sans-serif',
-            stroke: this.darkText,
-            margin: 4
-        };
-    },
-
-    makePort: function (name, spot, angle) {
-        var triangle = go.Geometry.parse('M 0,0 L 12,0 12,12 0,0 12,0', true);
+    makeLinkGadget: function () {
 
         return go.GraphObject.make(go.Panel, {
-                alignment: spot,
+                name: 'LinkGadget',
+                opacity: 0.0,
+                alignment: go.Spot.Bottom,
                 alignmentFocus: go.Spot.Top
-            }, new go.Binding('visible', 'group', function(group) { return !group; } ),
+            },
             go.GraphObject.make(go.Shape, {
-                    geometry: triangle,
+                    figure: 'TriangleDown',
                     stroke: 'black',
-                    fill: 'red',
-                    angle: angle
-                },
-                {
-                    name: name,
-                    fromLinkable: true
+                    fill: 'blue',
+                    desiredSize: new go.Size(10,10),
+                    name: 'Port',
+                    fromSpot: go.Spot.Bottom,
+                    toSpot: go.Spot.Top,
+                    fromLinkable: true,
+                    portId: "Bottom"
                 }
             )
         );
     },
 
-    makeGroupPort: function (name, spot, angle) {
-        var triangle = go.Geometry.parse('M 0,0 L 12,0 12,12 0,0 12,0', true);
-
-        return go.GraphObject.make(go.Panel, {
-                alignment: spot,
-                alignmentFocus: go.Spot.Top
+    makeStepGadget: function () {
+        var gmake = go.GraphObject.make;
+        return gmake(go.Panel, go.Panel.Auto, {
+                name: 'StepGadget',
+                opacity: 0.0,
+                alignment: new go.Spot(0.5, 1.0, 12, 0),
+                alignmentFocus: go.Spot.Top,
+                click: Savanna.process.utils.ProcessUtils.addStep
             },
-            go.GraphObject.make(go.Shape, {
-                    geometry: triangle,
+            gmake(go.Shape, {
+                    figure: 'Circle',
                     stroke: 'black',
-                    fill: 'red',
-                    angle: angle
-                },
-                {
-                    name: name,
-                    fromLinkable: true
+                    fill: 'green',
+                    desiredSize: new go.Size(10,10)
                 }
-            )
+            ),
+            gmake(go.Shape, { figure: 'ThickCross', stroke: null, fill: 'white', desiredSize: new go.Size(8,8) } )
+        );
+    },
+
+    makeDecisionGadget: function () {
+        var gmake = go.GraphObject.make;
+        return gmake(go.Panel, go.Panel.Auto, {
+                name: 'DecisionGadget',
+                opacity: 0.0,
+                alignment: new go.Spot(0.5, 1.0, 25, -1),
+                alignmentFocus: go.Spot.Top,
+                click: Savanna.process.utils.ProcessUtils.addDecision
+            },
+            gmake(go.Shape, {
+                    figure: 'Diamond',
+                    stroke: 'black',
+                    fill: 'green',
+                    desiredSize: new go.Size(12,12)
+                }
+            ),
+            gmake(go.Shape, { figure: 'ThickCross', stroke: null, fill: 'white', desiredSize: new go.Size(8,8) } )
         );
     },
 
@@ -103,21 +105,16 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                 // define the Node templates for regular nodes
 
         nodeTemplateMap.add('ProcessItem',
-            gmake(go.Node, go.Panel.Spot, Savanna.process.utils.ViewTemplates.nodeStyle(), {fromLinkable:true, toLinkable:true},
+            gmake(go.Node, go.Panel.Spot, Savanna.process.utils.ViewTemplates.nodeStyle(), {fromLinkable:null, toLinkable:true},
                 // the main object is a Panel that surrounds a TextBlock with a rectangular Shape
                 gmake(go.Panel, go.Panel.Horizontal,
                     gmake(go.Shape, 'Rectangle', this.styler.rectangle().outline),
-                    gmake(go.Panel, go.Panel.Vertical, { defaultAlignment: go.Spot.Left },
-                        gmake(go.TextBlock, this.styler.rectangle().textblock , new go.Binding('text', 'text').makeTwoWay()),
-                        // define a Horizontal panel to place the node's three buttons side by side
-                        gmake(go.Panel, go.Panel.Horizontal, {opacity: 0.0, name: 'BUTTONS'},
-                            gmake(go.TextBlock, '+Step', this.styler.linker({"click":Savanna.process.utils.ProcessUtils.addStep}).handler),
-                            gmake(go.TextBlock, '+Decision', this.styler.linker({"click":Savanna.process.utils.ProcessUtils.addDecision}).handler),
-                            gmake(go.TextBlock, '+End', this.styler.linker({"click":Savanna.process.utils.ProcessUtils.addEnd}).handler)
-                        )
-                    )
+                    gmake(go.TextBlock, this.styler.rectangle().textblock , new go.Binding('text', 'text').makeTwoWay())
                 ),
-                this.makePort('BC', go.Spot.Bottom, 135)
+                this.makeTopPort(),
+                this.makeLinkGadget(),
+                this.makeStepGadget(),
+                this.makeDecisionGadget()
             )
         );
         
@@ -125,42 +122,30 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
             gmake(go.Node, go.Panel.Spot, Savanna.process.utils.ViewTemplates.nodeStyle(),
                 gmake(go.Panel, go.Panel.Horizontal, { defaultAlignment: go.Spot.Top },
                     gmake(go.Shape, 'Start', this.styler.start().outline),
-                    gmake(go.Panel, go.Panel.Vertical, { defaultAlignment: go.Spot.Left },
-                        gmake(go.TextBlock, 'Start', this.styler.start().textblock),
-                        // define a Horizontal panel to place the node's two buttons side by side
-                        gmake(go.Panel, go.Panel.Horizontal, {opacity: 0.0, name: 'BUTTONS'},
-                                gmake(go.TextBlock, '+Step', this.styler.linker({"click":Savanna.process.utils.ProcessUtils.addStep}).handler),
-                                gmake(go.TextBlock, '+Decision', this.styler.linker({"click":Savanna.process.utils.ProcessUtils.addDecision}).handler)
-                        )
-                    )
-                )
+                    gmake(go.TextBlock, 'Start', this.styler.start().textblock)
+                ),
+                this.makeLinkGadget(),
+                this.makeStepGadget(),
+                this.makeDecisionGadget()
             )
         );
 
         nodeTemplateMap.add('ProcessAction',
             gmake(go.Node, go.Panel.Spot, Savanna.process.utils.ViewTemplates.nodeStyle(),
-                gmake(go.Panel, go.Panel.Horizontal, { defaultAlignment: go.Spot.Top },
-                    gmake(go.Shape, 'Circle', this.styler.circle().outline),
-                    gmake(go.Panel, go.Panel.Vertical, { defaultAlignment: go.Spot.Left },
-                        gmake(go.TextBlock, this.styler.circle().textblock, new go.Binding('text', 'text').makeTwoWay())
-                    )
-                )
+                gmake(go.TextBlock, this.styler.circle().textblock, new go.Binding('text', 'text').makeTwoWay())
             )
         );
 
         nodeTemplateMap.add('DecisionPoint', // Category must match the uri type
             gmake(go.Node, go.Panel.Spot, Savanna.process.utils.ViewTemplates.nodeStyle(), {toLinkable: true},
-                    gmake(go.Panel, go.Panel.Horizontal, { defaultAlignment: go.Spot.Top },
-                        gmake(go.Shape, 'Diamond', this.styler.diamond().outline),
-                        gmake(go.Panel, go.Panel.Vertical, { defaultAlignment: go.Spot.Left },
-                            gmake(go.TextBlock,this.styler.diamond().textblock, new go.Binding('text', 'text').makeTwoWay()),
-                            // define a Horizontal panel to place the node's two buttons side by side
-                            gmake(go.Panel, go.Panel.Horizontal, {opacity: 0.0, name: 'BUTTONS'},
-                                gmake(go.TextBlock, '+Step', this.styler.linker({"click":Savanna.process.utils.ProcessUtils.addStep}).handler),
-                                gmake(go.TextBlock, '+Decision', this.styler.linker({"click":Savanna.process.utils.ProcessUtils.addDecision}).handler)
-                            )
-                        )  // end Horizontal Panel
-                    )
+                gmake(go.Panel, go.Panel.Horizontal, { defaultAlignment: go.Spot.Top },
+                    gmake(go.Shape, 'Diamond', this.styler.diamond().outline),
+                    gmake(go.TextBlock,this.styler.diamond().textblock, new go.Binding('text', 'text').makeTwoWay())
+                ),
+                this.makeTopPort(),
+                this.makeLinkGadget(),
+                this.makeStepGadget(),
+                this.makeDecisionGadget()
             )
         );
 
@@ -169,7 +154,8 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                 gmake(go.Panel, go.Panel.Horizontal,
                     gmake(go.Shape, 'StopSign', this.styler.end().outline),
                     gmake(go.TextBlock, 'End', this.styler.end().textblock)
-                )
+                ),
+                this.makeTopPort()
             )
         );
 
@@ -379,6 +365,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                     toLinkable: true,
                     mouseEnter: Savanna.process.utils.GroupEventHandlers.onMouseEnter,
                     mouseLeave: Savanna.process.utils.GroupEventHandlers.onMouseLeave,
+                    selectionChanged: Savanna.process.utils.GroupEventHandlers.onSelectionChange,
                     // highlight when dragging into the Group
                     mouseDragEnter: Savanna.process.utils.GroupEventHandlers.onMouseDragEnter,
                     mouseDragLeave: Savanna.process.utils.GroupEventHandlers.onMouseDragLeave,
@@ -403,15 +390,12 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                     ),
                     // create a placeholder to represent the area where the contents of the group are
                     gmake(go.Placeholder, { padding: new go.Margin(0, 10) }),
-                    gmake(go.Panel, go.Panel.Horizontal,
-                        { defaultAlignment: go.Spot.Center, opacity: 0.0, name: 'BUTTONS'},
-                                                    
-                        gmake(go.TextBlock, '+Result', this.styler.linker({"click":Savanna.process.utils.ProcessUtils.addFinalResult}).handler),
-                        gmake(go.TextBlock, '+Step', this.styler.linker({"click":Savanna.process.utils.ProcessUtils.addStep}).handler),
-                        gmake(go.TextBlock, '+Decision', this.styler.linker({"click":Savanna.process.utils.ProcessUtils.addDecision}).handler)
-                    )
+                    gmake(go.Panel, {desiredSize: new go.Size(10,10)})
                 ),  // end Vertical Panel
-                this.makeGroupPort('BC', go.Spot.Bottom, 135)
+                this.makeTopPort(),
+                this.makeLinkGadget(),
+                this.makeStepGadget(),
+                this.makeDecisionGadget()
             )
         );  // end Group
 
