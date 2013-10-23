@@ -32,46 +32,129 @@ Ext.define('Savanna.metadata.view.StringList', {
 
     makeEditViewItems: function() {
         var me = this;
-        if(null !== me.value && 0 != me.value.length) {
-            var fieldLabelValue = me.displayLabel;
-            var contains = Ext.create('Ext.container.Container', {
-               layout: 'vbox',
-               width: "100%",
-               border: false
+        if(null !== me.getValue() && 0 != me.getValue().length) {
+            var fieldLabelValue = me.displayLabel + ':';
+
+            var stackAndAddContainer = Ext.create('Ext.container.Container', {
+                id: 'stackandaddcontainer',
+                layout: 'vbox',
+                width: "100%",
+                border: false
             });
-            var cloneArray = Ext.Array.clone(me.value);
-            Ext.Array.each(cloneArray, function(stringElement, index, allItems) {
-                var textField = Ext.create('Ext.form.field.Text', {
-                    allowBlank: true,
-                    width: '100%',
-                    labelWidth: 200,
-                    value: stringElement,
 
+            var stackContainer = Ext.create('Ext.container.Container', {
+                id: 'stackcontainer',
+                layout: 'vbox',
+                width: "100%",
+                border: false
+            });
+            me.createEditItems(stackContainer, fieldLabelValue);
+            stackAndAddContainer.add(stackContainer);
 
-                    listeners: {
-                        blur: function(d) {
-                            allItems[index] = d.getValue().trim();
-                            me.setValue(allItems);
-                        }
+            var newItemButton = Ext.create('Ext.Button', {
+                text: 'Add',
+                padding: '0 0 0 180',
+                listeners: {
+                    click: function() {
+                        me.addNewItem();
                     }
-                });
-                textField.fieldLabel = fieldLabelValue;
-                contains.add(textField);
-                if(fieldLabelValue == '&nbsp;') {
-                    textField.labelSeparator = '';
                 }
-                fieldLabelValue = '&nbsp;';
             });
-            me.add(contains);
+            stackAndAddContainer.add(newItemButton);
+            me.add(stackAndAddContainer);
+
         }
+    },
+
+    createEditItems: function(stackContainer, firstFieldLabelValue) {
+        var me = this;
+        var cloneArray = Ext.Array.clone(me.getValue());
+        Ext.Array.each(cloneArray, function(stringElement, index, allItems) {
+            var editAndDeleteContainer = me.makeEditAndDeleteContainer(index);
+            me.makeEditAndDeleteItem(index, editAndDeleteContainer, stringElement, firstFieldLabelValue, allItems );
+            stackContainer.add(editAndDeleteContainer);
+
+            firstFieldLabelValue = '&nbsp;';
+        });
+
+    },
+
+    makeEditAndDeleteContainer: function(index) {
+        return Ext.create('Ext.container.Container', {
+            layout: 'hbox',
+            width: "100%",
+            id: 'EandDContainer' + parseInt(index, 10),
+            border: false
+        });
+    },
+
+    deleteItem: function(index) {
+        var cloneArray = Ext.Array.clone(this.getValue());
+        if(this.getValue().length > 1) {
+            Ext.Array.remove(cloneArray, cloneArray[index]);
+            this.setValue(cloneArray);
+        } else {
+            cloneArray[0] = '';
+            this.setValue(cloneArray);
+        }
+
+        this.clearAndRecreate();
+    },
+
+    addNewItem: function() {
+        this.value.push('');
+        this.clearAndRecreate();
+
+        var containerId = '#EandDContainer'+parseInt(this.getValue().length-1);
+        var item = this.down(containerId);
+        if(item) {
+            item.down('textfield').focus();
+        }
+    },
+
+    clearAndRecreate: function() {
+        this.down('#stackcontainer').removeAll();
+        var fieldLabelValue = this.displayLabel + ':';
+        this.createEditItems(this.down('#stackcontainer'), fieldLabelValue);
+    },
+
+    makeEditAndDeleteItem: function(index, container, stringElement, fieldLabelValue, allItems) {
+        var me = this;
+        var textField = Ext.create('Ext.form.field.Text', {
+            allowBlank: true,
+            width: '90%',
+            labelWidth: 180,
+            value: stringElement,
+            labelSeparator: '', // we'll just append it to the label itself.  Saves trouble on all the items after the first.
+
+            listeners: {
+                blur: function(d) {
+                    allItems[index] = d.getValue().trim();
+                    me.setValue(allItems);
+                }
+            }
+        });
+        textField.fieldLabel = fieldLabelValue;
+        container.add(textField);
+
+        var deleteButton = Ext.create('Ext.Button', {
+            text: 'X',
+            listeners: {
+                click: function() {
+                    me.deleteItem(index);
+                }
+            }
+        });
+        container.add(deleteButton);
+
     },
 
     makeViewViewItems: function() {
         var me = this;
         this.add(Ext.create('Ext.form.Label', {
             itemId: 'displayLabelItem',
-            width: 200,
-            minWidth: 200,
+            width: 180,
+            minWidth: 180,
             height: 25
         }));
 

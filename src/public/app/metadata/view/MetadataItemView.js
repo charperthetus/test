@@ -74,10 +74,10 @@ Ext.define('Savanna.metadata.view.MetadataItemView', {
             width: '100%',
             labelWidth: 200,
             grow: true,
-            //rows: 1,
-            //growMin: 24,
-            //minHeight: 24,
-            //maxHeight: 24,
+            growAppend: '',
+            rows: 0,
+            growMin: 22,
+            growMax: 200,
             listeners: {
                 blur: function(d) {
                     //console.log('Item Blur');
