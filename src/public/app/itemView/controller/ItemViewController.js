@@ -14,9 +14,6 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     mixins: {
         storeable: 'Savanna.mixin.Storeable'
     },
-    control: {
-        
-    },
 
     constructor: function (options) {
         this.opts = options || {};

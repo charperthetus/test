@@ -9,7 +9,7 @@
 Ext.define('Savanna.itemView.view.header.ViewHeader', {
     extend: 'Ext.grid.Panel',
 
-    require: ['Savanna.itemView.controller.ViewHeaderController'],
+    requires: ['Savanna.itemView.controller.ViewHeaderController'],
 
     alias: 'widget.itemview_view_header',
 
@@ -28,7 +28,7 @@ Ext.define('Savanna.itemView.view.header.ViewHeader', {
             itemId: 'headerColumn',
             tpl: Ext.create('Ext.XTemplate',
                 '<tpl if="label == \'Parent\'">',
-                    '<b>{label}:&nbsp;&nbsp;</b>',
+                    '<b>{label}&nbsp;&nbsp;</b>',
                     '<tpl for="values">',
                         '<input type="button" name="{value}" value="{label}" id="openParentItem" />',
                     '</tpl>',
@@ -37,7 +37,7 @@ Ext.define('Savanna.itemView.view.header.ViewHeader', {
                         '{value}',
                     '</tpl>',
                 '<tpl else>',
-                    '<b>{label}:&nbsp;&nbsp;</b>',
+                    '<b>{label}&nbsp;&nbsp;</b>',
                     '<tpl for="values" between=",&nbsp;&nbsp;">',
                         '{value}',
                     '</tpl>',

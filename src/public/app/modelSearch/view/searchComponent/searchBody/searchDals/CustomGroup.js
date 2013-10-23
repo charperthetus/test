@@ -106,7 +106,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.searchDals.Custo
                 config.bbar = {
                     xtype: 'button',
                     text: 'Add Key Value Pair Option',
-                    handler: Ext.bind(this.addKeyValueInput, this),
+                    handler: Ext.bind(this.addKeyValueInput, this)
                     // ui: 'link'
                 };
                 break;

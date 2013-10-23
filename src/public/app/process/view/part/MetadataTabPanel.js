@@ -17,7 +17,6 @@ Ext.define('Savanna.process.view.part.MetadataTabPanel', {
     items: [
         { title: 'Details' }, //todo: fill in details
         { title: 'Comments' },
-        { title: 'Selection' },
         { title: 'JSON',
             xtype:'panel',
             layout:'vbox',

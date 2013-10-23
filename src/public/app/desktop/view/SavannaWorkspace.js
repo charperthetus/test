@@ -11,8 +11,6 @@ Ext.define('Savanna.desktop.view.SavannaWorkspace', {
     requires: [
         'Savanna.desktop.controller.WorkspaceController',
         'Savanna.desktop.view.SavannaTabPanel',
-        'Savanna.crumbnet.view.CrumbnetComponent',
-        'Savanna.map.view.MapComponent',
         'Savanna.process.view.ProcessEditorComponent'
     ],
 
@@ -63,21 +61,6 @@ Ext.define('Savanna.desktop.view.SavannaWorkspace', {
         items: [{
             title: 'Process',
             xtype: 'process_component',
-            tabConfig: {
-                ui: 'dark'
-            },
-            closable: true
-        }, {
-            title: 'Crumbnet',
-            xtype: 'go-graph',
-            tabConfig: {
-                ui: 'dark'
-            },
-            closable: true
-        }, {
-            title: 'Map',
-            xtype: 'map_component',
-            itemId: 'MAP_ONE',
             tabConfig: {
                 ui: 'dark'
             },

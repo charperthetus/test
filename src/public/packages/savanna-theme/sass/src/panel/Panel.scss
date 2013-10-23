@@ -1,10 +1,24 @@
 /*
-*
+* Sets custom panel.Panel styles by reusing ExtJS (or UIKit) mixins.
+ *  Refer to thetus-uikit/sass/src/panel/_uikit-panel.scss for the constructor of the UIKit mixin
+ *
+ *
+ *	@author astump 10/17/2013
 *
 * @author Eirby 10/21/2013
 *
 *
 */
+
+@import 'class/whiteGridView';
+
+@if $include-panel-uis == true {
+  @include uikit-panel(
+    $uikit-ui: 'search-prime',
+    $uikit-body-color: $medium-gray,
+    $uikit-body-background-color: $medium-gray
+  );
+}
 
 @include uikit-panel (
   $uikit-ui: 'item-view',
@@ -25,38 +39,5 @@
 }
 
 
-.white-grid-view-panel{
-  input[type="button"]{
-    border: 0;
-    background: transparent;
-    color: #2694be;
-    cursor: pointer;
-    padding-left: 0px;
-    &:hover, &:active, &:focus{
-        text-decoration: underline;
-    }
-  }
-  .#{$prefix}column-header, .#{$prefix}grid-header-ct{
-            background:none;
-            border-color:transparent;
-  }
-  td, tr, table, .#{$prefix}grid-cell {
-    border-color:transparent;
-  }
-  .#{$prefix}grid-row{
-    .#{$prefix}grid-cell-inner{
-      line-height: 17px;
-      padding: 0 6px 0 12px;
-    }
-    &:last-child{
-      .#{$prefix}grid-cell-inner{
-        padding: 0 6px 18px 12px;
-      }
-    }
-  }
-  .#{$prefix}column-header-over,
-  .#{$prefix}column-header-sort-ASC,
-  .#{$prefix}column-header-sort-DESC {
-    background:none;
-  }
-}
+
+

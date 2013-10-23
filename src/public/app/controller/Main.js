@@ -5,6 +5,10 @@
 Ext.define('Savanna.controller.Main', {
     extend: 'Ext.app.Controller',
 
+    requires: [
+        'Ext.util.TaskRunner'
+    ],
+
     views: [
         'Savanna.view.Login',
         'Savanna.desktop.view.SavannaDesktop',
@@ -47,6 +51,9 @@ Ext.define('Savanna.controller.Main', {
                 var main = Ext.create('Savanna.desktop.view.SavannaDesktop', { itemId: 'main' });
 
                 mainViewport.add(main);
+
+                //Start KeepAlive
+                this.keepAlive();
             }
         }
         else {
@@ -63,5 +70,32 @@ Ext.define('Savanna.controller.Main', {
 
         // NOTE: we assume we will always get the modal window, since the button is it's child
         modal.close();
+    },
+
+    keepAlive: function(){
+        var task = {
+            run: function(){
+                Ext.Ajax.request({
+                    url: SavannaConfig.pingUrl + ';jsessionid=' + Savanna.jsessionid,
+                    method: 'GET',
+                    success: function(response){
+                        var message = Ext.decode(response.responseText);
+                        if (message.isLoggedIn == false){
+                            runner.stop(task);
+                            //TODO - you were logged out of the server and didn't know it, what should I do
+                        }
+                    },
+                    failure: function(response){
+                        //TODO - What do we want to do on a failure here, it is likely a bad connection
+                        runner.stop(task);
+                        console.log('Server Side Failure' + response.status);
+                    }
+                })
+            },
+            interval: 30000 // every 30 seconds
+        };
+        var runner = new Ext.util.TaskRunner();
+        runner.start(task);
     }
+
 });
