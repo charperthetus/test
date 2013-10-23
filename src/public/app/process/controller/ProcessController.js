@@ -11,6 +11,11 @@ Ext.define('Savanna.process.controller.ProcessController', {
     requires: [
         'Savanna.process.utils.ViewTemplates'
     ],
+    inject: [ 'application' ], //todo: inject Process store and use it to load process data
+
+    config: {
+        application: null
+    },
 
     control: {
         expandsteps: {
@@ -44,11 +49,28 @@ Ext.define('Savanna.process.controller.ProcessController', {
         },
         zoomout: {
             click: 'zoomOut'
+        },
+        cancelprocess: {
+            click: 'onCancel'
+        },
+        saveprocess: {
+            click: 'onSave'
+        },
+        view: {
+            beforeclose: 'onProcessClose'
         }
     },
+
+    init: function() {
+        //you can get the application object here by using this.getApplication() now that it has been injected...
+
+        //todo: diagram initialization here: setup for checking for a "dirty" process component
+
+        return this.callParent(arguments);
+    },
+
     toggleExpanded: function(expand) {
-        var canvas = this.getCanvas();
-        var diagram = canvas.diagram;
+        var diagram = this.getCanvas().diagram;
         diagram.startTransaction('toggleExpanded');
         var iter = diagram.nodes;
         while ( iter.next() ){
@@ -73,16 +95,16 @@ Ext.define('Savanna.process.controller.ProcessController', {
     saveJSONClick: function() {
         var canvas = this.getCanvas();
         var metadata = this.getMetadata();
-        this.save(canvas.diagram, metadata.down('#JSONtextarea'));
+        this.showDiagramJSON(canvas.diagram, metadata.down('#JSONtextarea'));
     },
     clearJSONClick: function() {
-        var canvas = this.getCanvas();
         var metadata = this.getMetadata();
-        this.clear(canvas.diagram, metadata.down('#JSONtextarea'));
+        var textArea = metadata.down('#JSONtextarea');
+        this.clear(this.getCanvas().diagram, textArea);
     },
 
-        // Show the diagram's model in JSON format that the user may have edited
-    save: function(diagram, textarea) {
+    // Show the diagram's model in JSON format that the user may have edited
+    showDiagramJSON: function(diagram, textarea) {
         var str = diagram.model.toJson();
         textarea.setValue(str);
     },
@@ -101,32 +123,80 @@ Ext.define('Savanna.process.controller.ProcessController', {
     },
 
     handleUndo: function() {
-        var canvas = this.getCanvas();
-        var diagram = canvas.diagram;
-        diagram.undoManager.undo();
+        this.getCanvas().diagram.undoManager.undo();
     },
 
     handleRedo: function() {
-        var canvas = this.getCanvas();
-        var diagram = canvas.diagram;
-        diagram.undoManager.redo();
+        this.getCanvas().diagram.undoManager.redo();
     },
 
     zoomIn: function() {
-        var canvas = this.getCanvas();
-        var diagram = canvas.diagram;
+        var diagram = this.getCanvas().diagram;
         diagram.scale = diagram.scale * Math.LOG2E;
     },
 
     zoomOut: function() {
-        var canvas = this.getCanvas();
-        var diagram = canvas.diagram;
+        var diagram = this.getCanvas().diagram;
         diagram.scale = diagram.scale / Math.LOG2E;
     },
 
+
+    confirmClosed: false,
+
+    onProcessClose: function(panel) {
+        var me = this;
+        Ext.Msg.show({
+            title: 'Close Process',
+            msg: 'Are you sure you want to close? Any unsaved changes will be lost.', //todo: get final wording for dialog
+            buttons: Ext.Msg.YESNOCANCEL,
+            buttonText: {yes: 'Close and Disard Changes', no: 'Save Changes and Close', cancel: 'Cancel'},//Ext.Msg.YESNOCANCEL,
+            fn: function(button) {
+                if(button == 'yes'){
+                    //discard changes and close
+                    me.confirmClosed = true;
+                    panel[panel.closeAction]();
+                } else if (button == 'no') {
+                    //save and close
+                    me.onSave();
+                    panel[panel.closeAction]();
+                } else {
+                    //do nothing, leave the process open
+                }
+            }
+        });
+        return false;
+    },
+
+    onCancel: function() {
+        var me = this;
+        Ext.Msg.confirm(
+            'Cancel Changes?',
+            'This will abort any changes you have made. Are you sure you want to cancel your changes?',//todo: get final wording for dialog
+            function(btn) {
+               if (btn == 'yes') {
+                   me.cancelProcess();
+               }
+            }
+        );
+    },
+
+    cancelProcess: function() {
+        //todo: either rollback to initial transaction (if possible in GoJS) or make a service call to get/load json for the uri
+        // For now just reload the initial JSON
+        var diagram = this.getCanvas().diagram;
+        if (diagram.isInTransaction) {
+            diagram.rollbackTransaction();
+        }
+        this.loadInitialJSON();
+    },
+
+    onSave: function() {
+        //todo: commit the initial transaction (if possible in GoJS). Call service to save json data. Start a new main transaction.
+        //for now, do nothing
+    },
+
     loadInitialJSON: function () {
-        var canvas = this.getCanvas();
-        var diagram = canvas.diagram;
+        var diagram = this.getCanvas().diagram;
         var metadata = this.getMetadata();
         var textarea = metadata.down('#JSONtextarea');
 

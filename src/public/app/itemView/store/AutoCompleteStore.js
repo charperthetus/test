@@ -1,12 +1,12 @@
 /**
  * Created with IntelliJ IDEA.
  * User: bjohnson
- * Date: 10/15/13
- * Time: 2:36 PM
+ * Date: 10/22/13
+ * Time: 9:50 AM
  * To change this template use File | Settings | File Templates.
  */
 
-Ext.define('Savanna.itemView.store.MainItemStore', {
+Ext.define('Savanna.itemView.store.AutoCompleteStore', {
     extend: 'Ext.data.JsonStore',
 
     requires: [
@@ -14,7 +14,7 @@ Ext.define('Savanna.itemView.store.MainItemStore', {
         'Savanna.proxy.Cors'
     ],
 
-    model: 'Savanna.itemView.model.MainItemModel',
+    model: 'Savanna.itemView.model.AutoCompleteModel',
 
     storeId: 'mainItem',
 
@@ -24,7 +24,7 @@ Ext.define('Savanna.itemView.store.MainItemStore', {
 
         this.setProxy({
             type: 'savanna-cors',
-            url: SavannaConfig.itemViewUrl,
+            url: SavannaConfig.itemPredicateUrl,
             reader: {
                 type: 'json'
             },

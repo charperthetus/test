@@ -56,23 +56,14 @@ Ext.application({
         //ItemView
         'Savanna.itemView.controller.ItemViewController',
         //Model Search
-        'Savanna.modelSearch.controller.SearchComponent',
+        'Savanna.modelSearch.controller.ModelSearchController',
         //Upload
         'Savanna.upload.controller.UploadController'
     ],
 
-    autoCreateViewport: false,
+    autoCreateViewport: true,
 
     launch: function() {
-        Deft.Injector.configure({
-            'application': {
-                value: this
-            }
-        });
-
-        //in order to get Injection to work, I had to set autoCreateViewport to false and then manually create the viewport here
-        Ext.create('Savanna.view.Viewport');
-
         var viewportQueryResults = Ext.ComponentQuery.query('viewport');
 
         if (viewportQueryResults && viewportQueryResults.length > 0) {
