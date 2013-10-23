@@ -244,7 +244,7 @@ var ThetusTestHelpers;
     ThetusHelpers.Fixtures = ThetusHelpers.Fixtures || {};
     ThetusHelpers.Fixtures.Metadata = ThetusHelpers.Fixtures.Metadata || {};
 
-    ThetusHelpers.Fixtures.Metadata.json = testMetadataResponse;
+    ThetusHelpers.Fixtures.Metadata.metadataResponse = testMetadataResponse;
     ThetusHelpers.Fixtures.Metadata.noTemplatesResponse = noMetadataResponse;
 
 })(ThetusTestHelpers || (ThetusTestHelpers = {}));
