@@ -45,10 +45,13 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
         ]
     }],
 
-    tbar: [
+    tbar:{
+        ui:'item-view',
+        items:[
         {
-            xtype: 'splitbutton',
+            xtype: 'button',
             text: 'Options',
+            ui:'basic',
             menu: [
                 {
                     text: 'New Item...'
@@ -88,7 +91,8 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
             itemId: 'editModeButton',
             text: 'Edit'
         }
-    ],
+        ]
+    },
 
 
     constructor: function(configs) {
@@ -119,19 +123,22 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                 items:  [
                     {
                         xtype: 'panel',
-                        cls: 'BoilerPlatePropertyGrid',
+                        cls: 'item-view-left-column',
                         flex: 1,
                         items: [
                             {
                                 xtype: 'itemview_view_header',
                                 itemId: 'itemViewHeaderView',
+                                cls:'white-grid-view-panel',
                                 header:{
-                                    ui:'white'
+                                    ui:'item-view',
+                                    height:48
                                 }
                             },
                             {
                                 xtype: 'itemview_view_related_processes',
                                 itemId: 'relatedProcessesView',
+                                cls:'white-grid-view-panel',
                                 collapsible: true,
                                 header:{
                                     ui:'light-blue'
@@ -141,6 +148,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                                 //Todo: create related items component here
                                 xtype: 'itemview_view_related_items',
                                 itemId: 'relatedItemsView',
+                                cls:'white-grid-view-panel',
                                 collapsible: true,
                                 title: 'Related Items (#)',
                                 header:{
@@ -156,6 +164,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                             {
                                 xtype: 'itemview_view_qualities',
                                 itemId: 'itemViewPropertiesView',
+                                cls:'white-grid-view-panel',
                                 collapsible: true,
                                 header:{
                                     ui:'light-blue'
