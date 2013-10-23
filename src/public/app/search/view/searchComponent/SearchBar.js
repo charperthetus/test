@@ -13,7 +13,7 @@ Ext.define('Savanna.search.view.searchComponent.SearchBar', {
     border: false,
     frame: false,
     layout: 'ux.center',
-    cls: 'search-prime',
+    ui: 'search-prime',
 
     items: [
         {
@@ -22,6 +22,8 @@ Ext.define('Savanna.search.view.searchComponent.SearchBar', {
             width: '30%',
             minWidth: 520,
             itemId: 'main_panel',
+            ui: 'search-prime',
+
             items: [
                 {
                     xtype: 'searchbar_form',
@@ -33,10 +35,12 @@ Ext.define('Savanna.search.view.searchComponent.SearchBar', {
                     bodyPadding: 0,
                     itemId:'search_reset',
                     minHeight:25,
+                    ui: 'search-prime',
                     items: [
                         {
                             xtype: 'button',
                             itemId:'search_reset_button',
+                            ui: 'white',
                             text: 'Start New Search'
                         }
                     ]
