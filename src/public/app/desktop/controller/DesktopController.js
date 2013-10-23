@@ -12,13 +12,14 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
         'Savanna.desktop.view.AboutWindow',
         'Savanna.desktop.view.SearchWindow',
         'Savanna.desktop.view.UploadWindow',
-        'Savanna.modelSearch.view.ModelSearch'
+        'Savanna.modelSearch.view.ModelSearch',
+        'Savanna.desktop.view.ModelSearchWindow'
     ],
     statics: {
         aboutwindow: null,
         searchwindow: null,
         uploadwindow: null
-    },
+            },
 
     control: {
         logobutton: {
@@ -45,8 +46,6 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
     },
 
     init: function() {
-        Savanna.app.on('initModelSearch', this.displayModelSearch);
-
         return this.callParent(arguments);
     },
 
@@ -81,7 +80,7 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
         }
     },
 
-    displayUploadDialog: function() {
+    displayUploadDialog: function(button) {
         if (!this.statics().uploadwindow) {
             this.statics().uploadwindow = Ext.create('Savanna.desktop.view.UploadWindow', { closeAction: 'hide'});
         }
@@ -103,7 +102,20 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
     },
 
     handleLogout: function() {
-        console.log('The user is trying to logout');
+        //POST to the logout url, and refresh the page on a response to trigger the login page
+        Ext.Ajax.request({
+            url: SavannaConfig.logoutUrl + ';jsessionid=' + Savanna.jsessionid,
+            cors: true,
+            method: 'POST',
+            success: function(response){
+                //Refresh the page
+                location.href = location.href;
+            },
+            failure: function(response){
+                location.href = location.href;
+            }
+        })
+
     },
 
     displayModelSearch: function() {

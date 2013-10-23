@@ -60,23 +60,13 @@ Ext.define('Savanna.desktop.view.SavannaWorkspace', {
         itemId: 'maintabpanel',
         flex: 2,
         height: '100%',
-        items: [
-            {
-                title: 'Crumbnet',
-                xtype: 'go-graph',
-                tabConfig: {
-                    ui: 'dark'
-                },
-                closable: true
-            }, {
-                title: 'Map',
-                xtype: 'map_component',
-                itemId: 'MAP_ONE',
-                tabConfig: {
-                    ui: 'dark'
-                },
-                closable: true
-            }
-        ]
+        items: [{
+            title: 'Process',
+            xtype: 'process_component',
+            tabConfig: {
+                ui: 'dark'
+            },
+            closable: true
+        }]
     }]
 });

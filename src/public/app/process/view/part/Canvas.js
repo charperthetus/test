@@ -21,7 +21,6 @@ Ext.define('Savanna.process.view.part.Canvas', {
     diagram: null,
 
     onRender: function() {
-        var gmake = go.GraphObject.make;
         var domElem;
 
         this.callParent(arguments);

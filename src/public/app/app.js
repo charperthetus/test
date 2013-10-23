@@ -49,8 +49,6 @@ Ext.application({
         'Savanna.flexpaper.controller.FlexpaperComponent',
         //Search
         'Savanna.search.controller.SearchComponent',
-        //Crumbnet
-        'Savanna.crumbnet.controller.CrumbnetController',
         //Map
         'Savanna.map.controller.MapController',
         //ItemView

@@ -18,16 +18,19 @@ Ext.define('Savanna.itemView.store.MainItemStore', {
 
     storeId: 'mainItem',
 
-    proxy: {
-        type: 'savanna-cors',
+    constructor: function () {
 
-        reader: {
-            type: 'json'
-        },
-        writer: {
-            type: 'json'
-        }
+        this.callParent(arguments);
+
+        this.setProxy({
+            type: 'savanna-cors',
+            url: SavannaConfig.itemViewUrl,
+            reader: {
+                type: 'json'
+            },
+            writer: {
+                type: 'json'
+            }
+        });
     }
-
-
 });
