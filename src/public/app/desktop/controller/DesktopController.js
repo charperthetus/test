@@ -114,7 +114,7 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
             failure: function(response){
                 location.href = location.href;
             }
-        })
+        });
 
     },
 
