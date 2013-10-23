@@ -105,7 +105,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                 // define the Node templates for regular nodes
 
         nodeTemplateMap.add('ProcessItem',
-            gmake(go.Node, go.Panel.Spot, Savanna.process.utils.ViewTemplates.nodeStyle(), {fromLinkable:null, toLinkable:true},
+            gmake(go.Node, go.Panel.Spot, Savanna.process.utils.ViewTemplates.nodeStyle(), {toLinkable:true},
                 // the main object is a Panel that surrounds a TextBlock with a rectangular Shape
                 gmake(go.Panel, go.Panel.Horizontal,
                     gmake(go.Shape, 'Rectangle', this.styler.rectangle().outline),
@@ -361,7 +361,6 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                 {
                     name: 'null',
                     background: 'transparent',
-                    fromLinkable: true,
                     toLinkable: true,
                     mouseEnter: Savanna.process.utils.GroupEventHandlers.onMouseEnter,
                     mouseLeave: Savanna.process.utils.GroupEventHandlers.onMouseLeave,
