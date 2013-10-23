@@ -31,6 +31,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
     columns: [
         {
             text: ' ',
+            hideable: false, //No hide menu for a single column
             xtype: 'templatecolumn',
             tpl: new Ext.XTemplate(
 
@@ -38,7 +39,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
                 '<div id="hoverDiv" style="visibility: hidden; right: 0;  top: 5; position: absolute;" ><button class="openButtonClass">Open</button></div>',
                 '<table>',
                 '<tr><td colspan="2" class="grid-cell-title"><strong>{title}</strong></td></tr>',
-                '<td><img src="{documentSource}" width="80px" height="60px" /></td>',
+                '<td><img src="{documentSource}" width="80px" height="60px" hspace="3px"/></td>',
                 '<td>({composite}) - {[this.parseDate(new Date(values.publishedDate))]} - {documentFileName}<br />{previewString}</td>',
                 '</table>',
                 '</div>',

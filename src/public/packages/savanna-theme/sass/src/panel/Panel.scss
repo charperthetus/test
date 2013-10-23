@@ -1,0 +1,19 @@
+/*
+ *  Sets custom panel.Panel styles by reusing ExtJS (or UIKit) mixins.
+ *  Refer to thetus-uikit/sass/src/panel/_uikit-panel.scss for the constructor of the UIKit mixin
+ *
+ *
+ *	@author astump 10/17/2013
+ *
+ */
+
+/* IMPORTS */
+
+/* MIXINS */
+@if $include-panel-uis == true {
+    @include uikit-panel(
+        $uikit-ui: 'search-prime',
+        $uikit-body-color: $medium-gray,
+        $uikit-body-background-color: $medium-gray
+    );
+}

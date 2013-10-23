@@ -96,10 +96,6 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                 cls: 'BoilerPlatePropertyGrid',
                 flex: 1,
                 items: [
-//                    {
-//                        xtype: 'itemview_edit_header',
-//                        itemId: 'itemEditHeader'
-//                    },
                     {
                         xtype: 'itemview_view_header',
                         itemId: 'itemViewHeader',
@@ -132,20 +128,10 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                 xtype: 'panel',
                 flex: 1,
                 items: [
-//                    {
-//                        xtype: 'itemview_imagesgrid',
-//                        itemId: 'imagesGrid'
-//                    },
-//                    {
-//                        xtype: 'itemview_edit_qualities',
-//                        itemId: 'itemEditProperties',
-//                        width: '100%',
-//                        collapsible: true,
-//                        title: 'Qualities (#)',
-//                        header:{
-//                            ui:'light-blue'
-//                        }
-//                    }
+                    {
+                        xtype: 'itemview_imagesgrid',
+                        itemId: 'itemViewImagesGrid'
+                    },
                     {
                         xtype: 'itemview_view_qualities',
                         itemId: 'itemViewProperties',

@@ -12,6 +12,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
     requires: [
         'Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent.ResultsPanelToolbar',
         'Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent.ResultsPanelGrid',
+        'Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent.ResultsPanelGridMultiColumn',
         'Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent.ResultsMap',
         'Savanna.controller.Factory'
     ],
@@ -42,6 +43,18 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
                 ]
             },
             {
+                xtype: 'model_search_resultspanelgrid_multi_column',
+                itemId: 'resultspanelgrid_multi_column',
+                dockedItems:[
+                    {
+                        xtype: 'pagingtoolbar',
+                        itemId: 'gridtoolbar',
+                        dock: 'top',
+                        displayInfo: true
+                    }
+                ]
+            },
+            {
                 xtype: 'model_search_resultsmap',
                 itemId: 'resultsmap',
                 hidden: true
@@ -57,6 +70,10 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
         var grid = this.queryById('resultspanelgrid');
         grid.reconfigure(obj.store);
         grid.queryById('gridtoolbar').bindStore(obj.store);
+
+        var gridMulti = this.queryById('resultspanelgrid_multi_column');
+        gridMulti.reconfigure(obj.store);
+        gridMulti.queryById('gridtoolbar').bindStore(obj.store);
 
         obj.store.loadPage(obj.store.currentPage);
     },
