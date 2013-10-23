@@ -26,7 +26,8 @@ Ext.define('Savanna.upload.view.part.CurrentUploadsView', {
             {
                 xtype:'panel',
                 layout:{
-                    type: 'hbox'
+                    type: 'hbox',
+                    pack: 'center'
                 },
                 defaults:{
                     margin:'0 20 0 0'
@@ -36,10 +37,12 @@ Ext.define('Savanna.upload.view.part.CurrentUploadsView', {
                     xtype: 'label',
                     text: 'My Uploads',
                     style: 'line-height:37px;',
+                    width: '33%',
                     cls: ['h1', 'dark']
                 },{
                     xtype: 'label',
                     itemId: 'uploadProgressLabel',
+                    width: '33%',
                     style: 'line-height:40px;'
                 },{
                    xtype:'tbfill'
