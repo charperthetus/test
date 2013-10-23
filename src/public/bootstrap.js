@@ -5,16 +5,22 @@
  * metadata-driven class system features 
  */
 Ext.Loader.addClassPathMappings({
+  "ThetusUikit.form": "packages/thetus-uikit/overrides/form",
   "Deft.Component": "packages/deft/src/js/event/LiveEventBus.js",
+  "ThetusUikit.panel": "packages/thetus-uikit/overrides/panel",
   "Ext.rtl.EventObjectImpl": "ext/src/rtl/EventObject.js",
+  "ThetusUikit.layout": "packages/thetus-uikit/overrides/layout",
   "Savanna.metadata.view.String": "app/metadata/view/string.js",
+  "ThetusUikit.toolbar": "packages/thetus-uikit/overrides/toolbar",
   "Savanna-Theme": "packages/savanna-theme/overrides",
+  "ThetusUikit.tip": "packages/thetus-uikit/overrides/tip",
   "Deft.InjectableComponent": "packages/deft/src/js/ioc/Injector.js",
+  "ThetusUikit.button": "packages/thetus-uikit/overrides/button",
   "Savanna.metadata.view.Details": "app/metadata/view/details.js",
   "Ext": "ext/src",
-  "Savanna.metadata.view.LongString": "app/metadata/view/longString.js",
   "Ext.ux.layout.component.field.BoxSelectField": "app/components/boxSelect/BoxSelect.js",
-  "ThetusUikit": "packages/thetus-uikit/overrides",
+  "Savanna.metadata.view.LongString": "app/metadata/view/longString.js",
+  "ThetusUikit": "packages/thetus-uikit/src",
   "ThemeDemoApp": "packages/thetus-uikit/overrides",
   "Savanna": "app",
   "Deft": "packages/deft/src/js"
@@ -856,7 +862,7 @@ Ext.ClassManager.addNameAliasMappings({
     "widget.metadata_double"
   ],
   "ThetusUikit.ux.form.SearchField": [
-    "widget.searchfield"
+    "widget.thetus-searchfield"
   ],
   "Savanna.modelSearch.controller.resultsComponent.resultsDals.ResultsRefineSearchbarController": [],
   "Savanna.process.model.TemplateGroup": [],
@@ -986,4 +992,3 @@ Ext.Loader.loadScript("packages/thetus-uikit/overrides/toolbar/Separator.js");
 Ext.Loader.loadScript("packages/thetus-uikit/overrides/form/field/Number.js");
 Ext.Loader.loadScript("packages/thetus-uikit/overrides/picker/Month.js");
 Ext.Loader.loadScript("packages/thetus-uikit/overrides/panel/Tool.js");
-Ext.Loader.loadScript("packages/thetus-uikit/overrides/ux/form/SearchField.js");

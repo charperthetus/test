@@ -13,7 +13,8 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
         'Savanna.desktop.view.SearchWindow',
         'Savanna.desktop.view.UploadWindow',
         'Savanna.modelSearch.view.ModelSearch',
-        'Savanna.desktop.view.ModelSearchWindow'
+        'Savanna.desktop.view.ModelSearchWindow',
+        'Savanna.itemView.view.ItemViewer'
     ],
     statics: {
         aboutwindow: null,

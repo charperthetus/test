@@ -1,5 +1,5 @@
 Ext.define('Savanna.itemView.view.ItemViewer', {
-    extend: 'Ext.panel.Panel',
+    extend: 'Ext.tab.Panel',
 
     alias: 'widget.itemview_itemviewer',
 
@@ -8,23 +8,28 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
     require: [
         'Ext.grid.Panel',
         'Savanna.itemView.controller.ItemViewController',
-        'Savanna.itemView.view.header.EditHeader',
-        'Savanna.itemView.view.header.DisplayLabel',
         'Savanna.itemView.view.header.ViewHeader',
+        'Savanna.itemView.view.header.EditHeader',
+        'Savanna.itemView.view.itemQualities.EditItemQualities',
+        'Savanna.itemView.view.itemQualities.EditItemQualities',
+        'Savanna.itemView.view.header.DisplayLabelView',
+        'Savanna.itemView.view.relatedProcesses.ViewRelatedProcesses',
+        'Savanna.itemView.view.relatedItems.ViewRelatedItems',
+        'Savanna.itemView.view.relatedItems.EditRelatedItems',
+        'Savanna.itemView.view.itemQualities.ViewItemQualities',
+        'Savanna.itemView.view.itemQualities.EditItemQualities',
         'Savanna.itemView.view.imageBrowser.ImagesGrid',
         'Savanna.itemView.view.components.AutoCompleteWithTags',
         'Savanna.itemView.view.imageBrowser.ImageThumbnail',
-        'Savanna.itemView.view.itemQualities.EditItemQualities',
         'Savanna.itemView.view.components.LabeledFieldWithTags',
-        'Savanna.itemView.view.relatedProcesses.RelatedProcesses',
-        'Savanna.itemView.view.relatedItems.ViewRelatedItems',
-        'Savanna.itemView.view.itemQualities.ViewItemQualities'
+        'Savanna.components.boxSelect.AutoCompleteBox'
     ],
 
     controller: 'Savanna.itemView.controller.ItemViewController',
 
     config: {
-        itemUri: null
+        itemUri: null,
+        editMode:false
     },
 
     dockedItems: [{
@@ -65,22 +70,30 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                 },
                 {
                     text: 'Search Intell'
+                },
+                {
+                    xtype: 'menuseparator'
+                },
+                {
+                    text: 'Relationship Picker',
+                    handler: function(){
+                        Ext.create('Savanna.itemView.view.relatedItems.AddRelationships', {
+                            width: 400,
+                            height: 300
+                        });
+                    }
                 }
             ]
         },
         '->',
         {
             xtype: 'button',
+            itemId: 'editModeButton',
             text: 'Edit'
         }
         ]
     },
 
-    layout:{
-        type: 'hbox'
-    },
-    overflowY: 'auto',
-    autoScroll: true,
 
     constructor: function(configs) {
         this.initConfig(configs);  //initializes configs passed in constructor
@@ -91,63 +104,130 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
 
         this.items = this.buildItems();
         this.callParent(arguments);
+
+        this.tabBar.hide();
+        this.componentLayout.childrenChanged = true;
+        this.doComponentLayout();
     },
 
     buildItems: function() {
         return [
             {
-                xtype: 'panel',
-                cls: 'item-view-left-column',
-                flex: 1,
-                items: [
+                xtype:'panel',
+                itemId:'itemviewer_viewtab',
+                layout:{
+                    type: 'hbox'
+                },
+                overflowY: 'auto',
+                autoScroll: true,
+                items:  [
                     {
-                        xtype: 'itemview_view_header',
-                        itemId: 'itemViewHeader',
-                        cls:'white-grid-view-panel',
-                        header:{
-                            ui:'item-view',
-                            height:48
-                        }
+                        xtype: 'panel',
+                        cls: 'item-view-left-column',
+                        flex: 1,
+                        items: [
+                            {
+                                xtype: 'itemview_view_header',
+                                itemId: 'itemViewHeaderView',
+                                cls:'white-grid-view-panel',
+                                header:{
+                                    ui:'item-view',
+                                    height:48
+                                }
+                            },
+                            {
+                                xtype: 'itemview_view_related_processes',
+                                itemId: 'relatedProcessesView',
+                                cls:'white-grid-view-panel',
+                                collapsible: true,
+                                header:{
+                                    ui:'light-blue'
+                                }
+                            },
+                            {
+                                //Todo: create related items component here
+                                xtype: 'itemview_view_related_items',
+                                itemId: 'relatedItemsView',
+                                cls:'white-grid-view-panel',
+                                collapsible: true,
+                                title: 'Related Items (#)',
+                                header:{
+                                    ui:'light-blue'
+                                }
+                            }
+                        ]
                     },
                     {
-                        //ToDo: create related processes component here
-                        xtype: 'itemview_related_processes',
-                        itemId: 'relatedProcesses',
-                        cls:'white-grid-view-panel',
-                        collapsible: true,
-                        header:{
-                            ui:'light-blue'
-                        }
-                    },
-                    {
-                        //Todo: create related items component here
-                        xtype: 'itemview_view_related_items',
-                        itemId: 'relatedItems',
-                        cls:'white-grid-view-panel',
-                        collapsible: true,
-                        title: 'Related Items (#)',
-                        header:{
-                            ui:'light-blue'
-                        }
+                        xtype: 'panel',
+                        flex: 1,
+                        items: [
+                            {
+                                xtype: 'itemview_view_qualities',
+                                itemId: 'itemViewPropertiesView',
+                                cls:'white-grid-view-panel',
+                                collapsible: true,
+                                header:{
+                                    ui:'light-blue'
+                                }
+                            }
+                        ]
                     }
                 ]
             },
             {
-                xtype: 'panel',
-                flex: 1,
-                items: [
+                xtype:'panel',
+                itemId:'itemviewer_edittab',
+                layout:{
+                    type: 'hbox'
+                },
+                overflowY: 'auto',
+                autoScroll: true,
+                items:  [
                     {
-                        xtype: 'itemview_imagesgrid',
-                        itemId: 'itemViewImagesGrid'
+                        xtype: 'panel',
+                        cls: 'BoilerPlatePropertyGrid',
+                        flex: 1,
+                        items: [
+                            {
+                                xtype: 'itemview_edit_header',
+                                itemId: 'itemViewHeaderEdit',
+                                header:{
+                                    ui:'white'
+                                }
+                            },
+                            {
+                                xtype: 'itemview_view_related_processes',
+                                itemId: 'relatedProcessesView',
+                                collapsible: true,
+                                header:{
+                                    ui:'light-blue'
+                                }
+                            },
+                            {
+                                //Todo: create related items component here
+                                xtype: 'itemview_edit_related_items',
+                                itemId: 'relatedItemsEdit',
+                                collapsible: true,
+                                title: 'Related Items (#)',
+                                header:{
+                                    ui:'light-blue'
+                                }
+                            }
+                        ]
                     },
                     {
-                        xtype: 'itemview_view_qualities',
-                        itemId: 'itemViewProperties',
-                        cls:'white-grid-view-panel',
-                        collapsible: true,
-                        header:{
-                            ui:'light-blue'
-                        }
+                        xtype: 'panel',
+                        flex: 1,
+                        items: [
+                            {
+                                xtype: 'itemview_edit_qualities',
+                                itemId: 'itemViewPropertiesEdit',
+                                collapsible: true,
+                                header:{
+                                    ui:'light-blue'
+                                }
+                            }
+                        ]
                     }
                 ]
             }
