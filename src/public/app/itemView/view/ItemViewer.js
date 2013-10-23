@@ -18,7 +18,8 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
         'Savanna.itemView.view.components.LabeledFieldWithTags',
         'Savanna.itemView.view.relatedProcesses.RelatedProcesses',
         'Savanna.itemView.view.relatedItems.ViewRelatedItems',
-        'Savanna.itemView.view.itemQualities.ViewItemQualities'
+        'Savanna.itemView.view.itemQualities.ViewItemQualities',
+        'Savanna.itemView.view.relatedItems.AddRelationships'
     ],
 
     controller: 'Savanna.itemView.controller.ItemViewController',
@@ -62,6 +63,18 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                 },
                 {
                     text: 'Search Intell'
+                },
+                {
+                    xtype: 'menuseparator'
+                },
+                {
+                    text: 'Relationship Picker',
+                    handler: function(){
+                        Ext.create('Savanna.itemView.view.relatedItems.AddRelationships', {
+                            width: 400,
+                            height: 300
+                        });
+                    }
                 }
             ]
         },
