@@ -10,6 +10,10 @@ Ext.define('Savanna.process.store.Processes', {
 
     storeId: 'processStore',
 
+    requires: [
+        'Savanna.process.model.Process'
+    ],
+
     model: 'Savanna.process.model.Process',
 
     autoSync: false,

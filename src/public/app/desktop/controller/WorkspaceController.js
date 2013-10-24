@@ -2,6 +2,7 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
     extend: 'Deft.mvc.ViewController',
 
     requires: [
+        'Savanna.desktop.view.SavannaTabPanel',
         'Savanna.process.view.ProcessEditorComponent',
         'Savanna.metadata.view.Details'
     ],
