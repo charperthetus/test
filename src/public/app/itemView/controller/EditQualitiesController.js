@@ -6,11 +6,11 @@
  * To change this template use File | Settings | File Templates.
  */
 
-Ext.define('Savanna.itemView.controller.EditHeaderController', {
+Ext.define('Savanna.itemView.controller.EditQualitiesController', {
     extend: 'Deft.mvc.ViewController',
 
     views: [
-        'Savanna.itemView.view.header.EditHeader'
+        'Savanna.itemView.view.itemQualities.EditItemQualities'
     ],
 
     control: {
@@ -19,11 +19,11 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
         }
     },
 
-    addProp: function (propName, construct) {
+    addProp: function (propName, propData, aView) {
         if (this.getView().queryById('prop_' + propName.replace(/[\s']/g, "_")) === null) {
             var newProp = Ext.create('Savanna.components.autoComplete.AutoComplete', {
                 itemId: 'prop_' + propName.replace(/[\s']/g, "_"),
-                propData: construct.config.store.getAt(0).data,
+                propData: propData,
                 showTags: true,
                 preLabel: propName,
                 store: Ext.create('Ext.data.Store', {

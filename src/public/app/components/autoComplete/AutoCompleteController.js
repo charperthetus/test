@@ -35,10 +35,10 @@ Ext.define('Savanna.components.autoComplete.AutoCompleteController', {
             if (field.getValue().trim().length) {
                 if (field.store.data.items.length > 0 || this.getView().hasNoStore) {
                     if (this.getView().showTags) {
-                        field.findParentByType('auto_complete').addTerm(field.getValue());
+                        field.findParentByType('auto_complete').addTag(field.getValue());
                     }
 
-                    this.getView().fireEvent('AutoComplete:ItemSelected', field.getValue(), this.getView());
+                    this.getView().fireEvent('AutoComplete:ItemSelected', field.getValue(), this.getView().store.getAt(0).data, this.getView());
                     field.reset();
                 }
             }
