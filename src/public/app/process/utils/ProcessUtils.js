@@ -6,7 +6,7 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         'Ext.data.UuidGenerator'
     ],
 
-    knownUriTypes: ['DecisionPoint', 'ProcessModel', 'ProcessAction', 'ProcessItem', 'InternalGroup'],
+    knownUriTypes: ['DecisionPoint', 'ProcessModel', 'ProcessAction', 'ProcessItem', 'InternalGroup', 'MergePoint'],
 
     getURI: function(category) {
         // by convention, category names are the same as the URI type
@@ -181,6 +181,57 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         diagram.model.addLinkData(newLink);
         diagram.commitTransaction('addStep');
         Savanna.process.utils.ProcessUtils.startTextEdit(diagram, step);
+    },
+
+    addMerge: function(diagram) {
+        if (diagram.selection.count < 2){
+            Ext.Msg.show({
+                title: 'Merge Error',
+                msg: 'Select at least two nodes to merge.', //todo: get final wording for error
+                buttons: Ext.Msg.OK
+            });
+            return;
+        }
+
+        var iter = diagram.selection.iterator;
+        while (iter.next()) {
+            var node = iter.value;
+
+            if (node.containingGroup) {
+                Ext.Msg.show({
+                    title: 'Merge Error',
+                    msg: 'Select nodes that are not inside a step to merge.', //todo: get final wording for error
+                    buttons: Ext.Msg.OK
+                });
+                return;
+            }
+
+            if (node.findLinksOutOf().count > 0) {
+                Ext.Msg.show({
+                    title: 'Merge Error',
+                    msg: 'Select nodes that have no children to merge.', //todo: get final wording for error
+                    buttons: Ext.Msg.OK
+                });
+                return;
+            }
+        }
+
+        diagram.startTransaction('addMerge');
+
+        var mergeNode = {'category': 'MergePoint', 'text': '...'};
+        mergeNode.key = Savanna.process.utils.ProcessUtils.getURI(mergeNode.category);
+        diagram.model.addNodeData(mergeNode);
+
+        var iter = diagram.selection.iterator;
+        while (iter.next()) {
+            var node = iter.value;
+            var newLink = { category: 'ProcessLink', from: node.data.key, to: mergeNode.key };
+            diagram.model.addLinkData(newLink);
+        }
+
+        diagram.commitTransaction('addMerge');
+
+        Savanna.process.utils.ProcessUtils.startTextEdit(diagram, mergeNode);
     }
 
 

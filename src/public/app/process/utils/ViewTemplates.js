@@ -159,6 +159,19 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
             )
         );
 
+        nodeTemplateMap.add('MergePoint', // Category must match the uri type
+            gmake(go.Node, go.Panel.Spot, Savanna.process.utils.ViewTemplates.nodeStyle(), {toLinkable: true},
+                gmake(go.Panel, go.Panel.Horizontal, { defaultAlignment: go.Spot.Top },
+                    gmake(go.Shape, 'Diamond', this.styler.diamond().outline),
+                    gmake(go.TextBlock,this.styler.diamond().textblock, new go.Binding('text', 'text').makeTwoWay())
+                ),
+                this.makeTopPort(),
+                this.makeLinkGadget(),
+                this.makeStepGadget(),
+                this.makeDecisionGadget()
+            )
+        );
+
         return nodeTemplateMap;
     },
 
