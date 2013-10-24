@@ -25,11 +25,12 @@ Ext.define('Savanna.itemView.controller.ImageBrowserController', {
                 }
             }
         },
-        imageThumbnail: {
+        itemview_imagethumbnail: {
             live: true,
-            selector: 'itemview_imagethumbnail',
+            selector: 'panel itemview_imagethumbnail',
             listeners: {
                 click: {
+                    element: 'el',
                     fn: 'onChangeImage'
                 }
             }
@@ -51,49 +52,49 @@ Ext.define('Savanna.itemView.controller.ImageBrowserController', {
     // TODO: Replace this with some reeeeeeeeal data.... awwww yeah...
     store: {
         data: [{
-            photo: 'http://2.bp.blogspot.com/-SwRvvHer_wQ/T6GhgnQoS0I/AAAAAAAHhkY/iyxaoyoC-2g/s800/Kia-K9-01.jpg',
+            src: 'http://2.bp.blogspot.com/-SwRvvHer_wQ/T6GhgnQoS0I/AAAAAAAHhkY/iyxaoyoC-2g/s800/Kia-K9-01.jpg',
             title: 'Car',
-            description: 'Vroom vroom!',
+            alt: 'Vroom vroom!',
             isFeatured: false
         }, {
-            photo: 'http://4.bp.blogspot.com/-8iGyCfFuLuU/T5QA-1t4QTI/AAAAAAAAAXg/izbeFI2PvC0/s1600/korea.jpg',
+            src: 'http://4.bp.blogspot.com/-8iGyCfFuLuU/T5QA-1t4QTI/AAAAAAAAAXg/izbeFI2PvC0/s1600/korea.jpg',
             title: 'City',
-            description: 'It\'s a beautiful night, such a beautful night.',
+            alt: 'It\'s a beautiful night, such a beautful night.',
             isFeatured: false
         }, {
-            photo: 'http://www.dynamicdrive.com/cssexamples/media/ocean.jpg',
+            src: 'http://www.dynamicdrive.com/cssexamples/media/ocean.jpg',
             title: 'Ocean',
-            description: 'Look at me! I\'m an ocean!',
+            alt: 'Look at me! I\'m an ocean!',
             isFeatured: false
         }, {
-            photo: 'http://media.lonelyplanet.com/lpi/24744/24744-14/469x264.jpg',
+            src: 'http://media.lonelyplanet.com/lpi/24744/24744-14/469x264.jpg',
             title: 'Lake',
-            description: 'I\'d rather not be rowing.',
+            alt: 'I\'d rather not be rowing.',
             isFeatured: false
         }, {
-            photo: 'http://3.bp.blogspot.com/-kyrXb2orUgA/Te9KO0AxR5I/AAAAAAAAErY/X_XkbgU107Q/s1600/Blue_Ocean_17723522_std.jpg',
+            src: 'http://3.bp.blogspot.com/-kyrXb2orUgA/Te9KO0AxR5I/AAAAAAAAErY/X_XkbgU107Q/s1600/Blue_Ocean_17723522_std.jpg',
             title: 'Tropics',
-            description: 'That\'s a nice dock',
+            alt: 'That\'s a nice dock',
             isFeatured: true
         }, {
-            photo: 'http://1.bp.blogspot.com/-iOPb28o8svc/TpvN-dWORKI/AAAAAAAAAuw/8pPLujrCSQ0/s1600/toronto.jpg',
+            src: 'http://1.bp.blogspot.com/-iOPb28o8svc/TpvN-dWORKI/AAAAAAAAAuw/8pPLujrCSQ0/s1600/toronto.jpg',
             title: 'Dark city',
-            description: 'Kind of reminds me of Seattle.',
+            alt: 'Kind of reminds me of Seattle.',
             isFeatured: false
         }, {
-            photo: 'http://www.ebaytemplate.info/wp-content/gallery/germany/elbe-river-dresden-germany.jpg',
+            src: 'http://www.ebaytemplate.info/wp-content/gallery/germany/elbe-river-dresden-germany.jpg',
             title: 'Old City',
-            description: 'This is an older city.',
+            alt: 'This is an older city.',
             isFeatured: false
         }, {
-            photo: 'http://blog.educationusa.or.kr/wp-content/uploads/2008/07/dokdo-islets.jpg',
+            src: 'http://blog.educationusa.or.kr/wp-content/uploads/2008/07/dokdo-islets.jpg',
             title: 'Boating',
-            description: 'Sure beats rowing',
+            alt: 'Sure beats rowing',
             isFeatured: false
         }, {
-            photo: 'http://villaluxe.com/wp-content/gallery/pamillaretreat/maxico-palmilla-04.jpg',
+            src: 'http://villaluxe.com/wp-content/gallery/pamillaretreat/maxico-palmilla-04.jpg',
             title: 'Patio',
-            description: 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.',
+            alt: 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.',
             isFeatured: false
         }]
     },
@@ -110,8 +111,8 @@ Ext.define('Savanna.itemView.controller.ImageBrowserController', {
 
             Ext.Array.each(store.data, function() {
                 var thumbnail = Ext.create('Savanna.itemView.view.imageBrowser.ImageThumbnail', {
-                    src: this.photo,
-                    alt: this.description,
+                    src: this.src,
+                    alt: this.alt,
                     title: this.title
                 });
                 me.getView().queryById('thumbnailList').add(thumbnail);
@@ -138,10 +139,9 @@ Ext.define('Savanna.itemView.controller.ImageBrowserController', {
 
     // Selecting an image to expand
     onChangeImage: function(btn, image) {
-        console.debug(arguments);
-        var selectedImage = image.photo,
+        var selectedImage = image.src,
             title = (image.title) ? image.title : 'No title',
-            description = (image.description) ? image.description : 'No description',
+            description = (image.alt) ? image.alt : 'No description',
             jumboImage = this.getView().queryById('imagePrimary'),
             jumboMeta = this.getView().queryById('imageText'),
             imageWidth = image.naturalWidth,
