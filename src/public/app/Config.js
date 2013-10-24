@@ -8,6 +8,7 @@ Ext.define('Savanna.Config', {
         sc.loginUrl = rUrl + 'authcheck/loggedIn.html';
         sc.logoutUrl = rUrl + 'j_spring_security_logout';
         sc.pingUrl = rUrl + 'public/ping';
+        sc.userInfoUrl = rUrl + 'rest/user/info';
         sc.searchUrl = rUrl + 'rest/search'; // local dev version: 'app/assets/data/testSearchResults.json',
         sc.searchMetadataUrl = rUrl + 'rest/metadata/get';
         sc.itemViewUrl = rUrl + 'rest/model/item/';

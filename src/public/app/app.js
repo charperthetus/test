@@ -91,5 +91,5 @@ Ext.application({
 
     // CUSTOM CONFIGURATION
     jsessionid: '', // keep track of the user's session id
-    savannauser: '' // current savanna username
+    userinfo: {} // current savanna info
 });

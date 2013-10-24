@@ -22,6 +22,7 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
             },
 
     control: {
+        currentuser: true,
         logobutton: {
             click: 'displayAboutDialog'
         },
@@ -34,9 +35,6 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
         helpbutton: {
             click: 'launchHelp'
         },
-        accountsettings: {
-            click: 'displayAccountSettings'
-        },
         savannalogout: {
             click: 'handleLogout'
         },
@@ -46,6 +44,20 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
     },
 
     init: function() {
+        var me = this;
+        Ext.Ajax.request({
+            url: SavannaConfig.userInfoUrl + ';jsessionid=' + Savanna.jsessionid,
+            cors: true,
+            success: function(response){
+                var userInfo = Ext.decode(response.responseText);
+                Savanna.userinfo = userInfo;
+                me.getCurrentuser().text = userInfo.username;
+            },
+            failure: function(response){
+                //TODO - Add global failure handler
+            }
+        })
+
         Savanna.app.on('initModelSearch', this.displayModelSearch);
 
         return this.callParent(arguments);
@@ -93,10 +105,6 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
         }
         uploadWindow.show();
         uploadWindow.center();
-    },
-
-    displayAccountSettings: function() {
-        console.log('The user hit account settings');
     },
 
     launchHelp: function() {

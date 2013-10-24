@@ -77,11 +77,7 @@ Ext.define('Savanna.desktop.view.SavannaDesktop', {
                 scale: 'medium',
                 menu: {
                     items: [{
-                        text: 'Current Username here',
                         itemId: 'currentuser'
-                    }, {
-                        text: 'Account Settings',
-                        itemId: 'accountsettings'
                     }, {
                         text: 'Log Out',
                         itemId: 'savannalogout'
