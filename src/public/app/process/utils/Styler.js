@@ -141,6 +141,16 @@ Ext.define('Savanna.process.utils.Styler', {
                 return rectanglePalette;
             } else if (tag === 'paletteDiamond'){
                 return diamondPalette;
+            } else if (tag === 'linkGadget'){
+                return linkGadget;
+            } else if (tag === 'stepGadget'){
+                return stepGadget;
+            } else if (tag === 'decisionGadget'){
+                return decisionGadget;
+            } else if (tag === 'topPort'){
+                return topPort;
+            }  else if (tag === 'adornments'){
+                return adornments;
             } else {
                 //Returns back in the log you are not passing a tag that exisit.
                 return null;
@@ -156,8 +166,10 @@ Ext.define('Savanna.process.utils.Styler', {
             "outline": {
                 fill: palette.mainColor,
                 stroke: null,
-                width: 24, 
-                height: 32
+                width: 32, 
+                height: 32,
+                portId: "",                          // now the Shape is the port, not the whole Node
+          fromSpot: go.Spot.Right, toSpot: go.Spot.Left 
             },
             "textblock": {
                 font: properties.fontWeight + properties.fontSize + properties.font,
@@ -230,7 +242,307 @@ Ext.define('Savanna.process.utils.Styler', {
         var paletteInternalRectangle = function(){
             return rectanglePalette;
         };
+        
+        
+        
+        
+        
+        
+        
 
+        /* 
+         * @private
+         * x - JSON Object
+         * Defines default JSON for circle.  This can be overridden via using the addTo and removeFrom JSON modifier functions in the return statement.
+         */
+        var linkGadget = {
+            "panel": {
+                name: 'LinkGadget',
+                opacity: 0.0,
+                alignment: go.Spot.Bottom,
+                alignmentFocus: go.Spot.Top
+            },
+            "shape": {
+                    figure: 'TriangleDown',
+                    stroke: null,
+                    fill: '#3ca8c8',
+                    desiredSize: new go.Size(11,11),
+                    name: 'Port',
+                    fromSpot: go.Spot.Bottom,
+                    toSpot: go.Spot.Top,
+                    fromLinkable: true,
+                    portId: "Bottom"
+                }
+        };
+
+        /* 
+         * @private
+         * x
+         * Allows you to maniplute JSON for the shape and then returns the JSON you called to be used.  
+         * @return JSON
+         */
+        var linkGadgetShape = function(){
+            return linkGadget;
+        };
+        
+               
+        
+
+        /* 
+         * @private
+         * x - JSON Object
+         * Defines default JSON for circle.  This can be overridden via using the addTo and removeFrom JSON modifier functions in the return statement.
+         */
+        var stepGadget = {
+            "panel": {
+                name: 'StepGadget',
+                opacity: 0.0,
+                alignment: new go.Spot(0.5, 1.0, 12, 0),
+                alignmentFocus: go.Spot.Top,
+                click: null
+            },
+            "circle": {
+                    figure: 'Circle',
+                    stroke: null,
+                    fill: '#3d8060',
+                    desiredSize: new go.Size(11,11)
+                },
+            "plusLine":{ 
+                figure: 'PlusLine', 
+                strokeWidth: 2, 
+                stroke: 'white', 
+                desiredSize: new go.Size(8,8) 
+            }
+        };
+
+        /* 
+         * @private
+         * x
+         * Allows you to maniplute JSON for the shape and then returns the JSON you called to be used.  
+         * @return JSON
+         */
+        var stepGadgetShape = function(json){
+            // Provide JSON as a parameter for functions when overridding JSON properties, if nothing is passed it will be undefined and considered an optional parameter.  
+            if ( json !== undefined ){
+                
+                if ( jsonDriller(json, "click") !== '' ){  
+                    //This will be adding the click handler to the JSON
+                    stepGadget["panel"].click = json["click"];
+                                                  
+                }  
+            }
+            
+            return stepGadget;
+        };
+        
+        
+        
+        /* 
+         * @private
+         * x - JSON Object
+         * Defines default JSON for circle.  This can be overridden via using the addTo and removeFrom JSON modifier functions in the return statement.
+         */
+        var decisionGadget = {
+            "panel": {
+                name: 'DecisionGadget',
+                opacity: 0.0,
+                alignment: new go.Spot(0.5, 1.0, 25, -1),
+                alignmentFocus: go.Spot.Top,
+                click: null
+            },
+            "diamond": {
+                    figure: 'Diamond',
+                    stroke: null,
+                    fill: '#fdc16a',
+                    desiredSize: new go.Size(13,13)
+                },
+            "plusLine":{ 
+                figure: 'PlusLine', 
+                strokeWidth: 2, 
+                stroke: 'white', 
+                desiredSize: new go.Size(8,8) 
+            } 
+        };
+
+        /* 
+         * @private
+         * x
+         * Allows you to maniplute JSON for the shape and then returns the JSON you called to be used.  
+         * @return JSON
+         */
+        var decisionGadgetShape = function(json){
+            
+            // Provide JSON as a parameter for functions when overridding JSON properties, if nothing is passed it will be undefined and considered an optional parameter.  
+            if ( json !== undefined ){
+                
+                if ( jsonDriller(json, "click") !== '' ){  
+                    //This will be adding the click handler to the JSON
+                    decisionGadget["panel"].click = json["click"];
+                                                  
+                }  
+            }
+            
+            return decisionGadget;
+        };
+        
+        
+        
+                
+        /* 
+         * @private
+         * x - JSON Object
+         * Defines default JSON for circle.  This can be overridden via using the addTo and removeFrom JSON modifier functions in the return statement.
+         */
+        var topPort = {
+            "shape": {
+                    alignment: go.Spot.Top,
+                    desiredSize: new go.Size(0,0),
+                    fromSpot: go.Spot.Bottom,
+                    toSpot: go.Spot.Top,
+                    toLinkable: true,
+                    portId: "Top"
+                }
+        };
+
+        /* 
+         * @private
+         * x
+         * Allows you to maniplute JSON for the shape and then returns the JSON you called to be used.  
+         * @return JSON
+         */
+        var topPortShape = function(){
+            return topPort;
+        };
+        
+        
+        
+                     
+        /* 
+         * @private
+         * x - JSON Object
+         * Defines default JSON for circle.  This can be overridden via using the addTo and removeFrom JSON modifier functions in the return statement.
+         */
+        var adornments = {
+            "panel": {
+                alignment: null, //alignmentSpot,
+                alignmentFocus: go.Spot.Center,
+                width:72, 
+                height:72
+            },
+            "HalfEllipse":{
+                    background: 'transparent',
+                    fill: null,
+                    stroke: null,
+                    angle: null, //gooAngle,
+                    width:36, 
+                    height:72,
+                    position: null, //gooPoint,
+                    isActionable: true,
+                    mouseDragEnter: function(e, obj) {
+                        obj.fill = '#ededed';
+                    },
+                    mouseDragLeave: function(e, obj) {
+                        obj.fill = null;
+                    },
+                    mouseDrop: null //dropHandler
+                },
+            "circlePanel":{
+                    isActionable: true,
+                    position: new go.Point(24, 24),
+                    click: null, //clickHandler,
+                    actionDown: function(e, obj) {
+                        obj.elt(0).fill = '#63d9f5'; //#63d9f5 //#99e7fa //#c7f4ff
+                    },
+                    actionUp: function(e, obj) {
+                        obj.elt(0).fill = '#c7f4ff';
+                    },
+                    mouseEnter: function(e, obj) {
+                        obj.elt(0).fill = '#99e7fa';
+                    },
+                    mouseLeave: function(e, obj) {
+                        // should only change the hover color if we are moving outside, not if we are moving over the glyph
+                        // todo: not yet sure how to implement this
+                        obj.elt(0).fill = '#c7f4ff';
+                    },
+                    mouseDragEnter: function(e, obj) {
+                        obj.elt(0).fill = '#99e7fa ';
+                    },
+                    mouseDragLeave: function(e, obj) {
+                        obj.elt(0).fill = '#c7f4ff ';
+                    },
+                    mouseDrop: null//dropHandler
+                },
+            "circle":{
+                        fill: '#c7f4ff',
+                        stroke: 'white',
+                        strokeWidth:3,
+                        width:30, height:30,
+                        position: new go.Point(0, 0)
+                    },
+            "mainIcon": { font: '10pt SickFont', stroke: '#3ca8c8', position: new go.Point(10, 10) },
+            "addIcon": { font: '7pt SickFont', stroke: '#008bb9', position: new go.Point(18, 0) },
+            "label": { font: 'bold 6pt sans-serif', background: 'white', 
+                      position: null //labelPoint 
+                     }
+            
+        };
+
+        /* 
+         * @private
+         * x
+         * Allows you to maniplute JSON for the shape and then returns the JSON you called to be used.  
+         * @return JSON
+         */
+        var adornmentsShape = function(json){
+            console.log(json);
+            // Provide JSON as a parameter for functions when overridding JSON properties, if nothing is passed it will be undefined and considered an optional parameter.  
+            if ( json !== undefined ){
+                if ( jsonDriller(json, "angle") !== '' ){ 
+                    adornments['HalfEllipse'].angle = json['angle'];
+                }
+                
+                if ( jsonDriller(json, "position") !== '' ){ 
+                    adornments['HalfEllipse'].position = json['position'];
+                }  
+                
+                if ( jsonDriller(json, "mouseDrop") !== '' ){  
+                    //This will be adding the click handler to the JSON
+                    adornments["HalfEllipse"].mouseDrop = json["mouseDrop"];                              
+                }    
+                
+                if ( jsonDriller(json, "alignment") !== '' ){  
+                    //This will be adding the click handler to the JSON
+                    adornments["panel"].alignment = json["alignment"];                              
+                }   
+                
+                if ( jsonDriller(json, "click") !== '' ){  
+                    //This will be adding the click handler to the JSON
+                    adornments["circlePanel"].click = json["click"];                              
+                }   
+                
+                if ( jsonDriller(json, "mouseDrop") !== '' ){  
+                    //This will be adding the click handler to the JSON
+                    adornments["circlePanel"].mouseDrop = json["mouseDrop"];                              
+                } 
+                
+                if ( jsonDriller(json, "position") !== '' ){  
+                    //This will be adding the click handler to the JSON
+                    adornments["label"].position = json["position"];                              
+                }  
+            }  
+        
+            return adornments;
+        };
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         /* 
          * @private
          * circle - JSON Object
@@ -330,13 +642,16 @@ Ext.define('Savanna.process.utils.Styler', {
                 fill: palette.startColor,
                 stroke: null,
                 width: 60, 
-                height: 60
+                height: 60,
+                portId: "",                          // now the Shape is the port, not the whole Node
+          fromSpot: go.Spot.Right, toSpot: go.Spot.Left 
             },
             "textblock": {
                 margin: 0,
                 font: properties.fontSize + properties.font,
                 stroke: palette.white
-            }
+            },
+            "selectionAdornment":{ fill: null, stroke: null, strokeWidth: 0  }
         };
 
         /* 
@@ -388,16 +703,18 @@ Ext.define('Savanna.process.utils.Styler', {
                 fill: '#f9aa41',
                 stroke: null,
                 width: 32, 
-                height: 32
+                height: 32,
+                row: 0, column: 1, margin: 0
             },
             "textblock": {
                 font: properties.fontWeight + properties.fontSize + properties.font,
                 stroke: palette.darkText,
-                margin: 4,
-                maxSize: new go.Size(160, NaN),
+
+                maxSize: new go.Size(150, NaN),
                 wrap: go.TextBlock.WrapFit,
                 editable: true,
-                name: "TEXT"
+                name: "TEXT",
+                row: 0, column: 2, margin: 0
             }
         };
 
@@ -485,8 +802,9 @@ Ext.define('Savanna.process.utils.Styler', {
             "roundedRectangle": {
                 fill: null,
                 stroke: palette.black,
-                margin: 0,
-                strokeDashOffset: 1
+                margin: 0
+                
+                
                // strokeDashArray: [4, 2]
        
             },
@@ -498,7 +816,12 @@ Ext.define('Savanna.process.utils.Styler', {
                 editable: true,
                 font: properties.fontWeight + properties.fontSize + properties.font,
                 stroke: palette.black
-            }
+            },
+            "selectionAdornment":{ fill: null, stroke: '#63d9f5' , strokeWidth: 3, margin: 0   },
+            "panelVertical":{ defaultAlignment: go.Spot.Center, padding: new go.Margin(5, 5, 5, 5) },
+            "panelHorizontal":{ defaultAlignment: go.Spot.Top, stretch: go.GraphObject.Horizontal, background: 'transparent'},
+            "placeholder": { padding: new go.Margin(0, 10) },
+            "panelPlaceholder": {desiredSize: new go.Size(10,10)}
         };
 
         /* 
@@ -516,10 +839,7 @@ Ext.define('Savanna.process.utils.Styler', {
          * Defines default JSON for internal group.  This can be overridden via using the addTo and removeFrom JSON modifier functions in the return statement.
          */
         var internalGroup = {
-            "roundedRectangle": {
-                fill: palette.aqua,
-                stroke: null
-            },
+            "roundedRectangle": { fill: '#dbf7fe', name:'BACKGROUND', stroke: null, desiredSize: new go.Size(125,125)},
             "textblockTools": {
                 angle: 270,
                 alignment: go.Spot.Center,
@@ -541,7 +861,19 @@ Ext.define('Savanna.process.utils.Styler', {
                 margin: 2,
                 editable: false,
                 click: null
-            }
+            },
+            "gridLayout":{ wrappingWidth: 1, alignment: go.GridLayout.Position, cellSize: new go.Size(1, 1) }, 
+            "placeholder":{
+                            padding: new go.Margin(16, 16),
+                            background: 'transparent',
+                            mouseDragEnter: function(e, obj) {
+                                obj.background = 'orange';
+                            },
+                            mouseDragLeave: function(e, obj) {
+                                obj.background = 'transparent';
+                            },
+                            mouseDrop: null //Savanna.process.utils.GroupEventHandlers.onActionGroupMouseDrop
+                        }
         };
 
         /* 
@@ -581,6 +913,10 @@ Ext.define('Savanna.process.utils.Styler', {
                 if ( jsonDriller(json, "clickTools") !== '' ){  
                     //This will be adding the click handler to the JSON
                     internalGroup["textblockTools"].click = json["clickTools"];                               
+                }   
+                if ( jsonDriller(json, "mouseDrop") !== '' ){  
+                    //This will be adding the click handler to the JSON
+                    internalGroup["placeholder"].mouseDrop = json["mouseDrop"];                               
                 }  
             }
             
@@ -642,11 +978,11 @@ Ext.define('Savanna.process.utils.Styler', {
             },
             "shapeTool": {
                 fill: palette.gray,
-                stroke: 2
+                strokeWidth: 1//stroke: 2
             },
             "linkpathTool": {
                 stroke: palette.gray,
-                strokeWidth: 2
+                strokeWidth: 1
             },
             "textblockInput": {
                 font: properties.fontWeight + properties.fontSizeSmall + properties.font,
@@ -655,19 +991,17 @@ Ext.define('Savanna.process.utils.Styler', {
                 margin: 2,
                 editable: true
             },
-            "arrowheadInput": {
-                toArrow: "none",
-                fromArrow: "backward",
-                stroke: null,
-                fill: palette.green  
-            },
+            "arrowheadInput": { toArrow: 'none',
+                        fromArrow: 'backward',
+                        stroke: null,
+                        fill: null},
             "shapeInput": {
                 fill: palette.gray,
-                stroke: 2
+                strokeWidth: 1
             },
             "linkpathInput": {
                 stroke: palette.gray,
-                strokeWidth: 2
+                strokeWidth: 1 //stroke: 2
             },
             "textblockByProduct": {
                 font: properties.fontWeight + properties.fontSizeSmall + properties.font,
@@ -683,11 +1017,11 @@ Ext.define('Savanna.process.utils.Styler', {
             },
             "shapeByProduct": {
                 fill: palette.gray,
-                stroke: 2
+                strokeWidth: 1 //stroke: 2
             },
             "linkpathByProduct": {
                 stroke: palette.gray,
-                strokeWidth: 2
+                strokeWidth: 1
             }
         };
         
@@ -792,6 +1126,21 @@ Ext.define('Savanna.process.utils.Styler', {
             },
             paletteDiamond: function(){
                 return paletteInternalDiamond();
+            },
+            linkGadget: function(){
+                return linkGadgetShape();
+            },
+            stepGadget: function(json){
+                return stepGadgetShape(json);
+            },
+            decisionGadget: function(json){
+                return decisionGadgetShape(json);
+            },
+            topPort: function(){
+                return topPortShape();
+            },
+            adornments: function(json){
+                return adornmentsShape(json);
             },
 
             /*
