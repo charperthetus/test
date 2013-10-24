@@ -62,16 +62,16 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
     toggleEditMode: function (btn) {
         if (!this.getView().getEditMode()) {
-            this.getView().setActiveTab(1);
+            this.getView().getLayout().setActiveItem(1);
         } else {
-            this.getView().setActiveTab(0);
+            this.getView().getLayout().setActiveItem(0);
         }
 
         this.getView().setEditMode(!this.getView().getEditMode());
     },
 
     onEditCancel:function() {
-        this.getView().setActiveTab(0);
+        this.getView().getLayout().setActiveItem(0);
         this.getView().setEditMode(!this.getView().getEditMode());
     },
 
@@ -84,7 +84,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     },
 
     onEditDone:function() {
-        this.getView().setActiveTab(0);
+        this.getView().getLayout().setActiveItem(0);
         this.getView().setEditMode(!this.getView().getEditMode());
     },
 
