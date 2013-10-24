@@ -7,6 +7,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
 
     require: [
         'Ext.grid.Panel',
+        'Ext.tab.Panel',
         'Savanna.itemView.controller.ItemViewController',
         'Savanna.itemView.view.header.ViewHeader',
         'Savanna.itemView.view.header.EditHeader',
@@ -197,7 +198,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                             },
                             {
                                 xtype: 'itemview_related_processes',
-                                itemId: 'relatedProcessesView',
+                                itemId: 'relatedProcessesViewEdit',
                                 collapsible: true,
                                 header:{
                                     ui:'light-blue'

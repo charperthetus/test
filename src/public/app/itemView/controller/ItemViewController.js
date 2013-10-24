@@ -55,69 +55,80 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     handleRecordDataRequestSuccess: function (record, operation, success) {
 
         if (success) {
-
             var me = this;
 
             /*
             Header View
              */
-            Ext.each(['itemViewHeaderView', 'itemViewHeaderEdit'], function (id) {
-                var headerComponent = me.getView().queryById(id);
-                headerComponent.setTitle(record[0].data.label);
-                if (me.getView().getEditMode()) {
-                    headerComponent.reconfigure(record[0].propertyGroupsStore.getAt(0).valuesStore);
-                }
-            });
+            var headerComponent = me.getView().queryById('itemViewHeaderView');
+            headerComponent.setTitle(record[0].data.label);
+            headerComponent.reconfigure(record[0].propertyGroupsStore.getAt(0).valuesStore);
 
             /*
-            Process View
+            Header Edit
+             */
+            //ToDo: do what needs to be done for edit version of header
+
+            /*
+            Related Processes View
              */
             var processComponent = me.getView().queryById('relatedProcessesView');
             processComponent.setTitle('Participated in Process (' + record[0].kvPairGroupsStore.getAt(0).pairsStore.data.length + ')');
             processComponent.reconfigure(record[0].kvPairGroupsStore.getAt(0).pairsStore);
 
             /*
-            Properties View
+            Related Processes Edit
              */
-            Ext.each(['itemViewPropertiesView', 'itemViewPropertiesEdit'], function (id) {
-                var qualitiesComponent = me.getView().queryById(id);
-                qualitiesComponent.setTitle('Qualities (' + record[0].propertyGroupsStore.getAt(3).valuesStore.data.length + ')');
-                if (me.getView().getEditMode()) {
-                    qualitiesComponent.reconfigure(record[0].propertyGroupsStore.getAt(3).valuesStore);
-                }
-            });
+            var processEditComponent = me.getView().queryById('relatedProcessesViewEdit');
+            processEditComponent.setTitle('Participated in Process (' + record[0].kvPairGroupsStore.getAt(0).pairsStore.data.length + ')');
+            processEditComponent.reconfigure(record[0].kvPairGroupsStore.getAt(0).pairsStore);
+
+            /*
+            Qualities
+             */
+            var qualitiesComponent = me.getView().queryById('itemViewPropertiesView');
+            qualitiesComponent.setTitle('Qualities (' + record[0].propertyGroupsStore.getAt(3).valuesStore.data.length + ')');
+            qualitiesComponent.reconfigure(record[0].propertyGroupsStore.getAt(3).valuesStore);
+
+            /*
+            Qualities Edit
+             */
+            //ToDo: do what needs to be done for edit version of qualities
 
             /*
             Related Items View
              */
-            Ext.each(['relatedItemsView', 'relatedItemsEdit'], function (id) {
-                var relatedItemView = me.getView().queryById(id);
+            var relatedItemView = me.getView().queryById('relatedItemsView');
 
-                Ext.each(record[0].propertyGroupsStore.getAt(2).valuesStore.data.items, function (relatedItemsGroup) {
+            Ext.each(record[0].propertyGroupsStore.getAt(2).valuesStore.data.items, function (relatedItemsGroup) {
 
-                    var grid = Ext.create('Ext.grid.Panel', {
-                        store: relatedItemsGroup.valuesStore,
-                        columns: [
-                            {
-                                xtype: 'templatecolumn',
-                                tpl: Ext.create('Ext.XTemplate',
-                                    '<input type="button" name="{value}" value="{label}" id="openRelatedItem" />'
-                                ),
-                                text: relatedItemsGroup.get('label'),
-                                flex: 1,
-                                sortable: false
-                            }
-                        ],
-                        listeners: {
-                            itemclick: me.onRelatedItemClick
+                var grid = Ext.create('Ext.grid.Panel', {
+                    store: relatedItemsGroup.valuesStore,
+                    columns: [
+                        {
+                            xtype: 'templatecolumn',
+                            tpl: Ext.create('Ext.XTemplate',
+                                '<input type="button" name="{value}" value="{label}" id="openRelatedItem" />'
+                            ),
+                            text: relatedItemsGroup.get('label'),
+                            flex: 1,
+                            sortable: false
                         }
-                    });
-
-                    relatedItemView.add(grid);
-
+                    ],
+                    listeners: {
+                        itemclick: me.onRelatedItemClick
+                    }
                 });
 
+                relatedItemView.add(grid);
+
             });
+
+            /*
+             Related Items View
+             */
+            //ToDo: do what needs to be done for edit version of related items
+
         } else {
             /*
             Server down..?
