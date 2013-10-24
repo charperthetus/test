@@ -18,6 +18,18 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         editModeButton: {
             click: 'toggleEditMode'
         },
+        editCancelButton: {
+            click: 'onEditCancel'
+        },
+        editDeleteButton: {
+            click: 'onEditDelete'
+        },
+        editSaveButton: {
+            click: 'onEditSave'
+        },
+        editDoneButton: {
+            click: 'onEditDone'
+        },
         newItemButton:  {
             click: 'onNewItemClick'
         }
@@ -41,6 +53,24 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
             this.getView().setActiveTab(0);
         }
 
+        this.getView().setEditMode(!this.getView().getEditMode());
+    },
+
+    onEditCancel:function() {
+        this.getView().setActiveTab(0);
+        this.getView().setEditMode(!this.getView().getEditMode());
+    },
+
+    onEditDelete:function() {
+
+    },
+
+    onEditSave:function() {
+
+    },
+
+    onEditDone:function() {
+        this.getView().setActiveTab(0);
         this.getView().setEditMode(!this.getView().getEditMode());
     },
 
