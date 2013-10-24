@@ -6,7 +6,8 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     ],
 
     requires: [
-        'Savanna.itemView.store.MainItemStore'
+        'Savanna.itemView.store.MainItemStore',
+        'Savanna.itemView.view.relatedItems.AddRelationships'
     ],
 
     store: 'Savanna.itemView.store.MainItemStore',
@@ -32,8 +33,21 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         },
         newItemButton:  {
             click: 'onNewItemClick'
+        },
+        deleteItemButton:  {
+            click: 'onEditDelete'
+        },
+        workflowButton:  {
+            click: 'onWorkflowSelect'
+        },
+        searchButton:  {
+            click: 'onSearchSelect'
+        },
+        relationshipButton:  {
+            click: 'onRelationshipSelect'
         }
     },
+
 
     constructor: function (options) {
         this.opts = options || {};
@@ -62,11 +76,11 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     },
 
     onEditDelete:function() {
-
+       console.log('delete item method');
     },
 
     onEditSave:function() {
-
+        console.log('save item method');
     },
 
     onEditDone:function() {
@@ -174,6 +188,21 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
     onNewItemClick: function(btn)  {
         Savanna.app.fireEvent('itemview:createitem', btn);
+    },
+
+    onWorkflowSelect:function() {
+       console.log('workflow selected');
+    },
+
+    onSearchSelect:function() {
+        console.log('search selected');
+    },
+
+    onRelationshipSelect:function() {
+        Ext.create('Savanna.itemView.view.relatedItems.AddRelationships', {
+            width: 400,
+            height: 300
+        });
     },
 
     onRelatedItemClick: function (grid, record, item, index, e, eOpts) {

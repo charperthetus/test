@@ -86,31 +86,29 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                                     itemId:'newItemButton'
                                 },
                                 {
-                                    text: 'Delete'
+                                    text: 'Delete',
+                                    itemId:'newItemButton'
                                 },
                                 {
                                     xtype: 'menuseparator'
                                 },
                                 {
-                                    text: 'Workflow'
+                                    text: 'Workflow',
+                                    itemId:'workflowButton'
                                 },
                                 {
                                     xtype: 'menuseparator'
                                 },
                                 {
-                                    text: 'Search Intell'
+                                    text: 'Search Intell',
+                                    itemId:'searchButton'
                                 },
                                 {
                                     xtype: 'menuseparator'
                                 },
                                 {
                                     text: 'Relationship Picker',
-                                    handler: function(){
-                                        Ext.create('Savanna.itemView.view.relatedItems.AddRelationships', {
-                                            width: 400,
-                                            height: 300
-                                        });
-                                    }
+                                    itemId:'relationshipButton'
                                 }
                             ]
                         },
@@ -197,31 +195,29 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                                     itemId:'newItemButton'
                                 },
                                 {
-                                    text: 'Delete'
+                                    text: 'Delete',
+                                    itemId:'deleteItemButton'
                                 },
                                 {
                                     xtype: 'menuseparator'
                                 },
                                 {
-                                    text: 'Workflow'
+                                    text: 'Workflow',
+                                    itemId:'workflowButton'
                                 },
                                 {
                                     xtype: 'menuseparator'
                                 },
                                 {
-                                    text: 'Search Intell'
+                                    text: 'Search Intell',
+                                    itemId:'searchButton'
                                 },
                                 {
                                     xtype: 'menuseparator'
                                 },
                                 {
                                     text: 'Relationship Picker',
-                                    handler: function(){
-                                        Ext.create('Savanna.itemView.view.relatedItems.AddRelationships', {
-                                            width: 400,
-                                            height: 300
-                                        });
-                                    }
+                                    itemId:'relationshipButton'
                                 }
                             ]
                         },
