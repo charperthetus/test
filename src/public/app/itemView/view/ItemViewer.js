@@ -1,5 +1,5 @@
 Ext.define('Savanna.itemView.view.ItemViewer', {
-    extend: 'Ext.tab.Panel',
+    extend: 'Ext.panel.Panel',
 
     alias: 'widget.itemview_itemviewer',
 
@@ -22,6 +22,8 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
         'Savanna.components.autoComplete.AutoComplete',
         'Savanna.itemView.view.imageBrowser.ImageThumbnail'
     ],
+
+    layout: 'card',
 
     controller: 'Savanna.itemView.controller.ItemViewController',
 
@@ -54,9 +56,6 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
         this.items = this.buildItems();
         this.callParent(arguments);
 
-        this.tabBar.hide();
-        this.componentLayout.childrenChanged = true;
-        this.doComponentLayout();
 
 
     },
