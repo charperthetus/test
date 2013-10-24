@@ -9,50 +9,46 @@ Ext.define('Savanna.process.view.part.PaletteWindow', {
     extend: 'Ext.window.Window',
     alias: 'widget.process_palettewindow',
 
-    mixins: {
-        storeable: 'Savanna.mixin.Storeable'
-    },
-
     requires: [
         'Ext.layout.container.Accordion',
-        'Savanna.process.view.part.Palette',
-        'Savanna.process.store.Templates'
+        'Savanna.process.view.part.ItemList',
+        'Savanna.process.view.part.ActionList',
+        'Savanna.process.controller.PaletteController'
     ],
 
-    store: 'Savanna.process.store.Templates',
+    controller: 'Savanna.process.controller.PaletteController',
 
     layout: {
         type: 'accordion',
         titleCollapse: true,
-        multi: true
+        multi: false //do we want to allow multiple sections open at the same time?
     },
 
     modal: false,
     closable: false,
     constrain: true, //limit this window to the parent container
+    //todo: have DI style the window including height/width
     width: 250,
     height: 400,
 
     items: [],
 
     initComponent: function() {
-        this.mixins.storeable.initStore.call(this);
+        this.items = this.setupItems();
         this.callParent(arguments);
     },
 
-    onStoreLoad: function() {
-        this.removeAll();
-
-        if (0 === this.store.getCount()) {
-            // TODO: should this be an error?
-            this.add(Ext.create('Savanna.process.view.part.Palette', {
-                model: Ext.create('Savanna.process.model.TemplateGroup', { title: 'NO PALETTE', templates: [] })
-            }));
-        }
-        else {
-            this.store.each(function(model) {
-                this.add(Ext.create('Savanna.process.view.part.Palette', { model: model }));
-            }, this);
-        }
+    setupItems: function() {
+        return [
+            {
+                xtype: 'process_itemlist',
+                itemId: 'itemlist'
+            },
+            {
+                xtype: 'process_actionlist',
+                itemId: 'actionlist'
+            }
+        ];
     }
+
 });

@@ -6,11 +6,11 @@ Ext.define('Savanna.process.utils.NodeEventHandlers', {
     ],
 
     onMouseEnter: function (e, obj) {
-        Savanna.process.utils.ProcessUtils.toggleButtons(obj, true);
+        Savanna.process.utils.ProcessUtils.toggleGadgets(obj, true);
     },
 
     onMouseLeave: function (e, obj) {
-        Savanna.process.utils.ProcessUtils.toggleButtons(obj, false);
+        Savanna.process.utils.ProcessUtils.toggleGadgets(obj, false);
     },
 
     onMouseDrop: function (e, obj) {
@@ -23,6 +23,10 @@ Ext.define('Savanna.process.utils.NodeEventHandlers', {
 
     onMouseDragLeave: function (e, grp, next) {
         //todo
+    },
+
+    onSelectionChange: function(obj) {
+        Savanna.process.utils.ProcessUtils.toggleGadgets(obj, false);
     }
 
 
