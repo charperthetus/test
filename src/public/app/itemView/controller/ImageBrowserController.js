@@ -1,12 +1,12 @@
 Ext.define('Savanna.itemView.controller.ImageBrowserController', {
     extend: 'Deft.mvc.ViewController',
-    
-    views: [
-        'Savanna.itemView.view.imageBrowser.ImagesGrid'
-    ],
+
+    view: 'Savanna.itemView.view.imageBrowser.ImagesGrid',
 
     control: {
         view: {
+
+            // TODO: This is run multiple times due to the nature of the event. Find a better way...
             afterlayout: 'buildImageGallery'
         },
         navLeft: {
@@ -24,9 +24,26 @@ Ext.define('Savanna.itemView.controller.ImageBrowserController', {
                     fn: 'onNavRight'
                 }
             }
+        },
+        imageThumbnail: {
+            live: true,
+            selector: 'itemview_imagethumbnail',
+            listeners: {
+                click: {
+                    fn: 'onChangeImage'
+                }
+            }
         }
     },
 
+    // TODO: Move common itemId's here
+    statics: {
+        mainImage: null,
+        mainImageDescription: null,
+        uploadwindow: null
+    },
+
+    // TODO: Remove this once we find a better event to trigger from
     config: {
         hasBeenBuilt: false
     },
@@ -56,7 +73,7 @@ Ext.define('Savanna.itemView.controller.ImageBrowserController', {
         }, {
             photo: 'http://3.bp.blogspot.com/-kyrXb2orUgA/Te9KO0AxR5I/AAAAAAAAErY/X_XkbgU107Q/s1600/Blue_Ocean_17723522_std.jpg',
             title: 'Tropics',
-            description: 'Boy, what a sick dock.',
+            description: 'That\'s a nice dock',
             isFeatured: true
         }, {
             photo: 'http://1.bp.blogspot.com/-iOPb28o8svc/TpvN-dWORKI/AAAAAAAAAuw/8pPLujrCSQ0/s1600/toronto.jpg',
@@ -82,11 +99,12 @@ Ext.define('Savanna.itemView.controller.ImageBrowserController', {
     },
 
     buildImageGallery: function() {
-        if (this.config.hasBeenBuilt === true) {
+        if (this.getHasBeenBuilt()) {
             
             return true;
         
         } else {
+
             var me = this,
                 store = this.store;
 
@@ -97,8 +115,12 @@ Ext.define('Savanna.itemView.controller.ImageBrowserController', {
                     title: this.title
                 });
                 me.getView().queryById('thumbnailList').add(thumbnail);
+
+                if (this.isFeatured) {
+                    me.onChangeImage(null, this);
+                }
             });
-            this.config.hasBeenBuilt = true;            
+            this.setHasBeenBuilt(true);            
         }
     },
 
@@ -116,11 +138,12 @@ Ext.define('Savanna.itemView.controller.ImageBrowserController', {
 
     // Selecting an image to expand
     onChangeImage: function(btn, image) {
-        var selectedImage = image.src,
+        console.debug(arguments);
+        var selectedImage = image.photo,
             title = (image.title) ? image.title : 'No title',
-            description = (image.alt) ? image.alt : 'No description',
-            jumboImage = Ext.ComponentQuery.query('#image_primary')[0],
-            jumboMeta = Ext.ComponentQuery.query('#image_text')[0],
+            description = (image.description) ? image.description : 'No description',
+            jumboImage = this.getView().queryById('imagePrimary'),
+            jumboMeta = this.getView().queryById('imageText'),
             imageWidth = image.naturalWidth,
             imageHeight = image.naturalHeight;
 

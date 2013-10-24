@@ -163,7 +163,10 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                     {
                         xtype: 'panel',
                         flex: 1,
-                        items: [
+                        items: [                            
+                            {
+                                xtype: 'itemview_imagesgrid',
+                            },
                             {
                                 xtype: 'itemview_view_qualities',
                                 itemId: 'itemViewPropertiesView',
