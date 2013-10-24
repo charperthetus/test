@@ -15,6 +15,7 @@ Ext.define('Savanna.Config', {
         sc.modelSearchUrl = rUrl + 'rest/mockModelSearch/keyword/item';
         sc.dalSourcesUrl = rUrl + 'rest/search/sources'; // local dev version: 'resources/data/testSearchDalsWithFormData.json',
         sc.locationSearch = rUrl + '/rest/map/search';   // local dev version: 'resources/data/testSearchLocationSearch.json',
+        sc.documentUrl = rUrl + 'rest/document/';
         sc.uploadUrl = rUrl + 'rest/document/upload';
         sc.metadataUrl = rUrl + 'rest/metadata';
         sc.capcoUrl = rUrl + 'rest/capco/';
