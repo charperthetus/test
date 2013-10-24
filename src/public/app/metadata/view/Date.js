@@ -11,7 +11,6 @@ Ext.define('Savanna.metadata.view.Date', {
     alias: 'widget.metadata_date',
 
     requires: [
-        'Savanna.controller.Factory',
         'Ext.form.field.Date'
     ],
 
