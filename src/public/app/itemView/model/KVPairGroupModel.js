@@ -9,13 +9,23 @@
 Ext.define('Savanna.itemView.model.KVPairGroupModel', {
     extend: 'Ext.data.Model',
 
+    requires: [
+        'Savanna.itemView.model.KVPairModel'
+    ],
+
     fields: [
         { name: 'label'},
-        { name: 'layoutType'}
+        { name: 'layoutType'},
+        { name: 'pairs'}
     ],
 
     associations: [
-        { type: 'hasMany', model: 'KVPairModel', name: 'pairs'}
+        {
+            type: 'hasMany',
+            model: 'Savanna.itemView.model.KVPairModel',
+            name: 'pairs',
+            associationKey:'pairs'
+        }
     ]
 });
 

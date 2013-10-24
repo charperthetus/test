@@ -2,7 +2,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
     extend: 'Ext.toolbar.Toolbar',
     alias: 'widget.model_search_resultspaneltoolbar',
     controller: 'Savanna.modelSearch.controller.resultsComponent.ResultsPanelToolbarController',
-    bubbleEvents: ['Search:PageSizeChanged', "Search:SortByChanged"],
+    bubbleEvents: ['Search:PageSizeChanged', "Search:SortByChanged", 'search:multiColumnGridView', 'search:singleColumnGridView'],
     requires: [
         'Savanna.controller.Factory',
         'Ext.form.field.ComboBox',
@@ -21,25 +21,21 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
         var sortStore = Ext.create('Ext.data.Store', {
             fields: ['sortby', 'name'],
             data: [
-                {'sortby': 'relevance', 'name': 'Relevance'}
+                {'sortby': 'relevance', 'name': 'Sort by Relevance'}
             ]
         });
 
         var countStore = Ext.create('Ext.data.Store', {
             fields: ['count', 'name'],
             data: [
-                {'count': 20, 'name': '20'},
-                {'count': 50, 'name': '50'},
-                {'count': 100, 'name': '100'}
+                {'count': 20, 'name': '20 results per page'},
+                 {'count': 50, 'name': '50 results per page'},
+                 {'count': 100, 'name': '100 results per page'}
             ]
         });
 
         return [
-            {
-                xtype: 'tbtext',
-                text: 'Sort by:',
-                itemId: 'sortby_combobox_label'
-            },
+
             {
                 xtype: 'combobox',
                 itemId: 'resultsSortByCombobox',
@@ -49,15 +45,12 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
                 value: 'relevance'
 
             },
-            {
-                xtype: 'tbtext',
-                text: 'Results Per Page:',
-                itemId: 'pagesize_combobox_label'
-            },
+
             {
                 xtype: 'combobox',
                 itemId: 'resultsPageSizeCombobox',
                 store: countStore,
+                editable: false,
                 displayField: 'name',
                 valueField: 'count',
                 value: '20'
@@ -65,9 +58,22 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
             },
             {
                 xtype: 'tbfill'
+            },
+            {
+                xtype: 'button',    //thumb
+                enableToggle: true,
+                pressed: true,
+                ui: 'basic',
+                glyph: 61442,
+                itemId: 'singleColumnGridView'
+            },
+            {
+                xtype: 'button',    //grid
+                enableToggle: true,
+                ui: 'basic',
+                glyph: 61808,
+                itemId: 'multiColumnGridView'
             }
-
-
         ]
     }
 

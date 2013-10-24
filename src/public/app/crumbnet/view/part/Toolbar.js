@@ -59,7 +59,7 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
             { text: 'Main Menu', menu: this.buildMainDropdown() },
             this.buildUndoMenuItem(),
             this.buildRedoMenuItem(),
-            { glyph: 61718, menu: this.buildCutCopyPasteMenu() },
+            { glyph: 'cut', menu: this.buildCutCopyPasteMenu() },
             { type: 'layout submenu', glyph: 61775, tooltip: 'Layout', menu: this.buildLayoutMenuItems() },
 
             { xtype: 'tbfill' }, // could also be '->'
@@ -159,7 +159,7 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
     buildUndoMenuItem: function(includeLabel) {
         return this.buildToolbarButton({
             type: 'undo',
-            glyph: 61800,
+            glyph: 'undo',
             tooltip: 'Undo',
             includeLabel: includeLabel
         });
@@ -168,7 +168,7 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
     buildRedoMenuItem: function(includeLabel) {
         return this.buildToolbarButton({
             type: 'redo',
-            glyph: 61777,
+            glyph: 'redo',
             tooltip: 'Redo',
             includeLabel: includeLabel
         });
@@ -199,7 +199,7 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
     buildZoomInItem: function(includeLabel) {
         return this.buildToolbarButton({
             type: 'zoomIn',
-            glyph: 61806,
+            glyph: 'zoomIn',
             tooltip: 'Zoom In',
             includeLabel: includeLabel
         });
@@ -208,7 +208,7 @@ Ext.define('Savanna.crumbnet.view.part.Toolbar', {
     buildZoomOutItem: function(includeLabel) {
         return this.buildToolbarButton({
             type: 'zoomOut',
-            glyph: 61807,
+            glyph: 'zoomOut',
             tooltip: 'Zoom Out',
             includeLabel: includeLabel
         });

@@ -177,7 +177,7 @@ var ThetusTestHelpers;
                 "key": "classification",
                 "type": "String",
                 "visible": true,
-                "editable": true,
+                "editable": false,
                 "displayLabel": "Classification"
             },
             {
@@ -214,7 +214,7 @@ var ThetusTestHelpers;
             },
             {
                 "value": [1360960788447, 0, 1362960788447],
-                "key": "important_values",
+                "key": "important_values_list",
                 "type": "Integer_List",
                 "visible": true,
                 "editable": true,
@@ -222,7 +222,7 @@ var ThetusTestHelpers;
             },
             {
                 "value": 1360960788447,
-                "key": "important_value",
+                "key": "a_value",
                 "type": "Integer",
                 "visible": true,
                 "editable": true,
@@ -230,7 +230,7 @@ var ThetusTestHelpers;
             },
             {
                 "value": 13609607884.47,
-                "key": "important_values",
+                "key": "important_double",
                 "type": "Double",
                 "visible": true,
                 "editable": true,
@@ -244,7 +244,7 @@ var ThetusTestHelpers;
     ThetusHelpers.Fixtures = ThetusHelpers.Fixtures || {};
     ThetusHelpers.Fixtures.Metadata = ThetusHelpers.Fixtures.Metadata || {};
 
-    ThetusHelpers.Fixtures.Metadata.json = testMetadataResponse;
+    ThetusHelpers.Fixtures.Metadata.metadataResponse = testMetadataResponse;
     ThetusHelpers.Fixtures.Metadata.noTemplatesResponse = noMetadataResponse;
 
 })(ThetusTestHelpers || (ThetusTestHelpers = {}));

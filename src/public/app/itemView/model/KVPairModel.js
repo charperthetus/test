@@ -7,6 +7,11 @@
  */
 
 Ext.define('Savanna.itemView.model.KVPairModel', {
-    extend: 'Ext.data.Model'
+    extend: 'Ext.data.Model',
+
+    fields: [
+        { name: 'key'},
+        { name: 'value'}
+    ]
 });
 

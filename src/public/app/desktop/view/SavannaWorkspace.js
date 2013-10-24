@@ -12,7 +12,8 @@ Ext.define('Savanna.desktop.view.SavannaWorkspace', {
         'Savanna.desktop.controller.WorkspaceController',
         'Savanna.desktop.view.SavannaTabPanel',
         'Savanna.crumbnet.view.CrumbnetComponent',
-        'Savanna.map.view.MapComponent'
+        'Savanna.map.view.MapComponent',
+        'Savanna.process.view.ProcessEditorComponent'
     ],
 
     controller: "Savanna.desktop.controller.WorkspaceController",
@@ -38,6 +39,7 @@ Ext.define('Savanna.desktop.view.SavannaWorkspace', {
                 ui:'workspace-header',
                 itemId: 'singleviewbutton',
                 cls:'singleViewButtonFramework',
+                glyph:'singleView',
                 enableToggle: true,
                 allowDepress: false,
                 pressed: true,
@@ -48,6 +50,7 @@ Ext.define('Savanna.desktop.view.SavannaWorkspace', {
                 ui:'workspace-header',
                 itemId: 'splitviewbutton',
                 cls:'splitViewButtonFramework',
+                glyph:'splitView',
                 enableToggle: true,
                 allowDepress: false,
                 toggleGroup: 'tabviewgroup'
@@ -59,25 +62,6 @@ Ext.define('Savanna.desktop.view.SavannaWorkspace', {
         itemId: 'maintabpanel',
         flex: 2,
         height: '100%',
-        items: [{
-            title: 'Process',
-            xtype: 'process_component',
-            tabConfig: {
-                ui: 'dark'
-            }
-        }, {
-            title: 'Crumbnet',
-            xtype: 'go-graph',
-            tabConfig: {
-                ui: 'dark'
-            }
-        }, {
-            title: 'Map',
-            xtype: 'map_component',
-            itemId: 'MAP_ONE',
-            tabConfig: {
-                ui: 'dark'
-            }
-        }]
+        items: []
     }]
 });

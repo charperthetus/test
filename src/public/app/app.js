@@ -24,7 +24,7 @@ Ext.syncRequire(['Deft.mixin.Injectable','Deft.mixin.Controllable']);
 //@require Deft.mixin.Injectable
 //@require Deft.mixin.Controllable
 
-Ext.setGlyphFontFamily('SickFont');
+Ext.setGlyphFontFamily('thetus-icons');
 Ext.application({
     name: 'Savanna',
 
@@ -49,8 +49,6 @@ Ext.application({
         'Savanna.flexpaper.controller.FlexpaperComponent',
         //Search
         'Savanna.search.controller.SearchComponent',
-        //Crumbnet
-        'Savanna.crumbnet.controller.CrumbnetController',
         //Map
         'Savanna.map.controller.MapController',
         //ItemView
@@ -58,12 +56,28 @@ Ext.application({
         //Model Search
         'Savanna.modelSearch.controller.SearchComponent',
         //Upload
-        'Savanna.upload.controller.UploadController'
+        'Savanna.upload.controller.UploadController',
+        //Process Stores
+        'Savanna.process.store.Processes',
+        'Savanna.process.store.ProcessItemStore',
+        'Savanna.process.store.ProcessActionStore'
     ],
 
-    autoCreateViewport: true,
+    autoCreateViewport: false,
 
     launch: function() {
+        Deft.Injector.configure({
+            'application': {
+                value: this
+            },
+            processStore: 'Savanna.process.store.Processes',
+            processItemStore: 'Savanna.process.store.ProcessItemStore',
+            processActionStore: 'Savanna.process.store.ProcessActionStore'
+        });
+
+        //in order to get Injection to work, I had to set autoCreateViewport to false and then manually create the viewport here
+        Ext.create('Savanna.view.Viewport');
+
         var viewportQueryResults = Ext.ComponentQuery.query('viewport');
 
         if (viewportQueryResults && viewportQueryResults.length > 0) {

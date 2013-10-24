@@ -152,7 +152,10 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
     createDetails: function(tabpanel) {
         var details = Ext.create('Savanna.metadata.view.Details', {
             title: 'Untitled Details',
-            itemURI: 'SolrJdbc%252FRich%252F061aedc6-d88c-497e-81dc-77d809b3262c',
+            //itemURI: 'SolrJdbc%252FRich%252F061aedc6-d88c-497e-81dc-77d809b3262c',
+            //itemURI: 'SolrJdbc%252FRich%252Fca1035f5-8ede-4415-ab75-e58956121819',
+            //itemURI: 'SolrJdbc%252FRich%252F2fa25cdf-9aab-471f-85b6-5359c0cd0dfd',
+            itemURI: 'SolrJdbc%252FText%252F9d62ad60-f453-4215-b8bc-c4c1398b84a4',
             closable: true,
             tabConfig: {
                 ui: 'dark'

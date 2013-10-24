@@ -308,11 +308,16 @@
 .singleViewButtonFramework.#{$prefix}btn-workspace-header-toolbar-small-focus,
 .singleViewButtonFramework.#{$prefix}btn-workspace-header-toolbar-small-active,
 .singleViewButtonFramework.#{$prefix}btn-workspace-header-toolbar-small-pressed {
-    background-image: $workspace-header-singleview-image;
-    background-position: center center;
-    background-repeat: no-repeat;
     width: 22px;
     height: 22px;
+  .#{$prefix}btn-button{
+    height:20px;
+  }
+  .#{$prefix}btn-glyph{
+    text-align: center;
+    width:20px;
+    line-height: 20px;
+  }
 }
 
 .splitViewButtonFramework, 
@@ -321,9 +326,14 @@
 .splitViewButtonFramework.#{$prefix}btn-workspace-header-toolbar-small-focus,
 .splitViewButtonFramework.#{$prefix}btn-workspace-header-toolbar-small-active,
 .splitViewButtonFramework.#{$prefix}btn-workspace-header-toolbar-small-pressed {
-    background-image: $workspace-header-splitview-image;
-    background-position: center center;
-    background-repeat: no-repeat;
     width: 22px;
     height: 22px;
+  .#{$prefix}btn-button{
+    height:20px;
+  }
+  .#{$prefix}btn-glyph{
+    text-align: center;
+    width:20px;
+    line-height: 20px;
+  }
 }
