@@ -10,16 +10,14 @@ Ext.define('Savanna.classification.controller.BannerController', {
         var uri = me.getView().ownerCt.getItemURI();
         if(uri) {
             Ext.Ajax.request({
-                url: 'http://thedevsav1:8080/SavannaX/rest/capco/' + encodeURI(uri),
-                withCredentials: true,
+                url: SavannaConfig.capcoUrl + encodeURI(uri) + ';jsessionid=' + Savanna.jsessionid,
                 success: me.onSuccess,
                 scope: me
             });
         }
         else {
             Ext.Ajax.request({
-                url: 'http://thedevsav1:8080/SavannaX/rest/capco/string/default/high',
-                withCredentials: true,
+                url: SavannaConfig.capcoDefaultHighUrl + ';jsessionid=' + Savanna.jsessionid,
                 success: me.onSuccess,
                 scope: me
             });
