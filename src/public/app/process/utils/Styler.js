@@ -57,11 +57,12 @@ Ext.define('Savanna.process.utils.Styler', {
             "yellow": "#EFFAB4",
             "red": "red",
             "white": "#F8F8F8",
-            "aqua": "#88FFFF",
-            "gray": "gray",
+            "aqua": "#dbf7fe",
+            "gray": "#999999",
+            "lightgray": "#f2f2f2",
             "fade": "#353535",
             "black": "#454545",
-            "startColor": "#79C900",
+            "startColor": "#7cc19d",
             "mainColor": "#00A9C9",
             "endColor": "#DC3C00",
             "graygrad": { 0: "rgb(150, 150, 150)", 0.5: "rgb(86, 86, 86)", 1: "rgb(86, 86, 86)" }, 
@@ -328,13 +329,13 @@ Ext.define('Savanna.process.utils.Styler', {
             "outline": {
                 fill: palette.startColor,
                 stroke: null,
-                width: 32, 
-                height: 16
+                width: 60, 
+                height: 60
             },
             "textblock": {
-                margin: 4,
-                font: properties.fontWeight + properties.fontSize + properties.font,
-                stroke: palette.darkText
+                margin: 0,
+                font: properties.fontSize + properties.font,
+                stroke: palette.white
             }
         };
 
@@ -384,7 +385,7 @@ Ext.define('Savanna.process.utils.Styler', {
          */
         var diamond = {
             "outline": {
-                fill: palette.mainColor,
+                fill: '#f9aa41',
                 stroke: null,
                 width: 32, 
                 height: 32
@@ -483,10 +484,14 @@ Ext.define('Savanna.process.utils.Styler', {
         var processModel = {
             "roundedRectangle": {
                 fill: null,
-                stroke: palette.black
+                stroke: palette.black,
+                margin: 0,
+                strokeDashOffset: 1
+               // strokeDashArray: [4, 2]
+       
             },
             "textblock": {
-                margin: 5,
+                margin: new go.Margin(0,0,0,4),
                 maxSize: new go.Size(200, NaN),
                 wrap: go.TextBlock.WrapFit,
                 textAlign: "center",
@@ -604,9 +609,10 @@ Ext.define('Savanna.process.utils.Styler', {
                 editable: true
             },
             "arrowheadProcess": {
-                toArrow: "standard",
-                stroke: null,
-                fill: palette.gray    
+                toArrow: "circle",
+                stroke: palette.gray,
+                strokeWidth: 1,
+                fill: palette.white    
             },
             "shapeProcess": {
                 fill: palette.white,
@@ -618,7 +624,8 @@ Ext.define('Savanna.process.utils.Styler', {
             },
             "linkpathProcess": {
                 stroke: palette.gray,
-                strokeWidth: 2
+                strokeWidth: 1
+                
             },
             "textblockTool": {
                 font: properties.fontWeight + properties.fontSizeSmall + properties.font,
@@ -629,9 +636,9 @@ Ext.define('Savanna.process.utils.Styler', {
             },
             "arrowheadTool": {
                 toArrow: "none",
-                fromArrow: "backward",
+                fromArrow: "none",
                 stroke: null,
-                fill: palette.gray  
+                fill: null  
             },
             "shapeTool": {
                 fill: palette.gray,
@@ -652,7 +659,7 @@ Ext.define('Savanna.process.utils.Styler', {
                 toArrow: "none",
                 fromArrow: "backward",
                 stroke: null,
-                fill: palette.gray  
+                fill: palette.green  
             },
             "shapeInput": {
                 fill: palette.gray,
@@ -728,6 +735,7 @@ Ext.define('Savanna.process.utils.Styler', {
             mainColor: palette.mainColor,
             blue: palette.blue,
             gray: palette.gray,
+            lightgray: palette.lightgray,
             black: palette.black,
             aqua: palette.aqua,
             yellow: palette.yellow,

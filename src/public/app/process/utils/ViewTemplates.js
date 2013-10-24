@@ -45,9 +45,9 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
             },
             go.GraphObject.make(go.Shape, {
                     figure: 'TriangleDown',
-                    stroke: 'black',
-                    fill: 'blue',
-                    desiredSize: new go.Size(10,10),
+                    stroke: null,
+                    fill: '#3ca8c8',
+                    desiredSize: new go.Size(11,11),
                     name: 'Port',
                     fromSpot: go.Spot.Bottom,
                     toSpot: go.Spot.Top,
@@ -69,12 +69,12 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
             },
             gmake(go.Shape, {
                     figure: 'Circle',
-                    stroke: 'black',
-                    fill: 'green',
-                    desiredSize: new go.Size(10,10)
+                    stroke: null,
+                    fill: '#3d8060',
+                    desiredSize: new go.Size(11,11)
                 }
             ),
-            gmake(go.Shape, { figure: 'ThickCross', stroke: null, fill: 'white', desiredSize: new go.Size(8,8) } )
+            gmake(go.Shape, { figure: 'PlusLine', strokeWidth: 2, stroke: 'white', desiredSize: new go.Size(8,8) } )
         );
     },
 
@@ -89,12 +89,12 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
             },
             gmake(go.Shape, {
                     figure: 'Diamond',
-                    stroke: 'black',
-                    fill: 'green',
-                    desiredSize: new go.Size(12,12)
+                    stroke: null,
+                    fill: '#fdc16a',
+                    desiredSize: new go.Size(13,13)
                 }
             ),
-            gmake(go.Shape, { figure: 'ThickCross', stroke: null, fill: 'white', desiredSize: new go.Size(8,8) } )
+            gmake(go.Shape, { figure: 'PlusLine', strokeWidth: 2, stroke: 'white', desiredSize: new go.Size(8,8) } )
         );
     },
 
@@ -119,11 +119,21 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
         );
         
         nodeTemplateMap.add('Start',
-            gmake(go.Node, go.Panel.Spot, Savanna.process.utils.ViewTemplates.nodeStyle(),
-                gmake(go.Panel, go.Panel.Horizontal, { defaultAlignment: go.Spot.Top },
-                    gmake(go.Shape, 'Start', this.styler.start().outline),
-                    gmake(go.TextBlock, 'Start', this.styler.start().textblock)
-                ),
+          gmake(go.Node, "Spot", Savanna.process.utils.ViewTemplates.nodeStyle(),
+            new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
+            gmake(go.Panel, "Auto",
+              gmake(go.Shape, "Circle",
+                this.styler.start().outline),
+              gmake(go.TextBlock, "Start",
+                this.styler.start().textblock)
+            ), {
+        selectionAdornmentTemplate:
+          gmake(go.Adornment, "Auto",
+            gmake(go.Shape, "RoundedRectangle",
+            { fill: null, stroke: null, strokeWidth: 0  }),
+            gmake(go.Placeholder)
+          )  // end Adornment
+      },
                 this.makeLinkGadget(),
                 this.makeStepGadget(),
                 this.makeDecisionGadget()
@@ -138,9 +148,11 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
 
         nodeTemplateMap.add('DecisionPoint', // Category must match the uri type
             gmake(go.Node, go.Panel.Spot, Savanna.process.utils.ViewTemplates.nodeStyle(), {toLinkable: true},
-                gmake(go.Panel, go.Panel.Horizontal, { defaultAlignment: go.Spot.Top },
-                    gmake(go.Shape, 'Diamond', this.styler.diamond().outline),
-                    gmake(go.TextBlock,this.styler.diamond().textblock, new go.Binding('text', 'text').makeTwoWay())
+                gmake(go.Panel, go.Panel.Vertical, { defaultAlignment: go.Spot.Center },
+                    gmake(go.Panel, go.Panel.Horizontal, { defaultAlignment: go.Spot.Top },
+                        gmake(go.Shape, 'Diamond', this.styler.diamond().outline),
+                        gmake(go.TextBlock,this.styler.diamond().textblock, new go.Binding('text', 'text').makeTwoWay())
+                    )
                 ),
                 this.makeTopPort(),
                 this.makeLinkGadget(),
@@ -214,6 +226,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                     this.styler.addTo('linker','linkpathProcess', 'isPanelMain', true).linker().linkpathProcess),
                 gmake(go.Shape,  // the arrowhead
                     this.styler.linker().arrowheadProcess),
+                  
                 gmake(go.Panel, 'Auto',
                     { visible: false,
                         name: 'LABEL'},
@@ -222,9 +235,17 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                     gmake(go.TextBlock, 'Choice',  // the label
                         this.styler.linker().textblockProcess,
                         new go.Binding('text', 'text').makeTwoWay())
-                )
+                ), {
+        selectionAdornmentTemplate:
+          gmake(go.Adornment,
+            gmake(go.Shape,
+              this.styler.linker().arrowheadProcess),
+            gmake(go.Shape,
+              this.styler.linker().arrowheadProcess)
+          )  // end Adornment
+      }
             )
-        );
+                        );
 
         linkTemplateMap.add('ToolLink',
             gmake(go.Link,  // the whole link panel
@@ -256,11 +277,11 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                 gmake(go.Shape,  // the link path shape
                       this.styler.addTo('linker','linkpathInput', 'isPanelMain', true).linker().linkpathInput
                     ),
-                gmake(go.Shape,  // the arrowhead
+                gmake(go.Shape, "Circle", // the arrowhead
                     { toArrow: 'none',
                         fromArrow: 'backward',
                         stroke: null,
-                        fill: 'gray'})
+                        fill: null})
             )
         );
 
@@ -300,7 +321,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                     position: gooPoint,
                     isActionable: true,
                     mouseDragEnter: function(e, obj) {
-                        obj.fill = 'lightblue';
+                        obj.fill = '#ededed';
                     },
                     mouseDragLeave: function(e, obj) {
                         obj.fill = null;
@@ -313,37 +334,37 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                     position: new go.Point(24, 24),
                     click: clickHandler,
                     actionDown: function(e, obj) {
-                        obj.elt(0).fill = 'dodgerblue';
+                        obj.elt(0).fill = '#63d9f5'; //#63d9f5 //#99e7fa //#c7f4ff
                     },
                     actionUp: function(e, obj) {
-                        obj.elt(0).fill = 'lightblue';
+                        obj.elt(0).fill = '#c7f4ff';
                     },
                     mouseEnter: function(e, obj) {
-                        obj.elt(0).fill = 'skyblue';
+                        obj.elt(0).fill = '#99e7fa';
                     },
                     mouseLeave: function(e, obj) {
                         // should only change the hover color if we are moving outside, not if we are moving over the glyph
                         // todo: not yet sure how to implement this
-                        obj.elt(0).fill = 'lightblue';
+                        obj.elt(0).fill = '#c7f4ff';
                     },
                     mouseDragEnter: function(e, obj) {
-                        obj.elt(0).fill = 'skyblue';
+                        obj.elt(0).fill = '#99e7fa ';
                     },
                     mouseDragLeave: function(e, obj) {
-                        obj.elt(0).fill = 'lightblue';
+                        obj.elt(0).fill = '#c7f4ff ';
                     },
                     mouseDrop: dropHandler
                 },
                 gmake(go.Shape, 'Circle', {
-                        fill: 'lightblue',
+                        fill: '#c7f4ff',
                         stroke: 'white',
                         strokeWidth:3,
-                        width:24, height:24,
+                        width:30, height:30,
                         position: new go.Point(0, 0)
                     }
                 ),
-                gmake(go.TextBlock, glyph,{ font: '10pt SickFont', stroke: 'blue', position: new go.Point(6, 7) } ),
-                gmake(go.TextBlock, '\uf100',{ font: '7pt SickFont', stroke: 'blue', position: new go.Point(18, 0) } )
+                gmake(go.TextBlock, glyph,{ font: '10pt SickFont', stroke: '#3ca8c8', position: new go.Point(10, 10) } ),
+                gmake(go.TextBlock, '\uf100',{ font: '7pt SickFont', stroke: '#008bb9', position: new go.Point(18, 0) } )
             ),
             gmake(go.TextBlock, labelStr,
                 { font: 'bold 6pt sans-serif', background: 'white', position: labelPoint }
@@ -354,6 +375,44 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
     generateGroupTemplateMap: function() {
         var gmake = go.GraphObject.make;
         var groupTemplateMap = new go.Map();
+
+        
+      go.GraphObject.Builders.add("PanelExpanderButton", function() {
+        return gmake("Button",
+              { "ButtonBorder.stroke": null,
+                "ButtonBorder.fill": "#454545",
+                click: function(e, obj) {
+                  var elt = obj.part.findObject("COLLAPSIBLE");
+                  if (elt !== null) {
+                    obj.diagram.startTransaction("Collapse/Expand Panel");
+                    elt.visible = !elt.visible;
+                    obj.diagram.commitTransaction("Collapse/Expand Panel");
+                  }
+                    
+                    var group = obj.part;  // OBJ is this button
+                    if (!(group instanceof go.Group)) return;
+                    var diagram = group.diagram;
+                    if (diagram === null) return;
+                    e.handled = true;
+                    if (group.isSubGraphExpanded) {
+                      diagram.commandHandler.collapseSubGraph(group);
+                    } else {
+                      diagram.commandHandler.expandSubGraph(group);
+                    }
+                } },
+              gmake(go.Shape, "PlusLine",
+                { desiredSize: new go.Size(7, 7), fill:'white', stroke: 'white', strokeWidth: 2 },
+                    // bind the Shape.figure to the Group.isSubGraphExpanded value using this converter:
+                    new go.Binding("figure", "isSubGraphExpanded",
+                      function(exp, group) {
+                        var fig = null;
+                        var button = group.panel;
+                        if (button) fig = exp ? button["_subGraphExpandedFigure"] : button["_subGraphCollapsedFigure"];
+                        if (!fig) fig = exp ? "MinusLine" : "PlusLine";
+                        return fig;
+                  }).ofObject(), new go.Binding("figure", "visible", function(vis) { return vis ? "MinusLine" : "MinusLine"; }).ofObject("COLLAPSIBLE") ) )});
+
+
 
         // define the Step template
         groupTemplateMap.add('ProcessModel',
@@ -378,24 +437,39 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                     // the group begins unexpanded;
                     isSubGraphExpanded: false
                 }, new go.Binding('isSubGraphExpanded', 'isSubGraphExpanded').makeTwoWay(),
-                gmake(go.Shape, 'RoundedRectangle', this.styler.addTo('processModel', 'roundedRectangle', 'name', 'BACKGROUND').processModel().roundedRectangle),
+                gmake(go.Shape, 'RoundedRectangle', this.styler.addTo('processModel', 'roundedRectangle', 'name', 'BACKGROUND').processModel().roundedRectangle,
+                              new go.Binding("fill", "isSelected", function(sel) {
+                      if (sel) return '#f2f2f2'; else return "transparent";
+                    }).ofObject("")
+                     
+                   
+                     
+                     
+                     ), {
+        selectionAdornmentTemplate:
+          gmake(go.Adornment, "Auto",
+            gmake(go.Shape, "RoundedRectangle",
+            { fill: null, stroke: '#63d9f5' , strokeWidth: 3, margin: 0  }),
+            gmake(go.Placeholder)
+          )  // end Adornment
+      },
                 gmake(go.Panel, go.Panel.Vertical,
-                    { defaultAlignment: go.Spot.Center },
+                    { defaultAlignment: go.Spot.Center, padding: new go.Margin(5, 5, 5, 5) },
                     gmake(go.Panel, go.Panel.Horizontal,
-                        { defaultAlignment: go.Spot.Top, stretch: go.GraphObject.Horizontal, background: 'transparent' },
+                        { defaultAlignment: go.Spot.Top, stretch: go.GraphObject.Horizontal, background: 'transparent'},
                         // the SubGraphExpanderButton is a panel that functions as a button to expand or collapse the subGraph
-                        gmake('SubGraphExpanderButton'),
+                        gmake('PanelExpanderButton'),
                         gmake(go.TextBlock, this.styler.processModel().textblock, new go.Binding('text', 'text').makeTwoWay())
                     ),
                     // create a placeholder to represent the area where the contents of the group are
                     gmake(go.Placeholder, { padding: new go.Margin(0, 10) }),
-                    gmake(go.Panel, {desiredSize: new go.Size(10,10)})
+                    gmake(go.Panel, {desiredSize: new go.Size(10,10)}) 
                 ),  // end Vertical Panel
                 this.makeTopPort(),
                 this.makeLinkGadget(),
                 this.makeStepGadget(),
                 this.makeDecisionGadget()
-            )
+            )   
         );  // end Group
 
         // define the Actions Group template
@@ -419,7 +493,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                     wasSubGraphExpanded: true
                 },
                 gmake(go.Panel, go.Panel.Auto,
-                    gmake(go.Shape, 'RoundedRectangle', { fill: '#88FFFF', name:'BACKGROUND', stroke: null}),
+                    gmake(go.Shape, 'RoundedRectangle', { fill: '#dbf7fe', name:'BACKGROUND', stroke: null, desiredSize: new go.Size(125,125)}),
                     gmake(go.Placeholder, {
                             padding: new go.Margin(16, 16),
                             background: 'transparent',
@@ -433,10 +507,10 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                         }
                     )
                 ),
-                this.makeAdornment(go.Spot.Left, new go.Point(0, 0), 180, Savanna.process.utils.GroupEventHandlers.onParticipantMouseDrop, Savanna.process.utils.ProcessUtils.addParticipant, '\uf116', 'Participants', new go.Point(14, 50)),
-                this.makeAdornment(go.Spot.Top, new go.Point(0, 0), 270, Savanna.process.utils.GroupEventHandlers.onInputMouseDrop, Savanna.process.utils.ProcessUtils.addInput, '\uf124', 'Inputs', new go.Point(26, 15)),
-                this.makeAdornment(go.Spot.Right, new go.Point(36, 0), 0, Savanna.process.utils.GroupEventHandlers.onByproductMouseDrop, Savanna.process.utils.ProcessUtils.addByproduct, '\uf13d', 'Byproducts', new go.Point(14, 50)),
-                this.makeAdornment(go.Spot.Bottom, new go.Point(0, 36), 90, Savanna.process.utils.GroupEventHandlers.onResultMouseDrop, Savanna.process.utils.ProcessUtils.addResult, '\uf16d', 'Results', new go.Point(24, 50))
+                this.makeAdornment(go.Spot.Left, new go.Point(0, 0), 180, Savanna.process.utils.GroupEventHandlers.onParticipantMouseDrop, Savanna.process.utils.ProcessUtils.addParticipant, '\uf116', 'Participants', new go.Point(17, 58)),
+                this.makeAdornment(go.Spot.Top, new go.Point(0, 0), 270, Savanna.process.utils.GroupEventHandlers.onInputMouseDrop, Savanna.process.utils.ProcessUtils.addInput, '\uf124', 'Inputs', new go.Point(27, 12)),
+                this.makeAdornment(go.Spot.Right, new go.Point(36, 0), 0, Savanna.process.utils.GroupEventHandlers.onByproductMouseDrop, Savanna.process.utils.ProcessUtils.addByproduct, '\uf13d', 'By Products', new go.Point(17, 58)),
+                this.makeAdornment(go.Spot.Bottom, new go.Point(0, 36), 90, Savanna.process.utils.GroupEventHandlers.onResultMouseDrop, Savanna.process.utils.ProcessUtils.addResult, '\uf16d', 'Results', new go.Point(25, 58))
             )
         );  // end Actions Group
 
