@@ -50,6 +50,8 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
     },
 
     init: function() {
+        Savanna.app.on('initModelSearch', this.displayModelSearch);
+
         return this.callParent(arguments);
     },
 
@@ -84,7 +86,7 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
         }
     },
 
-    displayUploadDialog: function(button) {
+    displayUploadDialog: function() {
         if (!this.statics().uploadwindow) {
             this.statics().uploadwindow = Ext.create('Savanna.desktop.view.UploadWindow', { closeAction: 'hide'});
         }

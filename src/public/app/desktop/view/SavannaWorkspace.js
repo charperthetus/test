@@ -11,6 +11,8 @@ Ext.define('Savanna.desktop.view.SavannaWorkspace', {
     requires: [
         'Savanna.desktop.controller.WorkspaceController',
         'Savanna.desktop.view.SavannaTabPanel',
+        'Savanna.crumbnet.view.CrumbnetComponent',
+        'Savanna.map.view.MapComponent',
         'Savanna.process.view.ProcessEditorComponent'
     ],
 
@@ -58,13 +60,6 @@ Ext.define('Savanna.desktop.view.SavannaWorkspace', {
         itemId: 'maintabpanel',
         flex: 2,
         height: '100%',
-        items: [{
-            title: 'Process',
-            xtype: 'process_component',
-            tabConfig: {
-                ui: 'dark'
-            },
-            closable: true
-        }]
+        items: []
     }]
 });
