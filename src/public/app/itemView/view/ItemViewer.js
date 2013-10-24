@@ -198,7 +198,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                             },
                             {
                                 xtype: 'itemview_related_processes',
-                                itemId: 'relatedProcessesView',
+                                itemId: 'relatedProcessesViewEdit',
                                 cls:'white-grid-view-panel-edit',
                                 collapsible: true,
                                 header:{
