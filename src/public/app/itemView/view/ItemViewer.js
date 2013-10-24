@@ -87,7 +87,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                                 },
                                 {
                                     text: 'Delete',
-                                    itemId:'newItemButton'
+                                    itemId:'deleteItemButton'
                                 },
                                 {
                                     xtype: 'menuseparator'
