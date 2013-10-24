@@ -191,7 +191,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                             {
                                 xtype: 'itemview_edit_header',
                                 itemId: 'itemViewHeaderEdit',
-                                cls:'white-grid-view-panel',
+                                cls:'white-grid-view-panel-edit',
                                 header:{
                                     ui:'white'
                                 }
@@ -199,7 +199,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                             {
                                 xtype: 'itemview_related_processes',
                                 itemId: 'relatedProcessesView',
-                                cls:'white-grid-view-panel',
+                                cls:'white-grid-view-panel-edit',
                                 collapsible: true,
                                 header:{
                                     ui:'light-blue'
@@ -209,7 +209,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                                 //Todo: create related items component here
                                 xtype: 'itemview_edit_related_items',
                                 itemId: 'relatedItemsEdit',
-                                cls:'white-grid-view-panel',
+                                cls:'white-grid-view-panel-edit',
                                 collapsible: true,
                                 title: 'Related Items (#)',
                                 header:{
@@ -225,7 +225,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                             {
                                 xtype: 'itemview_edit_qualities',
                                 itemId: 'itemViewPropertiesEdit',
-                                cls:'white-grid-view-panel',
+                                cls:'white-grid-view-panel-edit',
                                 collapsible: true,
                                 header:{
                                     ui:'light-blue'
