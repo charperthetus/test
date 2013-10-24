@@ -6,11 +6,11 @@
  * To change this template use File | Settings | File Templates.
  */
 
-Ext.define('Savanna.itemView.controller.EditHeaderController', {
+Ext.define('Savanna.itemView.controller.EditQualitiesController', {
     extend: 'Deft.mvc.ViewController',
 
     views: [
-        'Savanna.itemView.view.header.EditHeader'
+        'Savanna.itemView.view.itemQualities.EditItemQualities'
     ],
 
     control: {

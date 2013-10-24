@@ -11,9 +11,9 @@ Ext.define('Savanna.itemView.view.itemQualities.EditItemQualities', {
 
     alias: 'widget.itemview_edit_qualities',
 
-    controller: 'Savanna.itemView.controller.EditHeaderController',
+    controller: 'Savanna.itemView.controller.EditQualitiesController',
 
-    require: ['Savanna.itemView.controller.EditHeaderController'],
+    requires: ['Savanna.itemView.controller.EditQualitiesController'],
 
     layout: 'vbox',
 

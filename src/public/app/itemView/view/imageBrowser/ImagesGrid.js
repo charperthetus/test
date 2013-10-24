@@ -2,7 +2,7 @@ Ext.define('Savanna.itemView.view.imageBrowser.ImagesGrid', {
     
     extend: 'Ext.container.Container',
 
-    require: 'Savanna.itemView.controller.ImageBrowserController',
+    requires: 'Savanna.itemView.controller.ImageBrowserController',
     
     controller: 'Savanna.itemView.controller.ImageBrowserController',
     
