@@ -27,8 +27,10 @@ Ext.define('Savanna.itemView.view.header.EditHeader', {
             text: 'Alias'
         },
         {
-            xtype: 'auto_complete_with_tags',
-            labelType: 'Click to add an Alias'
+            xtype: 'auto_complete',
+            labelType: 'Click to add an Alias',
+            showTags: true,
+            hasNoStore: true
         },
         {
             xtype: 'label',
@@ -41,8 +43,9 @@ Ext.define('Savanna.itemView.view.header.EditHeader', {
             width: '100%',
             items: [
                 {
-                    xtype: 'auto_complete_with_tags',
+                    xtype: 'auto_complete',
                     labelType: 'Click to add an Intended Use',
+                    showTags: true,
                     store: Ext.create('Ext.data.Store', {
                         fields: ['photo', 'title', 'description', 'isFeatured', 'value', 'abbr'],
 
@@ -120,6 +123,26 @@ Ext.define('Savanna.itemView.view.header.EditHeader', {
                     xtype: 'button',
                     text: 'Chooser',
                     itemId: 'intendedUseChooserBtn'
+                }
+            ]
+        },
+        {
+            xtype: 'label',
+            margin: "20 0 0 0",
+            text: 'Type'
+        },
+        {
+            xtype: 'container',
+            layout: 'hbox',
+            margin: "0 0 0 -10",
+            items: [
+                {
+                    xtype: 'button',
+                    text: 'Parent Class'
+                },
+                {
+                    xtype: 'button',
+                    text: "Chooser"
                 }
             ]
         },

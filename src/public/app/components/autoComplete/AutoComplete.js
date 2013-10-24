@@ -6,10 +6,10 @@
  * To change this template use File | Settings | File Templates.
  */
 
-Ext.define('Savanna.itemView.view.components.AutoCompleteWithTags', {
+Ext.define('Savanna.components.autoComplete.AutoComplete', {
     extend: 'Ext.container.Container',
 
-    alias: 'widget.auto_complete_with_tags',
+    alias: 'widget.auto_complete',
 
     store: null,
 
@@ -20,14 +20,17 @@ Ext.define('Savanna.itemView.view.components.AutoCompleteWithTags', {
     config: {
         labelType: '',
         tagValues: null,
-        propData: null
+        propData: null,
+        showTags: false,
+        hasNoStore: false,
+        preLabel: ''
     },
 
     attachedStore: null,
 
-    controller: 'Savanna.itemView.controller.AutoCompleteController',
+    controller: 'Savanna.components.autoComplete.AutoCompleteController',
 
-    requires: 'Savanna.itemView.controller.AutoCompleteController',
+    requires: 'Savanna.components.autoComplete.AutoCompleteController',
 
     listeners: {
         afterrender: function() {
@@ -56,13 +59,12 @@ Ext.define('Savanna.itemView.view.components.AutoCompleteWithTags', {
                 itemId: 'autoCompleteBox',
                 displayField: 'title',
                 typeAhead: false,
-                hideLabel: true,
                 hideTrigger: true,
                 anchor: '100%',
                 width: '100%',
                 minChars: 1,
                 store: this.store,
-//              "fieldLabel": "Intended Uses",
+                fieldLabel: this.getPreLabel(),
                 enableKeyEvents: true,
                 emptyText: this.getLabelType(),
                 queryMode: 'local'
@@ -88,7 +90,7 @@ Ext.define('Savanna.itemView.view.components.AutoCompleteWithTags', {
         }
     },
 
-    removeTerm: function (view) {
+    removeTag: function (view) {
         var myTag = view.itemId;
         this.queryById('tagsList').remove(myTag);
     }

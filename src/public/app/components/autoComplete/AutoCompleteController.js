@@ -6,7 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 
-Ext.define('Savanna.itemView.controller.AutoCompleteController', {
+Ext.define('Savanna.components.autoComplete.AutoCompleteController', {
     extend: 'Deft.mvc.ViewController',
 
     control: {
@@ -26,14 +26,19 @@ Ext.define('Savanna.itemView.controller.AutoCompleteController', {
     },
 
     handleRemoveTagClick: function (value, view) {
-        this.getView().removeTerm(view);
+        this.getView().removeTag(view);
+        this.getView().fireEvent('AutoComplete:TagRemoved', field.getValue(), this.getView());
     },
 
     handleAutoCompleteTextKeyUp: function (field, evt) {
         if (evt.keyCode === Ext.EventObject.ENTER) {
             if (field.getValue().trim().length) {
-                if (field.store.data.items.length > 0 || this.getView().queryById('autoCompleteBox').store.data.items.length === 0) {
-                    field.findParentByType('auto_complete_with_tags').addTerm(field.getValue());
+                if (field.store.data.items.length > 0 || this.getView().hasNoStore) {
+                    if (this.getView().showTags) {
+                        field.findParentByType('auto_complete').addTerm(field.getValue());
+                    }
+
+                    this.getView().fireEvent('AutoComplete:ItemSelected', field.getValue(), this.getView());
                     field.reset();
                 }
             }

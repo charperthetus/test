@@ -11,6 +11,10 @@ Ext.define('Savanna.itemView.view.itemQualities.EditItemQualities', {
 
     alias: 'widget.itemview_edit_qualities',
 
+    controller: 'Savanna.itemView.controller.EditHeaderController',
+
+    require: ['Savanna.itemView.controller.EditHeaderController'],
+
     layout: 'vbox',
 
     width: '100%',
@@ -20,18 +24,10 @@ Ext.define('Savanna.itemView.view.itemQualities.EditItemQualities', {
             xtype: 'tbfill'
         },
         {
-            xtype: 'combo',
+            xtype: 'auto_complete',
             itemId: 'addPropAutoChooser',
-            displayField: 'title',
-            typeAhead: false,
-            hideLabel: true,
-            hideTrigger: true,
-            anchor: '100%',
+            labelType: 'Click to Add a Property',
             width: '35%',
-            minChars: 1,
-            enableKeyEvents: true,
-            emptyText: 'Click to Add a Property',
-            queryMode: 'local',
             store: Ext.create('Ext.data.Store', {
                 fields: ['photo', 'title', 'description', 'isFeatured', 'value', 'abbr'],
 
@@ -104,26 +100,13 @@ Ext.define('Savanna.itemView.view.itemQualities.EditItemQualities', {
             })
         },
         {
+            xtype: 'button',
+            text: 'Chooser'
+        },
+        {
             xtype: 'tbfill'
         }
     ],
 
-    items: [],
-
-    addProp: function (prop) {
-        if (this.queryById('prop_' + prop.propName.replace(/[\s']/g, "_")) === null) {
-            var newProp = Ext.create('Savanna.itemView.view.components.AutoCompleteWithTags', {
-                itemId: 'prop_' + prop.propName.replace(/[\s']/g, "_"),
-                propData: prop,
-                label: prop.propName
-            });
-
-            this.add(newProp);
-        }
-    },
-
-    removeProp: function (closeButton) {
-        var myProp = this.queryById(closeButton.up('auto_complete_with_tags').itemId);
-        this.queryById('item_properties').remove(myProp);
-    }
+    items: []
 });

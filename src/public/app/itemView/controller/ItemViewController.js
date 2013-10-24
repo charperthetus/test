@@ -113,6 +113,9 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
             Header Edit
              */
             //ToDo: do what needs to be done for edit version of header
+            var headerEditComponent = me.getView().queryById('itemViewHeaderEdit');
+            headerEditComponent.setTitle(record[0].data.label);
+            headerEditComponent
 
             /*
             Related Processes View
@@ -233,7 +236,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     // TODO: Keeping for now in order to pull later into own controller
     setupAliases: function (aliasList, view) {
         if (aliasList != null && aliasList.length > 0) {
-            var aliasTags = view.down('#itemAlias > auto_complete_with_tags');
+            var aliasTags = view.down('#itemAlias > auto_complete');
 
             for (var i = 0; i < aliasList.length; i++) {
                 aliasTags.addTerm(aliasList[i]);

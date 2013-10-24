@@ -55,3 +55,10 @@
     background-color: $white-grid-row-cell-over-background-color;
   }
 }
+.white-grid-view-panel-edit{
+  @extend .white-grid-view-panel;
+   input[type="text"]{
+    border-color:silver #d9d9d9 #d9d9d9;
+     border-width:1px;
+  }
+}
