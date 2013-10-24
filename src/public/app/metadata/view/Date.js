@@ -9,9 +9,8 @@
 Ext.define('Savanna.metadata.view.Date', {
     extend: 'Savanna.metadata.view.MetadataItemView',
     alias: 'widget.metadata_date',
-
     requires: [
-        'Ext.form.field.Date'
+        'Savanna.components.DatePicker'
     ],
 
     items: [
@@ -30,9 +29,8 @@ Ext.define('Savanna.metadata.view.Date', {
             }
 
             if(me.getEditable() && me.getEditMode()) {
-                if(me.down('#displayValueEdit')) {
-                    me.down('#displayValueEdit').setValue(myDate);
-                    me.down('#displayValueEdit').fieldLabel = me.getDisplayLabel();
+                if(me.down('#editLabelItem')) {
+                    me.down('#editLabelItem').html = me.getDisplayLabel() + ':&nbsp;&nbsp;';
                 }
             } else {
                 if(me.down('#displayLabelItem')) {
@@ -48,21 +46,33 @@ Ext.define('Savanna.metadata.view.Date', {
 
     makeEditViewItems: function() {
         var me = this;
-        this.add(Ext.create('Ext.form.field.Date', {
-            fieldLabel: '',
+        this.layout = 'vbox';
+        this.add(Ext.create('Ext.form.Label', {
+            itemId: 'editLabelItem',
+            width: 180,
+            minWidth: 180,
+            height: 25
+        }));
+
+        this.add(Ext.create('Savanna.components.DatePicker', {
             itemId: 'displayValueEdit',
-            allowBlank: true,
-            width: '100%',
-            labelWidth: 180,
-            dateFormat: 'Y-m-d\\TH:i:s.m\\Z',
+            //width: 200,
+            jsDate: new Date(me.getValue()),
+            renderTo: Ext.getBody(),
             listeners: {
                 blur: function(d) {
-                    //console.log('Item Blur');
-                    var newVal = d.getValue();
-                    me.setValue(newVal);
+                    console.log('Date picker Item Blur');
+//                    var newVal = d.getUnixDate();
+//                    me.setValue(newVal);
                 }
             }
-        }));
+
+         }));
+    },
+
+    makeViewViewItems: function() {
+        this.layout = 'hbox';
+        this.callParent(arguments);
     }
 
 
