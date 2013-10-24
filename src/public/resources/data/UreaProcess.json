@@ -360,7 +360,7 @@
 		  "from":"x07/DecisionPoint",
 		  "to":"x15/ProcessModel",
           "category":"ProcessLink",
-		  "text":"Nitric Acid is Available.",
+		  "text":"Use Nitric Acid",
 		  "visible":true
 	  },
 	  {
@@ -409,7 +409,7 @@
 		  "from":"x07/DecisionPoint",
 		  "to":"x18/ProcessModel",
           "category":"ProcessLink",
-		  "text":"Nitric Acid is NOT Available.",
+		  "text":"Use Nitrate Salt",
 		  "visible":true
 	  },
 	  {
