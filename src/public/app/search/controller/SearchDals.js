@@ -127,10 +127,12 @@ Ext.define('Savanna.search.controller.SearchDals', {
 
         if (button.text === this.addDalDetailText) {
             button.setText(this.removeDalDetailText);
+            button.nextSibling('#resetSingleDal').show();
             childSearchDalsPanel.show();
         }
         else {
             button.setText(this.addDalDetailText);
+            button.nextSibling('#resetSingleDal').hide();
             childSearchDalsPanel.hide();
         }
 

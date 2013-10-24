@@ -27,10 +27,10 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.searchDals.SearchOpti
 
             this.down('checkbox').boxLabel = checkboxLabel;
             this.down('label').text = label;
-
+            this.down('#resetSingleDal').hide();
+            
             if (!showButton) {
                 this.down('#searchOptionsToggle').hide();
-                this.down('#resetSingleDal').hide();
             }
         }, this));
     },
