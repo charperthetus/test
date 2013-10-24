@@ -15,7 +15,8 @@ Ext.define('Savanna.image.view.ImageComponent', {
     overview: null,
 
     initComponent: function() {
-        this.setImageUri('SolrJdbc%2FImage%2F61b06128-361a-419a-a316-cb6460a94053'); //TODO: Don't fake this.
+        this.setImageUri('SolrJdbc%2FImage%2F61b06128-361a-419a-a316-cb6460a94053');// c2aptsav //TODO: Don't fake this.
+//        this.setImageUri("SolrJdbc%2FImage%2Fd459c032-35b3-4fcc-8c7c-8d4fd7ceb30d");// thedevsav1
         this.width = '100%';
         this.height = '100%';
         this.callParent(arguments);
