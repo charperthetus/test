@@ -40,10 +40,14 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
     },
 
     init: function() {
+        //TODO - this is temporary until open is fully working
         Savanna.app.on('search:itemselected', this.showItemView, this);
+
+        EventHub.on('open', this.onOpen);
         return this.callParent(arguments);
     },
 
+    //TODO - this is temporary until open is fully working
     showItemView: function (itemView) {
         this.getMaintabpanel().add(itemView);
         this.getMaintabpanel().setActiveTab(itemView)
@@ -119,6 +123,20 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
     onRemove: function(tabpanel, component) {
         if(tabpanel.items.getCount() < 1) {
             this.getSingleviewbutton().toggle();
+        }
+    },
+
+    onOpen: function(event){
+        console.log(arguments);
+        var component = ComponentManager.getComponentForType(event.type);
+        if (component){
+            component.uri = event.uri;
+            component.title = event.label;
+            var tab = tabpanel.add(component);
+            tabpanel.doLayout();
+            tabpanel.setActiveTab(tab);
+        }else{
+            //TODO - What should I do here?
         }
     },
 

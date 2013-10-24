@@ -7,7 +7,8 @@ Ext.define('Savanna.controller.Main', {
 
     requires: [
         'Ext.util.TaskRunner',
-        'Savanna.utils.EventHub'
+        'Savanna.utils.EventHub',
+        'Savanna.utils.ComponentManager'
     ],
 
     views: [

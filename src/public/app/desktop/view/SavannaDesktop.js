@@ -65,12 +65,13 @@ Ext.define('Savanna.desktop.view.SavannaDesktop', {
             //     ui:'brand-header',
             //     scale: 'medium'
             // }, 
-            {
+            /*{ //TODO - commented until we have a real help link to point to.
                 itemId: 'helpbutton',
                 cls:'helpButtonFramework',
                 ui:'brand-header',
                 scale: 'medium'
-            }, {
+            },*/
+            {
                 itemId: 'userbutton',
                 cls:'userButtonFramework',
                 ui:'brand-header',
