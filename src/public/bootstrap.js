@@ -312,6 +312,7 @@ Ext.ClassManager.addNameAlternateMappings({
     "Deft.Class"
   ],
   "Savanna.itemView.store.Relationships": [],
+  "Savanna.itemView.view.header.DisplayLabel": [],
   "Savanna.crumbnet.store.Templates": [],
   "Savanna.metadata.view.Double": [],
   "ThetusUikit.ux.form.SearchField": [],
@@ -369,6 +370,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "Ext.ux.DataTip": [],
   "Savanna.modelSearch.view.searchComponent.searchBody.SearchDals": [],
   "Savanna.view.Login": [],
+  "Savanna.itemView.view.relatedProcesses.RelatedProcesses": [],
   "Savanna.metadata.controller.MetadataViewController": [],
   "Ext.ux.ajax.JsonSimlet": [],
   "Savanna.search.model.dalSource.CustomSearchParameter": [],
@@ -867,6 +869,9 @@ Ext.ClassManager.addNameAliasMappings({
   ],
   "Deft.core.Class": [],
   "Savanna.itemView.store.Relationships": [],
+  "Savanna.itemView.view.header.DisplayLabel": [
+    "widget.itemview_displaylabel"
+  ],
   "Savanna.crumbnet.store.Templates": [],
   "Savanna.metadata.view.Double": [
     "widget.metadata_double"
@@ -979,6 +984,9 @@ Ext.ClassManager.addNameAliasMappings({
   ],
   "Savanna.view.Login": [
     "widget.login"
+  ],
+  "Savanna.itemView.view.relatedProcesses.RelatedProcesses": [
+    "widget.itemview_related_processes"
   ],
   "Savanna.metadata.controller.MetadataViewController": [],
   "Ext.ux.ajax.JsonSimlet": [
