@@ -37,10 +37,8 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     toggleEditMode: function (btn) {
         if (!this.getView().getEditMode()) {
             this.getView().setActiveTab(1);
-            btn.setText('View');
         } else {
             this.getView().setActiveTab(0);
-            btn.setText('Edit');
         }
 
         this.getView().setEditMode(!this.getView().getEditMode());
@@ -132,7 +130,6 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
              */
             if(me.getView().getEditMode())  {
                 me.getView().setActiveTab(1);
-                me.getView().queryById('editModeButton').setText('View');
             }
 
         } else {
