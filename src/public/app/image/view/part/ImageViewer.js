@@ -2,7 +2,6 @@ Ext.define('Savanna.image.view.part.ImageViewer', {
     extend: 'Ext.container.Container',
     alias: 'widget.image_part_imageviewer',
 
-
     layout: {
         type: 'vbox',
         align: 'stretch'
@@ -44,36 +43,43 @@ Ext.define('Savanna.image.view.part.ImageViewer', {
             items: [{
                 xtype: 'button',
                 tooltip: me.tooltips.stretchHorizontally,
+                itemId:'fitWideButton',
                 text: 'fit wide',
                 listeners: { click: me.stretchHorizontally, scope: me }
             }, {
                 xtype: 'button',
                 tooltip: me.tooltips.stretchVertically,
+                itemId:'fitHighButton',
                 text: 'fit high',
                 listeners: { click: me.stretchVertically, scope: me }
             }, {
                 xtype: 'button',
                 tooltip: me.tooltips.stretchOptimally,
-                text: 'fit right',
+                itemId:'fitToTabButton',
+                text: 'fit to tab',
                 listeners: { click: me.stretchOptimally, scope: me }
             }, {
                 xtype: 'button',
                 tooltip: me.tooltips.zoomIn,
+                itemId:'zoomInButton',
                 text: 'zoom in',
                 listeners: { click: me.zoomIn, scope: me }
             }, {
                 xtype: 'button',
                 tooltip: me.tooltips.zoomOut,
+                itemId:'zoomOutButton',
                 text: 'zoom out',
                 listeners: { click: me.zoomOut, scope: me }
             }, {
                 xtype: 'button',
                 tooltip: me.tooltips.rotateClockwise,
+                itemId:'rotateClockwiseButton',
                 text: 'rotate clockwise',
                 listeners: { click: me.rotateClockwise, scope: me }
             }, {
                 xtype: 'button',
                 tooltip: me.tooltips.rotateAntiClockwise,
+                itemId:'rotateCounterClockwiseButton',
                 text: 'rotate counterclockwise',
                 listeners: { click: me.rotateAntiClockwise, scope: me }
             }]
@@ -89,6 +95,7 @@ Ext.define('Savanna.image.view.part.ImageViewer', {
             },
             items: {
                 xtype: 'image',
+                itemId: 'image',
                 mode: 'element',
                 src: me.src,
                 style: {
@@ -399,35 +406,6 @@ Ext.define('Savanna.image.view.part.ImageViewer', {
             me.setImageHeight(size.height);
         }
     },
-
-//  TODO: remove
-//    setImageSizeTesting: function (size) {
-//        var me = this,
-//            rotation = me.getRotation(),
-//            newHeight,
-//            newWidth;
-//
-//        if (rotation === 90 || rotation === 270) {
-//            newWidth = size.height;
-//            newHeight = size.width;
-//        } else {
-//            newWidth = size.width;
-//            newHeight = size.height;
-//        }
-//
-//        me.getImage().animate({
-//            duration: 50,
-//            to:{
-//                width: newWidth
-//            }
-//        }).animate({
-//                duration: 50,
-//                to:{
-//                    height: newHeight
-//                }
-//            });
-//    },
-//
 
     applyImageWidth: function (width) {
         var me = this;
