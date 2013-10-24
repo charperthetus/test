@@ -8,8 +8,6 @@ Ext.define('Savanna.image.view.ImageComponent', {
         'Savanna.image.view.part.ImageViewer'
     ],
 
-    controller : 'Savanna.image.controller.ImageController',
-
     layout: {
         type: 'vbox'
     },
@@ -17,7 +15,7 @@ Ext.define('Savanna.image.view.ImageComponent', {
     overview: null,
 
     initComponent: function() {
-        this.setImageUri('SolrJdbc%252FImage%252Fc6649d14-8e31-4e82-9ca3-e94e45f422ed'); //TODO: Don't fake this.
+        this.setImageUri('SolrJdbc%2FImage%2F61b06128-361a-419a-a316-cb6460a94053'); //TODO: Don't fake this.
         this.width = '100%';
         this.height = '100%';
         this.callParent(arguments);
@@ -32,7 +30,7 @@ Ext.define('Savanna.image.view.ImageComponent', {
                 itemId: 'imageViewer',
                 flex:1,
                 width: '100%',
-                src: SavannaConfig.documentUrl + imageUri + '/original'  //c2devsav uri
+                src: SavannaConfig.documentUrl + imageUri + '/original'
             }
         ]
     }
