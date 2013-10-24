@@ -37,7 +37,7 @@ Ext.define('Savanna.components.autoComplete.AutoComplete', {
         afterrender: function() {
             if (this.getTagValues()) {
                 for (var i = 0; i < this.getTagValues().length; i++) {
-                    this.addTerm(this.getTagValues()[i]);
+                    this.addTag(this.getTagValues()[i]);
                 }
             }
         }
@@ -95,10 +95,10 @@ Ext.define('Savanna.components.autoComplete.AutoComplete', {
         ];
     },
 
-    addTerm: function (tag) {
-        if (this.queryById('term_' + tag.replace(/[\s'"]/g, "_")) === null) {
+    addTag: function (tag) {
+        if (this.queryById('tag_' + tag.replace(/[\s'"]/g, "_")) === null) {
             var newTag = Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineTerm', {
-                itemId: 'term_' + tag.replace(/[\s'"]/g, "_")
+                itemId: 'tag_' + tag.replace(/[\s'"]/g, "_")
             });
 
             newTag.setTerm(tag);

@@ -6,11 +6,11 @@
  * To change this template use File | Settings | File Templates.
  */
 
-Ext.define('Savanna.itemView.controller.EditHeaderController', {
+Ext.define('Savanna.itemView.controller.EditQualitiesController', {
     extend: 'Deft.mvc.ViewController',
 
     views: [
-        'Savanna.itemView.view.header.EditHeader'
+        'Savanna.itemView.view.itemQualities.EditItemQualities'
     ],
 
     control: {
@@ -20,17 +20,17 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
     },
 
     // NOTE: Properties have certain form elements based on what "type" they are.
-    addProp: function (propName, construct) {
+    addProp: function (propName, propData, aView) {
         if (!this.getView().queryById('prop_' + propName.replace(/[\s']/g, "_"))) {
 
-            var qualityType = construct.config.store.getAt(0).data.type,
+            var qualityType = propData.type,
                 closeButton = Ext.create('Ext.button.Button', { text: '(X)' }),
                 picker = Ext.create('Ext.button.Button', {text: 'Chooser' }),
-                formControls = [],  
-                
+                formControls = [],
+
                 newProp = Ext.create('Savanna.components.autoComplete.AutoComplete', {
                     itemId: 'prop_' + propName.replace(/[\s']/g, "_"),
-                    propData: construct.config.store.getAt(0).data,
+                    propData: propData,
                     showTags: true,
                     preLabel: propName,
                     hasControls: true,

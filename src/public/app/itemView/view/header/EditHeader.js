@@ -11,6 +11,13 @@ Ext.define('Savanna.itemView.view.header.EditHeader', {
 
     alias: 'widget.itemview_edit_header',
 
+    controller: 'Savanna.itemView.controller.EditHeaderController',
+
+    requires: [
+        'Savanna.itemView.controller.EditHeaderController',
+        'Savanna.itemView.view.header.AddIntendedUses'
+    ],
+
     cls: 'itemview',
 
     layout: 'vbox',
@@ -29,6 +36,7 @@ Ext.define('Savanna.itemView.view.header.EditHeader', {
         {
             xtype: 'auto_complete',
             labelType: 'Click to add an Alias',
+            itemId: 'addAliasBox',
             showTags: true,
             hasNoStore: true
         },
@@ -46,6 +54,7 @@ Ext.define('Savanna.itemView.view.header.EditHeader', {
                     xtype: 'auto_complete',
                     labelType: 'Click to add an Intended Use',
                     showTags: true,
+                    itemId: 'addIntendedUseBox',
                     store: Ext.create('Ext.data.Store', {
                         fields: ['photo', 'title', 'description', 'isFeatured', 'value', 'abbr'],
 
@@ -134,14 +143,16 @@ Ext.define('Savanna.itemView.view.header.EditHeader', {
         {
             xtype: 'container',
             layout: 'hbox',
-            margin: "0 0 0 -10",
+            margin: "0 0 0 -11",
             items: [
                 {
                     xtype: 'button',
+                    itemId: 'parentBtn',
                     text: 'Parent Class'
                 },
                 {
                     xtype: 'button',
+                    itemId: 'parentChooser',
                     text: "Chooser"
                 }
             ]

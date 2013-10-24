@@ -5,22 +5,23 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
 
     cls: 'itemview',
 
-    require: [
+    requires: [
         'Ext.grid.Panel',
         'Savanna.itemView.controller.ItemViewController',
         'Savanna.itemView.view.header.ViewHeader',
         'Savanna.itemView.view.header.EditHeader',
         'Savanna.itemView.view.itemQualities.EditItemQualities',
         'Savanna.itemView.view.itemQualities.EditItemQualities',
-        'Savanna.itemView.view.header.DisplayLabelView',
-        'Savanna.itemView.view.relatedProcesses.ViewRelatedProcesses',
+        'Savanna.itemView.view.header.DisplayLabel',
+        'Savanna.itemView.view.relatedProcesses.RelatedProcesses',
         'Savanna.itemView.view.relatedItems.ViewRelatedItems',
         'Savanna.itemView.view.relatedItems.EditRelatedItems',
         'Savanna.itemView.view.itemQualities.ViewItemQualities',
         'Savanna.itemView.view.itemQualities.EditItemQualities',
         'Savanna.itemView.view.imageBrowser.ImagesGrid',
         'Savanna.components.autoComplete.AutoComplete',
-        'Savanna.itemView.view.imageBrowser.ImageThumbnail'
+        'Savanna.itemView.view.imageBrowser.ImageThumbnail',
+        'Savanna.itemView.view.workflow.WorkflowSelect'
     ],
 
     layout: 'card',
