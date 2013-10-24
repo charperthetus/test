@@ -32,8 +32,10 @@ Ext.define('Savanna.itemView.controller.AutoCompleteController', {
     handleAutoCompleteTextKeyUp: function (field, evt) {
         if (evt.keyCode === Ext.EventObject.ENTER) {
             if (field.getValue().trim().length) {
-                field.findParentByType('auto_complete_with_tags').addTerm(field.getValue());
-                field.reset();
+                if (field.store.data.items.length > 0 || this.getView().attachedStore == null) {
+                    field.findParentByType('auto_complete_with_tags').addTerm(field.getValue());
+                    field.reset();
+                }
             }
         }
     }

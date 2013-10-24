@@ -161,11 +161,8 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
 
     createDalFacets: function (id) {
 
-        //big freeking todo
-        return;
 
         var dalRecord = this.store.getById(id),
-            descriptions = dalRecord.get('facetDescriptions'),
             facets = this.queryById('resultsfacets').queryById('tab_' + id),
             me = this;
 
@@ -175,41 +172,32 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
 
         Ext.each(this.findParentByType('model_search_resultscomponent').allResultSets, function (resultset) {
             if (resultset.id === id) {
-                if (descriptions.length > 0) {
+                var facetData = resultset.store.facetValueSummaries;
+                var len = facetData.length;
 
-                    /*
-                     loop through the facetDescriptions for each set of results to determine which facets
-                     should be rendered when the user selects that DAL's results, and add them to the
-                     corresponding tab in the facets tabpanel.
+                for (var i = 0; i < len; i++) {
+                    var facetElement;
 
-                     raw array loop for better performance
-                     */
-
-                    var len = descriptions.length;
-
-                    for (var i = 0; i < len; i++) {
-                        var facetElement;
-
-                        facetElement = me.createFacet(descriptions[i], resultset, dalRecord);
-                        if (facetElement) {
-                            facets.add(facetElement);
-                        }
+                    facetElement = me.createFacet(facetData[i], resultset, dalRecord);
+                    if (facetElement) {
+                        facets.add(facetElement);
                     }
                 }
             }
+
         });
     },
 
     createFacet: function (facet, results, dalRecord) {
-        var hasValues = results.store.facetValueSummaries[facet.facetId].facetValues.length;
-        var isStringFacet = (facet.facetDataType === 'STRING'),
-            createdFacet;
+        var hasValues = facet.facetValues.length;
+        var isStringFacet = (facet.facetType === 'string');
+        var createdFacet;
         if (!isStringFacet || (isStringFacet && hasValues)) {
             createdFacet = Ext.create('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacet', {
                 facet: facet,
                 searchResults: results,
                 dal: dalRecord,
-                itemId: 'facet_' + dalRecord.get('id') + '_' + facet.facetId
+                itemId: 'facet_' + dalRecord.get('id') + '_' + facet.key
             });
         }
         return createdFacet;
