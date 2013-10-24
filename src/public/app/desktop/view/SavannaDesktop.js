@@ -48,7 +48,7 @@ Ext.define('Savanna.desktop.view.SavannaDesktop', {
                 cls:'modelSearchButtonFramework',
                 ui:'brand-header',
                 scale: 'medium',
-                text:   'Model Search'
+                text: 'Model Search'
             }]
         },
         {
