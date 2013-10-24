@@ -10,8 +10,7 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
     extend: 'Deft.mvc.ViewController',
 
     views: [
-        'Savanna.itemView.view.header.EditHeader',
-        'Savanna.itemView.view.header.AddIntendedUses'
+        'Savanna.itemView.view.header.EditHeader'
     ],
 
     control: {
