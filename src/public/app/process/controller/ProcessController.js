@@ -11,10 +11,11 @@ Ext.define('Savanna.process.controller.ProcessController', {
     requires: [
         'Savanna.process.utils.ViewTemplates'
     ],
-    inject: [ 'application' ], //todo: inject Process store and use it to load process data
+    inject: [ 'application', 'processStore' ], //todo: inject Process store and use it to load process data
 
     config: {
-        application: null
+        application: null,
+        processStore: null
     },
 
     control: {
@@ -62,8 +63,6 @@ Ext.define('Savanna.process.controller.ProcessController', {
     },
 
     init: function() {
-        //you can get the application object here by using this.getApplication() now that it has been injected...
-
         //todo: diagram initialization here: setup for checking for a "dirty" process component
 
         return this.callParent(arguments);
@@ -88,14 +87,16 @@ Ext.define('Savanna.process.controller.ProcessController', {
         this.toggleExpanded(false);
     },
     loadJSONClick: function() {
-        var canvas = this.getCanvas();
-        var metadata = this.getMetadata();
-        this.load(canvas.diagram, metadata.down('#JSONtextarea'));
+        var diagram = this.getCanvas().diagram;
+        var textarea = this.getMetadata().down('#JSONtextarea');
+
+        var str = textarea.value;
+        diagram.model = go.Model.fromJson(str);
+        diagram.undoManager.isEnabled = true;
     },
     saveJSONClick: function() {
-        var canvas = this.getCanvas();
         var metadata = this.getMetadata();
-        this.showDiagramJSON(canvas.diagram, metadata.down('#JSONtextarea'));
+        this.showDiagramJSON(this.getCanvas().diagram, metadata.down('#JSONtextarea'));
     },
     clearJSONClick: function() {
         var metadata = this.getMetadata();
@@ -109,10 +110,12 @@ Ext.define('Savanna.process.controller.ProcessController', {
         textarea.setValue(str);
     },
 
-    load: function(diagram, textarea) {
-       var str = textarea.value;
-       diagram.model = go.Model.fromJson(str);
-       diagram.undoManager.isEnabled = true;
+    load: function(diagram, rec) {
+        diagram.model = go.GraphObject.make(go.GraphLinksModel, {
+            nodeDataArray: rec.get('nodeDataArray'),
+            linkDataArray: rec.get('linkDataArray')
+        });
+        diagram.undoManager.isEnabled = true;
     },
 
     clear: function(diagram, textarea) {
@@ -196,19 +199,23 @@ Ext.define('Savanna.process.controller.ProcessController', {
     },
 
     loadInitialJSON: function () {
-        var diagram = this.getCanvas().diagram;
+        var me = this;
         var metadata = this.getMetadata();
-        var textarea = metadata.down('#JSONtextarea');
 
-        Ext.Ajax.request({
-            url:SavannaConfig.ureaProcessDataUrl,
-            success : function(response) {
-                var bytes = response.responseText;
-                diagram.model = go.Model.fromJson(bytes);
-                textarea.setValue(bytes);
-                diagram.undoManager.isEnabled = true;
+        me.loadJSON(function(rec) {
+            me.load(me.getCanvas().diagram, rec);
+            me.showDiagramJSON(me.getCanvas().diagram, metadata.down('#JSONtextarea'));
+        });
+    },
+
+    loadJSON: function (callbackFunc) {
+        var store = this.getProcessStore();
+        this.getProcessStore().load({
+            callback: function() {
+                if (callbackFunc) {
+                    callbackFunc(store.first());
+                }
             }
         });
     }
-
 });

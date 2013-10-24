@@ -32,6 +32,8 @@ Ext.define('Savanna.itemView.view.imageBrowser.ImagesGrid', {
         height: 100,
         margin: 10,
         overflowX: 'auto',
+        
+        // Controls and gallery
         items: [{
             xtype: 'button',
             itemId: 'navLeft',

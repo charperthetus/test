@@ -52,7 +52,8 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
             ui:'basic',
             menu: [
                 {
-                    text: 'New Item...'
+                    text: 'New Item...',
+                    itemId:'newItemButton'
                 },
                 {
                     text: 'Delete'
@@ -106,6 +107,8 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
         this.tabBar.hide();
         this.componentLayout.childrenChanged = true;
         this.doComponentLayout();
+
+
     },
 
     buildItems: function() {
@@ -158,7 +161,10 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                     {
                         xtype: 'panel',
                         flex: 1,
-                        items: [
+                        items: [                            
+                            {
+                                xtype: 'itemview_imagesgrid',
+                            },
                             {
                                 xtype: 'itemview_view_qualities',
                                 itemId: 'itemViewPropertiesView',

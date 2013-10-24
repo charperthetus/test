@@ -41,6 +41,7 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
 
     init: function() {
         Savanna.app.on('search:itemselected', this.showItemView, this);
+        Savanna.app.on('itemview:createitem', this.createItem, this);
         return this.callParent(arguments);
     },
 
@@ -122,17 +123,19 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
         }
     },
 
-    createItem: function(tabpanel) {
-        var panel = Ext.create('Ext.panel.Panel', {
-            title: 'Untitled Item',
+    createItem: function() {
+
+        var itemView = Ext.create('Savanna.itemView.view.ItemViewer', {
+            title: 'Model Item',
+            itemUri: 'x012f931fec769ca941e8de4f7a674bec2a290937%2FItem',
+            editMode: true,
             closable: true,
+            autoScroll: true,
             tabConfig: {
                 ui: 'dark'
             }
         });
-        var tab = tabpanel.add(panel);
-        tabpanel.doLayout();
-        tabpanel.setActiveTab(tab);
+        Savanna.app.fireEvent('search:itemSelected', itemView);
     },
 
     createProcess: function(tabpanel) {
@@ -155,7 +158,7 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
             //itemURI: 'SolrJdbc%252FRich%252F061aedc6-d88c-497e-81dc-77d809b3262c',
             //itemURI: 'SolrJdbc%252FRich%252Fca1035f5-8ede-4415-ab75-e58956121819',
             //itemURI: 'SolrJdbc%252FRich%252F2fa25cdf-9aab-471f-85b6-5359c0cd0dfd',
-            itemURI: 'SolrJdbc%252FRich%252F741881a6-5bcb-4680-ab07-69e4dc845849',
+            itemURI: 'SolrJdbc%252FText%252F9d62ad60-f453-4215-b8bc-c4c1398b84a4',
             closable: true,
             tabConfig: {
                 ui: 'dark'

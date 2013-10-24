@@ -17,6 +17,9 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     control: {
         editModeButton: {
             click: 'toggleEditMode'
+        },
+        newItemButton:  {
+            click: 'onNewItemClick'
         }
     },
 
@@ -128,9 +131,12 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
             });
 
             /*
-             Related Items View
+            are we creating a new item?
              */
-            //ToDo: do what needs to be done for edit version of related items
+            if(me.getView().getEditMode())  {
+                me.getView().setActiveTab(1);
+                me.getView().queryById('editModeButton').setText('View');
+            }
 
         } else {
             /*
@@ -140,6 +146,10 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
                 msg: 'No record return for item URI.'
             })
         }
+    },
+
+    onNewItemClick: function(btn)  {
+        Savanna.app.fireEvent('itemview:createitem', btn);
     },
 
     onRelatedItemClick: function (grid, record, item, index, e, eOpts) {
