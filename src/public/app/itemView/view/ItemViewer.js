@@ -20,7 +20,8 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
         'Savanna.itemView.view.itemQualities.EditItemQualities',
         'Savanna.itemView.view.imageBrowser.ImagesGrid',
         'Savanna.components.autoComplete.AutoComplete',
-        'Savanna.itemView.view.imageBrowser.ImageThumbnail'
+        'Savanna.itemView.view.imageBrowser.ImageThumbnail',
+        'Savanna.itemView.view.workflow.WorkflowSelect'
     ],
 
     layout: 'card',
