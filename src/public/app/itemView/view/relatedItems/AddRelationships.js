@@ -35,7 +35,7 @@ Ext.define('Savanna.itemView.view.relatedItems.AddRelationships', {
             text: 'OK'
         },
         {
-            text: 'cancel'
+            text: 'CANCEL'
         }
     ],
 

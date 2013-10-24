@@ -164,7 +164,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
             are we creating a new item?
              */
             if(me.getView().getEditMode())  {
-                me.getView().setActiveTab(1);
+                me.getView().getLayout().setActiveItem(1);
             }
 
         } else {
@@ -182,7 +182,10 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     },
 
     onWorkflowSelect:function() {
-       console.log('workflow selected');
+        Ext.create('Savanna.itemView.view.workflow.WorkflowSelect', {
+            width: 500,
+            height: 425
+        });
     },
 
     onSearchSelect:function() {

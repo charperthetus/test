@@ -22,6 +22,9 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
         },
         parentChooser: {
             click: 'openParentChooser'
+        },
+        intendedUseChooserBtn: {
+            click: 'onIntendedUsesSelect'
         }
     },
 
@@ -48,5 +51,12 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
     openParentChooser: function() {
         //ToDo: build and connect the chooser
         console.log('open a chooser for a parent here');
+    },
+
+    onIntendedUsesSelect:function() {
+        Ext.create('Savanna.itemView.view.header.AddIntendedUses', {
+            width: 400,
+            height: 300
+        });
     }
 });

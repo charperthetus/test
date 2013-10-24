@@ -11,9 +11,12 @@ Ext.define('Savanna.itemView.view.header.EditHeader', {
 
     alias: 'widget.itemview_edit_header',
 
-    require: ['Savanna.itemView.controller.EditHeaderController'],
-
     controller: 'Savanna.itemView.controller.EditHeaderController',
+
+    requires: [
+        'Savanna.itemView.controller.EditHeaderController',
+        'Savanna.itemView.view.header.AddIntendedUses'
+    ],
 
     cls: 'itemview',
 
