@@ -21,7 +21,7 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
 
     // NOTE: Properties have certain form elements based on what "type" they are.
     addProp: function (propName, construct) {
-        if (this.getView().queryById('prop_' + propName.replace(/[\s']/g, "_")) === null) {
+        if (!this.getView().queryById('prop_' + propName.replace(/[\s']/g, "_"))) {
 
             var qualityType = construct.config.store.getAt(0).data.type,
                 closeButton = Ext.create('Ext.button.Button', { text: '(X)' }),
