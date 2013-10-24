@@ -43,56 +43,6 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
         ]
     }],
 
-    tbar:{
-        ui:'item-view',
-        items:[
-        {
-            xtype: 'button',
-            text: 'Options',
-            ui:'basic',
-            menu: [
-                {
-                    text: 'New Item...',
-                    itemId:'newItemButton'
-                },
-                {
-                    text: 'Delete'
-                },
-                {
-                    xtype: 'menuseparator'
-                },
-                {
-                    text: 'Workflow'
-                },
-                {
-                    xtype: 'menuseparator'
-                },
-                {
-                    text: 'Search Intell'
-                },
-                {
-                    xtype: 'menuseparator'
-                },
-                {
-                    text: 'Relationship Picker',
-                    handler: function(){
-                        Ext.create('Savanna.itemView.view.relatedItems.AddRelationships', {
-                            width: 400,
-                            height: 300
-                        });
-                    }
-                }
-            ]
-        },
-        '->',
-        {
-            xtype: 'button',
-            itemId: 'editModeButton',
-            text: 'Edit'
-        }
-        ]
-    },
-
 
     constructor: function(configs) {
         this.initConfig(configs);  //initializes configs passed in constructor
@@ -121,6 +71,53 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                 },
                 overflowY: 'auto',
                 autoScroll: true,
+                tbar:{
+                    ui:'item-view',
+                    items:[
+                        {
+                            xtype: 'button',
+                            text: 'Options',
+                            ui:'basic',
+                            menu: [
+                                {
+                                    text: 'New Item...',
+                                    itemId:'newItemButton'
+                                },
+                                {
+                                    text: 'Delete',
+                                    itemId:'deleteItemButton'
+                                },
+                                {
+                                    xtype: 'menuseparator'
+                                },
+                                {
+                                    text: 'Workflow',
+                                    itemId:'workflowButton'
+                                },
+                                {
+                                    xtype: 'menuseparator'
+                                },
+                                {
+                                    text: 'Search Intell',
+                                    itemId:'searchButton'
+                                },
+                                {
+                                    xtype: 'menuseparator'
+                                },
+                                {
+                                    text: 'Relationship Picker',
+                                    itemId:'relationshipButton'
+                                }
+                            ]
+                        },
+                        '->',
+                        {
+                            xtype: 'button',
+                            itemId: 'editModeButton',
+                            text: 'Edit'
+                        }
+                    ]
+                },
                 items:  [
                     {
                         xtype: 'panel',
@@ -186,6 +183,68 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                 },
                 overflowY: 'auto',
                 autoScroll: true,
+                tbar:{
+                    ui:'item-view',
+                    items:[
+                        {
+                            xtype: 'button',
+                            text: 'Options',
+                            ui:'basic',
+                            menu: [
+                                {
+                                    text: 'New Item...',
+                                    itemId:'newItemButton'
+                                },
+                                {
+                                    text: 'Delete',
+                                    itemId:'deleteItemButton'
+                                },
+                                {
+                                    xtype: 'menuseparator'
+                                },
+                                {
+                                    text: 'Workflow',
+                                    itemId:'workflowButton'
+                                },
+                                {
+                                    xtype: 'menuseparator'
+                                },
+                                {
+                                    text: 'Search Intell',
+                                    itemId:'searchButton'
+                                },
+                                {
+                                    xtype: 'menuseparator'
+                                },
+                                {
+                                    text: 'Relationship Picker',
+                                    itemId:'relationshipButton'
+                                }
+                            ]
+                        },
+                        '->',
+                        {
+                            xtype: 'button',
+                            itemId: 'editCancelButton',
+                            text: 'Discard Changes'
+                        },
+                        {
+                            xtype: 'button',
+                            itemId: 'editDeleteButton',
+                            text: 'Delete'
+                        },
+                        {
+                            xtype: 'button',
+                            itemId: 'editSaveButton',
+                            text: 'Save'
+                        },
+                        {
+                            xtype: 'button',
+                            itemId: 'editDoneButton',
+                            text: 'Done'
+                        }
+                    ]
+                },
                 items:  [
                     {
                         xtype: 'panel',

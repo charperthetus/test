@@ -6,7 +6,8 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     ],
 
     requires: [
-        'Savanna.itemView.store.MainItemStore'
+        'Savanna.itemView.store.MainItemStore',
+        'Savanna.itemView.view.relatedItems.AddRelationships'
     ],
 
     store: 'Savanna.itemView.store.MainItemStore',
@@ -18,10 +19,35 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         editModeButton: {
             click: 'toggleEditMode'
         },
+        editCancelButton: {
+            click: 'onEditCancel'
+        },
+        editDeleteButton: {
+            click: 'onEditDelete'
+        },
+        editSaveButton: {
+            click: 'onEditSave'
+        },
+        editDoneButton: {
+            click: 'onEditDone'
+        },
         newItemButton:  {
             click: 'onNewItemClick'
+        },
+        deleteItemButton:  {
+            click: 'onEditDelete'
+        },
+        workflowButton:  {
+            click: 'onWorkflowSelect'
+        },
+        searchButton:  {
+            click: 'onSearchSelect'
+        },
+        relationshipButton:  {
+            click: 'onRelationshipSelect'
         }
     },
+
 
     constructor: function (options) {
         this.opts = options || {};
@@ -37,12 +63,28 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     toggleEditMode: function (btn) {
         if (!this.getView().getEditMode()) {
             this.getView().setActiveTab(1);
-            btn.setText('View');
         } else {
             this.getView().setActiveTab(0);
-            btn.setText('Edit');
         }
 
+        this.getView().setEditMode(!this.getView().getEditMode());
+    },
+
+    onEditCancel:function() {
+        this.getView().setActiveTab(0);
+        this.getView().setEditMode(!this.getView().getEditMode());
+    },
+
+    onEditDelete:function() {
+       console.log('delete item method');
+    },
+
+    onEditSave:function() {
+        console.log('save item method');
+    },
+
+    onEditDone:function() {
+        this.getView().setActiveTab(0);
         this.getView().setEditMode(!this.getView().getEditMode());
     },
 
@@ -135,7 +177,6 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
              */
             if(me.getView().getEditMode())  {
                 me.getView().setActiveTab(1);
-                me.getView().queryById('editModeButton').setText('View');
             }
 
         } else {
@@ -150,6 +191,21 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
     onNewItemClick: function(btn)  {
         Savanna.app.fireEvent('itemview:createitem', btn);
+    },
+
+    onWorkflowSelect:function() {
+       console.log('workflow selected');
+    },
+
+    onSearchSelect:function() {
+        console.log('search selected');
+    },
+
+    onRelationshipSelect:function() {
+        Ext.create('Savanna.itemView.view.relatedItems.AddRelationships', {
+            width: 400,
+            height: 300
+        });
     },
 
     onRelatedItemClick: function (grid, record, item, index, e, eOpts) {
