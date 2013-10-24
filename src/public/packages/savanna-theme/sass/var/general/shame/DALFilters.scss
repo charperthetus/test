@@ -61,12 +61,15 @@ $dal-panel-padding-text: $dal-panel-padding + 90px;
 			color: $thetus-blue;
 		}
 	}
-	.#{$prefix}container{ margin-top: 15px; }
+	// .#{$prefix}container{ margin-top: 15px; }
 }
 .#{$prefix}box-item.search-dal {
- 	padding: 0;
- 	border-top: 1px solid $dark-gray;
-
+ 	padding: 0 0 20px 0;
+ 	border-top: 1px solid #ccc;
+	
+	.#{$prefix}form-cb-label-after{
+		margin-right: 15px;
+	}
  	// &:hover {
  	// 	background-color: $dal-hover-background-color;
 
@@ -80,6 +83,6 @@ $dal-panel-padding-text: $dal-panel-padding + 90px;
  	// 	}
  	// }
 }
-.#{$prefix}tabpanel-child.search-dal {
-	padding: 10px 0 10px; 
-}
+// .#{$prefix}tabpanel-child.search-dal {
+// 	padding: 10px 0 10px; 
+// }

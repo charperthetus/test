@@ -16,4 +16,26 @@
         $uikit-body-color: $medium-gray,
         $uikit-body-background-color: $medium-gray
     );
+    
+    @include uikit-panel(
+        $uikit-ui: 'search-dal-group',
+        $uikit-header-color: $panel-searchoption-header-color,
+	    $uikit-header-font-weight: $panel-searchoption-header-font-weight,
+	    $uikit-header-line-height: $panel-searchoption-header-line-height,
+	    $uikit-header-background-color: $panel-searchoption-header-background-color,
+	    $uikit-header-text-padding: $panel-searchoption-header-text-padding,
+	    $uikit-header-text-transform: $panel-searchoption-header-text-transform,
+	    $uikit-header-padding: $panel-searchoption-header-padding,
+	    $uikit-header-icon-width: $panel-searchoption-header-icon-width,
+	    $uikit-header-icon-height: $panel-searchoption-header-icon-height,
+	    $uikit-header-icon-spacing: $panel-searchoption-header-icon-spacing,
+	    
+	    $uikit-body-padding: $panel-searchoption-body-padding,
+	    $uikit-body-border-color: $panel-searchoption-body-border-color,
+	    $uikit-tool-background-image: 'tools/tool-sprites-black'
+    );
+	
+	.#{$prefix}panel-body-search-dal-group{
+		text-align: right;
+	}
 }

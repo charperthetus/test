@@ -13,7 +13,6 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.searchDals.SearchOpti
     itemId: 'dalSearchOptions',
 
     cls: 'search-dal',
-
     items: [],
 
     initComponent: function() {
