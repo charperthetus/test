@@ -63,15 +63,15 @@ Ext.define('Savanna.metadata.view.Details', {
         }
     },
 
-//    updateItemURI: function(newURI, oldURI) {
-////        if(undefined != oldURI ) { // don't want to do this on init
-//            me.removeAll();
-//            var metadataStore = Ext.data.StoreManager.lookup('metadata');
-//            metadataStore.itemURI = config.itemURI;
-//            metadataStore.load();
-////        }
-//
-//    },
+    updateItemURI: function(newURI, oldURI) {
+        if(undefined != oldURI ) { // don't want to do this on init
+            this.removeAll();
+        }
+        var metadataStore = Ext.data.StoreManager.lookup('metadata');
+        metadataStore.itemURI = newURI;
+        metadataStore.load();
+
+    },
 
     initComponent: function () {
         this.mixins.storeable.initStore.call(this);

@@ -8,9 +8,6 @@
 Ext.define('Savanna.process.controller.PaletteController', {
     extend: 'Deft.mvc.ViewController',
 
-
-    inject: [ 'application' ],
-
     config: {
         application: null
     },
@@ -31,7 +28,7 @@ Ext.define('Savanna.process.controller.PaletteController', {
     },
 
     onItemSearchClick: function() {
-        this.getApplication().fireEvent('initModelSearch');
+        Savanna.app.fireEvent('initModelSearch');
     },
 
     onActionTextChange: function(field, newValue) {

@@ -10,10 +10,6 @@ Ext.define('Savanna.metadata.view.DateList', {
     extend: 'Savanna.metadata.view.MetadataItemView',
     alias: 'widget.metadata_datelist',
 
-    requires: [
-        'Savanna.controller.Factory'
-    ],
-
     items: [
     ],
 

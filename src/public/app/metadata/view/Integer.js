@@ -10,10 +10,6 @@ Ext.define('Savanna.metadata.view.Integer', {
     extend: 'Savanna.metadata.view.MetadataItemView',
     alias: 'widget.metadata_integer',
 
-    requires: [
-        'Savanna.controller.Factory'
-    ],
-
     items: [
     ],
 
