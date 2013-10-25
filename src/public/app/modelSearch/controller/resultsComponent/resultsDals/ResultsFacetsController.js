@@ -18,7 +18,7 @@ Ext.define('Savanna.modelSearch.controller.resultsComponent.resultsDals.ResultsF
 
 
         onHideShowFacetsClick: function (btn) {
-            Ext.each(btn.up('#resultsfacets').getActiveTab().query('panel[cls=results-facet]'), function (facet) {
+            Ext.each(btn.up('#resultsfacets').query('panel[cls=results-facet]'), function (facet) {
                 if (facet) {
                     if (!btn.facetsExpanded) {
                         btn.setText('Hide All');

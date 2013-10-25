@@ -22,14 +22,14 @@ Ext.define('Savanna.modelSearch.controller.resultsComponent.ResultsPanelToolbarC
     },
 
     onMultiColumnGridViewClicked: function (button) {
-        this.onViewBtnClick();
-        this.getView().fireEvent("search:multiColumnGridView", button );
+        this.onViewBtnClick(button);
+        this.getView().fireEvent("search:multiColumnGridView", button);
         this.getSingleColumnGridView().pressed = false;
     },
 
     onSingleColumnGridViewClicked: function (button) {
-        this.onViewBtnClick();
-        this.getView().fireEvent("search:singleColumnGridView", button );
+        this.onViewBtnClick(button);
+        this.getView().fireEvent("search:singleColumnGridView", button);
         this.getMultiColumnGridView().pressed = false;
     },
 
@@ -48,7 +48,7 @@ Ext.define('Savanna.modelSearch.controller.resultsComponent.ResultsPanelToolbarC
         return this.callParent(arguments);
     },
 
-    onViewBtnClick:function()  {
+    onViewBtnClick: function (btn) {
         this.getView().queryById('singleColumnGridView').toggle();
         this.getView().queryById('multiColumnGridView').toggle();
     }

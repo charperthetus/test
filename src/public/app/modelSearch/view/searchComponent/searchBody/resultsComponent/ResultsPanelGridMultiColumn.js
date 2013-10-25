@@ -51,7 +51,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
                 if( isNaN(dateValue.getTime() ) ){
                     return "--";
                 }
-                return Ext.Date.format(dateValue, 'F d, Y');
+                return Ext.Date.format(dateValue, 'd M Y').toUpperCase();
 
             }
 
@@ -87,7 +87,8 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
                 metadataArray.push(record.get('uri'));
             });
 
-            controller.getDocumentMetadata(component.currentResultSet, metadataArray);
+            //We don't need metadata in this release.  Uncomment to get some...
+            //controller.getDocumentMetadata(component.currentResultSet, metadataArray);
         }
     }
 });
