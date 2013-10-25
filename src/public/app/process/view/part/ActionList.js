@@ -15,16 +15,18 @@
 Ext.define('Savanna.process.view.part.ActionList', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.process_actionlist',
+    requires: [
+        'Savanna.process.store.ProcessActionStore'
+    ],
 
-    inject: ['processActionStore'],
-
-    config: {
-        processActionStore: null
+    store: 'Savanna.process.store.ProcessActionStore',
+    mixins: {
+        storeable: 'Savanna.mixin.Storeable'
     },
 
     viewConfig: {
         plugins: {
-            dragGroup: 'PalleteActionDrag',
+            dragGroup: 'RNRM-ITEMS',
             dropGroup: 'RNRM-ITEMS',
             ptype: 'gridviewdragdrop',
             enableDrop: true,
@@ -53,7 +55,7 @@ Ext.define('Savanna.process.view.part.ActionList', {
     ],
 
     initComponent: function() {
-        this.store = this.getProcessActionStore();
+        this.mixins.storeable.initStore.call(this);
         this.callParent(arguments);
     }
 });
