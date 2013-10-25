@@ -30,14 +30,6 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
         );
     },
 
-    makeLinkGadget: function () {
-
-        return go.GraphObject.make(go.Panel, this.styler().linkGadget().panel,
-            go.GraphObject.make(go.Shape, this.styler().linkGadget().shape
-            )
-        );
-    },
-
     makeStepGadget: function () {
         var gmake = go.GraphObject.make;
         return gmake(go.Panel, go.Panel.Auto, this.styler().stepGadget({"click":Savanna.process.utils.ProcessUtils.addStep}).panel,
@@ -90,7 +82,6 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                 */
                 
                 this.makeTopPort(),
-                this.makeLinkGadget(),
                 this.makeStepGadget(),
                 this.makeDecisionGadget()
             )
@@ -123,7 +114,6 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                 */
       },
                this.makeTopPort(),
-                 this.makeLinkGadget(),
                  this.makeStepGadget(),
                  this.makeDecisionGadget()
              )
@@ -178,7 +168,6 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                 
                 
       },
-                  this.makeLinkGadget(),
                   this.makeStepGadget(),
                   this.makeDecisionGadget()
                                        
@@ -218,7 +207,6 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                     gmake(go.TextBlock,this.styler().diamond().textblock, new go.Binding('text', 'text').makeTwoWay())
                 ),
                 this.makeTopPort(),
-                this.makeLinkGadget(),
                 this.makeStepGadget(),
                 this.makeDecisionGadget()
             )
@@ -548,8 +536,6 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                     gmake(go.Panel, this.styler().processModel().panelPlaceholder)
                 ),  // end Vertical Panel
                 this.makeTopPort(),
-                this.makeLinkGadget(),
-                this.makeStepGadget(),
                 this.makeDecisionGadget()
             )   
         );  // end Group
