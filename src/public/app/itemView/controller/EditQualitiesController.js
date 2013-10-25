@@ -19,7 +19,7 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
         },
         qualitieschooser: {
             live: true,
-            selector: 'container #qualitieschooser',
+            selector: 'auto_complete #qualitieschooser',
             listeners: {
                 click: 'launchChooser'
             }
@@ -28,13 +28,19 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
 
     // NOTE: Properties have certain form elements based on what "type" they are.
     addProp: function (propName, propData, aView) {
+        var me = this;
         if (!this.getView().queryById('prop_' + propName.replace(/[\s']/g, '_'))) {
 
             var qualityType = propData.type,            
                 formControls = [],
+
+                // TODO Refactor this to use Deft events?
                 picker = Ext.create('Ext.button.Button', {
                     text: 'Chooser',
-                    itemId: 'qualitieschooser'
+                    itemId: 'qualitieschooser',
+                    listeners: {
+                        click: me.launchChooser
+                    }
                 }),
                 newProp = Ext.create('Savanna.components.autoComplete.AutoComplete', {
                     itemId: 'prop_' + propName.replace(/[\s']/g, '_'),
@@ -117,16 +123,22 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
                     })
                 });
 
-            // 
+            // Build the control based on the type of quality
             if(qualityType === 'list'){
                 formControls = [picker];
             }
+            // Insert after the input for autocomplete, but before the close button
             newProp.child('container').insert(1, formControls);
             this.getView().add(newProp);
         }
     },
 
-    launchChooser: function() {
-        console.debug(arguments);
+    // TODO: Launch the qualities chooser¡
+    launchChooser: function(button, event, eOpts) {
+        Ext.create('Savanna.itemView.view.header.AddIntendedUses', {
+            width: 400,
+            height: 300,
+            title: button.id
+        });
     }
 });

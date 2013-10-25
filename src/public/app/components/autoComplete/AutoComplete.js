@@ -56,7 +56,7 @@ Ext.define('Savanna.components.autoComplete.AutoComplete', {
 
     buildItems: function() {
         // If autocomplete has additional controls, generate a space to insert them.
-        var closeButton = (this.getIsClosable()) ? Ext.create('Ext.button.Button', { text: 'Close', itemId: 'close' }) : {};
+        var closeButton = (this.getIsClosable()) ? Ext.create('Ext.button.Button', { text: 'Close', itemId: 'closeautocomplete' }) : {};
 
         return [
             {
@@ -91,7 +91,6 @@ Ext.define('Savanna.components.autoComplete.AutoComplete', {
             }
         ];
     },
-
     addTag: function (tag) {
         if (this.queryById('tag_' + tag.replace(/[\s'"]/g, "_")) === null) {
             var newTag = Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineTerm', {
