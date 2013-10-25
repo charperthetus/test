@@ -237,7 +237,7 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         mergeNode.key = Savanna.process.utils.ProcessUtils.getURI(mergeNode.category);
         diagram.model.addNodeData(mergeNode);
 
-        var prevNodeNames = new Array();
+        var prevNodeNames = [];
         var outputNode;
         var iter = diagram.selection.iterator;
         while (iter.next()) {
