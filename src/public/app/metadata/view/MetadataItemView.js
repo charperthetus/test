@@ -67,12 +67,17 @@ Ext.define('Savanna.metadata.view.MetadataItemView', {
 
     makeEditViewItems: function() {
         var me = this;
-        this.add(Ext.create('Ext.form.field.Text', {
+        this.add(Ext.create('Ext.form.field.TextArea', {
             fieldLabel: '',
             itemId: 'displayValueEdit',
             allowBlank: true,
             width: '100%',
-            labelWidth: 200,
+            labelWidth: 180,
+            grow: true,
+            growAppend: '',
+            rows: 0,
+            growMin: 22,
+            growMax: 200,
             listeners: {
                 blur: function(d) {
                     //console.log('Item Blur');
@@ -86,8 +91,8 @@ Ext.define('Savanna.metadata.view.MetadataItemView', {
     makeViewViewItems: function() {
         this.add(Ext.create('Ext.form.Label', {
             itemId: 'displayLabelItem',
-            width: 200,
-            minWidth: 200,
+            width: 180,
+            minWidth: 180,
             height: 25
         }));
         this.add(Ext.create('Ext.form.Label', {

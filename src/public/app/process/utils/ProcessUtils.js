@@ -36,10 +36,25 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         diagram.commandHandler.editTextBlock(node.findObject('TEXT'));
     },
 
-    toggleButtons: function(obj, show) {
-        var panel = obj.findObject('BUTTONS');
-        if (panel) {
-            panel.opacity = show ? 1.0 : 0.0;
+    toggleGadgets: function(obj, show) {
+
+        //always show for selected objects
+        if (obj.isSelected) {
+            show = true;
+        }
+
+        // never show for descendants of an Action Node
+        var parent = obj.findTreeParentNode();
+        if (parent && parent.category == 'InternalGroup') {
+            show = false;
+        }
+
+        var names = ['LinkGadget','StepGadget','DecisionGadget'];
+        for (var i = 0; i < names.length; i++) {
+            var gadget = obj.findObject(names[i]);
+            if (gadget) {
+                gadget.opacity = show ? 1.0 : 0.0;
+            }
         }
     },
 
