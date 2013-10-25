@@ -45,7 +45,7 @@ Ext.define('Savanna.upload.view.part.CurrentUploadsView', {
                     width: '33%',
                     style: 'line-height:40px;'
                 },{
-                   xtype:'tbfill'
+                    xtype:'tbfill'
                 },{
                     xtype: 'button',
                     itemId: 'clearFinishedButton',
@@ -76,12 +76,17 @@ Ext.define('Savanna.upload.view.part.CurrentUploadsView', {
                     hideable: false,
                     width: 80,
                     renderer : function(val) {
-                        if (val > 0) {
-                            return '<span style="color:' + '#73b51e' + '">' + val + '%</span>';
-                        } else if (val < 0) {
-                            return '<span style="color:' + '#cf4c35' + ';">' + val + '%</span>';
+                        if (val === 'completed') {
+                            return '<i class="icon-success">' + '</i>';
+                        } else if (val === 'pending') {
+                            return '<i class="icon-pending">' + '</i>';
+                        } else if (val === 'failed') {
+                            return '<i class="icon-alert">' + '</i>';
+                        } else {
+                            return val;
                         }
-                        return val;
+
+
                     }
 
                 },{

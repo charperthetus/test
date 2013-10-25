@@ -50,6 +50,13 @@
     $border-color: $workspace-header-toolbar-border-color
 );
 
+@include extjs-toolbar-ui(
+    $ui: 'testtoolbar',
+    $background-color: #F2F2F2,
+    $border-width: 1px,
+    $border-color: #999999
+);
+
 /*
 * Logic
 */
