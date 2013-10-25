@@ -10,10 +10,6 @@ Ext.define('Savanna.metadata.view.Boolean', {
     extend: 'Savanna.metadata.view.MetadataItemView',
     alias: 'widget.metadata_boolean',
 
-    requires: [
-        'Savanna.controller.Factory'
-    ],
-
     items: [
     ],
 
@@ -47,7 +43,7 @@ Ext.define('Savanna.metadata.view.Boolean', {
             labelWidth: 180,
             items: [{
                         boxLabel: 'True',
-                        checked: me.value == true,
+                        checked: true == me.value,
                         name: 'radios',
                         listeners: {
                             change: function(d) {
@@ -59,7 +55,7 @@ Ext.define('Savanna.metadata.view.Boolean', {
 
                     }, {
                         boxLabel: 'False',
-                        checked: me.value == false,
+                        checked: false == me.value,
                         name: 'radios',
                         listeners: {
                             change: function(d) {
