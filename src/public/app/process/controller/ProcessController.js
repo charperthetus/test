@@ -10,7 +10,8 @@ Ext.define('Savanna.process.controller.ProcessController', {
 
     requires: [
         'Savanna.process.utils.ProcessUtils',
-        'Savanna.process.utils.ViewTemplates'
+        'Savanna.process.utils.ViewTemplates',
+        'Savanna.process.store.Processes'
     ],
     store: 'Savanna.process.store.Processes',
     mixins: {
