@@ -31,7 +31,7 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
         var me = this;
         if (!this.getView().queryById('prop_' + propName.replace(/[\s']/g, '_'))) {
 
-            var qualityType = propData.type,            
+            var qualityType = propData.type,
                 formControls = [],
 
                 // TODO Refactor this to use Deft events?
@@ -42,6 +42,8 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
                         click: me.launchChooser
                     }
                 }),
+
+                // The new form control
                 newProp = Ext.create('Savanna.components.autoComplete.AutoComplete', {
                     itemId: 'prop_' + propName.replace(/[\s']/g, '_'),
                     propData: propData,
