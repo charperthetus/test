@@ -24,6 +24,7 @@ Ext.define('Savanna.components.autoComplete.AutoComplete', {
         showTags: false,
         hasNoStore: false,
         preLabel: '',
+        isClosable: false,
         hasControls: false
     },
 
@@ -55,11 +56,7 @@ Ext.define('Savanna.components.autoComplete.AutoComplete', {
 
     buildItems: function() {
         // If autocomplete has additional controls, generate a space to insert them.
-        var controlSpace = {};
-
-        if (this.getHasControls()) {
-            controlSpace = { xtype: 'container', flex: 1 };
-        }
+        var closeButton = (this.getIsClosable()) ? Ext.create('Ext.button.Button', { text: 'Close', itemId: 'closeautocomplete' }) : {};
 
         return [
             {
@@ -84,7 +81,7 @@ Ext.define('Savanna.components.autoComplete.AutoComplete', {
                         queryMode: 'remote',
                         anyMatch: true
                     },
-                    controlSpace
+                    closeButton
                 ]
             },
             {
@@ -96,7 +93,6 @@ Ext.define('Savanna.components.autoComplete.AutoComplete', {
             }
         ];
     },
-
     addTag: function (tag) {
         if (this.queryById('tag_' + tag.replace(/[\s'"]/g, "_")) === null) {
             var newTag = Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineTerm', {
@@ -107,7 +103,6 @@ Ext.define('Savanna.components.autoComplete.AutoComplete', {
             this.queryById('tagsList').add(newTag);
         }
     },
-
     removeTag: function (view) {
         var myTag = view.itemId;
         this.queryById('tagsList').remove(myTag);

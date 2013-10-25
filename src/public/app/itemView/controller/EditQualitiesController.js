@@ -16,24 +16,41 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
     control: {
         addPropAutoChooser: {
             'AutoComplete:ItemSelected': 'addProp'
+        },
+        qualitieschooser: {
+            live: true,
+            selector: 'auto_complete #qualitieschooser',
+            listeners: {
+                click: 'launchChooser'
+            }
         }
     },
 
     // NOTE: Properties have certain form elements based on what "type" they are.
     addProp: function (propName, propData, aView) {
-        if (!this.getView().queryById('prop_' + propName.replace(/[\s']/g, "_"))) {
+        var me = this;
+        if (!this.getView().queryById('prop_' + propName.replace(/[\s']/g, '_'))) {
 
-            var qualityType = propData.type,
-                closeButton = Ext.create('Ext.button.Button', { text: '(X)' }),
-                picker = Ext.create('Ext.button.Button', {text: 'Chooser' }),
+            var qualityType = propData.type,            
                 formControls = [],
 
+                // TODO Refactor this to use Deft events?
+                picker = Ext.create('Ext.button.Button', {
+                    text: 'Chooser',
+                    itemId: 'qualitieschooser',
+                    listeners: {
+                        click: me.launchChooser
+                    }
+                }),
                 newProp = Ext.create('Savanna.components.autoComplete.AutoComplete', {
-                    itemId: 'prop_' + propName.replace(/[\s']/g, "_"),
+                    itemId: 'prop_' + propName.replace(/[\s']/g, '_'),
                     propData: propData,
                     showTags: true,
                     preLabel: propName,
                     hasControls: true,
+                    isClosable: true,
+
+                    // TODO: Hook up to live data
                     store: Ext.create('Ext.data.Store', {
                         fields: ['photo', 'title', 'description', 'isFeatured', 'value', 'abbr', 'type'],
 
@@ -106,27 +123,22 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
                     })
                 });
 
-            // Switch over the quality type to add appropriate form controls
-            switch(qualityType){
-                case 'string':
-                    break;
-                case 'list':
-                    console.log(qualityType);
-                    formControls = [picker];
-                    break;
-                case 'boolean':
-                    break;
-                default:
-                    break;
+            // Build the control based on the type of quality
+            if(qualityType === 'list'){
+                formControls = [picker];
             }
-            formControls.push(closeButton);
-            newProp.child('container').add(formControls);
+            // Insert after the input for autocomplete, but before the close button
+            newProp.child('container').insert(1, formControls);
             this.getView().add(newProp);
         }
     },
 
-    removeProp: function (closeButton) {
-        var myProp = this.getView().queryById(closeButton.up('auto_complete').itemId);
-        this.getView().queryById('item_properties').remove(myProp);
+    // TODO: Launch the qualities chooser¡
+    launchChooser: function(button, event, eOpts) {
+        Ext.create('Savanna.itemView.view.header.AddIntendedUses', {
+            width: 400,
+            height: 300,
+            title: button.id
+        });
     }
 });
