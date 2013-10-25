@@ -661,6 +661,13 @@ Ext.define('Savanna.process.utils.Styler', {
                 height: 32,
                 row: 0, column: 1, margin: 0
             },
+            "xline": {
+                fill: null,
+                stroke: palette.black,
+                width: 10,
+                height: 10,
+                row: 0, column: 1, margin: 0
+            },
             "textblock": {
                 font: properties.fontWeight + properties.fontSize + properties.font,
                 stroke: palette.darkText,
