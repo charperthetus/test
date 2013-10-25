@@ -340,7 +340,7 @@
       {
    		  "from":"x00/Start",
    		  "to":"x10/DecisionPoint",
-          "category":"ProcessLink",
+          "category":"ProcessLink"
    	  },
       {
    		  "from":"x10/DecisionPoint",
@@ -573,6 +573,6 @@
    		  "from":"x45/ProcessItem",
    		  "to":"x99/End",
           "category":"ProcessLink"
-   	  },
+   	  }
   ]
 }
