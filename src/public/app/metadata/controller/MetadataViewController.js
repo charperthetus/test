@@ -11,6 +11,7 @@ Ext.define('Savanna.metadata.controller.MetadataViewController', {
     requires: [
         'Savanna.metadata.view.String',
         'Savanna.metadata.view.StringVerticalEdit',
+        'Savanna.metadata.view.Classification',
         'Savanna.metadata.view.Date',
         'Savanna.metadata.view.Uri',
         'Savanna.metadata.view.Integer',
@@ -121,54 +122,62 @@ Ext.define('Savanna.metadata.controller.MetadataViewController', {
 
     getTypeFromName: function(name, key) {
         var typeToAdd = '';
-        switch(name){
-            case 'String':
-                if('docTitle' == key || 'document-description' == key) { // I don't like these special cases, but design insists
+        switch(key) {
+            case 'classification':
+                typeToAdd = 'Savanna.metadata.view.Classification';
+                break;
+        }
+
+        if('' === typeToAdd) {
+            switch(name){
+                case 'String':
+                    if('docTitle' === key || 'document-description' === key) { // I don't like these special cases, but design insists
+                        typeToAdd = 'Savanna.metadata.view.StringVerticalEdit';
+                    } else {
+                        typeToAdd = 'Savanna.metadata.view.String';
+                    }
+                    break;
+                case 'LongString':
                     typeToAdd = 'Savanna.metadata.view.StringVerticalEdit';
-                } else {
-                    typeToAdd = 'Savanna.metadata.view.String';
-                }
-                break;
-            case 'LongString':
-                typeToAdd = 'Savanna.metadata.view.StringVerticalEdit';
-                break;
-            case 'Date':
-                typeToAdd = 'Savanna.metadata.view.Date';
-                break;
-            case 'Uri':
-                typeToAdd = 'Savanna.metadata.view.Uri';
-                break;
-            case 'Integer':
-                typeToAdd = 'Savanna.metadata.view.Integer';
-                break;
-            case 'Boolean':
-                typeToAdd = 'Savanna.metadata.view.Boolean';
-                break;
-            case 'Double':
-                typeToAdd = 'Savanna.metadata.view.Double';
-                break;
-            case 'String_List':
-                typeToAdd = 'Savanna.metadata.view.StringList';
-                break;
-            case 'Boolean_List':
-                typeToAdd = 'Savanna.metadata.view.BooleanList';
-                break;
-            case 'Date_List':
-                typeToAdd = 'Savanna.metadata.view.DateList';
-                break;
-            case 'Integer_List':
-                typeToAdd = 'Savanna.metadata.view.IntegerList';
-                break;
-            case 'Double_List':
-                typeToAdd = 'Savanna.metadata.view.DoubleList';
-                break;
-            case 'Uri_List':
-                typeToAdd = 'Savanna.metadata.view.UriList';
-                break;
-            default:
-                //console.log('Unknown metadata type', name);
-                typeToAdd = '';
-                break;
+                    break;
+                case 'Date':
+                    typeToAdd = 'Savanna.metadata.view.Date';
+                    break;
+                case 'Uri':
+                    typeToAdd = 'Savanna.metadata.view.Uri';
+                    break;
+                case 'Integer':
+                    typeToAdd = 'Savanna.metadata.view.Integer';
+                    break;
+                case 'Boolean':
+                    typeToAdd = 'Savanna.metadata.view.Boolean';
+                    break;
+                case 'Double':
+                    typeToAdd = 'Savanna.metadata.view.Double';
+                    break;
+                case 'String_List':
+                    typeToAdd = 'Savanna.metadata.view.StringList';
+                    break;
+                case 'Boolean_List':
+                    typeToAdd = 'Savanna.metadata.view.BooleanList';
+                    break;
+                case 'Date_List':
+                    typeToAdd = 'Savanna.metadata.view.DateList';
+                    break;
+                case 'Integer_List':
+                    typeToAdd = 'Savanna.metadata.view.IntegerList';
+                    break;
+                case 'Double_List':
+                    typeToAdd = 'Savanna.metadata.view.DoubleList';
+                    break;
+                case 'Uri_List':
+                    typeToAdd = 'Savanna.metadata.view.UriList';
+                    break;
+                default:
+                    //console.log('Unknown metadata type', name);
+                    typeToAdd = '';
+                    break;
+            }
         }
         return typeToAdd;
     },
