@@ -25,12 +25,8 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
 
             var qualityType = propData.type,            
                 formControls = [],
-                closeButton = Ext.create('Ext.button.Button', { 
-                    text: 'Close',
-                     
-                }),
                 picker = Ext.create('Ext.button.Button', {
-                    text: 'Chooser' 
+                    text: 'Chooser'
                 }),
                 newProp = Ext.create('Savanna.components.autoComplete.AutoComplete', {
                     itemId: 'prop_' + propName.replace(/[\s']/g, '_'),
@@ -38,6 +34,7 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
                     showTags: true,
                     preLabel: propName,
                     hasControls: true,
+                    isClosable: true,
 
                     // TODO: Hook up to live data
                     store: Ext.create('Ext.data.Store', {
@@ -124,14 +121,8 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
                 default:
                     break;
             }
-            formControls.push(closeButton);
             newProp.child('container').add(formControls);
             this.getView().add(newProp);
         }
-    },
-
-    removeProp: function (closeButton) {
-        var myProp = this.getView().queryById(closeButton.up('auto_complete').itemId);
-        this.getView().queryById('item_properties').remove(myProp);
     }
 });

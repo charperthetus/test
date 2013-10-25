@@ -24,6 +24,7 @@ Ext.define('Savanna.components.autoComplete.AutoComplete', {
         showTags: false,
         hasNoStore: false,
         preLabel: '',
+        isClosable: false,
         hasControls: false
     },
 
@@ -58,7 +59,12 @@ Ext.define('Savanna.components.autoComplete.AutoComplete', {
         var controlSpace = {};
 
         if (this.getHasControls()) {
-            controlSpace = { xtype: 'container', flex: 1 };
+            controlSpace = Ext.create('Ext.container.Container', { flex: 1 });
+
+            if(this.getIsClosable()) {
+                var closeButton = Ext.create('Ext.button.Button', { text: 'Close' });
+                controlSpace.add(closeButton);
+            }
         }
 
         return [
@@ -105,7 +111,6 @@ Ext.define('Savanna.components.autoComplete.AutoComplete', {
             this.queryById('tagsList').add(newTag);
         }
     },
-
     removeTag: function (view) {
         var myTag = view.itemId;
         this.queryById('tagsList').remove(myTag);

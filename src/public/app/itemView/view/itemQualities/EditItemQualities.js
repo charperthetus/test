@@ -13,7 +13,10 @@ Ext.define('Savanna.itemView.view.itemQualities.EditItemQualities', {
 
     controller: 'Savanna.itemView.controller.EditQualitiesController',
 
-    require: ['Savanna.itemView.controller.EditQualitiesController'],
+    require: [
+        'Savanna.itemView.controller.EditQualitiesController',
+        'Savanna.itemView.view.formControls.CloseButton'
+    ],
 
     layout: 'vbox',
 

@@ -19,10 +19,16 @@ Ext.define('Savanna.components.autoComplete.AutoCompleteController', {
                 }
             }
         },
-
         autoCompleteBox: {
                 keyup: 'handleAutoCompleteTextKeyUp',
                 select: 'handleAutoCompleteSelect'
+        },
+        closebutton: {
+            live: true,
+            selector: 'container button',
+            listeners: {
+                click: 'closeForm'
+            }
         }
     },
 
@@ -42,7 +48,6 @@ Ext.define('Savanna.components.autoComplete.AutoCompleteController', {
             }
         }
     },
-
     handleAutoCompleteSelect: function (combo, records, eOpts) {
         if (this.getView().showTags) {
             combo.findParentByType('auto_complete').addTag(records[0].data.value);
@@ -50,5 +55,8 @@ Ext.define('Savanna.components.autoComplete.AutoCompleteController', {
 
         this.getView().fireEvent('AutoComplete:ItemSelected', records[0].data.value, records[0].data, this.getView());
         combo.setValue("");
+    },
+    closeForm: function(closeButton, event) {
+        this.getView().destroy();
     }
 });
