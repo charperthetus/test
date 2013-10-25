@@ -69,7 +69,7 @@ Ext.define('Savanna.process.utils.Styler', {
             "endColor": "#DC3C00",
             "graygrad": { 0: "rgb(150, 150, 150)", 0.5: "rgb(86, 86, 86)", 1: "rgb(86, 86, 86)" }, 
             "greengrad": { 0: "rgb(150, 150, 150)", 0.5: "rgb(86, 86, 86)", 1: "rgb(86, 86, 86)" }, 
-            "redgrad": { 0: "rgb(150, 150, 150)", 0.5: "rgb(86, 86, 86)", 1: "rgb(86, 86, 86)" }, 
+            "redgrad": { 0: "rgb(150, 150, 150)", 0.5: "rgb(86, 86, 86)", 1: "rgb(86, 86, 86)" },
             "yellowgrad": { 0: "rgb(150, 150, 150)", 0.5: "rgb(86, 86, 86)", 1: "rgb(86, 86, 86)" } 
         };
 
@@ -253,7 +253,7 @@ Ext.define('Savanna.process.utils.Styler', {
             "panel": {
                 name: 'StepGadget',
                 opacity: 0.0,
-                alignment: new go.Spot(0.5, 1.0, 12, 0),
+                alignment: new go.Spot(1.0, 1.0, -22, 6),
                 alignmentFocus: go.Spot.Top,
                 click: null
             },
@@ -302,7 +302,7 @@ Ext.define('Savanna.process.utils.Styler', {
             "panel": {
                 name: 'DecisionGadget',
                 opacity: 0.0,
-                alignment: new go.Spot(0.5, 1.0, 25, -1),
+                alignment: new go.Spot(1.0, 1.0, -6, 6),
                 alignmentFocus: go.Spot.Top,
                 click: null
             },
@@ -450,8 +450,7 @@ Ext.define('Savanna.process.utils.Styler', {
          * @return JSON
          */
         var adornmentsShape = function(json){
-            console.log(json);
-            // Provide JSON as a parameter for functions when overridding JSON properties, if nothing is passed it will be undefined and considered an optional parameter.  
+            // Provide JSON as a parameter for functions when overridding JSON properties, if nothing is passed it will be undefined and considered an optional parameter.
             if ( json !== undefined ){
                 if ( jsonDriller(json, "angle") !== '' ){ 
                     adornments['HalfEllipse'].angle = json['angle'];
@@ -597,8 +596,8 @@ Ext.define('Savanna.process.utils.Styler', {
             "outline": {
                 fill: palette.startColor,
                 stroke: null,
-                width: 60, 
-                height: 60,
+                width: 48,
+                height: 48,
                 portId: "",                          // now the Shape is the port, not the whole Node
           fromSpot: go.Spot.Right, toSpot: go.Spot.Left 
             },
@@ -629,13 +628,13 @@ Ext.define('Savanna.process.utils.Styler', {
             "outline": {
                 fill: palette.endColor,
                 stroke: null,
-                width: 32, 
-                height: 32
+                width: 48,
+                height: 48
             },
             "textblock": {
                 margin: 4,
-                font: properties.fontWeight + properties.fontSize + properties.font,
-                stroke: palette.darkText
+                font: properties.fontSize + properties.font,
+                stroke: palette.lightText
             }
         };
 
@@ -660,6 +659,13 @@ Ext.define('Savanna.process.utils.Styler', {
                 stroke: null,
                 width: 32, 
                 height: 32,
+                row: 0, column: 1, margin: 0
+            },
+            "xline": {
+                fill: null,
+                stroke: palette.black,
+                width: 10,
+                height: 10,
                 row: 0, column: 1, margin: 0
             },
             "textblock": {
@@ -795,7 +801,7 @@ Ext.define('Savanna.process.utils.Styler', {
          * Defines default JSON for internal group.  This can be overridden via using the addTo and removeFrom JSON modifier functions in the return statement.
          */
         var internalGroup = {
-            "roundedRectangle": { fill: '#dbf7fe', name:'BACKGROUND', stroke: null, desiredSize: new go.Size(125,125)},
+            "roundedRectangle": { fill: '#dbf7fe', stroke: null, minSize: new go.Size(96,96)},
             "textblockTools": {
                 angle: 270,
                 alignment: go.Spot.Center,
