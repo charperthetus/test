@@ -156,7 +156,7 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
     addStep: function(e, obj) {
         var diagram = obj.diagram;
         diagram.startTransaction('addStep');
-                                                                                              F
+
         var step = {'category': 'ProcessModel', 'text': 'Description', 'isGroup': true, 'isSubGraphExpanded': true};
         step.key = Savanna.process.utils.ProcessUtils.getURI(step.category);
         diagram.model.addNodeData(step);
