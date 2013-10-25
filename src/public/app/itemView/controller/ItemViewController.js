@@ -162,6 +162,13 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
             var relatedItemView = me.getView().queryById('relatedItemsView');
             relatedItemView.fireEvent('ViewRelatedItems:SetupData', record[0].propertyGroupsStore.getAt(2).valuesStore.data.items);
 
+
+            /*
+            Related Items Edit
+             */
+            var relatedItemViewEdit = me.getView().queryById('relatedItemsEdit');
+            relatedItemViewEdit.fireEvent('EditRelatedItems:SetupData', record[0].propertyGroupsStore.getAt(2).valuesStore.data.items);
+
             /*
             are we creating a new item?
              */
