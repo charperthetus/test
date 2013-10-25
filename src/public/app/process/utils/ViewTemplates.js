@@ -428,13 +428,6 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                 "ButtonBorder.fill": "#454545",
                 click: function(e, obj) {
                     
-                  var elt = obj.part.findObject("COLLAPSIBLE");
-                  if (elt !== null) {
-                    obj.diagram.startTransaction("Collapse/Expand Panel");
-                    elt.visible = !elt.visible;
-                    obj.diagram.commitTransaction("Collapse/Expand Panel");
-                  }
-                    
                     var group = obj.part;  // OBJ is this button
                     if (!(group instanceof go.Group)) return;
                     var diagram = group.diagram;
@@ -458,7 +451,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                         if (button) fig = exp ? button["_subGraphExpandedFigure"] : button["_subGraphCollapsedFigure"];
                         if (!fig) fig = exp ? "MinusLine" : "PlusLine";
                         return fig;
-                  }).ofObject(), new go.Binding("figure", "visible", function(vis) { return vis ? "MinusLine" : "MinusLine"; }).ofObject("COLLAPSIBLE") ) )});
+                  }) ) )});
 
                 /*
                 * Addition End
