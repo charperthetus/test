@@ -19,7 +19,7 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
         aboutwindow: null,
         searchwindow: null,
         uploadwindow: null
-            },
+    },
 
     control: {
         currentuser: true,
@@ -32,9 +32,10 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
         uploadbutton: {
             click: 'displayUploadDialog'
         },
-        helpbutton: {
-            click: 'launchHelp'
-        },
+        //TODO - commented until we have a real help page to link to
+//        helpbutton: {
+//            click: 'launchHelp'
+//        },
         savannalogout: {
             click: 'handleLogout'
         },
@@ -108,6 +109,7 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
     },
 
     launchHelp: function() {
+        //TODO - this should go to a sized popup that is named so we don't open more than one.
         window.open(SavannaConfig.helpUrl);
     },
 

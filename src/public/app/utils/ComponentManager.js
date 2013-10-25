@@ -21,7 +21,7 @@ Ext.define('Savanna.utils.ComponentManager', {
      *
      * @param type - String describing the type of component to return
      */
-    getComponentForType: function(type){
+    getComponentForType: function(type, uri, label){
         var length = this.componentClasses.length,
             i = 0;
         for (i;i<length;i++){
@@ -30,6 +30,14 @@ Ext.define('Savanna.utils.ComponentManager', {
                 return component;
             }
         }
+
+        //TEMP for testing image
+        var panel = Ext.create('Savanna.image.view.ImageComponent', {
+            title: label,
+            imageUri: uri.replace(/%2/g, '%252')
+        });
+
+        return panel;
         //Didn't find a component for this type
         return null;
     }

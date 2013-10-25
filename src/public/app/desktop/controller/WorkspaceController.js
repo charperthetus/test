@@ -43,7 +43,7 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
         //TODO - this is temporary until open is fully working
         Savanna.app.on('search:itemselected', this.showItemView, this);
 
-        EventHub.on('open', this.onOpen);
+        EventHub.on('open', this.onOpen, this);
         return this.callParent(arguments);
     },
 
@@ -128,13 +128,16 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
 
     onOpen: function(event){
         console.log(arguments);
-        var component = ComponentManager.getComponentForType(event.type);
+        var component = ComponentManager.getComponentForType(event.type, event.uri, event.label),
+            tabPanel = this.getMaintabpanel();
         if (component){
-            component.uri = event.uri;
-            component.title = event.label;
-            var tab = tabpanel.add(component);
-            tabpanel.doLayout();
-            tabpanel.setActiveTab(tab);
+            var tab = tabPanel.add(component);
+            tab.tabConfig = {
+                ui: 'dark'
+            }
+            tab.closable = true;
+            tabPanel.doLayout();
+            tabPanel.setActiveTab(tab);
         }else{
             //TODO - What should I do here?
         }
