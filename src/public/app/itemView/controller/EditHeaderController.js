@@ -92,7 +92,6 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
         var tagUri = tagData ? tagData.uri : null;
         var newTag = {editable: true, inheritedFrom: null, label: tagName, uri: tagUri, value: tagName, version: 0};
         tagArray.push(newTag);
-        this.getView().up('itemview_itemviewer').down('itemview_view_header').reconfigure(myStore);
     },
 
     removingTag: function(tagName, tagArray) {
@@ -104,13 +103,10 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
                 break;
             }
         }
-
-        this.getView().up('itemview_itemviewer').down('itemview_view_header').reconfigure(myStore);
     },
 
     updateDescription: function(comp, e, eOpts) {
         var myStore = this.getView().store;
         myStore.getAt(4).data.values[0].value = comp.value;
-        this.getView().up('itemview_itemviewer').down('itemview_view_header').reconfigure(myStore);
     }
 });

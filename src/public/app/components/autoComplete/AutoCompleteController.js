@@ -21,7 +21,8 @@ Ext.define('Savanna.components.autoComplete.AutoCompleteController', {
         },
 
         autoCompleteBox: {
-                keyup: 'handleAutoCompleteTextKeyUp'
+                keyup: 'handleAutoCompleteTextKeyUp',
+                select: 'handleAutoCompleteSelect'
         }
     },
 
@@ -33,20 +34,21 @@ Ext.define('Savanna.components.autoComplete.AutoCompleteController', {
     handleAutoCompleteTextKeyUp: function (field, evt) {
         if (evt.keyCode === Ext.EventObject.ENTER) {
             if (field.getValue().trim().length) {
-                if (field.store.data.items.length > 0 || this.getView().hasNoStore) {
-                    if (this.getView().showTags) {
-                        field.findParentByType('auto_complete').addTag(field.getValue());
-                    }
-                    if(this.getView().store)   {
-                        this.getView().fireEvent('AutoComplete:ItemSelected', field.getValue(), this.getView().store.getAt(0).data, this.getView());
-                    }
-                    else {
-                        this.getView().fireEvent('AutoComplete:ItemSelected', field.getValue(), null, this.getView());
-                    }
-
+                if (this.getView().hasNoStore) {
+                    field.findParentByType('auto_complete').addTag(field.getValue());
+                    this.getView().fireEvent('AutoComplete:ItemSelected', field.getValue(), null, this.getView());
                     field.reset();
                 }
             }
         }
+    },
+
+    handleAutoCompleteSelect: function (combo, records, eOpts) {
+        if (this.getView().showTags) {
+            combo.findParentByType('auto_complete').addTag(records[0].data.value);
+        }
+
+        this.getView().fireEvent('AutoComplete:ItemSelected', records[0].data.value, records[0].data, this.getView());
+        combo.setValue("");
     }
 });
