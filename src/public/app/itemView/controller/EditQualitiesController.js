@@ -250,7 +250,6 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
     },
 
     addingTag: function(tagName, tagData, tagArray) {
-        console.log(arguments);
         var tagUri = tagData ? tagData.uri : null;
         var newTag = {editable: true, inheritedFrom: null, label: tagName, uri: tagUri, value: tagName, version: 0};
         tagArray.push(newTag);
