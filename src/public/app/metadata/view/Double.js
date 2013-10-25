@@ -10,10 +10,6 @@ Ext.define('Savanna.metadata.view.Double', {
     extend: 'Savanna.metadata.view.MetadataItemView',
     alias: 'widget.metadata_double',
 
-    requires: [
-        'Savanna.controller.Factory'
-    ],
-
     items: [
     ],
 
@@ -24,14 +20,13 @@ Ext.define('Savanna.metadata.view.Double', {
         me.on('beforerender', Ext.bind(function() {
             if(me.getEditable() && me.getEditMode()) {
                 if(me.down('#displayValueEdit')) {
-                    me.down('#displayValueEdit').setValue(me.getValue());
+                    me.down('#displayValueEdit').setValue(me.getValue().toString());
                     me.down('#displayValueEdit').fieldLabel = me.getDisplayLabel();
                     me.down('#displayValueEdit').regex = /^[0-9]*.[0-9]*$/;
                     me.down('#displayValueEdit').maskRe = /[\d\.]/i;
                     me.down('#displayValueEdit').listeners = {
                         blur: function(d) {
-                            var newVal = parseFloat(d.getValue(), 10);
-                            me.setValue(newVal);
+                            me.setValue(parseFloat(d.getValue(), 10));
                         }
                     };
 

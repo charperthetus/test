@@ -11,9 +11,8 @@ Ext.define('Savanna.desktop.view.SavannaWorkspace', {
     requires: [
         'Savanna.desktop.controller.WorkspaceController',
         'Savanna.desktop.view.SavannaTabPanel',
-        'Savanna.crumbnet.view.CrumbnetComponent',
-        'Savanna.map.view.MapComponent',
-        'Savanna.process.view.ProcessEditorComponent'
+        'Savanna.image.view.ImageComponent'
+
     ],
 
     controller: "Savanna.desktop.controller.WorkspaceController",
@@ -60,6 +59,13 @@ Ext.define('Savanna.desktop.view.SavannaWorkspace', {
         itemId: 'maintabpanel',
         flex: 2,
         height: '100%',
-        items: []
+        items: [{
+            title: 'Image',
+            xtype: 'image_component',
+            itemId: 'workspaceImage',
+            tabConfig: {
+                ui: 'dark'
+            }
+        }]
     }]
 });

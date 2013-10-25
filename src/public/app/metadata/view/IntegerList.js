@@ -10,10 +10,6 @@ Ext.define('Savanna.metadata.view.IntegerList', {
     extend: 'Savanna.metadata.view.MetadataItemView',
     alias: 'widget.metadata_integerlist',
 
-    requires: [
-        'Savanna.controller.Factory'
-    ],
-
     items: [
     ],
 
@@ -22,36 +18,56 @@ Ext.define('Savanna.metadata.view.IntegerList', {
         var me = this;
 
         me.on('beforerender', Ext.bind(function() {
-            me.down('#displayLabelItem').text = me.displayLabel + ':';
-//            if(null !== me.value && 0 != me.value.length) {
-//                Ext.Array.each(me.value, function(stringElement) {
-//                    var theLabel = Ext.create('Ext.form.Label', {
-//                        text: '',
-//                        width: "100%"
-//                    });
-//                    theLabel.setText( stringElement.toLocaleString() );
-//                    me.add( theLabel );
-//                });
-//            } else {
-//                me.add( Ext.create('Ext.form.Label', {
-//                                    html: '&nbsp;',
-//                                    width: "100%"
-//                                })
-//                );
-//            }
+            if(me.getEditable() && me.getEditMode()) {
+                //me.down('#displayLabelItem').text = me.displayLabel + ':';
+            } else {
+                me.down('#displayLabelItem').text = me.displayLabel + ':';
+            }
         }, this));
     },
 
     makeEditViewItems: function() {
-        this.makeViewViewItems(); // for now, until we get the edit mode figured out.
+        var me = this;
+        if(null !== me.value && 0 != me.value.length) {
+            var fieldLabelValue = me.displayLabel;
+            var container = Ext.create('Ext.container.Container', {
+               layout: 'vbox',
+               width: "100%",
+               border: false
+            });
+            var cloneArray = Ext.Array.clone(me.value);
+            Ext.Array.each(cloneArray, function(stringElement, index, allItems) {
+                var textField = Ext.create('Ext.form.field.Text', {
+                    allowBlank: true,
+                    width: '100%',
+                    labelWidth: 180,
+                    value: stringElement,
+                    regex: /^[0-9]*$/,
+                    maskRe: /\d/i,
+                    listeners: {
+                        blur: function(d) {
+                            allItems[index] = parseInt(d.getValue(), 10);
+                            me.setValue(allItems);
+                        }
+                    }
+                });
+                textField.fieldLabel = fieldLabelValue;
+                container.add(textField);
+                if('&nbsp;' == fieldLabelValue) {
+                    textField.labelSeparator = '';
+                }
+                fieldLabelValue = '&nbsp;';
+            });
+            me.add(container);
+        }
     },
 
     makeViewViewItems: function() {
         var me = this;
         this.add(Ext.create('Ext.form.Label', {
             itemId: 'displayLabelItem',
-            width: 200,
-            minWidth: 200,
+            width: 180,
+            minWidth: 180,
             height: 25
         }));
 
