@@ -14,19 +14,25 @@ Ext.define('Savanna.itemView.store.AutoCompleteStore', {
         'Savanna.proxy.Cors'
     ],
 
+    config: {
+        urlEndPoint: "",
+        paramsObj: {}
+    },
+
     model: 'Savanna.itemView.model.AutoCompleteModel',
 
-    storeId: 'mainItem',
-
-    constructor: function () {
-
+    constructor: function (configs) {
         this.callParent(arguments);
+        this.initConfig(configs);
 
         this.setProxy({
             type: 'savanna-cors',
-            url: SavannaConfig.itemPredicateUrl,
+            url: this.getUrlEndPoint(),
+            extraParams: this.getParamsObj(),
+
             reader: {
-                type: 'json'
+                type: 'json',
+                root: 'results'
             },
             writer: {
                 type: 'json'
