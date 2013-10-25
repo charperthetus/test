@@ -10,13 +10,12 @@ Ext.define('Savanna.process.controller.ProcessController', {
 
     requires: [
         'Savanna.process.utils.ProcessUtils',
-        'Savanna.process.utils.ViewTemplates'
+        'Savanna.process.utils.ViewTemplates',
+        'Savanna.process.store.Processes'
     ],
-    inject: [ 'application', 'processStore' ], //todo: inject Process store and use it to load process data
-
-    config: {
-        application: null,
-        processStore: null
+    store: 'Savanna.process.store.Processes',
+    mixins: {
+        storeable: 'Savanna.mixin.Storeable'
     },
 
     control: {
@@ -64,6 +63,12 @@ Ext.define('Savanna.process.controller.ProcessController', {
         view: {
             beforeclose: 'onProcessClose'
         }
+    },
+
+    constructor: function (options) {
+        this.opts = options || {};
+        this.mixins.storeable.initStore.call(this);
+        this.callParent(arguments);
     },
 
     init: function() {
@@ -217,11 +222,11 @@ Ext.define('Savanna.process.controller.ProcessController', {
     },
 
     loadJSON: function (callbackFunc) {
-        var store = this.getProcessStore();
-        this.getProcessStore().load({
+        var processStore = Ext.data.StoreManager.lookup(this.store);
+        processStore.load({
             callback: function() {
                 if (callbackFunc) {
-                    callbackFunc(store.first());
+                    callbackFunc(processStore.first());
                 }
             }
         });

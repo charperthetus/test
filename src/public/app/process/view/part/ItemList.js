@@ -8,16 +8,18 @@
 Ext.define('Savanna.process.view.part.ItemList', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.process_itemlist',
+    requires: [
+        'Savanna.process.store.ProcessItemStore'
+    ],
 
-    inject: ['processItemStore'],
-
-    config: {
-        processItemStore: null
+    store: 'Savanna.process.store.ProcessItemStore',
+    mixins: {
+        storeable: 'Savanna.mixin.Storeable'
     },
 
     viewConfig: {
         plugins: {
-            dragGroup: 'PaletteItemDrag',
+            dragGroup: 'RNRM-ITEMS',
             dropGroup: 'RNRM-ITEMS',
             ptype: 'gridviewdragdrop',
             enableDrop: true,
@@ -55,7 +57,11 @@ Ext.define('Savanna.process.view.part.ItemList', {
     ],
 
     initComponent: function() {
-        this.store = this.getProcessItemStore();
+        this.mixins.storeable.initStore.call(this);
         this.callParent(arguments);
+    },
+
+    onStoreLoad: function() {
+        console.log(this.store);
     }
 });
