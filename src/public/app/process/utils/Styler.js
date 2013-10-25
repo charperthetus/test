@@ -1074,6 +1074,9 @@ Ext.define('Savanna.process.utils.Styler', {
             internalGroup: function(json){
                 return internalGroupShape(json);
             },
+            altsGroup: function(json){
+                return internalGroupShape(json);
+            },
             paletteCircle: function(){
                 return paletteInternalCircle();
             },

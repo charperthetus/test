@@ -571,6 +571,36 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
             )
         );  // end Actions Group
 
+        groupTemplateMap.add('SubstitutionsGroup',
+            gmake(go.Group, go.Panel.Spot,
+                {
+                    background: 'transparent',
+                    computesBoundsAfterDrag: true,
+                    mouseEnter: Savanna.process.utils.GroupEventHandlers.onMouseEnter,
+                    mouseLeave: Savanna.process.utils.GroupEventHandlers.onMouseLeave,
+                    // highlight when dragging into the Group
+                    mouseDragEnter: Savanna.process.utils.GroupEventHandlers.onMouseDragEnter,
+                    mouseDragLeave: Savanna.process.utils.GroupEventHandlers.onMouseDragLeave,
+                    memberValidation: Savanna.process.utils.GroupEventHandlers.actionsGroupMemberValidation,
+                    // define the group's internal layout
+                    layout: gmake(go.GridLayout,
+                                  this.styler().internalGroup().gridLayout),
+                    // the group begins expanded
+                    isSubGraphExpanded: true,
+                    wasSubGraphExpanded: true
+                },
+                gmake(go.Panel, go.Panel.Auto,
+                    gmake(go.Shape, 'RoundedRectangle', this.styler().internalGroup().roundedRectangle),
+                    gmake(go.Placeholder, this.styler().internalGroup({"mouseDrop":Savanna.process.utils.GroupEventHandlers.onActionGroupMouseDrop}).placeholder
+                    )
+                ),
+                this.makeAdornment(go.Spot.Left, new go.Point(0, 0), 180, Savanna.process.utils.GroupEventHandlers.onParticipantMouseDrop, Savanna.process.utils.ProcessUtils.addParticipant, '\uf116', 'Participants', new go.Point(17, 58)),
+                this.makeAdornment(go.Spot.Top, new go.Point(0, 0), 270, Savanna.process.utils.GroupEventHandlers.onInputMouseDrop, Savanna.process.utils.ProcessUtils.addInput, '\uf124', 'Inputs', new go.Point(27, 12)),
+                this.makeAdornment(go.Spot.Right, new go.Point(36, 0), 0, Savanna.process.utils.GroupEventHandlers.onByproductMouseDrop, Savanna.process.utils.ProcessUtils.addByproduct, '\uf13d', 'By Products', new go.Point(17, 58)),
+                this.makeAdornment(go.Spot.Bottom, new go.Point(0, 36), 90, Savanna.process.utils.GroupEventHandlers.onResultMouseDrop, Savanna.process.utils.ProcessUtils.addResult, '\uf16d', 'Results', new go.Point(25, 58))
+            )
+        );  // end SubstitutionsGroup
+
         return groupTemplateMap;
     }
 
