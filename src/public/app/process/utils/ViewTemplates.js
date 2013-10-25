@@ -138,57 +138,29 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                 */
         nodeTemplateMap.add('DecisionPoint', // Category must match the uri type
             gmake(go.Node, go.Panel.Table, Savanna.process.utils.ViewTemplates.nodeStyle(),
-                       gmake(go.RowColumnDefinition, { column: 0, width: 150, minimum: 150, maximum: 150 }),
-        gmake(go.RowColumnDefinition, { column: 1, width: 30, minimum: 30, maximum: 30 }),
-        gmake(go.RowColumnDefinition, { column: 2, width: 150, minimum: 150, maximum: 150 }),
- 
-                  
-        gmake(go.TextBlock, "",
-          { row: 0, column: 0, margin: 0 }),
-                  
-                  
-        gmake(go.Shape, 'Diamond',
-          this.styler().diamond().outline),
-                  
-        gmake( go.TextBlock,this.styler().diamond().textblock, new go.Binding('text', 'text').makeTwoWay()
-
-             ),
-          
-            
-                   {
-                
-               
-                
-        selectionAdornmentTemplate:
-          gmake(go.Adornment, "Auto",
-            gmake(go.Shape, "RoundedRectangle",
-            this.styler().start().selectionAdornment),
-            gmake(go.Placeholder)
-          )  
-                
-                
-      },
-                  this.makeStepGadget(),
-                  this.makeDecisionGadget()
-                                       
-            
-                        
-                        
-                        
-                        
-                       
-                                 
-                  
-    
-   
-                
+                gmake(go.RowColumnDefinition, { column: 0, width: 150, minimum: 150, maximum: 150 }),
+                gmake(go.RowColumnDefinition, { column: 1, width: 30, minimum: 30, maximum: 30 }),
+                gmake(go.RowColumnDefinition, { column: 2, width: 150, minimum: 150, maximum: 150 }),
+                gmake(go.TextBlock, "",
+                    { row: 0, column: 0, margin: 0 }),
+                gmake(go.Shape, 'Diamond',
+                    this.styler().diamond().outline),
+                gmake(go.TextBlock, this.styler().diamond().textblock, new go.Binding('text', 'text').makeTwoWay()),
+                {
+                    selectionAdornmentTemplate: gmake(go.Adornment, "Auto",
+                        gmake(go.Shape, "RoundedRectangle",
+                            this.styler().start().selectionAdornment),
+                        gmake(go.Placeholder)
+                    )
+                },
+                this.makeStepGadget(),
+                this.makeDecisionGadget()
             )
-                           
         );
-        
-         /*
-                * Addition End
-                */
+
+        /*
+               * Addition End
+               */
 
         nodeTemplateMap.add('End',
             gmake(go.Node, go.Panel.Spot, Savanna.process.utils.ViewTemplates.nodeStyle(),
@@ -202,9 +174,8 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
 
         nodeTemplateMap.add('MergePoint', // Category must match the uri type
             gmake(go.Node, go.Panel.Spot, Savanna.process.utils.ViewTemplates.nodeStyle(),
-                gmake(go.Panel, go.Panel.Horizontal, { defaultAlignment: go.Spot.Top },
-                    gmake(go.Shape, 'Diamond', this.styler().diamond().outline)
-                ),
+                gmake(go.Shape, 'Diamond', this.styler().diamond().outline),
+                gmake(go.Shape, 'XLine', this.styler().diamond().xline),
                 this.makeTopPort(),
                 this.makeStepGadget(),
                 this.makeDecisionGadget()
