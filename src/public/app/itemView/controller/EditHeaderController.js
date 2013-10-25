@@ -25,6 +25,17 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
         },
         intendedUseChooserBtn: {
             click: 'onIntendedUsesSelect'
+        },
+        addAliasBox: {
+            'AutoComplete:ItemSelected': 'addingAlias',
+            'AutoComplete:TagRemoved': 'removingAlias'
+        },
+        addIntendedUseBox: {
+            'AutoComplete:ItemSelected': 'addingIntendedUse',
+            'AutoComplete:TagRemoved': 'removingIntendedUse'
+        },
+        itemDescription: {
+            blur: 'updateDescription'
         }
     },
 
@@ -58,5 +69,48 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
             width: 400,
             height: 300
         });
+    },
+
+    addingAlias: function(tagName, tagData, aView) {
+        this.addingTag(tagName, tagData, this.getView().store.getAt(0).data.values);
+    },
+
+    removingAlias: function(tagName, aView) {
+        this.removingTag(tagName, this.getView().store.getAt(0).data.values);
+    },
+
+    addingIntendedUse: function(tagName, tagData, aView) {
+        this.addingTag(tagName, tagData, this.getView().store.getAt(1).data.values);
+    },
+
+    removingIntendedUse: function(tagName, aView) {
+        this.removingTag(tagName, this.getView().store.getAt(1).data.values);
+    },
+
+    addingTag: function(tagName, tagData, tagArray) {
+        var myStore = this.getView().store;
+        var tagUri = tagData ? tagData.uri : null;
+        var newTag = {editable: true, inheritedFrom: null, label: tagName, uri: tagUri, value: tagName, version: 0};
+        tagArray.push(newTag);
+        this.getView().up('itemview_itemviewer').down('itemview_view_header').reconfigure(myStore);
+    },
+
+    removingTag: function(tagName, tagArray) {
+        var myStore = this.getView().store;
+
+        for (var i = 0; i < tagArray.length; i++) {
+            if (tagArray[i].label === tagName) {
+                Ext.Array.remove(tagArray, tagArray[i]);
+                break;
+            }
+        }
+
+        this.getView().up('itemview_itemviewer').down('itemview_view_header').reconfigure(myStore);
+    },
+
+    updateDescription: function(comp, e, eOpts) {
+        var myStore = this.getView().store;
+        myStore.getAt(4).data.values[0].value = comp.value;
+        this.getView().up('itemview_itemviewer').down('itemview_view_header').reconfigure(myStore);
     }
 });

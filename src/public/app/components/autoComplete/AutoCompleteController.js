@@ -27,7 +27,7 @@ Ext.define('Savanna.components.autoComplete.AutoCompleteController', {
 
     handleRemoveTagClick: function (value, view) {
         this.getView().removeTag(view);
-        this.getView().fireEvent('AutoComplete:TagRemoved', field.getValue(), this.getView());
+        this.getView().fireEvent('AutoComplete:TagRemoved', value, this.getView());
     },
 
     handleAutoCompleteTextKeyUp: function (field, evt) {
@@ -37,8 +37,13 @@ Ext.define('Savanna.components.autoComplete.AutoCompleteController', {
                     if (this.getView().showTags) {
                         field.findParentByType('auto_complete').addTag(field.getValue());
                     }
+                    if(this.getView().store)   {
+                        this.getView().fireEvent('AutoComplete:ItemSelected', field.getValue(), this.getView().store.getAt(0).data, this.getView());
+                    }
+                    else {
+                        this.getView().fireEvent('AutoComplete:ItemSelected', field.getValue(), null, this.getView());
+                    }
 
-                    this.getView().fireEvent('AutoComplete:ItemSelected', field.getValue(), this.getView().store.getAt(0).data, this.getView());
                     field.reset();
                 }
             }

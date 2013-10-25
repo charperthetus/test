@@ -58,7 +58,6 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         }
     },
 
-
     constructor: function (options) {
         this.opts = options || {};
         this.mixins.storeable.initStore.call(this);
@@ -125,7 +124,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
             //ToDo: do what needs to be done for edit version of header
             var headerEditComponent = me.getView().queryById('itemViewHeaderEdit');
             headerEditComponent.setTitle(record[0].data.label);
-            headerEditComponent.store = record[0].propertyGroupsStore.getAt(0).valuesStore;//.getAt(0).valuesStore;
+            headerEditComponent.store = record[0].propertyGroupsStore.getAt(0).valuesStore;
             headerEditComponent.fireEvent('EditHeader:StoreSet');
 
             /*
