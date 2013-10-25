@@ -13,14 +13,19 @@ Ext.define('Savanna.desktop.view.SearchWindow', {
         'Savanna.search.view.SearchComponent'
     ],
 
-    title: 'Search',
-    maximizable: true,
     layout: 'fit',
+    maximizable: true,
     height: 500,
     width: 640,
     minWidth: 200,
     minHeight: 100,
     ghost: false,
+
+    header: {
+        titlePosition: 1,
+        title: 'Search'
+    },
+
     items: [{
         xtype: 'search_searchcomponent',
         itemId: 'searchcomponent'

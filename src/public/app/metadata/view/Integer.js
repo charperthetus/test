@@ -10,10 +10,6 @@ Ext.define('Savanna.metadata.view.Integer', {
     extend: 'Savanna.metadata.view.MetadataItemView',
     alias: 'widget.metadata_integer',
 
-    requires: [
-        'Savanna.controller.Factory'
-    ],
-
     items: [
     ],
 
@@ -24,7 +20,7 @@ Ext.define('Savanna.metadata.view.Integer', {
         me.on('beforerender', Ext.bind(function() {
             if(me.getEditable() && me.getEditMode()) {
                 if(me.down('#displayValueEdit')) {
-                    me.down('#displayValueEdit').setValue(me.getValue());
+                    me.down('#displayValueEdit').setValue(me.getValue().toString());
                     me.down('#displayValueEdit').fieldLabel = me.getDisplayLabel();
                     me.down('#displayValueEdit').regex = /^[0-9]*$/;
                     me.down('#displayValueEdit').maskRe = /\d/i;

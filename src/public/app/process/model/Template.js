@@ -8,6 +8,10 @@
 Ext.define('Savanna.process.model.Template', {
     extend: 'Ext.data.Model',
 
+    requires: [
+        'Savanna.process.model.TemplateGroup'
+    ],
+
     belongsTo: 'Savanna.process.model.TemplateGroup',
 
     fields: ['category','title','figure']

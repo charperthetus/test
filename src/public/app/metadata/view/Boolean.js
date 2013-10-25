@@ -10,10 +10,6 @@ Ext.define('Savanna.metadata.view.Boolean', {
     extend: 'Savanna.metadata.view.MetadataItemView',
     alias: 'widget.metadata_boolean',
 
-    requires: [
-        'Savanna.controller.Factory'
-    ],
-
     items: [
     ],
 
@@ -36,6 +32,42 @@ Ext.define('Savanna.metadata.view.Boolean', {
                 }
             }
         }, this));
+    },
+
+    makeEditViewItems: function() {
+        var me = this;
+        this.add(Ext.create('Ext.form.RadioGroup', {
+            fieldLabel: '',
+            itemId: 'displayValueEdit',
+            width: 350,
+            labelWidth: 180,
+            items: [{
+                        boxLabel: 'True',
+                        checked: true == me.value,
+                        name: 'radios',
+                        listeners: {
+                            change: function(d) {
+                                if(d.getValue()) {
+                                    me.setValue(true);
+                                }
+                            }
+                        }
+
+                    }, {
+                        boxLabel: 'False',
+                        checked: false == me.value,
+                        name: 'radios',
+                        listeners: {
+                            change: function(d) {
+                                if(d.getValue()) {
+                                    me.setValue(false);
+                                }
+                            }
+                        }
+
+                    }]
+        }));
     }
+
 
 });

@@ -190,17 +190,7 @@ Ext.define('Savanna.modelSearch.controller.SearchComponent', {
         component.down('#resultsdals').removeAll();
 
 
-        /*
-         return to the options screen if we're not already there
-         */
-
-        /* jwb we don't have this pannel in modelSearch
-         if (component.down('#searchbody').currentPanel !== 'searchoptions') {
-         var optionsBtn = component.queryById('optionsbutton');
-         optionsBtn.fireEvent('click', optionsBtn);
-         }*/
-
-        /*
+         /*
          clear the grid - it's misleading in error states to see results in the grid, even though
          the search request has failed for one reason or another
          */

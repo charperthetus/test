@@ -49,8 +49,6 @@ Ext.application({
         'Savanna.flexpaper.controller.FlexpaperComponent',
         //Search
         'Savanna.search.controller.SearchComponent',
-        //Crumbnet
-        'Savanna.crumbnet.controller.CrumbnetController',
         //Map
         'Savanna.map.controller.MapController',
         //ItemView
@@ -64,12 +62,6 @@ Ext.application({
     autoCreateViewport: false,
 
     launch: function() {
-        Deft.Injector.configure({
-            'application': {
-                value: this
-            }
-        });
-
         //in order to get Injection to work, I had to set autoCreateViewport to false and then manually create the viewport here
         Ext.create('Savanna.view.Viewport');
 
