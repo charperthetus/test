@@ -192,8 +192,8 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
 
         nodeTemplateMap.add('End',
             gmake(go.Node, go.Panel.Spot, Savanna.process.utils.ViewTemplates.nodeStyle(),
-                gmake(go.Shape, 'StopSign', this.styler.end().outline),
-                gmake(go.TextBlock, 'End', this.styler.end().textblock),
+                gmake(go.Shape, 'StopSign', this.styler().end().outline),
+                gmake(go.TextBlock, 'End', this.styler().end().textblock),
                 this.makeTopPort()
             )
         );
@@ -479,7 +479,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                     // the group begins unexpanded;
                     isSubGraphExpanded: false
                 }, new go.Binding('isSubGraphExpanded', 'isSubGraphExpanded').makeTwoWay(),
-                gmake(go.Shape, 'RoundedRectangle', this.styler.processModel().roundedRectangle,
+                gmake(go.Shape, 'RoundedRectangle', this.styler().processModel().roundedRectangle,
                             
                       /*
                 * Addition Start
