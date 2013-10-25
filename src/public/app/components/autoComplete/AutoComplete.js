@@ -23,7 +23,8 @@ Ext.define('Savanna.components.autoComplete.AutoComplete', {
         propData: null,
         showTags: false,
         hasNoStore: false,
-        preLabel: ''
+        preLabel: '',
+        hasControls: false
     },
 
     attachedStore: null,
@@ -53,21 +54,36 @@ Ext.define('Savanna.components.autoComplete.AutoComplete', {
     },
 
     buildItems: function() {
+        // If autocomplete has additional controls, generate a space to insert them.
+        var controlSpace = {};
+
+        if (this.getHasControls()) {
+            controlSpace = { xtype: 'container', flex: 1 };
+        }
+
         return [
             {
-                xtype: 'combo',
-                itemId: 'autoCompleteBox',
-                displayField: 'title',
-                typeAhead: false,
-                hideTrigger: true,
-                anchor: '100%',
+                xtype: 'container',
+                layout: 'hbox',
                 width: '100%',
-                minChars: 1,
-                store: this.store,
-                fieldLabel: this.getPreLabel(),
-                enableKeyEvents: true,
-                emptyText: this.getLabelType(),
-                queryMode: 'local'
+                items: [
+                    {
+                        xtype: 'combo',
+                        itemId: 'autoCompleteBox',
+                        displayField: 'title',
+                        typeAhead: false,
+                        hideTrigger: true,
+                        anchor: '100%',
+                        flex: 2,
+                        minChars: 1,
+                        store: this.store,
+                        fieldLabel: this.getPreLabel(),
+                        enableKeyEvents: true,
+                        emptyText: this.getLabelType(),
+                        queryMode: 'local'
+                    },
+                    controlSpace
+                ]
             },
             {
                 xtype: 'container',
