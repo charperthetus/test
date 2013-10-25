@@ -267,8 +267,9 @@ Ext.define('Savanna.components.DatePicker', {
                 }
             }
         },
+
+        keyCount: 0,
         listeners: {
-            keyCount: 0,
             select: function(checkbox, records) {
                 //When the user makes a selection then it will update the displayValue so we can get the raw value.
                 this.displayValue = this.getRawValue();

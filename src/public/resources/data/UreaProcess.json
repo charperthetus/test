@@ -8,7 +8,7 @@
       {
    		  "category":"DecisionPoint",
    		  "key":"x10/DecisionPoint",
-   		  "text":"Use UAN or Urea Fertilizer"
+   		  "text":"Use UAN or Urea Fertilizer?"
    	  },
       {
    		  "category":"ProcessModel",
@@ -42,7 +42,7 @@
    	  },
       {
           "category":"ProcessItem",
-          "text":"Urea Nitrate",
+          "text":"Urea Nitrate Solution",
           "key":"x43/ProcessItem"
       },
       {
@@ -84,12 +84,12 @@
 	  {
 		  "category":"ProcessItem",
 		  "key":"x06/ProcessItem",
-		  "text":"Solution"
+		  "text":"Urea Solution"
 	  },
 	  {
 		  "category":"DecisionPoint",
 		  "key":"x07/DecisionPoint",
-		  "text":"Is NitricAcid available?"
+		  "text":"Is Nitric Acid available?"
 	  },
 	  {
 		  "category":"ProcessModel",
@@ -124,7 +124,7 @@
       {
    		  "category":"ProcessItem",
    		  "key":"x44/ProcessItem",
-   		  "text":"Urea Nitrate"
+   		  "text":"Urea Nitrate Solution"
    	  },
 	  {
 		  "category":"ProcessModel",
@@ -165,12 +165,12 @@
 	  {
 		  "category":"ProcessItem",
 		  "key":"x23/ProcessItem",
-		  "text":"Nitrate Salt"
+		  "text":"Nitrate Salt Solution"
 	  },
 	  {
 		  "category":"ProcessModel",
 		  "key":"x24/ProcessModel",
-		  "text":"Mix Urea, Nitrate Salt, and Acid",
+		  "text":"Mix Urea Solution, Nitrate Salt Solution, and Acid",
 		  "isGroup":"true"
 	  },
       {
@@ -200,17 +200,17 @@
       {
    		  "category":"ProcessItem",
    		  "key":"x27/ProcessItem",
-   		  "text":"Urea Nitrate"
+   		  "text":"Urea Nitrate Solution"
    	  },
 	  {
 		  "category":"ProcessItem",
 		  "key":"x28/ProcessItem",
-		  "text":"Urea Nitrate"
+		  "text":"Urea Nitrate Solution"
 	  },
 	  {
 		  "category":"ProcessModel",
 		  "key":"x29/ProcessModel",
-		  "text":"Filter out urea Nitrate Precipitate",
+		  "text":"Filter out Urea Nitrate Precipitate",
 		  "isGroup":"true"
 	  },
       {
@@ -240,12 +240,12 @@
 	  {
 		  "category":"ProcessItem",
 		  "key":"x33/ProcessItem",
-		  "text":"Urea Nitrate"
+		  "text":"Wet Urea Nitrate Precipitate"
 	  },
 	  {
 		  "category":"DecisionPoint",
 		  "key":"x34/DecisionPoint",
-		  "text":"Dry Indoors or Out"
+		  "text":"Dry Indoors or Out?"
 	  },
 	  {
 		  "category":"ProcessModel",
@@ -298,17 +298,37 @@
 	  {
           "category":"ProcessItem",
 		  "key":"x41/ProcessItem",
-          "text":"Urea Nitrate"
+          "text":"Dry Urea Nitrate Crystals"
 	  },
       {
    		  "category":"ProcessItem",
    		  "key":"x42/ProcessItem",
-   		  "text":"Urea Nitrate"
+   		  "text":"Dry Urea Nitrate Crystals"
    	  },
       {
    		  "category":"ProcessItem",
    		  "key":"x45/ProcessItem",
-   		  "text":"Urea Nitrate"
+   		  "text":"Dry Urea Nitrate Crystals"
+   	  },
+      {
+   		  "category":"ProcessItem",
+   		  "key":"x46/ProcessItem",
+   		  "text":"Urea Nitrate Solution"
+   	  },
+      {
+   		  "category":"MergePoint",
+   		  "key":"x70/MergePoint",
+   		  "text":""
+   	  },
+      {
+   		  "category":"MergePoint",
+   		  "key":"x71/MergePoint",
+   		  "text":""
+   	  },
+      {
+   		  "category":"MergePoint",
+   		  "key":"x72/MergePoint",
+   		  "text":""
    	  },
       {
    		  "category":"End",
@@ -373,7 +393,7 @@
 		  "from":"x07/DecisionPoint",
 		  "to":"x15/ProcessModel",
           "category":"ProcessLink",
-		  "text":"Nitric Acid is Available.",
+		  "text":"Use Nitric Acid",
 		  "visible":true
 	  },
 	  {
@@ -422,7 +442,7 @@
 		  "from":"x07/DecisionPoint",
 		  "to":"x18/ProcessModel",
           "category":"ProcessLink",
-		  "text":"Nitric Acid is NOT Available.",
+		  "text":"Use Nitrate Salt",
 		  "visible":true
 	  },
 	  {
@@ -442,12 +462,12 @@
 	  },
       {
    		  "from":"x43/ProcessItem",
-   		  "to":"x28/ProcessItem",
+   		  "to":"x71/MergePoint",
           "category":"ProcessLink"
    	  },
       {
    		  "from":"x44/ProcessItem",
-   		  "to":"x28/ProcessItem",
+   		  "to":"x70/MergePoint",
           "category":"ProcessLink"
    	  },
 	  {
@@ -457,7 +477,7 @@
 	  },
 	  {
 		  "from":"x28/ProcessItem",
-		  "to":"x29/ProcessModel",
+		  "to":"x71/MergePoint",
           "category":"ProcessLink"
 	  },
 	  {
@@ -516,11 +536,36 @@
 	  },
       {
    		  "from":"x41/ProcessItem",
-   		  "to":"x45/ProcessItem",
+   		  "to":"x72/MergePoint",
           "category":"ProcessLink"
    	  },
       {
    		  "from":"x42/ProcessItem",
+   		  "to":"x72/MergePoint",
+          "category":"ProcessLink"
+   	  },
+      {
+   		  "from":"x27/ProcessItem",
+   		  "to":"x70/MergePoint",
+          "category":"ProcessLink"
+   	  },
+      {
+   		  "from":"x71/MergePoint",
+   		  "to":"x46/ProcessItem",
+          "category":"ProcessLink"
+   	  },
+      {
+   		  "from":"x46/ProcessItem",
+   		  "to":"x29/ProcessModel",
+          "category":"ProcessLink"
+   	  },
+      {
+   		  "from":"x70/MergePoint",
+   		  "to":"x28/ProcessItem",
+          "category":"ProcessLink"
+   	  },
+      {
+   		  "from":"x72/MergePoint",
    		  "to":"x45/ProcessItem",
           "category":"ProcessLink"
    	  },
@@ -528,11 +573,6 @@
    		  "from":"x45/ProcessItem",
    		  "to":"x99/End",
           "category":"ProcessLink"
-   	  },
-	  {
-		  "from":"x27/ProcessItem",
-		  "to":"x28/ProcessItem",
-          "category":"ProcessLink"
-	  }
+   	  }
   ]
 }
