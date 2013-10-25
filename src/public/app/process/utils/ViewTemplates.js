@@ -478,7 +478,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                     // the group begins unexpanded;
                     isSubGraphExpanded: false
                 }, new go.Binding('isSubGraphExpanded', 'isSubGraphExpanded').makeTwoWay(),
-                gmake(go.Shape, 'RoundedRectangle', this.styler.addTo('processModel', 'roundedRectangle', 'name', 'BACKGROUND').processModel().roundedRectangle,
+                gmake(go.Shape, 'RoundedRectangle', this.styler.processModel().roundedRectangle,
                             
                       /*
                 * Addition Start
@@ -534,7 +534,6 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
         groupTemplateMap.add('InternalGroup',
             gmake(go.Group, go.Panel.Spot,
                 {
-                    name: '#88FFFF',
                     background: 'transparent',
                     computesBoundsAfterDrag: true,
                     mouseEnter: Savanna.process.utils.GroupEventHandlers.onMouseEnter,

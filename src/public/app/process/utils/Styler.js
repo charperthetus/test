@@ -838,7 +838,7 @@ Ext.define('Savanna.process.utils.Styler', {
          * Defines default JSON for internal group.  This can be overridden via using the addTo and removeFrom JSON modifier functions in the return statement.
          */
         var internalGroup = {
-            "roundedRectangle": { fill: '#dbf7fe', name:'BACKGROUND', stroke: null, minSize: new go.Size(96,96)},
+            "roundedRectangle": { fill: '#dbf7fe', stroke: null, minSize: new go.Size(96,96)},
             "textblockTools": {
                 angle: 270,
                 alignment: go.Spot.Center,

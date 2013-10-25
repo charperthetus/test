@@ -135,10 +135,6 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         Savanna.process.utils.ProcessUtils.startTextEdit(diagram, nodeData);
     },
 
-    addFinalResult: function(e, obj) {
-        Savanna.process.utils.ProcessUtils.addNode(obj, 'ProcessItem', 'Result', true);
-    },
-
     addEnd: function(e, obj) {
         Savanna.process.utils.ProcessUtils.addNode(obj, 'End', 'End', true);
     },
