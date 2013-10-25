@@ -253,7 +253,7 @@ Ext.define('Savanna.process.utils.Styler', {
             "panel": {
                 name: 'StepGadget',
                 opacity: 0.0,
-                alignment: new go.Spot(0.5, 1.0, 12, 0),
+                alignment: new go.Spot(1.0, 1.0, -22, 6),
                 alignmentFocus: go.Spot.Top,
                 click: null
             },
@@ -302,7 +302,7 @@ Ext.define('Savanna.process.utils.Styler', {
             "panel": {
                 name: 'DecisionGadget',
                 opacity: 0.0,
-                alignment: new go.Spot(0.5, 1.0, 25, -1),
+                alignment: new go.Spot(1.0, 1.0, -6, 6),
                 alignmentFocus: go.Spot.Top,
                 click: null
             },

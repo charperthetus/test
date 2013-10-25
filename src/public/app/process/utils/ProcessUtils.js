@@ -266,8 +266,18 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
             selNode = diagram.findNodeForData(mergeNode);
         }
         selNode.isSelected = true;
-    }
+    },
 
+    toggleBackground: function(obj) {
+        var bodyElt = obj.findObject('BODY');
+        if (bodyElt) {
+            if (obj.isSelected) {
+                bodyElt.background = '#f2f2f2';
+            } else {
+                bodyElt.background = 'transparent';
+            }
+        }
+    }
 
 
 
