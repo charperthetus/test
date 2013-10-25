@@ -16,4 +16,9 @@
         $uikit-body-color: $medium-gray,
         $uikit-body-background-color: $medium-gray
     );
+    
+    @include uikit-panel(
+        $uikit-ui: 'left-padding',
+        $uikit-body-padding: $panel-leftpadding-body-padding
+    );
 }
