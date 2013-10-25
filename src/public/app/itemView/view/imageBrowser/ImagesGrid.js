@@ -2,7 +2,7 @@ Ext.define('Savanna.itemView.view.imageBrowser.ImagesGrid', {
     
     extend: 'Ext.container.Container',
 
-    require: 'Savanna.itemView.controller.ImageBrowserController',
+    requires: 'Savanna.itemView.controller.ImageBrowserController',
     
     controller: 'Savanna.itemView.controller.ImageBrowserController',
     
@@ -32,6 +32,8 @@ Ext.define('Savanna.itemView.view.imageBrowser.ImagesGrid', {
         height: 100,
         margin: 10,
         overflowX: 'auto',
+        
+        // Controls and gallery
         items: [{
             xtype: 'button',
             itemId: 'navLeft',

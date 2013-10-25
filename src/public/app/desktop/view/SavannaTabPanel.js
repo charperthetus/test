@@ -31,9 +31,10 @@ Ext.define('Savanna.desktop.view.SavannaTabPanel', {
 
     setupTabBarItems: function() {
         return [{
-            xtype: 'button',
+            xtype: 'tab',
             text:'+',
             ui: 'dark',
+            closable: false,
             menu: {
                 plain: true,
                 items: [

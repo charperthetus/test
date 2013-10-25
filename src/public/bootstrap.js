@@ -5,17 +5,22 @@
  * metadata-driven class system features 
  */
 Ext.Loader.addClassPathMappings({
+  "ThetusUikit.form": "packages/thetus-uikit/overrides/form",
   "Deft.Component": "packages/deft/src/js/event/LiveEventBus.js",
-  "Savanna.itemView.controller.EditHeaderController": "app/itemView/controller/EditQualitiesController.js",
+  "ThetusUikit.panel": "packages/thetus-uikit/overrides/panel",
   "Ext.rtl.EventObjectImpl": "ext/src/rtl/EventObject.js",
+  "ThetusUikit.layout": "packages/thetus-uikit/overrides/layout",
   "Savanna.metadata.view.String": "app/metadata/view/string.js",
+  "ThetusUikit.toolbar": "packages/thetus-uikit/overrides/toolbar",
   "Savanna-Theme": "packages/savanna-theme/overrides",
+  "ThetusUikit.tip": "packages/thetus-uikit/overrides/tip",
   "Deft.InjectableComponent": "packages/deft/src/js/ioc/Injector.js",
+  "ThetusUikit.button": "packages/thetus-uikit/overrides/button",
   "Savanna.metadata.view.Details": "app/metadata/view/details.js",
   "Ext": "ext/src",
-  "Savanna.metadata.view.LongString": "app/metadata/view/longString.js",
   "Ext.ux.layout.component.field.BoxSelectField": "app/components/boxSelect/BoxSelect.js",
-  "ThetusUikit": "packages/thetus-uikit/overrides",
+  "Savanna.metadata.view.LongString": "app/metadata/view/longString.js",
+  "ThetusUikit": "packages/thetus-uikit/src",
   "ThemeDemoApp": "packages/thetus-uikit/overrides",
   "Savanna": "app",
   "Deft": "packages/deft/src/js"
@@ -24,6 +29,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent.ResultsPreviewWindow": [],
   "ThetusUikit.tip.QuickTip": [],
   "Savanna.modelSearch.view.searchComponent.searchBody.searchDals.SearchOptions": [],
+  "Savanna.components.autoComplete.AutoCompleteController": [],
   "Savanna.itemView.controller.AddRelationships": [],
   "Savanna.desktop.view.SavannaWorkspace": [],
   "Savanna.flexpaper.view.FlexpaperEntityWindow": [],
@@ -40,6 +46,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "Ext.ux.layout.component.field.BoxSelectField": [],
   "Savanna.desktop.view.ModelSearchWindow": [],
   "Savanna.crumbnet.view.part.PaletteGroup": [],
+  "Savanna.process.store.ProcessItemStore": [],
   "Savanna.search.model.SearchRequest": [],
   "Ext.ux.DataView.DragSelector": [],
   "Savanna.modelSearch.model.dalSource.CustomSearchDescription": [],
@@ -56,7 +63,9 @@ Ext.ClassManager.addNameAlternateMappings({
   "Deft.promise.Resolver": [
     "Deft.Resolver"
   ],
+  "Savanna.component.ClassificationPanel": [],
   "Savanna.components.boxSelect.BoxSelect": [],
+  "Savanna.itemView.model.IntendedUses": [],
   "Deft.promise.Chain": [
     "Deft.Chain"
   ],
@@ -72,13 +81,16 @@ Ext.ClassManager.addNameAlternateMappings({
   "Savanna.process.model.Template": [],
   "Savanna.search.view.SearchComponent": [],
   "Ext.ux.CellDragDrop": [],
+  "Savanna.process.store.ProcessActionStore": [],
   "Savanna.upload.controller.UploadController": [],
+  "Savanna.process.view.part.ItemList": [],
   "Ext.ux.ajax.Simlet": [],
   "Ext.ux.SlidingPager": [],
   "Savanna.search.controller.resultsComponent.ResultsPreviewContentController": [],
   "Ext.ux.TabReorderer": [],
   "Deft.mixin.Controllable": [],
   "Ext.ux.grid.filter.NumericFilter": [],
+  "Savanna.itemView.controller.ViewRelatedItemsController": [],
   "Savanna.modelSearch.view.searchComponent.searchBody.SearchMap": [],
   "Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsPreviewContent": [],
   "Savanna.process.store.Processes": [],
@@ -87,8 +99,8 @@ Ext.ClassManager.addNameAlternateMappings({
   "Savanna.process.controller.ProcessController": [],
   "Savanna.search.view.searchComponent.searchBody.SearchDals": [],
   "Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent.ResultsPanelToolbar": [],
-  "Savanna.process.model.Process": [],
   "Savanna.crumbnet.view.part.PaletteMenu": [],
+  "Savanna.process.model.Process": [],
   "Savanna.map.view.part.Canvas": [],
   "Savanna.itemView.controller.ItemViewController": [],
   "Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacet": [],
@@ -96,6 +108,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "Savanna.itemView.model.MainItemModel": [],
   "Savanna.search.controller.ResultsComponent": [],
   "Savanna.modelSearch.store.SearchLocation": [],
+  "Savanna.image.view.ImageComponent": [],
   "Savanna.itemView.model.PropertyGroupValueModel": [],
   "Deft.mvc.ComponentSelector": [],
   "Ext.ux.IFrame": [],
@@ -117,6 +130,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "Deft.promise.Deferred": [
     "Deft.Deferred"
   ],
+  "Savanna.image.view.part.ImageViewer": [],
   "Savanna.mixin.Storeable": [],
   "Savanna.modelSearch.controller.ResultsComponent": [],
   "Ext.ux.FieldReplicator": [],
@@ -139,6 +153,8 @@ Ext.ClassManager.addNameAlternateMappings({
   "Savanna.modelSearch.store.ResultsMetadata": [],
   "Ext.ux.GMapPanel": [],
   "Savanna.modelSearch.controller.SearchDals": [],
+  "Savanna.process.view.part.ActionList": [],
+  "Savanna.classification.view.ClassificationBanner": [],
   "Savanna.itemView.view.imageBrowser.ImageThumbnail": [],
   "Deft.util.Function": [
     "Deft.Function"
@@ -182,7 +198,6 @@ Ext.ClassManager.addNameAlternateMappings({
   "Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsOptions": [],
   "ThetusUikit.toolbar.Separator": [],
   "Ext.ux.ToolbarDroppable": [],
-  "Savanna.itemView.controller.AutoCompleteController": [],
   "Savanna.process.view.part.PaletteWindow": [],
   "Savanna.desktop.controller.DesktopController": [],
   "Ext.ux.DataView.Draggable": [],
@@ -220,13 +235,16 @@ Ext.ClassManager.addNameAlternateMappings({
   "Ext.ux.event.Driver": [],
   "Ext.ux.ajax.XmlSimlet": [],
   "Savanna.desktop.view.SearchWindow": [],
+  "Savanna.classification.controller.BannerController": [],
   "Savanna.controller.Factory": [],
   "Savanna.upload.view.part.NewUploadView": [],
   "Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsOptions": [],
   "Deft.mvc.Observer": [],
   "Savanna.crumbnet.view.part.NodeTypeMenu": [],
+  "Savanna.components.DatePicker": [],
   "Savanna.itemView.model.Relationships": [],
   "Savanna.view.PrintModal": [],
+  "Savanna.process.controller.PaletteController": [],
   "Deft.mvc.ViewController": [
     "Deft.ViewController"
   ],
@@ -263,12 +281,10 @@ Ext.ClassManager.addNameAlternateMappings({
   "Ext.ux.TabScrollerMenu": [],
   "Savanna.modelSearch.controller.resultsComponent.ResultsPreviewContentController": [],
   "Savanna.modelSearch.view.searchComponent.SearchToolbar": [],
-  "Savanna.itemView.view.components.AutoCompleteWithTags": [],
   "Savanna.search.model.SearchResult": [],
   "Savanna.desktop.view.AboutWindow": [],
   "Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineTerm": [],
   "Savanna.desktop.view.SavannaTabPanel": [],
-  "Savanna.itemView.view.components.LabeledFieldWithTags": [],
   "Savanna.process.utils.Styler": [],
   "Ext.ux.LiveSearchGridPanel": [],
   "Savanna.process.utils.GroupEventHandlers": [],
@@ -306,7 +322,9 @@ Ext.ClassManager.addNameAlternateMappings({
   "Savanna.itemView.store.Relationships": [],
   "Savanna.itemView.view.header.DisplayLabel": [],
   "Savanna.crumbnet.store.Templates": [],
+  "Savanna.itemView.store.IntendedUses": [],
   "Savanna.metadata.view.Double": [],
+  "Savanna.itemView.controller.EditQualitiesController": [],
   "ThetusUikit.ux.form.SearchField": [],
   "Savanna.modelSearch.controller.resultsComponent.resultsDals.ResultsRefineSearchbarController": [],
   "Savanna.process.model.TemplateGroup": [],
@@ -321,6 +339,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "Savanna.metadata.model.Metadata": [],
   "Savanna.modelSearch.view.searchComponent.SearchBody": [],
   "Savanna.crumbnet.utils.ExtendedLink": [],
+  "Savanna.components.autoComplete.AutoComplete": [],
   "Savanna.search.view.searchComponent.searchBar.SearchAdvancedTextfield": [],
   "Savanna.metadata.view.StringList": [],
   "Savanna.modelSearch.view.searchComponent.SearchBar": [],
@@ -338,6 +357,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "Savanna.view.Viewport": [],
   "Savanna.itemView.view.relatedItems.EditRelatedItems": [],
   "Savanna.modelSearch.view.ResultsGrid": [],
+  "Savanna.itemView.view.header.AddIntendedUses": [],
   "Savanna.desktop.view.UploadWindow": [],
   "Savanna.itemView.view.relatedItems.AddRelationships": [],
   "Ext.ux.event.Maker": [],
@@ -348,6 +368,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineSearchbar": [],
   "Savanna.crumbnet.model.Template": [],
   "Savanna.search.store.ResultsMetadata": [],
+  "Savanna.itemView.view.workflow.WorkflowSelect": [],
   "Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsPanelGrid": [],
   "Savanna.modelSearch.model.SearchResult": [],
   "ThetusUikit.panel.Tool": [],
@@ -362,8 +383,8 @@ Ext.ClassManager.addNameAlternateMappings({
   "Ext.ux.DataTip": [],
   "Savanna.modelSearch.view.searchComponent.searchBody.SearchDals": [],
   "Savanna.view.Login": [],
-  "Savanna.itemView.view.relatedProcesses.RelatedProcesses": [],
   "Savanna.metadata.controller.MetadataViewController": [],
+  "Savanna.itemView.view.relatedProcesses.RelatedProcesses": [],
   "Ext.ux.ajax.JsonSimlet": [],
   "Savanna.search.model.dalSource.CustomSearchParameter": [],
   "Savanna.search.view.searchComponent.SearchBar": [],
@@ -378,6 +399,7 @@ Ext.ClassManager.addNameAliasMappings({
   "Savanna.modelSearch.view.searchComponent.searchBody.searchDals.SearchOptions": [
     "widget.model_search_searchDals_searchoptions"
   ],
+  "Savanna.components.autoComplete.AutoCompleteController": [],
   "Savanna.itemView.controller.AddRelationships": [],
   "Savanna.desktop.view.SavannaWorkspace": [
     "widget.desktop_savannaworkspace"
@@ -410,6 +432,7 @@ Ext.ClassManager.addNameAliasMappings({
   "Savanna.crumbnet.view.part.PaletteGroup": [
     "widget.crumbnet_part_palette-group"
   ],
+  "Savanna.process.store.ProcessItemStore": [],
   "Savanna.search.model.SearchRequest": [],
   "Ext.ux.DataView.DragSelector": [],
   "Savanna.modelSearch.model.dalSource.CustomSearchDescription": [],
@@ -430,10 +453,12 @@ Ext.ClassManager.addNameAliasMappings({
   ],
   "Savanna.crumbnet.model.Graph": [],
   "Deft.promise.Resolver": [],
+  "Savanna.component.ClassificationPanel": [],
   "Savanna.components.boxSelect.BoxSelect": [
     "widget.boxselect",
     "widget.comboboxselect"
   ],
+  "Savanna.itemView.model.IntendedUses": [],
   "Deft.promise.Chain": [],
   "Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent.ResultsMap": [
     "widget.model_search_resultsmap"
@@ -459,7 +484,11 @@ Ext.ClassManager.addNameAliasMappings({
   "Ext.ux.CellDragDrop": [
     "plugin.celldragdrop"
   ],
+  "Savanna.process.store.ProcessActionStore": [],
   "Savanna.upload.controller.UploadController": [],
+  "Savanna.process.view.part.ItemList": [
+    "widget.process_itemlist"
+  ],
   "Ext.ux.ajax.Simlet": [
     "simlet.basic"
   ],
@@ -470,6 +499,7 @@ Ext.ClassManager.addNameAliasMappings({
   "Ext.ux.grid.filter.NumericFilter": [
     "gridfilter.numeric"
   ],
+  "Savanna.itemView.controller.ViewRelatedItemsController": [],
   "Savanna.modelSearch.view.searchComponent.searchBody.SearchMap": [
     "widget.model_search_searchmap"
   ],
@@ -488,10 +518,10 @@ Ext.ClassManager.addNameAliasMappings({
   "Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent.ResultsPanelToolbar": [
     "widget.model_search_resultspaneltoolbar"
   ],
-  "Savanna.process.model.Process": [],
   "Savanna.crumbnet.view.part.PaletteMenu": [
     "widget.crumbnet_part_palette-menu"
   ],
+  "Savanna.process.model.Process": [],
   "Savanna.map.view.part.Canvas": [
     "widget.map_canvas"
   ],
@@ -505,6 +535,9 @@ Ext.ClassManager.addNameAliasMappings({
   "Savanna.itemView.model.MainItemModel": [],
   "Savanna.search.controller.ResultsComponent": [],
   "Savanna.modelSearch.store.SearchLocation": [],
+  "Savanna.image.view.ImageComponent": [
+    "widget.image_component"
+  ],
   "Savanna.itemView.model.PropertyGroupValueModel": [],
   "Deft.mvc.ComponentSelector": [],
   "Ext.ux.IFrame": [
@@ -538,6 +571,9 @@ Ext.ClassManager.addNameAliasMappings({
   ],
   "ThemeDemoApp.picker.Month": [],
   "Deft.promise.Deferred": [],
+  "Savanna.image.view.part.ImageViewer": [
+    "widget.image_part_imageviewer"
+  ],
   "Savanna.mixin.Storeable": [],
   "Savanna.modelSearch.controller.ResultsComponent": [],
   "Ext.ux.FieldReplicator": [],
@@ -574,6 +610,12 @@ Ext.ClassManager.addNameAliasMappings({
     "widget.gmappanel"
   ],
   "Savanna.modelSearch.controller.SearchDals": [],
+  "Savanna.process.view.part.ActionList": [
+    "widget.process_actionlist"
+  ],
+  "Savanna.classification.view.ClassificationBanner": [
+    "widget.classification_banner"
+  ],
   "Savanna.itemView.view.imageBrowser.ImageThumbnail": [
     "widget.itemview_imagethumbnail"
   ],
@@ -657,7 +699,6 @@ Ext.ClassManager.addNameAliasMappings({
   ],
   "ThetusUikit.toolbar.Separator": [],
   "Ext.ux.ToolbarDroppable": [],
-  "Savanna.itemView.controller.AutoCompleteController": [],
   "Savanna.process.view.part.PaletteWindow": [
     "widget.process_palettewindow"
   ],
@@ -722,6 +763,7 @@ Ext.ClassManager.addNameAliasMappings({
   "Savanna.desktop.view.SearchWindow": [
     "widget.desktop_searchwindow"
   ],
+  "Savanna.classification.controller.BannerController": [],
   "Savanna.controller.Factory": [],
   "Savanna.upload.view.part.NewUploadView": [
     "widget.upload_part_newupload"
@@ -733,10 +775,12 @@ Ext.ClassManager.addNameAliasMappings({
   "Savanna.crumbnet.view.part.NodeTypeMenu": [
     "widget.crumbnet_part_nodeTypeMenu"
   ],
+  "Savanna.components.DatePicker": [],
   "Savanna.itemView.model.Relationships": [],
   "Savanna.view.PrintModal": [
     "widget.print-modal"
   ],
+  "Savanna.process.controller.PaletteController": [],
   "Deft.mvc.ViewController": [],
   "Ext.ux.form.MultiSelect": [
     "widget.multiselect",
@@ -790,9 +834,6 @@ Ext.ClassManager.addNameAliasMappings({
   "Savanna.modelSearch.view.searchComponent.SearchToolbar": [
     "widget.model_search_searchtoolbar"
   ],
-  "Savanna.itemView.view.components.AutoCompleteWithTags": [
-    "widget.auto_complete_with_tags"
-  ],
   "Savanna.search.model.SearchResult": [],
   "Savanna.desktop.view.AboutWindow": [
     "widget.desktop_aboutwindow"
@@ -802,9 +843,6 @@ Ext.ClassManager.addNameAliasMappings({
   ],
   "Savanna.desktop.view.SavannaTabPanel": [
     "widget.desktop_tabpanel"
-  ],
-  "Savanna.itemView.view.components.LabeledFieldWithTags": [
-    "widget.labeled_field_with_tags"
   ],
   "Savanna.process.utils.Styler": [],
   "Ext.ux.LiveSearchGridPanel": [],
@@ -859,11 +897,13 @@ Ext.ClassManager.addNameAliasMappings({
     "widget.itemview_displaylabel"
   ],
   "Savanna.crumbnet.store.Templates": [],
+  "Savanna.itemView.store.IntendedUses": [],
   "Savanna.metadata.view.Double": [
     "widget.metadata_double"
   ],
+  "Savanna.itemView.controller.EditQualitiesController": [],
   "ThetusUikit.ux.form.SearchField": [
-    "widget.searchfield"
+    "widget.thetus-searchfield"
   ],
   "Savanna.modelSearch.controller.resultsComponent.resultsDals.ResultsRefineSearchbarController": [],
   "Savanna.process.model.TemplateGroup": [],
@@ -890,6 +930,9 @@ Ext.ClassManager.addNameAliasMappings({
     "widget.model_searchbody"
   ],
   "Savanna.crumbnet.utils.ExtendedLink": [],
+  "Savanna.components.autoComplete.AutoComplete": [
+    "widget.auto_complete"
+  ],
   "Savanna.search.view.searchComponent.searchBar.SearchAdvancedTextfield": [
     "widget.searchadvanced_textfield"
   ],
@@ -929,6 +972,9 @@ Ext.ClassManager.addNameAliasMappings({
   "Savanna.modelSearch.view.ResultsGrid": [
     "widget.modelsearch_resultsGrid"
   ],
+  "Savanna.itemView.view.header.AddIntendedUses": [
+    "widget.itemview_intendeduses_add_picker"
+  ],
   "Savanna.desktop.view.UploadWindow": [
     "widget.desktop_uploadwindow"
   ],
@@ -951,6 +997,9 @@ Ext.ClassManager.addNameAliasMappings({
   ],
   "Savanna.crumbnet.model.Template": [],
   "Savanna.search.store.ResultsMetadata": [],
+  "Savanna.itemView.view.workflow.WorkflowSelect": [
+    "widget.itemview_workflow_select"
+  ],
   "Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsPanelGrid": [
     "widget.search_resultspanelgrid"
   ],
@@ -971,10 +1020,10 @@ Ext.ClassManager.addNameAliasMappings({
   "Savanna.view.Login": [
     "widget.login"
   ],
+  "Savanna.metadata.controller.MetadataViewController": [],
   "Savanna.itemView.view.relatedProcesses.RelatedProcesses": [
     "widget.itemview_related_processes"
   ],
-  "Savanna.metadata.controller.MetadataViewController": [],
   "Ext.ux.ajax.JsonSimlet": [
     "simlet.json"
   ],
@@ -999,4 +1048,3 @@ Ext.Loader.loadScript("packages/thetus-uikit/overrides/toolbar/Separator.js");
 Ext.Loader.loadScript("packages/thetus-uikit/overrides/form/field/Number.js");
 Ext.Loader.loadScript("packages/thetus-uikit/overrides/picker/Month.js");
 Ext.Loader.loadScript("packages/thetus-uikit/overrides/panel/Tool.js");
-Ext.Loader.loadScript("packages/thetus-uikit/overrides/ux/form/SearchField.js");

@@ -11,6 +11,13 @@ Ext.define('Savanna.itemView.view.header.EditHeader', {
 
     alias: 'widget.itemview_edit_header',
 
+    controller: 'Savanna.itemView.controller.EditHeaderController',
+
+    requires: [
+        'Savanna.itemView.controller.EditHeaderController',
+        'Savanna.itemView.view.header.AddIntendedUses'
+    ],
+
     cls: 'itemview',
 
     layout: 'vbox',
@@ -27,8 +34,11 @@ Ext.define('Savanna.itemView.view.header.EditHeader', {
             text: 'Alias'
         },
         {
-            xtype: 'auto_complete_with_tags',
-            labelType: 'Click to add an Alias'
+            xtype: 'auto_complete',
+            labelType: 'Click to add an Alias',
+            itemId: 'addAliasBox',
+            showTags: true,
+            hasNoStore: true
         },
         {
             xtype: 'label',
@@ -41,8 +51,10 @@ Ext.define('Savanna.itemView.view.header.EditHeader', {
             width: '100%',
             items: [
                 {
-                    xtype: 'auto_complete_with_tags',
+                    xtype: 'auto_complete',
                     labelType: 'Click to add an Intended Use',
+                    showTags: true,
+                    itemId: 'addIntendedUseBox',
                     store: Ext.create('Ext.data.Store', {
                         fields: ['photo', 'title', 'description', 'isFeatured', 'value', 'abbr'],
 
@@ -53,63 +65,72 @@ Ext.define('Savanna.itemView.view.header.EditHeader', {
                                 description: 'Vroom vroom!',
                                 isFeatured: false,
                                 value: 'Car',
-                                abbr: 'Ca'
+                                abbr: 'Ca',
+                                uri: 'xx1'
                             }, {
                                 photo: 'http://4.bp.blogspot.com/-8iGyCfFuLuU/T5QA-1t4QTI/AAAAAAAAAXg/izbeFI2PvC0/s1600/korea.jpg',
                                 title: 'City',
                                 description: 'It\'s a beautiful night, such a beautful night.',
                                 isFeatured: false,
                                 value: 'City',
-                                abbr: 'Ci'
+                                abbr: 'Ci',
+                                uri: 'xx2'
                             }, {
                                 photo: 'http://www.dynamicdrive.com/cssexamples/media/ocean.jpg',
                                 title: 'Ocean',
                                 description: 'Look at me! I\'m an ocean!',
                                 isFeatured: false,
                                 value: 'Ocean',
-                                abbr: 'Oc'
+                                abbr: 'Oc',
+                                uri: 'xx3'
                             }, {
                                 photo: 'http://media.lonelyplanet.com/lpi/24744/24744-14/469x264.jpg',
                                 title: 'Lake',
                                 description: 'I\'d rather not be rowing.',
                                 isFeatured: false,
                                 value: 'Lake',
-                                abbr: 'La'
+                                abbr: 'La',
+                                uri: 'xx4'
                             }, {
                                 photo: 'http://3.bp.blogspot.com/-kyrXb2orUgA/Te9KO0AxR5I/AAAAAAAAErY/X_XkbgU107Q/s1600/Blue_Ocean_17723522_std.jpg',
                                 title: 'Tropics',
                                 description: 'Boy, what a sick dock.',
                                 isFeatured: true,
                                 value: 'Tropics',
-                                abbr: 'Tr'
+                                abbr: 'Tr',
+                                uri: 'xx5'
                             }, {
                                 photo: 'http://1.bp.blogspot.com/-iOPb28o8svc/TpvN-dWORKI/AAAAAAAAAuw/8pPLujrCSQ0/s1600/toronto.jpg',
                                 title: 'Dark city',
                                 description: 'Kind of reminds me of Seattle.',
                                 isFeatured: false,
                                 value: 'Dark City',
-                                abbr: 'DC'
+                                abbr: 'DC',
+                                uri: 'xx6'
                             }, {
                                 photo: 'http://www.ebaytemplate.info/wp-content/gallery/germany/elbe-river-dresden-germany.jpg',
                                 title: 'Old City',
                                 description: 'This is an older city.',
                                 isFeatured: false,
                                 value: 'Old City',
-                                abbr: 'Oc'
+                                abbr: 'Oc',
+                                uri: 'xx7'
                             }, {
                                 photo: 'http://blog.educationusa.or.kr/wp-content/uploads/2008/07/dokdo-islets.jpg',
                                 title: 'Boating',
                                 description: 'Sure beats rowing',
                                 isFeatured: false,
                                 value: 'Boating',
-                                abbr: 'Bo'
+                                abbr: 'Bo',
+                                uri: 'xx8'
                             }, {
                                 photo: 'http://villaluxe.com/wp-content/gallery/pamillaretreat/maxico-palmilla-04.jpg',
                                 title: 'Patio',
                                 description: 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.',
                                 isFeatured: false,
                                 value: 'Patio',
-                                abbr: 'Pa'
+                                abbr: 'Pa',
+                                uri: 'xx9'
                             }
                         ]
                     }),
@@ -120,6 +141,28 @@ Ext.define('Savanna.itemView.view.header.EditHeader', {
                     xtype: 'button',
                     text: 'Chooser',
                     itemId: 'intendedUseChooserBtn'
+                }
+            ]
+        },
+        {
+            xtype: 'label',
+            margin: "20 0 0 0",
+            text: 'Type'
+        },
+        {
+            xtype: 'container',
+            layout: 'hbox',
+            margin: "0 0 0 -11",
+            items: [
+                {
+                    xtype: 'button',
+                    itemId: 'parentBtn',
+                    text: 'Parent Class'
+                },
+                {
+                    xtype: 'button',
+                    itemId: 'parentChooser',
+                    text: "Chooser"
                 }
             ]
         },
