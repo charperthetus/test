@@ -494,8 +494,7 @@ Ext.define('Savanna.process.utils.Styler', {
          * @return JSON
          */
         var adornmentsShape = function(json){
-            console.log(json);
-            // Provide JSON as a parameter for functions when overridding JSON properties, if nothing is passed it will be undefined and considered an optional parameter.  
+            // Provide JSON as a parameter for functions when overridding JSON properties, if nothing is passed it will be undefined and considered an optional parameter.
             if ( json !== undefined ){
                 if ( jsonDriller(json, "angle") !== '' ){ 
                     adornments['HalfEllipse'].angle = json['angle'];
