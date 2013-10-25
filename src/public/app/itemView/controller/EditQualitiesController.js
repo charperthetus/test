@@ -21,19 +21,25 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
 
     // NOTE: Properties have certain form elements based on what "type" they are.
     addProp: function (propName, propData, aView) {
-        if (!this.getView().queryById('prop_' + propName.replace(/[\s']/g, "_"))) {
+        if (!this.getView().queryById('prop_' + propName.replace(/[\s']/g, '_'))) {
 
-            var qualityType = propData.type,
-                closeButton = Ext.create('Ext.button.Button', { text: '(X)' }),
-                picker = Ext.create('Ext.button.Button', {text: 'Chooser' }),
+            var qualityType = propData.type,            
                 formControls = [],
-
+                closeButton = Ext.create('Ext.button.Button', { 
+                    text: 'Close',
+                     
+                }),
+                picker = Ext.create('Ext.button.Button', {
+                    text: 'Chooser' 
+                }),
                 newProp = Ext.create('Savanna.components.autoComplete.AutoComplete', {
-                    itemId: 'prop_' + propName.replace(/[\s']/g, "_"),
+                    itemId: 'prop_' + propName.replace(/[\s']/g, '_'),
                     propData: propData,
                     showTags: true,
                     preLabel: propName,
                     hasControls: true,
+
+                    // TODO: Hook up to live data
                     store: Ext.create('Ext.data.Store', {
                         fields: ['photo', 'title', 'description', 'isFeatured', 'value', 'abbr', 'type'],
 
@@ -111,7 +117,6 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
                 case 'string':
                     break;
                 case 'list':
-                    console.log(qualityType);
                     formControls = [picker];
                     break;
                 case 'boolean':
