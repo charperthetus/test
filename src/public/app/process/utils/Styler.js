@@ -832,7 +832,28 @@ Ext.define('Savanna.process.utils.Styler', {
                         }
         };
 
-        /* 
+        /*
+         * @private
+         * altsGroup - JSON Object
+         * Defines default JSON for internal group.  This can be overridden via using the addTo and removeFrom JSON modifier functions in the return statement.
+         */
+        var altsGroup = {
+            "roundedRectangle": { fill: null, stroke: palette.black, desiredSize: new go.Size(125,125)},
+            "gridLayout":{ wrappingWidth: 3, alignment: go.GridLayout.Position, cellSize: new go.Size(1, 1) },
+            "placeholder":{
+                            padding: new go.Margin(16, 16),
+                            background: 'transparent',
+                            mouseDragEnter: function(e, obj) {
+                                obj.background = 'orange';
+                            },
+                            mouseDragLeave: function(e, obj) {
+                                obj.background = 'transparent';
+                            },
+                            mouseDrop: null //Savanna.process.utils.GroupEventHandlers.onActionGroupMouseDrop
+                        }
+        };
+
+        /*
          * @private
          * internalGroupShape
          * Allows you to maniplute JSON for the shape and then returns the JSON you called to be used.
@@ -879,7 +900,30 @@ Ext.define('Savanna.process.utils.Styler', {
             return internalGroup;
         };
 
-        /* 
+        /*
+         * @private
+         * altsGroupShape
+         * Allows you to maniplute JSON for the shape and then returns the JSON you called to be used.
+         * @param json - JSON - Accepted Lookup keys defined below. ( Optional Parameter )
+         *      - mouseDrop
+         * @return JSON
+         */
+        var altsGroupShape = function(json){
+
+            // Provide JSON as a parameter for functions when overridding JSON properties, if nothing is passed it will be undefined and considered an optional parameter.
+            if ( json !== undefined ){
+
+                //jsonDriller looks into the JSON to find the key you are passing.  If the key was in the passed JSON then it will override the JSON with your parameter.
+                if ( jsonDriller(json, "mouseDrop") !== '' ){
+                    //This will be adding the click handler to the JSON
+                    altsGroup["placeholder"].mouseDrop = json["mouseDrop"];
+                }
+            }
+
+            return altsGroup;
+        };
+
+        /*
          * @private
          * linker - JSON Object
          * Defines default JSON for linker shape that links two shapes.  This can be overridden via using the addTo and removeFrom JSON modifier functions in the return statement.
@@ -1075,7 +1119,7 @@ Ext.define('Savanna.process.utils.Styler', {
                 return internalGroupShape(json);
             },
             altsGroup: function(json){
-                return internalGroupShape(json);
+                return altsGroupShape(json);
             },
             paletteCircle: function(){
                 return paletteInternalCircle();
