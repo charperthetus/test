@@ -67,7 +67,7 @@ Ext.define('Savanna.process.utils.Styler', {
             "endColor": "#DC3C00",
             "graygrad": { 0: "rgb(150, 150, 150)", 0.5: "rgb(86, 86, 86)", 1: "rgb(86, 86, 86)" }, 
             "greengrad": { 0: "rgb(150, 150, 150)", 0.5: "rgb(86, 86, 86)", 1: "rgb(86, 86, 86)" }, 
-            "redgrad": { 0: "rgb(150, 150, 150)", 0.5: "rgb(86, 86, 86)", 1: "rgb(86, 86, 86)" }, 
+            "redgrad": { 0: "rgb(150, 150, 150)", 0.5: "rgb(86, 86, 86)", 1: "rgb(86, 86, 86)" },
             "yellowgrad": { 0: "rgb(150, 150, 150)", 0.5: "rgb(86, 86, 86)", 1: "rgb(86, 86, 86)" } 
         };
 
@@ -640,8 +640,8 @@ Ext.define('Savanna.process.utils.Styler', {
             "outline": {
                 fill: palette.startColor,
                 stroke: null,
-                width: 60, 
-                height: 60,
+                width: 48,
+                height: 48,
                 portId: "",                          // now the Shape is the port, not the whole Node
           fromSpot: go.Spot.Right, toSpot: go.Spot.Left 
             },
@@ -672,13 +672,13 @@ Ext.define('Savanna.process.utils.Styler', {
             "outline": {
                 fill: palette.endColor,
                 stroke: null,
-                width: 32, 
-                height: 32
+                width: 48,
+                height: 48
             },
             "textblock": {
                 margin: 4,
-                font: properties.fontWeight + properties.fontSize + properties.font,
-                stroke: palette.darkText
+                font: properties.fontSize + properties.font,
+                stroke: palette.lightText
             }
         };
 
@@ -838,7 +838,7 @@ Ext.define('Savanna.process.utils.Styler', {
          * Defines default JSON for internal group.  This can be overridden via using the addTo and removeFrom JSON modifier functions in the return statement.
          */
         var internalGroup = {
-            "roundedRectangle": { fill: '#dbf7fe', name:'BACKGROUND', stroke: null, desiredSize: new go.Size(125,125)},
+            "roundedRectangle": { fill: '#dbf7fe', name:'BACKGROUND', stroke: null, minSize: new go.Size(96,96)},
             "textblockTools": {
                 angle: 270,
                 alignment: go.Spot.Center,

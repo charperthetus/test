@@ -201,10 +201,8 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
 
         nodeTemplateMap.add('End',
             gmake(go.Node, go.Panel.Spot, Savanna.process.utils.ViewTemplates.nodeStyle(),
-                gmake(go.Panel, go.Panel.Horizontal,
-                    gmake(go.Shape, 'StopSign', this.styler.end().outline),
-                    gmake(go.TextBlock, 'End', this.styler.end().textblock)
-                ),
+                gmake(go.Shape, 'StopSign', this.styler.end().outline),
+                gmake(go.TextBlock, 'End', this.styler.end().textblock),
                 this.makeTopPort()
             )
         );
