@@ -5,6 +5,8 @@
  */
 Ext.define('Savanna.process.utils.Styler', {
 
+    singleton: true,
+
     /*
      * constructor
      * Create the styler object.
