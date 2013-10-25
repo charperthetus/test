@@ -59,8 +59,8 @@ $dal-panel-padding-text: $dal-panel-padding + 90px;
 	}
 }
 .#{$prefix}box-item.search-dal {
- 	padding: 0 0 20px 0;
- 	border-top: 1px solid #ccc;
+ 	padding: 0;
+ 	border-top: 1px solid #ededed;
 	
 	.#{$prefix}form-cb-label-after{
 		margin-right: 15px;
