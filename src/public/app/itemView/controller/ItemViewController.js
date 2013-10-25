@@ -15,6 +15,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     mixins: {
         storeable: 'Savanna.mixin.Storeable'
     },
+
     control: {
         editModeButton: {
             click: 'toggleEditMode'
@@ -45,9 +46,17 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         },
         relationshipButton:  {
             click: 'onRelationshipSelect'
+        },
+        relatedItemsView: {
+            'ItemView:OpenItem': 'openItem'
+        },
+        itemViewHeaderView: {
+            'ItemView:OpenItem': 'openItem'
+        },
+        itemViewHeaderEdit: {
+            'ItemView:OpenItem': 'openItem'
         }
     },
-
 
     constructor: function (options) {
         this.opts = options || {};
@@ -84,6 +93,9 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     },
 
     onEditDone:function() {
+        var myStore = Ext.data.StoreManager.lookup(this.store);
+        var headerComponent = this.getView().queryById('itemViewHeaderView');
+        headerComponent.reconfigure(myStore.getAt(0).propertyGroupsStore.getAt(0).valuesStore);
         this.getView().getLayout().setActiveItem(0);
         this.getView().setEditMode(!this.getView().getEditMode());
     },
@@ -115,7 +127,8 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
             //ToDo: do what needs to be done for edit version of header
             var headerEditComponent = me.getView().queryById('itemViewHeaderEdit');
             headerEditComponent.setTitle(record[0].data.label);
-            headerEditComponent
+            headerEditComponent.store = record[0].propertyGroupsStore.getAt(0).valuesStore;
+            headerEditComponent.fireEvent('EditHeader:StoreSet');
 
             /*
             Related Processes View
@@ -147,36 +160,13 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
             Related Items View
              */
             var relatedItemView = me.getView().queryById('relatedItemsView');
-
-            Ext.each(record[0].propertyGroupsStore.getAt(2).valuesStore.data.items, function (relatedItemsGroup) {
-
-                var grid = Ext.create('Ext.grid.Panel', {
-                    store: relatedItemsGroup.valuesStore,
-                    columns: [
-                        {
-                            xtype: 'templatecolumn',
-                            tpl: Ext.create('Ext.XTemplate',
-                                '<input type="button" name="{value}" value="{label}" id="openRelatedItem" />'
-                            ),
-                            text: relatedItemsGroup.get('label'),
-                            flex: 1,
-                            sortable: false
-                        }
-                    ],
-                    listeners: {
-                        itemclick: me.onRelatedItemClick
-                    }
-                });
-
-                relatedItemView.add(grid);
-
-            });
+            relatedItemView.fireEvent('ViewRelatedItems:SetupData', record[0].propertyGroupsStore.getAt(2).valuesStore.data.items);
 
             /*
             are we creating a new item?
              */
             if(me.getView().getEditMode())  {
-                me.getView().setActiveTab(1);
+                me.getView().getLayout().setActiveItem(1);
             }
 
         } else {
@@ -194,7 +184,10 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     },
 
     onWorkflowSelect:function() {
-       console.log('workflow selected');
+        Ext.create('Savanna.itemView.view.workflow.WorkflowSelect', {
+            width: 500,
+            height: 425
+        });
     },
 
     onSearchSelect:function() {
@@ -206,25 +199,6 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
             width: 400,
             height: 300
         });
-    },
-
-    onRelatedItemClick: function (grid, record, item, index, e, eOpts) {
-
-        if (e.target.id == "openRelatedItem") {
-
-            var itemView = Ext.create('Savanna.itemView.view.ItemViewer', {
-                title: e.target.value,
-                itemUri: e.target.name,
-                closable: true,
-                autoScroll: true,
-                tabConfig: {
-                    ui: 'dark'
-                }
-            });
-
-            Savanna.app.fireEvent('search:itemSelected', itemView);
-
-        }
     },
 
     // TODO: Keeping for now in order to pull later into own controller
@@ -261,5 +235,19 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
                 field.reset();
             }
         }
+    },
+
+    openItem: function (itemName, itemUri) {
+        var itemView = Ext.create('Savanna.itemView.view.ItemViewer', {
+            title: itemName,
+            itemUri: itemUri,
+            closable: true,
+            autoScroll: true,
+            tabConfig: {
+                ui: 'dark'
+            }
+        });
+
+        Savanna.app.fireEvent('search:itemSelected', itemView);
     }
 });

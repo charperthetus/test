@@ -23,7 +23,8 @@ Ext.define('Savanna.components.autoComplete.AutoComplete', {
         propData: null,
         showTags: false,
         hasNoStore: false,
-        preLabel: ''
+        preLabel: '',
+        hasControls: false
     },
 
     attachedStore: null,
@@ -36,7 +37,7 @@ Ext.define('Savanna.components.autoComplete.AutoComplete', {
         afterrender: function() {
             if (this.getTagValues()) {
                 for (var i = 0; i < this.getTagValues().length; i++) {
-                    this.addTerm(this.getTagValues()[i]);
+                    this.addTag(this.getTagValues()[i]);
                 }
             }
         }
@@ -53,21 +54,36 @@ Ext.define('Savanna.components.autoComplete.AutoComplete', {
     },
 
     buildItems: function() {
+        // If autocomplete has additional controls, generate a space to insert them.
+        var controlSpace = {};
+
+        if (this.getHasControls()) {
+            controlSpace = { xtype: 'container', flex: 1 };
+        }
+
         return [
             {
-                xtype: 'combo',
-                itemId: 'autoCompleteBox',
-                displayField: 'title',
-                typeAhead: false,
-                hideTrigger: true,
-                anchor: '100%',
+                xtype: 'container',
+                layout: 'hbox',
                 width: '100%',
-                minChars: 1,
-                store: this.store,
-                fieldLabel: this.getPreLabel(),
-                enableKeyEvents: true,
-                emptyText: this.getLabelType(),
-                queryMode: 'local'
+                items: [
+                    {
+                        xtype: 'combo',
+                        itemId: 'autoCompleteBox',
+                        displayField: 'title',
+                        typeAhead: false,
+                        hideTrigger: true,
+                        anchor: '100%',
+                        flex: 2,
+                        minChars: 1,
+                        store: this.store,
+                        fieldLabel: this.getPreLabel(),
+                        enableKeyEvents: true,
+                        emptyText: this.getLabelType(),
+                        queryMode: 'local'
+                    },
+                    controlSpace
+                ]
             },
             {
                 xtype: 'container',
@@ -79,10 +95,10 @@ Ext.define('Savanna.components.autoComplete.AutoComplete', {
         ];
     },
 
-    addTerm: function (tag) {
-        if (this.queryById('term_' + tag.replace(/[\s'"]/g, "_")) === null) {
+    addTag: function (tag) {
+        if (this.queryById('tag_' + tag.replace(/[\s'"]/g, "_")) === null) {
             var newTag = Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineTerm', {
-                itemId: 'term_' + tag.replace(/[\s'"]/g, "_")
+                itemId: 'tag_' + tag.replace(/[\s'"]/g, "_")
             });
 
             newTag.setTerm(tag);

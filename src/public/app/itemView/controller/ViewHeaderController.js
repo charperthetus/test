@@ -9,18 +9,10 @@ Ext.define('Savanna.itemView.controller.ViewHeaderController', {
             itemclick: 'openParentItem'
         }
     },
+
     openParentItem: function( grid, record, item, index, e, eOpts) {
         if (e.target.id == "openParentItem") {
-            var itemView = Ext.create('Savanna.itemView.view.ItemViewer', {
-                title: e.target.value,
-                itemUri: e.target.name,
-                closable: true,
-                autoScroll: true,
-                tabConfig: {
-                    ui: 'dark'
-                }
-            });
-            Savanna.app.fireEvent('search:itemSelected', itemView);
+            this.getView().fireEvent('ItemView:OpenItem', e.target.value, e.target.name);
         }
     }
 });
