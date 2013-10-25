@@ -15,7 +15,6 @@ Ext.require('Savanna.Config');
 
 Ext.require('Savanna.metadata.view.Details');
 Ext.require('Savanna.metadata.view.String');
-Ext.require('Savanna.metadata.view.LongString');
 Ext.require('Savanna.metadata.view.Date');
 Ext.require('Savanna.metadata.view.Uri');
 Ext.require('Savanna.metadata.view.Integer');

@@ -10,7 +10,7 @@ Ext.define('Savanna.metadata.controller.MetadataViewController', {
 
     requires: [
         'Savanna.metadata.view.String',
-        'Savanna.metadata.view.LongString',
+        'Savanna.metadata.view.StringVerticalEdit',
         'Savanna.metadata.view.Date',
         'Savanna.metadata.view.Uri',
         'Savanna.metadata.view.Integer',
@@ -99,7 +99,7 @@ Ext.define('Savanna.metadata.controller.MetadataViewController', {
         // TODO: need to create and add a classification thing.
 
         Ext.Array.each(me.getView().store.data.items, function(metadata) {
-            var typeToAdd = me.getTypeFromName(metadata.data.type);
+            var typeToAdd = me.getTypeFromName(metadata.data.type, metadata.data.key);
 
             if('' != typeToAdd) {
                 var valueObject = {
@@ -113,21 +113,24 @@ Ext.define('Savanna.metadata.controller.MetadataViewController', {
                 };
                 var metadataView = me.createViewForType(typeToAdd, valueObject );
                 if (metadataView) {
-                    me.getView().add( metadataView );
+                    me.getView().down('#wrapperPanel').add( metadataView );
                 }
             }
         });
     },
 
-    getTypeFromName: function(name) {
+    getTypeFromName: function(name, key) {
         var typeToAdd = '';
-
         switch(name){
             case 'String':
-                typeToAdd = 'Savanna.metadata.view.String';
+                if('docTitle' == key || 'document-description' == key) { // I don't like these special cases, but design insists
+                    typeToAdd = 'Savanna.metadata.view.StringVerticalEdit';
+                } else {
+                    typeToAdd = 'Savanna.metadata.view.String';
+                }
                 break;
             case 'LongString':
-                typeToAdd = 'Savanna.metadata.view.LongString';
+                typeToAdd = 'Savanna.metadata.view.StringVerticalEdit';
                 break;
             case 'Date':
                 typeToAdd = 'Savanna.metadata.view.Date';
