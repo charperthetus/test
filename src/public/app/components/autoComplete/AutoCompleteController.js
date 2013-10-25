@@ -25,7 +25,7 @@ Ext.define('Savanna.components.autoComplete.AutoCompleteController', {
         },
         closebutton: {
             live: true,
-            selector: 'container button',
+            selector: 'container #close',
             listeners: {
                 click: 'closeForm'
             }
