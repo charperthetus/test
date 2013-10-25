@@ -333,8 +333,8 @@ Ext.ClassManager.addNameAlternateMappings({
   "Savanna.process.view.part.Palette": [],
   "Savanna.metadata.model.Metadata": [],
   "Savanna.modelSearch.view.searchComponent.SearchBody": [],
-  "Savanna.components.autoComplete.AutoComplete": [],
   "Savanna.crumbnet.utils.ExtendedLink": [],
+  "Savanna.components.autoComplete.AutoComplete": [],
   "Savanna.search.view.searchComponent.searchBar.SearchAdvancedTextfield": [],
   "Savanna.metadata.view.StringList": [],
   "Savanna.modelSearch.view.searchComponent.SearchBar": [],
@@ -363,6 +363,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineSearchbar": [],
   "Savanna.crumbnet.model.Template": [],
   "Savanna.search.store.ResultsMetadata": [],
+  "Savanna.itemView.view.workflow.WorkflowSelect": [],
   "Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsPanelGrid": [],
   "Savanna.modelSearch.model.SearchResult": [],
   "ThetusUikit.panel.Tool": [],
@@ -377,8 +378,8 @@ Ext.ClassManager.addNameAlternateMappings({
   "Ext.ux.DataTip": [],
   "Savanna.modelSearch.view.searchComponent.searchBody.SearchDals": [],
   "Savanna.view.Login": [],
-  "Savanna.itemView.view.relatedProcesses.RelatedProcesses": [],
   "Savanna.metadata.controller.MetadataViewController": [],
+  "Savanna.itemView.view.relatedProcesses.RelatedProcesses": [],
   "Ext.ux.ajax.JsonSimlet": [],
   "Savanna.search.model.dalSource.CustomSearchParameter": [],
   "Savanna.search.view.searchComponent.SearchBar": [],
@@ -912,10 +913,10 @@ Ext.ClassManager.addNameAliasMappings({
   "Savanna.modelSearch.view.searchComponent.SearchBody": [
     "widget.model_searchbody"
   ],
+  "Savanna.crumbnet.utils.ExtendedLink": [],
   "Savanna.components.autoComplete.AutoComplete": [
     "widget.auto_complete"
   ],
-  "Savanna.crumbnet.utils.ExtendedLink": [],
   "Savanna.search.view.searchComponent.searchBar.SearchAdvancedTextfield": [
     "widget.searchadvanced_textfield"
   ],
@@ -980,6 +981,9 @@ Ext.ClassManager.addNameAliasMappings({
   ],
   "Savanna.crumbnet.model.Template": [],
   "Savanna.search.store.ResultsMetadata": [],
+  "Savanna.itemView.view.workflow.WorkflowSelect": [
+    "widget.itemview_workflow_select"
+  ],
   "Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsPanelGrid": [
     "widget.search_resultspanelgrid"
   ],
@@ -1000,10 +1004,10 @@ Ext.ClassManager.addNameAliasMappings({
   "Savanna.view.Login": [
     "widget.login"
   ],
+  "Savanna.metadata.controller.MetadataViewController": [],
   "Savanna.itemView.view.relatedProcesses.RelatedProcesses": [
     "widget.itemview_related_processes"
   ],
-  "Savanna.metadata.controller.MetadataViewController": [],
   "Ext.ux.ajax.JsonSimlet": [
     "simlet.json"
   ],

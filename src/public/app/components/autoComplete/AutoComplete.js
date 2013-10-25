@@ -70,17 +70,19 @@ Ext.define('Savanna.components.autoComplete.AutoComplete', {
                     {
                         xtype: 'combo',
                         itemId: 'autoCompleteBox',
-                        displayField: 'title',
+                        displayField: 'label',
                         typeAhead: false,
                         hideTrigger: true,
                         anchor: '100%',
                         flex: 2,
+                        queryParam: 'keyword',
                         minChars: 1,
                         store: this.store,
                         fieldLabel: this.getPreLabel(),
                         enableKeyEvents: true,
                         emptyText: this.getLabelType(),
-                        queryMode: 'local'
+                        queryMode: 'remote',
+                        anyMatch: true
                     },
                     controlSpace
                 ]
