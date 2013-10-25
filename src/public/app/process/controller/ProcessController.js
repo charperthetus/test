@@ -9,8 +9,8 @@ Ext.define('Savanna.process.controller.ProcessController', {
     extend: 'Deft.mvc.ViewController',
 
     requires: [
-        'Savanna.process.utils.ViewTemplates',
-        'Savanna.process.store.Processes'
+        'Savanna.process.utils.ProcessUtils',
+        'Savanna.process.utils.ViewTemplates'
     ],
     store: 'Savanna.process.store.Processes',
     mixins: {
@@ -43,6 +43,9 @@ Ext.define('Savanna.process.controller.ProcessController', {
         },
         redo: {
             click: 'handleRedo'
+        },
+        merge: {
+            click: 'handleMerge'
         },
         zoomin: {
             click: 'zoomIn'
@@ -136,6 +139,10 @@ Ext.define('Savanna.process.controller.ProcessController', {
 
     handleRedo: function() {
         this.getCanvas().diagram.undoManager.redo();
+    },
+
+    handleMerge: function() {
+        Savanna.process.utils.ProcessUtils.addMerge(this.getCanvas().diagram);
     },
 
     zoomIn: function() {

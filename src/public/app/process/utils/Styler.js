@@ -5,6 +5,8 @@
  */
 Ext.define('Savanna.process.utils.Styler', {
 
+    singleton: true,
+
     /*
      * constructor
      * Create the styler object.
@@ -141,8 +143,6 @@ Ext.define('Savanna.process.utils.Styler', {
                 return rectanglePalette;
             } else if (tag === 'paletteDiamond'){
                 return diamondPalette;
-            } else if (tag === 'linkGadget'){
-                return linkGadget;
             } else if (tag === 'stepGadget'){
                 return stepGadget;
             } else if (tag === 'decisionGadget'){
@@ -242,50 +242,6 @@ Ext.define('Savanna.process.utils.Styler', {
         var paletteInternalRectangle = function(){
             return rectanglePalette;
         };
-        
-        
-        
-        
-        
-        
-        
-
-        /* 
-         * @private
-         * x - JSON Object
-         * Defines default JSON for circle.  This can be overridden via using the addTo and removeFrom JSON modifier functions in the return statement.
-         */
-        var linkGadget = {
-            "panel": {
-                name: 'LinkGadget',
-                opacity: 0.0,
-                alignment: go.Spot.Bottom,
-                alignmentFocus: go.Spot.Top
-            },
-            "shape": {
-                    figure: 'TriangleDown',
-                    stroke: null,
-                    fill: '#3ca8c8',
-                    desiredSize: new go.Size(11,11),
-                    name: 'Port',
-                    fromSpot: go.Spot.Bottom,
-                    toSpot: go.Spot.Top,
-                    fromLinkable: true,
-                    portId: "Bottom"
-                }
-        };
-
-        /* 
-         * @private
-         * x
-         * Allows you to maniplute JSON for the shape and then returns the JSON you called to be used.  
-         * @return JSON
-         */
-        var linkGadgetShape = function(){
-            return linkGadget;
-        };
-        
-               
         
 
         /* 
@@ -1091,7 +1047,7 @@ Ext.define('Savanna.process.utils.Styler', {
             rectangle: function(json){
                 return rectangleShape(json);
             },
-            circle: function(spot,name,output,input){
+            circle: function(){
                 return circleShape();
             },
             custom: function(){
@@ -1126,9 +1082,6 @@ Ext.define('Savanna.process.utils.Styler', {
             },
             paletteDiamond: function(){
                 return paletteInternalDiamond();
-            },
-            linkGadget: function(){
-                return linkGadgetShape();
             },
             stepGadget: function(json){
                 return stepGadgetShape(json);
