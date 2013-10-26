@@ -3,7 +3,8 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
 
     requires: [
         'Savanna.process.view.ProcessEditorComponent',
-        'Savanna.metadata.view.Details'
+        'Savanna.metadata.view.Details',
+        'Savanna.itemView.view.createItem.CreateItem'
     ],
 
     control: {
@@ -126,6 +127,11 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
     createItem: function() {
 
         console.log('here');
+
+        Ext.create('Savanna.itemView.view.createItem.CreateItem', {
+            width: 500,
+            height: 500
+        });
         /*
         var itemView = Ext.create('Savanna.itemView.view.ItemViewer', {
             title: 'Model Item',
