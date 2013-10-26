@@ -61,8 +61,9 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
     },
     // Control responsible for adding a new auto-complete form (dynamic)
     addNewQualityForm: function (propName, propData, aView) {
-        console.debug(propData.uri);
-        var me = this;
+        var me = this,
+            predicateUri = Ext.Object.fromQueryString(propData.uri);
+        
         if (!this.getView().queryById('prop_' + propName.replace(/[\s']/g, '_'))) {
 
             // The "Chooser" button in the new auto-complete
@@ -84,7 +85,7 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
                     hasControls: true,
                     isClosable: true,
                     store: Ext.create('Savanna.itemView.store.AutoCompleteStore', {
-                        urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/mockModelSearch/keyword/property/' + propData.uri,
+                        urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/mockModelSearch/keyword/property/' + predicateUri,
                         paramsObj: { excludeUri:'asdf', pageStart:0, pageLimit:10 }
                     })
                 });
@@ -96,6 +97,7 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
     },
     // Convenience handler to generate a new auto-complete
     createNewAutoComplete: function(data) {
+        var predicateUri = Ext.Object.fromQueryString(data.predicateUri);
         return Ext.create('Savanna.components.autoComplete.AutoComplete', {
             itemId: 'prop_' + data.label.replace(/[\s']/g, '_'),
             propData: data.label,
@@ -104,7 +106,7 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
             hasControls: true,
             isClosable: true,
             store: Ext.create('Savanna.itemView.store.AutoCompleteStore', {
-                urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/mockModelSearch/keyword/property/' + data.predicateUri,
+                urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/mockModelSearch/keyword/property/' + predicateUri,
                 paramsObj: { excludeUri:'asdf', pageStart:0, pageLimit:10 }
             })
         });
