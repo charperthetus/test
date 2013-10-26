@@ -1,7 +1,6 @@
 /**
  * Created by jbarmettler on 10/8/13.
  */
-
 Ext.define('Savanna.modelSearch.controller.resultsComponent.ResultsPanelToolbarController', {
     extend: 'Deft.mvc.ViewController',
     control: {
