@@ -8,7 +8,7 @@ Ext.define('Savanna.image.util.ImageViewFactory', {
         if (type.toLowerCase() == 'image'){
             return Ext.create('Savanna.image.view.ImageComponent', {
                 title: label,
-                imageUri: uri.replace(/%2/g, '%252')
+                imageUri: encodeURI(uri)
             });
         }else {
             return null;
