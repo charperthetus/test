@@ -61,7 +61,6 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
     },
     // Control responsible for adding a new auto-complete form (dynamic)
     addNewQualityForm: function (propName, propData, aView) {
-        console.debug('TODO: Add a predicate to the store', arguments);
         var me = this,
             predicateUri = Ext.Object.fromQueryString(propData.uri);
         
@@ -126,22 +125,20 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
     },
     // When a new tag is added on a child auto-complete
     addTag: function(tagName, tagData, aView) {
-        this.addingTag(tagName, tagData, this.getView().store.getAt(0).data.values);
+        this.addingTag(tagName, tagData, this.getView().store.getById(aView.propData).data.values);
     },
     // When a tag is removed on a child auto-complete
     removeTag: function(tagName, aView) {
-        this.removingTag(tagName, this.getView().store.getAt(0).data.values);
+        this.removingTag(tagName, this.getView().store.getById(aView.propData).data.values);
     },
     // Adding tag to the store on a child auto-complete
     addingTag: function(tagName, tagData, tagArray) {
-        console.debug('TODO: Add the assertion on this predicate:', arguments);
         var tagUri = tagData ? tagData.uri : null;
         var newTag = {editable: true, inheritedFrom: null, label: tagName, uri: tagUri, value: tagName, version: 0};
         tagArray.push(newTag);
     },
     // Removing the tag from the store on a child auto-complete
     removingTag: function(tagName, store) {
-        console.debug('TODO: Remove the assertion on this predicate', arguments);
         for (var i = 0; i < store.length; i++) {
             if (store[i].label === tagName) {
                 Ext.Array.remove(store, store[i]);
@@ -160,9 +157,8 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
     launchPredicatesChooser: function() {
         console.debug('TODO: Launch the predicates chooser', arguments);
     },
+    // Removing the predicate from the store, this has to be done manually...
     removePredicate: function(view) {
-        // NOTE: We cannot call the destroy method on the model since we aren't supplying proxies.
-        console.debug(view);
         var store = this.getView().store.data.items;
         for (var i = 0; i < store.length; i++) {
             if (store[i].internalId === view.propData) {
