@@ -128,7 +128,6 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
     },
 
     onOpen: function(event){
-        console.log(arguments);
         var component = ComponentManager.getComponentForType(event.type, event.uri, event.label),
             tabPanel = this.getMaintabpanel();
         if (component){
