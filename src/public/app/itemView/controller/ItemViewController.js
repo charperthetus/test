@@ -48,6 +48,10 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
             click: 'onRelationshipSelect'
         },
         relatedItemsView: {
+            'ItemView:OpenItem': 'openItem',
+            'ItemView:DeleteRelatedItem': 'deleteRelatedItem'
+        },
+        relatedItemsEdit: {
             'ItemView:OpenItem': 'openItem'
         },
         itemViewHeaderView: {
@@ -169,6 +173,13 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
             var relatedItemView = me.getView().queryById('relatedItemsView');
             relatedItemView.fireEvent('ViewRelatedItems:SetupData', record[0].propertyGroupsStore.getAt(2).valuesStore.data.items);
 
+
+            /*
+            Related Items Edit
+             */
+            var relatedItemViewEdit = me.getView().queryById('relatedItemsEdit');
+            relatedItemViewEdit.fireEvent('EditRelatedItems:SetupData', record[0].propertyGroupsStore.getAt(2).valuesStore.data.items);
+
             /*
             are we creating a new item?
              */
@@ -245,6 +256,8 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     },
 
     openItem: function (itemName, itemUri) {
+        console.log('itemName',itemName);
+        console.log('itemUri', itemUri);
         var itemView = Ext.create('Savanna.itemView.view.ItemViewer', {
             title: itemName,
             itemUri: itemUri,
@@ -256,5 +269,8 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         });
 
         Savanna.app.fireEvent('search:itemSelected', itemView);
+    },
+    deleteRelatedItem: function (itemName, itemUri) {
+
     }
 });

@@ -8,6 +8,14 @@
 Ext.define('Savanna.itemView.view.relatedItems.EditRelatedItems', {
     extend: 'Ext.panel.Panel',
 
-    alias: 'widget.itemview_edit_related_items'
+    alias: 'widget.itemview_edit_related_items',
+
+    require: ['Savanna.itemView.controller.EditRelatedItemsController'],
+
+    controller: 'Savanna.itemView.controller.EditRelatedItemsController',
+
+    layout: 'vbox'
+
+
 
 });
