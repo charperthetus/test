@@ -95,10 +95,10 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     onEditDone:function() {
         var myStore = Ext.data.StoreManager.lookup(this.store);
         var headerComponent = this.getView().queryById('itemViewHeaderView');
-        headerComponent.reconfigure(myStore.getAt(0).propertyGroupsStore.getAt(0).valuesStore);
+        headerComponent.reconfigure(myStore.getAt(0).propertyGroupsStore.getById('Header').valuesStore);
         
         var qualitiesComponent = this.getView().queryById('itemViewPropertiesView');
-        qualitiesComponent.reconfigure(myStore.getAt(0).propertyGroupsStore.getAt(3).valuesStore);
+        qualitiesComponent.reconfigure(myStore.getAt(0).propertyGroupsStore.getById('Properties').valuesStore);
         
         this.getView().getLayout().setActiveItem(0);
         this.getView().setEditMode(!this.getView().getEditMode());
@@ -114,7 +114,6 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     },
 
     handleRecordDataRequestSuccess: function (record, operation, success) {
-
         if (success) {
             var me = this;
 
@@ -123,7 +122,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
              */
             var headerComponent = me.getView().queryById('itemViewHeaderView');
             headerComponent.setTitle(record[0].data.label);
-            headerComponent.reconfigure(record[0].propertyGroupsStore.getAt(0).valuesStore);
+            headerComponent.reconfigure(record[0].propertyGroupsStore.getById('Header').valuesStore);
 
             /*
             Header Edit
@@ -131,43 +130,43 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
             //ToDo: do what needs to be done for edit version of header
             var headerEditComponent = me.getView().queryById('itemViewHeaderEdit');
             headerEditComponent.setTitle(record[0].data.label);
-            headerEditComponent.store = record[0].propertyGroupsStore.getAt(0).valuesStore;
+            headerEditComponent.store = record[0].propertyGroupsStore.getById('Header').valuesStore;
             headerEditComponent.fireEvent('EditHeader:StoreSet');
 
             /*
             Related Processes View
              */
             var processComponent = me.getView().queryById('relatedProcessesView');
-            processComponent.setTitle('Participated in Process (' + record[0].kvPairGroupsStore.getAt(0).pairsStore.data.length + ')');
-            processComponent.reconfigure(record[0].kvPairGroupsStore.getAt(0).pairsStore);
+            processComponent.setTitle('Participated in Process (' + record[0].kvPairGroupsStore.getById('Related Processes').pairsStore.data.length + ')');
+            processComponent.reconfigure(record[0].kvPairGroupsStore.getById('Related Processes').pairsStore);
 
             /*
             Related Processes Edit
              */
             var processEditComponent = me.getView().queryById('relatedProcessesViewEdit');
-            processEditComponent.setTitle('Participated in Process (' + record[0].kvPairGroupsStore.getAt(0).pairsStore.data.length + ')');
-            processEditComponent.reconfigure(record[0].kvPairGroupsStore.getAt(0).pairsStore);
+            processEditComponent.setTitle('Participated in Process (' + record[0].kvPairGroupsStore.getById('Related Processes').pairsStore.data.length + ')');
+            processEditComponent.reconfigure(record[0].kvPairGroupsStore.getById('Related Processes').pairsStore);
 
             /*
             Qualities
              */
             var qualitiesComponent = me.getView().queryById('itemViewPropertiesView');
-            qualitiesComponent.setTitle('Qualities (' + record[0].propertyGroupsStore.getAt(3).valuesStore.data.length + ')');
-            qualitiesComponent.reconfigure(record[0].propertyGroupsStore.getAt(3).valuesStore);
+            qualitiesComponent.setTitle('Qualities (' + record[0].propertyGroupsStore.getById('Properties').valuesStore.data.length + ')');
+            qualitiesComponent.reconfigure(record[0].propertyGroupsStore.getById('Properties').valuesStore);
 
             /*
             Qualities Edit
              */
             var qualitiesEditComponent = me.getView().queryById('itemViewPropertiesEdit');
-            qualitiesEditComponent.setTitle('Qualities (' + record[0].propertyGroupsStore.getAt(3).valuesStore.data.length + ')');
-            qualitiesEditComponent.store = record[0].propertyGroupsStore.getAt(3).valuesStore;
+            qualitiesEditComponent.setTitle('Qualities (' + record[0].propertyGroupsStore.getById('Properties').valuesStore.data.length + ')');
+            qualitiesEditComponent.store = record[0].propertyGroupsStore.getById('Properties').valuesStore;
             qualitiesEditComponent.fireEvent('EditQualities:StoreSet');
 
             /*
             Related Items View
              */
             var relatedItemView = me.getView().queryById('relatedItemsView');
-            relatedItemView.fireEvent('ViewRelatedItems:SetupData', record[0].propertyGroupsStore.getAt(2).valuesStore.data.items);
+            relatedItemView.fireEvent('ViewRelatedItems:SetupData', record[0].propertyGroupsStore.getById('Related Items').valuesStore.data.items);
 
             /*
             are we creating a new item?
@@ -208,40 +207,9 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         });
     },
 
-    // TODO: Keeping for now in order to pull later into own controller
-    setupDisplayLabel: function (displayLabel, view) {
-        var displayLabelComponent = view.queryById('itemDisplayLabelView');
-        displayLabelComponent.update({displayLabel: displayLabel});
-    },
-
-    // TODO: Keeping for now in order to pull later into own controller
-    setupAliases: function (aliasList, view) {
-        if (aliasList != null && aliasList.length > 0) {
-            var aliasTags = view.down('#itemAlias > auto_complete');
-
-            for (var i = 0; i < aliasList.length; i++) {
-                aliasTags.addTerm(aliasList[i]);
-            }
-        }
-    },
-
     buildItemDataFetchUrl: function (uri) {
-        //uri = Ext.JSON.decode(uri);
         uri = encodeURI(uri);
         return SavannaConfig.itemViewUrl + uri + ';jsessionid=' + Savanna.jsessionid;
-    },
-
-    // TODO: Move to it's own controller for Edit Qualities along with it's handler above
-    handleAddChosenProperty: function (field, evt) {
-        if (evt.keyCode === Ext.EventObject.ENTER) {
-            if (field.getValue().trim().length) {
-                var valArray = new Array();
-                valArray[0] = "Red";
-                valArray[1] = "Blue";
-                field.up('item_edit_qualities').addProp({propName: field.getValue(), propValue: valArray});
-                field.reset();
-            }
-        }
     },
 
     openItem: function (itemName, itemUri) {
