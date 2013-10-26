@@ -41,11 +41,14 @@ Ext.define('Savanna.search.controller.resultsComponent.ResultsPanelToolbarContro
     },
 
     onViewBtnClick:function(btn)  {
-        this.getView().queryById('results_listViewButton').toggle();
-        this.getView().queryById('results_mapViewButton').toggle();
+        if(!btn.pressed)    {
+            this.getView().queryById('results_listViewButton').toggle();
+            this.getView().queryById('results_mapViewButton').toggle();
+        }
     },
 
-    onViewBtnToggle:function()  {
+    onViewBtnToggle:function(btn)  {
+
         var listBtn = this.getView().queryById('results_listViewButton');
         var mapBtn = this.getView().queryById('results_mapViewButton');
 

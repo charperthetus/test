@@ -597,20 +597,20 @@ Ext.define('Savanna.modelSearch.controller.ResultsComponent', {
     },
 
     changeResultView: function (button) {
-        var mapPanel = button.up('search_resultscomponent').down('#resultsmap');
-        var resultsGridPanel = button.up('search_resultscomponent').down('#resultspanelgrid');
-        switch (button.itemId){
-            case 'results_mapViewButton':
+        var mapPanel = button.up('model_search_resultscomponent').down('#resultsmap');
+        var resultsGridPanel = button.up('model_search_resultscomponent').down('#resultspanelgrid');
+        switch (button.text){
+            case 'Map':
                 resultsGridPanel.hide();
                 mapPanel.show();
                 break;
-            case 'results_listViewButton':
+            case 'List':
                 mapPanel.hide();
                 resultsGridPanel.show();
                 break;
         }
-    },
 
+    },
     addSearchPolygon: function (canvas) {
         var searchLayer = canvas.searchLayer;
         //modify resultmap searchLayer to match searchmap searchLayer
