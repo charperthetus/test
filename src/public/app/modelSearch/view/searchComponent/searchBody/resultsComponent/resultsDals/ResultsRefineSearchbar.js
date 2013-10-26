@@ -25,18 +25,14 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
             border:false,
             items: [
                 {
-                    xtype: 'textfield',
-                    width: 180,             //was making submit button below get clipped
+                    // adding thetus-searchfield removes the necessity for a submit button.
+                    xtype: 'thetus-searchfield',
+                    width: 180,
                     fieldLabel: '',
                     name: 'refine_search_terms',
                     itemId: 'refine_search_terms',
                     enableKeyEvents: true,
-                    emptyText: 'Refine Search'
-                },
-                {
-                    xtype: 'button',
-                    itemId: 'refine_search_submit',
-                    glyph: 61808
+                    emptyText: 'Search'
                 }
             ]
         }

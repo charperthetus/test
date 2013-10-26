@@ -20,7 +20,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.SearchBar', {
             xtype: 'panel',
             border: false,
             width: '30%',
-            minWidth: 520,
+            minWidth: 422,
             itemId: 'main_panel',
             items: [
                 {

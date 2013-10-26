@@ -17,15 +17,13 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
     ],
 
     width: '100%',
-    minHeight: 20,
-    bodyPadding: 5,
     border: false,
     cls: 'results-facet',
     collapsible: true,
     collapsed: true,
     titleCollapse: true,
-    hideCollapseTool: true,
     dateFormat: 'Y-m-d\\TH:i:s.m\\Z',
+    ui: 'results-facet',
 
     initComponent: function () {
 
@@ -206,25 +204,56 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
     },
 
 
+    deleteFilter: function(filter) {
+        var filters = me.dal.data.facetFilterCriteria;
+
+    },
+
+    getActualValue:function(value){
+        return value[this.facet.key];
+    },
+
     onDateRangeChange: function (radioGroup, newValue, oldValue) {
         var customDates = radioGroup.up('#facets_' + this.facet.key).queryById('customDatesPanel');
 
-        var newIsCustom = false;
-        for (key in newValue) {
-            if (newValue[key] == 'custom') {
-                newIsCustom = true;
-                break;
-            }
-        }
+        var newValueString = this.getActualValue(newValue);
+        var oldValueString = this.getActualValue(oldValue);
+
+        var newIsCustom = ( newValueString == "custom");
+
         if (!newIsCustom) {
             customDates.collapse();
             customDates.collapsed = true;
-            this.onFacetFilterChange();
+            var filters = this.getFilters();
+            var filterKey = this.facet.key;
+            var newFilter =  {key: filterKey, values: [{value: newValueString}]};
+            var filterFound = false;
+            Ext.each(filters, function (range, index) {
+                           if (range.key === filterKey) {
+                               // replace it, do not add another
+                               filters[index] = newFilter;
+                               filterFound = true;
+                           }
+                       });
+            if(!filterFound){
+                filters.push(newFilter);
+            }
+            this.doFilter(this);
         } else {
             customDates.expand();
             customDates.collapsed = false;
             //the new search will be kicked off by the date picker close event
         }
+    },
+
+    getFilters: function () {
+        var filters = this.dal.data.facetFilterCriteria;
+
+        if (!filters || !filters.length || filters == '') {
+            this.dal.data.facetFilterCriteria = [];   // just set to an empty array
+            filters = this.dal.data.facetFilterCriteria;
+        }
+        return filters;
     },
 
     //Called from date picker
@@ -242,12 +271,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
             updateExisting = false,
             me = this;
 
-        var filters = me.dal.data.facetFilterCriteria;
-
-        if (!filters || !filters.length || filters == '') {
-            me.dal.data.facetFilterCriteria = [];   // just set to an empty array
-            filters = me.dal.data.facetFilterCriteria;
-        }
+        var filters = this.getFilters();
 
         if (filters.length > 0) {
             Ext.each(filters, function (range, index) {
@@ -271,6 +295,10 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
     },
 
     onFacetFilterChange: function (btn) {
+        return this.onFacetFilterChangeHelper(btn.value, btn.inputValue);
+    },
+
+    onFacetFilterChangeHelper: function (isChecked, inputValue, doTheSearch) {
 
         var filterExists = false,
             facetName = this.facet.key,
@@ -279,69 +307,60 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
          check to see if this facet filter exists in the store already
          */
 
-        var filters = me.dal.get('facetFilterCriteria');
-        if (filters.length) {
+        var filters = this.getFilters();
 
-            Ext.each(filters, function (filter, index) {
 
-                if (filter) {
+        Ext.each(filters, function (filter, index) {
 
-                    var values = filter.values;
+            if (filter) {
 
-                    if (filter.key === facetName) { // if it already exists
+                var values = filter.values;
 
-                        filterExists = true;
+                if (filter.key === facetName) { // if it already exists
 
-                        if (btn.value) {   // if the checkbox has been selected, add the selection
+                    filterExists = true;
 
-                            values.push({ value: btn.inputValue});
+                    if (isChecked) {   // if the checkbox has been selected, add the selection
 
-                        } else {       // if the checkbox has been deselected, remove the selection
+                        values.push({ value: inputValue});
 
-                            //Since we are removing, we need to iterate from end to beginning
-                            var len = values.length;
-                            var index;
-                            for (index = len - 1; index--; index >= 0) {
-                                if (val.value === btn.inputValue) {
-                                    Ext.Array.remove(values, values[ind]);
-                                }
+                    } else {       // if the checkbox has been deselected, remove the selection
+
+                        //Since we are removing, we need to iterate from end to beginning
+                        var len = values.length;
+                        var valueIndex;
+                        for (valueIndex = len - 1; valueIndex--; valueIndex >= 0) {
+                            var val = values[valueIndex];
+                            if (val.value === inputValue) {
+                                Ext.Array.remove(values, values[valueIndex]);
                             }
                         }
                     }
-
-                    if (values.length > 0) {
-                        filter.values = values;
-                    } else {
-                        me.dal.get('facetFilterCriteria').splice(index, 1);   // remove the facetFilterCriteria entirely
-                    }
                 }
 
-            });
-
-            if (!filterExists) {
-                me.dal.get('facetFilterCriteria').push({
-                    'key': facetName,
-                    'values': [
-                        {value: btn.inputValue}
-                    ]   // this is always an array
-                });
+                if (values.length > 0) {
+                    filter.values = values;
+                } else {
+                    me.dal.get('facetFilterCriteria').splice(index, 1);   // remove the facetFilterCriteria entirely
+                }
             }
 
-        } else {
-            if (me.dal.get('facetFilterCriteria').length === 0) {
-                me.dal.set('facetFilterCriteria', []);
-            }
-            me.dal.get('facetFilterCriteria').push({
+        });
+
+        if (!filterExists && isChecked) {
+            filters.push({
                 'key': facetName,
                 'values': [
-                    {value: btn.inputValue}
+                    {value: inputValue}
                 ]   // this is always an array
             });
         }
+
+
         var searchController = Savanna.controller.Factory.getController('Savanna.modelSearch.controller.SearchComponent');
 
-        if (searchController !== undefined) {
-            this.doFilter(btn);
+        if (searchController !== undefined && doTheSearch ) {
+            this.doFilter(this);
         }
 
     },
