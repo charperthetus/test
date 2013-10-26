@@ -85,15 +85,22 @@ Ext.define('Savanna.search.view.searchComponent.SearchBody', {
                     itemId: 'resultsbutton'
                 }
             ]
-        }
-    ],
-    bbar: [
-        '->',
+        },
         {
-            xtype: 'button',
-            ui: 'commit',
-            text: 'Search',
-            itemId: 'toolbarsearchbutton'
+            xtype: 'toolbar',
+            dock:'bottom',
+            width: '100%',
+            itemId: 'searchbodybbar',
+            items: [
+                '->',
+                {
+                    xtype: 'button',
+                    ui: 'commit',
+                    scale: 'large',
+                    text: 'Search',
+                    itemId: 'toolbarsearchbutton'
+                }
+            ]
         }
     ]
 });

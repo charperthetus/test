@@ -560,17 +560,16 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
     changeResultView: function (button) {
         var mapPanel = button.up('search_resultscomponent').down('#resultsmap');
         var resultsGridPanel = button.up('search_resultscomponent').down('#resultspanelgrid');
-        switch (button.text){
-            case 'Map':
+        switch (button.itemId){
+            case 'results_mapViewButton':
                 resultsGridPanel.hide();
                 mapPanel.show();
                 break;
-            case 'List':
+            case 'results_listViewButton':
                 mapPanel.hide();
                 resultsGridPanel.show();
                 break;
         }
-
     },
     addSearchPolygon: function (canvas) {
         var searchLayer = canvas.searchLayer;
