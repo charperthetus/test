@@ -98,6 +98,10 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         var myStore = Ext.data.StoreManager.lookup(this.store);
         var headerComponent = this.getView().queryById('itemViewHeaderView');
         headerComponent.reconfigure(myStore.getAt(0).propertyGroupsStore.getAt(0).valuesStore);
+        
+        var qualitiesComponent = this.getView().queryById('itemViewPropertiesView');
+        qualitiesComponent.reconfigure(myStore.getAt(0).propertyGroupsStore.getAt(3).valuesStore);
+        
         this.getView().getLayout().setActiveItem(0);
         this.getView().setEditMode(!this.getView().getEditMode());
 
@@ -159,7 +163,10 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
             /*
             Qualities Edit
              */
-            //ToDo: do what needs to be done for edit version of qualities
+            var qualitiesEditComponent = me.getView().queryById('itemViewPropertiesEdit');
+            qualitiesEditComponent.setTitle('Qualities (' + record[0].propertyGroupsStore.getAt(3).valuesStore.data.length + ')');
+            qualitiesEditComponent.store = record[0].propertyGroupsStore.getAt(3).valuesStore;
+            qualitiesEditComponent.fireEvent('EditQualities:StoreSet');
 
             /*
             Related Items View

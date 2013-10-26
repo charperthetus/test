@@ -62,11 +62,6 @@ Ext.define('Savanna.itemView.controller.ImageBrowserController', {
             alt: 'It\'s a beautiful night, such a beautful night.',
             isFeatured: false
         }, {
-            src: 'http://www.dynamicdrive.com/cssexamples/media/ocean.jpg',
-            title: 'Ocean',
-            alt: 'Look at me! I\'m an ocean!',
-            isFeatured: false
-        }, {
             src: 'http://media.lonelyplanet.com/lpi/24744/24744-14/469x264.jpg',
             title: 'Lake',
             alt: 'I\'d rather not be rowing.',
