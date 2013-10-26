@@ -33,13 +33,14 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
                 click: 'launchChooser'
             }
         },
-        // When a tag is removed on a quality
-        tagRemoved: {
+        // When a tag is added, removed, or the predicate is destroyed
+        autocompleteevents: {
             live: true,
             selector: '',
             listeners: {                
                 'AutoComplete:TagRemoved': 'removeTag',
-                'AutoComplete:ItemSelected': 'addTag'
+                'AutoComplete:ItemSelected': 'addTag',
+                'AutoComplete:Destroyed': 'removePredicate'
             }
         },
         // Listens for the "choose" on the Click to add chooser
@@ -86,7 +87,7 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
                     isClosable: true,
                     store: Ext.create('Savanna.itemView.store.AutoCompleteStore', {
                         urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/mockModelSearch/keyword/property/' + predicateUri,
-                        paramsObj: { excludeUri:'asdf', pageStart:0, pageLimit:10 }
+                        paramsObj: { excludeUri:'', pageStart:0, pageLimit:10 }
                     })
                 });
 
@@ -107,7 +108,7 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
             isClosable: true,
             store: Ext.create('Savanna.itemView.store.AutoCompleteStore', {
                 urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/mockModelSearch/keyword/property/' + predicateUri,
-                paramsObj: { excludeUri:'asdf', pageStart:0, pageLimit:10 }
+                paramsObj: { excludeUri:'', pageStart:0, pageLimit:10 }
             })
         });
     },
@@ -120,12 +121,14 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
         this.removingTag(tagName, this.getView().store.getAt(0).data.values);
     },
     // Adding tag to the store on a child auto-complete
+    // TODO: Persist to the correct store
     addingTag: function(tagName, tagData, tagArray) {
         var tagUri = tagData ? tagData.uri : null;
         var newTag = {editable: true, inheritedFrom: null, label: tagName, uri: tagUri, value: tagName, version: 0};
         tagArray.push(newTag);
     },
     // Removing the tag from the store on a child auto-complete
+    // TODO: Persist to the correct store
     removingTag: function(tagName, store) {
         for (var i = 0; i < store.length; i++) {
             if (store[i].label === tagName) {
@@ -134,7 +137,8 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
             }
         }
     },
-    // Launching the chooser for child auto-completes
+
+    // TODO: Launch the assertions choose
     launchChooser: function(button, event, eOpts) {
         Ext.create('Savanna.itemView.view.header.AddIntendedUses', {
             width: 400,
@@ -142,8 +146,12 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
             title: button.id
         });
     },
-    // TODO: Hook-up the predicates chooser
+    // TODO: Launch the predicate chooser
     launchPredicatesChooser: function() {
         console.debug('Fired');
+    },
+    // TODO: Remove the predicate from the store
+    removePredicate: function() {
+        console.debug('Removing predicate', arguments);
     }
 });

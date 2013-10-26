@@ -56,7 +56,8 @@ Ext.define('Savanna.components.autoComplete.AutoCompleteController', {
         this.getView().fireEvent('AutoComplete:ItemSelected', records[0].data.label, records[0].data, this.getView());
         combo.setValue("");
     },
-    closeForm: function(closeButton, event) {
+    closeForm: function() {
+        this.getView().fireEvent('AutoComplete:Destroyed', this.getView().store);
         this.getView().destroy();
     }
 });
