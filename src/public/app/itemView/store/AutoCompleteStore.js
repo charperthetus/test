@@ -32,7 +32,7 @@ Ext.define('Savanna.itemView.store.AutoCompleteStore', {
 
             reader: {
                 type: 'json',
-                root: 'response'
+                root: 'results'
             },
             writer: {
                 type: 'json'
