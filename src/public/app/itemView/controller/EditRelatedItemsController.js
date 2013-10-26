@@ -87,14 +87,15 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
                             {
                                 xtype: 'button',
                                 text: item.label,
-                                handler: this.onRelatedItemClick,
+                                handler: me.onRelatedItemClick,
                                 name: item.value
+
 
                             },
                             {
                                 xtype: 'button',
                                 text: 'X',
-                                handler: this.onRemoveRelatedItem,
+                                handler: me.onRemoveRelatedItem,
                                 name: item.value,
                                 value: item.label
                             }
@@ -105,12 +106,12 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
         });
     },
     onRelatedItemClick: function (btn) {
-        console.log('button', btn);
-        btn.up('itemview_view_related_items').fireEvent('ItemView:OpenItem', btn.value, btn.text);
+        btn.up('itemview_edit_related_items').fireEvent('ItemView:OpenItem', btn.text, btn.name);
     },
 
     onRemoveRelatedItem: function(btn)  {
-        console.log('button', btn);
+        btn.up('itemview_edit_related_items').fireEvent('ItemView:DeleteRelatedItem', btn.value, btn.name);
+        btn.up('itemview_edit_related_items').remove(btn.up('container'));
     }
 
 });
