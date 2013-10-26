@@ -13,35 +13,70 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
         'Savanna.itemView.view.itemQualities.EditItemQualities'
     ],
 
+    // NOTE: There are multiple auto-complete forms on this controller, 
+    //       so be careful when listening for events, you might capture
+    //       more than you bargained for.
     control: {
-        addPropAutoChooser: {
-            'AutoComplete:ItemSelected': 'addProp'
+        // On load, set the main store
+        view: {
+            'EditQualities:StoreSet': 'storeSet'
         },
+        // This is the auto-complete that is static
+        addPropAutoChooser: {
+            'AutoComplete:ItemSelected': 'addNewQualityForm'
+        },
+        // Launching the chooser
         qualitieschooser: {
             live: true,
             selector: 'auto_complete #qualitieschooser',
             listeners: {
                 click: 'launchChooser'
             }
+        },
+        // When a tag is removed on a quality
+        tagRemoved: {
+            live: true,
+            selector: '',
+            listeners: {                
+                'AutoComplete:TagRemoved': 'removeTag',
+                'AutoComplete:ItemSelected': 'addTag'
+            }
+        },
+        // Listens for the "choose" on the Click to add chooser
+        predicateschooser: {
+            click: 'launchPredicatesChooser'
         }
     },
-
-    // NOTE: Properties have certain form elements based on what "type" they are.
-    addProp: function (propName, propData, aView) {
+    // This is for the main (static) auto-complete form.
+    storeSet: function() {
         var me = this;
+        // Generate a new form control for each predicate in the store
+        Ext.each(me.getView().store.getAt(0).data, function(data) {
+            var newProp = me.createNewAutoComplete(data, null);      
+            Ext.each(data.values, function(value) {
+                newProp.addTag(value.label);
+            });
+            me.getView().add(newProp);
+        });
+    },
+    // Control responsible for adding a new auto-complete form (dynamic)
+    addNewQualityForm: function (propName, propData, aView) {
+        var me = this,
+            predicateUri = Ext.Object.fromQueryString(propData.uri);
+        
         if (!this.getView().queryById('prop_' + propName.replace(/[\s']/g, '_'))) {
 
-            var qualityType = propData.type,            
-                formControls = [],
-
-                // TODO Refactor this to use Deft events?
-                picker = Ext.create('Ext.button.Button', {
+            // The "Chooser" button in the new auto-complete
+            var picker = Ext.create('Ext.button.Button', {
                     text: 'Chooser',
                     itemId: 'qualitieschooser',
+
                     listeners: {
                         click: me.launchChooser
                     }
                 }),
+
+                // The new auto-complete control
                 newProp = Ext.create('Savanna.components.autoComplete.AutoComplete', {
                     itemId: 'prop_' + propName.replace(/[\s']/g, '_'),
                     propData: propData,
@@ -49,96 +84,66 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
                     preLabel: propName,
                     hasControls: true,
                     isClosable: true,
-
-                    // TODO: Hook up to live data
-                    store: Ext.create('Ext.data.Store', {
-                        fields: ['photo', 'title', 'description', 'isFeatured', 'value', 'abbr', 'type'],
-
-                        data: [
-                            {
-                                photo: 'http://2.bp.blogspot.com/-SwRvvHer_wQ/T6GhgnQoS0I/AAAAAAAHhkY/iyxaoyoC-2g/s800/Kia-K9-01.jpg',
-                                title: 'Car',
-                                description: 'Vroom vroom!',
-                                isFeatured: false,
-                                value: 'Car',
-                                abbr: 'Ca'
-                            }, {
-                                photo: 'http://4.bp.blogspot.com/-8iGyCfFuLuU/T5QA-1t4QTI/AAAAAAAAAXg/izbeFI2PvC0/s1600/korea.jpg',
-                                title: 'City',
-                                description: 'It\'s a beautiful night, such a beautful night.',
-                                isFeatured: false,
-                                value: 'City',
-                                abbr: 'Ci'
-                            }, {
-                                photo: 'http://www.dynamicdrive.com/cssexamples/media/ocean.jpg',
-                                title: 'Ocean',
-                                description: 'Look at me! I\'m an ocean!',
-                                isFeatured: false,
-                                value: 'Ocean',
-                                abbr: 'Oc'
-                            }, {
-                                photo: 'http://media.lonelyplanet.com/lpi/24744/24744-14/469x264.jpg',
-                                title: 'Lake',
-                                description: 'I\'d rather not be rowing.',
-                                isFeatured: false,
-                                value: 'Lake',
-                                abbr: 'La'
-                            }, {
-                                photo: 'http://3.bp.blogspot.com/-kyrXb2orUgA/Te9KO0AxR5I/AAAAAAAAErY/X_XkbgU107Q/s1600/Blue_Ocean_17723522_std.jpg',
-                                title: 'Tropics',
-                                description: 'Boy, what a sick dock.',
-                                isFeatured: true,
-                                value: 'Tropics',
-                                abbr: 'Tr'
-                            }, {
-                                photo: 'http://1.bp.blogspot.com/-iOPb28o8svc/TpvN-dWORKI/AAAAAAAAAuw/8pPLujrCSQ0/s1600/toronto.jpg',
-                                title: 'Dark city',
-                                description: 'Kind of reminds me of Seattle.',
-                                isFeatured: false,
-                                value: 'Dark City',
-                                abbr: 'DC'
-                            }, {
-                                photo: 'http://www.ebaytemplate.info/wp-content/gallery/germany/elbe-river-dresden-germany.jpg',
-                                title: 'Old City',
-                                description: 'This is an older city.',
-                                isFeatured: false,
-                                value: 'Old City',
-                                abbr: 'Oc'
-                            }, {
-                                photo: 'http://blog.educationusa.or.kr/wp-content/uploads/2008/07/dokdo-islets.jpg',
-                                title: 'Boating',
-                                description: 'Sure beats rowing',
-                                isFeatured: false,
-                                value: 'Boating',
-                                abbr: 'Bo'
-                            }, {
-                                photo: 'http://villaluxe.com/wp-content/gallery/pamillaretreat/maxico-palmilla-04.jpg',
-                                title: 'Patio',
-                                description: 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.',
-                                isFeatured: false,
-                                value: 'Patio',
-                                abbr: 'Pa'
-                            }
-                        ]
+                    store: Ext.create('Savanna.itemView.store.AutoCompleteStore', {
+                        urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/mockModelSearch/keyword/property/' + predicateUri,
+                        paramsObj: { excludeUri:'asdf', pageStart:0, pageLimit:10 }
                     })
                 });
 
-            // Build the control based on the type of quality
-            if(qualityType === 'list'){
-                formControls = [picker];
-            }
             // Insert after the input for autocomplete, but before the close button
-            newProp.child('container').insert(1, formControls);
+            newProp.child('container').insert(1, picker);
             this.getView().add(newProp);
         }
     },
-
-    // TODO: Launch the qualities chooser¡
+    // Convenience handler to generate a new auto-complete
+    createNewAutoComplete: function(data) {
+        var predicateUri = Ext.Object.fromQueryString(data.predicateUri);
+        return Ext.create('Savanna.components.autoComplete.AutoComplete', {
+            itemId: 'prop_' + data.label.replace(/[\s']/g, '_'),
+            propData: data.label,
+            showTags: true,
+            preLabel: data.label,
+            hasControls: true,
+            isClosable: true,
+            store: Ext.create('Savanna.itemView.store.AutoCompleteStore', {
+                urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/mockModelSearch/keyword/property/' + predicateUri,
+                paramsObj: { excludeUri:'asdf', pageStart:0, pageLimit:10 }
+            })
+        });
+    },
+    // When a new tag is added on a child auto-complete
+    addTag: function(tagName, tagData, aView) {
+        this.addingTag(tagName, tagData, this.getView().store.getAt(0).data.values);
+    },
+    // When a tag is removed on a child auto-complete
+    removeTag: function(tagName, aView) {
+        this.removingTag(tagName, this.getView().store.getAt(0).data.values);
+    },
+    // Adding tag to the store on a child auto-complete
+    addingTag: function(tagName, tagData, tagArray) {
+        var tagUri = tagData ? tagData.uri : null;
+        var newTag = {editable: true, inheritedFrom: null, label: tagName, uri: tagUri, value: tagName, version: 0};
+        tagArray.push(newTag);
+    },
+    // Removing the tag from the store on a child auto-complete
+    removingTag: function(tagName, store) {
+        for (var i = 0; i < store.length; i++) {
+            if (store[i].label === tagName) {
+                Ext.Array.remove(store, store[i]);
+                break;
+            }
+        }
+    },
+    // Launching the chooser for child auto-completes
     launchChooser: function(button, event, eOpts) {
         Ext.create('Savanna.itemView.view.header.AddIntendedUses', {
             width: 400,
             height: 300,
             title: button.id
         });
+    },
+    // TODO: Hook-up the predicates chooser
+    launchPredicatesChooser: function() {
+        console.debug('Fired');
     }
 });

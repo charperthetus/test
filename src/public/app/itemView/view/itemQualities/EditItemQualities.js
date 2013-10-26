@@ -14,8 +14,7 @@ Ext.define('Savanna.itemView.view.itemQualities.EditItemQualities', {
     controller: 'Savanna.itemView.controller.EditQualitiesController',
 
     require: [
-        'Savanna.itemView.controller.EditQualitiesController',
-        'Savanna.itemView.view.formControls.CloseButton'
+        'Savanna.itemView.controller.EditQualitiesController'
     ],
 
     layout: 'vbox',
@@ -32,13 +31,14 @@ Ext.define('Savanna.itemView.view.itemQualities.EditItemQualities', {
             labelType: 'Click to Add a Property',
             width: '35%',
             store: Ext.create('Savanna.itemView.store.AutoCompleteStore', {
-                urlEndPoint: 'http://c2devsav1:8080/c2is2/rest/mockModelSearch/keyword/qualities',
+                urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/mockModelSearch/keyword/qualities',
                 paramsObj: {excludeUri:'asdf', pageStart:0, pageLimit:10}
             })
         },
         {
             xtype: 'button',
-            text: 'Chooser'
+            text: 'Chooser',            
+            itemId: 'predicateschooser'
         },
         {
             xtype: 'tbfill'
