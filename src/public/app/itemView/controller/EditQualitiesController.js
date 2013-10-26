@@ -12,7 +12,6 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
     views: [
         'Savanna.itemView.view.itemQualities.EditItemQualities'
     ],
-
     // NOTE: There are multiple auto-complete forms on this controller, 
     //       so be careful when listening for events, you might capture
     //       more than you bargained for.
@@ -62,6 +61,7 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
     },
     // Control responsible for adding a new auto-complete form (dynamic)
     addNewQualityForm: function (propName, propData, aView) {
+        console.debug('TODO: Add a predicate to the store', arguments);
         var me = this,
             predicateUri = Ext.Object.fromQueryString(propData.uri);
         
@@ -121,15 +121,15 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
         this.removingTag(tagName, this.getView().store.getAt(0).data.values);
     },
     // Adding tag to the store on a child auto-complete
-    // TODO: Persist to the correct store
     addingTag: function(tagName, tagData, tagArray) {
+        console.debug('TODO: Add the assertion on this predicate:', arguments);
         var tagUri = tagData ? tagData.uri : null;
         var newTag = {editable: true, inheritedFrom: null, label: tagName, uri: tagUri, value: tagName, version: 0};
         tagArray.push(newTag);
     },
     // Removing the tag from the store on a child auto-complete
-    // TODO: Persist to the correct store
     removingTag: function(tagName, store) {
+        console.debug('TODO: Remove the assertion on this predicate', arguments);
         for (var i = 0; i < store.length; i++) {
             if (store[i].label === tagName) {
                 Ext.Array.remove(store, store[i]);
@@ -137,21 +137,18 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
             }
         }
     },
-
-    // TODO: Launch the assertions choose
     launchChooser: function(button, event, eOpts) {
+        console.debug('TODO: Launch the assertions chooser', arguments);
         Ext.create('Savanna.itemView.view.header.AddIntendedUses', {
             width: 400,
             height: 300,
             title: button.id
         });
     },
-    // TODO: Launch the predicate chooser
     launchPredicatesChooser: function() {
-        console.debug('Fired');
+        console.debug('TODO: Launch the predicates chooser', arguments);
     },
-    // TODO: Remove the predicate from the store
     removePredicate: function() {
-        console.debug('Removing predicate', arguments);
+        console.debug('TODO: Remove the predicate from the store', arguments);
     }
 });
