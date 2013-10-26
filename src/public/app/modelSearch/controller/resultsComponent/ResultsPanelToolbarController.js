@@ -22,6 +22,12 @@ Ext.define('Savanna.modelSearch.controller.resultsComponent.ResultsPanelToolbarC
         results_mapViewButton: {
             click: 'onViewBtnClick',
             toggle: 'onViewBtnToggle'
+        },
+        multiColumnGridView: {
+            click: 'onMultiColumnGridViewClicked'
+        },
+        singleColumnGridView: {
+            click: 'onSingleColumnGridViewClicked'
         }
     },
 
@@ -29,6 +35,17 @@ Ext.define('Savanna.modelSearch.controller.resultsComponent.ResultsPanelToolbarC
         this.getView().queryById('results_listViewButton').toggle();
     },
 
+    onMultiColumnGridViewClicked: function (button) {
+        this.onViewBtnClick();
+        this.getView().fireEvent("search:multiColumnGridView", button );
+        this.getSingleColumnGridView().pressed = false;
+    },
+
+    onSingleColumnGridViewClicked: function (button) {
+        this.onViewBtnClick();
+        this.getView().fireEvent("search:singleColumnGridView", button );
+        this.getMultiColumnGridView().pressed = false;
+    },
 
     onPageSizeChange: function (box, record, index) {
         this.getView().fireEvent("Search:PageSizeChanged", record[0].data.count);
@@ -61,6 +78,11 @@ Ext.define('Savanna.modelSearch.controller.resultsComponent.ResultsPanelToolbarC
 
     init: function () {
         return this.callParent(arguments);
+    },
+
+    onViewBtnClick:function()  {
+        this.getView().queryById('singleColumnGridView').toggle();
+        this.getView().queryById('multiColumnGridView').toggle();
     }
 
 });

@@ -56,11 +56,11 @@ StepLayout.prototype.doLayout = function(coll) {
 
     this.diagram.startTransaction("StepLayout");
 
-    var toolLayout = gmake(go.TreeLayout, {angle: 180, arrangement: go.TreeLayout.ArrangementFixedRoots});
+    var toolLayout = gmake(go.TreeLayout, {angle: 180, arrangement: go.TreeLayout.ArrangementFixedRoots, layerSpacing:24});
     var maxSideNodes = Math.max(countToolNodes, countByproductNodes);
-    var spacing = 50 + 25 * Math.max(maxSideNodes - 2, 0);
+    var spacing = 24 + 24 * Math.max(maxSideNodes - 2, 0);
     var inputLayout = gmake(go.TreeLayout, {angle: 270, arrangement: go.TreeLayout.ArrangementFixedRoots, layerSpacing:spacing});
-    var byproductLayout = gmake(go.TreeLayout, {angle: 0, arrangement: go.TreeLayout.ArrangementFixedRoots});
+    var byproductLayout = gmake(go.TreeLayout, {angle: 0, arrangement: go.TreeLayout.ArrangementFixedRoots, layerSpacing:24});
 
     toolLayout.doLayout(toolParts);
     inputLayout.doLayout(inputParts);

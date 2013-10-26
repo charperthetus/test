@@ -2,7 +2,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
     extend: 'Ext.toolbar.Toolbar',
     alias: 'widget.search_resultspaneltoolbar',
     controller: 'Savanna.search.controller.resultsComponent.ResultsPanelToolbarController',
-    bubbleEvents: ['Search:PageSizeChanged', "Search:SortByChanged"],
+    bubbleEvents: ['Search:PageSizeChanged', 'Search:SortByChanged'],
     requires: [
         'Savanna.controller.Factory',
         'Ext.form.field.ComboBox',
@@ -58,9 +58,6 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
             },
             {
                 xtype: 'tbfill'
-            },
-            {
-                text: 'Imgs'
             },
             {
                 glyph: 61786,

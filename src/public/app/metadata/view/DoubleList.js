@@ -10,10 +10,6 @@ Ext.define('Savanna.metadata.view.DoubleList', {
     extend: 'Savanna.metadata.view.MetadataItemView',
     alias: 'widget.metadata_doublelist',
 
-    requires: [
-        'Savanna.controller.Factory'
-    ],
-
     items: [
     ],
     initComponent: function () {
@@ -49,8 +45,8 @@ Ext.define('Savanna.metadata.view.DoubleList', {
         var me = this;
         this.add(Ext.create('Ext.form.Label', {
             itemId: 'displayLabelItem',
-            width: 200,
-            minWidth: 200,
+            width: 180,
+            minWidth: 180,
             height: 25
         }));
 

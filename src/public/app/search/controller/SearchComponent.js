@@ -32,6 +32,9 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             'search_searchcomponent': {
                 render: this.onSearchRender
             },
+            'search_searchcomponent #toolbarsearchbutton': {
+                click: this.handleSearchSubmit
+            },
             'search_searchcomponent #search_reset_button': {
                 click: this.handleNewSearch
             },

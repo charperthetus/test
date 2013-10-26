@@ -22,13 +22,11 @@ Ext.define('Savanna.metadata.store.Metadata', {
     itemURI: '',
 
     constructor: function() {
-        var me = this;
-
         this.callParent(arguments);
 
         this.setProxy({
             type: 'savanna-cors',
-
+            url: SavannaConfig.metadataUrl,
             modifyRequest: function(request) {
                 if('update' == request.action) {
                     // Must put, not push.  So sayeth endpoint.

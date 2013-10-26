@@ -32,6 +32,10 @@ Ext.define('Savanna.modelSearch.controller.ResultsComponent', {
                     me.component.on('Search:SortByChanged', this.onSortOrderChange, this);
                     me.component.on('search:changeSelectedStore', this.changeSelectedStore, this);
 
+                    me.component.on('search:multiColumnGridView', this.onMultiColumnGridView, this);
+                    me.component.on('search:singleColumnGridView', this.onSingleColumnGridView, this);
+
+
                     //grid notifications
                     me.component.on('search:grid:itemdblclick', this.onItemPreview, this);
                     me.component.on('search:grid:itemclick', this.onItemClick, this);
@@ -97,6 +101,11 @@ Ext.define('Savanna.modelSearch.controller.ResultsComponent', {
         return  this.getResultsComponent().down('model_search_resultspanelgrid');
     },
 
+    // Get the grid component.
+    getMultiGrid: function () {
+        return  this.getResultsComponent().down('model_search_resultspanelgrid_multi_column');
+    },
+
     // Get the grid's store.
     getGridStore: function () {
         return  this.getGrid().store;
@@ -121,6 +130,16 @@ Ext.define('Savanna.modelSearch.controller.ResultsComponent', {
     // The 'Preview Results 1 of xxx' label
     previewIndexAndTotalLabel: function () {
         return this.previewWindow().down('#itemIndexAndTotalLabel');
+    },
+
+    // Get button that displays the single column grid
+    getSingleColumnGridButton: function () {
+        return  this.getResultsComponent().down('multiColumnGridView');
+    },
+
+    // Get the button that displays the multicolumn grid
+    getMultiColumnGridButton: function () {
+        return  this.getResultsComponent().down('singleColumnGridView');
     },
 
     getCurrentDalId: function () {
@@ -288,12 +307,17 @@ Ext.define('Savanna.modelSearch.controller.ResultsComponent', {
         //gaaaahhh    the index passed in does not include all the pages that have come before.
         //gaaaahhh*10 the current page is 1-based.
         this.previewIndex = index + (this.resultsStore.currentPage - 1) * (this.resultsStore.pageSize);
-        this.updatePreview();
+        //We don't need this feature in this release.  Uncomment to restore function.
+        //this.updatePreview();
     },
 
     onItemMouseEnter: function (view, rec, node) {    // other parameters: , index, e, options
         if (node) {
-            node.querySelector('#hoverDiv').style.visibility = 'visible';
+            var div = node.querySelector('#hoverDiv');
+            //Not all grids have this div.
+            if(div){
+                div.style.visibility = 'visible';
+            }
         }
     },
 
@@ -307,7 +331,11 @@ Ext.define('Savanna.modelSearch.controller.ResultsComponent', {
 
     onItemMouseLeave: function (view, rec, node) {  // other parameters: , index, e, options
         if (node) {
-            node.querySelector('#hoverDiv').style.visibility = 'hidden';
+            var div = node.querySelector('#hoverDiv');
+            //Not all grids have this div.
+            if(div){
+                div.style.visibility = 'hidden';
+            }
         }
     },
 
@@ -316,18 +344,14 @@ Ext.define('Savanna.modelSearch.controller.ResultsComponent', {
     },
 
     onNextItemPreview: function () {
-        if (this.previewIndex >= this.resultsStore.totalCount) {
-            return;
-        } else {
+        if (this.previewIndex < this.resultsStore.totalCount) {
             this.previewIndex++;
             this.updatePreview();
         }
     },
 
     onPrevItemPreview: function () {
-        if (this.previewIndex <= 0) {
-            return;
-        } else {
+        if (this.previewIndex > 0)  {
             this.previewIndex--;
             this.updatePreview();
         }
@@ -338,14 +362,16 @@ Ext.define('Savanna.modelSearch.controller.ResultsComponent', {
         var id = this.getCurrentDalId();
         var dalRecord = Ext.data.StoreManager.lookup('dalSources').getById(id),
             resultsDals = btn.up('#resultsdals'),
-            resultsTerms = resultsDals.down('model_model_search_resultsDals_resultsterms');
+            resultsTerms = resultsDals.down('model_search_resultsDals_resultsterms');
 
         dalRecord.set('facetFilterCriteria', []);
         resultsDals.queryById('resultsfacets').removeAll();
         resultsDals.createFacetsTabPanel();
         btn.findParentByType('model_search_searchcomponent').refineSearchString = '';
 
-        resultsTerms.queryById('termValues').removeAll();
+        if(resultsTerms){
+            resultsTerms.queryById('termValues').removeAll();
+        }
 
         this.getApplication().fireEvent('model_results:dalreset', btn);
     },
@@ -376,6 +402,20 @@ Ext.define('Savanna.modelSearch.controller.ResultsComponent', {
 
         this.getApplication().fireEvent('model_results:buildAndLoadResultsStore', dalRecord, searchComponent, searchObj, 'filter', newSize);
 
+    },
+
+    onSingleColumnGridView: function (button) {
+        var grid = this.getGrid();
+        var multiGrid = this.getMultiGrid();
+        grid.show();
+        multiGrid.hide();
+    },
+
+    onMultiColumnGridView: function (button) {
+        var grid = this.getGrid();
+        var multiGrid = this.getMultiGrid();
+        grid.hide();
+        multiGrid.show();
     },
 
     /*

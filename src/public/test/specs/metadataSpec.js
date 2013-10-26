@@ -11,45 +11,86 @@
           ThetusTestHelpers: false,
           Savanna: false
  */
+Ext.require('Savanna.Config');
+
 Ext.require('Savanna.metadata.view.Details');
+Ext.require('Savanna.metadata.view.String');
+Ext.require('Savanna.metadata.view.LongString');
+Ext.require('Savanna.metadata.view.Date');
+Ext.require('Savanna.metadata.view.Uri');
+Ext.require('Savanna.metadata.view.Integer');
+Ext.require('Savanna.metadata.view.Boolean');
+Ext.require('Savanna.metadata.view.Double');
+Ext.require('Savanna.metadata.view.StringList');
+Ext.require('Savanna.metadata.view.BooleanList');
+Ext.require('Savanna.metadata.view.DateList');
+Ext.require('Savanna.metadata.view.IntegerList');
+Ext.require('Savanna.metadata.view.DoubleList');
+Ext.require('Savanna.metadata.view.UriList');
+Ext.require('Savanna.metadata.controller.MetadataViewController');
+Ext.require('Savanna.metadata.store.Metadata');
 
 
 describe('Metadata field generator', function() {
-    var fixtures = {};
+    var detailsComponent = null,
+        detailsController = null,
+        fixtures = null,
+        store = null,
+        server = null,
+        readMethod = null,
+        testUrl = null;
 
-    beforeEach(function() {
-//        fixtures = Ext.clone(ThetusTestHelpers.Fixtures.DalSources);
-//
-//        ThetusTestHelpers.ExtHelpers.createTestDom();
+    beforeEach(function () {
+        ThetusTestHelpers.ExtHelpers.createTestDom();
+
+        fixtures = Ext.clone(ThetusTestHelpers.Fixtures.Metadata);
+
+        store = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.metadata.store.Metadata', { autoLoad: false });
+
+        // now set up server to get store data
+        server = new ThetusTestHelpers.FakeServer(sinon);
+
+        readMethod = 'GET';
+
+        testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(store.getProxy(), 'read', readMethod);
+
+        server.respondWith(readMethod, testUrl, fixtures.metadataResponse);
+
+        store.load();
+
+        server.respond({
+            errorOnInvalidRequest: true
+        });
+
+        detailsComponent = Ext.create('Savanna.metadata.view.Details', {
+            renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID,
+            itemURI: 'SolrJdbc%252FText%252F9d62ad60-f453-4215-b8bc-c4c1398b84a4'
+        });
+
+        detailsController = detailsComponent.getController();
     });
 
-    afterEach(function() {
-//        fixtures = null;
-//        ThetusTestHelpers.ExtHelpers.cleanTestDom();
+    afterEach(function () {
+
+        if(detailsComponent)   {
+            detailsComponent.destroy();
+            detailsComponent = null;
+            detailsController.destroy();
+            detailsController = null;
+        }
+        server.restore();
+        server = null;
+        store = null;
+        fixtures = null;
+        readMethod = null;
+        testUrl = null;
+
+        ThetusTestHelpers.ExtHelpers.cleanTestDom();
     });
 
-    describe('Savanna.search.model.Metadata', function() {
-//        var store = null;
-//
-//        beforeEach(function() {
-//            // NOTE: this has to happen BEFORE your create a FakeServer,
-//            store = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.DalSources');
-//            store.add(Ext.create('Savanna.search.model.DalSource', fixtures.groupedDal));
-//        });
-//
-//        afterEach(function() {
-//            store = null;
-//        });
-//
-//        describe('constructor', function() {
-//
-//            it('should be able to create a model with canonical data', function() {
-//                var dal = Ext.create('Savanna.search.model.DalSource', fixtures.groupedDal);
-//
-//                expect(dal instanceof Savanna.search.model.DalSource).toBeTruthy();
-//
-//                expect(dal.get('inputTypes').length).toBeGreaterThan(0);
-//            });
-//        });
-    });
+//    it('should instantiate Details as the correct component class', function()    {
+//        expect(detailsComponent instanceof Savanna.metadata.view.Details).toBeTruthy();
+//    });
+
+
 });
