@@ -50,9 +50,9 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
             me.getView().queryById('addIntendedUseBox').addTag(value.label);
         });
 
-        me.getView().queryById('parentBtn').setText(me.getView().store.getAt(3).data.values[0].label);
+        me.getView().queryById('parentBtn').setText(me.getView().store.getAt(2).data.values[0].label);
 
-        me.getView().queryById('itemDescription').setValue(me.getView().store.getAt(4).data.values[0].value);
+        me.getView().queryById('itemDescription').setValue(me.getView().store.getAt(3).data.values[0].value);
     },
 
     openParentItem: function() {
