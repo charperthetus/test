@@ -89,7 +89,7 @@ Ext.define('Savanna.controller.Main', {
         var task = {
             run: function(){
                 Ext.Ajax.request({
-                    url: SavannaConfig.pingUrl, // + ';jsessionid=' + Savanna.jsessionid,
+                    url: SavannaConfig.pingUrl,
                     method: 'GET',
                     success: function(response){
                         var message = Ext.decode(response.responseText);
