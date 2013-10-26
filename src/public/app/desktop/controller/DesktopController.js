@@ -51,7 +51,7 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
             cors: true,
             success: function(response){
                 var userInfo = Ext.decode(response.responseText);
-                Savanna.userinfo = userInfo;
+                Savanna.userInfo = userInfo;
                 me.getCurrentuser().text = userInfo.username;
             },
             failure: function(response){

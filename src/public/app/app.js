@@ -60,7 +60,9 @@ Ext.application({
         //Process Stores
         'Savanna.process.store.Processes',
         'Savanna.process.store.ProcessItemStore',
-        'Savanna.process.store.ProcessActionStore'
+        'Savanna.process.store.ProcessActionStore',
+        //Image
+        'Savanna.image.util.ImageViewFactory'
     ],
 
     autoCreateViewport: false,
@@ -83,13 +85,15 @@ Ext.application({
         if (viewportQueryResults && viewportQueryResults.length > 0) {
             this.viewport = viewportQueryResults[0];
         }
-        else {
-            // TODO: Fatal condition...how to handle?
-            Ext.Error.raise('no viewport found. cannot start application');
-        }
+
+        this.setupComponents();
+    },
+
+    setupComponents: function(){
+        ComponentManager.registerComponent(Ext.create('Savanna.image.util.ImageViewFactory'));
     },
 
     // CUSTOM CONFIGURATION
     jsessionid: '', // keep track of the user's session id
-    userinfo: {} // current savanna info
+    userInfo: {} // current savanna info
 });
