@@ -131,11 +131,11 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
         var component = ComponentManager.getComponentForType(event.type, event.uri, event.label),
             tabPanel = this.getMaintabpanel();
         if (component){
-            var tab = tabPanel.add(component);
-            tab.tabConfig = {
+            component.closable = true;
+            component.tabConfig = {
                 ui: 'dark'
             }
-            tab.closable = true;
+            var tab = tabPanel.add(component);
             tabPanel.doLayout();
             tabPanel.setActiveTab(tab);
         }else{
