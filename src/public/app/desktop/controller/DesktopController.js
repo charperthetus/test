@@ -141,7 +141,7 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
     displayDummyItem: function() {
         var itemView = Ext.create('Savanna.itemView.view.ItemViewer', {
             title: 'Model Item',
-            itemUri: 'x012f931fec769ca941e8de4f7a674bec2a290937%2FItem',
+            itemUri: 'thetus%2EArtifactOntology%3AYellowPalmOilContainer%2FModelItemXML',
             closable: true,
             autoScroll: true,
             tabConfig: {

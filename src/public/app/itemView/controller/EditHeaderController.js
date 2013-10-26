@@ -72,37 +72,46 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
     },
 
     addingAlias: function(tagName, tagData, aView) {
-        this.addingTag(tagName, tagData, this.getView().store.getAt(0).data.values);
+        this.addingTag(tagName, tagData, 0);
     },
 
     removingAlias: function(tagName, aView) {
-        this.removingTag(tagName, this.getView().store.getAt(0).data.values);
+        this.removingTag(tagName, 0);
     },
 
     addingIntendedUse: function(tagName, tagData, aView) {
-        this.addingTag(tagName, tagData, this.getView().store.getAt(1).data.values);
+        this.addingTag(tagName, tagData, 1);
     },
 
     removingIntendedUse: function(tagName, aView) {
-        this.removingTag(tagName, this.getView().store.getAt(1).data.values);
+        this.removingTag(tagName, 1);
     },
 
-    addingTag: function(tagName, tagData, tagArray) {
-        var myStore = this.getView().store;
-        var tagUri = tagData ? tagData.uri : null;
-        var newTag = {editable: true, inheritedFrom: null, label: tagName, uri: tagUri, value: tagName, version: 0};
-        tagArray.push(newTag);
+    addingTag: function(tagName, tagData, index) {
+        var myStore = Ext.data.StoreManager.lookup('Savanna.itemView.store.MainItemStore'),
+            tagUri = tagData ? tagData.uri : null,
+            vals = myStore.getAt(0).data.propertyGroups[0].values[index].values;
+
+        vals.push({editable: true, inheritedFrom: null, label: tagName, uri: tagUri, value: tagName, version: 0});
+
+        myStore.getRange()[0].setDirty();
     },
 
-    removingTag: function(tagName, tagArray) {
+    removingTag: function(tagName, data) {
         var myStore = this.getView().store;
 
-        for (var i = 0; i < tagArray.length; i++) {
-            if (tagArray[i].label === tagName) {
-                Ext.Array.remove(tagArray, tagArray[i]);
+        for (var i = 0; i < data.get('values').length; i++) {
+            if (data.get('values').getAt(i).label === tagName) {
+                Ext.Array.remove(data.get('values'), data.get('values').getAt(i));
                 break;
             }
         }
+
+        myStore.getRange()[0].setDirty();
+    },
+
+    itemUpdateCallback:function(records, action, success)   {
+        console.log(success);
     },
 
     updateDescription: function(comp, e, eOpts) {

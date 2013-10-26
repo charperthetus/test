@@ -125,9 +125,11 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
 
     createItem: function() {
 
+        console.log('here');
+        /*
         var itemView = Ext.create('Savanna.itemView.view.ItemViewer', {
             title: 'Model Item',
-            itemUri: 'x012f931fec769ca941e8de4f7a674bec2a290937%2FItem',
+            itemUri: 'thetus%2EArtifactOntology%3AYellowPalmOilContainer%2FModelItemXML',
             editMode: true,
             closable: true,
             autoScroll: true,
@@ -136,6 +138,9 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
             }
         });
         Savanna.app.fireEvent('search:itemSelected', itemView);
+        */
+
+
     },
 
     createProcess: function(tabpanel) {

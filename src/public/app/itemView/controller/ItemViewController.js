@@ -93,11 +93,16 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     },
 
     onEditDone:function() {
+
+
         var myStore = Ext.data.StoreManager.lookup(this.store);
         var headerComponent = this.getView().queryById('itemViewHeaderView');
         headerComponent.reconfigure(myStore.getAt(0).propertyGroupsStore.getAt(0).valuesStore);
         this.getView().getLayout().setActiveItem(0);
         this.getView().setEditMode(!this.getView().getEditMode());
+
+        myStore.getProxy().url = SavannaConfig.itemViewUrl;
+        myStore.sync();
     },
 
     getItemViewData: function () {
@@ -238,6 +243,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     },
 
     openItem: function (itemName, itemUri) {
+
         var itemView = Ext.create('Savanna.itemView.view.ItemViewer', {
             title: itemName,
             itemUri: itemUri,

@@ -10,7 +10,8 @@ Ext.define('Savanna.Config', {
         sc.pingUrl = rUrl + 'public/ping';
         sc.searchUrl = rUrl + 'rest/search'; // local dev version: 'app/assets/data/testSearchResults.json',
         sc.searchMetadataUrl = rUrl + 'rest/metadata/get';
-        sc.itemViewUrl = rUrl + 'rest/model/mock/item/';
+        sc.itemViewUrl = rUrl + 'rest/model/item/';
+        sc.itemViewUpdateUrl = rUrl + 'rest/model/item/';
         sc.modelSearchUrl = rUrl + 'rest/mockModelSearch/keyword/item';
         sc.dalSourcesUrl = rUrl + 'rest/search/sources'; // local dev version: 'resources/data/testSearchDalsWithFormData.json',
         sc.locationSearch = rUrl + '/rest/map/search';   // local dev version: 'resources/data/testSearchLocationSearch.json',
