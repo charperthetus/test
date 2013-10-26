@@ -21,17 +21,17 @@ Ext.define('Savanna.itemView.store.ParentItemStore', {
 
     autoLoad: false,
 
-    pageStart:0,
+    pageStart: 0,
 
     pageSize: 20,
 
-    keyword:'',
+    keyword: '',
 
-    excludeUri:'',
+    excludeUri: '',
 
-    facets:[],
+    facets: [],
 
-    queryId:'',
+    queryId: '',
 
     constructor: function () {
 
@@ -41,27 +41,38 @@ Ext.define('Savanna.itemView.store.ParentItemStore', {
         this.callParent(arguments);
 
         ReaderClass = Ext.extend(Ext.data.JsonReader, {
-            type:'json',
+            type: 'json',
             root: 'results',
-            totalProperty:'totalResults',
-            readRecords: function(data) {
+            totalProperty: 'totalResults',
+            readRecords: function (data) {
                 me.facets = data.facets;
                 me.queryId = data.queryId;
                 return this.callParent([data]);
             }
 
         });
+        console.log(SavannaConfig.mockModelSearch);
 
         this.setProxy({
             type: 'savanna-cors',
             url: SavannaConfig.mockModelSearch,
-            params: {
-                keyword: me.keyword,
-                pageStart:me.pageStart,
-                pageSize:me.pageSize,
-                excludeUri:me.excludeUri
+            reader: new ReaderClass(),
+            writer: {
+                type: 'json'
             },
-            reader: new ReaderClass()
+            modifyRequest: function (request) {
+                Ext.apply(request, {
+                    params: {
+                        keyword: me.keyword,
+                        pageStart: me.pageStart,
+                        pageSize: me.pageSize,
+                        excludeUri: me.excludeUri
+                    },
+                    method: 'GET'
+                });
+
+                return request;
+            }
         });
     }
 });

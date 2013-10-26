@@ -13,13 +13,8 @@ Ext.define('Savanna.itemView.controller.CreateItemController', {
         'Savanna.itemView.view.createItem.CreateItem'
     ],
 
-    requires: [
-        'Savanna.itemView.view.createItem.CreateItem'
-    ],
-
-    control: {
+    control:    {
 
     }
-
 });
 

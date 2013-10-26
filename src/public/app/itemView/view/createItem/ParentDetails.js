@@ -20,36 +20,66 @@ Ext.define('Savanna.itemView.view.createItem.ParentDetails', {
     alias: 'widget.itemview_parentdetails',
 
     requires: [
-
+        'Ext.Img'
     ],
 
     title: 'Selection',
 
-    layout:'hbox',
+    layout: 'hbox',
 
-    items:[],
+    items: [],
 
     initComponent: function () {
         this.items = this.setupItems();
+
         this.callParent(arguments);
+
+        Savanna.app.on('itemview:treepanel:itemclick', this.onTreeItemClick, this);
+        Savanna.app.on('itemview:treepanel:itemdblclick', this.onTreeItemDblClick, this);
+    },
+
+    onTreeItemClick: function (view, td, cellIndex, record, tr, rowIndex, e, eOpts) {
+        this.queryById('item_title').setText(this.store.getAt(rowIndex).raw.label);
+        this.queryById('item_imagethumbnail').setSrc(this.store.getAt(rowIndex).raw.primaryImageUrl);
+        this.queryById('parentdetails_textpanel').update(this.store.getAt(rowIndex).raw);
+    },
+
+    onTreeItemDblClick: function () {
+        console.log(arguments);
     },
 
     setupItems: function () {
 
         var content = [
             {
-                xtype:'panel',
-                itemId:'parentdetails_imagepanel',
-                flex:1
+                xtype: 'image',
+                itemId: 'item_imagethumbnail',
+                flex: 1,
+                height: 300
             },
             {
-                xtype:'panel',
-                itemId:'parentdetails_textpanel',
-                flex:2
+                xtype: 'panel',
+                itemId: 'parentdetails_textpanel',
+                flex: 2,
+                padding:    {
+                    left:10
+                },
+                height:'100%',
+                tpl: Ext.create('Ext.XTemplate',
+                    '<b>{label}</b>'
+                )
             }
 
         ];
         return content;
-    }
+    },
+
+    tbar: [
+        {
+            xtype: 'tbtext',
+            itemId: 'item_title',
+            text: ''
+        }
+    ]
 });
 

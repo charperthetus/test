@@ -22,8 +22,11 @@ Ext.define('Savanna.itemView.view.createItem.ParentTree', {
     requires: [
         'Ext.data.TreeStore',
         'Ext.tree.Panel',
-        'Savanna.components.autoComplete.AutoComplete'
+        'Savanna.components.autoComplete.AutoComplete',
+        'Savanna.itemView.controller.ParentTreeController'
     ],
+
+    controller: 'Savanna.itemView.controller.ParentTreeController',
 
     title: 'Item Types',
 
@@ -36,32 +39,40 @@ Ext.define('Savanna.itemView.view.createItem.ParentTree', {
 
     setupItems: function () {
 
+        var parentsArray = [];
+
+        Ext.each(this.store.data.items, function(item)  {
+            parentsArray.push({text: item.raw.label});
+        });
+
         var store = Ext.create('Ext.data.TreeStore', {
             root: {
                 expanded: true,
-                children: [
-                    { text: "Yellow Palm Oil Container"}
-                ]
+                children: parentsArray
             }
         });
 
         var content = [
             {
-                xtype:'auto_complete',
-                itemId:'parenttype_autocomplete',
-                width:'100%'
-            },
-            {
                 xtype: 'treepanel',
-                title: 'Simple Tree',
+                itemId:'parentitems_treepanel',
+                titleCollapse: true,
                 width: '100%',
-                height: '100%',
+                height:400,
+                forceFit:true,
                 store: store,
                 rootVisible: false
             }
 
         ];
         return content;
-    }
+    },
+    tbar:   [
+        {
+            xtype:'auto_complete',
+            itemId:'parenttype_autocomplete',
+            width:'100%'
+        }
+    ]
 });
 

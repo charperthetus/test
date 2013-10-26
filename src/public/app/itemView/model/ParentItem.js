@@ -7,7 +7,7 @@
  */
 
 Ext.define('Savanna.itemView.model.ParentItem', {
-    extend: 'Ext.data.Model',
+    extend: 'Ext.data.Model'
 });
 
 
