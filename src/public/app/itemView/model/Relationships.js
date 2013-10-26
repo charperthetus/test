@@ -9,7 +9,7 @@ Ext.define('Savanna.itemView.model.Relationships', {
     extend: 'Ext.data.Model',
 
     fields: [
-        { name: 'key'},
+        { name: 'uri'},
         { name: 'value'}
     ]
 });

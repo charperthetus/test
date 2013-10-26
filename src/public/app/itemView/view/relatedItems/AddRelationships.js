@@ -48,6 +48,10 @@ Ext.define('Savanna.itemView.view.relatedItems.AddRelationships', {
     afterRender: function() {
 
         var me = this;
+        var itemStore = Ext.data.StoreManager.lookup('Savanna.itemView.store.MainItemStore');
+        Ext.each(itemStore.getAt(0).propertyGroupsStore.getAt(2).valuesStore.data.items, function (relatedItemsGroup) {
+            console.log('relatedItemsGroup', relatedItemsGroup, relatedItemsGroup.data.label);
+        });
         this.store.each(function(record) {
             var myPanel = me.down('#relationshipGroups');
             me.down('#relationshipGroups').add({
