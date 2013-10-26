@@ -6,7 +6,9 @@ Ext.define('Savanna.controller.Main', {
     extend: 'Ext.app.Controller',
 
     requires: [
-        'Ext.util.TaskRunner'
+        'Ext.util.TaskRunner',
+        'Savanna.utils.EventHub',
+        'Savanna.utils.ComponentManager'
     ],
 
     views: [
@@ -19,6 +21,8 @@ Ext.define('Savanna.controller.Main', {
 
     init: function(app) {
         var me = this;
+
+        this.captureBackspace();
 
         this.app = app;
 
@@ -72,11 +76,20 @@ Ext.define('Savanna.controller.Main', {
         modal.close();
     },
 
+    captureBackspace: function(){
+        Ext.EventManager.addListener(Ext.getBody(), 'keydown', function(e){
+            var type = e.getTarget().type;
+            if(type != 'text' && type != 'textarea' && e.getKey() == '8' ){
+                e.preventDefault();
+            }
+        });
+    },
+
     keepAlive: function(){
         var task = {
             run: function(){
                 Ext.Ajax.request({
-                    url: SavannaConfig.pingUrl + ';jsessionid=' + Savanna.jsessionid,
+                    url: SavannaConfig.pingUrl,
                     method: 'GET',
                     success: function(response){
                         var message = Ext.decode(response.responseText);
