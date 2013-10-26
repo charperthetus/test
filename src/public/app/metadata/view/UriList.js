@@ -10,10 +10,6 @@ Ext.define('Savanna.metadata.view.UriList', {
     extend: 'Savanna.metadata.view.MetadataItemView',
     alias: 'widget.metadata_urilist',
 
-    requires: [
-        'Savanna.controller.Factory'
-    ],
-
     items: [
     ],
 
