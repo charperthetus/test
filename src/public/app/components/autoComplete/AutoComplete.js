@@ -67,7 +67,7 @@ Ext.define('Savanna.components.autoComplete.AutoComplete', {
                     {
                         xtype: 'combo',
                         itemId: 'autoCompleteBox',
-                        displayField: 'label',
+                        displayField: 'displayLabel',
                         typeAhead: false,
                         hideTrigger: true,
                         anchor: '100%',

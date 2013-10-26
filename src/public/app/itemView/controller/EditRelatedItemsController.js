@@ -60,8 +60,17 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
                             ]
 
                         },
-{
-                            xtype: 'auto_complete'
+                        {
+                            xtype: 'auto_complete',
+                            labelType: 'Find items',
+                            showTags: true,
+                            itemId: 'addIntendedUseBox',
+                            store: Ext.create('Savanna.itemView.store.AutoCompleteStore', {
+                                urlEndPoint: 'http://c2devsav1:8080/c2is2/rest/mockModelSearch/keyword/property/propUri',
+                                paramsObj: {excludeUri:'asdf', pageStart:0, pageLimit:10}
+                            }),
+                            flex: 1
+
                         }
 
                     ]
@@ -69,7 +78,6 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
                 }
 
             );
-            console.log('relatedItemsGroup', relatedItemsGroup.data.values[0].label);
             Ext.each(relatedItemsGroup.data.values, function(item) {
                 me.getView().add(
                     {
@@ -78,43 +86,31 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
                         items: [
                             {
                                 xtype: 'button',
-                                text: item.label
+                                text: item.label,
+                                handler: this.onRelatedItemClick,
+                                name: item.value
 
                             },
                             {
                                 xtype: 'button',
-                                text: 'X'
+                                text: 'X',
+                                handler: this.onRemoveRelatedItem,
+                                name: item.value,
+                                value: item.label
                             }
                         ]
                     }
                 );
             });
-
-//            var grid = Ext.create('Ext.grid.Panel', {
-//                store: relatedItemsGroup.valuesStore,
-//                columns: [
-//                    {
-//                        xtype: 'templatecolumn',
-//                        tpl: Ext.create('Ext.XTemplate',
-//                            '<input type="button" name="{value}" value="{label}" id="openRelatedItem" />'
-//                        ),
-//                        text: relatedItemsGroup.get('label'),
-//                        flex: 1,
-//                        sortable: false
-//                    }
-//                ],
-//                listeners: {
-//                    itemclick: me.onRelatedItemClick
-//                }
-//            });
-//
-//            me.getView().add(grid);
         });
+    },
+    onRelatedItemClick: function (btn) {
+        console.log('button', btn);
+        btn.up('itemview_view_related_items').fireEvent('ItemView:OpenItem', btn.value, btn.text);
+    },
+
+    onRemoveRelatedItem: function(btn)  {
+        console.log('button', btn);
     }
 
-//    onRelatedItemClick: function (grid, record, item, index, e, eOpts) {
-//        if (e.target.id == "openRelatedItem") {
-//            grid.up('itemview_view_related_items').fireEvent('ItemView:OpenItem', e.target.value, e.target.name);
-//        }
-//    }
 });
