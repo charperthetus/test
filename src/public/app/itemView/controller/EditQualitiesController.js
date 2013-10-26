@@ -80,7 +80,7 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
                 // The new auto-complete control
                 newProp = Ext.create('Savanna.components.autoComplete.AutoComplete', {
                     itemId: 'prop_' + propName.replace(/[\s']/g, '_'),
-                    propData: propData,
+                    propData: propName,
                     showTags: true,
                     preLabel: propName,
                     hasControls: true,
@@ -94,6 +94,18 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
             // Insert after the input for autocomplete, but before the close button
             newProp.child('container').insert(1, picker);
             this.getView().add(newProp);
+
+
+            // Create a new model for the store, mapping the data to fit the model
+            var newQualitiesModel = {
+                id: propData.label,
+                label: propData.label,
+                predicateUri: propData.uri,
+                values: []
+            };
+
+            // Add a new model into the store
+            this.getView().store.add(newQualitiesModel);
         }
     },
     // Convenience handler to generate a new auto-complete
@@ -148,7 +160,15 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
     launchPredicatesChooser: function() {
         console.debug('TODO: Launch the predicates chooser', arguments);
     },
-    removePredicate: function() {
-        console.debug('TODO: Remove the predicate from the store', arguments);
+    removePredicate: function(view) {
+        // NOTE: We cannot call the destroy method on the model since we aren't supplying proxies.
+        console.debug(view);
+        var store = this.getView().store.data.items;
+        for (var i = 0; i < store.length; i++) {
+            if (store[i].internalId === view.propData) {
+                Ext.Array.remove(store, store[i]);
+                break;
+            }
+        }
     }
 });
