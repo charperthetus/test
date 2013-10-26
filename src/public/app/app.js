@@ -57,10 +57,6 @@ Ext.application({
         'Savanna.modelSearch.controller.SearchComponent',
         //Upload
         'Savanna.upload.controller.UploadController',
-        //Process Stores
-        'Savanna.process.store.Processes',
-        'Savanna.process.store.ProcessItemStore',
-        'Savanna.process.store.ProcessActionStore',
         //Image
         'Savanna.image.util.ImageViewFactory'
     ],
@@ -68,15 +64,6 @@ Ext.application({
     autoCreateViewport: false,
 
     launch: function() {
-        Deft.Injector.configure({
-            'application': {
-                value: this
-            },
-            processStore: 'Savanna.process.store.Processes',
-            processItemStore: 'Savanna.process.store.ProcessItemStore',
-            processActionStore: 'Savanna.process.store.ProcessActionStore'
-        });
-
         //in order to get Injection to work, I had to set autoCreateViewport to false and then manually create the viewport here
         Ext.create('Savanna.view.Viewport');
 
@@ -95,5 +82,5 @@ Ext.application({
 
     // CUSTOM CONFIGURATION
     jsessionid: '', // keep track of the user's session id
-    userInfo: {} // current savanna info
+    userInfo: {} // current user info
 });

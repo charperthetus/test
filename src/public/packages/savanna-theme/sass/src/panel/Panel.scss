@@ -1,19 +1,41 @@
-/*
- *  Sets custom panel.Panel styles by reusing ExtJS (or UIKit) mixins.
- *  Refer to thetus-uikit/sass/src/panel/_uikit-panel.scss for the constructor of the UIKit mixin
- *
- *
- *	@author astump 10/17/2013
- *
- */
+// /*
+//  *  Sets custom panel.Panel styles by reusing ExtJS (or UIKit) mixins.
+//  *  Refer to thetus-uikit/sass/src/panel/_uikit-panel.scss for the constructor of the UIKit mixin
+//  *
+//  *
+//  *	@author astump 10/17/2013
+//  *		@edits astump 10/24/2013 - added 'result-facet' ui
+//  *
+//  */
 
-/* IMPORTS */
+// /* IMPORTS */
 
-/* MIXINS */
+// /* MIXINS */
 @if $include-panel-uis == true {
     @include uikit-panel(
         $uikit-ui: 'search-prime',
         $uikit-body-color: $medium-gray,
         $uikit-body-background-color: $medium-gray
+    );
+    
+    // /* 
+    //  * This is the solution to result facets until these can be changed from 'accordion panels' to 'form field set groups'. 
+    // */
+    @include uikit-panel(
+        $uikit-ui: 'results-facet',
+	    $uikit-header-color: $panel-resultfacet-header-color,
+	    $uikit-header-font-weight: $panel-resultfacet-header-font-weight,
+	    $uikit-header-line-height: $panel-resultfacet-header-line-height,
+	    $uikit-header-background-color: $panel-resultfacet-header-background-color,
+	    $uikit-header-text-padding: $panel-resultfacet-header-text-padding,
+	    $uikit-header-text-transform: $panel-resultfacet-header-text-transform,
+	    $uikit-header-padding: $panel-resultfacet-header-padding,
+	    $uikit-header-icon-width: $panel-resultfacet-header-icon-width,
+	    $uikit-header-icon-height: $panel-resultfacet-header-icon-height,
+	    $uikit-header-icon-spacing: $panel-resultfacet-header-icon-spacing,
+	    
+	    $uikit-body-padding: $panel-resultfacet-body-padding,
+	    $uikit-body-border-color: $panel-resultfacet-body-border-color,
+	    $uikit-tool-background-image: 'tools/tool-sprites-black'
     );
 }
