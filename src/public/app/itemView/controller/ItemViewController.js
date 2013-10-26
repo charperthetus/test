@@ -105,7 +105,6 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         this.getView().getLayout().setActiveItem(0);
         this.getView().setEditMode(!this.getView().getEditMode());
 
-        myStore.getProxy().url = SavannaConfig.itemViewUrl;
         myStore.sync();
     },
 
