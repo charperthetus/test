@@ -53,12 +53,8 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
     },
 
     initComponent: function() {
-
         this.items = this.buildItems();
         this.callParent(arguments);
-
-
-
     },
 
     buildItems: function() {

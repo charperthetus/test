@@ -43,7 +43,7 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
             }
         },
         // Listens for the "choose" on the Click to add chooser
-        predicateschooser: {
+        qualitiesChooser: {
             click: 'launchPredicatesChooser'
         }
     },
@@ -144,6 +144,10 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
     },
     // TODO: Hook-up the predicates chooser
     launchPredicatesChooser: function() {
-        console.debug('Fired');
+        Ext.create('Savanna.itemView.view.itemQualities.QualitiesPicker', {
+            width: 500,
+            height: 600,
+            selectionStore: this.getView().store
+        });
     }
 });
