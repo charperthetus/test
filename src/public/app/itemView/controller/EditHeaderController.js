@@ -42,21 +42,21 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
     storeSet: function () {
         var me = this;
 
-        Ext.each(me.getView().store.getAt(0).data.values, function(value) {
+        Ext.each(me.getView().store.getById('Aliases').data.values, function(value) {
             me.getView().queryById('addAliasBox').addTag(value.label);
         });
 
-        Ext.each(me.getView().store.getAt(1).data.values, function(value) {
+        Ext.each(me.getView().store.getById('Intended Use').data.values, function(value) {
             me.getView().queryById('addIntendedUseBox').addTag(value.label);
         });
 
-        me.getView().queryById('parentBtn').setText(me.getView().store.getAt(2).data.values[0].label);
+        me.getView().queryById('parentBtn').setText(me.getView().store.getById('Type').data.values[0].label);
 
-        me.getView().queryById('itemDescription').setValue(me.getView().store.getAt(3).data.values[0].value);
+        me.getView().queryById('itemDescription').setValue(me.getView().store.getById('Description').data.values[0].value);
     },
 
     openParentItem: function() {
-        this.getView().fireEvent('ItemView:OpenItem', this.getView().store.getAt(3).data.values[0].label, this.getView().store.getAt(3).data.values[0].value);
+        this.getView().fireEvent('ItemView:OpenItem', this.getView().store.getById('Type').data.values[0].label, this.getView().store.getById('Type').data.values[0].value);
     },
 
     openParentChooser: function() {
@@ -72,25 +72,24 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
     },
 
     addingAlias: function(tagName, tagData, aView) {
-        this.addingTag(tagName, tagData, 0);
+        this.addingTag(tagName, tagData, this.getView().store.getById('Aliases').data.values);
     },
 
     removingAlias: function(tagName, aView) {
-        this.removingTag(tagName, 0);
+        this.removingTag(tagName, this.getView().store.getById('Aliases').data.values);
     },
 
     addingIntendedUse: function(tagName, tagData, aView) {
-        this.addingTag(tagName, tagData, 1);
+        this.addingTag(tagName, tagData, this.getView().store.getById('Intended Use').data.values);
     },
 
     removingIntendedUse: function(tagName, aView) {
-        this.removingTag(tagName, 1);
+        this.removingTag(tagName, this.getView().store.getById('Intended Use').data.values);
     },
 
-    addingTag: function(tagName, tagData, index) {
+    addingTag: function(tagName, tagData, vals) {
         var myStore = Ext.data.StoreManager.lookup('Savanna.itemView.store.MainItemStore'),
-            tagUri = tagData ? tagData.uri : null,
-            vals = myStore.getAt(0).data.propertyGroups[0].values[index].values;
+            tagUri = tagData ? tagData.uri : null;
 
         vals.push({editable: true, inheritedFrom: null, label: tagName, uri: tagUri, value: tagName, version: 0});
 
@@ -100,9 +99,9 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
     removingTag: function(tagName, data) {
         var myStore = this.getView().store;
 
-        for (var i = 0; i < data.get('values').length; i++) {
-            if (data.get('values').getAt(i).label === tagName) {
-                Ext.Array.remove(data.get('values'), data.get('values').getAt(i));
+        for (var i = 0; i < data.length; i++) {
+            if (data.getAt(i).label === tagName) {
+                Ext.Array.remove(data, data.getAt(i));
                 break;
             }
         }
@@ -116,6 +115,6 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
 
     updateDescription: function(comp, e, eOpts) {
         var myStore = this.getView().store;
-        myStore.getAt(4).data.values[0].value = comp.value;
+        myStore.getById('Description').data.values[0].value = comp.value;
     }
 });

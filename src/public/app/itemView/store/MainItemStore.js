@@ -18,20 +18,13 @@ Ext.define('Savanna.itemView.store.MainItemStore', {
 
     storeId: 'mainItem',
 
-
-
     constructor: function () {
 
         this.callParent(arguments);
 
         this.setProxy({
             type: 'savanna-cors',
-            api: {
-                create: SavannaConfig.itemCreateUrl,
-                read: SavannaConfig.itemViewUrl,
-                update: SavannaConfig.itemViewUrl,
-                destroy: SavannaConfig.itemDestroyUrl
-            },
+            url: SavannaConfig.itemViewUrl,
             reader: {
                 type: 'json'
             },
@@ -39,18 +32,9 @@ Ext.define('Savanna.itemView.store.MainItemStore', {
                 type: 'json'
             },
             modifyRequest: function(request) {
-                console.log(request);
                 if('update' == request.action) {
                     console.log('------------ UPDATE ------------');
                     request.method = 'PUT';
-                }
-                if('create' == request.action || 'read' == request.action) {
-                    console.log('------------ CREATE OR READ ------------');
-                    request.method = 'GET';
-                }
-                if('destroy' == request.action) {
-                    console.log('------------ DELETE ------------');
-                    request.method = 'DELETE';
                 }
                 return request;
             }

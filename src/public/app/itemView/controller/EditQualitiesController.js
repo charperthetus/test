@@ -12,7 +12,6 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
     views: [
         'Savanna.itemView.view.itemQualities.EditItemQualities'
     ],
-
     // NOTE: There are multiple auto-complete forms on this controller, 
     //       so be careful when listening for events, you might capture
     //       more than you bargained for.
@@ -33,13 +32,14 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
                 click: 'launchChooser'
             }
         },
-        // When a tag is removed on a quality
-        tagRemoved: {
+        // When a tag is added, removed, or the predicate is destroyed
+        autocompleteevents: {
             live: true,
             selector: '',
             listeners: {                
                 'AutoComplete:TagRemoved': 'removeTag',
-                'AutoComplete:ItemSelected': 'addTag'
+                'AutoComplete:ItemSelected': 'addTag',
+                'AutoComplete:Destroyed': 'removePredicate'
             }
         },
         // Listens for the "choose" on the Click to add chooser
@@ -79,20 +79,32 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
                 // The new auto-complete control
                 newProp = Ext.create('Savanna.components.autoComplete.AutoComplete', {
                     itemId: 'prop_' + propName.replace(/[\s']/g, '_'),
-                    propData: propData,
+                    propData: propName,
                     showTags: true,
                     preLabel: propName,
                     hasControls: true,
                     isClosable: true,
                     store: Ext.create('Savanna.itemView.store.AutoCompleteStore', {
                         urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/mockModelSearch/keyword/property/' + predicateUri,
-                        paramsObj: { excludeUri:'asdf', pageStart:0, pageLimit:10 }
+                        paramsObj: { excludeUri:'', pageStart:0, pageLimit:10 }
                     })
                 });
 
             // Insert after the input for autocomplete, but before the close button
             newProp.child('container').insert(1, picker);
             this.getView().add(newProp);
+
+
+            // Create a new model for the store, mapping the data to fit the model
+            var newQualitiesModel = {
+                id: propData.label,
+                label: propData.label,
+                predicateUri: propData.uri,
+                values: []
+            };
+
+            // Add a new model into the store
+            this.getView().store.add(newQualitiesModel);
         }
     },
     // Convenience handler to generate a new auto-complete
@@ -107,17 +119,17 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
             isClosable: true,
             store: Ext.create('Savanna.itemView.store.AutoCompleteStore', {
                 urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/mockModelSearch/keyword/property/' + predicateUri,
-                paramsObj: { excludeUri:'asdf', pageStart:0, pageLimit:10 }
+                paramsObj: { excludeUri:'', pageStart:0, pageLimit:10 }
             })
         });
     },
     // When a new tag is added on a child auto-complete
     addTag: function(tagName, tagData, aView) {
-        this.addingTag(tagName, tagData, this.getView().store.getAt(0).data.values);
+        this.addingTag(tagName, tagData, this.getView().store.getById(aView.propData).data.values);
     },
     // When a tag is removed on a child auto-complete
     removeTag: function(tagName, aView) {
-        this.removingTag(tagName, this.getView().store.getAt(0).data.values);
+        this.removingTag(tagName, this.getView().store.getById(aView.propData).data.values);
     },
     // Adding tag to the store on a child auto-complete
     addingTag: function(tagName, tagData, tagArray) {
@@ -134,16 +146,25 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
             }
         }
     },
-    // Launching the chooser for child auto-completes
     launchChooser: function(button, event, eOpts) {
+        console.debug('TODO: Launch the assertions chooser', arguments);
         Ext.create('Savanna.itemView.view.header.AddIntendedUses', {
             width: 400,
             height: 300,
             title: button.id
         });
     },
-    // TODO: Hook-up the predicates chooser
     launchPredicatesChooser: function() {
-        console.debug('Fired');
+        console.debug('TODO: Launch the predicates chooser', arguments);
+    },
+    // Removing the predicate from the store, this has to be done manually...
+    removePredicate: function(view) {
+        var store = this.getView().store.data.items;
+        for (var i = 0; i < store.length; i++) {
+            if (store[i].internalId === view.propData) {
+                Ext.Array.remove(store, store[i]);
+                break;
+            }
+        }
     }
 });

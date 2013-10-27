@@ -51,7 +51,6 @@ Ext.define('Savanna.itemView.store.ParentItemStore', {
             }
 
         });
-        console.log(SavannaConfig.mockModelSearch);
 
         this.setProxy({
             type: 'savanna-cors',

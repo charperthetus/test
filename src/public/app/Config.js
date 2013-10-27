@@ -10,7 +10,7 @@ Ext.define('Savanna.Config', {
         sc.pingUrl = rUrl + 'public/ping';
         sc.searchUrl = rUrl + 'rest/search'; // local dev version: 'app/assets/data/testSearchResults.json',
         sc.searchMetadataUrl = rUrl + 'rest/metadata/get';
-        sc.itemViewUrl = rUrl + 'rest/model/item/';
+        sc.itemViewUrl = rUrl + 'rest/model/mock/item/';
         sc.itemCreateUrl = rUrl + 'rest/model/item/create/';
         sc.itemDestroyUrl = rUrl + 'rest/model/item/';
         sc.itemViewUpdateUrl = rUrl + 'rest/model/item/';
