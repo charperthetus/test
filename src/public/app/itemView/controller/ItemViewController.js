@@ -230,8 +230,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         if(!this.getView().getCreateMode()) {
             return SavannaConfig.itemViewUrl + uri;
         }   else    {
-
-            return 'http://c2aptsav1:8080/c2is2/rest/model/item/create';
+            return SavannaConfig.itemCreateUrl;
         }
     },
 
