@@ -48,6 +48,9 @@ Ext.define('Savanna.process.controller.ProcessController', {
         merge: {
             click: 'handleMerge'
         },
+        alts: {
+            click: 'handleAlts'
+        },
         zoomin: {
             click: 'zoomIn'
         },
@@ -144,6 +147,10 @@ Ext.define('Savanna.process.controller.ProcessController', {
 
     handleMerge: function() {
         Savanna.process.utils.ProcessUtils.addMerge(this.getCanvas().diagram);
+    },
+
+    handleAlts: function() {
+        Savanna.process.utils.ProcessUtils.addAlts(this.getCanvas().diagram);
     },
 
     zoomIn: function() {

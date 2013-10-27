@@ -277,8 +277,45 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
                 bodyElt.background = 'transparent';
             }
         }
-    }
+    },
 
+    addAlts: function(diagram) {
+        if (diagram.selection.count != 1){
+            Ext.Msg.show({
+                title: 'Alternates Error',
+                msg: 'Select one and only one item to add alternates to.', //todo: get final wording for error
+                buttons: Ext.Msg.OK
+            });
+            return;
+        }
+
+        var selItem = diagram.selection.first();
+        if (selItem.category != 'ProcessItem') {
+            Ext.Msg.show({
+                title: 'Alternates Error',
+                msg: 'Select a process item to add alternates to.', //todo: get final wording for error
+                buttons: Ext.Msg.OK
+            });
+            return;
+        }
+
+        diagram.startTransaction('addAlts');
+
+        var altsGroupData = {'category': 'AltsGroup', 'text': 'Alternates', 'isGroup': true};
+        if (selItem.containingGroup) {
+            altsGroupData.group = selItem.containingGroup.data.key;
+        }
+        altsGroupData.key = Savanna.process.utils.ProcessUtils.getURI(altsGroupData.category);
+        diagram.model.addNodeData(altsGroupData);
+
+        var altsGroup = diagram.findNodeForData(altsGroupData);
+
+        selItem.containingGroup = altsGroup;
+
+        diagram.commitTransaction('addAlts');
+
+        Savanna.process.utils.ProcessUtils.startTextEdit(diagram, selItem.data);
+    }
 
 
 });

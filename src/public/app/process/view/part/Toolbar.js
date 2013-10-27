@@ -47,6 +47,11 @@ Ext.define('Savanna.process.view.part.Toolbar', {
                 tooltip: 'Select two nodes and create a merge point',
                 itemId: 'merge'
             },
+            {
+                text: '+ Alternates',
+                tooltip: 'Select a node to add alternates',
+                itemId: 'alts'
+            },
             '->',
             {
                 glyph: 61806,
