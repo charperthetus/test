@@ -203,8 +203,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
         var win = me.previewWindow();
         //Show the contents
         win.displayPreview(record.data, recordMetadata.get('datastore'), me.previewIndex, me.resultsStore.totalCount);
-        //Show the index and total
-        me.previewIndexAndTotalLabel().setText('Preview Result ' + (me.previewIndex + 1) + ' of ' + me.resultsStore.totalCount);
+
         //Enable/disable the prev and next buttons
         if (me.previewIndex === 0) {
             me.previewPrevButton().disable();
