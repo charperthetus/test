@@ -63,7 +63,7 @@ Ext.define('Savanna.process.view.ProcessEditorComponent', {
                 ]
             },
             {
-                xtype: 'process_metadata', //todo - this should be refactored out for all savanna item components later
+                xtype: 'process_metadata',
                 itemId: 'metadata',
                 region: 'east',
                 layout: 'fit',

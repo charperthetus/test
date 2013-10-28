@@ -189,10 +189,12 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
             return;
         }
 
-        var category = null;
-        var iter = diagram.selection.iterator;
+        var category = null,
+            iter = diagram.selection.iterator,
+            node = null;
+
         while (iter.next()) {
-            var node = iter.value;
+            node = iter.value;
 
             if (!category) {
                 category = node.data.category;
@@ -235,9 +237,9 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
 
         var prevNodeNames = [];
         var outputNode;
-        var iter = diagram.selection.iterator;
+        iter = diagram.selection.iterator;
         while (iter.next()) {
-            var node = iter.value;
+            node = iter.value;
             var nodeText = node.data.text;
             var newLink = { category: 'ProcessLink', from: node.data.key, to: mergeNode.key };
             diagram.model.addLinkData(newLink);
@@ -278,7 +280,4 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
             }
         }
     }
-
-
-
 });
