@@ -42,7 +42,8 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
                 store: sortStore,
                 displayField: 'name',
                 valueField: 'sortby',
-                value: 'relevance'
+                value: 'relevance',
+                ui: 'combo-button'
 
             },
 
@@ -53,7 +54,8 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
                 editable: false,
                 displayField: 'name',
                 valueField: 'count',
-                value: '20'
+                value: '20',
+                ui: 'combo-button'
 
             },
             {
@@ -74,6 +76,8 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
                 glyph: 'multiColumn',
                 itemId: 'multiColumnGridView'
             }
+
+
         ]
     }
 

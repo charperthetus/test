@@ -5,14 +5,17 @@
 Ext.define('Savanna.search.controller.resultsComponent.ResultsPreviewContentController', {
     extend: 'Deft.mvc.ViewController',
     control: {
-        previewclosebutton:  {
+        previewCloseButton:  {
             click: 'onCloseClick'
         },
         previewPrevButton:  {
             click: 'onPrevClick'
-        } ,
+        },
         previewNextButton:  {
             click: 'onNextClick'
+        },
+        openResult:  {
+            click: 'onOpenClick'
         }
 
     },
@@ -23,6 +26,11 @@ Ext.define('Savanna.search.controller.resultsComponent.ResultsPreviewContentCont
             view.up('#resultspreviewwindow').hide();
         }
 
+    },
+
+    onOpenClick: function() {
+        var rec =  this.getView().currentRecord;
+        EventHub.fireEvent('open', {uri: rec.uri, type: rec.contentType, label: rec.title})
     },
 
     onPrevClick: function() {

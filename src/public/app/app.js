@@ -45,8 +45,6 @@ Ext.application({
         'Savanna.Config',
         //Desktop
         'Savanna.desktop.controller.DesktopController',
-        //Flexpaper
-        'Savanna.flexpaper.controller.FlexpaperComponent',
         //Search
         'Savanna.search.controller.SearchComponent',
         //Map
@@ -57,24 +55,15 @@ Ext.application({
         'Savanna.modelSearch.controller.SearchComponent',
         //Upload
         'Savanna.upload.controller.UploadController',
-        //Process Stores
-        'Savanna.process.store.Processes',
-        'Savanna.process.store.ProcessItemStore',
-        'Savanna.process.store.ProcessActionStore'
+        //Image
+        'Savanna.image.util.ImageViewFactory',
+        //Document
+        'Savanna.document.util.DocumentViewFactory'
     ],
 
     autoCreateViewport: false,
 
     launch: function() {
-        Deft.Injector.configure({
-            'application': {
-                value: this
-            },
-            processStore: 'Savanna.process.store.Processes',
-            processItemStore: 'Savanna.process.store.ProcessItemStore',
-            processActionStore: 'Savanna.process.store.ProcessActionStore'
-        });
-
         //in order to get Injection to work, I had to set autoCreateViewport to false and then manually create the viewport here
         Ext.create('Savanna.view.Viewport');
 
@@ -83,13 +72,16 @@ Ext.application({
         if (viewportQueryResults && viewportQueryResults.length > 0) {
             this.viewport = viewportQueryResults[0];
         }
-        else {
-            // TODO: Fatal condition...how to handle?
-            Ext.Error.raise('no viewport found. cannot start application');
-        }
+
+        this.setupComponents();
+    },
+
+    setupComponents: function(){
+        ComponentManager.registerComponent(Ext.create('Savanna.image.util.ImageViewFactory'));
+        ComponentManager.registerComponent(Ext.create('Savanna.document.util.DocumentViewFactory'));
     },
 
     // CUSTOM CONFIGURATION
     jsessionid: '', // keep track of the user's session id
-    savannauser: '' // current savanna username
+    userInfo: {} // current user info
 });

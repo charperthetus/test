@@ -18,6 +18,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
 
     requires: [
         'Savanna.modelSearch.controller.resultsComponent.ResultsPanelGridController',
+        'Ext.grid.plugin.DragDrop',
         'Ext.grid.column.Template',
         'Ext.XTemplate'
     ],
@@ -61,7 +62,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
                     },
 
                     conditionallyRenderImage: function (url) {
-                        if(url && url.length > 0){
+                        if (url && url.length > 0) {
                             return '<div  style="background-image: url(\'' + url + '\');width:200px;height:100px;background-position:center;background-size:cover;left: 1;top: 1;" ></div>';
                         }
                         return '<div style="width: 100%; height: 100%;text-align:center;line-height: 100px;background-color:  #eeeeee;left: 1px;top: 1px;" >No Image</div>';
@@ -100,7 +101,8 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
                 metadataArray.push(record.get('uri'));
             });
 
-            controller.getDocumentMetadata(component.currentResultSet, metadataArray);
+            // We don't need metadata in this release.  Uncomment to get some.
+            // controller.getDocumentMetadata(component.currentResultSet, metadataArray);
         }
     }
 });

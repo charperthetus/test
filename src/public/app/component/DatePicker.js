@@ -40,10 +40,21 @@
  * setDefaultDate() -> You can provide a date to set the input values to.  Formats include JavaScript Date/Timestamp Object or Unix Timestamp.
  *                     Examples: yourObj.setDefaultDate(new Date()) or yourObj.setDefaultDate(1359712980) , yourObj.setDefaultDate(Date.parse((new Date())) / 1000)
  *
+ * Listeners 
+ * 
+ * focusLost
+ * @param - cmp - This returns the component that fired the event.
+ * Calling this will return the DateTime object and cmp will return the object that fired the event.
+ * The example below shows grabbing the event then doing any processing required.
+ * 
+ * Example: 
+ * yourDateTimeObj.on('focusLost', function(cmp) {
+ *      if (this.isDateValid() === true){ return this.getJsDate(); }
+ *      else { return null; }
+ * }
  */
 
-
-Ext.define('Savanna.components.DatePicker', {
+Ext.define('Savanna.component.DatePicker', {
     extend: 'Ext.panel.Panel',
 
     //Default Dimensions
@@ -167,6 +178,8 @@ Ext.define('Savanna.components.DatePicker', {
                     var n = parseInt(this.getValue()); //Gets the value
                     this.setValue((n < 10) ? ("0" + n) : n); //If the value is a single digit then add a leading zero
                 }
+                //When the field loses focus then fire this event.
+                this.up().fireEvent('focusLost', this);
             }
         }
     }, {
@@ -183,6 +196,7 @@ Ext.define('Savanna.components.DatePicker', {
                     var n = parseInt(this.getValue());
                     this.setValue((n < 10) ? ("0" + n) : n);
                 }
+                this.up().fireEvent('focusLost', this);
             }
         }
     }, {
@@ -199,6 +213,7 @@ Ext.define('Savanna.components.DatePicker', {
                     var n = parseInt(this.getValue());
                     this.setValue((n < 10) ? ("0" + n) : n);
                 }
+                this.up().fireEvent('focusLost', this);
             }
         }
     }, {
@@ -267,8 +282,9 @@ Ext.define('Savanna.components.DatePicker', {
                 }
             }
         },
+
+        keyCount: 0,
         listeners: {
-            keyCount: 0,
             select: function(checkbox, records) {
                 //When the user makes a selection then it will update the displayValue so we can get the raw value.
                 this.displayValue = this.getRawValue();
@@ -290,6 +306,9 @@ Ext.define('Savanna.components.DatePicker', {
             focus: function() {
                 //It must reset everytime on focus in order to know it was just entered into and then on the keyup event it will not call findInStore when focused into with the tab key.
                 this.keyCount = 0;
+            },
+            blur: function() {
+                this.up().fireEvent('focusLost', this);
             }
 
         }
@@ -300,7 +319,12 @@ Ext.define('Savanna.components.DatePicker', {
         allowBlank: false,
         maxLength: 4,
         enforceMaxLength: true,
-        maskRe: /[0-9.]/
+        maskRe: /[0-9.]/,
+        listners: {
+            blur: function() {
+                this.up().fireEvent('focusLost', this);
+            }
+        }
     }],
 
     /*
