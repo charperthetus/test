@@ -43,7 +43,7 @@ Ext.define('Savanna.itemView.controller.ImageBrowserController', {
         
         Ext.Array.each(images, function() {
             var thumbnail = Ext.create('Savanna.itemView.view.imageBrowser.ImageThumbnail', {
-                src: SavannaConfig.savannaUrlRoot + 'rest/document/' + Ext.urlEncode(this.raw.uri) + '/thumbnail/',
+                src: SavannaConfig.savannaUrlRoot + 'rest/document/' + encodeURI(this.raw.uri) + '/thumbnail/',
                 alt: this.raw.description,
                 title: this.raw.label
             });
