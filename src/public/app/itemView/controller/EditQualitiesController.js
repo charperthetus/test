@@ -15,6 +15,8 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
 
     propNameArray: [],
 
+    storeHelper: null,
+
     // NOTE: There are multiple auto-complete forms on this controller, 
     //       so be careful when listening for events, you might capture
     //       more than you bargained for.
@@ -50,9 +52,16 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
             click: 'launchPredicatesChooser'
         }
     },
+
+    init: function() {
+        this.callParent(arguments);
+        this.storeHelper = Ext.create('Savanna.itemView.store.ItemViewStoreHelper');
+    },
+
     // This is for the main (static) auto-complete form.
     storeSet: function() {
         var me = this;
+        this.storeHelper.init();
         // Generate a new form control for each predicate in the store
         Ext.each(me.getView().store.data.items, function(item) {
             var newProp = me.createNewAutoComplete(item.data);
@@ -94,6 +103,7 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
             // Insert after the input for autocomplete, but before the close button
             newProp.child('container').insert(1, picker);
             this.getView().add(newProp);
+            this.propNameArray.push(propName);
 
             // Create a new model for the store, mapping the data to fit the model
             var newQualitiesModel = {
@@ -105,6 +115,7 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
 
             // Add a new model into the store
             this.getView().store.add(newQualitiesModel);
+            this.storeHelper.addToMainStore("Properties", newQualitiesModel);
         }
     },
     // Convenience handler to generate a new auto-complete
@@ -171,12 +182,13 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
         if (view.updatedStore) {
             this.getView().removeAll();
             this.propNameArray = [];
+            this.storeHelper.updateMainStore(this.getView().store.data.items, "Properties");
             this.storeSet();
         }
     },
 
     removePredicate: function(view) {
-        var store = this.getView().store;
-        store.remove(store.getById(view.preLabel));
+        this.storeHelper.removeFromMainStore("Properties", view.preLabel);
+        this.getView().store.remove(this.getView().store.getById(view.preLabel));
     }
 });

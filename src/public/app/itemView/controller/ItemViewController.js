@@ -106,6 +106,9 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         
         this.getView().getLayout().setActiveItem(0);
         this.getView().setEditMode(!this.getView().getEditMode());
+
+        myStore.getAt(0).setDirty();
+        myStore.save();
     },
 
     getItemViewData: function () {
