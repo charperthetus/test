@@ -4,7 +4,8 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
     requires: [
         'Savanna.desktop.view.SavannaTabPanel',
         'Savanna.process.view.ProcessEditorComponent',
-        'Savanna.metadata.view.Details'
+        'Savanna.metadata.view.Details',
+        'Savanna.itemView.view.createItem.CreateItem'
     ],
 
     control: {
@@ -146,17 +147,10 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
 
     createItem: function() {
 
-        var itemView = Ext.create('Savanna.itemView.view.ItemViewer', {
-            title: 'Model Item',
-            itemUri: 'x012f931fec769ca941e8de4f7a674bec2a290937%2FItem',
-            editMode: true,
-            closable: true,
-            autoScroll: true,
-            tabConfig: {
-                ui: 'dark'
-            }
+        Ext.create('Savanna.itemView.view.createItem.CreateItem', {
+            width: 850,
+            height: 500
         });
-        Savanna.app.fireEvent('search:itemSelected', itemView);
     },
 
     createProcess: function(tabpanel) {

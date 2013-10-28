@@ -32,7 +32,8 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
 
     config: {
         itemUri: null,
-        editMode:false
+        editMode:false,
+        createMode:false
     },
 
     dockedItems: [{
