@@ -203,6 +203,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "Savanna.process.view.part.PaletteWindow": [],
   "Savanna.desktop.controller.DesktopController": [],
   "Ext.ux.DataView.Draggable": [],
+  "Savanna.itemView.store.ItemViewStoreHelper": [],
   "Ext.ux.TabCloseMenu": [],
   "Savanna.itemView.controller.ImageBrowserController": [],
   "Savanna.search.controller.resultsComponent.resultsDals.ResultsRefineTermController": [],
@@ -232,6 +233,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "Savanna.flexpaper.controller.FlexpaperComponent": [],
   "Savanna.desktop.controller.WorkspaceController": [],
   "Savanna.search.model.ResultMetadata": [],
+  "Savanna.itemView.view.annotationProperties.AnnotationProperties": [],
   "ThetusUikit.panel.Header": [],
   "Savanna.patch.AbstractComponent": [],
   "Ext.ux.event.Driver": [],
@@ -364,6 +366,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "Savanna.itemView.view.relatedItems.AddRelationships": [],
   "Ext.ux.event.Maker": [],
   "Savanna.modelSearch.view.ModelSearch": [],
+  "Savanna.itemView.controller.QualitiesPickerController": [],
   "Savanna.modelSearch.model.SearchRequest": [],
   "Savanna.itemView.view.ItemViewer": [],
   "Savanna.modelSearch.view.searchComponent.searchBody.searchMap.SearchLocationComboBox": [],
@@ -710,6 +713,7 @@ Ext.ClassManager.addNameAliasMappings({
   ],
   "Savanna.desktop.controller.DesktopController": [],
   "Ext.ux.DataView.Draggable": [],
+  "Savanna.itemView.store.ItemViewStoreHelper": [],
   "Ext.ux.TabCloseMenu": [
     "plugin.tabclosemenu"
   ],
@@ -760,6 +764,9 @@ Ext.ClassManager.addNameAliasMappings({
   "Savanna.flexpaper.controller.FlexpaperComponent": [],
   "Savanna.desktop.controller.WorkspaceController": [],
   "Savanna.search.model.ResultMetadata": [],
+  "Savanna.itemView.view.annotationProperties.AnnotationProperties": [
+    "widget.itemview_annotation_properties"
+  ],
   "ThetusUikit.panel.Header": [],
   "Savanna.patch.AbstractComponent": [],
   "Ext.ux.event.Driver": [],
@@ -991,6 +998,7 @@ Ext.ClassManager.addNameAliasMappings({
   "Savanna.modelSearch.view.ModelSearch": [
     "widget.modelsearch"
   ],
+  "Savanna.itemView.controller.QualitiesPickerController": [],
   "Savanna.modelSearch.model.SearchRequest": [],
   "Savanna.itemView.view.ItemViewer": [
     "widget.itemview_itemviewer"

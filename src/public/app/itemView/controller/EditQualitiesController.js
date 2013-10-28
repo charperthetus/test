@@ -30,15 +30,15 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
             'AutoComplete:ItemSelected': 'addNewQualityForm'
         },
         // Launching the chooser
-        qualitieschooser: {
+        qualitiesChooser: {
             live: true,
-            selector: 'auto_complete #qualitieschooser',
+            selector: 'auto_complete #qualitiesChooser',
             listeners: {
                 click: 'launchChooser'
             }
         },
         // When a tag is added, removed, or the predicate is destroyed
-        autocompleteevents: {
+        autocompleteEvents: {
             live: true,
             selector: '',
             listeners: {                
@@ -80,7 +80,7 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
             // The "Chooser" button in the new auto-complete
             var picker = Ext.create('Ext.button.Button', {
                     text: 'Chooser',
-                    itemId: 'qualitieschooser',
+                    itemId: 'qualitiesChooser',
 
                     listeners: {
                         click: me.launchChooser
