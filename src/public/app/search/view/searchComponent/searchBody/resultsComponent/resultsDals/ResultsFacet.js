@@ -62,6 +62,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
                             {
                                 xtype: 'radiogroup',
                                 itemId: 'dateFacet',
+                                cls: 'small-spacing',
                                 // Arrange radio buttons, distributed vertically
                                 columns: 1,
                                 vertical: true,
@@ -123,6 +124,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
                             {
                                 xtype: 'checkboxgroup',
                                 itemId: 'stringFacet',
+                                cls: 'small-spacing',
                                 columns: 1,
                                 vertical: true,
                                 items: []

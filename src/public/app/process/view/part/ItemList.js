@@ -9,26 +9,24 @@ Ext.define('Savanna.process.view.part.ItemList', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.process_itemlist',
     requires: [
-        'Savanna.process.store.ProcessItemStore'
+        'Ext.grid.plugin.DragDrop',
+        'Savanna.process.model.Node'
     ],
-
-    store: 'Savanna.process.store.ProcessItemStore',
-    mixins: {
-        storeable: 'Savanna.mixin.Storeable'
-    },
 
     viewConfig: {
         plugins: {
+            ptype: 'gridviewdragdrop',
             dragGroup: 'RNRM-ITEMS',
             dropGroup: 'RNRM-ITEMS',
-            ptype: 'gridviewdragdrop',
             enableDrop: true,
             enableDrag: true
-        }
+        },
+        copy: true
     },
 
     title: 'Items',
     titleAlign: 'center',
+    emptyText: 'Drop items here for use in process steps or search the model to find new items',
 
     hideHeaders: true,
     columns: [
@@ -37,31 +35,102 @@ Ext.define('Savanna.process.view.part.ItemList', {
         }
     ],
 
-    tbar: [
-        {
-            //todo: need drop icon here...
-            xtype: 'label',
-            text: 'Drop Items'
+    tbar: {
+        itemId: 'itemtools',
+        border: 2,
+        style: {
+            borderStyle: 'dashed'
         },
-        '->',
-        {
-            xtype: 'label',
-            text: 'OR'
-        },
-        '->',
-        {
-            xtype: 'button',
-            itemId: 'searchitems',
-            text: 'Search'
-        }
-    ],
-
-    initComponent: function() {
-        this.mixins.storeable.initStore.call(this);
-        this.callParent(arguments);
+        items: [
+            {
+                //todo: need drop icon here...
+                xtype: 'label',
+                text: 'Drop Items',
+                cls: ['sub', 'h4', 'bold', 'drag-and-drop']
+            },
+            '->',
+            {
+                xtype: 'label',
+                text: 'OR',
+                cls: ['bold']
+            },
+            '->',
+            {
+                xtype: 'button',
+                itemId: 'searchitems',
+                text: 'Search'
+            }
+        ]
     },
 
-    onStoreLoad: function() {
-        console.log(this.store);
+    initComponent: function() {
+
+        //each instance of this grid needs its own store, otherwise, a change to the store will result in ALL palettes changing
+        this.store = Ext.create('Ext.data.Store', {
+            model: 'Savanna.process.model.Node',
+            data: [
+                {
+                    'uri': '',
+                    'label': 'Urea Ammonium Nitrate',
+                    'type': 'Item',
+                    'modifiedBy': '',
+                    'modifiedDate': '',
+                    'preview': '',
+                    'primaryImageUrl': '',
+                    'workflowState': '',
+                    'classification': '',
+                    'key': ''
+                },
+                {
+                    'uri': '',
+                    'label': 'Strong Acid',
+                    'type': 'Item',
+                    'modifiedBy': '',
+                    'modifiedDate': '',
+                    'preview': '',
+                    'primaryImageUrl': '',
+                    'workflowState': '',
+                    'classification': '',
+                    'key': ''
+                },
+                {
+                    'uri': '',
+                    'label': 'Urea Nitrate Solution',
+                    'type': 'Item',
+                    'modifiedBy': '',
+                    'modifiedDate': '',
+                    'preview': '',
+                    'primaryImageUrl': '',
+                    'workflowState': '',
+                    'classification': '',
+                    'key': ''
+                },
+                {
+                    'uri': '',
+                    'label': 'Heat Source',
+                    'type': 'Item',
+                    'modifiedBy': '',
+                    'modifiedDate': '',
+                    'preview': '',
+                    'primaryImageUrl': '',
+                    'workflowState': '',
+                    'classification': '',
+                    'key': ''
+                },
+                {
+                    'uri': '',
+                    'label': 'Urea Solution',
+                    'type': 'Item',
+                    'modifiedBy': '',
+                    'modifiedDate': '',
+                    'preview': '',
+                    'primaryImageUrl': '',
+                    'workflowState': '',
+                    'classification': '',
+                    'key': ''
+                }
+            ]
+        });
+        this.callParent(arguments);
     }
 });

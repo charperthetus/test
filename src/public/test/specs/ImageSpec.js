@@ -9,7 +9,6 @@ describe('Savanna.image', function() {
 
     beforeEach(function() {
         ThetusTestHelpers.ExtHelpers.createTestDom();
-        SavannaConfig.resourcesPathPrefix = '/';
     });
 
     afterEach(function() {

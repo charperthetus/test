@@ -71,8 +71,8 @@ Ext.define('Savanna.desktop.view.SavannaDesktop', {
             //     cls:'errorButtonFramework',
             //     ui:'brand-header',
             //     scale: 'medium'
-            // },
-            {
+            // }, 
+            /*{ //TODO - commented until we have a real help link to point to.
                 itemId: 'helpbutton',
                 cls:'helpButtonFramework',
                 ui:'brand-header',
@@ -90,11 +90,7 @@ Ext.define('Savanna.desktop.view.SavannaDesktop', {
                 glyph:'silhouette',
                 menu: {
                     items: [{
-                        text: 'Current Username here',
                         itemId: 'currentuser'
-                    }, {
-                        text: 'Account Settings',
-                        itemId: 'accountsettings'
                     }, {
                         text: 'Log Out',
                         itemId: 'savannalogout'

@@ -16,7 +16,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
         this.callParent(arguments);
     },
 
-    setupItems:function()   {
+    setupItems: function () {
 
         var sortStore = Ext.create('Ext.data.Store', {
             fields: ['sortby', 'name'],
@@ -34,7 +34,8 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
             ]
         });
 
-        return [{
+        return [
+            {
                 xtype: 'combobox',
                 itemId: 'resultsSortByCombobox',
                 store: sortStore,
@@ -42,8 +43,10 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
                 valueField: 'sortby',
                 value: 'relevance',
                 editable: false,
-                ui: 'combo-button'
-            }, {
+                ui: 'combo-button',
+                width: 140
+            },
+            {
                 xtype: 'combobox',
                 itemId: 'resultsPageSizeCombobox',
                 store: countStore,
@@ -51,15 +54,22 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
                 valueField: 'count',
                 value: 'Results per page',
                 editable: false,
-                ui: 'combo-button'
+                ui: 'combo-button',
+                width: 150
 
-            }, {
+            },
+            {
                 xtype: 'tbfill'
-            },  {
-                text:'List'
-            }, {
-                text:'Map'
-        }]
+            },
+            {
+                glyph: 61786,
+                itemId: 'results_listViewButton'
+            },
+            {
+                glyph: 61746,
+                itemId: 'results_mapViewButton'
+            }
+        ]
     }
 
 });

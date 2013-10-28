@@ -343,7 +343,7 @@ Ext.define('Savanna.crumbnet.utils.ViewTemplates', {
     },
 
     convertTypeToImage: function(category) {
-        return  SavannaConfig.resourcesPathPrefix + 'resources/images/' + category + 'Icon.svg';
+        return 'resources/images/' + category + 'Icon.svg';
     },
 
     // Event handlers
