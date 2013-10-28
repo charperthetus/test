@@ -63,4 +63,4 @@ Ext.define('Savanna.process.view.part.Canvas', {
         toolManager.contextMenuTool.enabled = false;
         toolManager.clickCreatingTool.enabled = false;
     }
- });
+});
