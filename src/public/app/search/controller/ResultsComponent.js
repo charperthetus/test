@@ -658,7 +658,6 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
 
     setPopUpTemplate: function (event, featurePopUp){
         featurePopUp.store = [];
-        //featurePopUp.removeAll(true);
         var tempData = event.feature.cluster;
         var uniqueResults = {};
         var uriCount = 0;
@@ -690,8 +689,6 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
             }
         }
         (uriCount > 1) ? featurePopUp.down('#mapResultNext').enable() : featurePopUp.down('#mapResultNext').disable();
-        //set store of featurePopUp
-        //featurePopUp.data = featurePopUp.store[0];
         featurePopUp.currentIndex = 0;
         featurePopUp.update(featurePopUp.store[featurePopUp.currentIndex]);
         featurePopUp.updateLayout();
