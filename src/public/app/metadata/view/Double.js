@@ -10,10 +10,6 @@ Ext.define('Savanna.metadata.view.Double', {
     extend: 'Savanna.metadata.view.MetadataItemView',
     alias: 'widget.metadata_double',
 
-    requires: [
-        'Savanna.controller.Factory'
-    ],
-
     items: [
     ],
 

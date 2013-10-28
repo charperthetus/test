@@ -40,46 +40,27 @@ Ext.define('Savanna.process.view.part.Canvas', {
         this.on('resize', Ext.bind(function() { this.diagram.requestUpdate(); }, this));
         this.on('show', Ext.bind(function() { this.diagram.requestUpdate(); }, this));
 
-        this.diagram.layout = go.GraphObject.make(go.TreeLayout, { angle: 90, isRealtime: false });
+        this.diagram.layout = go.GraphObject.make(go.TreeLayout, { angle: 90, isRealtime: false, layerSpacing:24 });
 
         this.diagram.toolManager.linkingTool.direction = go.LinkingTool.ForwardsOnly;
         this.diagram.toolManager.linkingTool.portGravity = 10;
 
         this.diagram.model.undoManager.isEnabled = true;
 
-        //TODO - Move this to the controller
-        this.diagram.addDiagramListener('PartResized', Ext.bind(this.partResized, this));
-        this.diagram.addDiagramListener('ExternalObjectsDropped', Ext.bind(this.externalObjectsDropped, this));
-        this.diagram.addDiagramListener('TextEdited', Ext.bind(this.textEdited, this));
-
-
         // replace the default Link template in the linkTemplateMap
         this.diagram.linkTemplate =  this.diagram.linkTemplateMap.getValue('ProcessLink');
 
-        // temporary links used by LinkingTool and RelinkingTool are also orthogonal:
-        this.diagram.toolManager.linkingTool.temporaryLink.routing = go.Link.Orthogonal;
-        this.diagram.toolManager.relinkingTool.temporaryLink.routing = go.Link.Orthogonal;
-    },
-
-    // CUSTOM METHODS
-
-    textEdited: function() {
-        // reset our textarea selection so that we do not have anything selected yet
-        this.diagram.toolManager.textEditingTool.currentTextEditor.setSelectionRange(0,0);
-    },
-
-    partResized: function(diagramEvent) {
-        if (diagramEvent.subject instanceof go.TextBlock){
-            var textBlock = diagramEvent.subject;
-            textBlock.height = textBlock.lineCount * 15; //TODO - need to do this a better way - super brittle
-        }
-    },
-
-    externalObjectsDropped: function(diagramEvent) {
-        var addedNode = diagramEvent.subject.first();
-
+        var toolManager = this.diagram.toolManager;
+        //mouseDownTools
+        toolManager.relinkingTool.endabled = false;
+        toolManager.linkReshapingTool.enabled = false;
+        toolManager.resizingTool.enabled = false;
+        toolManager.rotatingTool.enabled = false;
+        //mouseMoveTools
+        toolManager.linkingTool.enabled = false;
+        toolManager.dragSelectingTool.enabled = false;
+        //mouseUpTools
+        toolManager.contextMenuTool.enabled = false;
+        toolManager.clickCreatingTool.enabled = false;
     }
-
-
-
 });
