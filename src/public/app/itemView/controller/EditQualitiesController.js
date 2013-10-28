@@ -134,25 +134,23 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
             })
         });
     },
+
     // When a new tag is added on a child auto-complete
+    // add the tag to the store
     addTag: function(tagName, tagData, aView) {
-        this.addingTag(tagName, tagData, this.getView().store.getById(aView.preLabel).data.values);
-    },
-    // When a tag is removed on a child auto-complete
-    removeTag: function(tagName, aView) {
-        this.removingTag(tagName, this.getView().store.getById(aView.preLabel).data.values);
-    },
-    // Adding tag to the store on a child auto-complete
-    addingTag: function(tagName, tagData, tagArray) {
         var tagUri = tagData ? tagData.uri : null;
         var newTag = {editable: true, inheritedFrom: null, label: tagName, uri: tagUri, value: tagName, version: 0};
-        tagArray.push(newTag);
+        this.getView().store.getById(aView.preLabel).data.values.push(newTag);
     },
-    // Removing the tag from the store on a child auto-complete
-    removingTag: function(tagName, store) {
-        for (var i = 0; i < store.length; i++) {
-            if (store[i].label === tagName) {
-                Ext.Array.remove(store, store[i]);
+
+    // When a tag is removed on a child auto-complete
+    // remove the tag from the store
+    removeTag: function(tagName, aView) {
+        var tagArray = this.getView().store.getById(aView.preLabel).data.values;
+
+        for (var i = 0; i < tagArray.length; i++) {
+            if (tagArray[i].label === tagName) {
+                Ext.Array.remove(tagArray, tagArray[i]);
                 break;
             }
         }
