@@ -48,7 +48,6 @@ Ext.define("Savanna.document.controller.DocumentController", {
         this.dvId = this.getView().docViewId;
     },
     onHandTool: function() {
-        //Ext.get(viewerId).setStyle('cursor', 'pointer');
         $FlexPaper(this.dvId).setCurrentCursor("ArrowCursor");
         this.currentTool = "hand";
     },
@@ -91,8 +90,7 @@ Ext.define("Savanna.document.controller.DocumentController", {
         $FlexPaper(this.dvId).printPaper();
     },
     onExportDoc : function() {
-        //TODO - Need Original
-        location.href =  SavannaConfig.savannaUrlRoot + "rest/document/" + this.getView().itemUri + ";jsessionid=" + Savanna.jsessionid
+        location.href =  SavannaConfig.documentUrl + this.getView().itemUri + "/original;jsessionid=" + Savanna.jsessionid
     }
 
 
