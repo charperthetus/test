@@ -14,7 +14,7 @@ Ext.define('Savanna.metadata.view.MetadataItemView', {
     layout: 'hbox',
     width: "100%",
     border: false,
-
+    padding: '0 3 0 3',
     id: '',
 
     config: {
