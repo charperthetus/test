@@ -48,8 +48,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
             click: 'onRelationshipSelect'
         },
         relatedItemsView: {
-            'ItemView:OpenItem': 'openItem',
-            'ItemView:DeleteRelatedItem': 'deleteRelatedItem'
+            'ItemView:OpenItem': 'openItem'
         },
         relatedItemsEdit: {
             'ItemView:OpenItem': 'openItem'
@@ -103,9 +102,17 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         
         var qualitiesComponent = this.getView().queryById('itemViewPropertiesView');
         qualitiesComponent.reconfigure(myStore.getAt(0).propertyGroupsStore.getById('Properties').valuesStore);
-        
+
+        var relatedItemView = this.getView().queryById('relatedItemsView');
+        Ext.each(myStore.getAt(0).propertyGroupsStore.getById('Related Items').valuesStore.data.items, function(group){
+            relatedItemView.queryById('relatedItemGrid_' + group.get('label').replace(/\s/g,'')).reconfigure(group.valueStore);
+        }, this);
+
         this.getView().getLayout().setActiveItem(0);
         this.getView().setEditMode(!this.getView().getEditMode());
+
+        myStore.getAt(0).setDirty();
+        myStore.save();
     },
 
     getItemViewData: function () {
@@ -162,6 +169,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
             Related Items Edit
              */
             var relatedItemViewEdit = me.getView().queryById('relatedItemsEdit');
+            relatedItemViewEdit.store = record[0].propertyGroupsStore.getById('Related Items').valuesStore;
             relatedItemViewEdit.fireEvent('EditRelatedItems:SetupData', record[0].propertyGroupsStore.getById('Related Items').valuesStore.data.items);
 
             /*
@@ -257,8 +265,5 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         });
 
         Savanna.app.fireEvent('search:itemSelected', itemView);
-    },
-    deleteRelatedItem: function (itemName, itemUri) {
-
     }
 });

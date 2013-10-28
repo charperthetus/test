@@ -25,6 +25,7 @@ Ext.define('Savanna.itemView.controller.ViewRelatedItemsController', {
         Ext.each(items, function (relatedItemsGroup) {
 
             var grid = Ext.create('Ext.grid.Panel', {
+                itemId: 'relatedItemGrid_' + relatedItemsGroup.get('label').replace(/\s/g,''),
                 store: relatedItemsGroup.valuesStore,
                 columns: [
                     {
