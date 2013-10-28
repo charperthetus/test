@@ -26,7 +26,7 @@ Ext.define('Savanna.metadata.view.DateList', {
 //                        width: "100%"
 //                    });
 //                    var myDate = new Date(stringElement);
-//                    theLabel.setText( Ext.Date.format(myDate,'F j, Y, g:i a') );
+//                    theLabel.setText( Ext.Date.format(myDate,'Y-m-d\\TH:i:s.m\\Z') );
 //
 //                    me.add( theLabel );
 //                });
@@ -66,7 +66,7 @@ Ext.define('Savanna.metadata.view.DateList', {
                     height: 25
                 });
                 var myDate = new Date(stringElement);
-                theLabel.setText( Ext.Date.format(myDate,'F j, Y, g:i a') );
+                theLabel.setText( Ext.Date.format(myDate,'Y-m-d\\TH:i:s.m\\Z') );
                 contains.add( theLabel );
             });
         }

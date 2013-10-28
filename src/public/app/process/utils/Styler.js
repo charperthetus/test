@@ -417,7 +417,6 @@ Ext.define('Savanna.process.utils.Styler', {
                     },
                     mouseLeave: function(e, obj) {
                         // should only change the hover color if we are moving outside, not if we are moving over the glyph
-                        // todo: not yet sure how to implement this
                         obj.elt(0).fill = '#c7f4ff';
                     },
                     mouseDragEnter: function(e, obj) {
@@ -762,7 +761,7 @@ Ext.define('Savanna.process.utils.Styler', {
          */
         var processModel = {
             "roundedRectangle": {
-                fill: null,
+                fill: palette.white,
                 stroke: palette.black,
                 margin: 0
                 

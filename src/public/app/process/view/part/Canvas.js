@@ -47,12 +47,6 @@ Ext.define('Savanna.process.view.part.Canvas', {
 
         this.diagram.model.undoManager.isEnabled = true;
 
-        //TODO - Move this to the controller
-        this.diagram.addDiagramListener('PartResized', Ext.bind(this.partResized, this));
-        this.diagram.addDiagramListener('ExternalObjectsDropped', Ext.bind(this.externalObjectsDropped, this));
-        this.diagram.addDiagramListener('TextEdited', Ext.bind(this.textEdited, this));
-
-
         // replace the default Link template in the linkTemplateMap
         this.diagram.linkTemplate =  this.diagram.linkTemplateMap.getValue('ProcessLink');
 
@@ -68,27 +62,5 @@ Ext.define('Savanna.process.view.part.Canvas', {
         //mouseUpTools
         toolManager.contextMenuTool.enabled = false;
         toolManager.clickCreatingTool.enabled = false;
-    },
-
-    // CUSTOM METHODS
-
-    textEdited: function() {
-        // reset our textarea selection so that we do not have anything selected yet
-        this.diagram.toolManager.textEditingTool.currentTextEditor.setSelectionRange(0,0);
-    },
-
-    partResized: function(diagramEvent) {
-        if (diagramEvent.subject instanceof go.TextBlock){
-            var textBlock = diagramEvent.subject;
-            textBlock.height = textBlock.lineCount * 15; //TODO - need to do this a better way - super brittle
-        }
-    },
-
-    externalObjectsDropped: function(diagramEvent) {
-        var addedNode = diagramEvent.subject.first();
-
     }
-
-
-
-});
+ });
