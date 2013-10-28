@@ -43,7 +43,8 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
                 valueField: 'sortby',
                 value: 'relevance',
                 editable: false,
-                ui: 'combo-button'
+                ui: 'combo-button',
+                width: 140
             },
             {
                 xtype: 'combobox',
@@ -53,7 +54,8 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
                 valueField: 'count',
                 value: 'Results per page',
                 editable: false,
-                ui: 'combo-button'
+                ui: 'combo-button',
+                width: 150
 
             },
             {
