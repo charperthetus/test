@@ -21,8 +21,11 @@ Ext.define('Savanna.itemView.view.itemQualities.QualitiesPicker', {
     controller: 'Savanna.itemView.controller.QualitiesPickerController',
 
     config: {
-        selectionStore: null
+        selectionStore: null,
+        propNameArray: []
     },
+
+    updatedStore: false,
 
     store: 'Savanna.itemView.store.AutoCompleteStore',
 
@@ -75,7 +78,11 @@ Ext.define('Savanna.itemView.view.itemQualities.QualitiesPicker', {
                     dataIndex: 'label',
                     flex: 1,
                     tpl: Ext.create('Ext.XTemplate',
-                        '<input type="checkbox" value="{label}"/>&nbsp;&nbsp;&nbsp;&nbsp;{label}')
+                        '<tpl if="selected">',
+                            '<input type="checkbox" id="qualityCheck" checked/>&nbsp;&nbsp;&nbsp;&nbsp;{label}',
+                        '<tpl else>',
+                            '<input type="checkbox" id="qualityCheck"/>&nbsp;&nbsp;&nbsp;&nbsp;{label}',
+                        '</tpl>')
                 }
             ]
         },
@@ -105,7 +112,7 @@ Ext.define('Savanna.itemView.view.itemQualities.QualitiesPicker', {
                 {
                     xtype: 'templatecolumn',
                     dataIndex: 'label',
-                    tpl: '<input type="button" value="x">'
+                    tpl: '<input type="button" value="x" id="removeSelectedQuality">'
                 }
             ]
         }
@@ -113,10 +120,12 @@ Ext.define('Savanna.itemView.view.itemQualities.QualitiesPicker', {
 
     buttons: [
         {
-            text: 'OK'
+            text: 'OK',
+            itemId: 'okBtn'
         },
         {
-            text: 'cancel'
+            text: 'cancel',
+            itemId: 'cancelBtn'
         }
     ],
 
@@ -140,8 +149,16 @@ Ext.define('Savanna.itemView.view.itemQualities.QualitiesPicker', {
 
     handleRecordDataRequestSuccess: function (record, operation, success) {
         if (success) {
+            var me = this;
             var qualitiesSelectStore = Ext.create('Ext.data.JsonStore', {
-                recordType: this.getSelectionStore().recordType
+                recordType: this.getSelectionStore().recordType,
+                model: this.getSelectionStore().model
+            });
+
+            Ext.each(this.store.data.items, function(value) {
+                if (Ext.Array.contains(me.getPropNameArray(), value.data.label)) {
+                    value.data.selected = true;
+                }
             });
 
             qualitiesSelectStore.add(this.getSelectionStore().getRange());

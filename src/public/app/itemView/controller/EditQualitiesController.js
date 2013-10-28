@@ -13,6 +13,8 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
         'Savanna.itemView.view.itemQualities.EditItemQualities'
     ],
 
+    propNameArray: [],
+
     // NOTE: There are multiple auto-complete forms on this controller, 
     //       so be careful when listening for events, you might capture
     //       more than you bargained for.
@@ -52,9 +54,9 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
     storeSet: function() {
         var me = this;
         // Generate a new form control for each predicate in the store
-        Ext.each(me.getView().store.getAt(0).data, function(data) {
-            var newProp = me.createNewAutoComplete(data, null);      
-            Ext.each(data.values, function(value) {
+        Ext.each(me.getView().store.data.items, function(item) {
+            var newProp = me.createNewAutoComplete(item.data);
+            Ext.each(item.data.values, function(value) {
                 newProp.addTag(value.label);
             });
             me.getView().add(newProp);
@@ -66,7 +68,6 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
             predicateUri = Ext.Object.fromQueryString(propData.uri);
         
         if (!this.getView().queryById('prop_' + propName.replace(/[\s']/g, '_'))) {
-
             // The "Chooser" button in the new auto-complete
             var picker = Ext.create('Ext.button.Button', {
                     text: 'Chooser',
@@ -80,7 +81,6 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
                 // The new auto-complete control
                 newProp = Ext.create('Savanna.components.autoComplete.AutoComplete', {
                     itemId: 'prop_' + propName.replace(/[\s']/g, '_'),
-                    propData: propName,
                     showTags: true,
                     preLabel: propName,
                     hasControls: true,
@@ -97,8 +97,8 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
 
             // Create a new model for the store, mapping the data to fit the model
             var newQualitiesModel = {
-                id: propData.label,
-                label: propData.label,
+                id: propName,
+                label: propName,
                 predicateUri: propData.uri,
                 values: []
             };
@@ -110,9 +110,9 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
     // Convenience handler to generate a new auto-complete
     createNewAutoComplete: function(data) {
         var predicateUri = Ext.Object.fromQueryString(data.predicateUri);
+        this.propNameArray.push(data.label);
         return Ext.create('Savanna.components.autoComplete.AutoComplete', {
             itemId: 'prop_' + data.label.replace(/[\s']/g, '_'),
-            propData: data.label,
             showTags: true,
             preLabel: data.label,
             hasControls: true,
@@ -125,11 +125,11 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
     },
     // When a new tag is added on a child auto-complete
     addTag: function(tagName, tagData, aView) {
-        this.addingTag(tagName, tagData, this.getView().store.getById(aView.propData).data.values);
+        this.addingTag(tagName, tagData, this.getView().store.getById(aView.preLabel).data.values);
     },
     // When a tag is removed on a child auto-complete
     removeTag: function(tagName, aView) {
-        this.removingTag(tagName, this.getView().store.getById(aView.propData).data.values);
+        this.removingTag(tagName, this.getView().store.getById(aView.preLabel).data.values);
     },
     // Adding tag to the store on a child auto-complete
     addingTag: function(tagName, tagData, tagArray) {
@@ -157,20 +157,26 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
     },
 
     launchPredicatesChooser: function() {
-        Ext.create('Savanna.itemView.view.itemQualities.QualitiesPicker', {
+        var qChooser = Ext.create('Savanna.itemView.view.itemQualities.QualitiesPicker', {
             width: 500,
             height: 600,
-            selectionStore: this.getView().store
+            selectionStore: this.getView().store,
+            propNameArray: this.propNameArray
         });
+
+        qChooser.on('close', this.closedQPicker, this);
+    },
+
+    closedQPicker: function(view) {
+        if (view.updatedStore) {
+            this.getView().removeAll();
+            this.propNameArray = [];
+            this.storeSet();
+        }
     },
 
     removePredicate: function(view) {
-        var store = this.getView().store.data.items;
-        for (var i = 0; i < store.length; i++) {
-            if (store[i].internalId === view.propData) {
-                Ext.Array.remove(store, store[i]);
-                break;
-            }
-        }
+        var store = this.getView().store;
+        store.remove(store.getById(view.preLabel));
     }
 });
