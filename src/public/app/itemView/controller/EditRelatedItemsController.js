@@ -22,13 +22,13 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
         var me = this;
 
         Ext.each(items, function (relatedItemsGroup) {
-
             me.getView().add(
                 {
                     xtype: 'label',
                     text: relatedItemsGroup.get('label')
                 },{
                     xtype: 'panel',
+                    value: relatedItemsGroup.get('predicateUri'),
                     border: 5,
                     style: {
                         borderColor: 'gray',
@@ -64,12 +64,15 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
                             xtype: 'auto_complete',
                             labelType: 'Find items',
                             showTags: true,
-                            itemId: 'addIntendedUseBox',
+                            itemId: 'addRelatedItem',
                             store: Ext.create('Savanna.itemView.store.AutoCompleteStore', {
                                 urlEndPoint: 'http://c2devsav1:8080/c2is2/rest/mockModelSearch/keyword/property/propUri',
                                 paramsObj: {excludeUri:'asdf', pageStart:0, pageLimit:10}
                             }),
-                            flex: 1
+                            flex: 1,
+                            listeners: {
+                                'AutoComplete:ItemSelected': me.addRelatedItem
+                            }
 
                         }
 
@@ -82,6 +85,8 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
                 me.getView().add(
                     {
                         xtype: 'container',
+                        cls: 'itemDropZone',
+                        value: relatedItemsGroup.get('predicateUri'),
                         layout: 'hbox',
                         items: [
                             {
@@ -105,6 +110,7 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
             });
         });
     },
+
     onRelatedItemClick: function (btn) {
         btn.up('itemview_edit_related_items').fireEvent('ItemView:OpenItem', btn.text, btn.name);
     },
@@ -112,6 +118,9 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
     onRemoveRelatedItem: function(btn)  {
         btn.up('itemview_edit_related_items').fireEvent('ItemView:DeleteRelatedItem', btn.value, btn.name);
         btn.up('itemview_edit_related_items').remove(btn.up('container'));
-    }
+    },
 
+    addRelatedItem: function(label, itemRecord, autoCompleteView) {
+        console.log(autoCompleteView.up('panel'));
+    }
 });
