@@ -18,6 +18,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
 
     requires: [
         'Savanna.modelSearch.controller.resultsComponent.ResultsPanelGridController',
+        'Ext.grid.plugin.DragDrop',
         'Ext.grid.column.Template',
         'Ext.XTemplate'
     ],

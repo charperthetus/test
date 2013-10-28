@@ -28,10 +28,10 @@ Ext.define('Savanna.metadata.view.StringList', {
 
     makeEditViewItems: function() {
         var me = this;
-        if (null !== me.getValue()) {
+        if (null === me.getValue()) {
             me.setValue([]);
         }
-        if (0 == me.getValue().length) {
+        if (0 === me.getValue().length) {
             me.value.push('');
         }
         var fieldLabelValue = me.displayLabel + ':';
@@ -163,7 +163,7 @@ Ext.define('Savanna.metadata.view.StringList', {
             width: "100%",
             border: false
         });
-        if(null !== me.value && 0 != me.value.length) {
+        if(null !== me.value && 0 !== me.value.length) {
             Ext.Array.each(me.value, function(stringElement) {
                 var theLabel = Ext.create('Ext.form.Label', {
                     text: '',

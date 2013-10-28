@@ -9,7 +9,8 @@ Ext.define('Savanna.process.view.part.ItemList', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.process_itemlist',
     requires: [
-        'Savanna.process.store.ProcessItemStore'
+        'Savanna.process.store.ProcessItemStore',
+        'Ext.grid.plugin.DragDrop'
     ],
 
     store: 'Savanna.process.store.ProcessItemStore',
