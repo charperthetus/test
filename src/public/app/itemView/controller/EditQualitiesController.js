@@ -53,6 +53,7 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
     // This is for the main (static) auto-complete form.
     storeSet: function() {
         var me = this;
+
         // Generate a new form control for each predicate in the store
         Ext.each(me.getView().store.data.items, function(item) {
             var newProp = me.createNewAutoComplete(item.data);
@@ -109,19 +110,30 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
     },
     // Convenience handler to generate a new auto-complete
     createNewAutoComplete: function(data) {
-        var predicateUri = Ext.Object.fromQueryString(data.predicateUri);
+        var me = this,
+            predicateUri = Ext.Object.fromQueryString(data.predicateUri),
+            picker = Ext.create('Ext.button.Button', {
+                text: 'Chooser',
+                itemId: 'qualitieschooser',
+
+                listeners: {
+                    click: me.launchChooser
+                }
+            }),
+            newProp =  Ext.create('Savanna.components.autoComplete.AutoComplete', {
+                itemId: 'prop_' + data.label.replace(/[\s']/g, '_'),
+                showTags: true,
+                preLabel: data.label,
+                hasControls: true,
+                isClosable: true,
+                store: Ext.create('Savanna.itemView.store.AutoCompleteStore', {
+                    urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/mockModelSearch/keyword/property/' + predicateUri,
+                    paramsObj: { excludeUri:'', pageStart:0, pageLimit:10 }
+                })
+            });
         this.propNameArray.push(data.label);
-        return Ext.create('Savanna.components.autoComplete.AutoComplete', {
-            itemId: 'prop_' + data.label.replace(/[\s']/g, '_'),
-            showTags: true,
-            preLabel: data.label,
-            hasControls: true,
-            isClosable: true,
-            store: Ext.create('Savanna.itemView.store.AutoCompleteStore', {
-                urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/mockModelSearch/keyword/property/' + predicateUri,
-                paramsObj: { excludeUri:'', pageStart:0, pageLimit:10 }
-            })
-        });
+        newProp.child('container').insert(1, picker);
+        return newProp;
     },
     // When a new tag is added on a child auto-complete
     addTag: function(tagName, tagData, aView) {
