@@ -10,7 +10,7 @@ Ext.define('Savanna.metadata.view.Date', {
     extend: 'Savanna.metadata.view.MetadataItemView',
     alias: 'widget.metadata_date',
     requires: [
-        'Savanna.components.DatePicker'
+        'Savanna.component.DatePicker'
     ],
 
     items: [

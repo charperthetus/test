@@ -88,22 +88,6 @@ Ext.define('Savanna.modelSearch.view.searchComponent.SearchBody', {
                 }
 
             ]
-        },
-        {
-            xtype: 'toolbar',
-            dock:'bottom',
-            width: '100%',
-            itemId: 'modelsearchbodybbar',
-            items: [
-                '->',
-                {
-                    xtype: 'button',
-                    ui: 'commit',
-                    scale: 'large',
-                    text: 'Search',
-                    itemId: 'toolbarmodelsearchbutton'
-                }
-            ]
         }
     ]
 });

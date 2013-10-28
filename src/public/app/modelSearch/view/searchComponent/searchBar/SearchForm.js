@@ -104,12 +104,6 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBar.SearchForm', {
             itemId: 'search_terms',
             enableKeyEvents: true,
             emptyText: 'Search'
-        },
-        {
-            hidden: true,
-            text: 'Advanced',
-            itemId: 'searchadvanced_btn'
-
         }
     ]
 });
