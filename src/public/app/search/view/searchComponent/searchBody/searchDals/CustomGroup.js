@@ -1,7 +1,6 @@
 Ext.define('Savanna.search.view.searchComponent.searchBody.searchDals.CustomGroup', {
     extend: 'Ext.form.Panel',
     alias: 'widget.searchDals_custom-group',
-    cls: 'search-dal-group',
     requires: [
         'Ext.form.field.ComboBox',
         'Ext.form.field.Radio',
@@ -13,9 +12,13 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.searchDals.CustomGrou
     //       http://www.sencha.com/forum/showthread.php?91512-moving-toggle-button-to-the-left
     collapsible: true,
     collapsed: true,
+    titleCollapse: true,
 
     items: [],
     model: null,
+
+    cls: 'search-dal-group',
+    ui: 'search-dal-group',
 
     constructor: function(config) {
         config = config || {};
@@ -57,7 +60,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.searchDals.CustomGrou
             fieldLabel: record.get('displayLabel'),
             labelAlign: 'left',
             labelWidth: 200,
-            labelPad: 5,
+            labelPad: 10,
             name: record.get('id'),
             cls: 'customInputField'
         };

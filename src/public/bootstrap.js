@@ -59,7 +59,6 @@ Ext.ClassManager.addNameAlternateMappings({
   "Deft.promise.Resolver": [
     "Deft.Resolver"
   ],
-  "Savanna.component.ClassificationPanel": [],
   "Deft.promise.Chain": [
     "Deft.Chain"
   ],
@@ -145,7 +144,6 @@ Ext.ClassManager.addNameAlternateMappings({
   "Savanna.modelSearch.controller.SearchDals": [],
   "Ext.ux.GMapPanel": [],
   "Savanna.process.view.part.ActionList": [],
-  "Savanna.classification.view.ClassificationBanner": [],
   "Savanna.itemView.view.imageBrowser.ImageThumbnail": [],
   "Deft.util.Function": [
     "Deft.Function"
@@ -226,7 +224,6 @@ Ext.ClassManager.addNameAlternateMappings({
   "Ext.ux.event.Driver": [],
   "Ext.ux.ajax.XmlSimlet": [],
   "Savanna.desktop.view.SearchWindow": [],
-  "Savanna.classification.controller.BannerController": [],
   "Savanna.controller.Factory": [],
   "Savanna.upload.view.part.NewUploadView": [],
   "Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsOptions": [],
@@ -430,7 +427,6 @@ Ext.ClassManager.addNameAliasMappings({
   ],
   "Savanna.crumbnet.model.Graph": [],
   "Deft.promise.Resolver": [],
-  "Savanna.component.ClassificationPanel": [],
   "Deft.promise.Chain": [],
   "Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent.ResultsMap": [
     "widget.model_search_resultsmap"
@@ -577,9 +573,6 @@ Ext.ClassManager.addNameAliasMappings({
   ],
   "Savanna.process.view.part.ActionList": [
     "widget.process_actionlist"
-  ],
-  "Savanna.classification.view.ClassificationBanner": [
-    "widget.classification_banner"
   ],
   "Savanna.itemView.view.imageBrowser.ImageThumbnail": [
     "widget.itemview_imagethumbnail"
@@ -728,7 +721,6 @@ Ext.ClassManager.addNameAliasMappings({
   "Savanna.desktop.view.SearchWindow": [
     "widget.desktop_searchwindow"
   ],
-  "Savanna.classification.controller.BannerController": [],
   "Savanna.controller.Factory": [],
   "Savanna.upload.view.part.NewUploadView": [
     "widget.upload_part_newupload"

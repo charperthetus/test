@@ -11,9 +11,8 @@ Ext.define('Savanna.desktop.view.SavannaWorkspace', {
     requires: [
         'Savanna.desktop.controller.WorkspaceController',
         'Savanna.desktop.view.SavannaTabPanel',
-        'Savanna.crumbnet.view.CrumbnetComponent',
-        'Savanna.map.view.MapComponent',
-        'Savanna.process.view.ProcessEditorComponent'
+        'Savanna.image.view.ImageComponent'
+
     ],
 
     controller: "Savanna.desktop.controller.WorkspaceController",

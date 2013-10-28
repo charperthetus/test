@@ -10,10 +10,6 @@ Ext.define('Savanna.metadata.view.StringList', {
     extend: 'Savanna.metadata.view.MetadataItemView',
     alias: 'widget.metadata_stringlist',
 
-    requires: [
-        'Savanna.controller.Factory'
-    ],
-
     items: [
     ],
 
@@ -32,38 +28,42 @@ Ext.define('Savanna.metadata.view.StringList', {
 
     makeEditViewItems: function() {
         var me = this;
-        if(null !== me.getValue() && 0 != me.getValue().length) {
-            var fieldLabelValue = me.displayLabel + ':';
-
-            var stackAndAddContainer = Ext.create('Ext.container.Container', {
-                id: 'stackandaddcontainer',
-                layout: 'vbox',
-                width: "100%",
-                border: false
-            });
-
-            var stackContainer = Ext.create('Ext.container.Container', {
-                id: 'stackcontainer',
-                layout: 'vbox',
-                width: "100%",
-                border: false
-            });
-            me.createEditItems(stackContainer, fieldLabelValue);
-            stackAndAddContainer.add(stackContainer);
-
-            var newItemButton = Ext.create('Ext.Button', {
-                text: 'Add',
-                padding: '0 0 0 180',
-                listeners: {
-                    click: function() {
-                        me.addNewItem();
-                    }
-                }
-            });
-            stackAndAddContainer.add(newItemButton);
-            me.add(stackAndAddContainer);
-
+        if (null !== me.getValue()) {
+            me.setValue([]);
         }
+        if (0 == me.getValue().length) {
+            me.value.push('');
+        }
+        var fieldLabelValue = me.displayLabel + ':';
+
+        var stackAndAddContainer = Ext.create('Ext.container.Container', {
+            id: 'stackandaddcontainer',
+            layout: 'vbox',
+            width: "100%",
+            border: false
+        });
+
+        var stackContainer = Ext.create('Ext.container.Container', {
+            id: 'stackcontainer',
+            layout: 'vbox',
+            width: "100%",
+            border: false
+        });
+        me.createEditItems(stackContainer, fieldLabelValue);
+        stackAndAddContainer.add(stackContainer);
+
+        var newItemButton = Ext.create('Ext.Button', {
+            text: 'Add',
+            padding: '0 0 0 180',
+            listeners: {
+                click: function () {
+                    me.addNewItem();
+                }
+            }
+        });
+        stackAndAddContainer.add(newItemButton);
+        me.add(stackAndAddContainer);
+
     },
 
     createEditItems: function(stackContainer, firstFieldLabelValue) {
@@ -90,7 +90,7 @@ Ext.define('Savanna.metadata.view.StringList', {
 
     deleteItem: function(index) {
         var cloneArray = Ext.Array.clone(this.getValue());
-        if(this.getValue().length > 1) {
+        if(1 < this.getValue().length) {
             Ext.Array.remove(cloneArray, cloneArray[index]);
             this.setValue(cloneArray);
         } else {

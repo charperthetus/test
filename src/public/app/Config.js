@@ -8,12 +8,14 @@ Ext.define('Savanna.Config', {
         sc.loginUrl = rUrl + 'authcheck/loggedIn.html';
         sc.logoutUrl = rUrl + 'j_spring_security_logout';
         sc.pingUrl = rUrl + 'public/ping';
+        sc.userInfoUrl = rUrl + 'rest/user/info';
         sc.searchUrl = rUrl + 'rest/search'; // local dev version: 'app/assets/data/testSearchResults.json',
         sc.searchMetadataUrl = rUrl + 'rest/metadata/get';
         sc.itemViewUrl = rUrl + 'rest/model/item/';
         sc.modelSearchUrl = rUrl + 'rest/mockModelSearch/keyword/item';
         sc.dalSourcesUrl = rUrl + 'rest/search/sources'; // local dev version: 'resources/data/testSearchDalsWithFormData.json',
         sc.locationSearch = rUrl + '/rest/map/search';   // local dev version: 'resources/data/testSearchLocationSearch.json',
+        sc.documentUrl = rUrl + 'rest/document/';
         sc.uploadUrl = rUrl + 'rest/document/upload';
         sc.metadataUrl = rUrl + 'rest/metadata';
         sc.capcoUrl = rUrl + 'rest/capco/';
