@@ -99,15 +99,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.searchMap.FeaturePopU
         Ext.DomHelper.append(this.getEl().dom, '<div class="popUpAnchor"></div>');
 
 
-    }/*,
-    afterRender: function() {
-        var dom = Ext.dom.Query.select('.button');
-        var el = Ext.get(dom[0]);
-        console.log("after render " + dom)
-
-     button
-    }*/
-
+    }
 });
 
 

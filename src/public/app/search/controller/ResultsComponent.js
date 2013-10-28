@@ -713,14 +713,14 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
         popUpAnchor.addCls(verticalOffset);
         var anchorSize = popUpAnchor.getSize();
 
-        if (horizontalOffset == 'right') {
+        if (horizontalOffset === 'right') {
             left = locationPx.x - elSize.width;
             ancLeft = elSize.width - anchorSize.width;
         } else {
             left = locationPx.x;
             ancLeft = 0;
         }
-        if (verticalOffset == 'bottom') {
+        if (verticalOffset === 'bottom') {
             top = locationPx.y - (elSize.height + anchorSize.height);
             ancTop = elSize.height;
         } else {
@@ -736,7 +736,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
     navigateMapResult: function (button) {
         var featurePopUp = button.up('search_featurepopup');
         if(featurePopUp.currentIndex <= featurePopUp.store.length -1){
-            featurePopUp.currentIndex += (button.direction == 'next')? 1:-1;
+            featurePopUp.currentIndex += (button.direction === 'next')? 1:-1;
             featurePopUp.update(featurePopUp.store[featurePopUp.currentIndex])
             Ext.getCmp('mapResultPrev').setDisabled((featurePopUp.currentIndex > 0)? false:true);
             Ext.getCmp('mapResultNext').setDisabled((featurePopUp.currentIndex < featurePopUp.store.length -1)? false:true);
