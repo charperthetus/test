@@ -27,6 +27,7 @@ Ext.define('Savanna.process.utils.NodeEventHandlers', {
 
     onSelectionChange: function(obj) {
         Savanna.process.utils.ProcessUtils.toggleGadgets(obj, false);
+        Savanna.process.utils.ProcessUtils.toggleBackground(obj);
     }
 
 

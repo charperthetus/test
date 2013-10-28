@@ -74,6 +74,8 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
                 glyph: 61808,
                 itemId: 'multiColumnGridView'
             }
+
+
         ]
     }
 

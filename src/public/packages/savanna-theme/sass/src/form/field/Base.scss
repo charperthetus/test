@@ -1,0 +1,9 @@
+.small-spacing {
+	.#{$prefix}autocontainer-form-item, 
+	.#{$prefix}anchor-form-item, 
+	.#{$prefix}vbox-form-item, 
+	.#{$prefix}checkboxgroup-form-item, 
+	.#{$prefix}table-form-item {
+		margin-bottom: $form-item-smallSpacing-margin-bottom;
+	}
+}
