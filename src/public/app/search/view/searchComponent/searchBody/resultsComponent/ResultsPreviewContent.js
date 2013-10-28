@@ -188,7 +188,10 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
 
         this.queryById('previewcontent').update(metaHTML);
 
+        //check is only for unit testing
+        if(this.ownerCt){
+            this.ownerCt.setTitle ( 'Preview Result ' + (index + 1) + ' of ' + totalResultsCount );
+        }
 
-        this.ownerCt.setTitle ( 'Preview Result ' + (index + 1) + ' of ' + totalResultsCount );
     }
 });

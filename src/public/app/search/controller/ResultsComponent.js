@@ -118,11 +118,6 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
 
     },
 
-    // The 'Preview Results 1 of xxx' label
-    previewIndexAndTotalLabel: function () {
-        return this.previewWindow().down('#itemIndexAndTotalLabel');
-    },
-
     getCurrentDalId: function () {
         return this.getResultsComponent().currentResultSet.id;
     },
