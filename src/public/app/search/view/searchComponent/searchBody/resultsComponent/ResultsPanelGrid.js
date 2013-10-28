@@ -51,7 +51,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
             )
         }
     ],
-
+    hideHeaders: true,
     header: false,
     forceFit: true,
 

@@ -828,7 +828,7 @@ describe('Search Results', function () {
             });
 
             it('should have a paging toolbar', function () {
-                expect(grid.queryById('gridtoolbar') instanceof Ext.toolbar.Paging).toBeTruthy();
+                expect(grid.up('search_resultspanel').queryById('gridtoolbar') instanceof Ext.toolbar.Paging).toBeTruthy();
             });
 
 
