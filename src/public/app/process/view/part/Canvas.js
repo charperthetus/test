@@ -56,9 +56,18 @@ Ext.define('Savanna.process.view.part.Canvas', {
         // replace the default Link template in the linkTemplateMap
         this.diagram.linkTemplate =  this.diagram.linkTemplateMap.getValue('ProcessLink');
 
-        // temporary links used by LinkingTool and RelinkingTool are also orthogonal:
-        this.diagram.toolManager.linkingTool.temporaryLink.routing = go.Link.Orthogonal;
-        this.diagram.toolManager.relinkingTool.temporaryLink.routing = go.Link.Orthogonal;
+        var toolManager = this.diagram.toolManager;
+        //mouseDownTools
+        toolManager.relinkingTool.endabled = false;
+        toolManager.linkReshapingTool.enabled = false;
+        toolManager.resizingTool.enabled = false;
+        toolManager.rotatingTool.enabled = false;
+        //mouseMoveTools
+        toolManager.linkingTool.enabled = false;
+        toolManager.dragSelectingTool.enabled = false;
+        //mouseUpTools
+        toolManager.contextMenuTool.enabled = false;
+        toolManager.clickCreatingTool.enabled = false;
     },
 
     // CUSTOM METHODS
