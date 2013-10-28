@@ -203,6 +203,8 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
             /*
             are we creating a new item?
              */
+            console.log(me.getView().getEditMode());
+
             if(me.getView().getEditMode())  {
                 me.getView().getLayout().setActiveItem(1);
             }

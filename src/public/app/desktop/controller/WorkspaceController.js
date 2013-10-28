@@ -130,21 +130,6 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
             width: 850,
             height: 500
         });
-        /*
-        var itemView = Ext.create('Savanna.itemView.view.ItemViewer', {
-            title: 'Model Item',
-            itemUri: 'thetus%2EArtifactOntology%3AYellowPalmOilContainer%2FModelItemXML',
-            editMode: true,
-            closable: true,
-            autoScroll: true,
-            tabConfig: {
-                ui: 'dark'
-            }
-        });
-        Savanna.app.fireEvent('search:itemSelected', itemView);
-        */
-
-
     },
 
     createProcess: function(tabpanel) {

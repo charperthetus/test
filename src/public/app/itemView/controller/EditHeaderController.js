@@ -49,10 +49,13 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
         Ext.each(me.getView().store.getById('Intended Use').data.values, function(value) {
             me.getView().queryById('addIntendedUseBox').addTag(value.label);
         });
+        if(me.getView().store.getById('Type').data.values.length)  {
+            me.getView().queryById('parentBtn').setText(me.getView().store.getById('Type').data.values[0].label);
+        }
 
-        me.getView().queryById('parentBtn').setText(me.getView().store.getById('Type').data.values[0].label);
-
-        me.getView().queryById('itemDescription').setValue(me.getView().store.getById('Description').data.values[0].value);
+        if(me.getView().store.getById('Description').data.values.length)  {
+            me.getView().queryById('itemDescription').setValue(me.getView().store.getById('Description').data.values[0].value);
+        }
     },
 
     openParentItem: function() {
