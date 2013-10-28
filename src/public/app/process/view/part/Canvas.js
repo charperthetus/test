@@ -21,7 +21,6 @@ Ext.define('Savanna.process.view.part.Canvas', {
     diagram: null,
 
     onRender: function() {
-        var gmake = go.GraphObject.make;
         var domElem;
 
         this.callParent(arguments);
@@ -41,7 +40,7 @@ Ext.define('Savanna.process.view.part.Canvas', {
         this.on('resize', Ext.bind(function() { this.diagram.requestUpdate(); }, this));
         this.on('show', Ext.bind(function() { this.diagram.requestUpdate(); }, this));
 
-        this.diagram.layout = go.GraphObject.make(go.TreeLayout, { angle: 90, isRealtime: false });
+        this.diagram.layout = go.GraphObject.make(go.TreeLayout, { angle: 90, isRealtime: false, layerSpacing:24 });
 
         this.diagram.toolManager.linkingTool.direction = go.LinkingTool.ForwardsOnly;
         this.diagram.toolManager.linkingTool.portGravity = 10;
@@ -55,7 +54,7 @@ Ext.define('Savanna.process.view.part.Canvas', {
 
 
         // replace the default Link template in the linkTemplateMap
-        this.diagram.linkTemplate =  this.diagram.linkTemplateMap.getValue('');
+        this.diagram.linkTemplate =  this.diagram.linkTemplateMap.getValue('ProcessLink');
 
         // temporary links used by LinkingTool and RelinkingTool are also orthogonal:
         this.diagram.toolManager.linkingTool.temporaryLink.routing = go.Link.Orthogonal;

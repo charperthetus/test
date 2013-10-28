@@ -8,16 +8,12 @@
 Ext.define('Savanna.desktop.controller.DesktopController', {
     extend: 'Deft.mvc.ViewController',
 
-    statics: {
-        aboutwindow: null,
-        searchwindow: null,
-        uploadwindow: null
-    },
     requires: [
         'Savanna.desktop.view.AboutWindow',
         'Savanna.desktop.view.SearchWindow',
         'Savanna.desktop.view.UploadWindow',
-        'Savanna.modelSearch.view.ModelSearch'
+        'Savanna.modelSearch.view.ModelSearch',
+        'Savanna.desktop.view.ModelSearchWindow'
     ],
     statics: {
         aboutwindow: null,
@@ -26,6 +22,7 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
     },
 
     control: {
+        currentuser: true,
         logobutton: {
             click: 'displayAboutDialog'
         },
@@ -35,12 +32,10 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
         uploadbutton: {
             click: 'displayUploadDialog'
         },
-        helpbutton: {
-            click: 'launchHelp'
-        },
-        accountsettings: {
-            click: 'displayAccountSettings'
-        },
+        //TODO - commented until we have a real help page to link to
+//        helpbutton: {
+//            click: 'launchHelp'
+//        },
         savannalogout: {
             click: 'handleLogout'
         },
@@ -50,6 +45,22 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
     },
 
     init: function() {
+        var me = this;
+        Ext.Ajax.request({
+            url: SavannaConfig.userInfoUrl + ';jsessionid=' + Savanna.jsessionid,
+            cors: true,
+            success: function(response){
+                var userInfo = Ext.decode(response.responseText);
+                Savanna.userInfo = userInfo;
+                me.getCurrentuser().text = userInfo.username;
+            },
+            failure: function(response){
+                //TODO - Add global failure handler
+            }
+        })
+
+        Savanna.app.on('initModelSearch', this.displayModelSearch);
+
         return this.callParent(arguments);
     },
 
@@ -84,7 +95,7 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
         }
     },
 
-    displayUploadDialog: function(button) {
+    displayUploadDialog: function() {
         if (!this.statics().uploadwindow) {
             this.statics().uploadwindow = Ext.create('Savanna.desktop.view.UploadWindow', { closeAction: 'hide'});
         }
@@ -97,21 +108,39 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
         uploadWindow.center();
     },
 
-    displayAccountSettings: function() {
-        console.log('The user hit account settings');
-    },
-
     launchHelp: function() {
+        //TODO - this should go to a sized popup that is named so we don't open more than one.
         window.open(SavannaConfig.helpUrl);
     },
 
     handleLogout: function() {
-        console.log('The user is trying to logout');
+        //POST to the logout url, and refresh the page on a response to trigger the login page
+        Ext.Ajax.request({
+            url: SavannaConfig.logoutUrl + ';jsessionid=' + Savanna.jsessionid,
+            cors: true,
+            method: 'POST',
+            success: function(response){
+                //Refresh the page
+                location.href = location.href;
+            },
+            failure: function(response){
+                location.href = location.href;
+            }
+        })
+
     },
 
     displayModelSearch: function() {
-        var modelSearch = Ext.create('Savanna.modelSearch.view.ModelSearch'),
-            savTabPanel = Ext.ComponentQuery.query('#maintabpanel')[0];
-        savTabPanel.add(modelSearch);
+        if (!this.statics().modelSearchWindow) {
+            this.statics().modelSearchWindow = Ext.create('Savanna.desktop.view.ModelSearchWindow', {closeAction: 'hide'});
+        }
+        var searchWindow = this.statics().modelSearchWindow;
+        searchWindow.show();
+        if(searchWindow.height > Ext.getBody().getViewSize().height) {
+            searchWindow.alignTo(Ext.getBody(), 't-t');
+        }
+        else {
+            searchWindow.center();
+        }
     }
 });

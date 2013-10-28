@@ -2,7 +2,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
     extend: 'Ext.toolbar.Toolbar',
     alias: 'widget.search_resultspaneltoolbar',
     controller: 'Savanna.search.controller.resultsComponent.ResultsPanelToolbarController',
-    bubbleEvents: ['Search:PageSizeChanged', "Search:SortByChanged"],
+    bubbleEvents: ['Search:PageSizeChanged', 'Search:SortByChanged'],
     requires: [
         'Savanna.controller.Factory',
         'Ext.form.field.ComboBox',
@@ -16,7 +16,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
         this.callParent(arguments);
     },
 
-    setupItems:function()   {
+    setupItems: function () {
 
         var sortStore = Ext.create('Ext.data.Store', {
             fields: ['sortby', 'name'],
@@ -34,7 +34,8 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
             ]
         });
 
-        return [{
+        return [
+            {
                 xtype: 'combobox',
                 itemId: 'resultsSortByCombobox',
                 store: sortStore,
@@ -43,7 +44,8 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
                 value: 'relevance',
                 editable: false,
                 ui: 'combo-button'
-            }, {
+            },
+            {
                 xtype: 'combobox',
                 itemId: 'resultsPageSizeCombobox',
                 store: countStore,
@@ -53,15 +55,19 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
                 editable: false,
                 ui: 'combo-button'
 
-            }, {
+            },
+            {
                 xtype: 'tbfill'
-            }, {
-                text:'Imgs'
-            }, {
-                text:'List'
-            }, {
-                text:'Map'
-        }]
+            },
+            {
+                glyph: 61786,
+                itemId: 'results_listViewButton'
+            },
+            {
+                glyph: 61746,
+                itemId: 'results_mapViewButton'
+            }
+        ]
     }
 
 });

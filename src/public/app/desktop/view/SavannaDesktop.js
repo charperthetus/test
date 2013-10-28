@@ -2,9 +2,10 @@
  * Central view for the Savanna client application
  */
 Ext.define('Savanna.desktop.view.SavannaDesktop', {
-    extend: 'Ext.panel.Panel',
+    extend: 'Savanna.component.ClassificationPanel',
     alias: 'widget.desktop_savannadesktop',
     requires:[
+        'Savanna.component.ClassificationPanel',
         'Savanna.desktop.controller.DesktopController',
         'Savanna.desktop.view.SavannaWorkspace'
     ],
@@ -42,14 +43,14 @@ Ext.define('Savanna.desktop.view.SavannaDesktop', {
                 ui:'brand-header',
                 scale: 'medium'
                 },{
-                // TODO: Change this out to a button or remove it depending on where MS lives         
+                // TODO: Change this out to a button or remove it depending on where MS lives
                 itemId: 'modelsearchbutton',
                 cls:'modelSearchButtonFramework',
                 ui:'brand-header',
                 scale: 'medium',
                 text: 'Model Search'
             }]
-        }, 
+        },
         {
             xtype: 'toolbar',
             scale: 'medium',
@@ -65,23 +66,20 @@ Ext.define('Savanna.desktop.view.SavannaDesktop', {
             //     ui:'brand-header',
             //     scale: 'medium'
             // }, 
-            {
+            /*{ //TODO - commented until we have a real help link to point to.
                 itemId: 'helpbutton',
                 cls:'helpButtonFramework',
                 ui:'brand-header',
                 scale: 'medium'
-            }, {
+            },*/
+            {
                 itemId: 'userbutton',
                 cls:'userButtonFramework',
                 ui:'brand-header',
                 scale: 'medium',
                 menu: {
                     items: [{
-                        text: 'Current Username here',
                         itemId: 'currentuser'
-                    }, {
-                        text: 'Account Settings',
-                        itemId: 'accountsettings'
                     }, {
                         text: 'Log Out',
                         itemId: 'savannalogout'

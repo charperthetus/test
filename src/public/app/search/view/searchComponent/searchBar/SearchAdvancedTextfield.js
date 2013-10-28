@@ -8,7 +8,7 @@
 Ext.define('Savanna.search.view.searchComponent.searchBar.SearchAdvancedTextfield', {
     extend: 'Ext.form.field.Text',
     alias: 'widget.searchadvanced_textfield',
-    width: 355,
+    width: 380,
     fieldLabel: 'All of these words:',
     name: 'all_words',
     enableKeyEvents: true,

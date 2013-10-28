@@ -572,19 +572,18 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
     },
 
     changeResultView: function (button) {
-       var mapPanel = button.up('search_resultscomponent').down('#resultsmap');
-       var resultsGridPanel = button.up('search_resultscomponent').down('#resultspanelgrid');
-       switch (button.text){
-           case 'Map':
-               resultsGridPanel.hide();
-               mapPanel.show();
-               break;
-           case 'List':
-               mapPanel.hide();
-               resultsGridPanel.show();
-               break;
-       }
-
+        var mapPanel = button.up('search_resultscomponent').down('#resultsmap');
+        var resultsGridPanel = button.up('search_resultscomponent').down('#resultspanelgrid');
+        switch (button.itemId){
+            case 'results_mapViewButton':
+                resultsGridPanel.hide();
+                mapPanel.show();
+                break;
+            case 'results_listViewButton':
+                mapPanel.hide();
+                resultsGridPanel.show();
+                break;
+        }
     },
     addSearchPolygon: function (canvas) {
       var searchLayer = canvas.searchLayer;
@@ -626,6 +625,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
                 }
             }
         }
+        var mapCanvas = scope.up('search_searchcomponent').down('#resultMapCanvas');
         if (mapCanvas.resultsLayer.features.length > 0) {
             mapCanvas.resultsLayer.removeAllFeatures();
         }

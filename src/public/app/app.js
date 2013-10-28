@@ -49,33 +49,38 @@ Ext.application({
         'Savanna.flexpaper.controller.FlexpaperComponent',
         //Search
         'Savanna.search.controller.SearchComponent',
-        //Crumbnet
-        'Savanna.crumbnet.controller.CrumbnetController',
         //Map
         'Savanna.map.controller.MapController',
         //ItemView
         'Savanna.itemView.controller.ItemViewController',
         //Model Search
-        'Savanna.modelSearch.controller.ModelSearchController',
+        'Savanna.modelSearch.controller.SearchComponent',
         //Upload
-        'Savanna.upload.controller.UploadController'
+        'Savanna.upload.controller.UploadController',
+        //Image
+        'Savanna.image.util.ImageViewFactory'
     ],
 
-    autoCreateViewport: true,
+    autoCreateViewport: false,
 
     launch: function() {
+        //in order to get Injection to work, I had to set autoCreateViewport to false and then manually create the viewport here
+        Ext.create('Savanna.view.Viewport');
+
         var viewportQueryResults = Ext.ComponentQuery.query('viewport');
 
         if (viewportQueryResults && viewportQueryResults.length > 0) {
             this.viewport = viewportQueryResults[0];
         }
-        else {
-            // TODO: Fatal condition...how to handle?
-            Ext.Error.raise('no viewport found. cannot start application');
-        }
+
+        this.setupComponents();
+    },
+
+    setupComponents: function(){
+        ComponentManager.registerComponent(Ext.create('Savanna.image.util.ImageViewFactory'));
     },
 
     // CUSTOM CONFIGURATION
     jsessionid: '', // keep track of the user's session id
-    savannauser: '' // current savanna username
+    userInfo: {} // current user info
 });

@@ -42,6 +42,11 @@ Ext.define('Savanna.process.view.part.Toolbar', {
                 tooltip: 'Redo',
                 itemId: 'redo'
             },
+            {
+                text: 'Merge',
+                tooltip: 'Select two nodes and create a merge point',
+                itemId: 'merge'
+            },
             '->',
             {
                 glyph: 61806,
@@ -52,9 +57,16 @@ Ext.define('Savanna.process.view.part.Toolbar', {
                 glyph: 61807,
                 tooltip: 'Zoom Out',
                 itemId: 'zoomout'
+            },
+            '->',
+            {
+                text: 'Cancel',
+                itemId: 'cancelprocess'
+            },
+            {
+                text: 'Save',
+                itemId: 'saveprocess'
             }
-
-
         ];
     }
 });

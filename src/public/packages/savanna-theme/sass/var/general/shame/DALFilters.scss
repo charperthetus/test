@@ -44,10 +44,6 @@ $dal-panel-padding-text: $dal-panel-padding + 90px;
 		top: $dal-panel-spacing - 1;
 		min-width: 127px;
 
-		// @include box-shadow(
-		// 	$button-default-shadow,
-		// 	$element-hover
-		// );
 	}
 	.dal-text {
 		position: absolute;
@@ -61,25 +57,13 @@ $dal-panel-padding-text: $dal-panel-padding + 90px;
 			color: $thetus-blue;
 		}
 	}
-	.#{$prefix}container{ margin-top: 15px; }
 }
 .#{$prefix}box-item.search-dal {
  	padding: 0;
- 	border-top: 1px solid $dark-gray;
-
- 	// &:hover {
- 	// 	background-color: $dal-hover-background-color;
-
- 	// 	.dal-toggle {
-
- 	// 		// Changes the 'collision' shadow since the BG is different
-		// 	@include box-shadow(
-		// 		$button-default-shadow,
-		// 		$dal-hover-background-color 10px 0 20px 20px
-		// 	);
- 	// 	}
- 	// }
-}
-.#{$prefix}tabpanel-child.search-dal {
-	padding: 10px 0 10px; 
+ 	border-top: 1px solid #ededed;
+	
+	.#{$prefix}form-cb-label-after{
+		margin-right: 15px;
+	}
+ 	
 }

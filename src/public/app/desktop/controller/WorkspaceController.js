@@ -2,6 +2,7 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
     extend: 'Deft.mvc.ViewController',
 
     requires: [
+        'Savanna.desktop.view.SavannaTabPanel',
         'Savanna.process.view.ProcessEditorComponent',
         'Savanna.metadata.view.Details'
     ],
@@ -40,10 +41,14 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
     },
 
     init: function() {
+        //TODO - this is temporary until open is fully working
         Savanna.app.on('search:itemselected', this.showItemView, this);
+
+        EventHub.on('open', this.onOpen, this);
         return this.callParent(arguments);
     },
 
+    //TODO - this is temporary until open is fully working
     showItemView: function (itemView) {
         this.getMaintabpanel().add(itemView);
         this.getMaintabpanel().setActiveTab(itemView)
@@ -122,6 +127,22 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
         }
     },
 
+    onOpen: function(event){
+        var component = ComponentManager.getComponentForType(event.type, event.uri, event.label),
+            tabPanel = this.getMaintabpanel();
+        if (component){
+            component.closable = true;
+            component.tabConfig = {
+                ui: 'dark'
+            }
+            var tab = tabPanel.add(component);
+            tabPanel.doLayout();
+            tabPanel.setActiveTab(tab);
+        }else{
+            //TODO - What should I do here?
+        }
+    },
+
     createItem: function(tabpanel) {
         var panel = Ext.create('Ext.panel.Panel', {
             title: 'Untitled Item',
@@ -152,7 +173,10 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
     createDetails: function(tabpanel) {
         var details = Ext.create('Savanna.metadata.view.Details', {
             title: 'Untitled Details',
-            itemURI: 'SolrJdbc%252FRich%252F061aedc6-d88c-497e-81dc-77d809b3262c',
+            //itemURI: 'SolrJdbc%252FRich%252F061aedc6-d88c-497e-81dc-77d809b3262c',
+            //itemURI: 'SolrJdbc%252FRich%252Fca1035f5-8ede-4415-ab75-e58956121819',
+            //itemURI: 'SolrJdbc%252FRich%252F2fa25cdf-9aab-471f-85b6-5359c0cd0dfd',
+            itemURI: 'SolrJdbc%252FText%252F9d62ad60-f453-4215-b8bc-c4c1398b84a4',
             closable: true,
             tabConfig: {
                 ui: 'dark'

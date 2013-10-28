@@ -87,6 +87,8 @@ Ext.define('Savanna.search.controller.SearchDals', {
         if (dalSearchOptionPanel) {
             parentView.remove(dalSearchOptionPanel, true);
         }
+        
+        button.hide();
 
         parentView.down('#searchOptionsToggle').setText(this.addDalDetailText);
     },
@@ -127,10 +129,12 @@ Ext.define('Savanna.search.controller.SearchDals', {
 
         if (button.text === this.addDalDetailText) {
             button.setText(this.removeDalDetailText);
+            button.nextSibling('#resetSingleDal').show();
             childSearchDalsPanel.show();
         }
         else {
             button.setText(this.addDalDetailText);
+            button.nextSibling('#resetSingleDal').hide();
             childSearchDalsPanel.hide();
         }
 

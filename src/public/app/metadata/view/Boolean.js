@@ -10,35 +10,64 @@ Ext.define('Savanna.metadata.view.Boolean', {
     extend: 'Savanna.metadata.view.MetadataItemView',
     alias: 'widget.metadata_boolean',
 
-    requires: [
-        'Savanna.controller.Factory'
+    items: [
     ],
 
-    items: [
-        {
-            xtype: 'label',
-            itemId: 'displayLabelItem',
-            text: '',
-            width: '100%'
-        },
-        {
-            xtype: 'label',
-            itemId: 'displayValue',
-            text: ''
-        }
-    ],
     initComponent: function () {
         this.callParent(arguments);
-        Savanna.controller.Factory.getController('Savanna.metadata.controller.FieldTypes');
-        var config = this.initialConfig || {};
-        this.initValues(config);
         var me = this;
 
         this.on('beforerender', Ext.bind(function() {
-            this.down('#displayLabelItem').text = me.displayLabel;
-            //this.down('#displayValue').text = me.value.toString();
-            this.down('#displayValue').html = (null === me.value) ? '&nbsp;' : me.value.toString();
+            if(me.getEditable() && me.getEditMode()) {
+                if(me.down('#displayValueEdit')) {
+                    me.down('#displayValueEdit').setValue(me.getValue());
+                    me.down('#displayValueEdit').fieldLabel = me.getDisplayLabel();
+                }
+            } else {
+                if(me.down('#displayLabelItem')) {
+                    me.down('#displayLabelItem').html = me.getDisplayLabel() + ':&nbsp;&nbsp;';
+                }
+                if(me.down('#displayValue')) {
+                    me.down('#displayValue').html = (null === me.getValue()) ? '&nbsp;' : me.getValue().toString();
+                }
+            }
         }, this));
+    },
+
+    makeEditViewItems: function() {
+        var me = this;
+        this.add(Ext.create('Ext.form.RadioGroup', {
+            fieldLabel: '',
+            itemId: 'displayValueEdit',
+            width: 350,
+            labelWidth: 180,
+            items: [{
+                        boxLabel: 'True',
+                        checked: true == me.value,
+                        name: 'radios',
+                        listeners: {
+                            change: function(d) {
+                                if(d.getValue()) {
+                                    me.setValue(true);
+                                }
+                            }
+                        }
+
+                    }, {
+                        boxLabel: 'False',
+                        checked: false == me.value,
+                        name: 'radios',
+                        listeners: {
+                            change: function(d) {
+                                if(d.getValue()) {
+                                    me.setValue(false);
+                                }
+                            }
+                        }
+
+                    }]
+        }));
     }
+
 
 });

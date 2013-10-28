@@ -9,41 +9,72 @@
 Ext.define('Savanna.metadata.view.Date', {
     extend: 'Savanna.metadata.view.MetadataItemView',
     alias: 'widget.metadata_date',
-
     requires: [
-        'Savanna.controller.Factory'
+        'Savanna.components.DatePicker'
     ],
 
     items: [
-        {
-            xtype: 'label',
-            itemId: 'displayLabelItem',
-            text: '',
-            width: '100%'
-        },
-        {
-            xtype: 'label',
-            itemId: 'displayValue',
-            text: ''
-        }
     ],
 
     initComponent: function () {
         this.callParent(arguments);
-        Savanna.controller.Factory.getController('Savanna.metadata.controller.FieldTypes');
-        var config = this.initialConfig || {};
-        this.initValues(config);
         var me = this;
 
         this.on('beforerender', Ext.bind(function() {
-            this.down('#displayLabelItem').text = me.displayLabel;
+            var displayValue = '&nbsp;';
+            var myDate = null;
             if(null !== me.value) {
-                var myDate = new Date(me.value);
-                this.down('#displayValue').text = Ext.Date.format(myDate,'F j, Y, g:i a');
-            } else {
-                theLabel.html =  '&nbsp;';
+                myDate = new Date(me.getValue());
+                displayValue = Ext.Date.format(myDate,'Y-m-d\\TH:i:s.m\\Z')
             }
+
+            if(me.getEditable() && me.getEditMode()) {
+                if(me.down('#editLabelItem')) {
+                    me.down('#editLabelItem').html = me.getDisplayLabel() + ':&nbsp;&nbsp;';
+                }
+            } else {
+                if(me.down('#displayLabelItem')) {
+                    me.down('#displayLabelItem').html = me.getDisplayLabel() + ':&nbsp;&nbsp;';
+                }
+                if(me.down('#displayValue')) {
+                    me.down('#displayValue').html = displayValue;
+                }
+            }
+
         }, this));
+    },
+
+    makeEditViewItems: function() {
+        var me = this;
+        this.layout = 'vbox';
+        this.add(Ext.create('Ext.form.Label', {
+            itemId: 'editLabelItem',
+            width: 180,
+            minWidth: 180,
+            height: 25
+        }));
+
+        this.add(Ext.create('Savanna.components.DatePicker', {
+            itemId: 'displayValueEdit',
+            //width: 200,
+            jsDate: new Date(me.getValue()),
+            renderTo: Ext.getBody(),
+            listeners: {
+                blur: function(d) {
+                    console.log('Date picker Item Blur');
+//                    var newVal = d.getUnixDate();
+//                    me.setValue(newVal);
+                }
+            }
+
+         }));
+    },
+
+    makeViewViewItems: function() {
+        this.layout = 'hbox';
+        this.callParent(arguments);
     }
+
+
 
 });

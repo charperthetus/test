@@ -21,11 +21,34 @@ Ext.define('Savanna.metadata.store.Metadata', {
 
     itemURI: '',
 
+    constructor: function() {
+        this.callParent(arguments);
+
+        this.setProxy({
+            type: 'savanna-cors',
+            url: SavannaConfig.metadataUrl,
+            modifyRequest: function(request) {
+                if('update' == request.action) {
+                    // Must put, not push.  So sayeth endpoint.
+                    request.method = 'PUT';
+                    // This endpoint wants an array of json objects.
+                    // If there's only one, the store gives us only that object.
+                    // We'll make an array of it.
+                    if(!Ext.isArray( request.jsonData ) ) {
+                        request.jsonData = [request.jsonData];
+                    }
+                }
+                return request;
+            }
+
+        });
+    },
+
     load: function() {
         // Take this line out to use the Provided URI below.
-        this.getProxy().url = SavannaConfig.metadataTestDataUrl;
+        //this.getProxy().url = SavannaConfig.metadataTestDataUrl;
         // Put this line back in to use the URI set in the constructor.
-        //this.getProxy().url = SavannaConfig.metadataUrl + '/' + this.itemURI;
+        this.getProxy().url = SavannaConfig.metadataUrl + '/' + this.itemURI;
 
         this.callParent(arguments);
     }
