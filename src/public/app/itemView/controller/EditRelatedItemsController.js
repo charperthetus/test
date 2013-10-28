@@ -96,9 +96,7 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
             );
             Ext.each(relatedItemsGroup.data.values, function(item) {
                 var myPanel = this.getView().down('[myId=' + relatedItemsGroup.get('predicateUri') + ']');
-                myPanel.add(this.buildAddItem(item, relatedItemsGroup.get('label'));
-
-                );
+                myPanel.add(this.buildAddItem(item, relatedItemsGroup.get('label')));
             }, this);
         }, this);
     },
