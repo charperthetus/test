@@ -22,7 +22,7 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
         var me = this;
 
         Ext.each(items, function (relatedItemsGroup) {
-            me.getView().add(
+            this.getView().add(
                 {
                     xtype: 'label',
                     text: relatedItemsGroup.get('label')
@@ -63,7 +63,7 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
                         {
                             xtype: 'auto_complete',
                             labelType: 'Find items',
-                            showTags: true,
+                            showTags: false,
                             itemId: 'addRelatedItem',
                             store: Ext.create('Savanna.itemView.store.AutoCompleteStore', {
                                 urlEndPoint: 'http://c2devsav1:8080/c2is2/rest/mockModelSearch/keyword/property/propUri',
@@ -71,46 +71,56 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
                             }),
                             flex: 1,
                             listeners: {
-                                'AutoComplete:ItemSelected': me.addRelatedItem
+                                'AutoComplete:ItemSelected': Ext.bind(this.addRelatedItem, this)
                             }
 
                         }
 
                     ]
 
+                },{
+                    xtype: 'panel',
+                    layout: 'vbox',
+                    width: '100%',
+                    myId: relatedItemsGroup.get('predicateUri')
+
                 }
 
             );
             Ext.each(relatedItemsGroup.data.values, function(item) {
-                me.getView().add(
-                    {
-                        xtype: 'container',
-                        cls: 'itemDropZone',
-                        value: relatedItemsGroup.get('predicateUri'),
-                        layout: 'hbox',
-                        items: [
-                            {
-                                xtype: 'button',
-                                text: item.label,
-                                handler: me.onRelatedItemClick,
-                                name: item.value
+                var myPanel = this.getView().down('[myId=' + relatedItemsGroup.get('predicateUri') + ']')
+                myPanel.add(this.buildAddItem(item, relatedItemsGroup.get('predicateUri'))
 
-
-                            },
-                            {
-                                xtype: 'button',
-                                text: 'X',
-                                handler: me.onRemoveRelatedItem,
-                                name: item.value,
-                                value: item.label
-                            }
-                        ]
-                    }
                 );
-            });
-        });
+            }, this);
+        }, this);
     },
 
+    buildAddItem: function(item, itemGroupUri) {
+        return {
+            xtype: 'container',
+            cls: 'itemDropZone',
+            value: itemGroupUri,
+            layout: 'hbox',
+            items: [
+                {
+                    xtype: 'button',
+                    text: item.label,
+                    handler: this.onRelatedItemClick,
+                    name: item.value
+
+
+                },
+                {
+                    xtype: 'button',
+                    text: 'X',
+                    handler: this.onRemoveRelatedItem,
+                    name: item.value,
+                    value: item.label
+                }
+            ]
+        }
+    },
     onRelatedItemClick: function (btn) {
         btn.up('itemview_edit_related_items').fireEvent('ItemView:OpenItem', btn.text, btn.name);
     },
@@ -121,6 +131,15 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
     },
 
     addRelatedItem: function(label, itemRecord, autoCompleteView) {
-        console.log(autoCompleteView.up('panel'));
+        var item = {};
+        var addRelatedItemPanel = autoCompleteView.up('panel');
+        var relatedItemGroupUri = addRelatedItemPanel.value;
+        var itemLabel = itemRecord.label;
+        var itemUri = itemRecord.uri;
+        var myPanel = this.getView().down('[myId=' + relatedItemGroupUri + ']')
+        item.label = itemLabel;
+        item.value = itemUri;
+        myPanel.add(this.buildAddItem(item, relatedItemGroupUri));
     }
+
 });
