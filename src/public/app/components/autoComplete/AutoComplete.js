@@ -20,7 +20,6 @@ Ext.define('Savanna.components.autoComplete.AutoComplete', {
     config: {
         labelType: '',
         tagValues: null,
-        propData: null,
         showTags: false,
         hasNoStore: false,
         preLabel: '',

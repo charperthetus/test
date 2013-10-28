@@ -21,7 +21,8 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
         'Savanna.itemView.view.imageBrowser.ImagesGrid',
         'Savanna.components.autoComplete.AutoComplete',
         'Savanna.itemView.view.imageBrowser.ImageThumbnail',
-        'Savanna.itemView.view.workflow.WorkflowSelect'
+        'Savanna.itemView.view.workflow.WorkflowSelect',
+        'Savanna.itemView.view.annotationProperties.AnnotationProperties'
     ],
 
     layout: 'card',
@@ -53,12 +54,8 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
     },
 
     initComponent: function() {
-
         this.items = this.buildItems();
         this.callParent(arguments);
-
-
-
     },
 
     buildItems: function() {
@@ -168,6 +165,14 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                                 cls:'white-grid-view-panel',
                                 collapsible: true,
                                 header:{
+                                    ui:'light-blue'
+                                }
+                            },
+                            {
+                                xtype: 'itemview_annotation_properties',
+                                itemId: 'annotationPropertiesView',
+                                collapsible: true,
+                                header: {
                                     ui:'light-blue'
                                 }
                             }
@@ -291,6 +296,14 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                                 cls:'white-grid-view-panel-edit',
                                 collapsible: true,
                                 header:{
+                                    ui:'light-blue'
+                                }
+                            },
+                            {
+                                xtype: 'itemview_annotation_properties',
+                                itemId: 'annotationPropertiesEdit',
+                                collapsible: true,
+                                header: {
                                     ui:'light-blue'
                                 }
                             }
