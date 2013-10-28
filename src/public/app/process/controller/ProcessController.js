@@ -11,7 +11,8 @@ Ext.define('Savanna.process.controller.ProcessController', {
     requires: [
         'Savanna.process.utils.ProcessUtils',
         'Savanna.process.utils.ViewTemplates',
-        'Savanna.process.store.Processes'
+        'Savanna.process.store.Processes',
+        'Savanna.process.view.part.Overview' //added dynamically later
     ],
     store: 'Savanna.process.store.Processes',
     mixins: {
@@ -19,6 +20,9 @@ Ext.define('Savanna.process.controller.ProcessController', {
     },
 
     control: {
+        newProcess: {
+            click: 'clearJSONClick'
+        },
         expandsteps: {
             click: 'expandStepsClick'
         },
@@ -48,11 +52,17 @@ Ext.define('Savanna.process.controller.ProcessController', {
         merge: {
             click: 'handleMerge'
         },
+        alts: {
+            click: 'handleAlts'
+        },
         zoomin: {
             click: 'zoomIn'
         },
         zoomout: {
             click: 'zoomOut'
+        },
+        zoomToFit: {
+            click: 'zoomToFit'
         },
         cancelprocess: {
             click: 'onCancel'
@@ -62,6 +72,15 @@ Ext.define('Savanna.process.controller.ProcessController', {
         },
         view: {
             beforeclose: 'onProcessClose'
+        },
+        palette: {
+            // palette window has its own controller
+        },
+        showPalette: {
+            click: 'togglePalette'
+        },
+        showOverview: {
+            click: 'toggleOverview'
         }
     },
 
@@ -146,6 +165,10 @@ Ext.define('Savanna.process.controller.ProcessController', {
         Savanna.process.utils.ProcessUtils.addMerge(this.getCanvas().diagram);
     },
 
+    handleAlts: function() {
+        Savanna.process.utils.ProcessUtils.addAlts(this.getCanvas().diagram);
+    },
+
     zoomIn: function() {
         var diagram = this.getCanvas().diagram;
         diagram.scale = diagram.scale * Math.LOG2E;
@@ -156,6 +179,9 @@ Ext.define('Savanna.process.controller.ProcessController', {
         diagram.scale = diagram.scale / Math.LOG2E;
     },
 
+    zoomToFit: function() {
+        this.getCanvas().diagram.zoomToFit();
+    },
 
     confirmClosed: false,
 
@@ -296,5 +322,30 @@ Ext.define('Savanna.process.controller.ProcessController', {
             diagramCoordinate = diagram.transformViewToDoc(new go.Point(x,y));
 
         return diagram.findPartAt(diagramCoordinate); //may be null
+    },
+
+    togglePalette: function() {
+        var palette = this.getPalette();
+        if (palette.hidden) {
+            palette.show();
+        } else {
+            palette.hide();
+        }
+    },
+
+    toggleOverview: function() {
+        var processViewport = this.getView();
+        var overview = processViewport.overview;
+
+        if (overview) {
+            processViewport.overview = null;
+            processViewport.remove(overview);
+        } else {
+            overview = Ext.create('Savanna.process.view.part.Overview', {});
+            overview.setDiagram(this.getCanvas().diagram);
+            processViewport.overview = overview;
+            processViewport.add(overview);
+        }
     }
+
 });
