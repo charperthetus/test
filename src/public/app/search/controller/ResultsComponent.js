@@ -301,10 +301,9 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
     },
 
     onItemClick: function (view, rec, node, index, e) {  //other parameter options
-        if (e && e.target && e.target.id) {
-            if (e.target.id === 'openButton') {
-                this.openUri(rec.data.uri);
-            }
+        //TODO - the way of getting this button is wrong, refactor
+        if (e && e.target && e.target.className == 'openButtonClass') {
+            EventHub.fireEvent('open', {uri: rec.data.uri, type: rec.data.contentType, label: rec.data.title});
         }
     },
 
@@ -312,10 +311,6 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
         if (node) {
             node.querySelector('#hoverDiv').style.visibility = 'hidden';
         }
-    },
-
-    openUri: function(){
-        //todo open the uri...
     },
 
     onNextItemPreview: function () {
