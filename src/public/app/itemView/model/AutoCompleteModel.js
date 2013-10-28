@@ -13,6 +13,7 @@ Ext.define('Savanna.itemView.model.AutoCompleteModel', {
         {name: "uri"},
         {name: "label"},
         {name: "type"},
-        {name: "units"}
+        {name: "units"},
+        {name: "selected", type: 'bool'}
     ]
 });

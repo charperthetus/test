@@ -159,21 +159,6 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
             processEditComponent.reconfigure(record[0].kvPairGroupsStore.getById('Related Processes').pairsStore);
 
             /*
-            Qualities
-             */
-            var qualitiesComponent = me.getView().queryById('itemViewPropertiesView');
-            qualitiesComponent.setTitle('Qualities (' + record[0].propertyGroupsStore.getById('Properties').valuesStore.data.length + ')');
-            qualitiesComponent.reconfigure(record[0].propertyGroupsStore.getById('Properties').valuesStore);
-
-            /*
-            Qualities Edit
-             */
-            var qualitiesEditComponent = me.getView().queryById('itemViewPropertiesEdit');
-            qualitiesEditComponent.setTitle('Qualities (' + record[0].propertyGroupsStore.getById('Properties').valuesStore.data.length + ')');
-            qualitiesEditComponent.store = record[0].propertyGroupsStore.getById('Properties').valuesStore;
-            qualitiesEditComponent.fireEvent('EditQualities:StoreSet');
-
-            /*
             Related Items View
              */
             var relatedItemView = me.getView().queryById('relatedItemsView');
@@ -185,6 +170,35 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
              */
             var relatedItemViewEdit = me.getView().queryById('relatedItemsEdit');
             relatedItemViewEdit.fireEvent('EditRelatedItems:SetupData', record[0].propertyGroupsStore.getById('Related Items').valuesStore.data.items);
+
+            /*
+             Qualities View
+             */
+            var qualitiesComponent = me.getView().queryById('itemViewPropertiesView');
+            qualitiesComponent.setTitle('Qualities (' + record[0].propertyGroupsStore.getById('Properties').valuesStore.data.length + ')');
+            qualitiesComponent.reconfigure(record[0].propertyGroupsStore.getById('Properties').valuesStore);
+
+            /*
+             Qualities Edit
+             */
+            var qualitiesEditComponent = me.getView().queryById('itemViewPropertiesEdit');
+            qualitiesEditComponent.setTitle('Qualities (' + record[0].propertyGroupsStore.getById('Properties').valuesStore.data.length + ')');
+            qualitiesEditComponent.store = record[0].propertyGroupsStore.getById('Properties').valuesStore;
+            qualitiesEditComponent.fireEvent('EditQualities:StoreSet');
+
+            /*
+            Annotation Properties View
+             */
+            var annotationViewComponent = me.getView().queryById('annotationPropertiesView');
+            annotationViewComponent.setTitle('Participated in Process (' + record[0].propertyGroupsStore.getById('Annotations').valuesStore.data.length + ')');
+            annotationViewComponent.reconfigure(record[0].propertyGroupsStore.getById('Annotations').valuesStore);
+
+            /*
+            Annotation Properties Edit
+             */
+            var annotationEditComponent = me.getView().queryById('annotationPropertiesEdit');
+            annotationEditComponent.setTitle('Participated in Process (' + record[0].propertyGroupsStore.getById('Annotations').valuesStore.data.length + ')');
+            annotationEditComponent.reconfigure(record[0].propertyGroupsStore.getById('Annotations').valuesStore);
 
             /*
             are we creating a new item?
