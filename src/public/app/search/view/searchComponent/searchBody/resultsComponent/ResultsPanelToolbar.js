@@ -18,12 +18,12 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
 
     setupItems: function () {
 
-        var sortStore = Ext.create('Ext.data.Store', {
-            fields: ['sortby', 'name'],
-            data: [
-                {'sortby': 'relevance', 'name': 'Sort by Relevance'}
-            ]
-        });
+        // var sortStore = Ext.create('Ext.data.Store', {
+        //     fields: ['sortby', 'name'],
+        //     data: [
+        //         {'sortby': 'relevance', 'name': 'Sort by Relevance'}
+        //     ]
+        // });
 
         var countStore = Ext.create('Ext.data.Store', {
             fields: ['count', 'name'],
@@ -35,17 +35,6 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
         });
 
         return [
-            {
-                xtype: 'combobox',
-                itemId: 'resultsSortByCombobox',
-                store: sortStore,
-                displayField: 'name',
-                valueField: 'sortby',
-                value: 'relevance',
-                editable: false,
-                ui: 'combo-button',
-                width: 140
-            },
             {
                 xtype: 'combobox',
                 itemId: 'resultsPageSizeCombobox',
@@ -60,6 +49,12 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
             },
             {
                 xtype: 'tbfill'
+            },
+            {
+                xtype: 'pagingtoolbar',
+                itemId: 'gridtoolbar',
+                dock: 'top',
+                displayInfo: true
             },
             {
                 glyph: 61786,

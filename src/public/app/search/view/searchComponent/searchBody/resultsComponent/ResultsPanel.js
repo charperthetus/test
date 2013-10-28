@@ -56,7 +56,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
     updateGridStore: function (obj) {
         var grid = this.queryById('resultspanelgrid');
         grid.reconfigure(obj.store);
-        grid.queryById('gridtoolbar').bindStore(obj.store);
+        this.queryById('gridtoolbar').bindStore(obj.store);
 
         obj.store.loadPage(obj.store.currentPage);
     },
