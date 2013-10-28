@@ -34,6 +34,24 @@ Ext.define('Savanna.process.utils.GroupEventHandlers', {
         }
     },
 
+    onMouseDrop: function(e, ddSource, data, diagram, part) {
+        var stepGroup = part;
+
+        var category = 'ProcessItem';
+        var label = data.records[0].data.label;
+        var linkType = 'ProcessLink';
+        diagram.startTransaction('onMouseDrop');
+        var nodeData = {'category': category, 'text': label};
+        nodeData.key = Savanna.process.utils.ProcessUtils.getURI(nodeData.category);
+
+        diagram.model.addNodeData(nodeData);
+
+        var linkData = {  category: linkType, from: stepGroup.data.key, to: nodeData.key };
+        diagram.model.addLinkData(linkData);
+        diagram.commitTransaction('onMouseDrop');
+        Savanna.process.utils.ProcessUtils.startTextEdit(diagram, nodeData);
+    },
+
     // when the selection is dropped into a Group, add the selected Parts into that Group;
     // if it fails, cancel the tool, rolling back any changes
     onActionGroupMouseDrop: function (e, obj) {

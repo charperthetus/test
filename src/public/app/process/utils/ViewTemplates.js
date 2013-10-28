@@ -427,6 +427,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                     mouseDragEnter: Savanna.process.utils.GroupEventHandlers.onMouseDragEnter,
                     mouseDragLeave: Savanna.process.utils.GroupEventHandlers.onMouseDragLeave,
                     mouseHold: Savanna.process.utils.GroupEventHandlers.onMouseHold,
+                    mouseDrop: Savanna.process.utils.GroupEventHandlers.onMouseDrop,
                     computesBoundsAfterDrag: true,
                     // when the selection is dropped into a Group, add the selected Parts into that Group;
                     // if it fails, cancel the tool, rolling back any changes

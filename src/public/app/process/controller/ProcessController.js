@@ -239,7 +239,7 @@ Ext.define('Savanna.process.controller.ProcessController', {
         // - commit the initial transaction (if possible in GoJS)...i don't think this is possible
         // - Call service to save json data - this should just be store.sync()
         // - Start a new main transaction...again, probably not possible
-        //for now, do nothing
+        this.store.sync();
     },
 
     initCanvas: function() {
