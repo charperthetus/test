@@ -20,9 +20,10 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
         aboutwindow: null,
         searchwindow: null,
         uploadwindow: null
-            },
+    },
 
     control: {
+        currentuser: true,
         logobutton: {
             click: 'displayAboutDialog'
         },
@@ -32,12 +33,10 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
         uploadbutton: {
             click: 'displayUploadDialog'
         },
-        helpbutton: {
-            click: 'launchHelp'
-        },
-        accountsettings: {
-            click: 'displayAccountSettings'
-        },
+        //TODO - commented until we have a real help page to link to
+//        helpbutton: {
+//            click: 'launchHelp'
+//        },
         savannalogout: {
             click: 'handleLogout'
         },
@@ -50,6 +49,20 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
     },
 
     init: function() {
+        var me = this;
+        Ext.Ajax.request({
+            url: SavannaConfig.userInfoUrl + ';jsessionid=' + Savanna.jsessionid,
+            cors: true,
+            success: function(response){
+                var userInfo = Ext.decode(response.responseText);
+                Savanna.userInfo = userInfo;
+                me.getCurrentuser().text = userInfo.username;
+            },
+            failure: function(response){
+                //TODO - Add global failure handler
+            }
+        })
+
         Savanna.app.on('initModelSearch', this.displayModelSearch);
 
         return this.callParent(arguments);
@@ -99,11 +112,8 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
         uploadWindow.center();
     },
 
-    displayAccountSettings: function() {
-        console.log('The user hit account settings');
-    },
-
     launchHelp: function() {
+        //TODO - this should go to a sized popup that is named so we don't open more than one.
         window.open(SavannaConfig.helpUrl);
     },
 

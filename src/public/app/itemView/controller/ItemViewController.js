@@ -48,8 +48,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
             click: 'onRelationshipSelect'
         },
         relatedItemsView: {
-            'ItemView:OpenItem': 'openItem',
-            'ItemView:DeleteRelatedItem': 'deleteRelatedItem'
+            'ItemView:OpenItem': 'openItem'
         },
         relatedItemsEdit: {
             'ItemView:OpenItem': 'openItem'
@@ -97,18 +96,22 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     },
 
     onEditDone:function() {
-
-
         var myStore = Ext.data.StoreManager.lookup(this.store);
         var headerComponent = this.getView().queryById('itemViewHeaderView');
         headerComponent.reconfigure(myStore.getAt(0).propertyGroupsStore.getById('Header').valuesStore);
         
         var qualitiesComponent = this.getView().queryById('itemViewPropertiesView');
         qualitiesComponent.reconfigure(myStore.getAt(0).propertyGroupsStore.getById('Properties').valuesStore);
-        
+
+        var relatedItemView = this.getView().queryById('relatedItemsView');
+        Ext.each(myStore.getAt(0).propertyGroupsStore.getById('Related Items').valuesStore.data.items, function(group){
+            relatedItemView.queryById('relatedItemGrid_' + group.get('label').replace(/\s/g,'')).reconfigure(group.valueStore);
+        }, this);
+
         this.getView().getLayout().setActiveItem(0);
         this.getView().setEditMode(!this.getView().getEditMode());
 
+        myStore.getAt(0).setDirty();
         myStore.sync();
     },
 
@@ -169,6 +172,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
             Related Items Edit
              */
             var relatedItemViewEdit = me.getView().queryById('relatedItemsEdit');
+            relatedItemViewEdit.store = record[0].propertyGroupsStore.getById('Related Items').valuesStore;
             relatedItemViewEdit.fireEvent('EditRelatedItems:SetupData', record[0].propertyGroupsStore.getById('Related Items').valuesStore.data.items);
 
             /*
@@ -199,6 +203,12 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
             var annotationEditComponent = me.getView().queryById('annotationPropertiesEdit');
             annotationEditComponent.setTitle('Participated in Process (' + record[0].propertyGroupsStore.getById('Annotations').valuesStore.data.length + ')');
             annotationEditComponent.reconfigure(record[0].propertyGroupsStore.getById('Annotations').valuesStore);
+
+            /*
+             Images View
+             */
+            var imagesBrowserComponent = me.getView().queryById('itemViewImagesGrid');
+            imagesBrowserComponent.fireEvent('ViewImagesGrid:Setup', record[0].propertyGroupsStore.getById('Images').valuesStore.getById('Images').valuesStore.data.items);
 
             /*
             are we creating a new item?

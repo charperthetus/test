@@ -22,7 +22,8 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
         'Savanna.components.autoComplete.AutoComplete',
         'Savanna.itemView.view.imageBrowser.ImageThumbnail',
         'Savanna.itemView.view.workflow.WorkflowSelect',
-        'Savanna.itemView.view.annotationProperties.AnnotationProperties'
+        'Savanna.itemView.view.annotationProperties.AnnotationProperties',
+        'Savanna.itemView.store.ItemViewStoreHelper'
     ],
 
     layout: 'card',
@@ -158,7 +159,8 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                         flex: 1,
                         items: [                            
                             {
-                                xtype: 'itemview_imagesgrid'
+                                xtype: 'itemview_imagesgrid',
+                                itemId: 'itemViewImagesGrid'
                             },
                             {
                                 xtype: 'itemview_view_qualities',

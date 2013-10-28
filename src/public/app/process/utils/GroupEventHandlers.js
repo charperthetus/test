@@ -61,6 +61,10 @@ Ext.define('Savanna.process.utils.GroupEventHandlers', {
         return (part.category == 'ProcessAction');
     },
 
+    altsGroupMemberValidation: function(group, part) {
+        return (part.category == 'ProcessItem');
+    },
+
     onActionMouseDragEnter:function(e, obj) {
         obj.areaBackground = '#00FF00';
 

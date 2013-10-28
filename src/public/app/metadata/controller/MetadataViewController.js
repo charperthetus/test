@@ -10,7 +10,8 @@ Ext.define('Savanna.metadata.controller.MetadataViewController', {
 
     requires: [
         'Savanna.metadata.view.String',
-        'Savanna.metadata.view.LongString',
+        'Savanna.metadata.view.StringVerticalEdit',
+        'Savanna.metadata.view.Classification',
         'Savanna.metadata.view.Date',
         'Savanna.metadata.view.Uri',
         'Savanna.metadata.view.Integer',
@@ -60,7 +61,7 @@ Ext.define('Savanna.metadata.controller.MetadataViewController', {
         var me = this;
         var theStore = this.getView().getStore();
         var  stuffChanged = false;
-        Ext.Array.each(me.getView().items.items, function(metadata) {
+        Ext.Array.each(me.getView().down('#wrapperPanel').items.items, function(metadata) {
             var key = metadata.key;
             //var thing = theStore.data.get(key); // if this would work (we have an actual key set on the store data items) then we wouldn't need the loop below.
             Ext.Array.each(theStore.data.items, function(storeData) {
@@ -99,7 +100,7 @@ Ext.define('Savanna.metadata.controller.MetadataViewController', {
         // TODO: need to create and add a classification thing.
 
         Ext.Array.each(me.getView().store.data.items, function(metadata) {
-            var typeToAdd = me.getTypeFromName(metadata.data.type);
+            var typeToAdd = me.getTypeFromName(metadata.data.type, metadata.data.key);
 
             if('' != typeToAdd) {
                 var valueObject = {
@@ -113,59 +114,70 @@ Ext.define('Savanna.metadata.controller.MetadataViewController', {
                 };
                 var metadataView = me.createViewForType(typeToAdd, valueObject );
                 if (metadataView) {
-                    me.getView().add( metadataView );
+                    me.getView().down('#wrapperPanel').add( metadataView );
                 }
             }
         });
     },
 
-    getTypeFromName: function(name) {
+    getTypeFromName: function(name, key) {
         var typeToAdd = '';
+        switch(key) {
+            case 'classification':
+                typeToAdd = 'Savanna.metadata.view.Classification';
+                break;
+        }
 
-        switch(name){
-            case 'String':
-                typeToAdd = 'Savanna.metadata.view.String';
-                break;
-            case 'LongString':
-                typeToAdd = 'Savanna.metadata.view.LongString';
-                break;
-            case 'Date':
-                typeToAdd = 'Savanna.metadata.view.Date';
-                break;
-            case 'Uri':
-                typeToAdd = 'Savanna.metadata.view.Uri';
-                break;
-            case 'Integer':
-                typeToAdd = 'Savanna.metadata.view.Integer';
-                break;
-            case 'Boolean':
-                typeToAdd = 'Savanna.metadata.view.Boolean';
-                break;
-            case 'Double':
-                typeToAdd = 'Savanna.metadata.view.Double';
-                break;
-            case 'String_List':
-                typeToAdd = 'Savanna.metadata.view.StringList';
-                break;
-            case 'Boolean_List':
-                typeToAdd = 'Savanna.metadata.view.BooleanList';
-                break;
-            case 'Date_List':
-                typeToAdd = 'Savanna.metadata.view.DateList';
-                break;
-            case 'Integer_List':
-                typeToAdd = 'Savanna.metadata.view.IntegerList';
-                break;
-            case 'Double_List':
-                typeToAdd = 'Savanna.metadata.view.DoubleList';
-                break;
-            case 'Uri_List':
-                typeToAdd = 'Savanna.metadata.view.UriList';
-                break;
-            default:
-                //console.log('Unknown metadata type', name);
-                typeToAdd = '';
-                break;
+        if('' === typeToAdd) {
+            switch(name){
+                case 'String':
+                    if('docTitle' === key || 'document-description' === key) { // I don't like these special cases, but design insists
+                        typeToAdd = 'Savanna.metadata.view.StringVerticalEdit';
+                    } else {
+                        typeToAdd = 'Savanna.metadata.view.String';
+                    }
+                    break;
+                case 'LongString':
+                    typeToAdd = 'Savanna.metadata.view.StringVerticalEdit';
+                    break;
+                case 'Date':
+                    typeToAdd = 'Savanna.metadata.view.Date';
+                    break;
+                case 'Uri':
+                    typeToAdd = 'Savanna.metadata.view.Uri';
+                    break;
+                case 'Integer':
+                    typeToAdd = 'Savanna.metadata.view.Integer';
+                    break;
+                case 'Boolean':
+                    typeToAdd = 'Savanna.metadata.view.Boolean';
+                    break;
+                case 'Double':
+                    typeToAdd = 'Savanna.metadata.view.Double';
+                    break;
+                case 'String_List':
+                    typeToAdd = 'Savanna.metadata.view.StringList';
+                    break;
+                case 'Boolean_List':
+                    typeToAdd = 'Savanna.metadata.view.BooleanList';
+                    break;
+                case 'Date_List':
+                    typeToAdd = 'Savanna.metadata.view.DateList';
+                    break;
+                case 'Integer_List':
+                    typeToAdd = 'Savanna.metadata.view.IntegerList';
+                    break;
+                case 'Double_List':
+                    typeToAdd = 'Savanna.metadata.view.DoubleList';
+                    break;
+                case 'Uri_List':
+                    typeToAdd = 'Savanna.metadata.view.UriList';
+                    break;
+                default:
+                    //console.log('Unknown metadata type', name);
+                    typeToAdd = '';
+                    break;
+            }
         }
         return typeToAdd;
     },

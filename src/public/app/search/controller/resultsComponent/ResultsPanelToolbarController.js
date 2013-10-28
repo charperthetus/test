@@ -5,14 +5,28 @@
 Ext.define('Savanna.search.controller.resultsComponent.ResultsPanelToolbarController', {
     extend: 'Deft.mvc.ViewController',
     control: {
+        view: {
+            boxready: "onViewBoxReady"
+        },
+
         resultsPageSizeCombobox: {
             select: 'onPageSizeChange'
         },
         resultsSortByCombobox: {
             select: 'onSortByChange'
+        },
+        results_listViewButton: {
+            click: 'onViewBtnClick',
+            toggle: 'onViewBtnToggle'
+        },
+        results_mapViewButton: {
+            click: 'onViewBtnClick',
+            toggle: 'onViewBtnToggle'
         }
+    },
 
-
+    onViewBoxReady:function()   {
+        this.getView().queryById('results_listViewButton').toggle();
     },
 
 
@@ -26,6 +40,26 @@ Ext.define('Savanna.search.controller.resultsComponent.ResultsPanelToolbarContro
 
     },
 
+    onViewBtnClick:function(btn)  {
+        if(!btn.pressed)    {
+            this.getView().queryById('results_listViewButton').toggle();
+            this.getView().queryById('results_mapViewButton').toggle();
+        }
+    },
+
+    onViewBtnToggle:function(btn)  {
+
+        var listBtn = this.getView().queryById('results_listViewButton');
+        var mapBtn = this.getView().queryById('results_mapViewButton');
+
+        if(listBtn.pressed) {
+            listBtn.setGlyph(61786);
+            mapBtn.setGlyph(61746);
+        } else  {
+            listBtn.setGlyph(61746);
+            mapBtn.setGlyph(61786);
+        }
+    },
 
     init: function () {
         return this.callParent(arguments);

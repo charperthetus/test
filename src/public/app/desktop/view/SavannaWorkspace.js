@@ -59,13 +59,6 @@ Ext.define('Savanna.desktop.view.SavannaWorkspace', {
         itemId: 'maintabpanel',
         flex: 2,
         height: '100%',
-        items: [{
-            title: 'Image',
-            xtype: 'image_component',
-            itemId: 'workspaceImage',
-            tabConfig: {
-                ui: 'dark'
-            }
-        }]
+        items: []
     }]
 });

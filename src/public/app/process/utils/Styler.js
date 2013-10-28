@@ -5,6 +5,8 @@
  */
 Ext.define('Savanna.process.utils.Styler', {
 
+    singleton: true,
+
     /*
      * constructor
      * Create the styler object.
@@ -67,7 +69,7 @@ Ext.define('Savanna.process.utils.Styler', {
             "endColor": "#DC3C00",
             "graygrad": { 0: "rgb(150, 150, 150)", 0.5: "rgb(86, 86, 86)", 1: "rgb(86, 86, 86)" }, 
             "greengrad": { 0: "rgb(150, 150, 150)", 0.5: "rgb(86, 86, 86)", 1: "rgb(86, 86, 86)" }, 
-            "redgrad": { 0: "rgb(150, 150, 150)", 0.5: "rgb(86, 86, 86)", 1: "rgb(86, 86, 86)" }, 
+            "redgrad": { 0: "rgb(150, 150, 150)", 0.5: "rgb(86, 86, 86)", 1: "rgb(86, 86, 86)" },
             "yellowgrad": { 0: "rgb(150, 150, 150)", 0.5: "rgb(86, 86, 86)", 1: "rgb(86, 86, 86)" } 
         };
 
@@ -141,8 +143,6 @@ Ext.define('Savanna.process.utils.Styler', {
                 return rectanglePalette;
             } else if (tag === 'paletteDiamond'){
                 return diamondPalette;
-            } else if (tag === 'linkGadget'){
-                return linkGadget;
             } else if (tag === 'stepGadget'){
                 return stepGadget;
             } else if (tag === 'decisionGadget'){
@@ -243,50 +243,6 @@ Ext.define('Savanna.process.utils.Styler', {
             return rectanglePalette;
         };
         
-        
-        
-        
-        
-        
-        
-
-        /* 
-         * @private
-         * x - JSON Object
-         * Defines default JSON for circle.  This can be overridden via using the addTo and removeFrom JSON modifier functions in the return statement.
-         */
-        var linkGadget = {
-            "panel": {
-                name: 'LinkGadget',
-                opacity: 0.0,
-                alignment: go.Spot.Bottom,
-                alignmentFocus: go.Spot.Top
-            },
-            "shape": {
-                    figure: 'TriangleDown',
-                    stroke: null,
-                    fill: '#3ca8c8',
-                    desiredSize: new go.Size(11,11),
-                    name: 'Port',
-                    fromSpot: go.Spot.Bottom,
-                    toSpot: go.Spot.Top,
-                    fromLinkable: true,
-                    portId: "Bottom"
-                }
-        };
-
-        /* 
-         * @private
-         * x
-         * Allows you to maniplute JSON for the shape and then returns the JSON you called to be used.  
-         * @return JSON
-         */
-        var linkGadgetShape = function(){
-            return linkGadget;
-        };
-        
-               
-        
 
         /* 
          * @private
@@ -297,7 +253,7 @@ Ext.define('Savanna.process.utils.Styler', {
             "panel": {
                 name: 'StepGadget',
                 opacity: 0.0,
-                alignment: new go.Spot(0.5, 1.0, 12, 0),
+                alignment: new go.Spot(1.0, 1.0, -22, 6),
                 alignmentFocus: go.Spot.Top,
                 click: null
             },
@@ -346,7 +302,7 @@ Ext.define('Savanna.process.utils.Styler', {
             "panel": {
                 name: 'DecisionGadget',
                 opacity: 0.0,
-                alignment: new go.Spot(0.5, 1.0, 25, -1),
+                alignment: new go.Spot(1.0, 1.0, -6, 6),
                 alignmentFocus: go.Spot.Top,
                 click: null
             },
@@ -461,7 +417,6 @@ Ext.define('Savanna.process.utils.Styler', {
                     },
                     mouseLeave: function(e, obj) {
                         // should only change the hover color if we are moving outside, not if we are moving over the glyph
-                        // todo: not yet sure how to implement this
                         obj.elt(0).fill = '#c7f4ff';
                     },
                     mouseDragEnter: function(e, obj) {
@@ -494,8 +449,7 @@ Ext.define('Savanna.process.utils.Styler', {
          * @return JSON
          */
         var adornmentsShape = function(json){
-            console.log(json);
-            // Provide JSON as a parameter for functions when overridding JSON properties, if nothing is passed it will be undefined and considered an optional parameter.  
+            // Provide JSON as a parameter for functions when overridding JSON properties, if nothing is passed it will be undefined and considered an optional parameter.
             if ( json !== undefined ){
                 if ( jsonDriller(json, "angle") !== '' ){ 
                     adornments['HalfEllipse'].angle = json['angle'];
@@ -641,8 +595,8 @@ Ext.define('Savanna.process.utils.Styler', {
             "outline": {
                 fill: palette.startColor,
                 stroke: null,
-                width: 60, 
-                height: 60,
+                width: 48,
+                height: 48,
                 portId: "",                          // now the Shape is the port, not the whole Node
           fromSpot: go.Spot.Right, toSpot: go.Spot.Left 
             },
@@ -673,13 +627,13 @@ Ext.define('Savanna.process.utils.Styler', {
             "outline": {
                 fill: palette.endColor,
                 stroke: null,
-                width: 32, 
-                height: 32
+                width: 48,
+                height: 48
             },
             "textblock": {
                 margin: 4,
-                font: properties.fontWeight + properties.fontSize + properties.font,
-                stroke: palette.darkText
+                font: properties.fontSize + properties.font,
+                stroke: palette.lightText
             }
         };
 
@@ -704,6 +658,13 @@ Ext.define('Savanna.process.utils.Styler', {
                 stroke: null,
                 width: 32, 
                 height: 32,
+                row: 0, column: 1, margin: 0
+            },
+            "xline": {
+                fill: null,
+                stroke: palette.black,
+                width: 10,
+                height: 10,
                 row: 0, column: 1, margin: 0
             },
             "textblock": {
@@ -800,7 +761,7 @@ Ext.define('Savanna.process.utils.Styler', {
          */
         var processModel = {
             "roundedRectangle": {
-                fill: null,
+                fill: palette.white,
                 stroke: palette.black,
                 margin: 0
                 
@@ -815,7 +776,8 @@ Ext.define('Savanna.process.utils.Styler', {
                 textAlign: "center",
                 editable: true,
                 font: properties.fontWeight + properties.fontSize + properties.font,
-                stroke: palette.black
+                stroke: palette.black,
+                name: "TEXT"
             },
             "selectionAdornment":{ fill: null, stroke: '#63d9f5' , strokeWidth: 3, margin: 0   },
             "panelVertical":{ defaultAlignment: go.Spot.Center, padding: new go.Margin(5, 5, 5, 5) },
@@ -839,7 +801,7 @@ Ext.define('Savanna.process.utils.Styler', {
          * Defines default JSON for internal group.  This can be overridden via using the addTo and removeFrom JSON modifier functions in the return statement.
          */
         var internalGroup = {
-            "roundedRectangle": { fill: '#dbf7fe', name:'BACKGROUND', stroke: null, desiredSize: new go.Size(125,125)},
+            "roundedRectangle": { fill: '#dbf7fe', stroke: null, minSize: new go.Size(96,96)},
             "textblockTools": {
                 angle: 270,
                 alignment: go.Spot.Center,
@@ -876,7 +838,38 @@ Ext.define('Savanna.process.utils.Styler', {
                         }
         };
 
-        /* 
+        /*
+         * @private
+         * altsGroup - JSON Object
+         * Defines default JSON for internal group.  This can be overridden via using the addTo and removeFrom JSON modifier functions in the return statement.
+         */
+        var altsGroup = {
+            "roundedRectangle": { fill: palette.white, stroke: palette.black},
+            "textblock": {
+                margin: new go.Margin(0,0,0,4),
+                maxSize: new go.Size(200, NaN),
+                wrap: go.TextBlock.WrapFit,
+                textAlign: "center",
+                editable: true,
+                font: properties.fontWeight + properties.fontSize + properties.font,
+                stroke: palette.black,
+                name: "TEXT"
+            },
+            "gridLayout":{ wrappingWidth: 3, alignment: go.GridLayout.Position, cellSize: new go.Size(1, 1), spacing: new go.Size(4, 4) },
+            "placeholder":{
+                            padding: new go.Margin(16, 16),
+                            background: 'transparent',
+                            mouseDragEnter: function(e, obj) {
+                                obj.background = 'orange';
+                            },
+                            mouseDragLeave: function(e, obj) {
+                                obj.background = 'transparent';
+                            },
+                            mouseDrop: null //Savanna.process.utils.GroupEventHandlers.onActionGroupMouseDrop
+                        }
+        };
+
+        /*
          * @private
          * internalGroupShape
          * Allows you to maniplute JSON for the shape and then returns the JSON you called to be used.
@@ -923,7 +916,30 @@ Ext.define('Savanna.process.utils.Styler', {
             return internalGroup;
         };
 
-        /* 
+        /*
+         * @private
+         * altsGroupShape
+         * Allows you to maniplute JSON for the shape and then returns the JSON you called to be used.
+         * @param json - JSON - Accepted Lookup keys defined below. ( Optional Parameter )
+         *      - mouseDrop
+         * @return JSON
+         */
+        var altsGroupShape = function(json){
+
+            // Provide JSON as a parameter for functions when overridding JSON properties, if nothing is passed it will be undefined and considered an optional parameter.
+            if ( json !== undefined ){
+
+                //jsonDriller looks into the JSON to find the key you are passing.  If the key was in the passed JSON then it will override the JSON with your parameter.
+                if ( jsonDriller(json, "mouseDrop") !== '' ){
+                    //This will be adding the click handler to the JSON
+                    altsGroup["placeholder"].mouseDrop = json["mouseDrop"];
+                }
+            }
+
+            return altsGroup;
+        };
+
+        /*
          * @private
          * linker - JSON Object
          * Defines default JSON for linker shape that links two shapes.  This can be overridden via using the addTo and removeFrom JSON modifier functions in the return statement.
@@ -1091,7 +1107,7 @@ Ext.define('Savanna.process.utils.Styler', {
             rectangle: function(json){
                 return rectangleShape(json);
             },
-            circle: function(spot,name,output,input){
+            circle: function(){
                 return circleShape();
             },
             custom: function(){
@@ -1118,6 +1134,9 @@ Ext.define('Savanna.process.utils.Styler', {
             internalGroup: function(json){
                 return internalGroupShape(json);
             },
+            altsGroup: function(json){
+                return altsGroupShape(json);
+            },
             paletteCircle: function(){
                 return paletteInternalCircle();
             },
@@ -1126,9 +1145,6 @@ Ext.define('Savanna.process.utils.Styler', {
             },
             paletteDiamond: function(){
                 return paletteInternalDiamond();
-            },
-            linkGadget: function(){
-                return linkGadgetShape();
             },
             stepGadget: function(json){
                 return stepGadgetShape(json);

@@ -8,6 +8,12 @@
 Ext.define('Savanna.metadata.view.Details', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.metadata_details',
+    id: 'detailsPanel',
+
+    height: '100%',
+    width: '100%',
+
+    layout: 'fit',
 
     mixins: {
         storeable: 'Savanna.mixin.Storeable'
@@ -22,33 +28,39 @@ Ext.define('Savanna.metadata.view.Details', {
 
     controller: 'Savanna.metadata.controller.MetadataViewController',
 
-    tbar: [
-        '->',
+
+    items: [
         {
-            xtype:    'button',
-            text:     'Edit',
-            itemId:   'metadata_edit_button'
-        },
-        {
-            xtype:    'button',
-            text:     'Save',
-            itemId:   'metadata_save_button'
-        },
-        {
-            xtype:    'button',
-            text:     'Cancel',
-            itemId:   'metadata_cancel_button'
+            xtype: 'panel',
+            id: 'wrapperPanel',
+            title: 'Information',
+            height: '100%',
+            width: '100%',
+            layout: 'vbox',
+            collapsible: true,
+            overflowY: 'auto',
+            tbar: [
+                '->',
+                {
+                    xtype:    'button',
+                    text:     'Edit',
+                    itemId:   'metadata_edit_button'
+                },
+                {
+                    xtype:    'button',
+                    text:     'Save',
+                    itemId:   'metadata_save_button'
+                },
+                {
+                    xtype:    'button',
+                    text:     'Cancel',
+                    itemId:   'metadata_cancel_button'
+                }
+            ],
+            autoScroll: true
         }
     ],
 
-    items: [
-    ],
-
-    layout: 'vbox',
-    collapsible: true,
-
-    overflowY: 'auto',
-    autoScroll: true,
 
     config: {
         editMode: false,
@@ -58,20 +70,20 @@ Ext.define('Savanna.metadata.view.Details', {
     updateEditMode: function(newEditMode, oldEditMode) {
         var me = this;
         if(undefined != oldEditMode ) { // don't want to do this on init
-            me.removeAll(); // this is only ok if all of our display items are created via createMetadataFields.
+            me.down('#wrapperPanel').removeAll();
             me.getController().createMetadataFields();
         }
     },
 
-//    updateItemURI: function(newURI, oldURI) {
-////        if(undefined != oldURI ) { // don't want to do this on init
-//            me.removeAll();
-//            var metadataStore = Ext.data.StoreManager.lookup('metadata');
-//            metadataStore.itemURI = config.itemURI;
-//            metadataStore.load();
-////        }
-//
-//    },
+    updateItemURI: function(newURI, oldURI) {
+        if(undefined != oldURI ) { // don't want to do this on init
+            this.down('#wrapperPanel').removeAll();
+        }
+        var metadataStore = Ext.data.StoreManager.lookup('metadata');
+        metadataStore.itemURI = newURI;
+        metadataStore.load();
+
+    },
 
     initComponent: function () {
         this.mixins.storeable.initStore.call(this);
