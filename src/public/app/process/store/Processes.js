@@ -19,7 +19,7 @@ Ext.define('Savanna.process.store.Processes', {
 
     autoSync: false,
 
-    itemURI: 'v18%2FProcessModel',
+    itemURI: '',
 
     constructor: function() {
         this.callParent(arguments);
@@ -40,9 +40,9 @@ Ext.define('Savanna.process.store.Processes', {
 
     load: function() {
         // Take this line out to use the Provided URI below.
-        this.getProxy().url = SavannaConfig.ureaProcessDataUrl;
+        //this.getProxy().url = SavannaConfig.ureaProcessDataUrl;
         // Put this line back in to use the URI set in the constructor.
-        //this.getProxy().url = SavannaConfig.processUrl + '/' + this.itemURI;
+        this.getProxy().url = SavannaConfig.processUrl + '/' + this.itemURI;
 
         this.callParent(arguments);
     }

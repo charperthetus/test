@@ -147,10 +147,10 @@ Ext.define('Savanna.process.controller.ProcessController', {
     },
 
     clear: function(diagram, textarea) {
-       var str = '{ "class": "go.GraphLinksModel", "nodeDataArray": [ {"key":-1, "category":"Start"} ], "linkDataArray": [ ]}';
-       diagram.model = go.Model.fromJson(str);
-       textarea.setValue(str);
-       diagram.undoManager.isEnabled = true;
+        var newProcess = { class: 'go.GraphLinksModel', nodeDataArray: [ {key:-1, category:'Start'} ], linkDataArray: [ ]};
+        this.store.add(newProcess);
+        this.load(diagram, this.store.first());
+        this.showDiagramJSON(diagram, textarea);
     },
 
     handleUndo: function() {
@@ -239,6 +239,7 @@ Ext.define('Savanna.process.controller.ProcessController', {
         // - commit the initial transaction (if possible in GoJS)...i don't think this is possible
         // - Call service to save json data - this should just be store.sync()
         // - Start a new main transaction...again, probably not possible
+        this.store.first().setDirty();
         this.store.sync();
     },
 
@@ -263,14 +264,15 @@ Ext.define('Savanna.process.controller.ProcessController', {
     },
 
     loadInitialJSON: function () {
-        var me = this;
-        var metadata = this.getMetadata();
-
-        me.loadJSON(function(rec) {
-            me.load(me.getCanvas().diagram, rec);
-            me.showDiagramJSON(me.getCanvas().diagram, metadata.down('#JSONtextarea'));
-            me.setupCanvasDrop(me.getCanvas());
-        });
+        this.clearJSONClick();
+//        var me = this;
+//        var metadata = this.getMetadata();
+//
+//        me.loadJSON(function(rec) {
+//            me.load(me.getCanvas().diagram, rec);
+//            me.showDiagramJSON(me.getCanvas().diagram, metadata.down('#JSONtextarea'));
+//            me.setupCanvasDrop(me.getCanvas());
+//        });
     },
 
     loadJSON: function (callbackFunc) {
