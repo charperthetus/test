@@ -45,8 +45,6 @@ Ext.application({
         'Savanna.Config',
         //Desktop
         'Savanna.desktop.controller.DesktopController',
-        //Flexpaper
-        'Savanna.flexpaper.controller.FlexpaperComponent',
         //Search
         'Savanna.search.controller.SearchComponent',
         //Map
@@ -58,7 +56,9 @@ Ext.application({
         //Upload
         'Savanna.upload.controller.UploadController',
         //Image
-        'Savanna.image.util.ImageViewFactory'
+        'Savanna.image.util.ImageViewFactory',
+        //Document
+        'Savanna.document.util.DocumentViewFactory'
     ],
 
     autoCreateViewport: false,
@@ -78,6 +78,7 @@ Ext.application({
 
     setupComponents: function(){
         ComponentManager.registerComponent(Ext.create('Savanna.image.util.ImageViewFactory'));
+        ComponentManager.registerComponent(Ext.create('Savanna.document.util.DocumentViewFactory'));
     },
 
     // CUSTOM CONFIGURATION
