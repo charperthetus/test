@@ -1,14 +1,16 @@
 Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.searchDals.CustomGroup', {
     extend: 'Ext.form.Panel',
     alias: 'widget.model_searchDals_custom-group',
-    cls: 'search-dal-group',
+    
     requires: [
         'Ext.form.field.ComboBox',
         'Ext.form.field.Radio',
         'Ext.form.field.Date',
         'Ext.form.FieldContainer'
     ],
-
+    
+    cls: 'search-dal-group',
+    ui: 'search-dal-group',
     // NOTE: Been trying to figure out how to configure the collapse to be left-aligned and this appears to be the best candidate (though it is all CSS)
     //       http://www.sencha.com/forum/showthread.php?91512-moving-toggle-button-to-the-left
     collapsible: true,

@@ -135,10 +135,6 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         Savanna.process.utils.ProcessUtils.startTextEdit(diagram, nodeData);
     },
 
-    addFinalResult: function(e, obj) {
-        Savanna.process.utils.ProcessUtils.addNode(obj, 'ProcessItem', 'Result', true);
-    },
-
     addEnd: function(e, obj) {
         Savanna.process.utils.ProcessUtils.addNode(obj, 'End', 'End', true);
     },
@@ -270,8 +266,18 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
             selNode = diagram.findNodeForData(mergeNode);
         }
         selNode.isSelected = true;
-    }
+    },
 
+    toggleBackground: function(obj) {
+        var bodyElt = obj.findObject('BODY');
+        if (bodyElt) {
+            if (obj.isSelected) {
+                bodyElt.background = '#f2f2f2';
+            } else {
+                bodyElt.background = 'transparent';
+            }
+        }
+    }
 
 
 

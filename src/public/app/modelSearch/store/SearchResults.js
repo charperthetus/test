@@ -1,7 +1,7 @@
 /* global Ext: false, Savanna: false */
 
 /*
-Ext.define('Savanna.modelSearch.store.SearchResults', {
+ Ext.define('Savanna.modelSearch.store.SearchResults', {
  extend: 'Ext.data.Store',
 
  requires: [
@@ -17,7 +17,51 @@ Ext.define('Savanna.modelSearch.store.SearchResults', {
 
  pageSize: 20,
 
- facetValueSummaries:null,
+ facetValueSummaries: [
+ {
+ key: "type_Acidity",
+ label: "Acidity",
+ facetType: "string",
+ facetMultiselect: true,
+ facetValues: [
+ {
+ value: "Acid",
+ count: 234
+ },
+ {
+ value: "Base",
+ count: 102
+ },
+ {
+ value: "Neutral",
+ count: 10
+ }
+
+ ]
+ },
+
+ {
+ key: "created_dts",
+ label: "Created" ,
+ facetType: "date",
+ facetMultiselect: false,  // how to populate.
+ facetValues: [
+ {
+ label: "Last Day",
+ value: "last day",
+ startValue: 234234234234,
+ count: 43
+ },
+ {
+ label: "Last Month",
+ value: "last month",
+ startValue: 234234234234,
+ count: 400
+ }
+ ]
+ }
+ ],
+
 
  facetFilterCriteria:[],
 
@@ -681,8 +725,8 @@ Ext.define('Savanna.modelSearch.store.SearchResults', {
 
  ]
  });
+ */
 
-*/
 
 /* global Ext: false, Savanna: false */
 
@@ -691,21 +735,22 @@ Ext.define('Savanna.modelSearch.store.SearchResults', {
     extend: 'Ext.data.JsonStore',
 
     requires: [
+        'Savanna.modelSearch.model.SearchResult',
         'Savanna.proxy.Cors'
     ],
 
     storeId: 'searchResults',
 
     fields: [
-    {name: 'uri', type: 'string'},
-    {name: 'label', type: 'string'},
-    {name: 'type', type: 'string'},   //possible values: "Item", "Process"
-    {name: 'modifiedBy', type: 'string'},
-    {name: 'modifiedDate', type: 'string'},
-    {name: 'preview', type: 'string'},
-    {name: 'primaryImageUrl', type: 'string'},
-    {name: 'workflowState', type: 'string'},
-    {name: 'classification', type: 'string'}
+        {name: 'uri', type: 'string'},
+        {name: 'label', type: 'string'},
+        {name: 'type', type: 'string'},   //possible values: "Item", "Process"
+        {name: 'modifiedBy', type: 'string'},
+        {name: 'modifiedDate', type: 'string'},
+        {name: 'preview', type: 'string'},
+        {name: 'primaryImageUrl', type: 'string'},
+        {name: 'workflowState', type: 'string'},
+        {name: 'classification', type: 'string'}
     ],
 
     autoLoad: false,
@@ -718,19 +763,27 @@ Ext.define('Savanna.modelSearch.store.SearchResults', {
 
     dateTimeRanges:[],
 
+    searchParamVO: null,
+
+
+    updateJson: function () {
+        //Hallelujah! This lets us change page size and start index
+        if (this.searchParamVO) {
+            this.searchParamVO.pageStart = (this.currentPage - 1) * this.pageSize;
+            this.searchParamVO.pageSize = this.pageSize;
+            this.jsonData = Ext.JSON.encode(this.searchParamVO);
+        }
+        return this.jsonData;
+    },
+
     constructor: function () {
 
-        var ReaderClass = null,
+        var ReaderClass,
             me = this;
 
         this.callParent(arguments);
 
 
-
-        //Must set totalProperty on the reader for our paging toolbar to work.  Because
-        //base elements are all on the same level in a json object with no key, the only way
-        //appears to be to modify the json object in readRecords to have a key value,
-        //which is set to 'data' in this case.  Allows then for 'data.totalResults', etc...
 
         ReaderClass = Ext.extend(Ext.data.JsonReader, {
             type:'json',
@@ -738,33 +791,35 @@ Ext.define('Savanna.modelSearch.store.SearchResults', {
             totalProperty:'totalResults',
             readRecords: function(data) {
                 me.facetValueSummaries = data.facets;
+
+                //This is the correct usage of this.  Follow IDEA's warning at your own peril:
                 return this.callParent([data]);
             }
 
         });
 
+
         this.setProxy({
             type: 'savanna-cors',
+            // url: '10.0.3.166:8095/rest/modelSearch/keyword/item' ,
             url: SavannaConfig.modelSearchUrl,
             reader: new ReaderClass(),
+            enablePagingParams: false,
 
-            //jwb -- this could change
-            limitParam: undefined,
-            pageParam: undefined,
-            startParam: undefined,
+            //gaaah.  Undefined used to work.  setEnablePagingParams(false) is supposed to work "soon".
+            // null works as of Tuesday Oct. 22, 2013.
+            pageParam: null,
+            startParam: null,
+            limitParam: null,
 
             modifyRequest:function(request) {
-                if(this.jsonData){
-                    Ext.apply(request, {
-                        jsonData: this.jsonData,
-                        method:'POST'
-                    });
 
-                    return request;
-                }
-                request.url = "";
+                Ext.apply(request, {
+                    jsonData: me.updateJson(),
+                    method: 'POST'
+                });
+
                 return request;
-
             }
         });
     }

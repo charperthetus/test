@@ -45,8 +45,6 @@ Ext.application({
         'Savanna.Config',
         //Desktop
         'Savanna.desktop.controller.DesktopController',
-        //Flexpaper
-        'Savanna.flexpaper.controller.FlexpaperComponent',
         //Search
         'Savanna.search.controller.SearchComponent',
         //Map
@@ -56,7 +54,11 @@ Ext.application({
         //Model Search
         'Savanna.modelSearch.controller.SearchComponent',
         //Upload
-        'Savanna.upload.controller.UploadController'
+        'Savanna.upload.controller.UploadController',
+        //Image
+        'Savanna.image.util.ImageViewFactory',
+        //Document
+        'Savanna.document.util.DocumentViewFactory'
     ],
 
     autoCreateViewport: false,
@@ -70,13 +72,16 @@ Ext.application({
         if (viewportQueryResults && viewportQueryResults.length > 0) {
             this.viewport = viewportQueryResults[0];
         }
-        else {
-            // TODO: Fatal condition...how to handle?
-            Ext.Error.raise('no viewport found. cannot start application');
-        }
+
+        this.setupComponents();
+    },
+
+    setupComponents: function(){
+        ComponentManager.registerComponent(Ext.create('Savanna.image.util.ImageViewFactory'));
+        ComponentManager.registerComponent(Ext.create('Savanna.document.util.DocumentViewFactory'));
     },
 
     // CUSTOM CONFIGURATION
     jsessionid: '', // keep track of the user's session id
-    savannauser: '' // current savanna username
+    userInfo: {} // current user info
 });
