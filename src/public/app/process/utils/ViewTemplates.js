@@ -499,6 +499,40 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
             )
         );  // end Actions Group
 
+        groupTemplateMap.add('AltsGroup',
+            gmake(go.Group, go.Panel.Auto,
+                {
+                    background: 'transparent',
+                    computesBoundsAfterDrag: true,
+                    mouseEnter: Savanna.process.utils.GroupEventHandlers.onMouseEnter,
+                    mouseLeave: Savanna.process.utils.GroupEventHandlers.onMouseLeave,
+                    // highlight when dragging into the Group
+                    mouseDragEnter: Savanna.process.utils.GroupEventHandlers.onMouseDragEnter,
+                    mouseDragLeave: Savanna.process.utils.GroupEventHandlers.onMouseDragLeave,
+                    memberValidation: Savanna.process.utils.GroupEventHandlers.altsGroupMemberValidation,
+                    // define the group's internal layout
+                    layout: gmake(go.GridLayout, this.styler().altsGroup().gridLayout),
+                    // the group begins expanded
+                    isSubGraphExpanded: true,
+                    wasSubGraphExpanded: true
+                },
+                gmake(go.Shape, 'RoundedRectangle', this.styler().altsGroup().roundedRectangle),
+                gmake(go.Panel, go.Panel.Vertical,
+                    gmake(go.Panel, go.Panel.Horizontal,
+                        this.styler().processModel().panelHorizontal,
+                        // the SubGraphExpanderButton is a panel that functions as a button to expand or collapse the subGraph
+                        gmake('PanelExpanderButton'),
+                        gmake(go.TextBlock, this.styler().altsGroup().textblock, new go.Binding('text', 'text').makeTwoWay())
+                    ),
+                    gmake(go.Placeholder, this.styler().altsGroup({"mouseDrop":Savanna.process.utils.GroupEventHandlers.onActionGroupMouseDrop}).placeholder
+                    )
+                ),
+                this.makeTopPort(),
+                this.makeStepGadget(),
+                this.makeDecisionGadget()
+            )
+        );  // end AltsGroup
+
         return groupTemplateMap;
     }
 
