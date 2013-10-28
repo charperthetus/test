@@ -31,15 +31,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
         return [
             {
                 xtype: 'search_resultspanelgrid',
-                itemId: 'resultspanelgrid',
-                dockedItems:[
-                    {
-                        xtype: 'pagingtoolbar',
-                        itemId: 'gridtoolbar',
-                        dock: 'top',
-                        displayInfo: true
-                    }
-                ]
+                itemId: 'resultspanelgrid'
             },
             {
                 xtype: 'search_resultsmap',
