@@ -7,8 +7,6 @@
  */
 
 Ext.define('Savanna.itemView.store.ItemViewStoreHelper', {
-    extend: 'Ext.Base',
-
     mainStore: null,
 
     init: function() {
