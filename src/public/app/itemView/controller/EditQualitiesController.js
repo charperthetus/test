@@ -180,3 +180,5 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
         store.remove(store.getById(view.preLabel));
     }
 });
+
+

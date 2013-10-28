@@ -34,8 +34,8 @@ Ext.define('Savanna.itemView.view.createItem.ParentDetails', {
 
         this.callParent(arguments);
 
-        Savanna.app.on('itemview:treepanel:itemclick', this.onTreeItemClick, this);
-        Savanna.app.on('itemview:treepanel:itemdblclick', this.onTreeItemDblClick, this);
+        //Savanna.app.on('itemview:treepanel:itemclick', this.onTreeItemClick, this);
+        //Savanna.app.on('itemview:treepanel:itemdblclick', this.onTreeItemDblClick, this);
     },
 
     onTreeItemClick: function (view, td, cellIndex, record, tr, rowIndex, e, eOpts) {
