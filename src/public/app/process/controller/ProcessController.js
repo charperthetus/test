@@ -35,7 +35,7 @@ Ext.define('Savanna.process.controller.ProcessController', {
             click: 'clearJSONClick'
         },
         canvas: {
-            boxready: 'loadInitialJSON'
+            boxready: 'initCanvas'
         },
         metadata: {
         },
@@ -197,7 +197,9 @@ Ext.define('Savanna.process.controller.ProcessController', {
     },
 
     cancelProcess: function() {
-        //todo: either rollback to initial transaction (if possible in GoJS) or make a service call to get/load json for the uri
+        //todo: options:
+        // - rollback to initial transaction (if possible in GoJS)...i don't think this is possible
+        // - make a service call to get/load json for the uri - which should just be store.load()
         // For now just reload the initial JSON
         var diagram = this.getCanvas().diagram;
         if (diagram.isInTransaction) {
@@ -207,8 +209,31 @@ Ext.define('Savanna.process.controller.ProcessController', {
     },
 
     onSave: function() {
-        //todo: commit the initial transaction (if possible in GoJS). Call service to save json data. Start a new main transaction.
+        //todo: options:
+        // - commit the initial transaction (if possible in GoJS)...i don't think this is possible
+        // - Call service to save json data - this should just be store.sync()
+        // - Start a new main transaction...again, probably not possible
         //for now, do nothing
+    },
+
+    initCanvas: function() {
+        var diagram = this.getCanvas().diagram;
+        diagram.addDiagramListener('PartResized', Ext.bind(this.partResized, this));
+        diagram.addDiagramListener('TextEdited', Ext.bind(this.textEdited, this));
+
+        this.loadInitialJSON();
+    },
+
+    textEdited: function() {
+        // reset our textarea selection so that we do not have anything selected yet
+        this.getCanvas().diagram.toolManager.textEditingTool.currentTextEditor.setSelectionRange(0,0);
+    },
+
+    partResized: function(diagramEvent) {
+        if (diagramEvent.subject instanceof go.TextBlock){
+            var textBlock = diagramEvent.subject;
+            textBlock.height = textBlock.lineCount * 15; //TODO - need to do this a better way - super brittle
+        }
     },
 
     loadInitialJSON: function () {
@@ -218,6 +243,7 @@ Ext.define('Savanna.process.controller.ProcessController', {
         me.loadJSON(function(rec) {
             me.load(me.getCanvas().diagram, rec);
             me.showDiagramJSON(me.getCanvas().diagram, metadata.down('#JSONtextarea'));
+            me.setupCanvasDrop(me.getCanvas());
         });
     },
 
@@ -230,5 +256,45 @@ Ext.define('Savanna.process.controller.ProcessController', {
                 }
             }
         });
+    },
+
+    setupCanvasDrop: function(canvasView) {
+        var me = this;
+        var canvasElement = canvasView.getEl();
+        if (canvasElement) {
+            canvasView.dropTarget = Ext.create('Ext.dd.DropTarget', canvasElement.dom, {
+                ddGroup: 'RNRM-ITEMS',
+                notifyDrop: Ext.Function.bind(me.notifyDropTarget, me),
+                notifyOver: Ext.Function.bind(me.notifyOverTarget, me)
+            });
+        }
+    },
+
+    notifyOverTarget: function(ddSource, e, data){
+        var part = this.getDiagramPart(e);
+        if (part && part.mouseDrop) {
+            return Ext.dd.DropZone.prototype.dropAllowed;
+        } else {
+            return Ext.dd.DropZone.prototype.dropNotAllowed; //currently, say we can't drop anywhere in the canvas
+        }
+    },
+
+    notifyDropTarget: function(ddSource, e, data){
+        var part = this.getDiagramPart(e);
+        if (part && part.mouseDrop) {
+            return part.mouseDrop(e,ddSource, data, this.getCanvas().diagram, part);
+        }
+    },
+
+    getDiagramPart: function(e) {
+        //given an event with mouse XY coordinates, find the diagram part under the mouse
+        var targetXY = Ext.get(e.getTarget()).getXY(),
+            eventXY = e.getXY(),
+            x = eventXY[0] - targetXY[0],
+            y = eventXY[1] - targetXY[1],
+            diagram = this.getCanvas().diagram,
+            diagramCoordinate = diagram.transformViewToDoc(new go.Point(x,y));
+
+        return diagram.findPartAt(diagramCoordinate); //may be null
     }
 });
