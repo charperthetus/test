@@ -194,6 +194,12 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
             annotationEditComponent.reconfigure(record[0].propertyGroupsStore.getById('Annotations').valuesStore);
 
             /*
+            Images View
+            */
+            var imagesBrowserComponent = me.getView().queryById('itemViewImagesGrid');
+            imagesBrowserComponent.fireEvent('ViewImagesGrid:Setup', record[0].propertyGroupsStore.getById('Images').valuesStore.getById('Images').valuesStore.data.items);
+
+            /*
             are we creating a new item?
              */
             if(me.getView().getEditMode())  {
