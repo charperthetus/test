@@ -17,15 +17,13 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
     ],
 
     width: '100%',
-    minHeight: 20,
-    bodyPadding: 5,
     border: false,
     cls: 'results-facet',
     collapsible: true,
     collapsed: true,
     titleCollapse: true,
-    hideCollapseTool: true,
     dateFormat: 'Y-m-d\\TH:i:s.m\\Z',
+    ui: 'results-facet',
 
     initComponent: function () {
 
@@ -33,16 +31,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
         this.items = this.buildFacetOptions();
         this.callParent(arguments);
 
-        /*
 
-         There are only two types of facets at present, STRING, and DATE.  STRING options are
-         defined by the json response for the DalSources store.
-
-         DATE facetDataTypes don't need the following step because they're a static set of 6 options,
-         listed out in 'buildFacetOptions' below.  That doesn't seem ideal - the options would be nice
-         to get dynamically from the services side as well.
-
-         */
         if (this.facet.facetType === 'string') {
             this.buildFacetFilterGroup();
         }
@@ -51,6 +40,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
     buildFacetOptions: function () {
 
         var content;
+        var me = this;
 
         switch (this.facet.facetType) {
 
@@ -59,7 +49,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
                 ];
                 break;
             case 'date' :
-                var facetID = this.facet.key;
+                var radioItemConfigs = this.buildDateRadioItems();
                 content = [
                     {
                         xtype: 'form',
@@ -71,16 +61,10 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
                                 // Arrange radio buttons, distributed vertically
                                 columns: 1,
                                 vertical: true,
-                                items: [
-                                    { boxLabel: 'Any Time', itemId: 'date_all', name: facetID, inputValue: 'all', checked: true },
-                                    { boxLabel: 'Past 24 Hours', itemId: 'date_past_day', name: facetID, inputValue: 'past_day'},
-                                    { boxLabel: 'Past Week', itemId: 'date_past_week', name: facetID, inputValue: 'past_week' },
-                                    { boxLabel: 'Past Month', itemId: 'date_past_month', name: facetID, inputValue: 'past_month' },
-                                    { boxLabel: 'Past Year', itemId: 'date_past_year', name: facetID, inputValue: 'past_year' },
-                                    { boxLabel: 'Custom Range', itemId: 'date_custom', name: facetID, inputValue: 'custom' }
-                                ],
+                                items: radioItemConfigs,
                                 listeners: {
-                                    'change': this.onDateRangeChange
+                                    //we want this to be *this*, and not radiogroup when we call the callback.
+                                    'change': Ext.bind(me.onDateRangeChange, me)
                                 }
                             },
                             {
@@ -140,9 +124,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
 
             default:
                 content = [];
-                Ext.Error.raise({
-                    msg: 'Unknown facet type: ' + this.facet.faceType
-                });
+                console.log('Unknown facet type: ' + this.facet.faceType);
                 break;
         }
 
@@ -159,7 +141,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
                 var checkbox = {
                     boxLabel: facetobj.value + ' (' + facetobj.count + ')',
                     name: facetobj.key,
-                    inputValue: me.facet.key,
+                    inputValue: facetobj.value,
                     id: 'checkbox_' + me.facet.key + '_' + String(Ext.id()),
                     /*
                      added to resolve defect SAV-5380.  Needs design to assign a class.
@@ -178,129 +160,131 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
         }
     },
 
-    getFormattedDateRange: function (period) {
+    /*
+     Return an array of configs for date type radio buttons
+     */
+    buildDateRadioItems: function () {
+        var me = this;
+        var radioButtonConfigs = [];
+        var radioCount = 0;
+        //  { boxLabel: 'Any Time', itemId: 'date_all', name: facetID, inputValue: 'all', checked: true },
+        Ext.each(this.facet.facetValues, function (facetobj) {
 
-        var now = new Date(),
+            var radioButton = {
+                boxLabel: facetobj.value + ' (' + facetobj.count + ')',
+                name: me.facet.key,   //group name
+                inputValue: facetobj.value,
+                id: 'checkbox_' + me.facet.key + '_' + String(Ext.id()),
+                checked: (radioCount == 0),
+                /*
+                 added to resolve defect SAV-5380.  Needs design to assign a class.
+                 */
+                style: {'white-space': 'nowrap' }
+            };
+            radioCount++;
+            radioButtonConfigs.push(radioButton);
+        });
 
-            dateObject = {startDate: '', endDate: Ext.Date.format(now, this.dateFormat)},
-            sinceTheBeginningOfTime = new Date('1/1/1971');
+        //add a radio button for custom date range
+        var radioButtonCustom = {
+            boxLabel: "Custom Range",
+            name: me.facet.key,  //group name
+            inputValue: "custom",
+            id: 'checkbox_' + me.facet.key + '_' + String(Ext.id()),
+            checked: (radioCount == 0),
+            /*
+             added to resolve defect SAV-5380.  Needs design to assign a class.
+             */
+            style: {'white-space': 'nowrap' }
+        };
+        radioCount++;
+        radioButtonConfigs.push(radioButtonCustom);
 
-        switch (period) {
-            case 'any'  :
-                dateObject.startDate = Ext.Date.format(sinceTheBeginningOfTime, this.dateFormat);
-                break;
-
-            case 'past_year'    :
-                dateObject.startDate = Ext.Date.format(Ext.Date.subtract(now, Ext.Date.YEAR, 1), this.dateFormat);
-                break;
-
-            case 'past_month'    :
-                dateObject.startDate = Ext.Date.format(Ext.Date.subtract(now, Ext.Date.MONTH, 1), this.dateFormat);
-                break;
-
-            case 'past_week'    :
-                dateObject.startDate = Ext.Date.format(Ext.Date.subtract(now, Ext.Date.DAY, 7), this.dateFormat);
-                break;
-
-            case 'past_day'    :
-                dateObject.startDate = Ext.Date.format(Ext.Date.subtract(now, Ext.Date.DAY, 1), this.dateFormat);
-                break;
-
-            case 'custom'   :
-                // TODO: not handled yet
-                break;
-
-            default:
-                Ext.Error.raise({
-                    msg: 'Unknown value: ' + period
-                });
-        }
-
-        return dateObject;
+        return radioButtonConfigs;
     },
 
-    onDateRangeChange: function (btn) {
 
-        var fieldName = btn.ownerCt.itemId.replace('facets_', ''),
-            rangeName = btn.lastValue[fieldName],
-            me = btn.findParentByType('model_search_resultsDals_resultsfacet'),
-            dateRange = me.getFormattedDateRange(rangeName),
-            customDates = btn.up('#facets_' + me.facet.key).queryById('customDatesPanel'),
-            updateExisting = false;
+    deleteFilter: function(filter) {
+        var filters = me.dal.data.facetFilterCriteria;
 
-        if (rangeName !== 'custom') {
-            if (!me.dal.get('dateTimeRanges').length) {
-                me.dal.set('dateTimeRanges', []);   // just set to an empty array
-            }
-            var newDateRange = {
-                'Startdate': dateRange.startDate,
-                'dateRangeName': rangeName,
-                'DateFieldName': fieldName,
-                'Enddate': dateRange.endDate
-            };
+    },
 
-            if (me.dal.get('dateTimeRanges').length > 0) {
-                Ext.each(me.dal.get('dateTimeRanges'), function (range, index) {
-                    if (range.DateFieldName === fieldName) {
-                        // replace it, do not add another
-                        me.dal.get('dateTimeRanges')[index] = newDateRange;
-                        updateExisting = true;
-                    }
-                });
-            }
+    getActualValue:function(value){
+        return value[this.facet.key];
+    },
 
-            if (!updateExisting) {
-                me.dal.get('dateTimeRanges').push(newDateRange);
-            }
+    onDateRangeChange: function (radioGroup, newValue, oldValue) {
+        var customDates = radioGroup.up('#facets_' + this.facet.key).queryById('customDatesPanel');
 
-            var searchController = Savanna.controller.Factory.getController('Savanna.modelSearch.controller.SearchComponent');
+        var newValueString = this.getActualValue(newValue);
+        var oldValueString = this.getActualValue(oldValue);
 
-            if (searchController !== undefined) {
-                me.doFilter(btn);
-            }
+        var newIsCustom = ( newValueString == "custom");
 
+        if (!newIsCustom) {
             customDates.collapse();
             customDates.collapsed = true;
-
+            var filters = this.getFilters();
+            var filterKey = this.facet.key;
+            var newFilter =  {key: filterKey, values: [{value: newValueString}]};
+            var filterFound = false;
+            Ext.each(filters, function (range, index) {
+                           if (range.key === filterKey) {
+                               // replace it, do not add another
+                               filters[index] = newFilter;
+                               filterFound = true;
+                           }
+                       });
+            if(!filterFound){
+                filters.push(newFilter);
+            }
+            this.doFilter(this);
         } else {
-
             customDates.expand();
             customDates.collapsed = false;
+            //the new search will be kicked off by the date picker close event
         }
     },
 
+    getFilters: function () {
+        var filters = this.dal.data.facetFilterCriteria;
+
+        if (!filters || !filters.length || filters == '') {
+            this.dal.data.facetFilterCriteria = [];   // just set to an empty array
+            filters = this.dal.data.facetFilterCriteria;
+        }
+        return filters;
+    },
+
+    //Called from date picker
     doCustomDateSearch: function () {
 
-        var startDate = Ext.Date.format(this.queryById('fromDate').getValue(), this.dateFormat),
-            endDate = Ext.Date.format(this.queryById('toDate').getValue(), this.dateFormat),
+        var startDate = this.queryById('fromDate').getValue(),
+            endDate = this.queryById('toDate').getValue(),
             fieldName = this.query('form')[0].itemId.replace('facets_', ''),
-            rangeName = 'custom',
             newDateRange = {
-                'Startdate': startDate,
-                'dateRangeName': rangeName,
-                'DateFieldName': fieldName,
-                'Enddate': endDate
+                key: fieldName,
+                values: [
+                    { valueMin: startDate.getTime(), valueMax: endDate.getTime()}
+                ]
             },
             updateExisting = false,
             me = this;
 
+        var filters = this.getFilters();
 
-        if (!me.dal.get('dateTimeRanges').length) {
-            me.dal.set('dateTimeRanges', []);   // just set to an empty array
-        }
-
-        if (me.dal.get('dateTimeRanges').length > 0) {
-            Ext.each(me.dal.get('dateTimeRanges'), function (range, index) {
-                if (range.DateFieldName === fieldName) {
+        if (filters.length > 0) {
+            Ext.each(filters, function (range, index) {
+                if (range.key === fieldName) {
                     // replace it, do not add another
-                    me.dal.get('dateTimeRanges')[index] = newDateRange;
+                    filters[index] = newDateRange;
                     updateExisting = true;
                 }
             });
         }
 
         if (!updateExisting) {
-            me.dal.get('dateTimeRanges').push(newDateRange);
+            filters.push(newDateRange);
         }
 
         var searchController = Savanna.controller.Factory.getController('Savanna.modelSearch.controller.SearchComponent');
@@ -311,69 +295,72 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
     },
 
     onFacetFilterChange: function (btn) {
+        return this.onFacetFilterChangeHelper(btn.value, btn.inputValue);
+    },
+
+    onFacetFilterChangeHelper: function (isChecked, inputValue, doTheSearch) {
 
         var filterExists = false,
-            facet = this.facet.key,
+            facetName = this.facet.key,
             me = this;
         /*
          check to see if this facet filter exists in the store already
          */
 
-        if (me.dal.get('facetFilterCriteria').length) {
+        var filters = this.getFilters();
 
-            Ext.each(me.dal.get('facetFilterCriteria'), function (filter, index) {
 
-                if (filter) {
+        Ext.each(filters, function (filter, index) {
 
-                    var values = filter.facetValues;
+            if (filter) {
 
-                    if (filter.facetName === facet) { // if it already exists
+                var values = filter.values;
 
-                        filterExists = true;
+                if (filter.key === facetName) { // if it already exists
 
-                        if (btn.value) {   // if the checkbox has been selected, add the selection
+                    filterExists = true;
 
-                            values.push(btn.inputValue);
+                    if (isChecked) {   // if the checkbox has been selected, add the selection
 
-                        } else {       // if the checkbox has been deselected, remove the selection
+                        values.push({ value: inputValue});
 
-                            Ext.each(values, function (val, ind) {
-                                if (val === btn.inputValue) {
-                                    Ext.Array.remove(values, values[ind]);
-                                }
-                            });
+                    } else {       // if the checkbox has been deselected, remove the selection
+
+                        //Since we are removing, we need to iterate from end to beginning
+                        var len = values.length;
+                        var valueIndex;
+                        for (valueIndex = len - 1; valueIndex--; valueIndex >= 0) {
+                            var val = values[valueIndex];
+                            if (val.value === inputValue) {
+                                Ext.Array.remove(values, values[valueIndex]);
+                            }
                         }
-                    }
-
-                    if (values.length > 0) {
-                        filter.facetValues = values;
-                    } else {
-                        me.dal.get('facetFilterCriteria').splice(index, 1);   // remove the facetFilterCriteria entirely
                     }
                 }
 
-            });
-
-            if (!filterExists) {
-                me.dal.get('facetFilterCriteria').push({
-                    'facetName': facet,
-                    'facetValues': [btn.inputValue]   // this is always an array
-                });
+                if (values.length > 0) {
+                    filter.values = values;
+                } else {
+                    me.dal.get('facetFilterCriteria').splice(index, 1);   // remove the facetFilterCriteria entirely
+                }
             }
 
-        } else {
-            if (me.dal.get('facetFilterCriteria').length === 0) {
-                me.dal.set('facetFilterCriteria', []);
-            }
-            me.dal.get('facetFilterCriteria').push({
-                'facetName': facet,
-                'facetValues': [btn.inputValue]   // this is always an array
+        });
+
+        if (!filterExists && isChecked) {
+            filters.push({
+                'key': facetName,
+                'values': [
+                    {value: inputValue}
+                ]   // this is always an array
             });
         }
+
+
         var searchController = Savanna.controller.Factory.getController('Savanna.modelSearch.controller.SearchComponent');
 
-        if (searchController !== undefined) {
-            this.doFilter(btn);
+        if (searchController !== undefined && doTheSearch ) {
+            this.doFilter(this);
         }
 
     },
