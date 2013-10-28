@@ -80,7 +80,8 @@ Ext.define('Savanna.desktop.view.SavannaDesktop', {
                 height:29,
                 margin:'3 0 0 0',
                 glyph:'help',
-            }, {
+            }, */
+                {
                 itemId: 'userbutton',
                 cls:'userButtonFramework',
                 ui:'brand-header',
