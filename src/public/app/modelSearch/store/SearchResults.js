@@ -1,6 +1,6 @@
 /* global Ext: false, Savanna: false */
 
-/*
+
  Ext.define('Savanna.modelSearch.store.SearchResults', {
  extend: 'Ext.data.Store',
 
@@ -85,7 +85,7 @@
 
  data:    [
  {
- uri: "uid:sadflkajsdf",
+ uri: "Nitric%2FProcess",
  label: "Nitric Acid Process",
  type: "Process",  // Process
  modifiedBy: "cmason",
@@ -96,7 +96,7 @@
  classification: "U//FOUO"
  },
  {
- uri: "uid:sadflkajsdf",
+ uri: "x012f931fec769ca941e8de4f7a674bec2a290937%2FItem",
  label: "Sulfuric Acid",
  type: "Item",  // Process
  modifiedBy: "cmason",
@@ -725,12 +725,12 @@
 
  ]
  });
- */
+
 
 
 /* global Ext: false, Savanna: false */
 
-
+/*
 Ext.define('Savanna.modelSearch.store.SearchResults', {
     extend: 'Ext.data.JsonStore',
 
@@ -824,5 +824,5 @@ Ext.define('Savanna.modelSearch.store.SearchResults', {
         });
     }
 });
-
+ */
 

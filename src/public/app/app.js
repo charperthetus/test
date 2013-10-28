@@ -58,7 +58,11 @@ Ext.application({
         //Image
         'Savanna.image.util.ImageViewFactory',
         //Document
-        'Savanna.document.util.DocumentViewFactory'
+        'Savanna.document.util.DocumentViewFactory',
+         //ItemView
+        'Savanna.itemView.util.ItemViewFactory',
+        //process editor
+        'Savanna.process.utils.ProcessViewFactory'
     ],
 
     autoCreateViewport: false,
@@ -79,6 +83,8 @@ Ext.application({
     setupComponents: function(){
         ComponentManager.registerComponent(Ext.create('Savanna.image.util.ImageViewFactory'));
         ComponentManager.registerComponent(Ext.create('Savanna.document.util.DocumentViewFactory'));
+        ComponentManager.registerComponent(Ext.create('Savanna.itemView.util.ItemViewFactory'));
+        ComponentManager.registerComponent(Ext.create('Savanna.process.utils.ProcessViewFactory'));
     },
 
     // CUSTOM CONFIGURATION
