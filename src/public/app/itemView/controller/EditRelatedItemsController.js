@@ -15,11 +15,17 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
     control: {
         view: {
             'EditRelatedItems:SetupData': 'setupData'
+        },
+        'addRelationshipType': {
+            click: 'addRelationshipType'
         }
     },
 
+    addRelationshipType: function(btn) {
+
+    },
+
     setupData: function (items) {
-        var me = this;
 
         Ext.each(items, function (relatedItemsGroup) {
             this.getView().add(
@@ -29,6 +35,7 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
                 },{
                     xtype: 'panel',
                     value: relatedItemsGroup.get('predicateUri'),
+                    name: relatedItemsGroup.get('label'),
                     border: 5,
                     style: {
                         borderColor: 'gray',
@@ -88,19 +95,20 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
 
             );
             Ext.each(relatedItemsGroup.data.values, function(item) {
-                var myPanel = this.getView().down('[myId=' + relatedItemsGroup.get('predicateUri') + ']')
-                myPanel.add(this.buildAddItem(item, relatedItemsGroup.get('predicateUri'))
+                var myPanel = this.getView().down('[myId=' + relatedItemsGroup.get('predicateUri') + ']');
+                myPanel.add(this.buildAddItem(item, relatedItemsGroup.get('label'));
 
                 );
             }, this);
         }, this);
     },
 
-    buildAddItem: function(item, itemGroupUri) {
+    buildAddItem: function(item, itemGroupName) {
         return {
             xtype: 'container',
+            myGroupName: itemGroupName,
             cls: 'itemDropZone',
-            value: itemGroupUri,
+            value: itemGroupName,
             layout: 'hbox',
             items: [
                 {
@@ -114,7 +122,7 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
                 {
                     xtype: 'button',
                     text: 'X',
-                    handler: this.onRemoveRelatedItem,
+                    handler: Ext.bind(this.onRemoveRelatedItem, this),
                     name: item.value,
                     value: item.label
                 }
@@ -126,20 +134,36 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
     },
 
     onRemoveRelatedItem: function(btn)  {
-        btn.up('itemview_edit_related_items').fireEvent('ItemView:DeleteRelatedItem', btn.value, btn.name);
-        btn.up('itemview_edit_related_items').remove(btn.up('container'));
+        this.removeItem(btn.value, btn.up('container').myGroupName);
+        btn.up().up().remove(btn.up('container'));
     },
 
     addRelatedItem: function(label, itemRecord, autoCompleteView) {
         var item = {};
         var addRelatedItemPanel = autoCompleteView.up('panel');
         var relatedItemGroupUri = addRelatedItemPanel.value;
+        var relatedItemGroupName = addRelatedItemPanel.name;
         var itemLabel = itemRecord.label;
         var itemUri = itemRecord.uri;
-        var myPanel = this.getView().down('[myId=' + relatedItemGroupUri + ']')
+        var myPanel = this.getView().down('[myId=' + relatedItemGroupUri + ']');
         item.label = itemLabel;
         item.value = itemUri;
-        myPanel.add(this.buildAddItem(item, relatedItemGroupUri));
+        myPanel.add(this.buildAddItem(item, relatedItemGroupName));
+        var newItem = {editable: true, inheritedFrom: null, label: itemLabel, uri: itemUri, value: itemLabel, version: 0};
+        this.getView().store.getById(relatedItemGroupName).valuesStore.add(newItem);
+        this.getView().store.getById(relatedItemGroupName).data.values.push(newItem);
+    },
+    // Removing the tag from the store on a child auto-complete
+    removeItem: function(itemName, groupName) {
+        var store = this.getView().store.getById(groupName);
+        store.valuesStore.remove(store.valuesStore.getById(itemName));
+
+        for (var i = 0; i < store.data.values.length; i++) {
+            if (store.data.values[i].label === itemName) {
+                Ext.Array.remove(store.data.values, store.data.values[i]);
+                break;
+            }
+        }
     }
 
 });

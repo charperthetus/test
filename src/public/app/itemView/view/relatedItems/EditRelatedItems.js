@@ -14,7 +14,13 @@ Ext.define('Savanna.itemView.view.relatedItems.EditRelatedItems', {
 
     controller: 'Savanna.itemView.controller.EditRelatedItemsController',
 
-    layout: 'vbox'
+    layout: 'vbox',
+
+    tools:[{
+        xtype: 'button',
+        itemId: 'addRelationshipType',
+        text: '+Add'
+    }]
 
 
 
