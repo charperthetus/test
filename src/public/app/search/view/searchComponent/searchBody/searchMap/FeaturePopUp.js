@@ -32,9 +32,6 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.searchMap.FeaturePopU
 
     header: false,
 
-    //layout: 'card',
-
-
     defaults: {
         // applied to each contained panel
         border: false

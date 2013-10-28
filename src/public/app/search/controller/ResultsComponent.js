@@ -620,7 +620,6 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
                 }
             }
         }
-        var mapCanvas = scope.up('search_searchcomponent').down('#resultMapCanvas');
         if (mapCanvas.resultsLayer.features.length > 0) {
             mapCanvas.resultsLayer.removeAllFeatures();
         }
