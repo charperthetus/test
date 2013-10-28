@@ -777,7 +777,8 @@ Ext.define('Savanna.process.utils.Styler', {
                 textAlign: "center",
                 editable: true,
                 font: properties.fontWeight + properties.fontSize + properties.font,
-                stroke: palette.black
+                stroke: palette.black,
+                name: "TEXT"
             },
             "selectionAdornment":{ fill: null, stroke: '#63d9f5' , strokeWidth: 3, margin: 0   },
             "panelVertical":{ defaultAlignment: go.Spot.Center, padding: new go.Margin(5, 5, 5, 5) },
@@ -852,9 +853,10 @@ Ext.define('Savanna.process.utils.Styler', {
                 textAlign: "center",
                 editable: true,
                 font: properties.fontWeight + properties.fontSize + properties.font,
-                stroke: palette.black
+                stroke: palette.black,
+                name: "TEXT"
             },
-            "gridLayout":{ wrappingWidth: 3, alignment: go.GridLayout.Position, cellSize: new go.Size(1, 1) },
+            "gridLayout":{ wrappingWidth: 3, alignment: go.GridLayout.Position, cellSize: new go.Size(1, 1), spacing: new go.Size(4, 4) },
             "placeholder":{
                             padding: new go.Margin(16, 16),
                             background: 'transparent',
