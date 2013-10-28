@@ -637,7 +637,6 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
     },
 
     displayMapPopUp: function(event) {
-        console.log(arguments);
         var resultsController = Savanna.app.getController('Savanna.search.controller.ResultsComponent');
         var resultsMap = Ext.ComponentQuery.query('search_resultscomponent')[0].down('search_resultsmap');
         var mapCanvas = resultsMap.down('#resultMapCanvas');
@@ -658,7 +657,8 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
     },
 
     setPopUpTemplate: function (event, featurePopUp){
-        featurePopUp.removeAll(true);
+        featurePopUp.store = [];
+        //featurePopUp.removeAll(true);
         var tempData = event.feature.cluster;
         var uniqueResults = {};
         var uriCount = 0;
@@ -682,29 +682,19 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
             }
         }
 
-        (uriCount > 1) ? featurePopUp.down('#mapResultNext').enable() : featurePopUp.down('#mapResultNext').disable();
-        //create "cards" of each cluster location for the popup
-        var items = [];
+        //put pivot object back into array
         for (var key in uniqueResults){
             if (uniqueResults.hasOwnProperty(key)){
-                var title =  (uniqueResults[key].title.length > 40) ? uniqueResults[key].title.substring(0,40) + "..." : uniqueResults[key].title;
-                var item = {
-                    id: uniqueResults[key].uri,
-                    html: '<div style="position: relative" >' +
-                    '<div id="hoverDivTop" style=" right: 0;  top: 5; position: absolute;" ><button class="openButtonClass">TN</button><button class="openButtonClass">AU</button><button class="openButtonClass">OF</button></div>' +
-                    '<table>' +
-                    '<tr><td colspan="2" class="map-popup-title"><strong>' + title + '</strong></td></tr>'+
-                    '<tr><td colspan="2" class="map-popup-text">Location: ' + uniqueResults[key].name + '</td></tr>'+
-                    '<tr><td colspan="2" class="map-popup-text">Mentions: ' + uniqueResults[key].count + '</td></tr>'+
-                    '<td>(' + uniqueResults[key].composite + ') - ' +  Ext.Date.format(new Date(uniqueResults[key].publishedDate), 'F d, Y') +' - ['+ uniqueResults[key].fileType + ']<br />' +uniqueResults[key].previewString + '</td>'+
-                    '</table>'+
-                    '</div>'+
-                    '<div id="hoverDivBottom" style=" right: 0;  bottom: 5; position: absolute;" ><button class="openButtonClass">Preview</button></div>'
-                }
-                items.push(item);
+                var newItem = uniqueResults[key];
+                featurePopUp.store.push(newItem)
             }
         }
-        featurePopUp.add(items)
+        (uriCount > 1) ? featurePopUp.down('#mapResultNext').enable() : featurePopUp.down('#mapResultNext').disable();
+        //set store of featurePopUp
+        //featurePopUp.data = featurePopUp.store[0];
+        featurePopUp.currentIndex = 0;
+        featurePopUp.update(featurePopUp.store[featurePopUp.currentIndex]);
+        featurePopUp.updateLayout();
     },
 
     position: function(featurePopUp, mapCanvas, featureLocation) {
@@ -748,10 +738,12 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
 
     navigateMapResult: function (button) {
         var featurePopUp = button.up('search_featurepopup');
-        var buttonDirection = button.direction;
-        var layout = featurePopUp.getLayout();
-        layout[buttonDirection]();
-        Ext.getCmp('mapResultPrev').setDisabled(!layout.getPrev());
-        Ext.getCmp('mapResultNext').setDisabled(!layout.getNext());
+        if(featurePopUp.currentIndex <= featurePopUp.store.length -1){
+            featurePopUp.currentIndex += (button.direction == 'next')? 1:-1;
+            featurePopUp.update(featurePopUp.store[featurePopUp.currentIndex])
+            Ext.getCmp('mapResultPrev').setDisabled((featurePopUp.currentIndex > 0)? false:true);
+            Ext.getCmp('mapResultNext').setDisabled((featurePopUp.currentIndex < featurePopUp.store.length -1)? false:true);
+        }
+
     }
 });
