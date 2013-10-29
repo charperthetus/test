@@ -92,6 +92,7 @@ Ext.define('Savanna.components.autoComplete.AutoComplete', {
             }
         ];
     },
+
     addTag: function (tag) {
         if (this.queryById('tag_' + tag.replace(/[\s'"]/g, "_")) === null) {
             var newTag = Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineTerm', {
@@ -102,8 +103,13 @@ Ext.define('Savanna.components.autoComplete.AutoComplete', {
             this.queryById('tagsList').add(newTag);
         }
     },
+
     removeTag: function (view) {
         var myTag = view.itemId;
         this.queryById('tagsList').remove(myTag);
+    },
+
+    clearTags: function () {
+        this.queryById('tagsList').removeAll();
     }
 });

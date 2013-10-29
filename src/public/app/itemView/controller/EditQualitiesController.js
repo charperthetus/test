@@ -71,6 +71,7 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
             });
             me.getView().add(newProp);
         });
+        this.updateTitle();
     },
     // Control responsible for adding a new auto-complete form (dynamic)
     addNewQualityForm: function (propName, propData, aView) {
@@ -117,6 +118,7 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
             // Add a new model into the store
             this.getView().store.add(newQualitiesModel);
             this.storeHelper.addToMainStore("Properties", newQualitiesModel);
+            this.updateTitle();
         }
     },
     // Convenience handler to generate a new auto-complete
@@ -184,7 +186,6 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
             selectionStore: this.getView().store,
             propNameArray: this.propNameArray
         });
-
         qChooser.on('close', this.closedQPicker, this);
     },
 
@@ -194,13 +195,17 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
             this.propNameArray = [];
             this.storeHelper.updateMainStore(this.getView().store.data.items, "Properties");
             this.storeSet();
+            this.updateTitle();
         }
     },
 
     removePredicate: function(view) {
         this.storeHelper.removeFromMainStore("Properties", view.preLabel);
         this.getView().store.remove(this.getView().store.getById(view.preLabel));
+        this.updateTitle();
+    },
+
+    updateTitle: function() {
+        this.getView().setTitle('Qualities (' + this.getView().store.data.items.length + ')');
     }
 });
-
-
