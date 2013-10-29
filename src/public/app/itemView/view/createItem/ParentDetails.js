@@ -39,6 +39,20 @@ Ext.define('Savanna.itemView.view.createItem.ParentDetails', {
 
     onTreeItemClick: function (view, record, item, index, e, eOpts) {
 
+        if(this.queryById('parentdetails_textpanel') === null)  {
+            this.add({
+                xtype: 'panel',
+                itemId: 'parentdetails_textpanel',
+                padding:    {
+                    left:10
+                },
+
+                tpl: Ext.create('Ext.XTemplate',
+                    '<b>{label}</b><br /><br />',
+                    '{description}'
+                )
+            })
+        }
         this.queryById('parentdetails_textpanel').update(record.data);
     },
 
