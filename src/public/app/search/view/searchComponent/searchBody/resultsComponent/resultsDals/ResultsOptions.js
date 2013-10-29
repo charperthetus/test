@@ -30,35 +30,6 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
     to line up text and icons, and leave room for the facets panel below the DALs.
      */
 
-    dalLoadNone: {
-        backgroundColor:'white',
-        width:'20px',
-        height:'20px',
-        'float':'right',
-        'margin-right':'10px'
-    },
-    dalLoadPending: {
-        backgroundColor:'yellow',
-        width:'20px',
-        height:'20px',
-        'float':'right',
-        'margin-right':'10px'
-    },
-    dalLoadFail: {
-        backgroundColor:'red',
-        width:'20px',
-        height:'20px',
-        'float':'right',
-        'margin-right':'10px'
-    },
-    dalLoadSuccess: {
-        backgroundColor:'green',
-        width:'20px',
-        height:'20px',
-        'float':'right',
-        'margin-right':'10px'
-    },
-
     initComponent: function () {
         this.items = this.setupItems();
 
@@ -81,7 +52,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
             {
                 xtype: 'box',
                 itemId: 'dalStatusIcon',
-                style:  this.dalLoadNone
+                cls: 'loadNone dalStatusIcon'
             }
         ];
     }
