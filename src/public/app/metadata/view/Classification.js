@@ -14,6 +14,15 @@ Ext.define('Savanna.metadata.view.Classification', {
     ],
     layout: 'vbox',
 
+    config: {
+        classificationObject: null
+    },
+
+    applyValue: function(value) {
+        // TODO: We'll probably make a service call to load the classification object from here.
+        return value;
+    },
+
     initComponent: function () {
         this.callParent(arguments);
         var me = this;
