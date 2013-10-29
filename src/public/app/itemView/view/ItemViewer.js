@@ -17,6 +17,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
         'Savanna.itemView.view.relatedItems.EditRelatedItems',
         'Savanna.itemView.view.itemQualities.ViewItemQualities',
         'Savanna.itemView.view.imageBrowser.ImagesGrid',
+        'Savanna.itemView.view.imageBrowser.ImagesGridEdit',
         'Savanna.components.autoComplete.AutoComplete',
         'Savanna.itemView.view.imageBrowser.ImageThumbnail',
         'Savanna.itemView.view.workflow.WorkflowSelect',
@@ -291,6 +292,10 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                         xtype: 'panel',
                         flex: 1,
                         items: [
+                            {
+                                xtype: 'itemview_imagesgrid_edit',
+                                itemId: 'itemViewImagesEdit'
+                            },
                             {
                                 xtype: 'itemview_edit_qualities',
                                 itemId: 'itemViewPropertiesEdit',
