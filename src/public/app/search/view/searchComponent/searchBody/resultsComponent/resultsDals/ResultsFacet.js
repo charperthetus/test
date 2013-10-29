@@ -17,14 +17,12 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
     ],
 
     width: '100%',
-    minHeight: 20,
-    bodyPadding: 5,
     border: false,
     cls: 'results-facet',
+    ui: 'results-facet',
     collapsible: true,
     collapsed: true,
     titleCollapse: true,
-    hideCollapseTool: true,
     dateFormat: 'Y-m-d\\TH:i:s.m\\Z',
 
     initComponent: function () {
@@ -64,6 +62,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
                             {
                                 xtype: 'radiogroup',
                                 itemId: 'dateFacet',
+                                cls: 'small-spacing',
                                 // Arrange radio buttons, distributed vertically
                                 columns: 1,
                                 vertical: true,
@@ -125,6 +124,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
                             {
                                 xtype: 'checkboxgroup',
                                 itemId: 'stringFacet',
+                                cls: 'small-spacing',
                                 columns: 1,
                                 vertical: true,
                                 items: []

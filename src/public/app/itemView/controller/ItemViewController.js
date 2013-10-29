@@ -112,12 +112,15 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         this.getView().setEditMode(!this.getView().getEditMode());
 
         myStore.getAt(0).setDirty();
-        myStore.save();
+        myStore.sync();
     },
 
     getItemViewData: function () {
         var tmpStore = Ext.data.StoreManager.lookup(this.store);
         tmpStore.getProxy().url = this.buildItemDataFetchUrl(this.getView().itemUri);
+        if(this.getView().getCreateMode())  {
+            tmpStore.getProxy().setExtraParam("parentUri", 'thetus%2EArtifactOntology%3AYellowPalmOilContainer%2FModelItemXML');
+        }
         tmpStore.load({
             scope: this,
             callback: this.handleRecordDataRequestSuccess
@@ -202,8 +205,16 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
             annotationEditComponent.reconfigure(record[0].propertyGroupsStore.getById('Annotations').valuesStore);
 
             /*
+             Images View
+             */
+            var imagesBrowserComponent = me.getView().queryById('itemViewImagesGrid');
+            imagesBrowserComponent.fireEvent('ViewImagesGrid:Setup', record[0].propertyGroupsStore.getById('Images').valuesStore.getById('Images').valuesStore.data.items);
+
+            /*
             are we creating a new item?
              */
+            console.log(me.getView().getEditMode());
+
             if(me.getView().getEditMode())  {
                 me.getView().getLayout().setActiveItem(1);
             }
@@ -242,7 +253,11 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
     buildItemDataFetchUrl: function (uri) {
         uri = encodeURI(uri);
-        return SavannaConfig.itemViewUrl + uri + ';jsessionid=' + Savanna.jsessionid;
+        if(!this.getView().getCreateMode()) {
+            return SavannaConfig.itemViewUrl + uri;
+        }   else    {
+            return SavannaConfig.itemCreateUrl;
+        }
     },
 
     openItem: function (itemName, itemUri) {
@@ -259,5 +274,8 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         });
 
         Savanna.app.fireEvent('search:itemSelected', itemView);
+    },
+    deleteRelatedItem: function (itemName, itemUri) {
+
     }
 });

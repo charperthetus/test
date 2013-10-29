@@ -79,7 +79,11 @@ Ext.define('Savanna.itemView.view.itemQualities.QualitiesPicker', {
                     flex: 1,
                     tpl: Ext.create('Ext.XTemplate',
                         '<tpl if="selected">',
-                            '<input type="checkbox" id="qualityCheck" checked/>&nbsp;&nbsp;&nbsp;&nbsp;{label}',
+//                            '<tpl if="editable">',
+//                                '<input type="checkbox" id="qualityCheck" checked/>&nbsp;&nbsp;&nbsp;&nbsp;{label}',
+//                            '<tpl else>',
+                                '<input type="checkbox" id="qualityCheck" checked disabled/>&nbsp;&nbsp;&nbsp;&nbsp;{label}',
+//                            '</tpl>',
                         '<tpl else>',
                             '<input type="checkbox" id="qualityCheck"/>&nbsp;&nbsp;&nbsp;&nbsp;{label}',
                         '</tpl>')

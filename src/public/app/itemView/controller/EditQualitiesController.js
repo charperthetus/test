@@ -62,6 +62,7 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
     storeSet: function() {
         var me = this;
         this.storeHelper.init();
+
         // Generate a new form control for each predicate in the store
         Ext.each(me.getView().store.data.items, function(item) {
             var newProp = me.createNewAutoComplete(item.data);
@@ -70,6 +71,7 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
             });
             me.getView().add(newProp);
         });
+        this.updateTitle();
     },
     // Control responsible for adding a new auto-complete form (dynamic)
     addNewQualityForm: function (propName, propData, aView) {
@@ -116,23 +118,35 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
             // Add a new model into the store
             this.getView().store.add(newQualitiesModel);
             this.storeHelper.addToMainStore("Properties", newQualitiesModel);
+            this.updateTitle();
         }
     },
     // Convenience handler to generate a new auto-complete
     createNewAutoComplete: function(data) {
-        var predicateUri = Ext.Object.fromQueryString(data.predicateUri);
+        var me = this,
+            predicateUri = Ext.Object.fromQueryString(data.predicateUri),
+            picker = Ext.create('Ext.button.Button', {
+                text: 'Chooser',
+                itemId: 'qualitieschooser',
+
+                listeners: {
+                    click: me.launchChooser
+                }
+            }),
+            newProp =  Ext.create('Savanna.components.autoComplete.AutoComplete', {
+                itemId: 'prop_' + data.label.replace(/[\s']/g, '_'),
+                showTags: true,
+                preLabel: data.label,
+                hasControls: true,
+                isClosable: true,
+                store: Ext.create('Savanna.itemView.store.AutoCompleteStore', {
+                    urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/mockModelSearch/keyword/property/' + predicateUri,
+                    paramsObj: { excludeUri:'', pageStart:0, pageLimit:10 }
+                })
+            });
         this.propNameArray.push(data.label);
-        return Ext.create('Savanna.components.autoComplete.AutoComplete', {
-            itemId: 'prop_' + data.label.replace(/[\s']/g, '_'),
-            showTags: true,
-            preLabel: data.label,
-            hasControls: true,
-            isClosable: true,
-            store: Ext.create('Savanna.itemView.store.AutoCompleteStore', {
-                urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/mockModelSearch/keyword/property/' + predicateUri,
-                paramsObj: { excludeUri:'', pageStart:0, pageLimit:10 }
-            })
-        });
+        newProp.child('container').insert(1, picker);
+        return newProp;
     },
 
     // When a new tag is added on a child auto-complete
@@ -172,7 +186,6 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
             selectionStore: this.getView().store,
             propNameArray: this.propNameArray
         });
-
         qChooser.on('close', this.closedQPicker, this);
     },
 
@@ -182,11 +195,17 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
             this.propNameArray = [];
             this.storeHelper.updateMainStore(this.getView().store.data.items, "Properties");
             this.storeSet();
+            this.updateTitle();
         }
     },
 
     removePredicate: function(view) {
         this.storeHelper.removeFromMainStore("Properties", view.preLabel);
         this.getView().store.remove(this.getView().store.getById(view.preLabel));
+        this.updateTitle();
+    },
+
+    updateTitle: function() {
+        this.getView().setTitle('Qualities (' + this.getView().store.data.items.length + ')');
     }
 });

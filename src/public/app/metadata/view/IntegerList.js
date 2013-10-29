@@ -10,10 +10,6 @@ Ext.define('Savanna.metadata.view.IntegerList', {
     extend: 'Savanna.metadata.view.MetadataItemView',
     alias: 'widget.metadata_integerlist',
 
-    requires: [
-        'Savanna.controller.Factory'
-    ],
-
     items: [
     ],
 
@@ -57,7 +53,7 @@ Ext.define('Savanna.metadata.view.IntegerList', {
                 });
                 textField.fieldLabel = fieldLabelValue;
                 container.add(textField);
-                if(fieldLabelValue == '&nbsp;') {
+                if('&nbsp;' == fieldLabelValue) {
                     textField.labelSeparator = '';
                 }
                 fieldLabelValue = '&nbsp;';

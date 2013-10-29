@@ -13,6 +13,8 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
     header: false,
     bubbleEvents: ['search:previewNextButton', 'search:previewPrevButton'],
 
+    currentRecord: null,
+
     requires: [
         'Savanna.search.controller.resultsComponent.ResultsPreviewContentController'
     ],
@@ -73,17 +75,16 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
                             xtype: 'button',
                             text: 'Add to MyStuff'
                         },
-                        {
-                            xtype: 'tbfill'
-                        },
+                        '->',
                         {
                             xtype: 'button',
-                            text: 'Open Result'
+                            text: 'Open Result',
+                            itemId: 'openResult'
                         },
                         {
                             xtype: 'button',
                             text: 'Close',
-                            itemId: 'previewclosebutton'
+                            itemId: 'previewCloseButton'
                         }
                     ]
                 }
@@ -99,6 +100,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
 
 
     populate: function (record, metadata, index, totalResultsCount) {
+        this.currentRecord = record;
 
         var capco = {'U': 'UNCLASSIFIED'},
             metaHTML = '<table>',
