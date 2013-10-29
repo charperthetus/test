@@ -89,7 +89,7 @@ Ext.define('Savanna.process.controller.PaletteController', {
         list.getSelectionModel().deselectAll(); //necessary to do here and in onFilterChange for some reason
         list.store.clearFilter();
         list.store.filter([{
-            property: 'text', //in the future possible filter on alias/description
+            property: 'label', //in the future possible filter on alias/description
             anyMatch: true,
             value   : newValue
         } ]);
