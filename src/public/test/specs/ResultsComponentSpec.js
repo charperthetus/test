@@ -77,7 +77,8 @@ describe('Search Results', function () {
         });
 
         describe('Results Toolbar subview', function () {
-            it('should apply a select handler to the "Sort By" combobox', function () {
+            /* hiding this test because this component has been removed for the time being. */
+            /*it('should apply a select handler to the "Sort By" combobox', function () {
                 var combo = resultsComponent.down('#resultsSortByCombobox');
 
                 combo.removeListener('select');
@@ -85,7 +86,7 @@ describe('Search Results', function () {
                 resultsController.init();
 
                 expect(combo.hasListener('select')).toBeTruthy();
-            });
+            });*/
 
             it('should apply a select handler to the "Results Per Page" combobox', function () {
                 var combo = resultsComponent.down('#resultsPageSizeCombobox');
@@ -833,7 +834,7 @@ describe('Search Results', function () {
             });
 
             it('should have a paging toolbar', function () {
-                expect(grid.queryById('gridtoolbar') instanceof Ext.toolbar.Paging).toBeTruthy();
+                expect(grid.up('search_resultspanel').queryById('gridtoolbar') instanceof Ext.toolbar.Paging).toBeTruthy();
             });
 
 

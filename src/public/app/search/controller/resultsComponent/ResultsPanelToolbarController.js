@@ -12,9 +12,6 @@ Ext.define('Savanna.search.controller.resultsComponent.ResultsPanelToolbarContro
         resultsPageSizeCombobox: {
             select: 'onPageSizeChange'
         },
-        resultsSortByCombobox: {
-            select: 'onSortByChange'
-        },
         results_listViewButton: {
             click: 'onViewBtnClick',
             toggle: 'onViewBtnToggle'
