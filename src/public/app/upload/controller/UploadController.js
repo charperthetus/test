@@ -13,6 +13,7 @@ Ext.define('Savanna.upload.controller.UploadController', {
     ingestedCount:0, //Do not use -1s because we are incrimenting the value (this.ingestedCount++ , this.currentlyUploadingCount+=...)
     failedCount:0,
     currentlyUploadingCount:0,
+    dropAreaActive:false,
 
     init: function() {
         this.control({
@@ -60,8 +61,15 @@ Ext.define('Savanna.upload.controller.UploadController', {
 
             dropArea.ondragover = function () {
                 //TODO - check the type of thing dragged in to determine if it can be dropped
+                //add drop indication (transparency)
+                dropArea.classList.add('dropzone_color');
                 //Note that false means it can be dropped
                 return false;
+            };
+
+            //remove drop indication
+            dropArea.ondragleave = function () {
+                dropArea.classList.remove('dropzone_color');
             };
 
             dropArea.ondrop = Ext.bind(this.fileDropHandler, this, [panel], true);
@@ -76,6 +84,7 @@ Ext.define('Savanna.upload.controller.UploadController', {
     fileDropHandler: function(e, panel) {
         e.preventDefault();
         this.uploadFiles(e.dataTransfer.files, panel);
+        panel.getEl().dom.classList.remove('dropzone_color');
     },
 
     // Launch file browser
