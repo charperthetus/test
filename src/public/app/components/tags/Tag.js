@@ -13,10 +13,13 @@ Ext.define('Savanna.components.tags.Tag', {
     ui:'grey',
     
     style:{
-    	position:'relative'
+        position:'relative'
     },
     
-    bubbleEvents: ['Tag:RemoveSearchTerm'],
+    bubbleEvents: [
+        'Tag:RemoveSearchTerm',
+        'Tag:TagClicked'
+    ],
     
     setTerm: function(term)  {
         this.setText(term);
