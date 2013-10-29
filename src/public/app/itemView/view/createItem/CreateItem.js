@@ -14,6 +14,7 @@ Ext.define('Savanna.itemView.view.createItem.CreateItem', {
     requires: [
         'Savanna.itemView.view.createItem.ParentDetails',
         'Savanna.itemView.view.createItem.ParentItems',
+        'Savanna.itemView.controller.CreateItemController',
         'Savanna.itemView.store.ParentItemStore'
     ],
 

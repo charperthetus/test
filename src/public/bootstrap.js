@@ -125,6 +125,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "Savanna.modelSearch.model.dalSource.CustomSearchGroup": [
     "DalCustomSearchGroup"
   ],
+  "Savanna.itemView.view.itemQualities.ValuesPicker": [],
   "Savanna.itemView.controller.ViewHeaderController": [],
   "Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineTerms": [],
   "ThemeDemoApp.picker.Month": [],
@@ -171,6 +172,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "Savanna.process.view.part.Toolbar": [],
   "Deft.InjectableComponent": [],
   "Savanna.search.controller.resultsComponent.ResultsPanelToolbarController": [],
+  "Savanna.search.view.searchComponent.searchBody.searchMap.FeaturePopUp": [],
   "Savanna.modelSearch.view.searchComponent.searchBar.SearchAdvancedTextfield": [],
   "Savanna.modelSearch.store.SearchResults": [],
   "Savanna.upload.model.UploadItem": [],
@@ -368,6 +370,7 @@ Ext.ClassManager.addNameAlternateMappings({
     "EventHub"
   ],
   "Savanna.modelSearch.view.searchComponent.SearchBar": [],
+  "Savanna.itemView.controller.ValuesPickerController": [],
   "Deft.mvc.ComponentSelectorListener": [],
   "Savanna.modelSearch.controller.resultsComponent.resultsDals.ResultsRefineTermsController": [],
   "Savanna.flexpaper.view.FlexpaperToolbar": [],
@@ -597,6 +600,9 @@ Ext.ClassManager.addNameAliasMappings({
     "widget.flexpaper_flexpaperbody"
   ],
   "Savanna.modelSearch.model.dalSource.CustomSearchGroup": [],
+  "Savanna.itemView.view.itemQualities.ValuesPicker": [
+    "widget.itemview_values_picker"
+  ],
   "Savanna.itemView.controller.ViewHeaderController": [],
   "Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineTerms": [
     "widget.model_search_resultsDals_resultsterms"
@@ -671,6 +677,9 @@ Ext.ClassManager.addNameAliasMappings({
   ],
   "Deft.InjectableComponent": [],
   "Savanna.search.controller.resultsComponent.ResultsPanelToolbarController": [],
+  "Savanna.search.view.searchComponent.searchBody.searchMap.FeaturePopUp": [
+    "widget.search_featurepopup"
+  ],
   "Savanna.modelSearch.view.searchComponent.searchBar.SearchAdvancedTextfield": [
     "widget.model_searchadvanced_textfield"
   ],
@@ -1006,6 +1015,7 @@ Ext.ClassManager.addNameAliasMappings({
   "Savanna.modelSearch.view.searchComponent.SearchBar": [
     "widget.model_search_searchbar"
   ],
+  "Savanna.itemView.controller.ValuesPickerController": [],
   "Deft.mvc.ComponentSelectorListener": [],
   "Savanna.modelSearch.controller.resultsComponent.resultsDals.ResultsRefineTermsController": [],
   "Savanna.flexpaper.view.FlexpaperToolbar": [

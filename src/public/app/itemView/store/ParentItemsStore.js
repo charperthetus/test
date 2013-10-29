@@ -11,7 +11,8 @@ Ext.define('Savanna.itemView.store.ParentItemsStore', {
     extend: 'Ext.data.TreeStore',
 
     requires: [
-        'Savanna.proxy.Cors'
+        'Savanna.proxy.Cors',
+        'Savanna.itemView.model.ParentItemsTreeModel'
     ],
 
     storeId: 'parentItemsTreeStore',
