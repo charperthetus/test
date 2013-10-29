@@ -61,7 +61,7 @@ Ext.define('Savanna.process.utils.Styler', {
             "white": "#F8F8F8",
             "aqua": "#dbf7fe",
             "gray": "#999999",
-            "lightgray": "#f2f2f2",
+            "lightgray": "#000",
             "fade": "#353535",
             "black": "#454545",
             "startColor": "#7cc19d",
@@ -78,7 +78,7 @@ Ext.define('Savanna.process.utils.Styler', {
          * Defines default properties.  These can be overridden via passing them as function parameter for the object.
          */
         var properties = {
-            "font": " OpenSansRegular', OpenSansRegular, 'Helvetica Neue', Helvetica, Arial, sans-serif ",
+            "font": " OpenSansRegular, OpenSansRegular, ''Helvetica Neue', Helvetica, Arial, sans-serif ",
             "fontSize": " 10pt ",
             "fontSizeSmall": " 9pt ",
             "fontSizeSmaller": " 8pt ",
@@ -172,7 +172,7 @@ Ext.define('Savanna.process.utils.Styler', {
           fromSpot: go.Spot.Right, toSpot: go.Spot.Left 
             },
             "textblock": {
-                font: properties.fontWeight + properties.fontSize + properties.font,
+                font: properties.fontSize + properties.font,
                 stroke: palette.darkText,
                 margin: 4,
                 maxSize: new go.Size(160, NaN),
@@ -223,7 +223,7 @@ Ext.define('Savanna.process.utils.Styler', {
                 stroke: null
             },
             "textblock": {
-                font: properties.fontWeight + properties.fontSizeSmaller + properties.font,
+                font: properties.fontSizeSmaller + properties.font,
                 stroke: palette.darkText,
                 margin: 4,
                 maxSize: new go.Size(160, NaN),
@@ -261,7 +261,8 @@ Ext.define('Savanna.process.utils.Styler', {
                     figure: 'Circle',
                     stroke: null,
                     fill: '#3d8060',
-                    desiredSize: new go.Size(11,11)
+                    desiredSize: new go.Size(13,13),
+                name:'circleme'
                 },
             "plusLine":{ 
                 figure: 'PlusLine', 
@@ -309,7 +310,7 @@ Ext.define('Savanna.process.utils.Styler', {
             "diamond": {
                     figure: 'Diamond',
                     stroke: null,
-                    fill: '#fdc16a',
+                    fill: '#f9aa41',
                     desiredSize: new go.Size(13,13)
                 },
             "plusLine":{ 
@@ -437,7 +438,7 @@ Ext.define('Savanna.process.utils.Styler', {
                     },
             "mainIcon": { font: '10pt SickFont', stroke: '#3ca8c8', position: new go.Point(10, 10) },
             "addIcon": { font: '7pt SickFont', stroke: '#008bb9', position: new go.Point(18, 0) },
-            "label": { font: 'bold 6pt sans-serif', background: 'white', 
+            "label": { font: '7pt  OpenSansRegular, OpenSansRegular, Helvetica Neue, Helvetica, Arial, sans-serif ', background: 'white', 
                       position: null //labelPoint 
                      }
             
@@ -511,7 +512,7 @@ Ext.define('Savanna.process.utils.Styler', {
                 stroke: null
             },
             "textblock": {
-                font: properties.fontWeight + properties.fontSize + properties.font,
+                font: properties.fontSize + properties.font,
                 stroke: palette.darkText,
                 margin: 4,
                 maxSize: new go.Size(160, NaN),
@@ -544,7 +545,7 @@ Ext.define('Savanna.process.utils.Styler', {
                 stroke: null
             },
             "textblock": {
-                font: properties.fontWeight + properties.fontSizeSmaller + properties.font,
+                font: properties.fontSizeSmaller + properties.font,
                 stroke: palette.darkText,
                 margin: 4,
                 maxSize: new go.Size(160, NaN),
@@ -669,7 +670,7 @@ Ext.define('Savanna.process.utils.Styler', {
                 row: 0, column: 1, margin: 0
             },
             "textblock": {
-                font: properties.fontWeight + properties.fontSize + properties.font,
+                font: properties.fontSize + properties.font,
                 stroke: palette.darkText,
 
                 maxSize: new go.Size(150, NaN),
@@ -704,7 +705,7 @@ Ext.define('Savanna.process.utils.Styler', {
                 stroke: null
             },
             "textblock": {
-                font: properties.fontWeight + properties.fontSizeSmaller + properties.font,
+                font: properties.fontSizeSmaller + properties.font,
                 stroke: palette.darkText,
                 margin: 4,
                 maxSize: new go.Size(160, NaN),
@@ -740,7 +741,7 @@ Ext.define('Savanna.process.utils.Styler', {
                 wrap: go.TextBlock.WrapFit,
                 textAlign: "center",
                 editable: true,
-                font: properties.fontWeight + properties.fontSize + properties.font,
+                font: properties.fontSize + properties.font,
                 stroke: palette.black
             }
         };
@@ -763,8 +764,10 @@ Ext.define('Savanna.process.utils.Styler', {
         var processModel = {
             "roundedRectangle": {
                 fill: null,
-                stroke: palette.black,
-                margin: 0
+                stroke: '#999999',
+                margin: 0,
+                strokeWidth: 1
+                
                 
                 
                // strokeDashArray: [4, 2]

@@ -59,6 +59,7 @@ Ext.define('Savanna.process.view.ProcessEditorComponent', {
                         xtype: 'process_palettewindow',
                         autoShow: true,
                         x: 0 //DI needs to position this window correctly
+                        
                     }
                 ]
             },
