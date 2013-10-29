@@ -147,7 +147,7 @@ Ext.define('Savanna.process.controller.ProcessController', {
     },
 
     clear: function(diagram, textarea) {
-        var newProcess = { class: 'go.GraphLinksModel', nodeDataArray: [ {key:-1, category:'Start'} ], linkDataArray: [ ]};
+        var newProcess = {'class': 'go.GraphLinksModel', 'nodeDataArray': [{'key':-1, 'category':'Start'}], 'linkDataArray': []};
         this.store.add(newProcess);
         this.load(diagram, this.store.first());
         this.showDiagramJSON(diagram, textarea);
