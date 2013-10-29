@@ -10,6 +10,16 @@
 $grid-cell-title-padding-bottom: 5px !default;
 
 // /* THESE SHOULD PROBABLY BE ADDED TO UIKIT */
+$grid-body-border-color : #fff !default;
+$grid-body-border-style : none !default;
+$grid-body-border-width : 0 !default;
+
+$grid-cell-border-width: 0 !default;
+
+$grid-row-cell-border-color: #fff !default;
+$grid-row-cell-border-style: none !default;
+$grid-row-cell-border-width: 0 !default;
+$grid-row-focus-border-style: none !default;
 $grid-row-cell-focus-background-color : $rollover_list !default;
 $grid-row-cell-focus-border-color : $rollover_list !default;
 $grid-row-cell-focus-border-style : none !default;
