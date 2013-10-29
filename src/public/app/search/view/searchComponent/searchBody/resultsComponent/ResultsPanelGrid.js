@@ -36,36 +36,18 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
             tpl: new Ext.XTemplate(
 
                 '<div style="position: relative" >',
-                '<div id="hoverDiv" style="visibility: hidden; right: 0;  top: 5px; position: absolute;" ><button id="resultGridHoverOpenButton" class="openButtonClass">Open</button></div>',
-
-                '<!-- column one -->',
-
-                '<div style="float: left; height: 102px; width: 202px;outline: solid 1px #cccccc;" >',
-                '{[this.conditionallyRenderImage(values.documentSource)]}',
+                '<div id="hoverDiv" style="visibility: hidden; right: 0;  top: 5; position: absolute;" ><button class="openButtonClass">Open</button></div>',
+                '<table>',
+                '<tr><td colspan="2" class="grid-cell-title"><strong>{title}</strong></td></tr>',
+                '<td><img src="{documentSource}" width="80px" height="60px" hspace="3px"/></td>',
+                '<td>({composite}) - {[this.parseDate(new Date(values.publishedDate))]} - {documentFileName}<br />{previewString}</td>',
+                '</table>',
                 '</div>',
-
-                '<!-- column two todo: leave room for open button, limit title to one line, military format date -->',
-                '<div style="margin-left: 216px; line-height: 1.2" >',
-                '<strong>{title}</strong>',
-                 '<br>({composite}) - {[this.parseDate(new Date(values.publishedDate))]} - {documentFileName}<br />',
-                '<div style="width: 100%;height: 50px;white-space: normal;line-break: normal" >{previewString}</div>',
-                '</div>',
-                '</div>',
-
                 {
                     parseDate: function (v) {
                         return Ext.Date.format(new Date(v), 'F d, Y');
-                    },
-
-                    conditionallyRenderImage: function (url) {
-                        if (url && url.length > 0) {
-                            return '<div  style="background-image: url(\'' + url + '\');width:200px;height:100px;background-position:center;background-size:cover;left: 1;top: 1;" ></div>';
                         }
-                        return '<div style="width: 100%; height: 100%;text-align:center;line-height: 100px;background-color:  #eeeeee;left: 1px;top: 1px;" >No Image</div>';
                     }
-
-                }
-
             )
         }
     ],
