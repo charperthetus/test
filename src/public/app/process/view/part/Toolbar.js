@@ -23,48 +23,105 @@ Ext.define('Savanna.process.view.part.Toolbar', {
     setupItems: function() {
         return [
             {
-                text: 'View',
-                menu: [{
-                    text: 'Expand All Steps',
-                    itemId: 'expandsteps'
-                }, {
-                    text: 'Collapse All Steps',
-                    itemId: 'collapsesteps'
-                }]
+                text: 'Menu',
+                tooltip: 'Process Editor Menu',
+                menu: [
+                    {
+                        text: 'New Process...',
+                        itemId: 'newProcess'
+                    },
+                    '-',
+                    {
+                         text: 'Undo',
+                         itemId: 'undo'
+                    },
+                    {
+                         text: 'Redo',
+                         itemId: 'redo'
+                    },
+                    '-',
+                    {
+                         text: 'Save',
+                         itemId: 'saveprocess'
+                    },
+                    {
+                         text: 'Delete',
+                         itemId: 'cancelprocess'
+                    },
+                    '-',
+                    {
+                         text: 'Workflow...',
+                         itemId: 'workflow'
+                    },
+                    '-',
+                    {
+                         text: 'Expand All Steps',
+                         itemId: 'expandsteps'
+                    },
+                    {
+                         text: 'Collapse All Steps',
+                         itemId: 'collapsesteps'
+                    },
+                    '-',
+                    {
+                        text: 'Show Palette',
+                        checked: true,
+                        itemId: 'showPalette'
+                    },
+                    {
+                        text: 'Show Overview',
+                        checked: false,
+                        itemId: 'showOverview'
+                    }
+
+                ]
             },
             {
-                glyph: 61800,
-                tooltip: 'Undo',
-                itemId: 'undo'
-            },
-            {
-                glyph: 61777,
-                tooltip: 'Redo',
-                itemId: 'redo'
-            },
-            {
-                text: 'Merge',
-                tooltip: 'Select two nodes and create a merge point',
+                text: 'Join',
+                tooltip: 'Join selected items together',
                 itemId: 'merge'
             },
-            '->',
             {
-                glyph: 61806,
+                text: '+ Alternates',
+                tooltip: 'Add alternates group',
+                itemId: 'alts'
+            },
+            '->', 
+            {
+                glyph: 'zoomIn',
                 tooltip: 'Zoom In',
                 itemId: 'zoomin'
             },
             {
-                glyph: 61807,
+                glyph: 'zoomOut',
                 tooltip: 'Zoom Out',
                 itemId: 'zoomout'
             },
-            '->',
             {
-                text: 'Cancel',
+                text: 'Fit',
+                tooltip: 'Fit to screen',
+                itemId: 'zoomToFit'
+            },
+            ' ',
+            {
+                glyph: 'undo',
+                tooltip: 'Undo',
+                itemId: 'undo'
+            },
+            {
+                glyph: 'redo',
+                tooltip: 'Redo',
+                itemId: 'redo'
+            },
+            ' ',
+            {
+                text: 'Delete',
+                tooltip: 'Delete draft',
                 itemId: 'cancelprocess'
             },
             {
                 text: 'Save',
+                tooltip: 'Save process',
                 itemId: 'saveprocess'
             }
         ];
