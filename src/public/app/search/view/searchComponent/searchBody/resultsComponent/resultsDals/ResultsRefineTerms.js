@@ -44,7 +44,8 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
 
         if (this.queryById('term_' + field.getValue()) === null) {
             var refineTerm = Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineTerm', {
-                itemId: 'term_' + field.getValue()
+                itemId: 'term_' + field.getValue(),
+                cls:'refine-term'
             });
             refineTerm.setTerm(field.getValue());
 

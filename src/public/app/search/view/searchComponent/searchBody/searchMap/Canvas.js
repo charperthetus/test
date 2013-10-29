@@ -12,11 +12,11 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.searchMap.Canvas', {
 
     map: null,
 
-    drawFeature: null,
-
     searchLayer: null,
 
     resultsLayer: null,
+
+    controls: null,
 
     initComponent: function() {
 
@@ -32,15 +32,9 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.searchMap.Canvas', {
         this.callParent(arguments);
     },
 
-    onRender: function() {
-
-        var element;
-
+    onRender: function () {
         this.callParent(arguments);
-
-        element = Ext.DomHelper.insertHtml('afterBegin', this.getEl().dom, '<div class="map" style="width: 100%; height: 100%; position: absolute;"></div>');
-
-        this.map.render(element);
+        this.map.render(this.getEl().dom);
         this.map.setCenter(new OpenLayers.LonLat.fromString(SavannaConfig.mapDefaultCenter), SavannaConfig.mapDefaultZoom);
     }
 });
