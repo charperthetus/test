@@ -2,6 +2,7 @@
 *  Variables for brand-header and workspace-header toolbar style
 *  @author lpelofske
 *  @edit  eirby 10/22/13
+*  @edit  lsanz 10/29/13
 */
 
 $brand-header-toolbar-border-color-top: #6a6a6a !default;
@@ -20,3 +21,9 @@ $workspace-header-toolbar-border-color: transparent !default;
 
 
 $item-view-header-toolbar-background-color:#f5f5f5 !default;
+
+
+$toolbar-horizontal-spacing: 0px !default;
+$toolbar-footer-horizontal-spacing: 0px !default;
+$toolbar-vertical-spacing: 4px !default;
+$toolbar-footer-vertical-spacing: 4px !default;

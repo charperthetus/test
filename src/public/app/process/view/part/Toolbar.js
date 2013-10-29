@@ -9,6 +9,7 @@ Ext.define('Savanna.process.view.part.Toolbar', {
     extend: 'Ext.toolbar.Toolbar',
     alias: 'widget.process_toolbar',
 
+    ui:'thetus-toolbar',
     width: '100%',
 
     items: [],
@@ -23,6 +24,7 @@ Ext.define('Savanna.process.view.part.Toolbar', {
     setupItems: function() {
         return [
             {
+                ui: 'basic',
                 text: 'Menu',
                 tooltip: 'Process Editor Menu',
                 menu: [
@@ -98,7 +100,7 @@ Ext.define('Savanna.process.view.part.Toolbar', {
                 itemId: 'zoomout'
             },
             {
-                text: 'Fit',
+                glyph: 'fit',
                 tooltip: 'Fit to screen',
                 itemId: 'zoomToFit'
             },

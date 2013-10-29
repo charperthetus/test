@@ -3,6 +3,7 @@
 *
 * @author lpelofske
 * @edit  eirby 10/22/13
+* @edit  lsanz 10/29/13 - adding default toolbar styles - needs to be moved into uikit at some point.
 */
 
 /*
@@ -58,11 +59,16 @@
 
 
 @include extjs-toolbar-ui(
-  $ui: 'default',
+  $ui: 'thetus-toolbar',
   $background-color: $item-view-header-toolbar-background-color,
-  $border-width: 1px,
-  $border-color: #999999
+  $border-width: 0px,
+  $border-color: none
 );
+
+.#{$prefix}toolbar-thetus-toolbar {
+  border-bottom: solid 1px #999999;
+  border-top: solid 1px #999999;
+}
 
 /*
 * Logic

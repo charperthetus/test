@@ -12,8 +12,8 @@ Ext.Loader.addClassPathMappings({
   "Ext.rtl.EventObjectImpl": "ext/src/rtl/EventObject.js",
   "ThetusUikit.layout": "packages/thetus-uikit/overrides/layout",
   "Savanna.metadata.view.String": "app/metadata/view/string.js",
-  "ThetusUikit.toolbar": "packages/thetus-uikit/overrides/toolbar",
   "Savanna-Theme": "packages/savanna-theme/overrides",
+  "ThetusUikit.toolbar": "packages/thetus-uikit/overrides/toolbar",
   "ThetusUikit.tip": "packages/thetus-uikit/overrides/tip",
   "Deft.InjectableComponent": "packages/deft/src/js/ioc/Injector.js",
   "ThetusUikit.button": "packages/thetus-uikit/overrides/button",
@@ -147,6 +147,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "Ext.ux.grid.filter.ListFilter": [],
   "Savanna.itemView.model.PropertyGroupValueValueModel": [],
   "Savanna.itemView.model.KVPairModel": [],
+  "Savanna-Theme.toolbar.Paging": [],
   "Savanna.desktop.view.SavannaDesktop": [],
   "Savanna.metadata.view.BooleanList": [],
   "Ext.ux.dd.PanelFieldDragZone": [],
@@ -636,6 +637,7 @@ Ext.ClassManager.addNameAliasMappings({
   ],
   "Savanna.itemView.model.PropertyGroupValueValueModel": [],
   "Savanna.itemView.model.KVPairModel": [],
+  "Savanna-Theme.toolbar.Paging": [],
   "Savanna.desktop.view.SavannaDesktop": [
     "widget.desktop_savannadesktop"
   ],
@@ -1123,6 +1125,7 @@ Ext.Loader.loadScript("packages/thetus-uikit/overrides/panel/Header.js");
 Ext.Loader.loadScript("packages/thetus-uikit/overrides/layout/component/Dock.js");
 Ext.Loader.loadScript("packages/thetus-uikit/overrides/button/Button.js");
 Ext.Loader.loadScript("packages/thetus-uikit/overrides/toolbar/Separator.js");
+Ext.Loader.loadScript("packages/savanna-theme/overrides/toolbar/Paging.js");
 Ext.Loader.loadScript("packages/thetus-uikit/overrides/form/field/Number.js");
 Ext.Loader.loadScript("packages/thetus-uikit/overrides/picker/Month.js");
 Ext.Loader.loadScript("packages/thetus-uikit/overrides/menu/Item.js");
