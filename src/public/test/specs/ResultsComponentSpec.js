@@ -702,10 +702,13 @@ describe('Search Results', function () {
 
                     view.updateDalStatus('mockDAL', 'success');
 
+                    /* Changed to now test for the class based loading icons */
                     var myDal = view.queryById('mockDAL'),
-                        green = 'rgb(0, 128, 0)';
+                        myClasses = myDal.down('#dalStatusIcon').getEl().getAttribute('class'),
+                        myClassReg = /\bicon-success\b/,
+                        successEval = myClassReg.test(myClasses);
 
-                    expect(myDal.down('#dalStatusIcon').getEl().getStyle('backgroundColor')).toEqual(green);
+                    expect(successEval).toEqual(true);
 
                 });
 
@@ -725,10 +728,13 @@ describe('Search Results', function () {
 
                     view.updateDalStatus('mockDAL', 'fail');
 
+                    /* Changed to now test for the class based loading icons */
                     var myDal = view.queryById('mockDAL'),
-                        red = 'rgb(255, 0, 0)';
+                        myClasses = myDal.down('#dalStatusIcon').getEl().getAttribute('class'),
+                        myClassReg = /\bicon-alert\b/,
+                        failureEval = myClassReg.test(myClasses);
 
-                    expect(myDal.down('#dalStatusIcon').getEl().getStyle('backgroundColor')).toEqual(red);
+                    expect(failureEval).toEqual(true);
                 });
 
                 it('should set the DAL item label based on a DAL id and status', function () {
