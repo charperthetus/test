@@ -1,14 +1,20 @@
 // Extending tabs
-Ext.define('Savanna.components.autoComplete.Tag', {
+Ext.define('Savanna.components.tags.Tag', {
     extend: 'Ext.tab.Tab',
     
     alias: 'widget.autocomplete_tags',
 
-    requires: ['Savanna.components.autoComplete.TagsController'],
+    requires: ['Savanna.components.tags.TagsController'],
     
-    controller: 'Savanna.components.autoComplete.TagsController',
+    controller: 'Savanna.components.tags.TagsController',
     
     closable: true,
+
+    ui:'grey',
+    
+    style:{
+    	position:'relative'
+    },
     
     bubbleEvents: ['Tag:RemoveSearchTerm'],
     

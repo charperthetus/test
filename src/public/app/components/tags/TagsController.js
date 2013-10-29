@@ -1,4 +1,4 @@
-Ext.define('Savanna.components.autoComplete.TagsController',{
+Ext.define('Savanna.components.tags.TagsController',{
     extend: 'Deft.mvc.ViewController',
 
     control: {
