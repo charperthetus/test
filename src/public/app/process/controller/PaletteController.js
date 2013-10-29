@@ -121,7 +121,7 @@ Ext.define('Savanna.process.controller.PaletteController', {
 
     createPaletteNode: function(categoryText, labelText) {
         return Ext.create('Savanna.process.model.Node', {
-            uri:                '',
+            uri:                Savanna.process.utils.ProcessUtils.getURI(categoryText),
             label:              labelText,
             type:               categoryText,
             modifiedBy:         '',
@@ -129,8 +129,7 @@ Ext.define('Savanna.process.controller.PaletteController', {
             preview:            '',
             primaryImageUrl:    '',
             workflowState:      '',
-            classification:     '',
-            key:                Savanna.process.utils.ProcessUtils.getURI(categoryText) //todo: should we create a key here?
+            classification:     ''
         });
     }
 });

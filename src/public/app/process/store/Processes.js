@@ -28,7 +28,7 @@ Ext.define('Savanna.process.store.Processes', {
             type: 'savanna-cors',
             url: SavannaConfig.processUrl,
             modifyRequest: function(request) {
-                if('update' == request.action) {
+                if('update' == request.action || 'create' == request.action) {
                     // Must put, not push.  So sayeth endpoint.
                     request.method = 'PUT';
                 }

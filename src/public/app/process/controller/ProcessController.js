@@ -140,6 +140,7 @@ Ext.define('Savanna.process.controller.ProcessController', {
 
     load: function(diagram, rec) {
         diagram.model = go.GraphObject.make(go.GraphLinksModel, {
+            nodeKeyProperty: rec.get('nodeKeyProperty'),
             nodeDataArray: rec.get('nodeDataArray'),
             linkDataArray: rec.get('linkDataArray')
         });
@@ -147,7 +148,8 @@ Ext.define('Savanna.process.controller.ProcessController', {
     },
 
     clear: function(diagram, textarea) {
-        var newProcess = { class: 'go.GraphLinksModel', nodeDataArray: [ {key:-1, category:'Start'} ], linkDataArray: [ ]};
+        var newProcess = {'class': 'go.GraphLinksModel', 'nodeKeyProperty': 'uri', 'nodeDataArray': [{'uri':-1, 'category':'Start'}], 'linkDataArray': []};
+        newProcess.uri = Savanna.process.utils.ProcessUtils.getURI('ProcessModel');
         this.store.add(newProcess);
         this.load(diagram, this.store.first());
         this.showDiagramJSON(diagram, textarea);
