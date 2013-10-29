@@ -47,9 +47,9 @@ Ext.define('Savanna.itemView.view.relatedProcesses.RelatedProcesses', {
     renderValues: function(value) {
         var returnStr = '';
         Ext.each(value, function(val) {
-            returnStr += val.label + ', ';
+            returnStr += val.label + ',&nbsp;&nbsp;';
         });
 
-        return returnStr.replace(/,\s$/, '');
+        return returnStr.replace(/,&nbsp;&nbsp;$/, '');
     }
 });

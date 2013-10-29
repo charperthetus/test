@@ -17,25 +17,25 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
         'Savanna.search.controller.resultsComponent.resultsDals.ResultsRefineTermController'
     ],
     controller: 'Savanna.search.controller.resultsComponent.resultsDals.ResultsRefineTermController',
-    minWidth:30,
-    bodyPadding:2,
-    border:true,
-    cls:'refine-term',
 
+    cls:'refine-term',
+    
     setTerm:function(term)  {
         this.queryById('termValue').setText(term);
     },
 
     items: [
         {
-            xtype: 'text',
+            xtype: 'label',
             itemId: 'termValue',
+            height:22,
             text: ''
         },
         {
             xtype: 'button',
             itemId: 'removeTerm',
-            text: 'x',
+            glyph:'closeRollout',
+            height:22,
             style: {
                 background: 'transparent',
                 border: 'none'
