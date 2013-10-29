@@ -265,14 +265,7 @@ Ext.define('Savanna.process.controller.ProcessController', {
 
     loadInitialJSON: function () {
         this.clearJSONClick();
-//        var me = this;
-//        var metadata = this.getMetadata();
-//
-//        me.loadJSON(function(rec) {
-//            me.load(me.getCanvas().diagram, rec);
-//            me.showDiagramJSON(me.getCanvas().diagram, metadata.down('#JSONtextarea'));
-//            me.setupCanvasDrop(me.getCanvas());
-//        });
+        this.setupCanvasDrop(this.getCanvas());
     },
 
     loadJSON: function (callbackFunc) {
