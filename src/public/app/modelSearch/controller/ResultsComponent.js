@@ -37,7 +37,7 @@ Ext.define('Savanna.modelSearch.controller.ResultsComponent', {
 
 
                     //grid notifications
-                    me.component.on('search:grid:itemdblclick', this.onItemPreview, this);
+                    me.component.on('search:grid:itemdblclick', this.onItemDoubleClick, this);
                     me.component.on('search:grid:itemclick', this.onItemClick, this);
                     me.component.on('search:grid:itemmouseenter', this.onItemMouseEnter, this);
                     me.component.on('search:grid:itemmouseleave', this.onItemMouseLeave, this);
@@ -301,14 +301,9 @@ Ext.define('Savanna.modelSearch.controller.ResultsComponent', {
         }
     },
 
-    onItemPreview: function (grid, record, node, index) {
-        this.resultsGrid = grid;
-        this.resultsStore = grid.store;
-        //gaaaahhh    the index passed in does not include all the pages that have come before.
-        //gaaaahhh*10 the current page is 1-based.
-        this.previewIndex = index + (this.resultsStore.currentPage - 1) * (this.resultsStore.pageSize);
-        //We don't need this feature in this release.  Uncomment to restore function.
-        //this.updatePreview();
+    //double click handler
+    onItemDoubleClick: function (grid, record, node, index) {
+        this.openUri(record);
     },
 
     onItemMouseEnter: function (view, rec, node) {    // other parameters: , index, e, options
@@ -324,7 +319,7 @@ Ext.define('Savanna.modelSearch.controller.ResultsComponent', {
     onItemClick: function (view, rec, node, index, e) {  //other parameter options
         if (e && e.target && e.target.id) {
             if (e.target.id === 'openButton') {
-                this.openUri(rec.data.uri);
+                this.openUri(rec);
             }
         }
     },
@@ -339,8 +334,9 @@ Ext.define('Savanna.modelSearch.controller.ResultsComponent', {
         }
     },
 
-    openUri: function(){
-        //todo open the uri...
+    openUri: function(rec){
+        //type will be "item" or "process"
+        EventHub.fireEvent('open', {uri: rec.data.uri, type: rec.data.type, label: rec.data.label});
     },
 
     onNextItemPreview: function () {
