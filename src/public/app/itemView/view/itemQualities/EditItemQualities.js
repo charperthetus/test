@@ -31,8 +31,8 @@ Ext.define('Savanna.itemView.view.itemQualities.EditItemQualities', {
             labelType: 'Click to Add a Property',
             width: '35%',
             store: Ext.create('Savanna.itemView.store.AutoCompleteStore', {
-                urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/mockModelSearch/keyword/qualities',
-                paramsObj: {excludeUri:'asdf', pageStart:0, pageLimit:10}
+                urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/model/fakeuri/qualities',
+                paramsObj: {excludeUri:'asdf', pageStart:0, pageLimit:10, pageSize: 20, alphabetical: true}
             })
         },
         {

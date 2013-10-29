@@ -141,8 +141,8 @@ Ext.define('Savanna.itemView.view.itemQualities.QualitiesPicker', {
     afterRender: function () {
         this.callParent(arguments);
         this.store = Ext.create(this.store, {
-            urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/mockModelSearch/keyword/qualities',
-            paramsObj: {excludeUri:'', pageStart:0, pageLimit:10, keyword: ''}
+            urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/model/fakeuri/qualities',
+            paramsObj: {excludeUri:'asdf', pageStart:0, pageLimit:10, pageSize: 20, alphabetical: true, q:"h"}
         });
 
         this.store.load({
