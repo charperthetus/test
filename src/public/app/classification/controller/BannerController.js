@@ -7,10 +7,10 @@ Ext.define('Savanna.classification.controller.BannerController', {
 
     init: function() {
         var me = this;
-        var uri = me.getView().ownerCt.getItemURI();
+        var uri = me.getView().ownerCt.getItemUri();
         if(uri) {
             Ext.Ajax.request({
-                url: SavannaConfig.capcoUrl + encodeURI(uri) + ';jsessionid=' + Savanna.jsessionid,
+                url: SavannaConfig.capcoUrl + 'formatted/uri/' + uri + ';jsessionid=' + Savanna.jsessionid,
                 success: me.onSuccess,
                 scope: me
             });
