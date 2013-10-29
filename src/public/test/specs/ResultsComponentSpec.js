@@ -77,7 +77,8 @@ describe('Search Results', function () {
         });
 
         describe('Results Toolbar subview', function () {
-            it('should apply a select handler to the "Sort By" combobox', function () {
+            /* hiding this test because this component has been removed for the time being. */
+            /*it('should apply a select handler to the "Sort By" combobox', function () {
                 var combo = resultsComponent.down('#resultsSortByCombobox');
 
                 combo.removeListener('select');
@@ -85,7 +86,7 @@ describe('Search Results', function () {
                 resultsController.init();
 
                 expect(combo.hasListener('select')).toBeTruthy();
-            });
+            });*/
 
             it('should apply a select handler to the "Results Per Page" combobox', function () {
                 var combo = resultsComponent.down('#resultsPageSizeCombobox');
@@ -702,10 +703,13 @@ describe('Search Results', function () {
 
                     view.updateDalStatus('mockDAL', 'success');
 
+                    /* Changed to now test for the class based loading icons */
                     var myDal = view.queryById('mockDAL'),
-                        green = 'rgb(0, 128, 0)';
+                        myClasses = myDal.down('#dalStatusIcon').getEl().getAttribute('class'),
+                        myClassReg = /\bicon-success\b/,
+                        successEval = myClassReg.test(myClasses);
 
-                    expect(myDal.down('#dalStatusIcon').getEl().getStyle('backgroundColor')).toEqual(green);
+                    expect(successEval).toEqual(true);
 
                 });
 
@@ -725,10 +729,13 @@ describe('Search Results', function () {
 
                     view.updateDalStatus('mockDAL', 'fail');
 
+                    /* Changed to now test for the class based loading icons */
                     var myDal = view.queryById('mockDAL'),
-                        red = 'rgb(255, 0, 0)';
+                        myClasses = myDal.down('#dalStatusIcon').getEl().getAttribute('class'),
+                        myClassReg = /\bicon-alert\b/,
+                        failureEval = myClassReg.test(myClasses);
 
-                    expect(myDal.down('#dalStatusIcon').getEl().getStyle('backgroundColor')).toEqual(red);
+                    expect(failureEval).toEqual(true);
                 });
 
                 it('should set the DAL item label based on a DAL id and status', function () {
@@ -827,7 +834,7 @@ describe('Search Results', function () {
             });
 
             it('should have a paging toolbar', function () {
-                expect(grid.queryById('gridtoolbar') instanceof Ext.toolbar.Paging).toBeTruthy();
+                expect(grid.up('search_resultspanel').queryById('gridtoolbar') instanceof Ext.toolbar.Paging).toBeTruthy();
             });
 
 
