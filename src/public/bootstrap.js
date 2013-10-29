@@ -12,8 +12,8 @@ Ext.Loader.addClassPathMappings({
   "Ext.rtl.EventObjectImpl": "ext/src/rtl/EventObject.js",
   "ThetusUikit.layout": "packages/thetus-uikit/overrides/layout",
   "Savanna.metadata.view.String": "app/metadata/view/string.js",
-  "ThetusUikit.toolbar": "packages/thetus-uikit/overrides/toolbar",
   "Savanna-Theme": "packages/savanna-theme/overrides",
+  "ThetusUikit.toolbar": "packages/thetus-uikit/overrides/toolbar",
   "ThetusUikit.tip": "packages/thetus-uikit/overrides/tip",
   "Deft.InjectableComponent": "packages/deft/src/js/ioc/Injector.js",
   "ThetusUikit.button": "packages/thetus-uikit/overrides/button",
@@ -164,6 +164,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "Savanna.process.view.part.Toolbar": [],
   "Deft.InjectableComponent": [],
   "Savanna.search.controller.resultsComponent.ResultsPanelToolbarController": [],
+  "Savanna.search.view.searchComponent.searchBody.searchMap.FeaturePopUp": [],
   "Savanna.modelSearch.view.searchComponent.searchBar.SearchAdvancedTextfield": [],
   "Savanna.modelSearch.store.SearchResults": [],
   "Savanna.upload.model.UploadItem": [],
@@ -634,6 +635,9 @@ Ext.ClassManager.addNameAliasMappings({
   ],
   "Deft.InjectableComponent": [],
   "Savanna.search.controller.resultsComponent.ResultsPanelToolbarController": [],
+  "Savanna.search.view.searchComponent.searchBody.searchMap.FeaturePopUp": [
+    "widget.search_featurepopup"
+  ],
   "Savanna.modelSearch.view.searchComponent.searchBar.SearchAdvancedTextfield": [
     "widget.model_searchadvanced_textfield"
   ],
