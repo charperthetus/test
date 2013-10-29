@@ -86,10 +86,6 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
                             itemId: 'previewclosebutton'
                         }
                     ]
-                },
-                {
-                    xtype: 'classification_banner',
-                    width: 620
                 }
             ]
         }

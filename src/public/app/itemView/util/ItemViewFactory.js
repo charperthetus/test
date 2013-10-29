@@ -9,11 +9,7 @@ Ext.define('Savanna.itemView.util.ItemViewFactory', {
             return Ext.create('Savanna.itemView.view.ItemViewer', {
                 title: label,
                 itemUri: encodeURI(uri),
-                closable: true,
-                autoScroll: true,
-                tabConfig: {
-                    ui: 'dark'
-                }
+                autoScroll: true
             });
         }else {
             return null;
