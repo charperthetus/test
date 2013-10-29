@@ -37,80 +37,50 @@ Ext.define('Savanna.image.view.part.ImageViewer', {
 
         me.items = [{
             xtype: 'toolbar',
-            height: '30',
-            ui: 'testtoolbar',
             defaults: {
                 tooltipType: 'title'
             },
             items: [{
                 xtype: 'button',
-                width:25,
-                height:25,
-                ui: 'icon-dark',
-                cls: 'uploadButtonFramework',
                 tooltip: me.tooltips.stretchHorizontally,
                 itemId:'fitWideButton',
-                //text: 'fit wide',
+                text: 'fit wide',
                 listeners: { click: me.stretchHorizontally, scope: me }
             }, {
                 xtype: 'button',
-                width:25,
-                height:25,
-                ui: 'icon-dark',
-                cls: 'uploadButtonFramework',
                 tooltip: me.tooltips.stretchVertically,
                 itemId:'fitHighButton',
-                //text: 'fit high',
+                text: 'fit high',
                 listeners: { click: me.stretchVertically, scope: me }
             }, {
                 xtype: 'button',
-                width:25,
-                height:25,
-                ui: 'icon-dark',
-                cls: 'uploadButtonFramework',
                 tooltip: me.tooltips.stretchOptimally,
                 itemId:'fitToTabButton',
-                //text: 'fit to tab',
+                text: 'fit to tab',
                 listeners: { click: me.stretchOptimally, scope: me }
             }, {
                 xtype: 'button',
-                width:25,
-                height:25,
-                ui: 'icon-dark',
-                cls: 'uploadButtonFramework',
                 tooltip: me.tooltips.zoomIn,
                 itemId:'zoomInButton',
-                //text: 'zoom in',
+                text: 'zoom in',
                 listeners: { click: me.zoomIn, scope: me }
             }, {
                 xtype: 'button',
-                width:25,
-                height:25,
-                ui: 'icon-dark',
-                cls: 'uploadButtonFramework',
                 tooltip: me.tooltips.zoomOut,
                 itemId:'zoomOutButton',
-                //text: 'zoom out',
+                text: 'zoom out',
                 listeners: { click: me.zoomOut, scope: me }
             }, {
                 xtype: 'button',
-                width:25,
-                height:25,
-                ui: 'icon-dark',
-                cls: 'uploadButtonFramework',
                 tooltip: me.tooltips.rotateClockwise,
                 itemId:'rotateClockwiseButton',
-                //text: 'rotate clockwise',
+                text: 'rotate clockwise',
                 listeners: { click: me.rotateClockwise, scope: me }
             }, {
                 xtype: 'button',
-                width:25,
-                height:25,
-                ui: 'icon-dark',
-                cls: 'uploadButtonFramework',
                 tooltip: me.tooltips.rotateAntiClockwise,
                 itemId:'rotateCounterClockwiseButton',
-                //text: 'rotate counterclockwise',
+                text: 'rotate counterclockwise',
                 listeners: { click: me.rotateAntiClockwise, scope: me }
             }]
         }, {
