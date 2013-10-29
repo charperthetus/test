@@ -26,14 +26,16 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
 
     items: [
         {
-            xtype: 'text',
+            xtype: 'label',
             itemId: 'termValue',
+            height:22,
             text: ''
         },
         {
             xtype: 'button',
             itemId: 'removeTerm',
-            text: 'x',
+            glyph:'closeRollout',
+            height:22,
             style: {
                 background: 'transparent',
                 border: 'none'

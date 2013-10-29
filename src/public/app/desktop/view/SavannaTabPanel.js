@@ -89,6 +89,8 @@ Ext.define('Savanna.desktop.view.SavannaTabPanel', {
      *  The deft control configuration will not work because the menu items are not children of this view.
      *  Dispatch events off of this view so they can be caught by the deft controller.
      */
+
+    // TODO: this is a temporary measure to open items w/o Model Search working
     itemHandler: function() {
         this.fireEvent('createitem', this);
     },
