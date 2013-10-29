@@ -227,6 +227,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "Ext.ux.Spotlight": [],
   "Ext.ux.grid.FiltersFeature": [],
   "Savanna-Theme.panel.Panel": [],
+  "Savanna.components.tags.Tag": [],
   "Savanna.utils.CorsAjax": [],
   "Savanna.itemView.controller.RelatedProcessesController": [],
   "Savanna.modelSearch.view.ModelSearchHeader": [],
@@ -418,6 +419,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "Ext.ux.ajax.JsonSimlet": [],
   "Savanna.search.model.dalSource.CustomSearchParameter": [],
   "Savanna.search.view.searchComponent.SearchBar": [],
+  "Savanna.components.tags.TagsController": [],
   "Savanna.modelSearch.view.searchComponent.searchBody.searchDals.CustomGroup": [],
   "Savanna.search.view.searchComponent.searchBody.searchDals.CustomSearchGroupForm": []
 });
@@ -781,6 +783,9 @@ Ext.ClassManager.addNameAliasMappings({
     "feature.filters"
   ],
   "Savanna-Theme.panel.Panel": [],
+  "Savanna.components.tags.Tag": [
+    "widget.autocomplete_tags"
+  ],
   "Savanna.utils.CorsAjax": [],
   "Savanna.itemView.controller.RelatedProcessesController": [],
   "Savanna.modelSearch.view.ModelSearchHeader": [
@@ -1109,6 +1114,7 @@ Ext.ClassManager.addNameAliasMappings({
   "Savanna.search.view.searchComponent.SearchBar": [
     "widget.search_searchbar"
   ],
+  "Savanna.components.tags.TagsController": [],
   "Savanna.modelSearch.view.searchComponent.searchBody.searchDals.CustomGroup": [
     "widget.model_searchDals_custom-group"
   ],
