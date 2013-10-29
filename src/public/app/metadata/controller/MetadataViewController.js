@@ -12,6 +12,7 @@ Ext.define('Savanna.metadata.controller.MetadataViewController', {
         'Savanna.metadata.view.String',
         'Savanna.metadata.view.StringVerticalEdit',
         'Savanna.metadata.view.Classification',
+        'Savanna.metadata.view.Title',
         'Savanna.metadata.view.Date',
         'Savanna.metadata.view.Uri',
         'Savanna.metadata.view.Integer',
