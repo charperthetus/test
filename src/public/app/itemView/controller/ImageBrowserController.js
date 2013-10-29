@@ -1,48 +1,76 @@
-/**
- * @class Savanna.itemView.controller.ImageBrowserController
- * @extends extendsClass
- * Description
- */
 Ext.define('Savanna.itemView.controller.ImageBrowserController', {
     extend: 'Deft.mvc.ViewController',
-    
-    views: [
-        'Savanna.itemView.view.imageBrowser.ImagesGrid',
-        'Savanna.itemView.view.imageBrowser.ImagesThumbnail'
-    ],
+
+    view: 'Savanna.itemView.view.imageBrowser.ImagesGrid',
 
     control: {
-        nav_left: {
-            click:'onNavLeft'
+        view: {
+            'ViewImagesGrid:Setup': 'buildImageGallery'
         },
-        nav_right: {
-            click: 'onNavRight'
+        navLeft: {
+            live: true,
+            listeners: {
+                click: {
+                    fn: 'onNavLeft'
+                }
+            }
+        },
+        navRight: {
+            live: true,
+            listeners: {
+                click: {
+                    fn: 'onNavRight'
+                }
+            }
+        },
+        itemview_imagethumbnail: {
+            live: true,
+            selector: 'panel itemview_imagethumbnail',
+            listeners: {
+                click: {
+                    element: 'el',
+                    fn: 'onChangeImage'
+                }
+            }
         }
     },
+    buildImageGallery: function(images) {
+        var me = this,
+            thumbnailDimensions = {
+                width: 100,
+                height: 100
+            };
+        
+        Ext.Array.each(images, function() {
+            var thumbnail = Ext.create('Savanna.itemView.view.imageBrowser.ImageThumbnail', {
+                src: SavannaConfig.savannaUrlRoot + 'rest/document/' + encodeURI(this.raw.uri) + '/thumbnail/',
+                alt: this.raw.description,
+                title: this.raw.label
+            });
+            me.getView().queryById('thumbnailList').add(thumbnail);
 
-    init: function() {
-        return this.callParent(arguments);
+            if (this.raw.primaryImage) {
+                me.onChangeImage(null, this);
+            }
+        });
     },
-
     // Scroll Left Button
     onNavLeft: function() {
-        var gallery = Ext.ComponentQuery.query('#thumbnail_list')[0];
+        var gallery = this.getView().queryById('thumbnailList');
         gallery.scrollBy(-450, 0, true);
     },
-
     // Scroll Right Button
     onNavRight: function() {
-        var gallery = Ext.ComponentQuery.query('#thumbnail_list')[0];
+        var gallery = this.getView().queryById('thumbnailList');
         gallery.scrollBy(450, 0, true);
     },
-
     // Selecting an image to expand
     onChangeImage: function(btn, image) {
         var selectedImage = image.src,
             title = (image.title) ? image.title : 'No title',
             description = (image.alt) ? image.alt : 'No description',
-            jumboImage = Ext.ComponentQuery.query('#image_primary')[0],
-            jumboMeta = Ext.ComponentQuery.query('#image_text')[0],
+            jumboImage = this.getView().queryById('imagePrimary'),
+            jumboMeta = this.getView().queryById('imageText'),
             imageWidth = image.naturalWidth,
             imageHeight = image.naturalHeight;
 
