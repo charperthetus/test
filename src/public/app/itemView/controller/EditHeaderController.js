@@ -13,6 +13,8 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
         'Savanna.itemView.view.header.EditHeader'
     ],
 
+    propNameArray: [],
+
     control: {
         view: {
             'EditHeader:StoreSet': 'storeSet'
@@ -48,6 +50,7 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
 
         Ext.each(me.getView().store.getById('Intended Use').data.values, function(value) {
             me.getView().queryById('addIntendedUseBox').addTag(value.label);
+            me.propNameArray.push(value.label);
         });
 
         me.getView().queryById('parentBtn').setText(me.getView().store.getById('Type').data.values[0].label);
@@ -65,10 +68,23 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
     },
 
     onIntendedUsesSelect:function() {
-        Ext.create('Savanna.itemView.view.header.AddIntendedUses', {
-            width: 400,
-            height: 300
+        var vChooser = Ext.create('Savanna.itemView.view.itemQualities.ValuesPicker', {
+            width: 500,
+            height: 600,
+            selectionStore: this.getView().store.getById("Intended Use").valuesStore,
+            valNameArray: this.propNameArray
         });
+
+        vChooser.on('close', this.closedVPicker, this);
+    },
+
+    closedVPicker: function(view) {
+//        if (view.updatedStore) {
+//            this.getView().removeAll();
+//            this.propNameArray = [];
+//            this.storeHelper.updateMainStore(this.getView().store.data.items, "Properties");
+//            this.storeSet();
+//        }
     },
 
     addingAlias: function(tagName, tagData, aView) {
@@ -81,10 +97,12 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
 
     addingIntendedUse: function(tagName, tagData, aView) {
         this.addingTag(tagName, tagData, this.getView().store.getById('Intended Use').data.values);
+        this.propNameArray.push(tagName);
     },
 
     removingIntendedUse: function(tagName, aView) {
         this.removingTag(tagName, this.getView().store.getById('Intended Use').data.values);
+        Ext.Array.remove(this.propNameArray, tagName);
     },
 
     addingTag: function(tagName, tagData, tagArray) {

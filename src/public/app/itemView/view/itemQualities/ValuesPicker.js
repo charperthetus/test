@@ -1,28 +1,28 @@
 /**
  * Created with IntelliJ IDEA.
  * User: bjohnson
- * Date: 10/26/13
- * Time: 12:46 PM
+ * Date: 10/28/13
+ * Time: 12:59 PM
  * To change this template use File | Settings | File Templates.
  */
 
-Ext.define('Savanna.itemView.view.itemQualities.QualitiesPicker', {
+Ext.define('Savanna.itemView.view.itemQualities.ValuesPicker', {
     extend: 'Ext.window.Window',
 
-    alias: 'widget.itemview_qualities_picker',
+    alias: 'widget.itemview_values_picker',
 
-    title: 'Add Qualities',
+    title: 'Add Values',
 
     requires: [
         'Savanna.itemView.store.AutoCompleteStore',
-        'Savanna.itemView.controller.QualitiesPickerController'
+        'Savanna.itemView.controller.ValuesPickerController'
     ],
 
-    controller: 'Savanna.itemView.controller.QualitiesPickerController',
+    controller: 'Savanna.itemView.controller.ValuesPickerController',
 
     config: {
         selectionStore: null,
-        propNameArray: []
+        valNameArray: []
     },
 
     updatedStore: false,
@@ -39,34 +39,10 @@ Ext.define('Savanna.itemView.view.itemQualities.QualitiesPicker', {
 
     items: [
         {
-            xtype: 'label',
-            text: 'Available Quality'
-        },
-        {
-            xtype: 'container',
-            layout: 'hbox',
-            width: '100%',
-            items: [
-                {
-                    xtype: 'textfield',
-                    flex: 1,
-                    emptyText: 'Find a Quality'
-                },
-                {
-                    xtype: 'button',
-                    text: 'Search'
-                },
-                {
-                    xtype: 'button',
-                    text: 'Clear'
-                }
-            ]
-        },
-        {
             xtype: 'grid',
-            title: '',
+            title: 'Available Values',
             padding: '0 0 15 0',
-            itemId: 'availableQualitiesGroup',
+            itemId: 'availableValuesGroup',
             height: 285,
             width: '100%',
             hideHeaders: true,
@@ -79,21 +55,17 @@ Ext.define('Savanna.itemView.view.itemQualities.QualitiesPicker', {
                     flex: 1,
                     tpl: Ext.create('Ext.XTemplate',
                         '<tpl if="selected">',
-//                            '<tpl if="editable">',
-//                                '<input type="checkbox" id="qualityCheck" checked/>&nbsp;&nbsp;&nbsp;&nbsp;{label}',
-//                            '<tpl else>',
-                                '<input type="checkbox" id="qualityCheck" checked disabled/>&nbsp;&nbsp;&nbsp;&nbsp;{label}',
-//                            '</tpl>',
+                            '<input type="checkbox" id="valueCheck" checked/>&nbsp;&nbsp;&nbsp;&nbsp;{label}',
                         '<tpl else>',
-                            '<input type="checkbox" id="qualityCheck"/>&nbsp;&nbsp;&nbsp;&nbsp;{label}',
+                            '<input type="checkbox" id="valueCheck"/>&nbsp;&nbsp;&nbsp;&nbsp;{label}',
                         '</tpl>')
                 }
             ]
         },
         {
             xtype: 'grid',
-            title: 'Selected Quality',
-            itemId: 'selectedQualitiesGroup',
+            title: 'Selected Values',
+            itemId: 'selectedValuesGroup',
             height: 150,
             width: '100%',
             hideHeaders: true,
@@ -107,16 +79,7 @@ Ext.define('Savanna.itemView.view.itemQualities.QualitiesPicker', {
                 {
                     xtype: 'templatecolumn',
                     dataIndex: 'label',
-                    flex: 1,
-                    tpl: Ext.create('Ext.XTemplate',
-                        '<tpl for="values" between=", ">',
-                            '{value}',
-                        '</tpl>')
-                },
-                {
-                    xtype: 'templatecolumn',
-                    dataIndex: 'label',
-                    tpl: '<input type="button" value="x" id="removeSelectedQuality">'
+                    tpl: '<input type="button" value="x" id="removeSelectedValue">'
                 }
             ]
         }
@@ -141,7 +104,7 @@ Ext.define('Savanna.itemView.view.itemQualities.QualitiesPicker', {
     afterRender: function () {
         this.callParent(arguments);
         this.store = Ext.create(this.store, {
-            urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/mockModelSearch/keyword/qualities',
+            urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/mockModelSearch/keyword/property/propUri',
             paramsObj: {excludeUri:'', pageStart:0, pageLimit:10, keyword: ''}
         });
 
@@ -154,20 +117,20 @@ Ext.define('Savanna.itemView.view.itemQualities.QualitiesPicker', {
     handleRecordDataRequestSuccess: function (record, operation, success) {
         if (success) {
             var me = this;
-            var qualitiesSelectStore = Ext.create('Ext.data.JsonStore', {
+            var valuesSelectStore = Ext.create('Ext.data.JsonStore', {
                 recordType: this.getSelectionStore().recordType,
                 model: this.getSelectionStore().model
             });
 
             Ext.each(this.store.data.items, function(value) {
-                if (Ext.Array.contains(me.getPropNameArray(), value.data.label)) {
+                if (Ext.Array.contains(me.getValNameArray(), value.data.label)) {
                     value.data.selected = true;
                 }
             });
 
-            qualitiesSelectStore.add(this.getSelectionStore().getRange());
-            this.queryById('selectedQualitiesGroup').reconfigure(qualitiesSelectStore);
-            this.queryById('availableQualitiesGroup').reconfigure(this.store);
+            valuesSelectStore.add(this.getSelectionStore().getRange());
+            this.queryById('selectedValuesGroup').reconfigure(valuesSelectStore);
+            this.queryById('availableValuesGroup').reconfigure(this.store);
         }
     }
 });
