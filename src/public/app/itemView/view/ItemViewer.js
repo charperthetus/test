@@ -32,7 +32,8 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
 
     config: {
         itemUri: null,
-        editMode:false
+        editMode:false,
+        createMode:false
     },
 
     dockedItems: [{
@@ -158,7 +159,8 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                         flex: 1,
                         items: [                            
                             {
-                                xtype: 'itemview_imagesgrid'
+                                xtype: 'itemview_imagesgrid',
+                                itemId: 'itemViewImagesGrid'
                             },
                             {
                                 xtype: 'itemview_view_qualities',

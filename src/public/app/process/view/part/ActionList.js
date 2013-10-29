@@ -15,21 +15,20 @@
 Ext.define('Savanna.process.view.part.ActionList', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.process_actionlist',
-
-    inject: ['processActionStore'],
-
-    config: {
-        processActionStore: null
-    },
+    requires: [
+        'Ext.grid.plugin.DragDrop',
+        'Savanna.process.model.Node'
+    ],
 
     viewConfig: {
         plugins: {
-            dragGroup: 'PalleteActionDrag',
-            dropGroup: 'RNRM-ITEMS',
             ptype: 'gridviewdragdrop',
+            dragGroup: 'RNRM-ITEMS',
+            dropGroup: 'RNRM-ACTIONS', //change to RNRM-ITEMS if we ever want to drag Actions from ModelSearch
             enableDrop: true,
             enableDrag: true
-        }
+        },
+        copy: true
     },
 
     title: 'Actions',
@@ -47,13 +46,73 @@ Ext.define('Savanna.process.view.part.ActionList', {
         {
             xtype: 'textfield',
             itemId: 'actiontext',
-            emptyText: 'Find and Add Actions',
-            width: '100%'
+            emptyText: 'Find and Add Actions'
+        },
+        {
+            //todo: design has this over the grid, I couldn't get that to happen so it is next to the filter text horizontally
+            xtype: 'button',
+            itemId: 'createaction',
+            text: 'Create',
+            hidden: true
         }
     ],
 
     initComponent: function() {
-        this.store = this.getProcessActionStore();
+        //each instance of this grid needs its own store otherwise, a change to the store will result in ALL palettes changing
+        this.store = Ext.create('Ext.data.Store', {
+            model: 'Savanna.process.model.Node',
+            data: [
+
+                {
+                    'uri': '',
+                    'label': 'Filter',
+                    'type': 'Action',
+                    'modifiedBy': '',
+                    'modifiedDate': '',
+                    'preview': '',
+                    'primaryImageUrl': '',
+                    'workflowState': '',
+                    'classification': '',
+                    'key': ''
+                },
+                {
+                    'uri': '',
+                    'label': 'Dissolve',
+                    'type': 'Action',
+                    'modifiedBy': '',
+                    'modifiedDate': '',
+                    'preview': '',
+                    'primaryImageUrl': '',
+                    'workflowState': '',
+                    'classification': '',
+                    'key': ''
+                },
+                {
+                    'uri': '',
+                    'label': 'Mix',
+                    'type': 'Action',
+                    'modifiedBy': '',
+                    'modifiedDate': '',
+                    'preview': '',
+                    'primaryImageUrl': '',
+                    'workflowState': '',
+                    'classification': '',
+                    'key': ''
+                },
+                {
+                    'uri': '',
+                    'label': 'Dry',
+                    'type': 'Action',
+                    'modifiedBy': '',
+                    'modifiedDate': '',
+                    'preview': '',
+                    'primaryImageUrl': '',
+                    'workflowState': '',
+                    'classification': '',
+                    'key': ''
+                }
+            ]
+        });
         this.callParent(arguments);
     }
 });

@@ -52,10 +52,13 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
             me.getView().queryById('addIntendedUseBox').addTag(value.label);
             me.propNameArray.push(value.label);
         });
+        if(me.getView().store.getById('Type').data.values.length)  {
+            me.getView().queryById('parentBtn').setText(me.getView().store.getById('Type').data.values[0].label);
+        }
 
-        me.getView().queryById('parentBtn').setText(me.getView().store.getById('Type').data.values[0].label);
-
-        me.getView().queryById('itemDescription').setValue(me.getView().store.getById('Description').data.values[0].value);
+        if(me.getView().store.getById('Description').data.values.length)  {
+            me.getView().queryById('itemDescription').setValue(me.getView().store.getById('Description').data.values[0].value);
+        }
     },
 
     openParentItem: function() {
@@ -105,19 +108,30 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
         Ext.Array.remove(this.propNameArray, tagName);
     },
 
-    addingTag: function(tagName, tagData, tagArray) {
-        var tagUri = tagData ? tagData.uri : null;
-        var newTag = {editable: true, inheritedFrom: null, label: tagName, uri: tagUri, value: tagName, version: 0};
-        tagArray.push(newTag);
+    addingTag: function(tagName, tagData, vals) {
+        var myStore = Ext.data.StoreManager.lookup('Savanna.itemView.store.MainItemStore'),
+            tagUri = tagData ? tagData.uri : null;
+
+        vals.push({editable: true, inheritedFrom: null, label: tagName, uri: tagUri, value: tagName, version: 0});
+
+        myStore.getRange()[0].setDirty();
     },
 
-    removingTag: function(tagName, tagArray) {
-        for (var i = 0; i < tagArray.length; i++) {
-            if (tagArray[i].label === tagName) {
-                Ext.Array.remove(tagArray, tagArray[i]);
+    removingTag: function(tagName, data) {
+        var myStore = this.getView().store;
+
+        for (var i = 0; i < data.length; i++) {
+            if (data.getAt(i).label === tagName) {
+                Ext.Array.remove(data, data.getAt(i));
                 break;
             }
         }
+
+        myStore.getRange()[0].setDirty();
+    },
+
+    itemUpdateCallback:function(records, action, success)   {
+        console.log(success);
     },
 
     updateDescription: function(comp, e, eOpts) {

@@ -2,6 +2,7 @@
 Ext.define('Savanna.image.view.ImageComponent', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.image_component',
+    imageUri: null,
 
     requires: [
         'Ext.layout.container.VBox',
@@ -15,15 +16,15 @@ Ext.define('Savanna.image.view.ImageComponent', {
     overview: null,
 
     initComponent: function() {
-        this.setImageUri('SolrJdbc%252FImage%252F61b06128-361a-419a-a316-cb6460a94053');// c2aptsav //TODO: Don't fake this.
+        if (this.imageUri){
+            this.loadImage(this.imageUri);
+        }
         this.width = '100%';
         this.height = '100%';
         this.callParent(arguments);
     },
 
-    // CUSTOM METHODS
-
-    setImageUri : function(imageUri){
+    loadImage: function(imageUri){
         this.items = [
             {
                 xtype: 'image_part_imageviewer',

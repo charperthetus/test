@@ -10,10 +10,6 @@ Ext.define('Savanna.metadata.view.BooleanList', {
     extend: 'Savanna.metadata.view.MetadataItemView',
     alias: 'widget.metadata_booleanlist',
 
-    requires: [
-        'Savanna.controller.Factory'
-    ],
-
     items: [
     ],
 

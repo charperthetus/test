@@ -2,8 +2,10 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
     extend: 'Deft.mvc.ViewController',
 
     requires: [
+        'Savanna.desktop.view.SavannaTabPanel',
         'Savanna.process.view.ProcessEditorComponent',
-        'Savanna.metadata.view.Details'
+        'Savanna.metadata.view.Details',
+        'Savanna.itemView.view.createItem.CreateItem'
     ],
 
     control: {
@@ -40,11 +42,15 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
     },
 
     init: function() {
+        //TODO - this is temporary until open is fully working
         Savanna.app.on('search:itemselected', this.showItemView, this);
+
+        EventHub.on('open', this.onOpen, this);
         Savanna.app.on('itemview:createitem', this.createItem, this);
         return this.callParent(arguments);
     },
 
+    //TODO - this is temporary until open is fully working
     showItemView: function (itemView) {
         this.getMaintabpanel().add(itemView);
         this.getMaintabpanel().setActiveTab(itemView)
@@ -123,19 +129,28 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
         }
     },
 
-    createItem: function() {
-
-        var itemView = Ext.create('Savanna.itemView.view.ItemViewer', {
-            title: 'Model Item',
-            itemUri: 'x012f931fec769ca941e8de4f7a674bec2a290937%2FItem',
-            editMode: true,
-            closable: true,
-            autoScroll: true,
-            tabConfig: {
+    onOpen: function(event){
+        var component = ComponentManager.getComponentForType(event.type, event.uri, event.label),
+            tabPanel = this.getMaintabpanel();
+        if (component){
+            component.closable = true;
+            component.tabConfig = {
                 ui: 'dark'
             }
+            var tab = tabPanel.add(component);
+            tabPanel.doLayout();
+            tabPanel.setActiveTab(tab);
+        }else{
+            //TODO - What should I do here?
+        }
+    },
+
+    createItem: function() {
+
+        Ext.create('Savanna.itemView.view.createItem.CreateItem', {
+            width: 850,
+            height: 500
         });
-        Savanna.app.fireEvent('search:itemSelected', itemView);
     },
 
     createProcess: function(tabpanel) {
