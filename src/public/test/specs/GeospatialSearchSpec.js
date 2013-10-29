@@ -17,16 +17,13 @@ Ext.require('Savanna.search.view.searchComponent.SearchToolbar');
 Ext.require('Savanna.search.view.searchComponent.searchBody.SearchMap');
 Ext.require('Savanna.search.view.searchComponent.searchBody.searchMap.SearchLocationComboBox');
 
-
 describe('Search Map Component', function () {
 
-    var dalFixtures;
-    var dalStore;
-    var server;
-    var fixtures;
-    var store;
-
-
+    var dalFixtures,
+        dalStore,
+        server,
+        fixtures,
+        store;
 
     beforeEach(function () {
 
@@ -47,8 +44,6 @@ describe('Search Map Component', function () {
         });
 
         ThetusTestHelpers.ExtHelpers.createTestDom();
-        // create a SearchResults store for results tests
-
     });
 
     afterEach(function () {
@@ -65,30 +60,25 @@ describe('Search Map Component', function () {
 
     describe('View', function () {
 
-        var searchMap = null;
-        var mapCanvas = null;
-        var locationSearch = null;
-        var mapSearchComboBox = null;
-        var searchComponent = null;
-        var resultsComponent = null;
-        var searchMapComponent = null;
-        var resultsController = null;
-        var searchController = null;
-        var mapZoomToPolygonButton = null;
-        var mapClearLocationSearch = null;
-        var mapDrawSearchPolygonButton = null;
+        var searchMap = null,
+            mapCanvas = null,
+            locationSearch = null,
+            mapSearchComboBox = null,
+            searchComponent = null,
+            resultsComponent = null,
+            searchMapComponent = null,
+            resultsController = null,
+            searchController = null,
+            mapZoomToPolygonButton = null,
+            mapClearLocationSearch = null,
+            mapDrawSearchPolygonButton = null;
 
         beforeEach(function () {
             searchComponent = Ext.create('Savanna.search.view.SearchComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
-
             resultsComponent = searchComponent.down('#searchresults');
-
             searchMapComponent = searchComponent.down('#searchMap');
-
             resultsController = Savanna.controller.Factory.getController('Savanna.search.controller.ResultsComponent');
-
             searchController = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
-
             searchMap = searchComponent.down('#searchMap');
             mapCanvas = searchComponent.down('#searchMapCanvas');
             locationSearch = searchComponent.down('#drawLocationSearch');
@@ -111,6 +101,7 @@ describe('Search Map Component', function () {
                 searchMapComponent.destroy();
                 searchMapComponent = null;
             }
+
             resultsController = null;
             searchController = null;
             fixtures = null;
@@ -143,11 +134,11 @@ describe('Search Map Component', function () {
 
     describe('Methods', function () {
 
-        var searchComponent = null;
-        var searchController = null;
-        var resultsController = null;
-        var mapCanvas = null;
-        var mapDrawSearchPolygonButton = null;
+        var searchComponent = null,
+            searchController = null,
+            resultsController = null,
+            mapCanvas = null,
+            mapDrawSearchPolygonButton = null;
 
         beforeEach(function () {
 
@@ -185,15 +176,16 @@ describe('Search Map Component', function () {
                 expect(mapCanvas.map.layers[0]).toBeTruthy();
             });
 
-            it('should create a drawFeature and searchLayer instance', function (){
+            it('should create a drawFeature, modifyFeature and searchLayer instance', function (){
                 expect(mapCanvas.searchLayer).toBeTruthy();
-                expect(mapCanvas.drawFeature).toBeTruthy();
+                expect(mapCanvas.controls.drawFeature).toBeTruthy();
+                expect(mapCanvas.controls.modifyFeature).toBeTruthy();
 
             });
 
             it('should activate the drawFeature instance', function () {
                 searchController.activateDrawFeature(mapDrawSearchPolygonButton);
-                expect(mapCanvas.drawFeature.active).toBeTruthy();
+                expect(mapCanvas.controls.drawFeature.active).toBeTruthy();
             });
 
             it('should zoom to a location search record', function () {
@@ -224,10 +216,10 @@ describe('Search Map Component', function () {
 
             describe('adding a polygon to the map', function () {
 
-                var zoomToButtonMenu = null;
-                var menuSelectedAreaOption = null;
-                var menuWholeWorldOption = null;
-                var mapCanvasOut = null;
+                var zoomToButtonMenu = null,
+                    menuSelectedAreaOption = null,
+                    menuWholeWorldOption = null,
+                    mapCanvasOut = null;
 
                 beforeEach(function () {
                     var points = [
@@ -254,6 +246,10 @@ describe('Search Map Component', function () {
                     expect(mapCanvas.searchLayer.features.length > 0).toBeTruthy();
                     var resultsMap = searchComponent.down('#resultMapCanvas');
                     expect(resultsMap.searchLayer.features.length > 0).toBeTruthy();
+                });
+
+                it('should activate the modifyFeature instance', function () {
+                    expect(mapCanvas.controls.modifyFeature.active).toBeTruthy();
                 });
 
                 it('should enable the zoom to selected area option', function () {
@@ -310,12 +306,10 @@ describe('Search Map Component', function () {
         beforeEach(function() {
             // NOTE: this has to happen BEFORE your create a FakeServer,
             store = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.SearchLocation');
-
-            //server = new ThetusTestHelpers.FakeServer(sinon);
         });
 
         afterEach(function() {
-
+            store = null;
         });
 
         describe('default data loading', function() {
@@ -339,9 +333,5 @@ describe('Search Map Component', function () {
                 expect(store.data.items[0].data.population).toBe(9854000);
             });
         });
-
-
-
     });
-
 });

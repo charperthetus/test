@@ -49,6 +49,12 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
             show = false;
         }
 
+        //never show for nodes contained in an AltsGroup
+        var group = obj.containingGroup;
+        if (group && group.category == 'AltsGroup') {
+            show = false;
+        }
+
         var names = ['LinkGadget','StepGadget','DecisionGadget'];
         for (var i = 0; i < names.length; i++) {
             var gadget = obj.findObject(names[i]);
@@ -189,10 +195,12 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
             return;
         }
 
-        var category = null;
-        var iter = diagram.selection.iterator;
+        var category = null,
+            iter = diagram.selection.iterator,
+            node = null;
+
         while (iter.next()) {
-            var node = iter.value;
+            node = iter.value;
 
             if (!category) {
                 category = node.data.category;
@@ -235,9 +243,9 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
 
         var prevNodeNames = [];
         var outputNode;
-        var iter = diagram.selection.iterator;
+        iter = diagram.selection.iterator;
         while (iter.next()) {
-            var node = iter.value;
+            node = iter.value;
             var nodeText = node.data.text;
             var newLink = { category: 'ProcessLink', from: node.data.key, to: mergeNode.key };
             diagram.model.addLinkData(newLink);
@@ -277,8 +285,68 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
                 bodyElt.background = 'transparent';
             }
         }
-    }
+    },
 
+    addAlts: function(diagram) {
+        if (diagram.selection.count != 1){
+            Ext.Msg.show({
+                title: 'Alternates Error',
+                msg: 'Select one and only one item to add alternates to.', //todo: get final wording for error
+                buttons: Ext.Msg.OK
+            });
+            return;
+        }
+
+        var selItem = diagram.selection.first();
+        if (selItem.category != 'ProcessItem') {
+            Ext.Msg.show({
+                title: 'Alternates Error',
+                msg: 'Select a process item to add alternates to.', //todo: get final wording for error
+                buttons: Ext.Msg.OK
+            });
+            return;
+        }
+
+        diagram.startTransaction('addAlts');
+
+        var altsGroupData = {'category': 'AltsGroup', 'text': 'Alternates', 'isGroup': true};
+        if (selItem.containingGroup) {
+            altsGroupData.group = selItem.containingGroup.data.key;
+        }
+        altsGroupData.key = Savanna.process.utils.ProcessUtils.getURI(altsGroupData.category);
+        diagram.model.addNodeData(altsGroupData);
+
+        var altsGroup = diagram.findNodeForData(altsGroupData);
+
+        selItem.containingGroup = altsGroup;
+
+        // fix up the links.  do in two passes to avoid breaking the iterator
+        var linkIter = selItem.findLinksInto();
+        var link;
+        var links = [];
+        while (linkIter.next()) {
+            link = linkIter.value;
+            links.push(link);
+        }
+
+        while (link = links.pop()) {
+            link.toNode = altsGroup;
+        }
+
+        linkIter = selItem.findLinksOutOf();
+        while (linkIter.next()) {
+            link = linkIter.value;
+            links.push(link);
+        }
+
+        while (link = links.pop()) {
+            link.fromNode = altsGroup;
+        }
+
+        diagram.commitTransaction('addAlts');
+
+        Savanna.process.utils.ProcessUtils.startTextEdit(diagram, altsGroupData);
+    }
 
 
 });
