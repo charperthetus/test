@@ -154,7 +154,7 @@ Ext.define('Savanna.process.controller.PaletteController', {
     beforeItemDrop: function(node, data) {
         //check to see if the user is dragging an item in the same grid view (i.e. reordering rows).
         //if so, disallow it
-        var itemList = this.getItemlist()
+        var itemList = this.getItemlist(),
             returnVal = true;
 
         if (itemList.view === data.view) {
