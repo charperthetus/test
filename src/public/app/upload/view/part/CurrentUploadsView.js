@@ -37,12 +37,12 @@ Ext.define('Savanna.upload.view.part.CurrentUploadsView', {
                     xtype: 'label',
                     text: 'My Uploads',
                     style: 'line-height:37px;',
-                    width: '33%',
+                    width: 115,
                     cls: ['h1', 'dark']
                 },{
                     xtype: 'label',
                     itemId: 'uploadProgressLabel',
-                    width: '33%',
+                    minWidth: 330,
                     style: 'line-height:40px;text-align:center'
                 },{
                     xtype:'tbfill'
