@@ -14,6 +14,7 @@ Ext.define('Savanna.itemView.model.ParentItemsTreeModel', {
         {name: "id"},
         {name: "uri"},
         {name: "hasChildren"},
+        {name: "description"},
         {name: "results"},
         {name: 'leaf', defaultValue: false}
     ]

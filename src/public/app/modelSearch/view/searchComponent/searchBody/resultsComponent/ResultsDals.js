@@ -20,7 +20,11 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
 
     title: 'Refine Search',
     region: 'west',
-
+    headerPosition: 'right',
+    collapsedCls: 'light-blue',
+    header: {
+        ui: 'light-blue'
+    } ,
     /*
      NOTE: to be replaced with a class attribute I'm sure - this just
      here to get the panel to display for development.
@@ -48,8 +52,6 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
         /*
          remove DALs that have been deselected
          */
-
-        var searchPanelDals = this.findParentByType('model_search_searchcomponent').down('#searchdals'); // the dal sources in search options
 
         if (!this.queryById('refinesearch')) {
             this.add(this.createRefineSearchPanel());
@@ -97,7 +99,8 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
 
     createRefineSearchPanel: function () {
         return Ext.create('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineSearchbar', {
-            itemId: 'refinesearch'
+            itemId: 'refinesearch',
+            ui:'left-padding'
         });
     },
 

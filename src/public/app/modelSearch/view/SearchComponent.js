@@ -40,12 +40,6 @@ Ext.define('Savanna.modelSearch.view.SearchComponent', {
         }
     ],
 
-    dockedItems: [
-        {
-            xtype: 'model_search_searchtoolbar',
-            itemId: 'searchtoolbar'
-        }
-    ],
 
     initComponent: function () {
 
