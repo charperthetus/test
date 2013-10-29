@@ -30,6 +30,13 @@ Ext.define('Savanna.itemView.store.MainItemStore', {
             },
             writer: {
                 type: 'json'
+            },
+            modifyRequest: function(request) {
+                if('update' == request.action) {
+                    console.log('------------ UPDATE ------------');
+                    request.method = 'PUT';
+                }
+                return request;
             }
         });
     }

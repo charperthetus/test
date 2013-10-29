@@ -13,6 +13,7 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
         'Savanna.desktop.view.SearchWindow',
         'Savanna.desktop.view.UploadWindow',
         'Savanna.desktop.view.ModelSearchWindow'
+        'Savanna.itemView.view.ItemViewer'
     ],
     statics: {
         aboutwindow: null,
@@ -56,7 +57,7 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
             failure: function(response){
                 //TODO - Add global failure handler
             }
-        });
+        })
 
         Savanna.app.on('initModelSearch', this.displayModelSearch);
 

@@ -6,7 +6,8 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     ],
 
     requires: [
-        'Savanna.itemView.store.MainItemStore'
+        'Savanna.itemView.store.MainItemStore',
+        'Savanna.itemView.view.relatedItems.AddRelationships'
     ],
 
     store: 'Savanna.itemView.store.MainItemStore',
@@ -14,8 +15,50 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     mixins: {
         storeable: 'Savanna.mixin.Storeable'
     },
+
     control: {
-        
+        editModeButton: {
+            click: 'toggleEditMode'
+        },
+        editCancelButton: {
+            click: 'onEditCancel'
+        },
+        editDeleteButton: {
+            click: 'onEditDelete'
+        },
+        editSaveButton: {
+            click: 'onEditSave'
+        },
+        editDoneButton: {
+            click: 'onEditDone'
+        },
+        newItemButton:  {
+            click: 'onNewItemClick'
+        },
+        deleteItemButton:  {
+            click: 'onEditDelete'
+        },
+        workflowButton:  {
+            click: 'onWorkflowSelect'
+        },
+        searchButton:  {
+            click: 'onSearchSelect'
+        },
+        relationshipButton:  {
+            click: 'onRelationshipSelect'
+        },
+        relatedItemsView: {
+            'ItemView:OpenItem': 'openItem'
+        },
+        relatedItemsEdit: {
+            'ItemView:OpenItem': 'openItem'
+        },
+        itemViewHeaderView: {
+            'ItemView:OpenItem': 'openItem'
+        },
+        itemViewHeaderEdit: {
+            'ItemView:OpenItem': 'openItem'
+        }
     },
 
     constructor: function (options) {
@@ -29,9 +72,55 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         return this.callParent(arguments);
     },
 
+    toggleEditMode: function (btn) {
+        if (!this.getView().getEditMode()) {
+            this.getView().getLayout().setActiveItem(1);
+        } else {
+            this.getView().getLayout().setActiveItem(0);
+        }
+
+        this.getView().setEditMode(!this.getView().getEditMode());
+    },
+
+    onEditCancel:function() {
+        this.getView().getLayout().setActiveItem(0);
+        this.getView().setEditMode(!this.getView().getEditMode());
+    },
+
+    onEditDelete:function() {
+       console.log('delete item method');
+    },
+
+    onEditSave:function() {
+        console.log('save item method');
+    },
+
+    onEditDone:function() {
+        var myStore = Ext.data.StoreManager.lookup(this.store);
+        var headerComponent = this.getView().queryById('itemViewHeaderView');
+        headerComponent.reconfigure(myStore.getAt(0).propertyGroupsStore.getById('Header').valuesStore);
+        
+        var qualitiesComponent = this.getView().queryById('itemViewPropertiesView');
+        qualitiesComponent.reconfigure(myStore.getAt(0).propertyGroupsStore.getById('Properties').valuesStore);
+
+        var relatedItemView = this.getView().queryById('relatedItemsView');
+        Ext.each(myStore.getAt(0).propertyGroupsStore.getById('Related Items').valuesStore.data.items, function(group){
+            relatedItemView.queryById('relatedItemGrid_' + group.get('label').replace(/\s/g,'')).reconfigure(group.valueStore);
+        }, this);
+
+        this.getView().getLayout().setActiveItem(0);
+        this.getView().setEditMode(!this.getView().getEditMode());
+
+        myStore.getAt(0).setDirty();
+        myStore.sync();
+    },
+
     getItemViewData: function () {
         var tmpStore = Ext.data.StoreManager.lookup(this.store);
         tmpStore.getProxy().url = this.buildItemDataFetchUrl(this.getView().itemUri);
+        if(this.getView().getCreateMode())  {
+            tmpStore.getProxy().setExtraParam("parentUri", 'thetus%2EArtifactOntology%3AYellowPalmOilContainer%2FModelItemXML');
+        }
         tmpStore.load({
             scope: this,
             callback: this.handleRecordDataRequestSuccess
@@ -39,98 +128,156 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     },
 
     handleRecordDataRequestSuccess: function (record, operation, success) {
-        var headerComponent = this.getView().queryById('itemViewHeader');
-        headerComponent.setTitle(record[0].data.label);
-        headerComponent.reconfigure(record[0].propertyGroupsStore.getAt(0).valuesStore);
+        if (success) {
+            var me = this;
 
-        var processComponent = this.getView().queryById('relatedProcesses');
-        processComponent.setTitle('Participated in Process (' + record[0].kvPairGroupsStore.getAt(0).pairsStore.data.length + ')');
-        processComponent.reconfigure(record[0].kvPairGroupsStore.getAt(0).pairsStore);
+            /*
+            Header View
+             */
+            var headerComponent = me.getView().queryById('itemViewHeaderView');
+            headerComponent.setTitle(record[0].data.label);
+            headerComponent.reconfigure(record[0].propertyGroupsStore.getById('Header').valuesStore);
 
-        var qualitiesComponent = this.getView().queryById('itemViewProperties');
-        qualitiesComponent.setTitle('Qualities (' + record[0].propertyGroupsStore.getAt(3).valuesStore.data.length + ')');
-        qualitiesComponent.reconfigure(record[0].propertyGroupsStore.getAt(3).valuesStore);
+            /*
+            Header Edit
+             */
+            //ToDo: do what needs to be done for edit version of header
+            var headerEditComponent = me.getView().queryById('itemViewHeaderEdit');
+            headerEditComponent.setTitle(record[0].data.label);
+            headerEditComponent.store = record[0].propertyGroupsStore.getById('Header').valuesStore;
+            headerEditComponent.fireEvent('EditHeader:StoreSet');
 
-        var relatedItemView = this.getView().queryById('relatedItems'),
-            me = this;
+            /*
+            Related Processes View
+             */
+            var processComponent = me.getView().queryById('relatedProcessesView');
+            processComponent.setTitle('Participated in Process (' + record[0].kvPairGroupsStore.getById('Related Processes').pairsStore.data.length + ')');
+            processComponent.reconfigure(record[0].kvPairGroupsStore.getById('Related Processes').pairsStore);
 
-        Ext.each(record[0].propertyGroupsStore.getAt(2).valuesStore.data.items, function (relatedItemsGroup) {
+            /*
+            Related Processes Edit
+             */
+            var processEditComponent = me.getView().queryById('relatedProcessesViewEdit');
+            processEditComponent.setTitle('Participated in Process (' + record[0].kvPairGroupsStore.getById('Related Processes').pairsStore.data.length + ')');
+            processEditComponent.reconfigure(record[0].kvPairGroupsStore.getById('Related Processes').pairsStore);
 
-            var grid = Ext.create('Ext.grid.Panel', {
-                store: relatedItemsGroup.valuesStore,
-                columns: [
-                    {
-                        xtype: 'templatecolumn',
-                        tpl: Ext.create('Ext.XTemplate',
-                            '<input type="button" name="{value}" value="{label}" id="openRelatedItem" />'
-                        ),
-                        text: relatedItemsGroup.get('label'),
-                        flex: 1,
-                        sortable: false
-                    }
-                ],
-                listeners: {
-                    itemclick: me.onRelatedItemClick
-                }
-            });
+            /*
+            Related Items View
+             */
+            var relatedItemView = me.getView().queryById('relatedItemsView');
+            relatedItemView.fireEvent('ViewRelatedItems:SetupData', record[0].propertyGroupsStore.getById('Related Items').valuesStore.data.items);
 
-            relatedItemView.add(grid);
 
+            /*
+            Related Items Edit
+             */
+            var relatedItemViewEdit = me.getView().queryById('relatedItemsEdit');
+            relatedItemViewEdit.store = record[0].propertyGroupsStore.getById('Related Items').valuesStore;
+            relatedItemViewEdit.fireEvent('EditRelatedItems:SetupData', record[0].propertyGroupsStore.getById('Related Items').valuesStore.data.items);
+
+            /*
+             Qualities View
+             */
+            var qualitiesComponent = me.getView().queryById('itemViewPropertiesView');
+            qualitiesComponent.setTitle('Qualities (' + record[0].propertyGroupsStore.getById('Properties').valuesStore.data.length + ')');
+            qualitiesComponent.reconfigure(record[0].propertyGroupsStore.getById('Properties').valuesStore);
+
+            /*
+             Qualities Edit
+             */
+            var qualitiesEditComponent = me.getView().queryById('itemViewPropertiesEdit');
+            qualitiesEditComponent.setTitle('Qualities (' + record[0].propertyGroupsStore.getById('Properties').valuesStore.data.length + ')');
+            qualitiesEditComponent.store = record[0].propertyGroupsStore.getById('Properties').valuesStore;
+            qualitiesEditComponent.fireEvent('EditQualities:StoreSet');
+
+            /*
+            Annotation Properties View
+             */
+            var annotationViewComponent = me.getView().queryById('annotationPropertiesView');
+            annotationViewComponent.setTitle('Participated in Process (' + record[0].propertyGroupsStore.getById('Annotations').valuesStore.data.length + ')');
+            annotationViewComponent.reconfigure(record[0].propertyGroupsStore.getById('Annotations').valuesStore);
+
+            /*
+            Annotation Properties Edit
+             */
+            var annotationEditComponent = me.getView().queryById('annotationPropertiesEdit');
+            annotationEditComponent.setTitle('Participated in Process (' + record[0].propertyGroupsStore.getById('Annotations').valuesStore.data.length + ')');
+            annotationEditComponent.reconfigure(record[0].propertyGroupsStore.getById('Annotations').valuesStore);
+
+            /*
+             Images View
+             */
+            var imagesBrowserComponent = me.getView().queryById('itemViewImagesGrid');
+            if(record[0].propertyGroupsStore.getById('Images').valuesStore.getById('Images') !== null)    {
+                imagesBrowserComponent.fireEvent('ViewImagesGrid:Setup', record[0].propertyGroupsStore.getById('Images').valuesStore.getById('Images').valuesStore.data.items);
+            };
+
+
+            /*
+            are we creating a new item?
+             */
+
+            if(me.getView().getEditMode())  {
+                me.getView().getLayout().setActiveItem(1);
+            }
+
+        } else {
+            /*
+            Server down..?
+             */
+            Ext.Error.raise({
+                msg: 'No record return for item URI.'
+            })
+        }
+    },
+
+    onNewItemClick: function(btn)  {
+        Savanna.app.fireEvent('itemview:createitem', btn);
+    },
+
+    onWorkflowSelect:function() {
+        Ext.create('Savanna.itemView.view.workflow.WorkflowSelect', {
+            width: 500,
+            height: 425
         });
     },
 
-    onRelatedItemClick: function (grid, record, item, index, e, eOpts) {
-
-        if (e.target.id == "openRelatedItem") {
-
-            var itemView = Ext.create('Savanna.itemView.view.ItemViewer', {
-                title: e.target.value,
-                itemUri: e.target.name,
-                closable: true,
-                autoScroll: true,
-                tabConfig: {
-                    ui: 'dark'
-                }
-            });
-
-            Savanna.app.fireEvent('search:itemSelected', itemView);
-
-        }
+    onSearchSelect:function() {
+        console.log('search selected');
     },
-    
-    // TODO: Keeping for now in order to pull later into own controller
-    setupDisplayLabel: function (displayLabel, view) {
-        var displayLabelComponent = view.queryById('itemDisplayLabel');
-        displayLabelComponent.update({displayLabel: displayLabel});
-    },
-    
-    // TODO: Keeping for now in order to pull later into own controller
-    setupAliases: function (aliasList, view) {
-        if (aliasList != null && aliasList.length > 0) {
-            var aliasTags = view.down('#itemAlias > auto_complete_with_tags');
 
-            for (var i = 0; i < aliasList.length; i++) {
-                aliasTags.addTerm(aliasList[i]);
-            }
-        }
+    onRelationshipSelect:function() {
+        Ext.create('Savanna.itemView.view.relatedItems.AddRelationships', {
+            width: 400,
+            height: 300
+        });
     },
 
     buildItemDataFetchUrl: function (uri) {
-        //uri = Ext.JSON.decode(uri);
-       uri = encodeURI(uri);
-        return SavannaConfig.itemViewUrl + uri + ';jsessionid=' + Savanna.jsessionid;
+        uri = encodeURI(uri);
+        if(!this.getView().getCreateMode()) {
+            return SavannaConfig.itemViewUrl + uri;
+        }   else    {
+            return SavannaConfig.itemCreateUrl;
+        }
     },
 
-    // TODO: Move to it's own controller for Edit Qualities along with it's handler above
-    handleAddChosenProperty: function (field, evt) {
-        if (evt.keyCode === Ext.EventObject.ENTER) {
-            if (field.getValue().trim().length) {
-                var valArray = new Array();
-                valArray[0] = "Red";
-                valArray[1] = "Blue";
-                field.up('item_edit_qualities').addProp({propName: field.getValue(), propValue: valArray});
-                field.reset();
+    openItem: function (itemName, itemUri) {
+        console.log('itemName',itemName);
+        console.log('itemUri', itemUri);
+        var itemView = Ext.create('Savanna.itemView.view.ItemViewer', {
+            title: itemName,
+            itemUri: itemUri,
+            closable: true,
+            autoScroll: true,
+            tabConfig: {
+                ui: 'dark'
             }
-        }
+        });
+
+        Savanna.app.fireEvent('search:itemSelected', itemView);
+    },
+    deleteRelatedItem: function (itemName, itemUri) {
+
     }
 });

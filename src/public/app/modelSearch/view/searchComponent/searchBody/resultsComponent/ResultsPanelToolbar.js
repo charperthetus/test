@@ -60,14 +60,14 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
                 enableToggle: true,
                 pressed: true,
                 ui: 'basic',
-                glyph: 61442,
+                glyph: 'singleView',
                 itemId: 'singleColumnGridView'
             },
             {
                 xtype: 'button',    //grid
                 enableToggle: true,
                 ui: 'basic',
-                glyph: 61808,
+                glyph: 'multiColumn',
                 itemId: 'multiColumnGridView'
             }
 
