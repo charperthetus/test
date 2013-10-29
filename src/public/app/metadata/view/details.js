@@ -34,6 +34,9 @@ Ext.define('Savanna.metadata.view.Details', {
             xtype: 'panel',
             id: 'wrapperPanel',
             title: 'Information',
+            header: {
+                ui: 'light-blue'
+            },
             height: '100%',
             width: '100%',
             layout: 'vbox',
