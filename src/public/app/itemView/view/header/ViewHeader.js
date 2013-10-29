@@ -39,7 +39,7 @@ Ext.define('Savanna.itemView.view.header.ViewHeader', {
                 '<tpl else>',
                     '<b>{label}&nbsp;&nbsp;</b>',
                     '<tpl for="values" between=",&nbsp;&nbsp;">',
-                        '{value}',
+                        '{label}',
                     '</tpl>',
                 '</tpl>'),
             flex: 1,
