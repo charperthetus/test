@@ -960,29 +960,27 @@ describe('Search Results', function () {
 
         describe('populate map with results', function () {
 
-            var searchStore = null;
-            var fixtures = null;
+            var searchStore = null,
+                fixtures = null;
 
             beforeEach(function () {
 
                 fixtures = Ext.clone(ThetusTestHelpers.Fixtures.SearchResults);
-
                 searchStore = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.SearchResults', { autoLoad: false });
-
                 // now set up server to get store data
                 server = new ThetusTestHelpers.FakeServer(sinon);
-
                 var readMethod = 'POST',
                     testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(searchStore.getProxy(), 'read', readMethod);
-
                 server.respondWith(readMethod, testUrl, fixtures.searchResults);
-
                 searchStore.load();
-
                 server.respond({
                     errorOnInvalidRequest: true
                 });
+            });
 
+            afterEach (function () {
+                searchStore = null;
+                fixtures = null;
             });
 
             it('should populate the map with search results', function () {
@@ -1001,7 +999,6 @@ describe('Search Results', function () {
             expect(resultsController.pageOfCurrentPreviewIndex()).toBe(1);
             resultsController.previewIndex = 19;
             expect(resultsController.pageOfCurrentPreviewIndex()).toBe(1);
-
             resultsController.previewIndex = 30;
             expect(resultsController.pageOfCurrentPreviewIndex()).toBe(2);
 
@@ -1010,8 +1007,6 @@ describe('Search Results', function () {
         it('should retreive document metadata via getDocumentMetadata', function () {
 
             var metadataArray = [];
-
-
 
             Ext.each(resultsComponent.currentResultSet.store.data.items, function (record) {
                 metadataArray.push(record.get('uri'));
