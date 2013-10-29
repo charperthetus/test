@@ -17,6 +17,11 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         return 'x' + uuid  + '/' + category;
     },
 
+    makeInstance: function(classUri) {
+        console.log(classUri);
+        return Savanna.process.utils.ProcessUtils.getURI(category);
+    },
+
     getActionsGroup: function(group) {
         var actionsGroup = null;
         var iter = group.memberParts;
@@ -64,12 +69,16 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         }
     },
 
-    addNode: function(obj, category, description, fromObj) {
+    addNode: function(obj, category, description, fromObj, classUri) {
         var diagram = obj.diagram;
         diagram.startTransaction('addNode');
         var tobj = obj.part;
         var nodeData = {'category': category, 'text': description};
-        nodeData.key = Savanna.process.utils.ProcessUtils.getURI(category);
+        if (classUri) {
+            nodeData.key = Savanna.process.utils.ProcessUtils.makeInstance(classUri);
+        } else {
+            nodeData.key = Savanna.process.utils.ProcessUtils.getURI(category);
+        }
         if (tobj.data.group) {
             nodeData.group = tobj.data.group;
         }
