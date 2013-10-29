@@ -26,7 +26,8 @@ Ext.define('Savanna.upload.view.part.CurrentUploadsView', {
             {
                 xtype:'panel',
                 layout:{
-                    type: 'hbox'
+                    type: 'hbox',
+                    pack: 'center'
                 },
                 defaults:{
                     margin:'0 20 0 0'
@@ -36,13 +37,15 @@ Ext.define('Savanna.upload.view.part.CurrentUploadsView', {
                     xtype: 'label',
                     text: 'My Uploads',
                     style: 'line-height:37px;',
+                    width: 115,
                     cls: ['h1', 'dark']
                 },{
                     xtype: 'label',
                     itemId: 'uploadProgressLabel',
-                    style: 'line-height:40px;'
+                    minWidth: 330,
+                    style: 'line-height:40px;text-align:center'
                 },{
-                   xtype:'tbfill'
+                    xtype:'tbfill'
                 },{
                     xtype: 'button',
                     itemId: 'clearFinishedButton',
@@ -71,14 +74,19 @@ Ext.define('Savanna.upload.view.part.CurrentUploadsView', {
                     align:'center',
                     resizable:false,
                     hideable: false,
-                    width: 80,
+                    width: 36,
                     renderer : function(val) {
-                        if (val > 0) {
-                            return '<span style="color:' + '#73b51e' + '">' + val + '%</span>';
-                        } else if (val < 0) {
-                            return '<span style="color:' + '#cf4c35' + ';">' + val + '%</span>';
+
+
+                        if (val === 'completed') {
+                            return '<div class="icon-success">' + '</div>';
+                        } else if (val === 'pending') {
+                            return '<div class="icon-pending">' + '</div>';
+                        } else if (val === 'failed') {
+                            return '<div class="icon-alert">' + '</div>';
+                        } else {
+                            return val;
                         }
-                        return val;
                     }
 
                 },{

@@ -50,6 +50,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBar.SearchForm', {
                                 xtype: 'searchadvanced_textfield',
                                 fieldLabel: 'All of these words:',
                                 name: 'all_words',
+                                cls: ['align_top', 'align_bottom'],
                                 itemId: 'all_words',
                                 tabIndex: 1,
                                 configs:{ join: '', booleanType: 'all' }
@@ -58,6 +59,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBar.SearchForm', {
                                 xtype: 'searchadvanced_textfield',
                                 fieldLabel: 'This exact phrase:',
                                 name: 'exact_phrase',
+                                cls: ['align_top', 'align_bottom'],
                                 itemId: 'exact_phrase',
                                 tabIndex: 2,
                                 configs:{ join: ' AND ', booleanType: 'exact' }
@@ -66,6 +68,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBar.SearchForm', {
                                 xtype: 'searchadvanced_textfield',
                                 fieldLabel: 'Any of these words:',
                                 name: 'any_words',
+                                cls: ['align_top', 'align_bottom'],
                                 itemId: 'any_words',
                                 tabIndex: 3,
                                 configs:{ join: ' AND ', booleanType: 'any' }
@@ -74,6 +77,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBar.SearchForm', {
                                 xtype: 'searchadvanced_textfield',
                                 fieldLabel: 'None of these words:',
                                 name: 'none_words',
+                                cls: ['align_top', 'align_bottom'],
                                 itemId: 'none_words',
                                 tabIndex: 4,
                                 configs:{ join: ' NOT ', booleanType: 'none' }
