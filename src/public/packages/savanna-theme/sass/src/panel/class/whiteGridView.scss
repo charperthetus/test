@@ -1,0 +1,64 @@
+.white-grid-view-panel{
+  input[type="button"]{
+    border: 0;
+    background: transparent;
+    color: #2694be;
+    cursor: pointer;
+    padding-left: 0px;
+    &:hover, &:active, &:focus{
+      text-decoration: underline;
+    }
+  }
+  .#{$prefix}column-header, .#{$prefix}grid-header-ct{
+    background:none;
+    border-color:transparent;
+  }
+  td, tr, table, .#{$prefix}grid-cell {
+    border-color:transparent;
+  }
+  .#{$prefix}grid-row{
+    .#{$prefix}grid-cell-inner{
+      line-height: 17px;
+      padding: 0 6px 0 12px;
+    }
+    &:last-child{
+      .#{$prefix}grid-cell-inner{
+        padding: 0 6px 18px 12px;
+      }
+    }
+  }
+  .#{$prefix}column-header-over,
+  .#{$prefix}column-header-sort-ASC,
+  .#{$prefix}column-header-sort-DESC {
+    background:none;
+  }
+  .#{$prefix}column-header-over, .#{$prefix}column-header-open {
+    .#{$prefix}column-header-trigger {
+      display: none;
+    }
+  }
+  .#{$prefix}grid-row-selected {
+    .#{$prefix}grid-td {
+      border-style: $grid-row-cell-selected-border-style;
+      border-color: $white-grid-row-cell-selected-border-color;
+      background-color: $white-grid-row-cell-selected-background-color !important;
+    }
+  }
+  .#{$prefix}grid-row-focused .#{$prefix}grid-td {
+    border-top: $grid-cell-border-width $grid-row-focus-border-style $white-grid-row-cell-focus-border-color!important;
+    border-bottom: $grid-cell-border-width $grid-row-focus-border-style $white-grid-row-cell-focus-border-color!important;
+    background-color: $white-grid-row-cell-focus-background-color;
+  }
+
+  .#{$prefix}grid-row-over .#{$prefix}grid-td {
+    border-color: $white-grid-row-cell-over-border-color;
+    background-color: $white-grid-row-cell-over-background-color;
+  }
+}
+.white-grid-view-panel-edit{
+  @extend .white-grid-view-panel;
+   input[type="text"]{
+    border-color:silver #d9d9d9 #d9d9d9;
+     border-width:1px;
+  }
+}

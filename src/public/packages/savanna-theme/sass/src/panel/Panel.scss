@@ -1,12 +1,11 @@
-// /*
-//  *  Sets custom panel.Panel styles by reusing ExtJS (or UIKit) mixins.
-//  *  Refer to thetus-uikit/sass/src/panel/_uikit-panel.scss for the constructor of the UIKit mixin
-//  *
-//  *
-//  *	@author astump 10/17/2013 
-//  *		@edits astump 10/24/2013 - added 'result-facet' and 'search-dal-group' ui
-//  *
-//  */
+/*
+ *  Sets custom panel.Panel styles by reusing ExtJS (or UIKit) mixins.
+ *  Refer to thetus-uikit/sass/src/panel/_uikit-panel.scss for the constructor of the UIKit mixin
+ *
+ *
+ *	@author astump 10/17/2013
+ *
+ */
 
 // /* IMPORTS */
 
@@ -57,8 +56,29 @@
 	    $uikit-body-border-color: $panel-resultfacet-body-border-color,
 	    $uikit-tool-background-image: 'tools/tool-sprites-black'
 	);
-	
+	@include uikit-panel(
+        $uikit-ui: 'left-padding',
+        $uikit-body-padding: $panel-leftpadding-body-padding
+    );
+
 	.#{$prefix}panel-body-search-dal-group{
 		text-align: right;
 	}
+}
+@include uikit-panel (
+  $uikit-ui: 'item-view',
+  $uikit-header-color: $font-color,
+  $uikit-header-font-family: $panel-header-font-family,
+  $uikit-header-font-size: $item-view-panel-header-font-size,
+  $uikit-header-font-weight: $panel-body-font-weight,
+  $uikit-header-line-height: $item-view-panel-header-line-height,
+  $uikit-header-border-color: $item-view-panel-header-border-color,
+  $uikit-header-border-width: $panel-header-border-width,
+  $uikit-header-border-style: $panel-header-border-style,
+  $uikit-header-background-color: $item-view-panel-header-background-color
+);
+
+.item-view-left-column{
+  border-right-width:$item-view-left-column-border-width;
+  border-right-style: $item-view-left-column-border-style;
 }

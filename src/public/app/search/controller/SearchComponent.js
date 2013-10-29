@@ -525,6 +525,12 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                  */
                 resultsPanel.up('#searchresults').allResultSets.push(resultsObj);
 
+                /*
+                 When results are returned fire event:
+                 Event listened to on the ResultComponent controller to add points to result map
+                 */
+                resultsDal.fireEvent('mapNewSearchResults', resultsObj, resultsDal);
+
                 if (store.facetValueSummaries !== null) {
                     resultsDal.createDalFacets(dalId);
                 }
@@ -575,27 +581,42 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         var searchLayer = new OpenLayers.Layer.Vector('searchLayer');
         searchLayer.events.register('featureadded', canvas, this.onFeatureAdded);
         searchLayer.events.register('featureremoved', canvas, this.onFeatureRemoved);
+        searchLayer.events.register('afterfeaturemodified', canvas, this.onFeatureModified);
         canvas.searchLayer = searchLayer;
         canvas.map.addLayer(searchLayer);
 
-        // Add the draw feature control to the map.
-        var drawFeature = new OpenLayers.Control.DrawFeature(searchLayer, OpenLayers.Handler.Polygon, {
-            id: 'PolygonDrawTool'
-        });
+        canvas.controls = {
+            drawFeature : new OpenLayers.Control.DrawFeature(searchLayer, OpenLayers.Handler.Polygon, {
+                id: 'PolygonDrawTool'
+            }),
+            modifyFeature : new OpenLayers.Control.ModifyFeature(searchLayer,{
+                id: 'ModifyTool',
+                mode: OpenLayers.Control.ModifyFeature.RESHAPE
+            })
+        };
 
-        drawFeature.handler.callbacks.point = this.pointCallback;
-        canvas.map.addControl(drawFeature);
-        canvas.drawFeature = drawFeature;
+        // Add controls to map
+        for(var key in canvas.controls) {
+            canvas.map.addControl(canvas.controls[key])
+        }
+
+        // Adding callback to point handler
+        canvas.controls.drawFeature.handler.callbacks.point = this.pointCallback;
     },
 
     onFeatureAdded: function (event) {
         // Scope: drawFeature
-        this.drawFeature.deactivate();
+        this.controls.drawFeature.deactivate();
+        this.controls.modifyFeature.activate();
         this.fireEvent('searchPolygonAdded', this);
     },
 
     onFeatureRemoved: function (event) {
         this.fireEvent('searchPolygonRemoved', this);
+    },
+
+    onFeatureModified: function (event) {
+        this.fireEvent('searchPolygonAdded', this);
     },
 
     onMapCanvasResize: function (canvas) {
@@ -612,14 +633,16 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
     activateDrawFeature: function (button) {
         var canvas = button.up('search_searchmap').down('search_map_canvas');
-        canvas.drawFeature.activate();
+        canvas.controls.drawFeature.activate();
+        canvas.controls.modifyFeature.deactivate()
     },
 
     clearDrawFeature: function (button) {
         var canvas = button.up('search_searchmap').down('search_map_canvas');
         canvas.searchLayer.removeAllFeatures();
-        canvas.drawFeature.deactivate();
+        canvas.controls.drawFeature.deactivate();
     },
+
     zoomToLocation: function (comboBoxButton) {
         var viewBox = comboBoxButton.viewBox;
         var mapCanvas = comboBoxButton.parentComboBox.up('search_searchmap').down('search_map_canvas');
@@ -660,9 +683,5 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         var canvasSize = searchMap.body.getSize();
         var polyButton = searchMap.down('#drawLocationSearch');
         polyButton.setPosition(canvasSize.width - 50, 10);
-    },
-
-    mapGetSearchResults: function (results, resultsDal) {
-        resultsDal.fireEvent('mapNewSearchResults', results, resultsDal);
     }
 });
