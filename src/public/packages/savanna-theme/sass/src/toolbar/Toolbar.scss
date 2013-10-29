@@ -2,6 +2,7 @@
 *  Sets custom toolbar styles by reusing ExtJS (or UIKit) mixins.
 *
 * @author lpelofske
+* @edit  eirby 10/22/13
 */
 
 /*
@@ -50,10 +51,15 @@
     $border-color: $workspace-header-toolbar-border-color
 );
 
+@include extjs-toolbar-ui(
+  $ui: 'item-view',
+  $background-color: $item-view-header-toolbar-background-color
+);
+
 
 @include extjs-toolbar-ui(
   $ui: 'default',
-  $background-color: #f5f5f5,
+  $background-color: $item-view-header-toolbar-background-color,
   $border-width: 1px,
   $border-color: #999999
 );

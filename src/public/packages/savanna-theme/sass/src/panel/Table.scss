@@ -7,6 +7,7 @@
  *
  */
 
+@import 'class/whiteGridView';
 
 .#{$prefix}grid-cell-inner {
 	/* These can be removed with new UIKit */
@@ -27,3 +28,4 @@
     	}
     } 
 }
+
