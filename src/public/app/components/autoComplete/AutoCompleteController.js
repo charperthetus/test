@@ -10,11 +10,11 @@ Ext.define('Savanna.components.autoComplete.AutoCompleteController', {
     extend: 'Deft.mvc.ViewController',
 
     control: {
-        search_resultsDals_resultsterm: {
+        autocomplete_tags: {
             live: true,
-            selector: 'container search_resultsDals_resultsterm',
+            selector: 'container autocomplete_tags',
             listeners: {
-                'Search:RemoveSearchTerm': {
+                click: {
                     fn: 'handleRemoveTagClick'
                 }
             }
