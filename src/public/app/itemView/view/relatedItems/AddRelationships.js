@@ -32,10 +32,14 @@ Ext.define('Savanna.itemView.view.relatedItems.AddRelationships', {
 
     buttons: [
         {
-            text: 'OK'
+            text: 'OK',
+            itemId: 'addNewRelationshipTypes'
         },
         {
-            text: 'CANCEL'
+            text: 'CANCEL',
+            handler: function() {
+                this.up('window').close();
+            }
         }
     ],
 

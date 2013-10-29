@@ -11,7 +11,7 @@ Ext.define('Savanna.itemView.view.relatedItems.ViewRelatedItems', {
 
     alias: 'widget.itemview_view_related_items',
 
-    require: ['Savanna.itemView.controller.ViewRelatedItemsController'],
+    requires: ['Savanna.itemView.controller.ViewRelatedItemsController'],
 
     controller: 'Savanna.itemView.controller.ViewRelatedItemsController'
 

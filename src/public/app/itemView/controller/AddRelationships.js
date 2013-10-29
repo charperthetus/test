@@ -17,7 +17,12 @@ Ext.define('Savanna.itemView.controller.AddRelationships', {
     ],
 
     control: {
+        addNewRelationshipTypes:{
+            click: 'addNewRelationships'
+        }
+
+    },
+    addNewRelationships: function(btn) {
 
     }
-
 });

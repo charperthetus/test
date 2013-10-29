@@ -22,7 +22,8 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
     },
 
     addRelationshipType: function(btn) {
-
+        var addNewRelationship = Ext.create(Savanna.itemView.view.relatedItems.AddRelationships);
+        addNewRelationship.show();
     },
 
     setupData: function (items) {
