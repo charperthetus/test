@@ -27,7 +27,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
                 {
                     // adding thetus-searchfield removes the necessity for a submit button.
                     xtype: 'thetus-searchfield',
-                    width: 180,
+                    width: 168,
                     fieldLabel: '',
                     name: 'refine_search_terms',
                     itemId: 'refine_search_terms',

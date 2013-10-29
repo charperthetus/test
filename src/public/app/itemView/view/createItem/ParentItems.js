@@ -34,6 +34,8 @@ Ext.define('Savanna.itemView.view.createItem.ParentItems', {
 
     items: [],
 
+    bodyPadding:8,
+
     initComponent: function () {
         this.items = this.setupItems();
         this.callParent(arguments);

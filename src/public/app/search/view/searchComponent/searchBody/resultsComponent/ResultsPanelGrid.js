@@ -46,8 +46,8 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
                 {
                     parseDate: function (v) {
                         return Ext.Date.format(new Date(v), 'F d, Y');
+                        }
                     }
-                }
             )
         }
     ],

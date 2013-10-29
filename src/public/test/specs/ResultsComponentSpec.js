@@ -1067,11 +1067,6 @@ describe('Search Results', function () {
             it('should be able to return the next button on the preview Window', function () {
                 expect(resultsController.previewPrevButton()).not.toBe(null);
             });
-
-            it('should be able to return the index label on preview Window', function () {
-                expect(resultsController.previewIndexAndTotalLabel()).not.toBe(null);
-            });
-
         });
 
         describe('Preview functions + controller', function () {
@@ -1152,7 +1147,7 @@ describe('Search Results', function () {
 
                 it('should update the preview label for the first record', function () {
                     var total = resultsController.getGridStore().totalCount;
-                    expect(resultsController.previewIndexAndTotalLabel().text).toBe('Preview Result 1 of ' + total);
+                    expect(resultsController.previewWindow().title).toBe('Preview Result 1 of ' + total);
 
 
                 });
@@ -1171,7 +1166,7 @@ describe('Search Results', function () {
 
                     var total = resultsController.getGridStore().totalCount;
                     resultsController.onNextItemPreview();
-                    expect(resultsController.previewIndexAndTotalLabel().text).toBe('Preview Result 2 of ' + total);
+                    expect(resultsController.previewWindow().title).toBe('Preview Result 2 of ' + total);
 
 
                 });
