@@ -31,7 +31,10 @@ Ext.define('Savanna.components.autoComplete.AutoComplete', {
 
     controller: 'Savanna.components.autoComplete.AutoCompleteController',
 
-    requires: 'Savanna.components.autoComplete.AutoCompleteController',
+    requires: [
+        'Savanna.components.autoComplete.AutoCompleteController',
+        'Savanna.components.tags.Tag'
+    ],
 
     listeners: {
         afterrender: function() {
