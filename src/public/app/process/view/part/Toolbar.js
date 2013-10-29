@@ -86,15 +86,15 @@ Ext.define('Savanna.process.view.part.Toolbar', {
                 tooltip: 'Add alternates group',
                 itemId: 'alts'
             },
-            '->',
+            '->', 
             {
-                glyph: 61806,
-                tooltip: 'Zoom in',
+                glyph: 'zoomIn',
+                tooltip: 'Zoom In',
                 itemId: 'zoomin'
             },
             {
-                glyph: 61807,
-                tooltip: 'Zoom out',
+                glyph: 'zoomOut',
+                tooltip: 'Zoom Out',
                 itemId: 'zoomout'
             },
             {
@@ -104,12 +104,12 @@ Ext.define('Savanna.process.view.part.Toolbar', {
             },
             ' ',
             {
-                glyph: 61800,
+                glyph: 'undo',
                 tooltip: 'Undo',
                 itemId: 'undo'
             },
             {
-                glyph: 61777,
+                glyph: 'redo',
                 tooltip: 'Redo',
                 itemId: 'redo'
             },
