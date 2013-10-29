@@ -295,7 +295,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
     },
 
     onFacetFilterChange: function (btn) {
-        return this.onFacetFilterChangeHelper(btn.value, btn.inputValue);
+        return this.onFacetFilterChangeHelper(btn.value, btn.inputValue, true);
     },
 
     onFacetFilterChangeHelper: function (isChecked, inputValue, doTheSearch) {
@@ -329,7 +329,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
                         //Since we are removing, we need to iterate from end to beginning
                         var len = values.length;
                         var valueIndex;
-                        for (valueIndex = len - 1; valueIndex--; valueIndex >= 0) {
+                        for (valueIndex = len - 1;  valueIndex >= 0; valueIndex--) {
                             var val = values[valueIndex];
                             if (val.value === inputValue) {
                                 Ext.Array.remove(values, values[valueIndex]);

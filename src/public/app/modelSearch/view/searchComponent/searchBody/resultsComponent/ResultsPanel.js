@@ -32,15 +32,8 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
         return [
             {
                 xtype: 'model_search_resultspanelgrid',
-                itemId: 'resultspanelgrid',
-                dockedItems:[
-                    {
-                        xtype: 'pagingtoolbar',
-                        itemId: 'gridtoolbar',
-                        dock: 'top',
-                        displayInfo: true
-                    }
-                ]
+                itemId: 'resultspanelgrid'
+
             },
             {
                 xtype: 'model_search_resultspanelgrid_multi_column',
@@ -69,7 +62,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
     updateGridStore: function (obj) {
         var grid = this.queryById('resultspanelgrid');
         grid.reconfigure(obj.store);
-        grid.queryById('gridtoolbar').bindStore(obj.store);
+        this.queryById('gridtoolbar').bindStore(obj.store);
 
         var gridMulti = this.queryById('resultspanelgrid_multi_column');
         gridMulti.reconfigure(obj.store);

@@ -7,12 +7,17 @@
 Ext.require('Savanna.Config');
 Ext.require('Savanna.itemView.view.ItemViewer');
 Ext.require('Savanna.itemView.view.header.ViewHeader');
+Ext.require('Savanna.itemView.view.header.EditHeader');
 Ext.require('Savanna.itemView.view.relatedProcesses.RelatedProcesses');
 Ext.require('Savanna.itemView.view.relatedItems.ViewRelatedItems');
+Ext.require('Savanna.itemView.view.relatedItems.EditRelatedItems');
 Ext.require('Savanna.itemView.view.itemQualities.ViewItemQualities');
+Ext.require('Savanna.itemView.view.itemQualities.EditItemQualities');
+Ext.require('Savanna.itemView.view.header.DisplayLabel');
+Ext.require('Savanna.itemView.view.components.AutoCompleteWithTags');
+Ext.require('Ext.tab.Panel');
 
 describe('Item Viewer', function () {
-
     var itemviewComponent = null,
         itemviewController = null,
         fixtures = null,
@@ -97,7 +102,7 @@ describe('Item Viewer', function () {
         var relatedItems = null;
 
         beforeEach(function() {
-            relatedItems = itemviewController.getView().queryById('relatedItems');
+            relatedItems = itemviewController.getView().queryById('relatedItemsView');
             spyOn(relatedItems, 'add');
             itemviewController.handleRecordDataRequestSuccess(store.data.items, 'read', true);
         });

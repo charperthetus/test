@@ -21,6 +21,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.ResultsComponent
     defaults: {
         // is collapsible good?  seemed handy.
         collapsible: true,
+        titleCollapse: true,
         split: true
     },
     currentResultSet:null,
@@ -33,6 +34,8 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.ResultsComponent
     items: [
         {
             xtype: 'model_search_resultsdals',
+            split: false,
+            collapseMode: "header",
             itemId: 'resultsdals'
         },
         {

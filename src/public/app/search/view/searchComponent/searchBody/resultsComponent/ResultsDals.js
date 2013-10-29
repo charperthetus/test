@@ -234,15 +234,17 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
          set the status icon - pending, success or fail - as well as the text,
          which is the display name and number of results returned
          */
-        var myDal = this.queryById(dalId);
+        var myDal = this.queryById(dalId),
+            loadingEl = myDal.down('#dalStatusIcon').getEl();
 
         var styleStatus = {
-            'success': myDal.dalLoadSuccess,
-            'fail': myDal.dalLoadFail,
-            'pending': myDal.dalLoadPending,
-            'none': myDal.dalLoadNone
+            'success': 'icon-success',
+            'fail': 'icon-alert',
+            'pending': 'icon-pending',
+            'none': 'loadNone'
         };
-        myDal.down('#dalStatusIcon').getEl().setStyle(styleStatus[status]);
+        loadingEl.removeCls('icon-success icon-alert icon-pending loadNone');
+        loadingEl.addCls(styleStatus[status]);
 
         var me = this,
             count = 0;

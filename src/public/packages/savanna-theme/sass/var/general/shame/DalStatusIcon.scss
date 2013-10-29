@@ -1,0 +1,22 @@
+/*
+ *	@author astump
+ *	@date 10/28/2013
+ *	@descriptiong This is a homeless bit of code. Sets an empty space 
+ *				   when a load is called and there is nothing to load.
+ */
+ .loadNone {
+ 	background: transparent;
+ 	width: 20px;
+    height: 20px;
+    float: right;
+ }
+
+ .dalStatusIcon {
+ 	font-size: 15px;
+ 	float: right;
+	margin-right: 15px;
+	
+	&[class*="icon-"]{
+		line-height: 20px;
+	}
+ }

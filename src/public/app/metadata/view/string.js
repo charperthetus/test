@@ -19,9 +19,12 @@ Ext.define('Savanna.metadata.view.String', {
 
         me.on('beforerender', Ext.bind(function() {
             if(me.getEditable() && me.getEditMode()) {
+                if(me.down('#editLabelItem')) {
+                    me.down('#editLabelItem').html = me.getDisplayLabel() + ':';
+                }
                 if(me.down('#displayValueEdit')) {
                     me.down('#displayValueEdit').setValue(me.getValue());
-                    me.down('#displayValueEdit').fieldLabel = me.getDisplayLabel();
+                    //me.down('#displayValueEdit').fieldLabel = me.getDisplayLabel();
                 }
             } else {
                 if(me.down('#displayLabelItem')) {
