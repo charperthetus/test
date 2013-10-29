@@ -57,7 +57,11 @@
 	    $uikit-body-border-color: $panel-resultfacet-body-border-color,
 	    $uikit-tool-background-image: 'tools/tool-sprites-black'
 	);
-	
+	@include uikit-panel(
+        $uikit-ui: 'left-padding',
+        $uikit-body-padding: $panel-leftpadding-body-padding
+    );
+
 	.#{$prefix}panel-body-search-dal-group{
 		text-align: right;
 	}
