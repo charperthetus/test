@@ -27,9 +27,5 @@ Ext.define('Savanna.itemView.view.createItem.ParentItemsTreePanel' ,{
         this.mixins.storeable.initStore.call(this);
         this.store.load();
         this.callParent(arguments);
-    },
-
-    onStoreLoad:function()  {
-        console.log(arguments);
     }
 });

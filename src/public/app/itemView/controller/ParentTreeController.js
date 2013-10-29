@@ -18,40 +18,54 @@ Ext.define('Savanna.itemView.controller.ParentTreeController', {
 
     control: {
         parentitems_treepanel: {
-            cellclick: 'onItemClick'
+            itemclick: 'onItemClick',
+            beforeitemexpand: 'onBeforeItemExpand'
         }
     },
 
+    onBeforeItemExpand: function (record, eOpts) {
+        console.log('before expand event', record);
 
-    onItemClick: function (view, td, cellIndex, record, tr, rowIndex, e, eOpts) {
-        console.log(record);
-        Savanna.app.fireEvent('itemview:treepanel:itemclick', view, td, cellIndex, record, tr, rowIndex, e, eOpts);
+        var tree = this.getView().queryById('parentitems_treepanel');
 
-        this.fetchChildItems(view, td, cellIndex, record, tr, rowIndex, e, eOpts);
+        tree.getSelectionModel().select(record);
+
+        var selectedNode = tree.getSelectionModel().getSelection()[0] || tree.getRootNode();
+
+        this.fetchChildItems(record, selectedNode);
     },
 
-    fetchChildItems: function (view, td, cellIndex, record, tr, rowIndex, e, eOpts) {
+    onItemClick: function (view, record, item, index, e, eOpts) {
+        console.log('CLICK');
+
+        this.getView().up('itemview_create_item').selectedParentUri = record.get('uri');
+        Savanna.app.fireEvent('itemview:treepanel:itemclick', view, record, item, index, e, eOpts);
+        var tree = this.getView().queryById('parentitems_treepanel');
+        var selectedNode = tree.getSelectionModel().getSelection()[0] || tree.getRootNode();
+        this.fetchChildItems(record, selectedNode);
+    },
+
+    fetchChildItems: function (record, selectedNode) {
         var me = this,
             tree = me.getView().queryById('parentitems_treepanel'),
-            selectedNode = tree.getSelectionModel().getSelection()[0] || tree.getRootNode(),
             uri, myStore;
 
-        if(record.get('hasChildren') && selectedNode.childNodes.length === 0) {
-        uri = SavannaConfig.itemViewPerspective + '/' + record.get('id');
-        myStore = Ext.create('Savanna.itemView.store.ParentItemsStore', {
-            storeId: 'itemview_' + record.get('id')
-        })
-        myStore.getProxy().url = uri;
+        if (record.get('hasChildren') && selectedNode.childNodes.length === 0) {
+            uri = SavannaConfig.itemViewPerspective + '/' + record.get('id');
+            myStore = Ext.create('Savanna.itemView.store.ParentItemsStore', {
+                storeId: 'itemview_' + record.get('id')
+            })
+            myStore.getProxy().url = uri;
 
-        myStore.load({
-            callback: Ext.bind(this.onChildItemsFetched, this, [selectedNode, tree], true)
-        });
-        }   else    {
+            myStore.load({
+                callback: Ext.bind(this.onChildItemsFetched, this, [selectedNode, tree], true)
+            });
+        } else {
             console.log('already loaded?')
         }
     },
     onChildItemsFetched: function (records, operation, success, selectedNode) {
-        console.log(selectedNode);
+        console.log('do I ever fire?');
 
         Ext.each(records, function (record) {
             record.set('leaf', !record.get('hasChildren'));
@@ -63,7 +77,10 @@ Ext.define('Savanna.itemView.controller.ParentTreeController', {
                 //inserting as a child
                 selectedNode.insertChild(0, record);
             }
-            selectedNode.expand();
+            if (!selectedNode.isExpanded()) {
+                selectedNode.expand();
+            }
+
         });
     }
 });

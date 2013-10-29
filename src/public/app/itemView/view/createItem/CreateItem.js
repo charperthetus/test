@@ -31,7 +31,7 @@ Ext.define('Savanna.itemView.view.createItem.CreateItem', {
 
     layout: 'hbox',
 
-
+    selectedParentUri: null,
 
     items:[],
 
@@ -89,19 +89,22 @@ Ext.define('Savanna.itemView.view.createItem.CreateItem', {
 
     onParentItemCommit:function()   {
 
-        var itemView = Ext.create('Savanna.itemView.view.ItemViewer', {
-            title: 'Model Item',
-            itemUri: 'thetus%2EArtifactOntology%3AYellowPalmOilContainer%2FModelItemXML',
-            editMode: true,
-            createMode:true,
-            closable: true,
-            autoScroll: true,
-            tabConfig: {
-                ui: 'dark'
-            }
-        });
-        Savanna.app.fireEvent('search:itemSelected', itemView);
-
+        if(this.up('itemview_create_item').selectedParentUri)  {
+            var itemView = Ext.create('Savanna.itemView.view.ItemViewer', {
+                title: 'Model Item',
+                itemUri: this.up('itemview_create_item').selectedParentUri,
+                editMode: true,
+                createMode:true,
+                closable: true,
+                autoScroll: true,
+                tabConfig: {
+                    ui: 'dark'
+                }
+            });
+            Savanna.app.fireEvent('search:itemSelected', itemView);
+        }   else    {
+            console.log('no uri for parent item');
+        }
 
 
         this.up('itemview_create_item').close();
