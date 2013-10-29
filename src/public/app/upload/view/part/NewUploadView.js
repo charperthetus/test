@@ -44,7 +44,7 @@ Ext.define('Savanna.upload.view.part.NewUploadView', {
                 items:[{
                     xtype: 'label',
                     text: 'Drag & Drop Files Here',
-                    cls: ['sub_font', 'h1', 'bold', 'drag-and-drop', 'align_top']
+                    cls: ['sub_font', 'h1', 'bold', 'drag-and-drop', 'drag-and-drop-large', 'align_top']
                 },{
                     xtype: 'label',
                     text: 'or',
@@ -64,17 +64,5 @@ Ext.define('Savanna.upload.view.part.NewUploadView', {
                 }]
             }
         ];
-//    },
-//    ondragover: function(){
-//        return[
-//            {xtype: 'label',
-//                                text: 'Drag & Drop Files Here',
-//                                cls: ['sub', 'h1', 'bold', 'drag-and-drop']}
-//        ]
-//    },
-//    ondrop: function(){
-//        return[
-//            {cls: 'dropzone'}
-//        ]
     }
 });

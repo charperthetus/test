@@ -43,12 +43,13 @@ Ext.define('Savanna.upload.view.part.CurrentUploadsView', {
                     xtype: 'label',
                     itemId: 'uploadProgressLabel',
                     width: '33%',
-                    style: 'line-height:40px;'
+                    style: 'line-height:40px;text-align:center'
                 },{
                     xtype:'tbfill'
                 },{
                     xtype: 'button',
                     itemId: 'clearFinishedButton',
+                    //ui: 'link',
                     width: 100,
                     text:'Clear Finished',
                     height: 40,
@@ -74,19 +75,19 @@ Ext.define('Savanna.upload.view.part.CurrentUploadsView', {
                     align:'center',
                     resizable:false,
                     hideable: false,
-                    width: 80,
+                    width: 36,
                     renderer : function(val) {
+
+
                         if (val === 'completed') {
-                            return '<i class="icon-success">' + '</i>';
+                            return '<div class="icon-success">' + '</div>';
                         } else if (val === 'pending') {
-                            return '<i class="icon-pending">' + '</i>';
+                            return '<div class="icon-pending">' + '</div>';
                         } else if (val === 'failed') {
-                            return '<i class="icon-alert">' + '</i>';
+                            return '<div class="icon-alert">' + '</div>';
                         } else {
                             return val;
                         }
-
-
                     }
 
                 },{
