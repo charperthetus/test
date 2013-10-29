@@ -1,10 +1,10 @@
 [
-       {
+    {
         "value": "FragglePDF",
         "key": "docTitle",
         "type": "String",
-        "visible": false,
-        "editable": false,
+        "visible": true,
+        "editable": true,
         "displayLabel": "Document Title"
     },
     {
