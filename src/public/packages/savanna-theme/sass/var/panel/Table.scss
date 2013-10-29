@@ -1,8 +1,11 @@
 // /*
 //  *   @author astump 10/9/2013 - added custom var for logic in thetus-uikit/sass/src/panel/Table.scss
 //	*								$grid-cell-title
+//  *   @edit eirby 10/23/2013
 //  *
 //  */
+
+@import 'class/whiteGridView';
 
 $grid-cell-title-padding-bottom: 5px !default;
 
@@ -18,3 +21,5 @@ $grid-row-cell-selected-border-style :  none !default;
 $grid-row-body-padding: 0px !default;
 
 $grid-cell-word-wrap: true !default;
+
+
