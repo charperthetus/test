@@ -36,7 +36,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
             tpl: new Ext.XTemplate(
 
                 '<div style="position: relative" >',
-                '<div id="hoverDiv" style="visibility: hidden; right: 0;  top: 5px; position: absolute;" ><button class="openButtonClass">Open</button></div>',
+                '<div id="hoverDiv" style="visibility: hidden; right: 0;  top: 5px; position: absolute;" ><button id="resultGridHoverOpenButton" class="openButtonClass">Open</button></div>',
 
                 '<!-- column one -->',
 

@@ -29,23 +29,14 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
             fields: ['count', 'name'],
             data: [
                 {'count': 20, 'name': '20 results per page'},
-                 {'count': 50, 'name': '50 results per page'},
-                 {'count': 100, 'name': '100 results per page'}
+                {'count': 50, 'name': '50 results per page'},
+                {'count': 100, 'name': '100 results per page'}
             ]
         });
 
         return [
 
-            {
-                xtype: 'combobox',
-                itemId: 'resultsSortByCombobox',
-                store: sortStore,
-                displayField: 'name',
-                valueField: 'sortby',
-                value: 'relevance',
-                ui: 'combo-button'
 
-            },
 
             {
                 xtype: 'combobox',
@@ -59,8 +50,11 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
 
             },
             {
-                xtype: 'tbfill'
-            },
+                xtype: 'pagingtoolbar',
+                itemId: 'gridtoolbar',
+                dock: 'top',
+                displayInfo: true
+            } ,
             {
                 xtype: 'button',    //thumb
                 enableToggle: true,
