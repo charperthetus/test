@@ -64,10 +64,15 @@ Ext.define('Savanna.process.view.part.ItemList', {
     },
 
     initComponent: function() {
-
         //each instance of this grid needs its own store, otherwise, a change to the store will result in ALL palettes changing
         this.store = Ext.create('Ext.data.Store', {
             model: 'Savanna.process.model.Node',
+            sorters: [
+                {
+                    property: 'label',
+                    direction: 'ASC'
+                }
+            ],
             data: [
                 {
                     'uri': '',
@@ -78,8 +83,7 @@ Ext.define('Savanna.process.view.part.ItemList', {
                     'preview': '',
                     'primaryImageUrl': '',
                     'workflowState': '',
-                    'classification': '',
-                    'key': ''
+                    'classification': ''
                 },
                 {
                     'uri': '',
@@ -90,8 +94,7 @@ Ext.define('Savanna.process.view.part.ItemList', {
                     'preview': '',
                     'primaryImageUrl': '',
                     'workflowState': '',
-                    'classification': '',
-                    'key': ''
+                    'classification': ''
                 },
                 {
                     'uri': '',
@@ -102,8 +105,7 @@ Ext.define('Savanna.process.view.part.ItemList', {
                     'preview': '',
                     'primaryImageUrl': '',
                     'workflowState': '',
-                    'classification': '',
-                    'key': ''
+                    'classification': ''
                 },
                 {
                     'uri': '',
@@ -114,8 +116,7 @@ Ext.define('Savanna.process.view.part.ItemList', {
                     'preview': '',
                     'primaryImageUrl': '',
                     'workflowState': '',
-                    'classification': '',
-                    'key': ''
+                    'classification': ''
                 },
                 {
                     'uri': '',
@@ -126,8 +127,7 @@ Ext.define('Savanna.process.view.part.ItemList', {
                     'preview': '',
                     'primaryImageUrl': '',
                     'workflowState': '',
-                    'classification': '',
-                    'key': ''
+                    'classification': ''
                 }
             ]
         });

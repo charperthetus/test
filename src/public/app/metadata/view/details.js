@@ -8,7 +8,7 @@
 Ext.define('Savanna.metadata.view.Details', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.metadata_details',
-    id: 'detailsPanel',
+    itemId: 'detailsPanel',
 
     height: '100%',
     width: '100%',
@@ -32,8 +32,11 @@ Ext.define('Savanna.metadata.view.Details', {
     items: [
         {
             xtype: 'panel',
-            id: 'wrapperPanel',
+            itemId: 'wrapperPanel',
             title: 'Information',
+            header: {
+                ui: 'light-blue'
+            },
             height: '100%',
             width: '100%',
             layout: 'vbox',

@@ -3,7 +3,10 @@ Ext.define('Savanna.image.view.ImageComponent', {
     extend: 'Savanna.component.ClassificationPanel',
     alias: 'widget.image_component',
 
-    requires: ['Savanna.image.view.part.ImageViewer'],
+    requires: [
+        'Savanna.image.view.part.ImageViewer',
+        'Savanna.metadata.view.Details'
+    ],
 
     layout: 'border',
 

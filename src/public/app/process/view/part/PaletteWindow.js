@@ -37,12 +37,17 @@ Ext.define('Savanna.process.view.part.PaletteWindow', {
         this.items = this.setupItems();
         this.callParent(arguments);
     },
+    
+    floating: {
+        shadow: false
+    },
 
     setupItems: function() {
         return [
             {
                 xtype: 'process_itemlist',
-                itemId: 'itemlist'
+                itemId: 'itemlist',
+                ui: 'default-processeditor'
             },
             {
                 xtype: 'process_actionlist',
