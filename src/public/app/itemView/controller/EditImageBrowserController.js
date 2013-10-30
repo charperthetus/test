@@ -64,6 +64,30 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
     init: function() {
         this.callParent(arguments);
         this.setupFileDrop();
+        this.setupExtDrop();
+    },
+    setupExtDrop: function() {
+        var me = this;
+        var dropTarget = me.getView().queryById('itemViewUploadImages').getEl();
+        if (dropTarget) {
+            dropTarget.dropTarget = Ext.create('Ext.dd.DropTarget', dropTarget.dom, {
+                ddGroup: 'SEARCH-ITEMS',
+                notifyOver: Ext.Function.bind(me.notifyImageDragHover, me),
+                notifyDrop: Ext.Function.bind(me.notifyImageDragDrop, me)
+            });
+        }
+    },
+    notifyImageDragHover: function(ddSource, e, data) {
+        //don't allow anything other than an Item to be dropped into the item palette
+        if (data.records[0].data.contentType === 'Image') {
+            console.debug('allowed');
+            return Ext.dd.DropZone.prototype.dropAllowed;
+        } else {
+            return Ext.dd.DropZone.prototype.dropNotAllowed;
+        }
+    },
+    notifyImageDragDrop: function(ddSource, e, data) {
+        console.debug(data);
     },
     // Query the drop zone, fire the fileHandler when items are dropped
     setupFileDrop: function() {
