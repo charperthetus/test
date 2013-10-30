@@ -48,7 +48,7 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
 //                        align:'center'
 //                    },
 //                    height: 70,
-                    width: '75%',
+                    width: 284,
 
                     items: [
                         {
