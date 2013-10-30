@@ -1,14 +1,15 @@
 Ext.define("Savanna.document.view.DocumentComponent", {
     extend: "Savanna.component.ClassificationPanel",
     alias: "widget.documentcomponent",
-    layout: "vbox",
+    layout: "hbox",
     border: false,
     itemUri: null,
     docViewId: null,
     requires: [
         "Savanna.document.view.DocumentToolbar",
         "Savanna.document.view.DocumentBody",
-        'Savanna.document.controller.DocumentController'
+        'Savanna.document.controller.DocumentController',
+        'Savanna.metadata.view.Details'
     ],
 
     controller: 'Savanna.document.controller.DocumentController',
@@ -18,6 +19,9 @@ Ext.define("Savanna.document.view.DocumentComponent", {
         //This div needs an explicit id
         this.docViewId = Ext.id();
         var domElement = Ext.DomHelper.insertHtml("afterBegin", this.down('#docBody').getEl().dom, "<div id='" + this.docViewId + "' class='flexpaper_viewer' style='width: 100%; height: 100%;'></div>");
+
+        if(this.itemUri)
+            this.down('#documentDetails').setItemURI(this.itemUri);
 
         jQuery(domElement).FlexPaperViewer(
             {
@@ -52,7 +56,17 @@ Ext.define("Savanna.document.view.DocumentComponent", {
             itemId: "docBody",
             width: '100%',
             flex: 1
+        },
+        {
+            xtype: 'metadata_details',
+            itemId: 'documentDetails',
+            itemURI: this.itemUri,
+            collapsible: true,
+            region: 'east',
+            split: true,
+            width: '30%'
         }
+
     ],
     tbar: [
         {
