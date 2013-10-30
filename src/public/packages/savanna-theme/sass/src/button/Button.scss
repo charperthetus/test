@@ -7,7 +7,8 @@
 
 /*                    
 * Runtime
-*/  
+*/
+
 @if $include-ext-toolbar-toolbar {
     @include uikit-button(
         $uikit-ui: 'brand-header-toolbar-small',
@@ -42,7 +43,8 @@
         $uikit-background-gradient-over: $brand-header-button-background-gradient-over,
         $uikit-background-gradient-focus: $brand-header-button-background-gradient-focus,
         $uikit-background-gradient-pressed: $brand-header-button-background-gradient-pressed,
-        $uikit-background-gradient-disabled: $brand-header-button-background-gradient-disabled
+        $uikit-background-gradient-disabled: $brand-header-button-background-gradient-disabled,
+        $uikit-text-decoration: $button-basic-text-decoration
     );
     @include uikit-button(
         $uikit-ui: 'brand-header-toolbar-medium',
@@ -77,7 +79,8 @@
         $uikit-background-gradient-over: $brand-header-button-background-gradient-over,
         $uikit-background-gradient-focus: $brand-header-button-background-gradient-focus,
         $uikit-background-gradient-pressed: $brand-header-button-background-gradient-pressed,
-        $uikit-background-gradient-disabled: $brand-header-button-background-gradient-disabled
+        $uikit-background-gradient-disabled: $brand-header-button-background-gradient-disabled,
+        $uikit-text-decoration: $button-basic-text-decoration
     );
     @include uikit-button(
         $uikit-ui: 'brand-header-toolbar-large',
@@ -112,7 +115,9 @@
         $uikit-background-gradient-over: $brand-header-button-background-gradient-over,
         $uikit-background-gradient-focus: $brand-header-button-background-gradient-focus,
         $uikit-background-gradient-pressed: $brand-header-button-background-gradient-pressed,
-        $uikit-background-gradient-disabled: $brand-header-button-background-gradient-disabled
+        $uikit-background-gradient-disabled: $brand-header-button-background-gradient-disabled,
+        $uikit-text-decoration: $button-basic-text-decoration
+
     );
     @include uikit-button(
         $uikit-ui: 'workspace-header-toolbar-small',
@@ -147,7 +152,8 @@
         $uikit-background-gradient-over: $workspace-header-button-background-gradient-over,
         $uikit-background-gradient-focus: $workspace-header-button-background-gradient-focus,
         $uikit-background-gradient-pressed: $workspace-header-button-background-gradient-pressed,
-        $uikit-background-gradient-disabled: $workspace-header-button-background-gradient-disabled
+        $uikit-background-gradient-disabled: $workspace-header-button-background-gradient-disabled,
+        $uikit-text-decoration: $button-basic-text-decoration
     );
     @include uikit-button(
         $uikit-ui: 'workspace-header-toolbar-medium',
@@ -182,7 +188,8 @@
         $uikit-background-gradient-over: $workspace-header-button-background-gradient-over,
         $uikit-background-gradient-focus: $workspace-header-button-background-gradient-focus,
         $uikit-background-gradient-pressed: $workspace-header-button-background-gradient-pressed,
-        $uikit-background-gradient-disabled: $workspace-header-button-background-gradient-disabled
+        $uikit-background-gradient-disabled: $workspace-header-button-background-gradient-disabled,
+        $uikit-text-decoration: $button-basic-text-decoration
     );
     @include uikit-button(
         $uikit-ui: 'workspace-header-toolbar-large',
@@ -217,7 +224,8 @@
         $uikit-background-gradient-over: $workspace-header-button-background-gradient-over,
         $uikit-background-gradient-focus: $workspace-header-button-background-gradient-focus,
         $uikit-background-gradient-pressed: $workspace-header-button-background-gradient-pressed,
-        $uikit-background-gradient-disabled: $workspace-header-button-background-gradient-disabled
+        $uikit-background-gradient-disabled: $workspace-header-button-background-gradient-disabled,
+        $uikit-text-decoration: $button-basic-text-decoration
     );
 }
 /*
@@ -335,5 +343,19 @@
     text-align: center;
     width:20px;
     line-height: 20px;
+  }
+}
+
+.#{$prefix}icon{
+  @each $alt-button-state in pressed, focus, over{
+    &.#{$prefix}btn-#{$alt-button-state} {
+      .#{$prefix}btn-inner{
+        text-decoration:none;
+      }
+    }
+  }
+
+  .#{$prefix}btn-inner{
+    text-decoration:none;
   }
 }

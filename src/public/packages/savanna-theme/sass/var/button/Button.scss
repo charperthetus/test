@@ -12,6 +12,12 @@
 /*
  *	brand-header button styles
  */
+$button-base-color: #008bd9 !default;
+$button-default-color: $button-base-color !default;
+$button-default-color-over: $button-base-color !default;
+$button-default-color-focus: $button-base-color !default;
+$button-default-color-pressed: $button-base-color !default;
+$button-default-color-disabled: $button-base-color !default;
 
 $brand-header-button-padding: 8px 12px !default;
 
