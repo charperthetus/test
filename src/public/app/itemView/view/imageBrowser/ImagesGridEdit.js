@@ -65,9 +65,9 @@ Ext.define('Savanna.itemView.view.imageBrowser.ImagesGridEdit', {
         flex:1,
         width: '100%',
         borderWidth: 0,
-        // viewConfig: {
-        //     preserveScrollOnRefresh: true
-        // },
+        viewConfig: {
+            preserveScrollOnRefresh: true
+        },
         hideHeaders: true,
         columns: []
 

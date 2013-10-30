@@ -41,6 +41,15 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
                     fn: 'chooseFilesHandler'
                 }
             }
+        },
+        handleUploadImagesButton: {
+            live: true,
+            selector: 'panel #fileBrowserButton',
+            listeners: {
+                change: {
+                    fn: 'fileBrowserChangeHandler'
+                }
+            }
         }
     },
 
@@ -207,7 +216,7 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
         uploadStatus.update('Uploading (' + this.currentPollingIds.length + ' of ' + this.currentlyUploadingCount + ')');
 
         // Once uploads are done, reset
-        if(this.currentPollingIds.length == 0) {
+        if(this.currentPollingIds.length === 0) {
             this.currentlyUploadingCount = 0;
             uploadStatus.hide();
         }
