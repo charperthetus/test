@@ -1,6 +1,10 @@
 Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
     extend: 'Deft.mvc.ViewController',
 
+    requires: [
+        'Savanna.itemView.store.ItemViewStoreHelper'
+    ],
+
     view: 'Savanna.itemView.view.imageBrowser.ImagesGridEdit',
 
     control: {
@@ -61,6 +65,9 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
     currentlyUploadingCount: 0,
     dropAreaActive: false,
 
+    // Store Helper for persisting
+    storeHelper: null,
+
     /////////
     // Setup
     /////////
@@ -68,6 +75,7 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
         this.callParent(arguments);
         this.setupFileDrop();
         this.setupExtDrop();
+        this.storeHelper = Ext.create('Savanna.itemView.store.ItemViewStoreHelper');
     },
 
     // Setup the Ext Drop Handler
@@ -98,8 +106,9 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
             return false;
         } else {
             // Add the image to the browser
-            this.createNewImage(data.records[0].data.uri);
+            this.createNewImage(data.records[0].data);
         }
+        return true;
     },
     // Setting up the dropzone for uploading files, calls fileDropHandler
     setupFileDrop: function() {
@@ -230,7 +239,7 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
                 this.currentPollingIds.splice(i,1);
                 if (documentStatus.status === 'completed') { 
                     this.ingestedCount++;
-                    this.createNewImage(documentStatus.documentUri);
+                    this.createNewImage(documentStatus);
                 } else {
                     this.failedCount++;
                 } 
@@ -265,7 +274,6 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
     // IMAGE BROWSING
     //////////////////
     buildImageGallery: function(images) {
-        console.debug(this.getView().store);
         var me = this;
         // TODO: Abstract this out.
         Ext.Array.each(images, function() {
@@ -281,13 +289,14 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
             }
         });
     },
-    createNewImage: function(imageUri){
+    createNewImage: function(image){
         var thumbnail = Ext.create('Savanna.itemView.view.imageBrowser.ImageThumbnail', {
-            src: SavannaConfig.savannaUrlRoot + 'rest/document/' + encodeURI(imageUri) + '/original/',
-            alt: 'Insert a description',
-            title: 'Add a Title'
+            src: SavannaConfig.savannaUrlRoot + 'rest/document/' + encodeURI(image.uri) + '/original/',
+            alt: (image.previewString) ? image.previewString : 'Insert a description',
+            title: (image.title) ? image.title : 'Add a Title'
         });
         this.addImageToBrowser(thumbnail);
+        //this.storeHelper.addBotLevItemInStore(image.title, image, this.getView().store);
         this.onChangeImage(null, thumbnail);
     },
     addImageToBrowser: function(image){
