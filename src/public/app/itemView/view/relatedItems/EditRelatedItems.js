@@ -12,7 +12,7 @@ Ext.define('Savanna.itemView.view.relatedItems.EditRelatedItems', {
 
     requires: [
         'Savanna.itemView.controller.EditRelatedItemsController',
-        'Savanna.itemView.view.relatedItems.AddRelationships'
+        'Savanna.itemView.view.relatedItems.RelationshipPicker'
     ],
 
     controller: 'Savanna.itemView.controller.EditRelatedItemsController',
