@@ -29,9 +29,7 @@ Ext.define('Savanna.process.view.metadata.MetadataTabPanel', {
     enableTabScroll: true,
     items: [
         {
-            //title: 'Details',
-            //xtype: 'metadata_details',
-            //itemURI: 'SolrJdbc%252FRich%252F4b494622-0fbe-4f8f-a542-d4a06f9b7620'
+//testing commit
         },
         { title: 'JSON',
             xtype:'panel',
