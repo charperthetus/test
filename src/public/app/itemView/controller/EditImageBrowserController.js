@@ -53,6 +53,7 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
         }
     },
 
+    // Properties used for uploading images
     currentPollingIds: [],
     currentlyPolling: false,
     ingestedCount: 0,
@@ -60,12 +61,16 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
     currentlyUploadingCount: 0,
     dropAreaActive: false,
 
-    // FILE UPLOADING
+    /////////
+    // Setup
+    /////////
     init: function() {
         this.callParent(arguments);
         this.setupFileDrop();
         this.setupExtDrop();
     },
+
+    // Setup the Ext Drop Handler
     setupExtDrop: function() {
         var me = this;
         var dropTarget = me.getView().queryById('itemViewUploadImages').getEl();
@@ -77,19 +82,26 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
             });
         }
     },
+    // Check if the Ext Item can be droped by its contentType
     notifyImageDragHover: function(ddSource, e, data) {
         //don't allow anything other than an Item to be dropped into the item palette
         if (data.records[0].data.contentType === 'Image') {
-            console.debug('allowed');
             return Ext.dd.DropZone.prototype.dropAllowed;
         } else {
             return Ext.dd.DropZone.prototype.dropNotAllowed;
         }
     },
+    // The Ext Drop Event, checks again if it's an image
     notifyImageDragDrop: function(ddSource, e, data) {
-        console.debug(data);
+        if(data.records[0].data.contentType !== 'Image'){
+            // Prevent dropping
+            return false;
+        } else {
+            // Add the image to the browser
+            this.createNewImage(data.records[0].data.uri);
+        }
     },
-    // Query the drop zone, fire the fileHandler when items are dropped
+    // Setting up the dropzone for uploading files, calls fileDropHandler
     setupFileDrop: function() {
         var panel = this.getView().queryById('itemViewUploadImages');
         if (typeof window.FileReader !== 'undefined') {
@@ -102,22 +114,23 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
             dropArea.ondrop = Ext.bind(this.fileDropHandler, this, [panel], true);
         }
     },
-    // Add drop handler
+    // Prevent the default behaviour of the browser (opening the image), and start the upload chain
     fileDropHandler: function(e) {
         e.preventDefault();
         this.uploadFiles(e.dataTransfer.files);
     },
-    // Launch file browser, does so by querying the hidden input[type=file]
+    // Launch file browser, does so by 'clicking' the hidden HTML input[type=file]
     chooseFilesHandler: function(button) {
         var fileBrowser = this.getView().queryById('fileBrowserButton');
         var input  = Ext.dom.Query.selectNode('[type=\'file\']', fileBrowser.getEl().dom);
         input.multiple = true;
         input.click();
     },
-    // Handles the file selected event once users select files
+    // Handles the the Upload button completion event
     fileBrowserChangeHandler: function(fileBrowserButton,event) {
         this.uploadFiles(event.target.files, fileBrowserButton);
     },
+    // Helper to build the URL
     buildUploadUrl: function(forPolling){
         var url = SavannaConfig.uploadUrl;
         if (forPolling){
@@ -126,6 +139,7 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
         url += ';jsessionid=' + Savanna.jsessionid;
         return url;
     },
+    // Iterates over the files uploaded and ignores ones that aren't images
     uploadFiles: function(files,component){
         var file;
 
@@ -145,6 +159,7 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
             }
         }
     },
+    // Creates the XMLHTTPRequest
     uploadFileViaXMLHttpRequest:function(url, file, uploadGrid, tempId) {
         var formData = new FormData();
         formData.append(file.name, file);
@@ -246,8 +261,11 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
         }
     },
 
+    //////////////////
     // IMAGE BROWSING
+    //////////////////
     buildImageGallery: function(images) {
+        console.debug(this.getView().store);
         var me = this;
         // TODO: Abstract this out.
         Ext.Array.each(images, function() {
