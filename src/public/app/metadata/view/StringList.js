@@ -37,14 +37,14 @@ Ext.define('Savanna.metadata.view.StringList', {
         var fieldLabelValue = me.displayLabel + ':';
 
         var stackAndAddContainer = Ext.create('Ext.container.Container', {
-            id: 'stackandaddcontainer',
+            itemId: 'stackandaddcontainer',
             layout: 'vbox',
             width: "100%",
             border: false
         });
 
         var stackContainer = Ext.create('Ext.container.Container', {
-            id: 'stackcontainer',
+            itemId: 'stackcontainer',
             layout: 'vbox',
             width: "100%",
             border: false
@@ -83,7 +83,7 @@ Ext.define('Savanna.metadata.view.StringList', {
         return Ext.create('Ext.container.Container', {
             layout: 'hbox',
             width: "100%",
-            id: 'EandDContainer' + parseInt(index, 10),
+            itemId: 'EandDContainer' + parseInt(index, 10),
             border: false
         });
     },

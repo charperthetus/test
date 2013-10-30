@@ -17,7 +17,6 @@ Ext.define('Savanna.process.model.Node', {
         {name: 'preview',           type: 'string'},
         {name: 'primaryImageUrl',   type: 'string'},
         {name: 'workflowState',     type: 'string'},
-        {name: 'classification',    type: 'string'},
-        {name: 'key',               type: 'string'}   //todo: do we need a key here?
+        {name: 'classification',    type: 'string'}
     ]
 });

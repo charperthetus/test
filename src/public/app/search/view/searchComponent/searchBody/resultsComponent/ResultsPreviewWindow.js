@@ -9,15 +9,31 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
     extend: 'Ext.window.Window',
     alias: 'widget.search_resultspreviewwindow',
     requires: [
+        'Savanna.search.controller.resultsComponent.ResultsPreviewWindowController',
         'Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsPreviewContent'
     ],
+    controller: 'Savanna.search.controller.resultsComponent.ResultsPreviewWindowController',
     layout: 'fit',
     floating: true,
+    ghost: false,
     hideCollapseTool: true,
     closeAction: 'hide',
     width:640,
     height:500,
-    header:true,
+    collapsible: false,  //allowing collapse caused problems w/ drag
+    tools   :[
+        {
+            type: 'refresh',
+            itemId: 'previewPrevButton',
+            repeat: true
+        },
+        {
+            type: 'help',
+            itemId: 'previewNextButton',
+            repeat: true
+        }
+
+    ],
     items: [
         {
             xtype: 'search_resultspreviewcontent',
@@ -27,7 +43,6 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
 
     initComponent: function () {
         this.callParent(arguments);
-        Savanna.controller.Factory.getController('Savanna.search.controller.ResultsComponent');
     },
 
     displayPreview:function(record, metadata, index, totalCount)   {

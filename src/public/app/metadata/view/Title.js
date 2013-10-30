@@ -1,14 +1,14 @@
 /**
  * Created with IntelliJ IDEA.
  * User: mfawver
- * Date: 9/25/13
- * Time: 1:09 PM
+ * Date: 10/29/13
+ * Time: 10:17 AM
  * To change this template use File | Settings | File Templates.
  */
 
-Ext.define('Savanna.metadata.view.Uri', {
+Ext.define('Savanna.metadata.view.Title', {
     extend: 'Savanna.metadata.view.MetadataItemView',
-    alias: 'widget.metadata_uri',
+    alias: 'widget.metadata_title',
 
     items: [
     ],
@@ -17,7 +17,7 @@ Ext.define('Savanna.metadata.view.Uri', {
         this.callParent(arguments);
         var me = this;
 
-        this.on('beforerender', Ext.bind(function() {
+        me.on('beforerender', Ext.bind(function() {
             if(me.getEditable() && me.getEditMode()) {
                 if(me.down('#editLabelItem')) {
                     me.down('#editLabelItem').html = me.getDisplayLabel() + ':';
@@ -27,17 +27,25 @@ Ext.define('Savanna.metadata.view.Uri', {
                     //me.down('#displayValueEdit').fieldLabel = me.getDisplayLabel();
                 }
             } else {
-                if(me.down('#displayLabelItem')) {
-                    me.down('#displayLabelItem').html = me.getDisplayLabel() + ':&nbsp;&nbsp;';
-                }
                 if(me.down('#displayValue')) {
-                    // TODO: This conversion is probably not correct.  Need to decode it properly.
-                    // If you change this, check UriList.js for similar.
-                    me.down('#displayValue').html = (null === me.getValue()) ? '&nbsp;' : me.value.replace('%2F', '/', 'g');
+                    me.down('#displayValue').html = (null === me.getValue()) ? '&nbsp;' : me.getValue();
                 }
             }
 
         }, this));
+    },
+
+    makeViewViewItems: function() {
+        this.layout = 'hbox';
+        this.pack = 'center';
+        this.align = 'middle';
+        this.add(Ext.create('Ext.form.Label', {
+            itemId: 'displayValue'
+
+        }));
     }
+
+
+
 
 });

@@ -12,7 +12,6 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
         'Savanna.desktop.view.AboutWindow',
         'Savanna.desktop.view.SearchWindow',
         'Savanna.desktop.view.UploadWindow',
-        'Savanna.modelSearch.view.ModelSearch',
         'Savanna.desktop.view.ModelSearchWindow',
         'Savanna.itemView.view.ItemViewer'
     ],
@@ -42,9 +41,6 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
         },
         modelsearchbutton: {
             click: 'displayModelSearch'
-        },
-        itemviewbutton: {
-            click: 'displayDummyItem'
         }
     },
 
@@ -61,7 +57,7 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
             failure: function(response){
                 //TODO - Add global failure handler
             }
-        })
+        });
 
         Savanna.app.on('initModelSearch', this.displayModelSearch);
 
@@ -130,7 +126,7 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
             failure: function(response){
                 location.href = location.href;
             }
-        });
+        })
 
     },
 
@@ -146,18 +142,5 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
         else {
             searchWindow.center();
         }
-    },
-    // TODO: Remove this once Model search can find and select actual items
-    displayDummyItem: function() {
-        var itemView = Ext.create('Savanna.itemView.view.ItemViewer', {
-            title: 'Model Item',
-            itemUri: 'x012f931fec769ca941e8de4f7a674bec2a290937%2FItem',
-            closable: true,
-            autoScroll: true,
-            tabConfig: {
-                ui: 'dark'
-            }
-        });
-        Savanna.app.fireEvent('search:itemSelected', itemView);
     }
 });

@@ -38,7 +38,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
             tpl: new Ext.XTemplate(
 
                 '<div style="position: relative" >',
-                '<div id="hoverDiv" style="visibility: hidden; right: 0;  top: 5px; position: absolute;" ><button class="openButtonClass">Open</button></div>',
+                '<div id="hoverDiv" style="visibility: hidden; right: 0;  top: 5px; position: absolute;" ><button id="openButton" class="openButtonClass">Open</button></div>',
 
                 '<!-- column one -->',
 
@@ -81,7 +81,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
             enableDrag: true
         }
     },
-
+    hideHeaders: true,
     header: false,
     forceFit: true,
 

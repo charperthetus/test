@@ -26,7 +26,7 @@ Ext.define('Savanna.process.utils.NodeEventHandlers', {
             } else if (obj.type === "Action") {
                 obj.type = "ProcessAction";
             }
-            Savanna.process.utils.ProcessUtils.addNode(newNode, obj.type, obj.label, true);
+            Savanna.process.utils.ProcessUtils.addNode(newNode, obj.type, obj.label, true, obj.uri);
         });
     },
 

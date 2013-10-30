@@ -1,5 +1,5 @@
 Ext.define("Savanna.document.view.DocumentComponent", {
-    extend: "Ext.panel.Panel",
+    extend: "Savanna.component.ClassificationPanel",
     alias: "widget.documentcomponent",
     layout: "vbox",
     border: false,
