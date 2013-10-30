@@ -1,10 +1,3 @@
-/**
- * Created with IntelliJ IDEA.
- * User: bjohnson
- * Date: 10/4/13
- * Time: 11:04 AM
- * To change this template use File | Settings | File Templates.
- */
 
 Ext.define('Savanna.itemView.view.createItem.ParentItemsAutoComplete', {
     extend: 'Savanna.components.autoComplete.AutoComplete',

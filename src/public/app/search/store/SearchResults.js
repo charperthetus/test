@@ -13,8 +13,6 @@ Ext.define('Savanna.search.store.SearchResults', {
 
     autoLoad: false,
 
-    pageSize: 20,
-
     facetValueSummaries:null,
 
     facetFilterCriteria:[],

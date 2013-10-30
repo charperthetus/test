@@ -18,8 +18,22 @@ Ext.define('Savanna.itemView.controller.ParentTreeController', {
 
     control: {
         parentitems_treepanel: {
-            itemclick: 'onItemClick'
+            beforeitemmousedown: 'onBeforeMouseDown',
+            itemclick: 'onItemClick',
+            beforeitemdblclick: 'onItemDblClick'
         }
+    },
+
+    selectedItemExpanded:false,
+
+    onItemDblClick: function (view, record) {
+        record.isExpandingOrCollapsing = false;
+        return false;
+    },
+
+    onBeforeMouseDown:function(view, record, item, index, e, eOpts) {
+
+        this.selectedItemExpanded = record.data.expanded;
     },
 
     onItemClick: function (view, record, item, index, e, eOpts) {
@@ -32,10 +46,15 @@ Ext.define('Savanna.itemView.controller.ParentTreeController', {
 
         var selectedNode = tree.getSelectionModel().getSelection()[0] || tree.getRootNode();
 
-        this.fetchChildItems(record, selectedNode);
+        if (this.selectedItemExpanded) {
+            selectedNode.collapse();
+        } else {
+            this.fetchChildItems(record, selectedNode);
+        }
     },
 
     fetchChildItems: function (record, selectedNode) {
+
         var me = this,
             tree = me.getView().queryById('parentitems_treepanel'),
             uri, myStore;
@@ -53,7 +72,10 @@ Ext.define('Savanna.itemView.controller.ParentTreeController', {
                 callback: Ext.bind(this.onChildItemsFetched, this, [selectedNode, tree], true)
             });
         } else {
-            //console.log('already loaded?')
+
+            if(selectedNode.childNodes.length > 0)  {
+                selectedNode.expand();
+            }
         }
     },
     onChildItemsFetched: function (records, operation, success, selectedNode) {
