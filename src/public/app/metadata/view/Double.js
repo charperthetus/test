@@ -19,9 +19,12 @@ Ext.define('Savanna.metadata.view.Double', {
 
         me.on('beforerender', Ext.bind(function() {
             if(me.getEditable() && me.getEditMode()) {
+                if(me.down('#editLabelItem')) {
+                    me.down('#editLabelItem').html = me.getDisplayLabel() + ':';
+                }
                 if(me.down('#displayValueEdit')) {
                     me.down('#displayValueEdit').setValue(me.getValue().toString());
-                    me.down('#displayValueEdit').fieldLabel = me.getDisplayLabel();
+                    //me.down('#displayValueEdit').fieldLabel = me.getDisplayLabel();
                     me.down('#displayValueEdit').regex = /^[0-9]*.[0-9]*$/;
                     me.down('#displayValueEdit').maskRe = /[\d\.]/i;
                     me.down('#displayValueEdit').listeners = {

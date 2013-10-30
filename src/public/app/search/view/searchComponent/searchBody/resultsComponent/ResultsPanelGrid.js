@@ -37,21 +37,21 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
 
                 '<div style="position: relative" >',
                 '<div id="hoverDiv" style="visibility: hidden; right: 0;  top: 5; position: absolute;" ><button class="openButtonClass">Open</button></div>',
-                '<table>',
-                '<tr><td colspan="2" class="grid-cell-title"><strong>{title}</strong></td></tr>',
-                '<td><img src="{documentSource}" width="80px" height="60px" hspace="3px"/></td>',
-                '<td>({composite}) - {[this.parseDate(new Date(values.publishedDate))]} - {documentFileName}<br />{previewString}</td>',
-                '</table>',
+                '<div class="resultDiv">',
+                '<div class="grid-cell-title"><strong>{title}</strong></div>',
+                '<div class="sourceDiv"><img src="{documentSource}"/></div>',
+                '<div class="contentDiv">({composite}) - {[this.parseDate(new Date(values.publishedDate))]} - {documentFileName}<br />{previewString}</div>',
+                '</div>',
                 '</div>',
                 {
                     parseDate: function (v) {
                         return Ext.Date.format(new Date(v), 'F d, Y');
+                        }
                     }
-                }
             )
         }
     ],
-
+    hideHeaders: true,
     header: false,
     forceFit: true,
 

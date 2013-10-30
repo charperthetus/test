@@ -34,6 +34,24 @@ Ext.define('Savanna.process.utils.GroupEventHandlers', {
         }
     },
 
+    onMouseDrop: function(e, ddSource, data, diagram, part) {
+        var stepGroup = part;
+
+        var category = 'ProcessItem';
+        var label = data.records[0].data.label;
+        var linkType = 'ProcessLink';
+        diagram.startTransaction('onMouseDrop');
+        var nodeData = {'category': category, 'text': label};
+        nodeData.uri = Savanna.process.utils.ProcessUtils.getURI(nodeData.category);
+
+        diagram.model.addNodeData(nodeData);
+
+        var linkData = {  category: linkType, from: stepGroup.data.uri, to: nodeData.uri };
+        diagram.model.addLinkData(linkData);
+        diagram.commitTransaction('onMouseDrop');
+        Savanna.process.utils.ProcessUtils.startTextEdit(diagram, nodeData);
+    },
+
     // when the selection is dropped into a Group, add the selected Parts into that Group;
     // if it fails, cancel the tool, rolling back any changes
     onActionGroupMouseDrop: function (e, obj) {
@@ -85,7 +103,7 @@ Ext.define('Savanna.process.utils.GroupEventHandlers', {
             var iter = diagram.selection.iterator;
             while (iter.next()) {
                 var node = iter.value;
-                var newLink = { category: linkType, from: actionsGroup.data.key, to: node.data.key };
+                var newLink = { category: linkType, from: actionsGroup.data.uri, to: node.data.uri };
                 diagram.model.addLinkData(newLink);
             }
 
@@ -117,7 +135,7 @@ Ext.define('Savanna.process.utils.GroupEventHandlers', {
         var iter = diagram.selection.iterator;
         while (iter.next()) {
             var node = iter.value;
-            var newLink = { category: linkType, from: stepGroup.data.key, to: node.data.key };
+            var newLink = { category: linkType, from: stepGroup.data.uri, to: node.data.uri };
             diagram.model.addLinkData(newLink);
         }
 

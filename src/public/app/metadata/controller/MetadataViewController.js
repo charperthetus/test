@@ -12,6 +12,7 @@ Ext.define('Savanna.metadata.controller.MetadataViewController', {
         'Savanna.metadata.view.String',
         'Savanna.metadata.view.StringVerticalEdit',
         'Savanna.metadata.view.Classification',
+        'Savanna.metadata.view.Title',
         'Savanna.metadata.view.Date',
         'Savanna.metadata.view.Uri',
         'Savanna.metadata.view.Integer',
@@ -126,16 +127,18 @@ Ext.define('Savanna.metadata.controller.MetadataViewController', {
             case 'classification':
                 typeToAdd = 'Savanna.metadata.view.Classification';
                 break;
+            case 'docTitle':
+                typeToAdd = 'Savanna.metadata.view.Title';
+                break;
+            case 'document-description':
+                typeToAdd = 'Savanna.metadata.view.StringVerticalEdit';
+                break;
         }
 
         if('' === typeToAdd) {
             switch(name){
                 case 'String':
-                    if('docTitle' === key || 'document-description' === key) { // I don't like these special cases, but design insists
-                        typeToAdd = 'Savanna.metadata.view.StringVerticalEdit';
-                    } else {
-                        typeToAdd = 'Savanna.metadata.view.String';
-                    }
+                    typeToAdd = 'Savanna.metadata.view.String';
                     break;
                 case 'LongString':
                     typeToAdd = 'Savanna.metadata.view.StringVerticalEdit';

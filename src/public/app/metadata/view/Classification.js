@@ -14,6 +14,15 @@ Ext.define('Savanna.metadata.view.Classification', {
     ],
     layout: 'vbox',
 
+    config: {
+        classificationObject: null
+    },
+
+    applyValue: function(value) {
+        // TODO: We'll probably make a service call to load the classification object from here.
+        return value;
+    },
+
     initComponent: function () {
         this.callParent(arguments);
         var me = this;
@@ -31,7 +40,7 @@ Ext.define('Savanna.metadata.view.Classification', {
     makeEditViewItems: function() {
         var me = this;
         var labelAndButtonContainer = Ext.create('Ext.container.Container', {
-            id: 'labelAndButtonContainer',
+            itemId: 'labelAndButtonContainer',
             layout: 'hbox',
             width: "100%",
             border: false

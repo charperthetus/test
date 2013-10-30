@@ -31,7 +31,10 @@ Ext.define('Savanna.components.autoComplete.AutoComplete', {
 
     controller: 'Savanna.components.autoComplete.AutoCompleteController',
 
-    requires: 'Savanna.components.autoComplete.AutoCompleteController',
+    requires: [
+        'Savanna.components.autoComplete.AutoCompleteController',
+        'Savanna.components.tags.Tag'
+    ],
 
     listeners: {
         afterrender: function() {
@@ -71,7 +74,7 @@ Ext.define('Savanna.components.autoComplete.AutoComplete', {
                         hideTrigger: true,
                         anchor: '100%',
                         flex: 2,
-                        queryParam: 'q',
+                        queryParam: 'keyword',
                         minChars: 1,
                         store: this.store,
                         fieldLabel: this.getPreLabel(),
@@ -94,7 +97,7 @@ Ext.define('Savanna.components.autoComplete.AutoComplete', {
     },
 
     addTag: function (tag) {
-        var newTag = Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineTerm', {
+        var newTag = Ext.create('Savanna.components.tags.Tag', {
             itemId: 'tag_' + tag.replace(/[\s'"]/g, "_")
         });
 

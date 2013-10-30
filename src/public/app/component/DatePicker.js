@@ -43,13 +43,12 @@
  * Listeners 
  * 
  * focusLost
- * @param - cmp - This returns the component that fired the event.
- * Calling this will return the DateTime object and cmp will return the object that fired the event.
- * The example below shows grabbing the event then doing any processing required.
+ * @param - cmp - This returns the datepicker itself.
+ *  * The example below shows grabbing the event then doing any processing required.
  * 
  * Example: 
  * yourDateTimeObj.on('focusLost', function(cmp) {
- *      if (this.isDateValid() === true){ return this.getJsDate(); }
+ *      if (cmp.isDateValid() === true){ return cmp.getJsDate(); }
  *      else { return null; }
  * }
  */
@@ -179,7 +178,7 @@ Ext.define('Savanna.component.DatePicker', {
                     this.setValue((n < 10) ? ("0" + n) : n); //If the value is a single digit then add a leading zero
                 }
                 //When the field loses focus then fire this event.
-                this.up().fireEvent('focusLost', this);
+                this.up().fireEvent('focusLost', this.up());
             }
         }
     }, {
@@ -196,7 +195,7 @@ Ext.define('Savanna.component.DatePicker', {
                     var n = parseInt(this.getValue());
                     this.setValue((n < 10) ? ("0" + n) : n);
                 }
-                this.up().fireEvent('focusLost', this);
+                this.up().fireEvent('focusLost', this.up());
             }
         }
     }, {
@@ -213,7 +212,7 @@ Ext.define('Savanna.component.DatePicker', {
                     var n = parseInt(this.getValue());
                     this.setValue((n < 10) ? ("0" + n) : n);
                 }
-                this.up().fireEvent('focusLost', this);
+                this.up().fireEvent('focusLost', this.up());
             }
         }
     }, {
@@ -308,7 +307,7 @@ Ext.define('Savanna.component.DatePicker', {
                 this.keyCount = 0;
             },
             blur: function() {
-                this.up().fireEvent('focusLost', this);
+                this.up().fireEvent('focusLost', this.up());
             }
 
         }
@@ -322,7 +321,7 @@ Ext.define('Savanna.component.DatePicker', {
         maskRe: /[0-9.]/,
         listners: {
             blur: function() {
-                this.up().fireEvent('focusLost', this);
+                this.up().fireEvent('focusLost', this.up());
             }
         }
     }],
@@ -483,15 +482,15 @@ Ext.define('Savanna.component.DatePicker', {
                 var month = parseInt(matches[1], 10);
                 var day = parseInt(matches[2], 10);
                 var year = parseInt(matches[3], 10);
-                var date = new Date(year, month - 1, day);
+                var date = new Date(year, month, day);
                 if (!date || !date.getTime()) return 1;
 
                 // make sure we did not have any illegal, month or day values that the date constructor, coerced into valid values.
-                if (date.getMonth() + 1 != month || date.getFullYear() != year || date.getDate() != day) {
+                if (date.getMonth() != month || date.getFullYear() != year || date.getDate() != day) {
                     if ( date.getDate() != day ){
                         me.items.items[5].markInvalid('Day is Invalid!');
                     }
-                    else if ( date.getMonth() + 1 != month ){
+                    else if ( date.getMonth() != month ){
                         me.items.items[8].markInvalid('Month is Invalid!');
                     }
                     else if ( date.getFullYear() != year ){

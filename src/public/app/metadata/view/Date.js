@@ -54,16 +54,15 @@ Ext.define('Savanna.metadata.view.Date', {
             height: 25
         }));
 
-        this.add(Ext.create('Savanna.components.DatePicker', {
+        this.add(Ext.create('Savanna.component.DatePicker', {
             itemId: 'displayValueEdit',
-            //width: 200,
             jsDate: new Date(me.getValue()),
             renderTo: Ext.getBody(),
             listeners: {
-                blur: function(d) {
-                    console.log('Date picker Item Blur');
-//                    var newVal = d.getUnixDate();
-//                    me.setValue(newVal);
+                focusLost: function(picker) {
+                    if(picker.isDateValid()) {
+                        me.setValue(picker.getJsDate().getTime());
+                    }
                 }
             }
 

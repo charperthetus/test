@@ -11,6 +11,14 @@
 
 // /* MIXINS */
 @if $include-panel-uis == true {
+	/* This should go in UIKIT */
+	@include uikit-panel(
+        $uikit-ui: 'dark',
+        $uikit-header-background-color: $dark-gray,
+        $uikit-header-color: $panel-dark-header-color,
+        $uikit-tool-color: $panel-dark-header-color
+    );
+    
     @include uikit-panel(
         $uikit-ui: 'search-prime',
         $uikit-body-color: $medium-gray,
@@ -36,7 +44,7 @@
 	    
 	    $uikit-body-padding: $panel-searchoption-body-padding,
 	    $uikit-body-border-color: $panel-searchoption-body-border-color,
-	    $uikit-tool-background-image: 'tools/tool-sprites-black'
+	    $uikit-tool-color: $panel-searchoption-header-color
 	);
 	
 	@include uikit-panel(
@@ -54,7 +62,7 @@
 	    
 	    $uikit-body-padding: $panel-resultfacet-body-padding,
 	    $uikit-body-border-color: $panel-resultfacet-body-border-color,
-	    $uikit-tool-background-image: 'tools/tool-sprites-black'
+	    $uikit-tool-color: $panel-resultfacet-header-color
 	);
 	@include uikit-panel(
         $uikit-ui: 'left-padding',

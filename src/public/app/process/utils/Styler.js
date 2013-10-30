@@ -78,11 +78,11 @@ Ext.define('Savanna.process.utils.Styler', {
          * Defines default properties.  These can be overridden via passing them as function parameter for the object.
          */
         var properties = {
-            "font": " OpenSansRegular', OpenSansRegular, 'Helvetica Neue', Helvetica, Arial, sans-serif ",
-            "fontSize": " 10pt ",
-            "fontSizeSmall": " 9pt ",
-            "fontSizeSmaller": " 8pt ",
-            "fontWeight": " bold "
+            "font": "OpenSansRegular, OpenSansRegular, 'Helvetica Neue', Helvetica, Arial, sans-serif ",
+            "fontSize": "10pt ",
+            "fontSizeSmall": "9pt ",
+            "fontSizeSmaller": "8pt ",
+            "fontWeight": "bold "
         };
          
         /* 
@@ -261,7 +261,8 @@ Ext.define('Savanna.process.utils.Styler', {
                     figure: 'Circle',
                     stroke: null,
                     fill: '#3d8060',
-                    desiredSize: new go.Size(11,11)
+                    desiredSize: new go.Size(13,13),
+                name:'circleme'
                 },
             "plusLine":{ 
                 figure: 'PlusLine', 
@@ -309,7 +310,7 @@ Ext.define('Savanna.process.utils.Styler', {
             "diamond": {
                     figure: 'Diamond',
                     stroke: null,
-                    fill: '#fdc16a',
+                    fill: '#f9aa41',
                     desiredSize: new go.Size(13,13)
                 },
             "plusLine":{ 
@@ -434,9 +435,9 @@ Ext.define('Savanna.process.utils.Styler', {
                         width:30, height:30,
                         position: new go.Point(0, 0)
                     },
-            "mainIcon": { font: '10pt SickFont', stroke: '#3ca8c8', position: new go.Point(10, 10) },
+            "mainIcon": { font: '10pt thetus-icons', stroke: '#3ca8c8', position: new go.Point(10, 10) },
             "addIcon": { font: '7pt SickFont', stroke: '#008bb9', position: new go.Point(18, 0) },
-            "label": { font: 'bold 6pt sans-serif', background: 'white', 
+            "label": { font: '7pt  OpenSansRegular, OpenSansRegular, Helvetica Neue, Helvetica, Arial, sans-serif ', background: 'white', 
                       position: null //labelPoint 
                      }
             
@@ -510,7 +511,7 @@ Ext.define('Savanna.process.utils.Styler', {
                 stroke: null
             },
             "textblock": {
-                font: properties.fontWeight + properties.fontSize + properties.font,
+                font: properties.fontSize + properties.font,
                 stroke: palette.darkText,
                 margin: 4,
                 maxSize: new go.Size(160, NaN),
@@ -543,7 +544,7 @@ Ext.define('Savanna.process.utils.Styler', {
                 stroke: null
             },
             "textblock": {
-                font: properties.fontWeight + properties.fontSizeSmaller + properties.font,
+                font: properties.fontSizeSmaller + properties.font,
                 stroke: palette.darkText,
                 margin: 4,
                 maxSize: new go.Size(160, NaN),
@@ -598,7 +599,8 @@ Ext.define('Savanna.process.utils.Styler', {
                 width: 48,
                 height: 48,
                 portId: "",                          // now the Shape is the port, not the whole Node
-          fromSpot: go.Spot.Right, toSpot: go.Spot.Left 
+                fromSpot: go.Spot.Right, 
+                toSpot: go.Spot.Left 
             },
             "textblock": {
                 margin: 0,
@@ -668,7 +670,7 @@ Ext.define('Savanna.process.utils.Styler', {
                 row: 0, column: 1, margin: 0
             },
             "textblock": {
-                font: properties.fontWeight + properties.fontSize + properties.font,
+                font: properties.fontSize + properties.font,
                 stroke: palette.darkText,
 
                 maxSize: new go.Size(150, NaN),
@@ -703,7 +705,7 @@ Ext.define('Savanna.process.utils.Styler', {
                 stroke: null
             },
             "textblock": {
-                font: properties.fontWeight + properties.fontSizeSmaller + properties.font,
+                font: properties.fontSizeSmaller + properties.font,
                 stroke: palette.darkText,
                 margin: 4,
                 maxSize: new go.Size(160, NaN),
@@ -739,7 +741,7 @@ Ext.define('Savanna.process.utils.Styler', {
                 wrap: go.TextBlock.WrapFit,
                 textAlign: "center",
                 editable: true,
-                font: properties.fontWeight + properties.fontSize + properties.font,
+                font: properties.fontSize + properties.font,
                 stroke: palette.black
             }
         };
@@ -761,9 +763,11 @@ Ext.define('Savanna.process.utils.Styler', {
          */
         var processModel = {
             "roundedRectangle": {
-                fill: palette.white,
-                stroke: palette.black,
-                margin: 0
+                fill: '#FFFFFF',
+                stroke: '#999999',
+                margin: 0,
+                strokeWidth: 1
+                
                 
                 
                // strokeDashArray: [4, 2]
@@ -801,7 +805,7 @@ Ext.define('Savanna.process.utils.Styler', {
          * Defines default JSON for internal group.  This can be overridden via using the addTo and removeFrom JSON modifier functions in the return statement.
          */
         var internalGroup = {
-            "roundedRectangle": { fill: '#dbf7fe', stroke: null, minSize: new go.Size(96,96)},
+            "roundedRectangle": { fill: '#dbf7fe', stroke: null, minSize: new go.Size(110,90)},
             "textblockTools": {
                 angle: 270,
                 alignment: go.Spot.Center,
@@ -1027,9 +1031,9 @@ Ext.define('Savanna.process.utils.Styler', {
                 editable: true
             },
             "arrowheadByProduct": {
-                toArrow: "standard",
+                toArrow: 'none',
                 stroke: null,
-                fill: palette.gray  
+                fill: null  
             },
             "shapeByProduct": {
                 fill: palette.gray,
