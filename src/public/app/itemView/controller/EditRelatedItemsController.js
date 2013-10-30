@@ -50,6 +50,10 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
                         borderColor: 'gray',
                         borderStyle: 'dashed'
                     },
+                    listeners: {
+                        boxready: Ext.bind(this.onDropItemReady, this)
+                    },
+
 //                    layout: {
 //                        type:'hbox',
 //                        align:'center'
@@ -128,9 +132,6 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
             cls: 'itemDropZone',
             value: itemGroupName,
             layout: 'hbox',
-            listeners: {
-                boxready: this.onDropItemReady
-            },
             items: [
                 {
                     xtype: 'button',
@@ -151,17 +152,48 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
         }
     },
     onDropItemReady: function(container){
-          console.log('%c container', 'background: #222; color: #bada55', container)
-//        var me = this;
-//        var listElement = me.getItemtools().getEl();
-//        if (listElement) {
-//            me.getItemlist().dropTarget = Ext.create('Ext.dd.DropTarget', listElement.dom, {
-//                ddGroup: 'RNRM-ITEMS',
-//                notifyOver: Ext.Function.bind(me.notifyItemPaletteOverTarget, me),
-//                notifyDrop: Ext.Function.bind(me.notifyItemPaletteDropTarget, me)
-//            });
-//        }
+        var myDropBox = container.getEl();
+        if (myDropBox){
+            container.dropTarget = Ext.create('Ext.dd.DropTarget', myDropBox.dom, {
+                ddGroup: 'RNRM-ITEMS',
+                notifyOver: Ext.bind(this.notifyItemOverTarget, this),
+                notifyDrop: Ext.bind(this.notifyItemDropTarget, this, container, true)
+            });
+        }
     },
+
+    notifyItemOverTarget: function(ddSource, e, data) {
+        //don't allow anything other than an Item to be dropped into the item palette
+        if (this.dragDataIsItem(data)) {
+            return Ext.dd.DropZone.prototype.dropAllowed;
+        } else {
+            return Ext.dd.DropZone.prototype.dropNotAllowed;
+        }
+    },
+
+    notifyItemDropTarget: function(ddSource, e, data, container) {
+        //only create a new palette item if the dragged data does not already exist in the palette
+
+        //too bad we can't use the itemListHasDupes() function, but if the drag data has multiple records, then we
+        //need to do the dupe check for each one and add it if we can (unless we want to abort the whole drag if just
+        //one drag item is invalid)
+        data.records.forEach(function(rec) {
+            var obj = rec.data;
+            // TODO check to make sure item doesn't already exist
+            this.addRelatedItem(obj.label, obj, container.down('#addRelatedItem'))
+        }, this);
+    },
+    dragDataIsItem: function(data) {
+        var returnVal = true;
+        data.records.forEach(function(rec) {
+            var obj = rec.data;
+            if (obj.type !== 'Item') {
+                returnVal = false
+            }
+        });
+        return returnVal;
+    },
+
     onRelatedItemClick: function (btn) {
         btn.up('itemview_edit_related_items').fireEvent('ItemView:OpenItem', btn.text, btn.name);
     },
