@@ -60,6 +60,10 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
             me.getView().queryById('addIntendedUseBox').addTag(value.label);
             me.valNameArray.push(value.label);
         });
+
+        me.getView().queryById('addIntendedUseBox').store.getProxy().url += encodeURI(me.getView().store.getById('Intended Use').data.predicateUri);
+
+
         if(me.getView().store.getById('Type').data.values.length)  {
             me.getView().queryById('parentBtn').setText(me.getView().store.getById('Type').data.values[0].label);
         }

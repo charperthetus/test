@@ -63,8 +63,8 @@ Ext.define('Savanna.itemView.view.header.EditHeader', {
                     showTags: true,
                     itemId: 'addIntendedUseBox',
                     store: Ext.create('Savanna.itemView.store.AutoCompleteStore', {
-                        urlEndPoint: 'http://c2devsav1:8080/c2is2/rest/mockModelSearch/keyword/property/propUri',
-                        paramsObj: {excludeUri:'asdf', pageStart:0, pageLimit:10, keyword: 'asdf'}
+                        urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/model/search/keyword/property/',
+                        paramsObj: { pageStart:0, pageSize:20, alphabetical: true }
                     }),
                     flex: 1
 
