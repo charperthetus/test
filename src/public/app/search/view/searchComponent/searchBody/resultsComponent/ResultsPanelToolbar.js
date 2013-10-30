@@ -52,11 +52,13 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
                 dock: 'top',
                 displayInfo: true
             }, {
-                glyph: 61786,
-                itemId: 'results_listViewButton'
+                glyph: 'list',
+                itemId: 'results_listViewButton',
+                ui:"basic"
             }, {
-                glyph: 61746,
-                itemId: 'results_mapViewButton'
+                glyph: 'earth',
+                itemId: 'results_mapViewButton',
+                ui:'basic'
             }
         ]
     }
