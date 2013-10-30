@@ -28,7 +28,7 @@ Ext.define('Savanna.itemView.store.ItemViewStoreHelper', {
     },
 
     addGroupItemInStore: function(componentName, modelName, uri, store) {
-        var newModel = this.storeHelper.createNewModelInstance(modelName, uri);
+        var newModel = this.createNewModelInstance(modelName, uri);
         store.add(newModel);
 
         for (var i = 0; i < this.mainStore.length; i++) {

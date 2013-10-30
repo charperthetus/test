@@ -29,14 +29,6 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
         addPropAutoChooser: {
             'AutoComplete:ItemSelected': 'addNewQualityForm'
         },
-        // Launching the chooser
-        qualitiesChooser: {
-            live: true,
-            selector: 'auto_complete #qualitiesChooser',
-            listeners: {
-                click: 'launchChooser'
-            }
-        },
         // When a tag is added, removed, or the predicate is destroyed
         autocompleteEvents: {
             live: true,
@@ -47,7 +39,7 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
                 'AutoComplete:Destroyed': 'removePredicate'
             }
         },
-        // Listens for the "choose" on the Click to add chooser
+        // launch qualities chooser
         qualitiesChooser: {
             click: 'launchPredicatesChooser'
         }
@@ -73,57 +65,32 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
         });
         this.updateTitle();
     },
+
     // Control responsible for adding a new auto-complete form (dynamic)
     addNewQualityForm: function (propName, propData, aView) {
-        var me = this,
-            predicateUri = Ext.Object.fromQueryString(propData.uri);
-        
-        if (!this.getView().queryById('prop_' + propName.replace(/[\s']/g, '_'))) {
-            // The "Chooser" button in the new auto-complete
-            var picker = Ext.create('Ext.button.Button', {
-                    text: 'Chooser',
-                    itemId: 'qualitiesChooser',
-
-                    listeners: {
-                        click: me.launchChooser
-                    }
-                }),
-
-                // The new auto-complete control
-                newProp = Ext.create('Savanna.components.autoComplete.AutoComplete', {
-                    itemId: 'prop_' + propName.replace(/[\s']/g, '_'),
-                    showTags: true,
-                    preLabel: propName,
-                    hasControls: true,
-                    isClosable: true,
-                    store: Ext.create('Savanna.itemView.store.AutoCompleteStore', {
-                        urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/mockModelSearch/keyword/property/' + predicateUri,
-                        paramsObj: { excludeUri:'', pageStart:0, pageLimit:10, keyword: 'asdf' }
-                    })
-                });
-
-            // Insert after the input for autocomplete, but before the close button
-            newProp.child('container').insert(1, picker);
+        if (this.getView().queryById('prop_' + propName.replace(/[\s'"]/g, "_")) === null) {
+            var newProp = this.createNewAutoComplete(propData);
             this.getView().add(newProp);
             this.propNameArray.push(propName);
             this.storeHelper.addGroupItemInStore("Properties", propName, propData.uri, this.getView().store);
             this.updateTitle();
         }
     },
+
     // Convenience handler to generate a new auto-complete
     createNewAutoComplete: function(data) {
         var me = this,
-            predicateUri = Ext.Object.fromQueryString(data.predicateUri),
+            predicateUri = data.predicateUri ? Ext.Object.fromQueryString(data.predicateUri): data.uri,
             picker = Ext.create('Ext.button.Button', {
                 text: 'Chooser',
-                itemId: 'qualitieschooser',
+                itemId: 'valuesChooser',
 
                 listeners: {
-                    click: me.launchChooser
+                    click: me.launchValuesChooser.bind(me, data.label)
                 }
             }),
             newProp =  Ext.create('Savanna.components.autoComplete.AutoComplete', {
-                itemId: 'prop_' + data.label.replace(/[\s']/g, '_'),
+                itemId: 'prop_' + data.label.replace(/[\s'"]/g, '_'),
                 showTags: true,
                 preLabel: data.label,
                 hasControls: true,
@@ -149,14 +116,34 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
     removeTag: function(tagName, aView) {
         this.storeHelper.removeBotLevItemInStore(tagName, this.getView().store.getById(aView.preLabel));
     },
-    
-    launchChooser: function(button, event, eOpts) {
-//        console.debug('TODO: Launch the assertions chooser', arguments);
-//        Ext.create('Savanna.itemView.view.header.AddIntendedUses', {
-//            width: 400,
-//            height: 300,
-//            title: button.id
-//        });
+
+    launchValuesChooser: function(storeName) {
+        var valNameArray = [];
+
+        Ext.each(this.getView().store.getById(storeName).valuesStore.data.items, function(value) {
+            valNameArray.push(value.data.label);
+        });
+
+        var vChooser = Ext.create('Savanna.itemView.view.itemQualities.ValuesPicker', {
+            width: 500,
+            height: 600,
+            selectionStore: this.getView().store.getById(storeName).valuesStore,
+            valNameArray: valNameArray
+        });
+
+        vChooser.on('close', this.closedVPicker, this, storeName);
+    },
+
+    closedVPicker: function(view, propName) {
+        if (view.updatedStore) {
+            Ext.Array.erase(this.getView().store.getById(propName).data.values, 0, this.getView().store.getById(propName).data.values.length);
+            this.getView().queryById('prop_' + propName.replace(/[\s'"]/g, "_")).clearTags();
+
+            Ext.each(this.getView().store.getById(propName).valuesStore.data.items, function(value) {
+                this.getView().store.getById(propName).data.values.push(value.data);
+                this.getView().queryById('prop_' + propName.replace(/[\s'"]/g, "_")).addTag(value.data.label);
+            }, this);
+        }
     },
 
     launchPredicatesChooser: function() {
