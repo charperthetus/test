@@ -17,7 +17,7 @@ Ext.define('Savanna.classification.controller.BannerController', {
         }
         else {
             Ext.Ajax.request({
-                url: SavannaConfig.capcoDefaultHighUrl + ';jsessionid=' + Savanna.jsessionid,
+                url: SavannaConfig.capcoUrl + 'string/high' + ';jsessionid=' + Savanna.jsessionid,
                 success: me.onSuccess,
                 scope: me
             });
