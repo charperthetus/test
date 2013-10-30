@@ -58,48 +58,27 @@ Ext.define('Savanna.itemView.view.imageBrowser.ImagesGridEdit', {
         }]
     }, {
 
-        // Upload zones
+        // TODO: Remove this grid and refactor as it's only good for holding a store.
         xtype: 'grid',
         itemId: 'uploadStatus',
         store: Ext.create('Savanna.upload.store.UploadGridStore'),
         flex:1,
         width: '100%',
         borderWidth: 0,
+        // viewConfig: {
+        //     preserveScrollOnRefresh: true
+        // },
         hideHeaders: true,
+        columns: []
 
-        // Upload Statuses
-        columns: [
-            {
-                text: '',
-                dataIndex: 'status',
-                borderWidth: 0,
-                sortable: false,
-                align:'center',
-                resizable:false,
-                hideable: true,
-                width: 36,
-                renderer : function(val) {
-                    if (val === 'completed') {
-                        return '<div class="icon-success">' + '</div>';
-                    } else if (val === 'pending') {
-                        return '<div class="icon-pending">' + '</div>';
-                    } else if (val === 'failed') {
-                        return '<div class="icon-alert">' + '</div>';
-                    } else {
-                        return val;
-                    }
-                }
-
-            },{
-                text: '',
-                borderWidth: 0,
-                dataIndex: 'progress',
-                sortable: false,
-                hideable: false,
-                flex: 2
-            }
-        ]
     }, {
+        xtype: 'label',
+        flex: 1,
+        itemId: 'uploadStatusMessage',
+        hidden: true
+    
+    }, {
+        // Upload drop zones
         xtype: 'itemview_image_upload',
         itemId: 'itemViewUploadImages'
     }]

@@ -94,16 +94,16 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
         return url;
     },
     uploadFiles: function(files,component){
-        console.debug(files);
         var file;
-        this.currentlyUploadingCount += files.length;
 
         var uploadGrid = this.getView().queryById('uploadStatus');
+
         for (var i = 0 ; i < files.length ; i++){
             file = files[i];
 
             // Check if file is an image before uploading
             if(file.type.indexOf('image') !== -1){
+                this.currentlyUploadingCount++;
                 var tempId = Ext.id();
                 this.uploadFileViaXMLHttpRequest(this.buildUploadUrl() , file,  uploadGrid, tempId);
                 uploadGrid.store.add({ status:'pending', fileName: file.name , fileSize: file.size , progress:'Queued', fileId: tempId});
@@ -198,7 +198,19 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
         }else{
             this.currentlyPolling = false;
         }
+        this.updateUploadLabel();
         uploadGrid.getView().refresh();
+    },
+    updateUploadLabel: function() {
+        var uploadStatus = this.getView().queryById('uploadStatusMessage');
+        uploadStatus.show();
+        uploadStatus.update('Uploading (' + this.currentPollingIds.length + ' of ' + this.currentlyUploadingCount + ')');
+
+        // Once uploads are done, reset
+        if(this.currentPollingIds.length == 0) {
+            this.currentlyUploadingCount = 0;
+            uploadStatus.hide();
+        }
     },
 
     // IMAGE BROWSING
