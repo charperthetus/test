@@ -20,6 +20,12 @@
 $base-color: $dark-gray !default;
 $color: $dark-gray !default;
 
+/* these are going into the savanna-theme for now.
+ * but will need to be pulled out into UIKit in the future
+ */
+$rollover_list: #EBF1F4 !default;
+$selected_list: #CCE1EE !default;
+
 // Global CSS Configs
 $include-rtl: false !default;
 
