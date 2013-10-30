@@ -220,7 +220,7 @@ Ext.define('Savanna.image.view.part.ImageViewer', {
 
     mousewheel: function (event) {
         var me = this;
-        var wheelDelta = event.browserEvent.wheelDelta;
+        var wheelDelta = event.getWheelDelta();
         if (wheelDelta >= 0 ){
             me.zoomIn(null, event, null);
         }else{

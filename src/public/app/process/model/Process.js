@@ -10,6 +10,8 @@ Ext.define('Savanna.process.model.Process', {
 
     fields: [
         { name: 'class', type: 'string' },
+        { name: 'nodeKeyProperty', type: 'string' },
+        { name: 'uri', type: 'string' },
         'nodeDataArray',
         'linkDataArray'
     ]

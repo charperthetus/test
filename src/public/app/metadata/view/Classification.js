@@ -40,7 +40,7 @@ Ext.define('Savanna.metadata.view.Classification', {
     makeEditViewItems: function() {
         var me = this;
         var labelAndButtonContainer = Ext.create('Ext.container.Container', {
-            id: 'labelAndButtonContainer',
+            itemId: 'labelAndButtonContainer',
             layout: 'hbox',
             width: "100%",
             border: false
