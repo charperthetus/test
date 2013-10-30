@@ -61,7 +61,7 @@ Ext.define('Savanna.process.utils.Styler', {
             "white": "#F8F8F8",
             "aqua": "#dbf7fe",
             "gray": "#999999",
-            "lightgray": "#000",
+            "lightgray": "#f2f2f2",
             "fade": "#353535",
             "black": "#454545",
             "startColor": "#7cc19d",
@@ -78,11 +78,11 @@ Ext.define('Savanna.process.utils.Styler', {
          * Defines default properties.  These can be overridden via passing them as function parameter for the object.
          */
         var properties = {
-            "font": " OpenSansRegular, OpenSansRegular, ''Helvetica Neue', Helvetica, Arial, sans-serif ",
-            "fontSize": " 10pt ",
-            "fontSizeSmall": " 9pt ",
-            "fontSizeSmaller": " 8pt ",
-            "fontWeight": " bold "
+            "font": "OpenSansRegular, OpenSansRegular, 'Helvetica Neue', Helvetica, Arial, sans-serif ",
+            "fontSize": "10pt ",
+            "fontSizeSmall": "9pt ",
+            "fontSizeSmaller": "8pt ",
+            "fontWeight": "bold "
         };
          
         /* 
@@ -172,7 +172,7 @@ Ext.define('Savanna.process.utils.Styler', {
           fromSpot: go.Spot.Right, toSpot: go.Spot.Left 
             },
             "textblock": {
-                font: properties.fontSize + properties.font,
+                font: properties.fontWeight + properties.fontSize + properties.font,
                 stroke: palette.darkText,
                 margin: 4,
                 maxSize: new go.Size(160, NaN),
@@ -223,7 +223,7 @@ Ext.define('Savanna.process.utils.Styler', {
                 stroke: null
             },
             "textblock": {
-                font: properties.fontSizeSmaller + properties.font,
+                font: properties.fontWeight + properties.fontSizeSmaller + properties.font,
                 stroke: palette.darkText,
                 margin: 4,
                 maxSize: new go.Size(160, NaN),
@@ -418,7 +418,6 @@ Ext.define('Savanna.process.utils.Styler', {
                     },
                     mouseLeave: function(e, obj) {
                         // should only change the hover color if we are moving outside, not if we are moving over the glyph
-                        // todo: not yet sure how to implement this
                         obj.elt(0).fill = '#c7f4ff';
                     },
                     mouseDragEnter: function(e, obj) {
@@ -436,7 +435,7 @@ Ext.define('Savanna.process.utils.Styler', {
                         width:30, height:30,
                         position: new go.Point(0, 0)
                     },
-            "mainIcon": { font: '10pt SickFont', stroke: '#3ca8c8', position: new go.Point(10, 10) },
+            "mainIcon": { font: '10pt thetus-icons', stroke: '#3ca8c8', position: new go.Point(10, 10) },
             "addIcon": { font: '7pt SickFont', stroke: '#008bb9', position: new go.Point(18, 0) },
             "label": { font: '7pt  OpenSansRegular, OpenSansRegular, Helvetica Neue, Helvetica, Arial, sans-serif ', background: 'white', 
                       position: null //labelPoint 
@@ -600,7 +599,8 @@ Ext.define('Savanna.process.utils.Styler', {
                 width: 48,
                 height: 48,
                 portId: "",                          // now the Shape is the port, not the whole Node
-          fromSpot: go.Spot.Right, toSpot: go.Spot.Left 
+                fromSpot: go.Spot.Right, 
+                toSpot: go.Spot.Left 
             },
             "textblock": {
                 margin: 0,
@@ -763,7 +763,7 @@ Ext.define('Savanna.process.utils.Styler', {
          */
         var processModel = {
             "roundedRectangle": {
-                fill: null,
+                fill: '#FFFFFF',
                 stroke: '#999999',
                 margin: 0,
                 strokeWidth: 1
@@ -780,7 +780,8 @@ Ext.define('Savanna.process.utils.Styler', {
                 textAlign: "center",
                 editable: true,
                 font: properties.fontWeight + properties.fontSize + properties.font,
-                stroke: palette.black
+                stroke: palette.black,
+                name: "TEXT"
             },
             "selectionAdornment":{ fill: null, stroke: '#63d9f5' , strokeWidth: 3, margin: 0   },
             "panelVertical":{ defaultAlignment: go.Spot.Center, padding: new go.Margin(5, 5, 5, 5) },
@@ -804,7 +805,7 @@ Ext.define('Savanna.process.utils.Styler', {
          * Defines default JSON for internal group.  This can be overridden via using the addTo and removeFrom JSON modifier functions in the return statement.
          */
         var internalGroup = {
-            "roundedRectangle": { fill: '#dbf7fe', stroke: null, minSize: new go.Size(96,96)},
+            "roundedRectangle": { fill: '#dbf7fe', stroke: null, minSize: new go.Size(110,90)},
             "textblockTools": {
                 angle: 270,
                 alignment: go.Spot.Center,
@@ -841,7 +842,38 @@ Ext.define('Savanna.process.utils.Styler', {
                         }
         };
 
-        /* 
+        /*
+         * @private
+         * altsGroup - JSON Object
+         * Defines default JSON for internal group.  This can be overridden via using the addTo and removeFrom JSON modifier functions in the return statement.
+         */
+        var altsGroup = {
+            "roundedRectangle": { fill: palette.white, stroke: palette.black},
+            "textblock": {
+                margin: new go.Margin(0,0,0,4),
+                maxSize: new go.Size(200, NaN),
+                wrap: go.TextBlock.WrapFit,
+                textAlign: "center",
+                editable: true,
+                font: properties.fontWeight + properties.fontSize + properties.font,
+                stroke: palette.black,
+                name: "TEXT"
+            },
+            "gridLayout":{ wrappingWidth: 3, alignment: go.GridLayout.Position, cellSize: new go.Size(1, 1), spacing: new go.Size(4, 4) },
+            "placeholder":{
+                            padding: new go.Margin(16, 16),
+                            background: 'transparent',
+                            mouseDragEnter: function(e, obj) {
+                                obj.background = 'orange';
+                            },
+                            mouseDragLeave: function(e, obj) {
+                                obj.background = 'transparent';
+                            },
+                            mouseDrop: null //Savanna.process.utils.GroupEventHandlers.onActionGroupMouseDrop
+                        }
+        };
+
+        /*
          * @private
          * internalGroupShape
          * Allows you to maniplute JSON for the shape and then returns the JSON you called to be used.
@@ -888,7 +920,30 @@ Ext.define('Savanna.process.utils.Styler', {
             return internalGroup;
         };
 
-        /* 
+        /*
+         * @private
+         * altsGroupShape
+         * Allows you to maniplute JSON for the shape and then returns the JSON you called to be used.
+         * @param json - JSON - Accepted Lookup keys defined below. ( Optional Parameter )
+         *      - mouseDrop
+         * @return JSON
+         */
+        var altsGroupShape = function(json){
+
+            // Provide JSON as a parameter for functions when overridding JSON properties, if nothing is passed it will be undefined and considered an optional parameter.
+            if ( json !== undefined ){
+
+                //jsonDriller looks into the JSON to find the key you are passing.  If the key was in the passed JSON then it will override the JSON with your parameter.
+                if ( jsonDriller(json, "mouseDrop") !== '' ){
+                    //This will be adding the click handler to the JSON
+                    altsGroup["placeholder"].mouseDrop = json["mouseDrop"];
+                }
+            }
+
+            return altsGroup;
+        };
+
+        /*
          * @private
          * linker - JSON Object
          * Defines default JSON for linker shape that links two shapes.  This can be overridden via using the addTo and removeFrom JSON modifier functions in the return statement.
@@ -976,9 +1031,9 @@ Ext.define('Savanna.process.utils.Styler', {
                 editable: true
             },
             "arrowheadByProduct": {
-                toArrow: "standard",
+                toArrow: 'none',
                 stroke: null,
-                fill: palette.gray  
+                fill: null  
             },
             "shapeByProduct": {
                 fill: palette.gray,
@@ -1082,6 +1137,9 @@ Ext.define('Savanna.process.utils.Styler', {
             },
             internalGroup: function(json){
                 return internalGroupShape(json);
+            },
+            altsGroup: function(json){
+                return altsGroupShape(json);
             },
             paletteCircle: function(){
                 return paletteInternalCircle();

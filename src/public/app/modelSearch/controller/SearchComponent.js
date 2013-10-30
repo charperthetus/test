@@ -302,50 +302,19 @@ Ext.define('Savanna.modelSearch.controller.SearchComponent', {
     },
 
     buildSearchObject: function (searchString, dal, currentDalPanel, mapView) {
-        var searchObj = Ext.create('Savanna.modelSearch.model.SearchRequest', {
-            'textInputString': searchString,
-            'displayLabel': searchString
-        });
 
-        if ((typeof mapView != 'undefined') && mapView &&  mapView.searchLayer) {
-            if (mapView.searchLayer.features.length > 0){
-                var polyVo = {};
-                var polyRings = [];
-                var vertices = mapView.searchLayer.features[0].geometry.getVertices();
-                for (var i = 0; i < vertices.length; i++) {
-                    var point = [vertices[i].x, vertices[i].y];
-                    polyRings.push(point);
-                }
-                polyVo.coordinates = [polyRings];
-                polyVo.type = 'Polygon';
-                searchObj.set('polygonVo', polyVo);
-            }
-        }
 
-        searchObj.set('contentDataSource', dal.get('id'));
-
-        searchObj.set('searchPreferencesVOs', [
-            {
-                'dalId': dal.get('id'),
-                'sortOrder': 'Default',
-                'customSearchSelections': this.getCustomSearchSelections(currentDalPanel)
-            }
-        ]);
+        var searchObj = {
+            keywords: searchString
+        };
 
         /*
-         set the facet filters, if any
+         set the facet filters, if any  format is:
+         https://confluence.thetus.com/display/CTW/Item+View+Rest+Services+High+Level+Strategy?src=search
          */
         if (dal.get('facetFilterCriteria').length) {
-            searchObj.set('facetFilterCriteria', dal.get('facetFilterCriteria'));
+            searchObj.filters = dal.get('facetFilterCriteria');
         }
-
-        /*
-         set the date ranges, if any
-         */
-        if (dal.get('dateTimeRanges').length) {
-            searchObj.set('dateTimeRanges', dal.get('dateTimeRanges'));
-        }
-
         return searchObj;
     },
 
@@ -360,25 +329,14 @@ Ext.define('Savanna.modelSearch.controller.SearchComponent', {
         var resultsStore = Ext.create('Savanna.modelSearch.store.SearchResults', {
             storeId: 'searchResults_' + dal.get('id'),
             pageSize: pageSize,
-            //This keeps the parameters below from being added to the query string.
-            //They are only in the json body of the request.
-            limitParam: undefined,
-            pageParam: undefined,
-            startParam: undefined
+            //We put the search object on the store, so it can be changed to reflect the current page and page size known best by the store.
+            searchParamVO: searchObj
         });
 
         var resultsDal = component.down('#resultsdals'),
             resultsPanel = component.down('#resultspanel');
 
-
-        //TODO todo
-        searchObj.data = {
-            //queryId: "asdlfkja2349",
-            startPage:0,
-            pageSize: pageSize,
-            keywords: "simian" // EDISMAX query language (for now)
-        } ;
-        resultsStore.proxy.jsonData = Ext.JSON.encode(searchObj.data);  // attach the search request object
+        resultsStore.proxy.jsonData = Ext.JSON.encode(searchObj);  // attach the search request object
         resultsStore.load({
             callback: Ext.bind(this.searchCallback, this, [resultsDal, resultsPanel, dal.get('id'), resultsStore, action], true)
         });
@@ -480,9 +438,11 @@ Ext.define('Savanna.modelSearch.controller.SearchComponent', {
     searchCallback: function (records, operation, success, resultsDal, resultsPanel, dalId, store, action) {
 
         if (!success) {
-            // server down..?
+            var errorString = (operation.error && operation.error.statusText) ? " Error: " + operation.error && operation.error.statusText + " " : " Unknown Error ",
+                statusString = (operation.error && (operation.error.status != 0) ) ? " Status: " + operation.error && operation.error.status + " " : " Unknown Status ";
+
             Ext.Error.raise({
-                msg: 'The server could not complete the search request - the DAL "' + dalId + '" may be unavailable.'
+                msg: 'The DAL "' + dalId + '" may be unavailable. ' + errorString + " " + statusString
             });
         } else {
 

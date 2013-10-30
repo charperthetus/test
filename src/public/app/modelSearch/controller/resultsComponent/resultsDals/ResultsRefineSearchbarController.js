@@ -8,10 +8,8 @@ Ext.define('Savanna.modelSearch.controller.resultsComponent.resultsDals.ResultsR
 
         control: {
             refine_search_terms: {
-                keyup: 'onKeyUp'
-            },
-            refine_search_submit: {
-                click: 'onSubmitClick'
+                keyup: 'onKeyUp',
+                'onsearchclick': 'onSubmitClick'
             }
         },
 

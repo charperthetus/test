@@ -24,7 +24,7 @@ Ext.syncRequire(['Deft.mixin.Injectable','Deft.mixin.Controllable']);
 //@require Deft.mixin.Injectable
 //@require Deft.mixin.Controllable
 
-Ext.setGlyphFontFamily('SickFont');
+Ext.setGlyphFontFamily('thetus-icons');
 Ext.application({
     name: 'Savanna',
 

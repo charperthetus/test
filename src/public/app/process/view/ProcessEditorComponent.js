@@ -27,6 +27,8 @@ Ext.define('Savanna.process.view.ProcessEditorComponent', {
     tbar: [],
     items: [],
 
+    overview: null,
+
     initComponent: function() {
         this.items = this.setupItems();
         this.callParent(arguments);
@@ -57,6 +59,7 @@ Ext.define('Savanna.process.view.ProcessEditorComponent', {
                     },
                     {
                         xtype: 'process_palettewindow',
+                        itemId: 'palette',
                         autoShow: true,
                         x: 0 //DI needs to position this window correctly
                         
@@ -64,7 +67,7 @@ Ext.define('Savanna.process.view.ProcessEditorComponent', {
                 ]
             },
             {
-                xtype: 'process_metadata', //todo - this should be refactored out for all savanna item components later
+                xtype: 'process_metadata',
                 itemId: 'metadata',
                 region: 'east',
                 layout: 'fit',
