@@ -80,19 +80,25 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
         var uploadGrid = this.getView().queryById('uploadStatus');
         for (var i = 0 ; i < files.length ; i++){
             file = files[i];
-            var tempId = Ext.id();
-            this.uploadFileViaXMLHttpRequest(this.buildUploadUrl() , file,  uploadGrid, tempId);
-            uploadGrid.store.add({ status:'pending', fileName: file.name , fileSize: file.size , progress:'Queued', fileId: tempId});
+
+            // Check if file is an image before uploading
+            if(file.type.indexOf('image') !== -1){
+                var tempId = Ext.id();
+                this.uploadFileViaXMLHttpRequest(this.buildUploadUrl() , file,  uploadGrid, tempId);
+                uploadGrid.store.add({ status:'pending', fileName: file.name , fileSize: file.size , progress:'Queued', fileId: tempId});
+            } else {
+                console.debug('Not an image: ', file.name);
+            }
         }
     },
     uploadFileViaXMLHttpRequest:function(url, file, uploadGrid, tempId) {
-        var formData = new FormData();
-        formData.append(file.name, file);
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', url, true);
-        xhr.cors = true;
-        xhr.onload = Ext.bind(this.onUploadRequestLoad,this,[uploadGrid, tempId],true );
-        xhr.send(formData);  // multipart/form-data
+            var formData = new FormData();
+            formData.append(file.name, file);
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', url, true);
+            xhr.cors = true;
+            xhr.onload = Ext.bind(this.onUploadRequestLoad,this,[uploadGrid, tempId],true );              
+            xhr.send(formData);  // multipart/form-data
     },
     onUploadRequestLoad: function(status, uploadGrid, tempId){
         var pollingId =  Ext.decode(status.target.response);
@@ -156,7 +162,7 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
                 this.currentPollingIds.splice(i,1);
                 if (documentStatus.status === 'completed') { 
                     this.ingestedCount++;
-                    this.addNewImageToBrowser(documentStatus.documentUri);
+                    this.createNewImage(documentStatus.documentUri);
                 } else {
                     this.failedCount++;
                 } 
@@ -178,27 +184,31 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
     // IMAGE BROWSING
     buildImageGallery: function(images) {
         var me = this;
+        // TODO: Abstract this out.
         Ext.Array.each(images, function() {
             var thumbnail = Ext.create('Savanna.itemView.view.imageBrowser.ImageThumbnail', {
                 src: SavannaConfig.savannaUrlRoot + 'rest/document/' + encodeURI(this.raw.uri) + '/original/',
                 alt: this.raw.description,
                 title: this.raw.label
             });
-            me.getView().queryById('thumbnailList').add(thumbnail);
+            me.addImageToBrowser(thumbnail);
 
             if (this.raw.primaryImage) {
                 me.onChangeImage(null, this);
             }
         });
     },
-    addNewImageToBrowser: function(imageUri){
+    createNewImage: function(imageUri){
         var thumbnail = Ext.create('Savanna.itemView.view.imageBrowser.ImageThumbnail', {
             src: SavannaConfig.savannaUrlRoot + 'rest/document/' + encodeURI(imageUri) + '/original/',
             alt: 'Insert a description',
             title: 'Add a Title'
         });
-        this.getView().queryById('thumbnailList').add(thumbnail);
+        this.addImageToBrowser(thumbnail);
         this.onChangeImage(null, thumbnail);
+    },
+    addImageToBrowser: function(image){
+        this.getView().queryById('thumbnailList').add(image);
     },
     // Scroll Left Button
     onNavLeft: function() {
