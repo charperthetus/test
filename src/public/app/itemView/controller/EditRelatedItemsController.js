@@ -109,6 +109,9 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
             cls: 'itemDropZone',
             value: itemGroupName,
             layout: 'hbox',
+            listeners: {
+                boxready: this.onDropItemReady
+            },
             items: [
                 {
                     xtype: 'button',
@@ -127,6 +130,18 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
                 }
             ]
         }
+    },
+    onDropItemReady: function(container){
+          console.log('%c container', 'background: #222; color: #bada55', container)
+//        var me = this;
+//        var listElement = me.getItemtools().getEl();
+//        if (listElement) {
+//            me.getItemlist().dropTarget = Ext.create('Ext.dd.DropTarget', listElement.dom, {
+//                ddGroup: 'RNRM-ITEMS',
+//                notifyOver: Ext.Function.bind(me.notifyItemPaletteOverTarget, me),
+//                notifyDrop: Ext.Function.bind(me.notifyItemPaletteDropTarget, me)
+//            });
+//        }
     },
     onRelatedItemClick: function (btn) {
         btn.up('itemview_edit_related_items').fireEvent('ItemView:OpenItem', btn.text, btn.name);
