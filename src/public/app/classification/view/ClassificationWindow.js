@@ -1,21 +1,28 @@
-Ext.define('Savanna.classification.view.ClassificationDialog', {
-    extend: 'Ext.panel.Panel',
-    alias: 'widget.classification_dialog',
+Ext.define('Savanna.classification.view.ClassificationWindow', {
+    extend: 'Ext.window.Window',
     requires: [
-        'Savanna.classification.controller.DialogController',
+        'Savanna.classification.controller.WindowController',
         'Savanna.component.BoxSelect'
     ],
 
-    controller: 'Savanna.classification.controller.DialogController',
+    controller: 'Savanna.classification.controller.WindowController',
+
+    config: {
+        portionMarking: null
+    },
+
+    title: 'Edit Classification',
 
     layout: 'vbox',
+    width: 480,
+    height: 526,
 
     bbar: [
         '->',
         {
             xtype: 'button',
-            itemId: 'okButton',
-            text: 'OK',
+            itemId: 'finishButton',
+            text: 'Finish',
             ui: 'commit'
         },
         {
@@ -44,6 +51,8 @@ Ext.define('Savanna.classification.view.ClassificationDialog', {
             },
             displayField: 'displayLabel',
             valueField: 'id',
+            allowBlank: false,
+            forceSelection: true,
             editable: false,
             width: '100%'
         },

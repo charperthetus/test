@@ -1,4 +1,4 @@
-Ext.define('Savanna.classification.controller.DialogController', {
+Ext.define('Savanna.classification.controller.WindowController', {
     extend: 'Deft.mvc.ViewController',
 
     requires: ['Savanna.classification.store.OptionsStore'],
@@ -9,18 +9,18 @@ Ext.define('Savanna.classification.controller.DialogController', {
             select: 'onClassificationSelect'
         },
         sciField: {
-            change: 'requestRestrictions'
+            change: 'requestRestrictionsByMarkings'
         },
         fgiField: {
-            change: 'requestRestrictions'
+            change: 'requestRestrictionsByMarkings'
         },
         disField: {
-            change: 'requestRestrictions'
+            change: 'requestRestrictionsByMarkings'
         },
         relField: {
-            change: 'requestRestrictions'
+            change: 'requestRestrictionsByMarkings'
         },
-        okButton: true,
+        finishButton: true,
         cancelButton: true
     },
 
@@ -32,12 +32,14 @@ Ext.define('Savanna.classification.controller.DialogController', {
         }
         else {
             this.loadFieldStores(options.first());
+            this.requestRestrictionsByPortionMarking();
         }
         this.callParent(arguments);
     },
 
     optionsLoaded: function(records) {
         this.loadFieldStores(records.shift());
+        this.requestRestrictionsByPortionMarking();
     },
 
     loadFieldStores: function(options) {
@@ -65,9 +67,15 @@ Ext.define('Savanna.classification.controller.DialogController', {
         };
     },
 
-    onClassificationSelect: function(combobox, records) {
+    onClassificationSelect: function() {
+        this.styleClassificationField();
+        this.requestRestrictionsByMarkings();
+    },
+
+    styleClassificationField: function() {
+        var classificationField = this.getClassificationField();
         var background, color;
-        switch(combobox.value) {
+        switch(classificationField.getValue()) {
             case "USCLASS_TS":
                 background = "#FFFA53"
                 color = "#000000";
@@ -89,14 +97,46 @@ Ext.define('Savanna.classification.controller.DialogController', {
                 color = "#FFFFFF";
                 break;
         }
-        combobox.setFieldStyle('background:' + background);
-        combobox.setFieldStyle('textAlign:center');
-        combobox.setFieldStyle('color:' + color);
-
-        this.requestRestrictions();
+        classificationField.setFieldStyle('background:' + background);
+        classificationField.setFieldStyle('textAlign:center');
+        classificationField.setFieldStyle('color:' + color);
     },
 
-    requestRestrictions: function() {
+    requestRestrictionsByPortionMarking: function() {
+        var portionMarking = this.getView().getPortionMarking();
+        this.makeRestrictionsAjaxRequest('restrictions/string', '"' + portionMarking + '"',
+            this.onSuccessRestrictionsByPortionMarking);
+    },
+
+    onSuccessRestrictionsByPortionMarking: function(response) {
+        var responseObj = Ext.JSON.decode(response.responseText);
+        var selectedMarkingIds = responseObj.selectedMarkingIds;
+        var ismformat = responseObj.ismformatData.ismformat;
+
+        var classificationField = this.getClassificationField();
+        for(var i = 0; i < selectedMarkingIds.length; i++) {
+            if(classificationField.findRecordByValue(selectedMarkingIds[i])) {
+                classificationField.setValue(selectedMarkingIds[i]);
+                this.styleClassificationField();
+            } else {
+                this.getSciField().setValue(selectedMarkingIds[i]);
+                this.getDisField().setValue(selectedMarkingIds[i]);
+            }
+        }
+
+        if(ismformat.fgisourceOpen) {
+            this.getFgiField().setValue(ismformat.fgisourceOpen.split(' '));
+        }
+        if(ismformat.releasableTo) {
+            this.getRelField().setValue(ismformat.releasableTo.split(' '));
+        }
+
+        var errors = responseObj.formattedString.errors;
+        var restrictions = responseObj.formattedString.restrictions;
+        this.updateForm(errors, restrictions);
+    },
+
+    requestRestrictionsByMarkings: function() {
         var classificationLastValue = this.getClassificationField().lastValue;
         var sciLastValue = this.getSciField().lastValue;
         var fgiLastValue = this.getFgiField().lastValue;
@@ -113,19 +153,23 @@ Ext.define('Savanna.classification.controller.DialogController', {
             relMarkings: relLastValue ? relLastValue.split(', ') : []
         };
 
+        this.makeRestrictionsAjaxRequest('restrictions/markings', markings, this.onSuccessRestrictionsByMarkings);
+    },
+
+    makeRestrictionsAjaxRequest: function(endpoint, jsonData, successFunction) {
         Ext.Ajax.request({
-            url: SavannaConfig.capcoRestrictionsMarkings + ';jsessionid=' + Savanna.jsessionid,
+            url: SavannaConfig.capcoUrl + endpoint + ';jsessionid=' + Savanna.jsessionid,
             method: 'POST',
-            jsonData: markings,
+            jsonData: jsonData,
             headers: {
                 'Accept': 'application/json'
             },
-            success: this.onRequestSuccess,
+            success: successFunction,
             scope: this
-        });
+        })
     },
 
-    onRequestSuccess: function(response) {
+    onSuccessRestrictionsByMarkings: function(response) {
         var responseObj = Ext.JSON.decode(response.responseText);
         if(responseObj.formattedString.restrictions) {
             var errors = responseObj.formattedString.errors;
@@ -136,7 +180,7 @@ Ext.define('Savanna.classification.controller.DialogController', {
             this.getFgiField().setValue();
             this.getDisField().setValue();
             this.getRelField().setValue();
-            this.requestRestrictions();
+            this.requestRestrictionsByMarkings();
         }
     },
 

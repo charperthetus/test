@@ -10,13 +10,9 @@ Ext.define('Savanna.metadata.view.Classification', {
     extend: 'Savanna.metadata.view.MetadataItemView',
     alias: 'widget.metadata_classification',
 
-    items: [
-    ],
-    layout: 'vbox',
+    requires: ['Savanna.classification.view.ClassificationWindow'],
 
-    config: {
-        classificationObject: null
-    },
+    layout: 'vbox',
 
     applyValue: function(value) {
         // TODO: We'll probably make a service call to load the classification object from here.
@@ -35,6 +31,15 @@ Ext.define('Savanna.metadata.view.Classification', {
                 me.down('#displayValue').html = (null === me.getValue()) ? '&nbsp;' : me.getValue();
             }
         }, this));
+    },
+
+    makeItems: function () {
+        this.removeAll();
+        if(this.getEditMode()) {
+            this.makeEditViewItems();
+        } else {
+            this.makeViewViewItems();
+        }
     },
 
     makeEditViewItems: function() {
@@ -56,10 +61,13 @@ Ext.define('Savanna.metadata.view.Classification', {
             padding: '0 0 0 180',
             listeners: {
                 click: function () {
-                    // TODO: pop up the classification edit dialog.
-
-                    console.log('Edit Classification');
-                }
+                    var classificationWindow = Ext.create('Savanna.classification.view.ClassificationWindow', {
+                        portionMarking: this.getValue()
+                    });
+                    classificationWindow.show();
+                    classificationWindow.center();
+                },
+                scope: this
             }
         }));
 
