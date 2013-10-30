@@ -77,7 +77,8 @@ describe('Search Results', function () {
         });
 
         describe('Results Toolbar subview', function () {
-            it('should apply a select handler to the "Sort By" combobox', function () {
+            /* hiding this test because this component has been removed for the time being. */
+            /*it('should apply a select handler to the "Sort By" combobox', function () {
                 var combo = resultsComponent.down('#resultsSortByCombobox');
 
                 combo.removeListener('select');
@@ -85,7 +86,7 @@ describe('Search Results', function () {
                 resultsController.init();
 
                 expect(combo.hasListener('select')).toBeTruthy();
-            });
+            });*/
 
             it('should apply a select handler to the "Results Per Page" combobox', function () {
                 var combo = resultsComponent.down('#resultsPageSizeCombobox');
@@ -833,7 +834,7 @@ describe('Search Results', function () {
             });
 
             it('should have a paging toolbar', function () {
-                expect(grid.queryById('gridtoolbar') instanceof Ext.toolbar.Paging).toBeTruthy();
+                expect(grid.up('search_resultspanel').queryById('gridtoolbar') instanceof Ext.toolbar.Paging).toBeTruthy();
             });
 
 
@@ -1066,11 +1067,6 @@ describe('Search Results', function () {
             it('should be able to return the next button on the preview Window', function () {
                 expect(resultsController.previewPrevButton()).not.toBe(null);
             });
-
-            it('should be able to return the index label on preview Window', function () {
-                expect(resultsController.previewIndexAndTotalLabel()).not.toBe(null);
-            });
-
         });
 
         describe('Preview functions + controller', function () {
@@ -1151,7 +1147,7 @@ describe('Search Results', function () {
 
                 it('should update the preview label for the first record', function () {
                     var total = resultsController.getGridStore().totalCount;
-                    expect(resultsController.previewIndexAndTotalLabel().text).toBe('Preview Result 1 of ' + total);
+                    expect(resultsController.previewWindow().title).toBe('Preview Result 1 of ' + total);
 
 
                 });
@@ -1170,7 +1166,7 @@ describe('Search Results', function () {
 
                     var total = resultsController.getGridStore().totalCount;
                     resultsController.onNextItemPreview();
-                    expect(resultsController.previewIndexAndTotalLabel().text).toBe('Preview Result 2 of ' + total);
+                    expect(resultsController.previewWindow().title).toBe('Preview Result 2 of ' + total);
 
 
                 });

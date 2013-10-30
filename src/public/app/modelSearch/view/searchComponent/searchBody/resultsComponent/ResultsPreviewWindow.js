@@ -13,7 +13,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
     ],
     layout: 'fit',
     floating: true,
-    hideCollapseTool: true,
+        hideCollapseTool: true,
     closeAction: 'hide',
     width:640,
     height:500,

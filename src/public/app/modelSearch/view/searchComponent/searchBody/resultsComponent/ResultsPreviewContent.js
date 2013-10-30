@@ -29,7 +29,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
 
     tbar: [
         {
-            height: 54,
+            height: 74,
             layout: 'anchor',
             xtype: 'container',
             border: false,

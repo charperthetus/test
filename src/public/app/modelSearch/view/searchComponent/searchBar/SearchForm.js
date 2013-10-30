@@ -18,6 +18,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBar.SearchForm', {
         {
             xtype: 'panel',
             cls: 'advanced-search-panel',
+            bodyPadding: 15,
             floating: true,
             border: false,
             itemId: 'searchadvanced_menu',
@@ -95,8 +96,13 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBar.SearchForm', {
         }
     ],
 
-    tbar: [
+    tbar: {
+
+        ui: 'search-prime',
+        items: [
+
         {
+
             xtype: 'thetus-searchfield',
             width: 400,
             fieldLabel: '',
@@ -106,4 +112,5 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBar.SearchForm', {
             emptyText: 'Search'
         }
     ]
+    }
 });

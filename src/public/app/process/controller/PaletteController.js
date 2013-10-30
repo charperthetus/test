@@ -21,6 +21,7 @@ Ext.define('Savanna.process.controller.PaletteController', {
             click: 'onItemSearchClick'
         },
         itemlist: {
+            boxready: 'onItemListReady'
         },
         actionlist: {
             filterchange: 'onFilterChange'
@@ -53,16 +54,28 @@ Ext.define('Savanna.process.controller.PaletteController', {
     },
 
     notifyItemPaletteOverTarget: function(ddSource, e, data) {
-        //todo: should we put in logic here to disallow drop from our own grid? it shouldn't do anything anyways
-        return Ext.dd.DropZone.prototype.dropAllowed;
+        //don't allow anything other than an Item to be dropped into the item palette
+        if (this.dragDataIsItem(data)) {
+            return Ext.dd.DropZone.prototype.dropAllowed;
+        } else {
+            return Ext.dd.DropZone.prototype.dropNotAllowed;
+        }
     },
 
     notifyItemPaletteDropTarget: function(ddSource, e, data) {
+        //only create a new palette item if the dragged data does not already exist in the palette
+
+        //too bad we can't use the itemListHasDupes() function, but if the drag data has multiple records, then we
+        //need to do the dupe check for each one and add it if we can (unless we want to abort the whole drag if just
+        //one drag item is invalid)
         var me = this;
         data.records.forEach(function(rec) {
             var obj = rec.data;
-            //todo: check for duplicates here before adding??
-            me.addNewPaletteItem(obj.label, obj.type);
+            if (me.getItemlist().store.findRecord('label', obj.label)) { //todo: this should be uri when it is available
+                //already exists...don't do anything
+            } else {
+                me.addNewPaletteItem(obj.label, obj.type);
+            }
         });
     },
 
@@ -76,7 +89,7 @@ Ext.define('Savanna.process.controller.PaletteController', {
         list.getSelectionModel().deselectAll(); //necessary to do here and in onFilterChange for some reason
         list.store.clearFilter();
         list.store.filter([{
-            property: 'text', //in the future possible filter on alias/description
+            property: 'label', //in the future possible filter on alias/description
             anyMatch: true,
             value   : newValue
         } ]);
@@ -110,13 +123,12 @@ Ext.define('Savanna.process.controller.PaletteController', {
 
     //create and add a new Item to the palette
     addNewPaletteItem: function(titleText, categoryText) {
-        console.log(categoryText);
-        if (categoryText === null) {
+        if (categoryText === null || categoryText === "Item") {
             categoryText = 'ProcessItem';
         }
-        categoryText = (categoryText === "Item") ? 'ProcessItem' : categoryText; //is there a better JS way to do this?
-        console.log(categoryText);
-        this.getItemlist().store.add(this.createPaletteNode(categoryText, titleText));
+        if (categoryText === 'ProcessItem') { //make sure no other non-item type was passed in here
+            this.getItemlist().store.add(this.createPaletteNode(categoryText, titleText));
+        }
     },
 
     createPaletteNode: function(categoryText, labelText) {
@@ -132,5 +144,53 @@ Ext.define('Savanna.process.controller.PaletteController', {
             classification:     '',
             key:                Savanna.process.utils.ProcessUtils.getURI(categoryText) //todo: should we create a key here?
         });
+    },
+
+    onItemListReady: function() {
+        //listen for beforedrop on the item grid view (to prevent user from reordering rows and to prevent dupes)
+        this.getItemlist().getView().on('beforedrop', this.beforeItemDrop, this);
+    },
+
+    beforeItemDrop: function(node, data) {
+        //check to see if the user is dragging an item in the same grid view (i.e. reordering rows).
+        //if so, disallow it
+        var itemList = this.getItemlist(),
+            returnVal = true;
+
+        if (itemList.view === data.view) {
+            returnVal = false;
+        } else if (this.itemListHasDupes(data)) {
+            //if the dragged data already exists in the item list, disallow it to prevent duplicate records
+            //(note - in the case of multiple drag items then this will prevent drop if even just one is a dupe)
+            returnVal = false;
+        } else if (!this.dragDataIsItem(data)) {
+            //if the dragged data is not an Item then don't allow it to be dropped on the Item palette
+            returnVal = false;
+        }
+        return returnVal;
+    },
+
+    itemListHasDupes: function(data) {
+        var itemList = this.getItemlist(),
+            returnVal = false;
+        data.records.forEach(function(rec) {
+            var obj = rec.data;
+            if (itemList.store.findRecord('label', obj.label)) { //todo: this should be uri when it is available
+                //already exists...don't do anything
+                returnVal = true;
+            }
+        });
+        return returnVal;
+    },
+
+    dragDataIsItem: function(data) {
+        var returnVal = true;
+        data.records.forEach(function(rec) {
+            var obj = rec.data;
+            if (obj.type !== 'Item' && obj.type !== 'ProcessItem') {
+                returnVal = false
+            }
+        });
+        return returnVal;
     }
 });

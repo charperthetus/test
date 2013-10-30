@@ -10,11 +10,11 @@ Ext.define('Savanna.components.autoComplete.AutoCompleteController', {
     extend: 'Deft.mvc.ViewController',
 
     control: {
-        search_resultsDals_resultsterm: {
+        autocomplete_tags: {
             live: true,
-            selector: 'container search_resultsDals_resultsterm',
+            selector: 'container autocomplete_tags',
             listeners: {
-                'Search:RemoveSearchTerm': {
+                'Tag:RemoveSearchTerm': {
                     fn: 'handleRemoveTagClick'
                 }
             }
@@ -33,6 +33,7 @@ Ext.define('Savanna.components.autoComplete.AutoCompleteController', {
     },
 
     handleRemoveTagClick: function (value, view) {
+        console.debug(arguments);
         this.getView().removeTag(view);
         this.getView().fireEvent('AutoComplete:TagRemoved', value, this.getView());
     },

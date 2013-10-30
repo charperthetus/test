@@ -39,7 +39,7 @@ Ext.define('Savanna.metadata.view.Boolean', {
         this.add(Ext.create('Ext.form.RadioGroup', {
             fieldLabel: '',
             itemId: 'displayValueEdit',
-            width: 350,
+            width: '100%',
             labelWidth: 180,
             items: [{
                         boxLabel: 'True',
