@@ -103,8 +103,8 @@ Ext.define('Savanna.classification.controller.WindowController', {
     },
 
     requestRestrictionsByPortionMarking: function() {
-        var portionMarking = this.getView().getPortionMarking();
-        this.makeRestrictionsAjaxRequest('restrictions/string', '"' + portionMarking + '"',
+        var portionMarking = '"' + this.getView().getPortionMarking() + '"';
+        this.makeRestrictionsAjaxRequest('restrictions/string', portionMarking,
             this.onSuccessRestrictionsByPortionMarking);
     },
 
