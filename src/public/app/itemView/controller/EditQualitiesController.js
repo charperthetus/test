@@ -98,7 +98,7 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
                     isClosable: true,
                     store: Ext.create('Savanna.itemView.store.AutoCompleteStore', {
                         urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/mockModelSearch/keyword/property/' + predicateUri,
-                        paramsObj: { excludeUri:'', pageStart:0, pageLimit:10 }
+                        paramsObj: { excludeUri:'', pageStart:0, pageLimit:10, keyword: 'asdf' }
                     })
                 });
 
@@ -106,18 +106,7 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
             newProp.child('container').insert(1, picker);
             this.getView().add(newProp);
             this.propNameArray.push(propName);
-
-            // Create a new model for the store, mapping the data to fit the model
-            var newQualitiesModel = {
-                id: propName,
-                label: propName,
-                predicateUri: propData.uri,
-                values: []
-            };
-
-            // Add a new model into the store
-            this.getView().store.add(newQualitiesModel);
-            this.storeHelper.addToMainStore("Properties", newQualitiesModel);
+            this.storeHelper.addGroupItemInStore("Properties", propName, propData.uri, this.getView().store);
             this.updateTitle();
         }
     },
@@ -141,7 +130,7 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
                 isClosable: true,
                 store: Ext.create('Savanna.itemView.store.AutoCompleteStore', {
                     urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/mockModelSearch/keyword/property/' + predicateUri,
-                    paramsObj: { excludeUri:'', pageStart:0, pageLimit:10 }
+                    paramsObj: { excludeUri:'', pageStart:0, pageLimit:10, keyword: 'asdf' }
                 })
             });
         this.propNameArray.push(data.label);
@@ -152,31 +141,22 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
     // When a new tag is added on a child auto-complete
     // add the tag to the store
     addTag: function(tagName, tagData, aView) {
-        var tagUri = tagData ? tagData.uri : null;
-        var newTag = {editable: true, inheritedFrom: null, label: tagName, uri: tagUri, value: tagName, version: 0};
-        this.getView().store.getById(aView.preLabel).data.values.push(newTag);
+        this.storeHelper.addBotLevItemInStore(tagName, tagData, this.getView().store.getById(aView.preLabel))
     },
 
     // When a tag is removed on a child auto-complete
     // remove the tag from the store
     removeTag: function(tagName, aView) {
-        var tagArray = this.getView().store.getById(aView.preLabel).data.values;
-
-        for (var i = 0; i < tagArray.length; i++) {
-            if (tagArray[i].label === tagName) {
-                Ext.Array.remove(tagArray, tagArray[i]);
-                break;
-            }
-        }
+        this.storeHelper.removeBotLevItemInStore(tagName, this.getView().store.getById(aView.preLabel));
     },
     
     launchChooser: function(button, event, eOpts) {
-        console.debug('TODO: Launch the assertions chooser', arguments);
-        Ext.create('Savanna.itemView.view.header.AddIntendedUses', {
-            width: 400,
-            height: 300,
-            title: button.id
-        });
+//        console.debug('TODO: Launch the assertions chooser', arguments);
+//        Ext.create('Savanna.itemView.view.header.AddIntendedUses', {
+//            width: 400,
+//            height: 300,
+//            title: button.id
+//        });
     },
 
     launchPredicatesChooser: function() {
@@ -200,8 +180,8 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
     },
 
     removePredicate: function(view) {
-        this.storeHelper.removeFromMainStore("Properties", view.preLabel);
-        this.getView().store.remove(this.getView().store.getById(view.preLabel));
+        this.storeHelper.removeGroupItemInStore("Properties", view.preLabel, this.getView().store);
+        Ext.Array.remove(this.propNameArray, view.preLabel);
         this.updateTitle();
     },
 

@@ -21,14 +21,21 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
         }
     },
 
-    addRelationshipType: function(btn) {
-        var addNewRelationship = Ext.create(Savanna.itemView.view.relatedItems.AddRelationships);
-        addNewRelationship.show();
+    relationshipNameArray: [],
+
+    storeHelper: null,
+
+    init: function() {
+        this.callParent(arguments);
+        this.storeHelper = Ext.create('Savanna.itemView.store.ItemViewStoreHelper');
     },
 
     setupData: function (items) {
+        this.storeHelper.init();
 
         Ext.each(items, function (relatedItemsGroup) {
+            this.relationshipNameArray.push(relatedItemsGroup.get('label'));
+
             this.getView().add(
                 {
                     xtype: 'label',
@@ -75,7 +82,7 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
                             itemId: 'addRelatedItem',
                             store: Ext.create('Savanna.itemView.store.AutoCompleteStore', {
                                 urlEndPoint: 'http://c2devsav1:8080/c2is2/rest/mockModelSearch/keyword/property/propUri',
-                                paramsObj: {excludeUri:'asdf', pageStart:0, pageLimit:10}
+                                paramsObj: {excludeUri:'asdf', pageStart:0, pageLimit:10, keyword: 'asdf'}
                             }),
                             flex: 1,
                             listeners: {
@@ -100,6 +107,27 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
                 myPanel.add(this.buildAddItem(item, relatedItemsGroup.get('label')));
             }, this);
         }, this);
+    },
+
+    addRelationshipType: function(btn) {
+        var addNewRelationship = Ext.create('Savanna.itemView.view.relatedItems.RelationshipPicker', {
+            width: 500,
+            height: 600,
+            selectionStore: this.getView().store,
+            relationshipNameArray: this.relationshipNameArray
+        });
+
+        addNewRelationship.on('close', this.closedRPicker, this);
+    },
+
+    closedRPicker: function(view) {
+        if (view.updatedStore) {
+            this.getView().removeAll();
+            this.relationshipNameArray = [];
+            this.storeHelper.updateMainStore(this.getView().store.data.items, "Related Items");
+            this.setupData(this.getView().store.data.items);
+//            this.updateTitle();
+        }
     },
 
     buildAddItem: function(item, itemGroupName) {
@@ -148,21 +176,12 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
         item.label = itemLabel;
         item.value = itemUri;
         myPanel.add(this.buildAddItem(item, relatedItemGroupName));
-        var newItem = {editable: true, inheritedFrom: null, label: itemLabel, uri: itemUri, value: itemLabel, version: 0};
-        this.getView().store.getById(relatedItemGroupName).valuesStore.add(newItem);
-        this.getView().store.getById(relatedItemGroupName).data.values.push(newItem);
+        this.storeHelper.addBotLevItemInStore(itemLabel, itemRecord, this.getView().store.getById(relatedItemGroupName))
     },
+
     // Removing the tag from the store on a child auto-complete
     removeItem: function(itemName, groupName) {
-        var store = this.getView().store.getById(groupName);
-        store.valuesStore.remove(store.valuesStore.getById(itemName));
-
-        for (var i = 0; i < store.data.values.length; i++) {
-            if (store.data.values[i].label === itemName) {
-                Ext.Array.remove(store.data.values, store.data.values[i]);
-                break;
-            }
-        }
+        this.storeHelper.removeBotLevItemInStore(itemName, this.getView().store.getById(groupName));
     }
 
 });

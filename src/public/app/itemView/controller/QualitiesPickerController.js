@@ -12,6 +12,9 @@ Ext.define('Savanna.itemView.controller.QualitiesPickerController', {
     views: [
         'Savanna.itemView.view.itemQualities.QualitiesPicker'
     ],
+
+    storeHelper: null,
+
     control: {
         availableQualitiesGroup: {
             itemclick: 'qualityChecked'
@@ -27,15 +30,16 @@ Ext.define('Savanna.itemView.controller.QualitiesPickerController', {
         }
     },
 
+    init: function() {
+        this.callParent(arguments);
+        this.storeHelper = Ext.create('Savanna.itemView.store.ItemViewStoreHelper');
+        this.storeHelper.init();
+    },
+
     qualityChecked: function (grid, record, item, index, e, eOpts) {
         if (e.target.checked) {
             // Create a new model for the store, mapping the data to fit the model
-            var newQualitiesModel = {
-                id: record.data.label,
-                label: record.data.label,
-                predicateUri: record.data.uri,
-                values: []
-            };
+            var newQualitiesModel = this.storeHelper.createNewModelInstance(record.data.label, record.data.uri);
 
             // Add a new model into the store
             this.getView().queryById('selectedQualitiesGroup').store.add(newQualitiesModel);

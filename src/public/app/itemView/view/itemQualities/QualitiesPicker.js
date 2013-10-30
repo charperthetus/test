@@ -142,7 +142,7 @@ Ext.define('Savanna.itemView.view.itemQualities.QualitiesPicker', {
         this.callParent(arguments);
         this.store = Ext.create(this.store, {
             urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/model/fakeuri/qualities',
-            paramsObj: {excludeUri:'asdf', pageStart:0, pageLimit:10, pageSize: 20, alphabetical: true, q:"h"}
+            paramsObj: {excludeUri:'asdf', pageStart:0, pageLimit:10, pageSize: 20, alphabetical: true, q:""}
         });
 
         this.store.load({

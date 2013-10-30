@@ -94,14 +94,12 @@ Ext.define('Savanna.components.autoComplete.AutoComplete', {
     },
 
     addTag: function (tag) {
-        if (this.queryById('tag_' + tag.replace(/[\s'"]/g, "_")) === null) {
-            var newTag = Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineTerm', {
-                itemId: 'tag_' + tag.replace(/[\s'"]/g, "_")
-            });
+        var newTag = Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineTerm', {
+            itemId: 'tag_' + tag.replace(/[\s'"]/g, "_")
+        });
 
-            newTag.setTerm(tag);
-            this.queryById('tagsList').add(newTag);
-        }
+        newTag.setTerm(tag);
+        this.queryById('tagsList').add(newTag);
     },
 
     removeTag: function (view) {
