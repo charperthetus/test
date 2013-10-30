@@ -49,13 +49,7 @@ Ext.define('Savanna.search.controller.resultsComponent.ResultsPanelToolbarContro
         var listBtn = this.getView().queryById('results_listViewButton');
         var mapBtn = this.getView().queryById('results_mapViewButton');
 
-        if(listBtn.pressed) {
-            listBtn.setGlyph(61786);
-            mapBtn.setGlyph(61746);
-        } else  {
-            listBtn.setGlyph(61746);
-            mapBtn.setGlyph(61786);
-        }
+
     },
 
     init: function () {

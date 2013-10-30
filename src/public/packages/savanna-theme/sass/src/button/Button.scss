@@ -228,6 +228,17 @@
         $uikit-text-decoration: $button-basic-text-decoration
     );
 }
+
+@include uikit-button(
+$uikit-ui: 'dark-small',
+$uikit-background-color: $new-savanna-tab-button-background-color,
+$uikit-background-color-over: $new-savanna-tab-button-background-color-over,
+$uikit-background-color-focus: $new-savanna-tab-button-background-color-focus,
+$uikit-background-color-pressed: $new-savanna-tab-button-background-color-pressed,
+$uikit-background-color-disabled: $new-savanna-tab-button-background-color-disabled
+
+);
+
 /*
 * Logic  
 */ 
@@ -357,5 +368,30 @@
 
   .#{$prefix}btn-inner{
     text-decoration:none;
+  }
+}
+
+.new-savanna-tab{
+  .#{$prefix}btn-inner{
+    text-decoration:none;
+  }
+  .#{$prefix}btn-arrow{
+    padding-right: 0;
+    width: 25px;
+    &:before {
+    content: "plus";
+    right: 0;
+    font-size: 16px;
+    position: absolute;
+    text-align: center;
+    width: 25px;
+    line-height: 25px;
+    display: block;
+    font-size: 10px;
+    }
+    color:$tab-dark-color;
+    &:hover{
+      opacity:0.5;
+    }
   }
 }
