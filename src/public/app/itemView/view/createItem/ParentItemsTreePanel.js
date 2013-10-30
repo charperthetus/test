@@ -19,6 +19,9 @@ Ext.define('Savanna.itemView.view.createItem.ParentItemsTreePanel' ,{
     height:400,
     forceFit:true,
     displayField: 'label',
+
+    cls: 'treepanel-hideexpand',
+
     mixins: {
         storeable: 'Savanna.mixin.Storeable'
     },
