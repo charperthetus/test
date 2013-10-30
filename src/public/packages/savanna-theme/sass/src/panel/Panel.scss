@@ -11,6 +11,14 @@
 
 // /* MIXINS */
 @if $include-panel-uis == true {
+	/* This should go in UIKIT */
+	@include uikit-panel(
+        $uikit-ui: 'dark',
+        $uikit-header-background-color: $dark-gray,
+        $uikit-header-color: $panel-dark-header-color,
+        $uikit-tool-color: $panel-dark-header-color
+    );
+    
     @include uikit-panel(
         $uikit-ui: 'search-prime',
         $uikit-body-color: $medium-gray,

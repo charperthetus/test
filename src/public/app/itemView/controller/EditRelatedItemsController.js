@@ -32,7 +32,8 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
             this.getView().add(
                 {
                     xtype: 'label',
-                    text: relatedItemsGroup.get('label')
+                    text: relatedItemsGroup.get('label'),
+                    cls:'h2'
                 },{
                     xtype: 'panel',
                     value: relatedItemsGroup.get('predicateUri'),
@@ -42,42 +43,32 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
                         borderColor: 'gray',
                         borderStyle: 'dashed'
                     },
-                    layout: 'hbox',
-
-                    height: 50,
-                    width: '100%',
+//                    layout: {
+//                        type:'hbox',
+//                        align:'center'
+//                    },
+//                    height: 70,
+                    width: '75%',
 
                     items: [
                         {
-                            xtype: 'container',
-                            width: 80,
-                            height: 80,
-                            layout: 'vbox',
-
-                            items: [
-                                {
-                                    xtype: 'image',
-                                    glyph: 61777
-                                },
-                                {
-                                    xtype: 'label',
-                                    text: 'Drop items here',
-                                    height: 30,
-                                    width: 70
-                                }
-                            ]
-
+                            xtype: 'label',
+                            text: 'Drop items here',
+                            cls:['drag-and-drop', 'related-items-control'],
+                            height: 40
                         },
                         {
                             xtype: 'auto_complete',
                             labelType: 'Find items',
                             showTags: false,
                             itemId: 'addRelatedItem',
+                            cls:'related-items-control',
                             store: Ext.create('Savanna.itemView.store.AutoCompleteStore', {
                                 urlEndPoint: 'http://c2devsav1:8080/c2is2/rest/mockModelSearch/keyword/property/propUri',
                                 paramsObj: {excludeUri:'asdf', pageStart:0, pageLimit:10}
                             }),
-                            flex: 1,
+                            flex: 0,
+                            width:200,
                             listeners: {
                                 'AutoComplete:ItemSelected': Ext.bind(this.addRelatedItem, this)
                             }
