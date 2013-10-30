@@ -22,10 +22,6 @@ Ext.define('Savanna.itemView.controller.ParentTreeController', {
         }
     },
 
-    onBeforeItemExpand: function (record, eOpts) {
-
-    },
-
     onItemClick: function (view, record, item, index, e, eOpts) {
 
         this.getView().up('itemview_create_item').selectedParentUri = record.get('uri');
@@ -72,11 +68,11 @@ Ext.define('Savanna.itemView.controller.ParentTreeController', {
                 //inserting as a child
                 selectedNode.insertChild(0, record);
             }
-            if (!selectedNode.isExpanded()) {
-                selectedNode.expand();
-            }
-
         });
+
+        if (!selectedNode.isExpanded()) {
+            selectedNode.expand();
+        }
     }
 });
 
