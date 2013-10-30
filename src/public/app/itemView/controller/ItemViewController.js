@@ -6,8 +6,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     ],
 
     requires: [
-        'Savanna.itemView.store.MainItemStore',
-        'Savanna.itemView.view.relatedItems.AddRelationships'
+        'Savanna.itemView.store.MainItemStore'
     ],
 
     store: 'Savanna.itemView.store.MainItemStore',
@@ -43,9 +42,6 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         },
         searchButton:  {
             click: 'onSearchSelect'
-        },
-        relationshipButton:  {
-            click: 'onRelationshipSelect'
         },
         relatedItemsView: {
             'ItemView:OpenItem': 'openItem'
@@ -105,7 +101,12 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
         var relatedItemView = this.getView().queryById('relatedItemsView');
         Ext.each(myStore.getAt(0).propertyGroupsStore.getById('Related Items').valuesStore.data.items, function(group){
-            relatedItemView.queryById('relatedItemGrid_' + group.get('label').replace(/\s/g,'')).reconfigure(group.valueStore);
+            if (relatedItemView.queryById('relatedItemGrid_' + group.get('label').replace(/\s/g,''))) {
+                relatedItemView.queryById('relatedItemGrid_' + group.get('label').replace(/\s/g,'')).reconfigure(group.valuesStore);
+            }
+            else {
+                relatedItemView.fireEvent('ViewRelatedItems:AddRelationshipGrid', group);
+            }
         }, this);
 
         this.getView().getLayout().setActiveItem(0);
@@ -167,7 +168,6 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
             var relatedItemView = me.getView().queryById('relatedItemsView');
             relatedItemView.fireEvent('ViewRelatedItems:SetupData', record[0].propertyGroupsStore.getById('Related Items').valuesStore.data.items);
 
-
             /*
             Related Items Edit
              */
@@ -194,14 +194,14 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
             Annotation Properties View
              */
             var annotationViewComponent = me.getView().queryById('annotationPropertiesView');
-            annotationViewComponent.setTitle('Participated in Process (' + record[0].propertyGroupsStore.getById('Annotations').valuesStore.data.length + ')');
+            annotationViewComponent.setTitle('Additional Properties (' + record[0].propertyGroupsStore.getById('Annotations').valuesStore.data.length + ')');
             annotationViewComponent.reconfigure(record[0].propertyGroupsStore.getById('Annotations').valuesStore);
 
             /*
             Annotation Properties Edit
              */
             var annotationEditComponent = me.getView().queryById('annotationPropertiesEdit');
-            annotationEditComponent.setTitle('Participated in Process (' + record[0].propertyGroupsStore.getById('Annotations').valuesStore.data.length + ')');
+            annotationEditComponent.setTitle('Additional Properties (' + record[0].propertyGroupsStore.getById('Annotations').valuesStore.data.length + ')');
             annotationEditComponent.reconfigure(record[0].propertyGroupsStore.getById('Annotations').valuesStore);
 
             /*
@@ -247,13 +247,6 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
     onSearchSelect:function() {
         console.log('search selected');
-    },
-
-    onRelationshipSelect:function() {
-        Ext.create('Savanna.itemView.view.relatedItems.AddRelationships', {
-            width: 400,
-            height: 300
-        });
     },
 
     buildItemDataFetchUrl: function (uri) {
