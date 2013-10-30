@@ -32,6 +32,15 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
                     fn: 'onChangeImage'
                 }
             }
+        },
+        uploadImagesButton: {
+            live: true,
+            selector: 'panel #uploadImagesButton',
+            listeners: {
+                click: {
+                    fn: 'chooseFilesHandler'
+                }
+            }
         }
     },
 
@@ -65,6 +74,17 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
         e.preventDefault();
         this.uploadFiles(e.dataTransfer.files);
     },
+    // Launch file browser, does so by querying the hidden input[type=file]
+    chooseFilesHandler: function(button) {
+        var fileBrowser = this.getView().queryById('fileBrowserButton');
+        var input  = Ext.dom.Query.selectNode('[type=\'file\']', fileBrowser.getEl().dom);
+        input.multiple = true;
+        input.click();
+    },
+    // Handles the file selected event once users select files
+    fileBrowserChangeHandler: function(fileBrowserButton,event) {
+        this.uploadFiles(event.target.files, fileBrowserButton);
+    },
     buildUploadUrl: function(forPolling){
         var url = SavannaConfig.uploadUrl;
         if (forPolling){
@@ -74,6 +94,7 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
         return url;
     },
     uploadFiles: function(files,component){
+        console.debug(files);
         var file;
         this.currentlyUploadingCount += files.length;
 
@@ -92,13 +113,13 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
         }
     },
     uploadFileViaXMLHttpRequest:function(url, file, uploadGrid, tempId) {
-            var formData = new FormData();
-            formData.append(file.name, file);
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', url, true);
-            xhr.cors = true;
-            xhr.onload = Ext.bind(this.onUploadRequestLoad,this,[uploadGrid, tempId],true );              
-            xhr.send(formData);  // multipart/form-data
+        var formData = new FormData();
+        formData.append(file.name, file);
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', url, true);
+        xhr.cors = true;
+        xhr.onload = Ext.bind(this.onUploadRequestLoad,this,[uploadGrid, tempId],true );              
+        xhr.send(formData);  // multipart/form-data
     },
     onUploadRequestLoad: function(status, uploadGrid, tempId){
         var pollingId =  Ext.decode(status.target.response);
@@ -107,7 +128,6 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
         var modelIndex = uploadGrid.store.find('fileId',tempId);
         var model = uploadGrid.store.getAt(modelIndex);
         model.data.fileId = pollingId;
-
         this.currentPollingIds.push(pollingId);
         if (this.currentlyPolling === false){
             this.pollForDocuments(uploadGrid);

@@ -31,6 +31,13 @@ Ext.define('Savanna.itemView.view.imageBrowser.ImageUpload', {
     }, {
         xtype: 'button',
         text: 'Upload',
+        itemId: 'uploadImagesButton',
         flex: 2
+    }, {
+        xtype: 'filebutton',
+        itemId: 'fileBrowserButton',
+        style: {
+            display: 'none'
+        }
     }]
 });
