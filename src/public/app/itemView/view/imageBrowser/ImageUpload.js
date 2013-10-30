@@ -4,9 +4,11 @@
  * Description
  */
 Ext.define('Savanna.itemView.view.imageBrowser.ImageUpload', {
+    extend: 'Ext.panel.Panel',
 
     alias: 'widget.itemview_image_upload',
-    extend: 'Ext.panel.Panel',
+
+    itemId: 'imageDropZone',
     
     requires: [
         'Ext.container.Container'
