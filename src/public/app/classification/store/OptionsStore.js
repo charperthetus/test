@@ -7,7 +7,7 @@ Ext.define('Savanna.classification.store.OptionsStore', {
 
     fields: ['dissemMarkings', 'classificationMarkings', 'fgiMarkings', 'sciMarkings', 'relMarkings'],
     proxy: {
-        url: SavannaConfig.capcoOptions + ';jsessionid=' + Savanna.jsessionid,
+        url: SavannaConfig.capcoUrl + 'options' + ';jsessionid=' + Savanna.jsessionid,
         type: 'savanna-cors'
     }
 });
