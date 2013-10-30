@@ -95,22 +95,22 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
             Savanna.process.utils.ProcessUtils.startTextEdit(diagram, nodeData);
         };
 
-        if (classUri) {
-            // make a real instance
-            Ext.Ajax.request({
-                url: SavannaConfig.itemViewUrl + encodeURI(classUri) + '/instance;jsessionid=' + Savanna.jsessionid,
-                method: 'GET',
-                success: function(response){
-                    var message = Ext.decode(response.responseText);
-                    reallyAddNode(message.uri);
-                },
-                failure: function(response){
-                    console.log('Server Side Failure: ' + response.status);
-                }
-            });
-        } else {
-            reallyAddNode(null); // make a fake node
+        if (!classUri) {
+            classUri = 'lib.snap:Object';
         }
+
+        // make a real instance
+        Ext.Ajax.request({
+            url: SavannaConfig.itemViewUrl + encodeURI(classUri) + '/instance;jsessionid=' + Savanna.jsessionid,
+            method: 'GET',
+            success: function(response){
+                var message = Ext.decode(response.responseText);
+                reallyAddNode(message.uri);
+            },
+            failure: function(response){
+                console.log('Server Side Failure: ' + response.status);
+            }
+        });
     },
 
     addDecision: function(e, obj) {
