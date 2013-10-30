@@ -19,9 +19,21 @@ Ext.define('Savanna.itemView.view.header.EditHeader', {
 
     cls: 'itemview',
 
+    title: '',
+
     layout: 'vbox',
 
     margin: 10,
+
+    tools:[
+        {
+            xtype: 'textfield',
+            itemId: 'itemNameField'
+        },
+        {
+            xtype: 'tbfill'
+        }
+    ],
 
     items: [
         {
