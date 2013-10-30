@@ -189,11 +189,11 @@ Ext.define('Savanna.classification.controller.WindowController', {
             var error = errors.pop();
             this.getErrorLabel().setText(error);
             this.getErrorLabel().show();
-            this.getOkButton().setDisabled(true);
+            this.getFinishButton().setDisabled(true);
         }
         else {
             this.getErrorLabel().hide();
-            this.getOkButton().setDisabled(false);
+            this.getFinishButton().setDisabled(false);
         }
         this.refreshRestrictions(restrictions.notAllowedMarkings);
         this.setRequiredMarkings(restrictions.requiredMarkings);
