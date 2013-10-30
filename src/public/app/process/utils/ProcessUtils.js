@@ -303,7 +303,7 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         var bodyElt = obj.findObject('BODY');
         if (bodyElt) {
             if (obj.isSelected) {
-                bodyElt.background = '#f2f2f2';
+                bodyElt.background = null;
             } else {
                 bodyElt.background = 'transparent';
             }
