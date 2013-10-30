@@ -83,8 +83,7 @@ Ext.define('Savanna.process.view.part.ItemList', {
                     'preview': '',
                     'primaryImageUrl': '',
                     'workflowState': '',
-                    'classification': '',
-                    'key': ''
+                    'classification': ''
                 },
                 {
                     'uri': '',
@@ -95,8 +94,7 @@ Ext.define('Savanna.process.view.part.ItemList', {
                     'preview': '',
                     'primaryImageUrl': '',
                     'workflowState': '',
-                    'classification': '',
-                    'key': ''
+                    'classification': ''
                 },
                 {
                     'uri': '',
@@ -107,8 +105,7 @@ Ext.define('Savanna.process.view.part.ItemList', {
                     'preview': '',
                     'primaryImageUrl': '',
                     'workflowState': '',
-                    'classification': '',
-                    'key': ''
+                    'classification': ''
                 },
                 {
                     'uri': '',
@@ -119,8 +116,7 @@ Ext.define('Savanna.process.view.part.ItemList', {
                     'preview': '',
                     'primaryImageUrl': '',
                     'workflowState': '',
-                    'classification': '',
-                    'key': ''
+                    'classification': ''
                 },
                 {
                     'uri': '',
@@ -131,8 +127,7 @@ Ext.define('Savanna.process.view.part.ItemList', {
                     'preview': '',
                     'primaryImageUrl': '',
                     'workflowState': '',
-                    'classification': '',
-                    'key': ''
+                    'classification': ''
                 }
             ]
         });
