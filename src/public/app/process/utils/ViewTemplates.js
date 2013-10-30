@@ -524,13 +524,10 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                     
                     group.isSelected = true;
                 }, 
-                    mouseEnter: function(e, obj) { 
-                    var buttonFillOver = '#454545';
+                    mouseEnter: function(e, button) {
                     var buttonFillOver = '#666666';
                          var buttonStrokeOver = null;
                     
-                    var button = obj;
-    var diagram = button.diagram;
     var shape = button.elt(0);  // the border Shape
     var brush = button["_buttonFillOver"];
     if (brush === undefined) brush = buttonFillOver;
@@ -543,15 +540,15 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                     
                    
                     },
-                    mouseLeave: function(e, obj) { 
-                     var button = obj;
-    var diagram = button.diagram;
+                    mouseLeave: function(e, button) {
+                        var buttonFillOver = '#666666';
+                        var buttonStrokeOver = null;
     var shape = button.elt(0);  // the border Shape
     var brush = button["_buttonFillNormal"];
-    if (brush === undefined) brush = buttonFillNormal
+    if (brush === undefined) brush = buttonFillOver;
     shape.fill = brush;
     brush = button["_buttonStrokeNormal"];
-    if (brush === undefined) brush = buttonStrokeNormal;
+    if (brush === undefined) brush = buttonStrokeOver;
     shape.stroke = brush;
                     
                     }
