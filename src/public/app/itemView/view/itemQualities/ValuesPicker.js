@@ -22,7 +22,8 @@ Ext.define('Savanna.itemView.view.itemQualities.ValuesPicker', {
 
     config: {
         selectionStore: null,
-        valNameArray: []
+        valNameArray: [],
+        uri : ""
     },
 
     updatedStore: false,
@@ -104,8 +105,8 @@ Ext.define('Savanna.itemView.view.itemQualities.ValuesPicker', {
     afterRender: function () {
         this.callParent(arguments);
         this.store = Ext.create(this.store, {
-            urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/mockModelSearch/keyword/property/propUri',
-            paramsObj: {excludeUri:'', pageStart:0, pageLimit:10, keyword: ''}
+            urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/model/search/keyword/property/' + this.uri,
+            paramsObj: {pageStart:0, pageSize:10}
         });
 
         this.store.load({

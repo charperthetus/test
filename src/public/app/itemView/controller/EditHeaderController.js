@@ -83,7 +83,8 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
             width: 500,
             height: 600,
             selectionStore: this.getView().store.getById("Intended Use").valuesStore,
-            valNameArray: this.valNameArray
+            valNameArray: this.valNameArray,
+            uri: encodeURI(this.getView().store.getById('Intended Use').data.predicateUri)
         });
 
         vChooser.on('close', this.closedVPicker, this);
