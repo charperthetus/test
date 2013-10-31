@@ -95,15 +95,17 @@ Ext.define('Savanna.metadata.view.Details', {
         var config = this.initialConfig || {};
         this.store = Ext.create('Savanna.metadata.store.Metadata');
 
-        this.setItemURI( config.itemURI );
+        if(config.itemURI) {
+            this.setItemURI( config.itemURI );
 
-        this.store.itemURI = config.itemURI;
-        this.store.load({
-            scope: this,
-            callback: function(records, operation, success) {
-                this.getController().createMetadataFields();
-            }
-        });
+            this.store.itemURI = config.itemURI;
+            this.store.load({
+                scope: this,
+                callback: function(records, operation, success) {
+                    this.getController().createMetadataFields();
+                }
+            });
+        }
     }
 
 });
