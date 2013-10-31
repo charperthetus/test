@@ -118,7 +118,8 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                                 header:{
                                     ui:'item-view',
                                     height:48,
-                                    padding:'0 0 0 10'
+                                    padding:'0 0 0 10',
+                                    cls:'item-view-header-header'
                                 }
                             },
                             {
