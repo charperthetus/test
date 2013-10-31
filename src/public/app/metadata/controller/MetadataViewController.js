@@ -60,7 +60,7 @@ Ext.define('Savanna.metadata.controller.MetadataViewController', {
         this.getMetadata_edit_button().show();
 
         var me = this;
-        var theStore = this.getView().getStore();
+        var theStore = this.getView().store;
         var  stuffChanged = false;
         Ext.Array.each(me.getView().down('#wrapperPanel').items.items, function(metadata) {
             var key = metadata.key;

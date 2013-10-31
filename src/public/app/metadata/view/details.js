@@ -15,11 +15,7 @@ Ext.define('Savanna.metadata.view.Details', {
 
     layout: 'fit',
 
-    mixins: {
-        storeable: 'Savanna.mixin.Storeable'
-    },
-
-    store: 'Savanna.metadata.store.Metadata',
+    store: null,
 
     requires: [
         'Savanna.metadata.controller.MetadataViewController',
@@ -82,26 +78,32 @@ Ext.define('Savanna.metadata.view.Details', {
         if(undefined != oldURI ) { // don't want to do this on init
             this.down('#wrapperPanel').removeAll();
         }
-        var metadataStore = Ext.data.StoreManager.lookup('metadata');
-        metadataStore.itemURI = newURI;
-        metadataStore.load();
+        console.log('updateItemURI');
+        this.store.itemURI = newURI;
+        this.store.load({
+            scope: this,
+            callback: function(records, operation, success) {
+                this.getController().createMetadataFields();
+            }
+        });
 
     },
 
     initComponent: function () {
-        this.mixins.storeable.initStore.call(this);
         this.callParent(arguments);
 
         var config = this.initialConfig || {};
+        this.store = Ext.create('Savanna.metadata.store.Metadata');
+
         this.setItemURI( config.itemURI );
 
-        var metadataStore = Ext.data.StoreManager.lookup('metadata');
-        metadataStore.itemURI = config.itemURI;
-        metadataStore.load();
-    },
-
-    onStoreLoad: function() {
-        this.getController().createMetadataFields();
+        this.store.itemURI = config.itemURI;
+        this.store.load({
+            scope: this,
+            callback: function(records, operation, success) {
+                this.getController().createMetadataFields();
+            }
+        });
     }
 
 });
