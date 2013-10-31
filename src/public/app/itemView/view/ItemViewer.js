@@ -21,7 +21,8 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
         'Savanna.itemView.view.imageBrowser.ImageThumbnail',
         'Savanna.itemView.view.workflow.WorkflowSelect',
         'Savanna.itemView.view.annotationProperties.AnnotationProperties',
-        'Savanna.itemView.store.ItemViewStoreHelper'
+        'Savanna.itemView.store.ItemViewStoreHelper',
+        'Savanna.itemView.store.ItemLockStore'
     ],
 
     layout: 'card',
@@ -32,7 +33,9 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
     config: {
         itemUri: null,
         editMode:false,
-        createMode:false
+        createMode:false,
+        lockStore:null,
+        selectedParentUri: null
     },
 
     dockedItems: [{
@@ -56,6 +59,10 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
 
     initComponent: function() {
         this.items = this.buildItems();
+
+
+        this.lockStore = Ext.create('Savanna.itemView.store.ItemLockStore');
+
         this.callParent(arguments);
     },
 
@@ -84,10 +91,12 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                                 {
                                     xtype: 'menuseparator'
                                 },
+                                /* commented out for demo
                                 {
                                     text: 'Workflow',
                                     itemId:'workflowButton'
                                 },
+                                */
                                 {
                                     xtype: 'menuseparator'
                                 },
@@ -203,23 +212,17 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                                 {
                                     xtype: 'menuseparator'
                                 },
-                                {
-                                    text: 'Workflow',
-                                    itemId:'workflowButton'
-                                },
-                                {
-                                    xtype: 'menuseparator'
-                                },
-                                {
-                                    text: 'Search Intell',
-                                    itemId:'searchButton'
-                                },
+                                /* commented out for demo
+                                 {
+                                 text: 'Workflow',
+                                 itemId:'workflowButton'
+                                 },
+                                 */
                                 {
                                     xtype: 'menuseparator'
                                 },
                                 {
-                                    text: 'Relationship Picker',
-                                    itemId:'relationshipButton'
+                                    xtype: 'menuseparator'
                                 }
                             ]
                         },
@@ -270,7 +273,6 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                                 }
                             },
                             {
-                                //Todo: create related items component here
                                 xtype: 'itemview_edit_related_items',
                                 itemId: 'relatedItemsEdit',
                                 cls:'white-grid-view-panel-edit',

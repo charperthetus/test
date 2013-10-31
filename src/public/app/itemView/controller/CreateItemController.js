@@ -14,7 +14,39 @@ Ext.define('Savanna.itemView.controller.CreateItemController', {
     ],
 
     control:    {
+        commitBtn:  {
+            click: 'onParentItemCommit'
+        },
+        cancelBtn:  {
+            click: 'onParentItemCancel'
+        }
+    },
 
+    onParentItemCommit:function()   {
+
+        if(this.getView().selectedParentUri)  {
+            var itemView = Ext.create('Savanna.itemView.view.ItemViewer', {
+                title: 'Model Item',
+                itemUri: this.getView().selectedParentUri,
+                editMode: true,
+                createMode:true,
+                closable: true,
+                autoScroll: true,
+                tabConfig: {
+                    ui: 'dark'
+                }
+            });
+            Savanna.app.fireEvent('search:itemSelected', itemView);
+        }   else    {
+            console.log('no uri for parent item');
+        }
+
+
+        this.getView().close();
+    },
+
+    onParentItemCancel:function()   {
+        this.getView().close();
     }
 });
 
