@@ -120,6 +120,7 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
             this.getView().storeHelper.updateMainStore(this.getView().store.data.items, "Related Items");
             this.setupData(this.getView().store.data.items);
 //            this.updateTitle();
+            Savanna.app.fireEvent('ItemView:SaveEnable');
         }
     },
 
@@ -212,12 +213,14 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
         item.label = itemLabel;
         item.value = itemUri;
         myPanel.add(this.buildAddItem(item, relatedItemGroupName));
-        this.getView().storeHelper.addBotLevItemInStore(itemLabel, itemRecord, this.getView().store.getById(relatedItemGroupName))
+        this.getView().storeHelper.addBotLevItemInStore(itemLabel, itemRecord, this.getView().store.getById(relatedItemGroupName));
+        Savanna.app.fireEvent('ItemView:SaveEnable');
     },
 
     // Removing the tag from the store on a child auto-complete
     removeItem: function(itemName, groupName) {
         this.getView().storeHelper.removeBotLevItemInStore(itemName, this.getView().store.getById(groupName));
+        Savanna.app.fireEvent('ItemView:SaveEnable');
     }
 
 });

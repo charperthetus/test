@@ -44,6 +44,8 @@ Ext.define('Savanna.itemView.controller.ValuesPickerController', {
             var store = this.getView().queryById('selectedValuesGroup').store;
             store.remove(store.getById(record.data.label));
         }
+
+        Savanna.app.fireEvent('ItemView:SaveEnable');
     },
 
     valueRemoved: function (grid, record, item, index, e, eOpts) {
@@ -62,6 +64,8 @@ Ext.define('Savanna.itemView.controller.ValuesPickerController', {
 
             this.getView().queryById('availableValuesGroup').reconfigure(this.getView().store);
             grid.store.remove(grid.store.getById(record.data.label));
+
+            Savanna.app.fireEvent('ItemView:SaveEnable');
         }
     },
 
@@ -70,6 +74,7 @@ Ext.define('Savanna.itemView.controller.ValuesPickerController', {
         this.getView().getSelectionStore().add(this.getView().queryById('selectedValuesGroup').store.getRange());
         this.getView().updatedStore = true;
         this.getView().close();
+        Savanna.app.fireEvent('ItemView:SaveEnable');
     },
 
     cancelValueSelections: function () {
