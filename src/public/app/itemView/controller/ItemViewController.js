@@ -135,7 +135,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     },
 
     onEditDelete: function () {
-        console.log('delete item method');
+        //console.log('delete item method');
 
         var tmpStore = Ext.data.StoreManager.lookup(this.store);
         tmpStore.getProxy().url = SavannaConfig.itemDeleteUrl + tmpStore.getAt(0).data.uri;
@@ -146,7 +146,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
         tmpStore.addSessionId = false;
 
-        console.log('URI IS:', tmpStore.getProxy().url)
+        //console.log('URI IS:', tmpStore.getProxy().url)
 
         var record = tmpStore.getAt(0);
         tmpStore.remove(record);
@@ -382,7 +382,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
      */
 
     onSearchSelect: function () {
-        console.log('search selected');
+        //console.log('search selected');
     },
 
     buildItemDataFetchUrl: function (uri) {
