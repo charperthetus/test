@@ -1,9 +1,11 @@
 Ext.define('Savanna.itemView.view.imageBrowser.ImagesGridEdit', {
     
-    extend: 'Ext.container.Container',
+    extend: 'Ext.panel.Panel',
+
+    title: 'Signatures and Observables',
 
     requires: [
-        'Savanna.itemView.controller.ImageBrowserController',
+        'Savanna.itemView.controller.EditImageBrowserController',
         'Savanna.itemView.view.imageBrowser.ImageUpload'
     ],
     

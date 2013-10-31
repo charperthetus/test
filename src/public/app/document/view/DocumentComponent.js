@@ -71,7 +71,8 @@ Ext.define("Savanna.document.view.DocumentComponent", {
     tbar: [
         {
             xtype: "document_toolbar",
-            itemId: "docToolbar"
+            itemId: "docToolbar",
+            width: '100%'
         }
     ]
 });
