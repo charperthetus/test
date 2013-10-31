@@ -49,16 +49,6 @@ Ext.define('Savanna.itemView.controller.ImageBrowserController', {
                 alt: imageMeta.description,
                 title: imageMeta.label
             });
-            thumbnail.setSrc(SavannaConfig.savannaUrlRoot + 'rest/document/' + encodeURI(imageMeta.uri) + '/original/');
-            thumbnail.setAlt((image.previewString) ? image.previewString : 'Insert a description');
-            thumbnail.setTitle((image.title) ? image.title : 'Add a Title');
-            thumbnail.setBodyStyle({
-                backgroundImage: 'url(' + thumbnail.getSrc() + ')',
-                backgroundRepeat: 'no-repeat',
-                backgroundPosition: 'center center',
-                backgroundSize: 'contain',
-                backgroundColor: 'transparent'
-            });
             me.addImageToBrowser(thumbnail);
 
             if (imageMeta.primaryImage) {
@@ -84,14 +74,13 @@ Ext.define('Savanna.itemView.controller.ImageBrowserController', {
     },
     // Selecting an image to expand
     onChangeImage: function(btn, image) {
-        console.debug(image);
-        var selectedImage = image.getSrc(),
-            title = (image.getTitle()) ? image.getTitle() : 'No title',
-            description = (image.getAlt()) ? image.getAlt() : 'No description',
+        var selectedImage = image.src,
+            title = (image.title) ? image.title : 'No title',
+            description = (image.alt) ? image.alt : 'No description',
             jumboImage = this.getView().queryById('imagePrimary'),
             jumboMeta = this.getView().queryById('imageText'),
-            imageWidth = image.getSrc().naturalWidth,
-            imageHeight = image.getSrc().naturalHeight;
+            imageWidth = image.naturalWidth,
+            imageHeight = image.naturalHeight;
 
         var backgroundSize = (imageWidth < jumboImage.width && imageHeight < jumboImage.height) ? 'inherit' : 'contain';
         
@@ -104,7 +93,5 @@ Ext.define('Savanna.itemView.controller.ImageBrowserController', {
             backgroundColor: 'transparent'
         });
         jumboMeta.update(description);
-
-        Savanna.app.fireEvent('ItemView:SaveEnable');
     }
 });
