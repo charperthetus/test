@@ -80,6 +80,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "Ext.ux.ajax.SimXhr": [],
   "Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent.ResultsDals": [],
   "Savanna.process.model.Template": [],
+  "Savanna.itemView.controller.ParentItemsAutoCompleteController": [],
   "Savanna.search.view.SearchComponent": [],
   "Ext.ux.CellDragDrop": [],
   "Savanna.upload.controller.UploadController": [],
@@ -278,6 +279,7 @@ Ext.ClassManager.addNameAlternateMappings({
     "Ext.ux.Multiselect"
   ],
   "Savanna.crumbnet.store.Graph": [],
+  "Savanna.itemView.view.createItem.ParentItemsAutoComplete": [],
   "Savanna.itemView.model.AutoCompleteModel": [],
   "ThetusUikit.menu.Item": [],
   "Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacets": [],
@@ -341,7 +343,6 @@ Ext.ClassManager.addNameAlternateMappings({
   "Deft.ioc.Injector": [
     "Deft.Injector"
   ],
-  "Savanna.itemView.controller.ParentTreeController": [],
   "Ext.ux.grid.filter.Filter": [],
   "Savanna.crumbnet.controller.CrumbnetController": [],
   "Savanna.itemView.view.createItem.ParentDetails": [],
@@ -516,6 +517,7 @@ Ext.ClassManager.addNameAliasMappings({
     "widget.model_search_resultsdals"
   ],
   "Savanna.process.model.Template": [],
+  "Savanna.itemView.controller.ParentItemsAutoCompleteController": [],
   "Savanna.search.view.SearchComponent": [
     "widget.search_searchcomponent"
   ],
@@ -864,6 +866,9 @@ Ext.ClassManager.addNameAliasMappings({
     "widget.multiselectfield"
   ],
   "Savanna.crumbnet.store.Graph": [],
+  "Savanna.itemView.view.createItem.ParentItemsAutoComplete": [
+    "widget.parentitems_auto_complete"
+  ],
   "Savanna.itemView.model.AutoCompleteModel": [],
   "ThetusUikit.menu.Item": [],
   "Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacets": [
@@ -967,7 +972,6 @@ Ext.ClassManager.addNameAliasMappings({
   "Savanna.search.store.SearchResults": [],
   "Ext.ux.BoxReorderer": [],
   "Deft.ioc.Injector": [],
-  "Savanna.itemView.controller.ParentTreeController": [],
   "Ext.ux.grid.filter.Filter": [],
   "Savanna.crumbnet.controller.CrumbnetController": [],
   "Savanna.itemView.view.createItem.ParentDetails": [
