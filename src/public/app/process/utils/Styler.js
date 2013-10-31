@@ -164,8 +164,9 @@ Ext.define('Savanna.process.utils.Styler', {
          */
         var rectangle = {
             "outline": {
-                fill: palette.mainColor,
-                stroke: null,
+                fill: 'white',
+                stroke: 1,
+                stroke: 'black',
                 width: 32, 
                 height: 32,
                 portId: "",                          // now the Shape is the port, not the whole Node
@@ -178,7 +179,8 @@ Ext.define('Savanna.process.utils.Styler', {
                 maxSize: new go.Size(160, NaN),
                 wrap: go.TextBlock.WrapFit,
                 editable: true,
-                name: "TEXT"
+                name: "TEXT", isMultiline: false
+                
             }
         };
 
@@ -253,9 +255,11 @@ Ext.define('Savanna.process.utils.Styler', {
             "panel": {
                 name: 'StepGadget',
                 opacity: 0.0,
-                alignment: new go.Spot(1.0, 1.0, -22, 6),
-                alignmentFocus: go.Spot.Top,
-                click: null
+               // alignment: new go.Spot(1.0, 1.0, 0, 0),
+              //  alignment: go.Spot.Top,
+             //   spot1: new go.Spot(0, 0, 10, 0), spot2: new go.Spot(1, 1, -10, -10),
+                click: null,
+                alignment: new go.Spot(1, 0.5, -22, 0)
             },
             "circle": {
                     figure: 'Circle',
@@ -303,15 +307,17 @@ Ext.define('Savanna.process.utils.Styler', {
             "panel": {
                 name: 'DecisionGadget',
                 opacity: 0.0,
-                alignment: new go.Spot(1.0, 1.0, -6, 6),
-                alignmentFocus: go.Spot.Top,
-                click: null
+               // alignment: new go.Spot(1.0, 1.0, 1.0, 1.0),
+               // alignment: go.Spot.Right,
+          // spot1: new go.Spot(0, 0, 10, 0), spot2: new go.Spot(1, 1, -10, -10), 
+                click: null,
+                alignment: new go.Spot(1, 0.5, -7, 0)
             },
             "diamond": {
                     figure: 'Diamond',
                     stroke: null,
                     fill: '#f9aa41',
-                    desiredSize: new go.Size(13,13)
+                    desiredSize: new go.Size(14,14)
                 },
             "plusLine":{ 
                 figure: 'PlusLine', 
@@ -600,7 +606,8 @@ Ext.define('Savanna.process.utils.Styler', {
                 height: 48,
                 portId: "",                          // now the Shape is the port, not the whole Node
                 fromSpot: go.Spot.Right, 
-                toSpot: go.Spot.Left 
+                toSpot: go.Spot.Left,
+                margin: new go.Margin(0,7,0,0)
             },
             "textblock": {
                 margin: 0,
@@ -658,9 +665,59 @@ Ext.define('Savanna.process.utils.Styler', {
             "outline": {
                 fill: '#f9aa41',
                 stroke: null,
-                width: 32, 
-                height: 32,
+                width: 42, 
+                height: 42,
+                row: 0, column: 1, margin: 0,
+                portId: "",                          // now the Shape is the port, not the whole Node
+                fromSpot: go.Spot.Right, 
+                toSpot: go.Spot.Left 
+            },
+            "xline": {
+                fill: null,
+                stroke: palette.black,
+                width: 10,
+                height: 10,
                 row: 0, column: 1, margin: 0
+            },
+            "textblock": {
+                font: properties.fontSize + properties.font,
+                stroke: palette.darkText,
+margin: new go.Margin(6,6,6,6),
+                maxSize: new go.Size(150, NaN),
+                wrap: go.TextBlock.WrapFit,
+                editable: true,
+                name: "TEXT",
+                row: 0, column: 2
+            }
+        };
+
+        /* 
+         * @private
+         * diamondShape
+         * Allows you to maniplute JSON for the shape and then returns the JSON you called to be used.
+         * @return JSON
+         */
+        var diamondShape = function(){
+            return diamond;
+        };
+        
+              
+        /* 
+         * @private
+         * diamond - JSON Object
+         * Defines default JSON for diamond shape.  This can be overridden via using the addTo and removeFrom JSON modifier functions in the return statement.
+         */
+        var mergeDiamond = {
+            "outline": {
+                fill: null,
+                stroke: 'gray',
+                strokeWidth: 1,
+                width: 26, 
+                height: 26,
+                row: 0, column: 1, margin: new go.Margin(0,18,0,0),
+                portId: "",                          // now the Shape is the port, not the whole Node
+                fromSpot: go.Spot.Right, 
+                toSpot: go.Spot.Left 
             },
             "xline": {
                 fill: null,
@@ -687,8 +744,8 @@ Ext.define('Savanna.process.utils.Styler', {
          * Allows you to maniplute JSON for the shape and then returns the JSON you called to be used.
          * @return JSON
          */
-        var diamondShape = function(){
-            return diamond;
+        var mergeDiamondShape = function(){
+            return mergeDiamond;
         };
         
                         
@@ -766,9 +823,11 @@ Ext.define('Savanna.process.utils.Styler', {
                 fill: '#FFFFFF',
                 stroke: '#999999',
                 margin: 0,
-                strokeWidth: 1
+                strokeWidth: 1,
                 
-                
+                portId: "",                          // now the Shape is the port, not the whole Node
+                fromSpot: go.Spot.Right, 
+                toSpot: go.Spot.Left 
                 
                // strokeDashArray: [4, 2]
        
@@ -783,7 +842,7 @@ Ext.define('Savanna.process.utils.Styler', {
                 stroke: palette.black,
                 name: "TEXT"
             },
-            "selectionAdornment":{ fill: null, stroke: '#63d9f5' , strokeWidth: 3, margin: 0   },
+            "selectionAdornment":{ fill: null, stroke: '#63d9f5' , strokeWidth: 3, margin: 2, isPanelMain: true   },
             "panelVertical":{ defaultAlignment: go.Spot.Center, padding: new go.Margin(5, 5, 5, 5) },
             "panelHorizontal":{ defaultAlignment: go.Spot.Top, stretch: go.GraphObject.Horizontal, background: 'transparent'},
             "placeholder": { padding: new go.Margin(0, 10) },
@@ -1131,6 +1190,9 @@ Ext.define('Savanna.process.utils.Styler', {
             },
             diamond: function(){
                 return diamondShape();
+            },
+            merge: function(){
+                return mergeDiamondShape();
             },
             processModel: function(){
                 return processModelShape();
