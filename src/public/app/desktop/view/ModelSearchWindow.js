@@ -20,8 +20,8 @@ Ext.define('Savanna.desktop.view.ModelSearchWindow', {
 
     ghost: false,
     layout: 'fit',
-    height: 600,
-    width: 680,
+    height: 800,
+    width: 800,
     minWidth: 200,
     minHeight: 100,
     items: [{
