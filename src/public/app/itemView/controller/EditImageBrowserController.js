@@ -286,6 +286,16 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
             alt: (image.previewString) ? image.previewString : 'Insert a description',
             title: (image.title) ? image.title : 'Add a Title'
         });
+        thumbnail.setSrc(SavannaConfig.savannaUrlRoot + 'rest/document/' + encodeURI(imageURI) + '/original/');
+        thumbnail.setAlt((image.previewString) ? image.previewString : 'Insert a description');
+        thumbnail.setTitle((image.title) ? image.title : 'Add a Title');
+        thumbnail.setBodyStyle({
+            backgroundImage: 'url(' + thumbnail.getSrc() + ')',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center center',
+            backgroundSize: 'contain',
+            backgroundColor: 'transparent'
+        });
 
         // Persist to the store and add the thumbnail to the slideshow
         this.addImageToBrowser(thumbnail);
