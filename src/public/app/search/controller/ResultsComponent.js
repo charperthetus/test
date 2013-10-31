@@ -619,8 +619,8 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
         }
         mapCanvas.resultsLayer.addFeatures(searchResultList);
         mapCanvas.controls.selectFeature.activate();
-        mapCanvas.resultsLayer.events.register("featureselected", event, this.displayMapPopUp);
-        mapCanvas.resultsLayer.events.register("featureunselected", event, this.destroyPopUp);
+        mapCanvas.resultsLayer.events.register("featureselected", {}, this.displayMapPopUp);
+        mapCanvas.resultsLayer.events.register("featureunselected", {}, this.destroyPopUp);
 
     },
 

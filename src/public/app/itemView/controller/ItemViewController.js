@@ -6,8 +6,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     ],
 
     requires: [
-        'Savanna.itemView.store.MainItemStore',
-        'Savanna.itemView.view.relatedItems.AddRelationships'
+        'Savanna.itemView.store.MainItemStore'
     ],
 
     store: 'Savanna.itemView.store.MainItemStore',
@@ -43,9 +42,6 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         },
         searchButton:  {
             click: 'onSearchSelect'
-        },
-        relationshipButton:  {
-            click: 'onRelationshipSelect'
         },
         relatedItemsView: {
             'ItemView:OpenItem': 'openItem'
@@ -97,7 +93,13 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
     onEditDone:function() {
         var myStore = Ext.data.StoreManager.lookup(this.store);
+
+        //gotta update the Item Name here since we can't access inside the edit header component.  Also have to update the tab text
+        myStore.getAt(0).data.label = this.getView().queryById('itemViewHeaderEdit').queryById('itemNameField').value;
+        this.getView().setTitle(myStore.getAt(0).data.label);
+
         var headerComponent = this.getView().queryById('itemViewHeaderView');
+        headerComponent.setTitle(myStore.getAt(0).data.label);
         headerComponent.reconfigure(myStore.getAt(0).propertyGroupsStore.getById('Header').valuesStore);
         
         var qualitiesComponent = this.getView().queryById('itemViewPropertiesView');
@@ -105,7 +107,12 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
         var relatedItemView = this.getView().queryById('relatedItemsView');
         Ext.each(myStore.getAt(0).propertyGroupsStore.getById('Related Items').valuesStore.data.items, function(group){
-            relatedItemView.queryById('relatedItemGrid_' + group.get('label').replace(/\s/g,'')).reconfigure(group.valueStore);
+            if (relatedItemView.queryById('relatedItemGrid_' + group.get('label').replace(/\s/g,''))) {
+                relatedItemView.queryById('relatedItemGrid_' + group.get('label').replace(/\s/g,'')).reconfigure(group.valuesStore);
+            }
+            else {
+                relatedItemView.fireEvent('ViewRelatedItems:AddRelationshipGrid', group);
+            }
         }, this);
 
         this.getView().getLayout().setActiveItem(0);
@@ -143,7 +150,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
              */
             //ToDo: do what needs to be done for edit version of header
             var headerEditComponent = me.getView().queryById('itemViewHeaderEdit');
-            headerEditComponent.setTitle(record[0].data.label);
+            headerEditComponent.queryById('itemNameField').setValue(record[0].data.label);
             headerEditComponent.store = record[0].propertyGroupsStore.getById('Header').valuesStore;
             headerEditComponent.fireEvent('EditHeader:StoreSet');
 
@@ -166,7 +173,6 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
              */
             var relatedItemView = me.getView().queryById('relatedItemsView');
             relatedItemView.fireEvent('ViewRelatedItems:SetupData', record[0].propertyGroupsStore.getById('Related Items').valuesStore.data.items);
-
 
             /*
             Related Items Edit
@@ -194,24 +200,26 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
             Annotation Properties View
              */
             var annotationViewComponent = me.getView().queryById('annotationPropertiesView');
-            annotationViewComponent.setTitle('Participated in Process (' + record[0].propertyGroupsStore.getById('Annotations').valuesStore.data.length + ')');
+            annotationViewComponent.setTitle('Additional Properties (' + record[0].propertyGroupsStore.getById('Annotations').valuesStore.data.length + ')');
             annotationViewComponent.reconfigure(record[0].propertyGroupsStore.getById('Annotations').valuesStore);
 
             /*
             Annotation Properties Edit
              */
             var annotationEditComponent = me.getView().queryById('annotationPropertiesEdit');
-            annotationEditComponent.setTitle('Participated in Process (' + record[0].propertyGroupsStore.getById('Annotations').valuesStore.data.length + ')');
+            annotationEditComponent.setTitle('Additional Properties (' + record[0].propertyGroupsStore.getById('Annotations').valuesStore.data.length + ')');
             annotationEditComponent.reconfigure(record[0].propertyGroupsStore.getById('Annotations').valuesStore);
 
             /*
-             Images View
+             Images View/Edit
              */
-            var imagesBrowserComponent = me.getView().queryById('itemViewImagesGrid');
-            if(record[0].propertyGroupsStore.getById('Images').valuesStore.getById('Images') !== null)    {
-                imagesBrowserComponent.fireEvent('ViewImagesGrid:Setup', record[0].propertyGroupsStore.getById('Images').valuesStore.getById('Images').valuesStore.data.items);
-            };
-
+            var imagesBrowserComponent = me.getView().queryById('itemViewImagesGrid'),
+                imagesBrowserComponentEdit = me.getView().queryById('itemViewImagesEdit');            
+            
+            imagesBrowserComponent.fireEvent('ViewImagesGrid:Setup', record[0].propertyGroupsStore.getById('Images').valuesStore.getById('Images').valuesStore.data.items);
+            
+            imagesBrowserComponentEdit.store = record[0].propertyGroupsStore.getById('Images').valuesStore;
+            imagesBrowserComponentEdit.fireEvent('EditImagesGrid:Setup', record[0].propertyGroupsStore.getById('Images').valuesStore.getById('Images').valuesStore.data.items);
 
             /*
             are we creating a new item?
@@ -244,13 +252,6 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
     onSearchSelect:function() {
         console.log('search selected');
-    },
-
-    onRelationshipSelect:function() {
-        Ext.create('Savanna.itemView.view.relatedItems.AddRelationships', {
-            width: 400,
-            height: 300
-        });
     },
 
     buildItemDataFetchUrl: function (uri) {
