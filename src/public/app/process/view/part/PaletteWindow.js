@@ -23,14 +23,11 @@ Ext.define('Savanna.process.view.part.PaletteWindow', {
         titleCollapse: true,
         multi: false //do we want to allow multiple sections open at the same time?
     },
-
     modal: false,
     closable: false,
     constrain: true, //limit this window to the parent container
-    //todo: have DI style the window including height/width
-    width: 250,
-    height: 400,
-
+    width: 200,
+    height: 300,
     items: [],
 
     initComponent: function() {
@@ -46,8 +43,7 @@ Ext.define('Savanna.process.view.part.PaletteWindow', {
         return [
             {
                 xtype: 'process_itemlist',
-                itemId: 'itemlist',
-                ui: 'default-processeditor'
+                itemId: 'itemlist'
             },
             {
                 xtype: 'process_actionlist',

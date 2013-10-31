@@ -32,30 +32,39 @@ Ext.define('Savanna.process.view.part.ActionList', {
     },
 
     title: 'Actions',
-    titleAlign: 'center',
+    titleAlign: 'left',
     emptyText: 'No Actions',
 
     hideHeaders: true,
     columns: [
         {
-            dataIndex: 'label'
+            dataIndex: 'label',
+            width: '100%'
         }
     ],
 
-    tbar: [
-        {
-            xtype: 'textfield',
-            itemId: 'actiontext',
-            emptyText: 'Find and Add Actions'
-        },
-        {
-            //todo: design has this over the grid, I couldn't get that to happen so it is next to the filter text horizontally
-            xtype: 'button',
-            itemId: 'createaction',
-            text: 'Create',
-            hidden: true
-        }
-    ],
+    tbar:
+        {   margin: 10,
+            items: [
+                {
+                    //xtype: 'thetus-searchfield',
+                    xtype: 'textfield',
+                    width: 143,
+                    itemId: 'actiontext',
+                    emptyText: 'Find and Add Actions'
+                },
+                {
+                    xtype: 'button',
+                    width:25,
+                    height:25,
+                    cls: 'toolbarButtonFramework',
+                    ui: 'icon-dark',
+                    glyph: 'add',
+                    itemId: "createaction",
+                    tooltip: 'Create',
+                    hidden: true
+                }
+            ]},
 
     initComponent: function() {
         //each instance of this grid needs its own store otherwise, a change to the store will result in ALL palettes changing

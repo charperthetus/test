@@ -235,7 +235,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
          which is the display name and number of results returned
          */
         var myDal = this.queryById(dalId),
-            loadingEl = myDal.down('#dalStatusIcon').getEl();
+            loadingEl = myDal.down('#dalStatusIcon');
 
         var styleStatus = {
             'success': 'icon-success',
