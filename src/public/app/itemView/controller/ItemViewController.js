@@ -344,6 +344,8 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         var imagesBrowserComponent = me.getView().queryById('itemViewImagesGrid'),
             imagesBrowserComponentEdit = me.getView().queryById('itemViewImagesEdit');
 
+        imagesBrowserComponent.store = record.propertyGroupsStore.getById('Images').valuesStore;
+        imagesBrowserComponentEdit.storeHelper = this.storeHelper;
         imagesBrowserComponentEdit.store = record.propertyGroupsStore.getById('Images').valuesStore;
 
         imagesBrowserComponent.fireEvent('ViewImagesGrid:Setup', record.propertyGroupsStore.getById('Images').valuesStore.getById('Images').valuesStore.data.items);
