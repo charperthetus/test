@@ -106,7 +106,7 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
             return false;
         } else {
             // Add the image to the browser
-            this.createNewImage(data.records[0].data);
+            this.handleNewImage(data.records[0].data);
         }
         return true;
     },
@@ -136,8 +136,8 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
         input.click();
     },
     // Handles the the Upload button completion event
-    fileBrowserChangeHandler: function(fileBrowserButton,event) {
-        this.uploadFiles(event.target.files, fileBrowserButton);
+    fileBrowserChangeHandler: function(fileBrowserButton, event) {
+        this.uploadFiles(event.target.files);
     },
     // Helper to build the URL
     buildUploadUrl: function(forPolling){
@@ -149,14 +149,13 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
         return url;
     },
     // Iterates over the files uploaded and ignores ones that aren't images
-    uploadFiles: function(files,component){
+    uploadFiles: function(files){
         var file;
 
         var uploadGrid = this.getView().queryById('uploadStatus');
 
         for (var i = 0 ; i < files.length ; i++){
             file = files[i];
-
             // Check if file is an image before uploading
             if(file.type.indexOf('image') !== -1){
                 this.currentlyUploadingCount++;
@@ -239,7 +238,7 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
                 this.currentPollingIds.splice(i,1);
                 if (documentStatus.status === 'completed') { 
                     this.ingestedCount++;
-                    this.createNewImage(documentStatus);
+                    this.handleNewImage(documentStatus);
                 } else {
                     this.failedCount++;
                 } 
@@ -289,14 +288,27 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
             }
         });
     },
-    createNewImage: function(image){
+    handleNewImage: function(image){
+        // Check to see if this was dragged from Search or from Upload. The URI is under a different key in each
+        var imageURI = (image.uri) ? image.uri : image.documentUri,
+            imageTitle = (image.title) ? image.title : image.documentUri;
+
+        // The store helper expects argument #2 to be an object representing the model, this sets that up
+        var imageModel = {
+            title: imageTitle,
+            uri: imageURI
+        };
+
+        // Create the view for the image thumbnail
         var thumbnail = Ext.create('Savanna.itemView.view.imageBrowser.ImageThumbnail', {
-            src: SavannaConfig.savannaUrlRoot + 'rest/document/' + encodeURI(image.uri) + '/original/',
+            src: SavannaConfig.savannaUrlRoot + 'rest/document/' + encodeURI(imageURI) + '/original/',
             alt: (image.previewString) ? image.previewString : 'Insert a description',
             title: (image.title) ? image.title : 'Add a Title'
         });
+
+        // Persist to the store and add the thumbnail to the slideshow
         this.addImageToBrowser(thumbnail);
-        //this.storeHelper.addBotLevItemInStore(image.title, image, this.getView().store);
+        this.storeHelper.addBotLevItemInStore(imageTitle, imageModel, this.getView().store.getById('Images'));
         this.onChangeImage(null, thumbnail);
     },
     addImageToBrowser: function(image){
