@@ -114,9 +114,11 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                                 xtype: 'itemview_view_header',
                                 itemId: 'itemViewHeaderView',
                                 cls:'white-grid-view-panel',
+
                                 header:{
                                     ui:'item-view',
-                                    height:48
+                                    height:48,
+                                    padding:'0 0 0 10'
                                 }
                             },
                             {
