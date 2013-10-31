@@ -535,7 +535,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                    }
                });
 
-               //is not, just add the results.
+               //...if not, just add the results.
                if(!found){
                    resultsPanel.up('#searchresults').allResultSets.push(resultsObj);
                }
