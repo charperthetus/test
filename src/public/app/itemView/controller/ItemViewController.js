@@ -93,7 +93,13 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
     onEditDone:function() {
         var myStore = Ext.data.StoreManager.lookup(this.store);
+
+        //gotta update the Item Name here since we can't access inside the edit header component.  Also have to update the tab text
+        myStore.getAt(0).data.label = this.getView().queryById('itemViewHeaderEdit').queryById('itemNameField').value;
+        this.getView().setTitle(myStore.getAt(0).data.label);
+
         var headerComponent = this.getView().queryById('itemViewHeaderView');
+        headerComponent.setTitle(myStore.getAt(0).data.label);
         headerComponent.reconfigure(myStore.getAt(0).propertyGroupsStore.getById('Header').valuesStore);
         
         var qualitiesComponent = this.getView().queryById('itemViewPropertiesView');
@@ -144,7 +150,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
              */
             //ToDo: do what needs to be done for edit version of header
             var headerEditComponent = me.getView().queryById('itemViewHeaderEdit');
-            headerEditComponent.setTitle(record[0].data.label);
+            headerEditComponent.queryById('itemNameField').setValue(record[0].data.label);
             headerEditComponent.store = record[0].propertyGroupsStore.getById('Header').valuesStore;
             headerEditComponent.fireEvent('EditHeader:StoreSet');
 
