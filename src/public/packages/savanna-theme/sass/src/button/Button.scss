@@ -258,17 +258,15 @@ $uikit-background-color-disabled: $new-savanna-tab-button-background-color-disab
     }
 }
 @mixin thetus-header-icon-button{
-    padding: 0;
-    .#{$prefix}btn-glyph{
-        color:#777777;
-        font-size:20px;
-        line-height:27px;
-        text-align:center;
-        width: 100%;
-        &:hover, &:active, &:focus{
-            color:#808080;
-        }
-    }
+  padding: 0;
+  .#{$prefix}btn-glyph{
+    color:#888888;
+    font-size:20px;
+    line-height:27px;
+    text-align:center;
+    width: 100%;
+    text-shadow:0 1px rgba(0,0,0,0.4);
+  }
 
 }
 
@@ -296,7 +294,10 @@ $uikit-background-color-disabled: $new-savanna-tab-button-background-color-disab
     display:inline-block;
     @include thetus-header-icon-button;
     &:hover, &:active, &:focus{
-        background-color: rgba(36, 36, 36, 0.35);
+      border:1px solid #777777;
+      -webkit-border-radius: 1px;
+      -moz-border-radius: 1px;
+      border-radius: 1px;
     }
 }
 
@@ -356,6 +357,10 @@ $uikit-background-color-disabled: $new-savanna-tab-button-background-color-disab
     .#{$prefix}btn-glyph{
         text-align: left;
     }
+  }
+  .#{$prefix}btn-glyph{
+    text-align: left;
+  }
 }
 
 .#{$prefix}tab-icon-el{
