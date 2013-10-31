@@ -105,14 +105,6 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         var qualitiesComponent = this.getView().queryById('itemViewPropertiesView');
         qualitiesComponent.reconfigure(myStore.getAt(0).propertyGroupsStore.getById('Properties').valuesStore);
 
-        // Reset the image browser component to get the new images
-        var imageBrowserComponent = this.getView().queryById('itemViewImagesGrid'),
-            imageBrowserComponentEdit = this.getView().queryById('itemViewImagesEdit');
-
-        imageBrowserComponent.fireEvent('ViewImagesGrid:Setup');
-        imageBrowserComponentEdit.fireEvent('EditImagesGrid:Setup');
-
-
         var relatedItemView = this.getView().queryById('relatedItemsView');
         Ext.each(myStore.getAt(0).propertyGroupsStore.getById('Related Items').valuesStore.data.items, function(group){
             if (relatedItemView.queryById('relatedItemGrid_' + group.get('label').replace(/\s/g,''))) {
