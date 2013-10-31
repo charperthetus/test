@@ -279,6 +279,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
          */
         var headerEditComponent = me.getView().queryById('itemViewHeaderEdit');
         headerEditComponent.queryById('itemNameField').setValue(record.data.label);
+        headerEditComponent.storeHelper = this.storeHelper;
         headerEditComponent.store = record.propertyGroupsStore.getById('Header').valuesStore;
         headerEditComponent.fireEvent('EditHeader:StoreSet');
 
@@ -306,6 +307,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
          Related Items Edit
          */
         var relatedItemViewEdit = me.getView().queryById('relatedItemsEdit');
+        relatedItemViewEdit.storeHelper = this.storeHelper;
         relatedItemViewEdit.store = record.propertyGroupsStore.getById('Related Items').valuesStore;
         relatedItemViewEdit.fireEvent('EditRelatedItems:SetupData', record.propertyGroupsStore.getById('Related Items').valuesStore.data.items);
 
@@ -321,6 +323,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
          */
         var qualitiesEditComponent = me.getView().queryById('itemViewPropertiesEdit');
         qualitiesEditComponent.setTitle('Qualities (' + record.propertyGroupsStore.getById('Properties').valuesStore.data.length + ')');
+        qualitiesEditComponent.storeHelper = this.storeHelper;
         qualitiesEditComponent.store = record.propertyGroupsStore.getById('Properties').valuesStore;
         qualitiesEditComponent.fireEvent('EditQualities:StoreSet');
 
