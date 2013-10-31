@@ -316,8 +316,8 @@ describe('Search Component', function () {
                 });
 
                 expect(component.down('#resultsdals').items.items.length).toBe(0);
-
-                expect(component.down('#searchbody').currentPanel).toBe('searchoptions');
+                
+                expect(component.down('#searchbody').getActiveTab().itemId === 'mainsearchoptions').toBeTruthy());
 
                 expect(component.down('search_resultspanelgrid').items.items[0].dataSource.data.items.length).toBe(0);
             });
@@ -944,28 +944,23 @@ describe('Search Component', function () {
         describe('managing Toolbar subview events', function () {
 
             describe('onBodyToolbarClick', function () {
-                it('should set currentPanel to "results" when "Results" is clicked', function () {
-                    var resbutton = component.queryById('resultsbutton');
-
-                    component.queryById('searchbody').currentPanel = 'searchoptions';
-
+                it('should set activeItem to "searchMap" when "searchMapButton" is clicked', function () {
+                    var mapbutton = component.queryById('searchMapButton');
+                    component.queryById('mainsearchoptions').getLayout().setActiveItem('searchdals');
                     spyOn(controller, 'onBodyToolbarClick');
+                    
+                    mapbutton.fireEvent('click', mapbutton);
 
-                    resbutton.fireEvent('click', resbutton);
-
-                    expect(component.queryById('searchbody').currentPanel).not.toBe('searchoptions');
+                    expect(component.queryById('mainsearchoptions').getLayout().getActiveItem().itemId).not.toBe('searchdals');
                 });
 
-                it('should set currentPanel to "searchoptions" when "Search Options" is clicked', function () {
-                    var optsbutton = component.queryById('optionsbutton');
-
-                    component.queryById('searchbody').currentPanel = 'results';
+                it('should set activeItem to "searchdals" when "searchDalsButton" is clicked', function () {
+                    var dalsButton = component.queryById('searchDalsButton');
+                    component.queryById('mainsearchoptions').getLayout().setActiveItem('searchMap');
 
                     spyOn(controller, 'onBodyToolbarClick');
-
-                    optsbutton.fireEvent('click', optsbutton);
-
-                    expect(component.queryById('searchbody').currentPanel).not.toBe('results');
+                    dalsButton.fireEvent('click', dalsButton);
+                    expect(component.queryById('mainsearchoptions').getLayout().getActiveItem().itemId).not.toBe('searchMap');
                 });
             });
         });
