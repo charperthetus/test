@@ -14,11 +14,6 @@ Ext.define('Savanna.metadata.view.Classification', {
 
     layout: 'vbox',
 
-    applyValue: function(value) {
-        // TODO: We'll probably make a service call to load the classification object from here.
-        return value;
-    },
-
     initComponent: function () {
         this.callParent(arguments);
         var me = this;
@@ -66,6 +61,8 @@ Ext.define('Savanna.metadata.view.Classification', {
                     });
                     classificationWindow.show();
                     classificationWindow.center();
+
+                    EventHub.on('classificationedited', this.onClassificationChanged, this);
                 },
                 scope: this
             }
@@ -89,6 +86,17 @@ Ext.define('Savanna.metadata.view.Classification', {
             width: '100%'
 
         }));
+    },
+
+    onClassificationChanged: function(event) {
+        EventHub.un('classificationedited', this.onClassificationChanged);
+        if(event) {
+            this.setValue(event.portionMarking);
+
+            if(this.down('#displayValue')) {
+                this.down('#displayValue').setText(this.getValue() ? this.getValue() : '&nbsp;');
+            }
+        }
     }
 
 

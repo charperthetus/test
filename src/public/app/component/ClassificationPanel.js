@@ -6,15 +6,22 @@ Ext.define('Savanna.component.ClassificationPanel', {
     ],
 
     config: {
+        systemHigh: false,
         itemUri: null
     },
 
     initComponent: function() {
         Ext.apply(this, {
-            dockedItems: [{
-                xtype: 'classification_banner',
-                dock: 'top'
-            }]
+            dockedItems: [
+                {
+                    xtype: 'classification_banner',
+                    dock: 'top'
+                },
+                {
+                    xtype: 'classification_banner',
+                    dock: 'bottom'
+                }
+            ]
         });
         this.callParent(arguments);
     }

@@ -6,22 +6,30 @@ Ext.define('Savanna.classification.controller.BannerController', {
     },
 
     init: function() {
-        var me = this;
-        var uri = me.getView().ownerCt.getItemUri();
+        var uri = this.getView().ownerCt.getItemUri();
+        var systemHigh = this.getView().ownerCt.getSystemHigh();
         if(uri) {
             Ext.Ajax.request({
                 url: SavannaConfig.capcoUrl + 'formatted/uri/' + uri + ';jsessionid=' + Savanna.jsessionid,
-                success: me.onSuccess,
-                scope: me
+                success: this.onSuccess,
+                scope: this
             });
         }
-        else {
+        else if(systemHigh && SavannaConfig.showSystemHighClassification){
             Ext.Ajax.request({
                 url: SavannaConfig.capcoUrl + 'string/high' + ';jsessionid=' + Savanna.jsessionid,
-                success: me.onSuccess,
-                scope: me
+                success: this.onSuccess,
+                scope: this
             });
         }
+        else if(!systemHigh){
+            Ext.Ajax.request({
+                url: SavannaConfig.capcoUrl + 'string/default' + ';jsessionid=' + Savanna.jsessionid,
+                success: this.onSuccess,
+                scope: this
+            });
+        }
+        EventHub.on('classificationchanged', this.onClassificationChanged, this);
         this.callParent(arguments);
     },
 
@@ -52,6 +60,16 @@ Ext.define('Savanna.classification.controller.BannerController', {
             this.getView().setBodyStyle('background:' + background);
             this.getView().setBodyStyle('textAlign:center');
             this.getView().setBodyStyle('color:' + color);
+        }
+    },
+
+    onClassificationChanged: function(itemUri) {
+        if(itemUri === this.getView().ownerCt.getItemUri()) {
+            Ext.Ajax.request({
+                url: SavannaConfig.capcoUrl + 'formatted/uri/' + itemUri + ';jsessionid=' + Savanna.jsessionid,
+                success: this.onSuccess,
+                scope: this
+            });
         }
     }
 });

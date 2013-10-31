@@ -20,18 +20,34 @@ Ext.define('Savanna.classification.controller.WindowController', {
         relField: {
             change: 'requestRestrictionsByMarkings'
         },
-        finishButton: true,
-        cancelButton: true
+        finishButton: {
+            click: 'onFinishButtonClick'
+        },
+        cancelButton: {
+            click: 'onCancelButtonClick'
+        }
     },
 
     init: function() {
+        // lock the fields while data is loading
+        this.lockFields();
+
+        // verify whether classification options have already been loaded
         var options = Ext.getStore('classificationOptions');
         if(!options) {
+            // create a new options store and load it
             options = Ext.create('Savanna.classification.store.OptionsStore');
-            options.load({callback: this.optionsLoaded, scope: this});
+            options.load({
+                callback: this.optionsLoaded,
+                scope: this
+            });
         }
         else {
+            // classification options have already been loaded
+            // populate the classification fields with loaded data
             this.loadFieldStores(options.first());
+
+            // load the restrictions
             this.requestRestrictionsByPortionMarking();
         }
         this.callParent(arguments);
@@ -43,25 +59,26 @@ Ext.define('Savanna.classification.controller.WindowController', {
     },
 
     loadFieldStores: function(options) {
-        // CLASSIFICATION
+        // classification
         this.getClassificationField().store.loadData(options.get('classificationMarkings'));
 
-        // SCI
+        // sci
         this.getSciField().store.loadData(options.get('sciMarkings'));
 
-        // FGI
+        // fgi markings must be mapped to an object to be used in a combo
         var fgiData = Ext.Array.map(options.get('fgiMarkings'), this.mapCallback);
         this.getFgiField().store.loadData(fgiData);
 
-        // DISSEM
+        // dissemination
         this.getDisField().store.loadData(options.get('dissemMarkings'));
 
-        // REL
+        // release to markings must be mapped to an object to be used in a combo
         var relData = Ext.Array.map(options.get('relMarkings'), this.mapCallback);
         this.getRelField().store.loadData(relData);
     },
 
     mapCallback: function(item) {
+        // the default display label value is text
         return {
             text: item
         };
@@ -109,26 +126,44 @@ Ext.define('Savanna.classification.controller.WindowController', {
     },
 
     onSuccessRestrictionsByPortionMarking: function(response) {
+        // decode the json response text
         var responseObj = Ext.JSON.decode(response.responseText);
-        var selectedMarkingIds = responseObj.selectedMarkingIds;
-        var ismformat = responseObj.ismformatData.ismformat;
 
-        var classificationField = this.getClassificationField();
+        this.getClassificationField().suspendEvents(false);
+        this.getSciField().suspendEvents(false);
+        this.getDisField().suspendEvents(false);
+
+        var selectedMarkingIds = responseObj.selectedMarkingIds;
         for(var i = 0; i < selectedMarkingIds.length; i++) {
-            if(classificationField.findRecordByValue(selectedMarkingIds[i])) {
-                classificationField.setValue(selectedMarkingIds[i]);
+            // load classification if applicable
+            if(this.getClassificationField().findRecordByValue(selectedMarkingIds[i])) {
+                this.getClassificationField().setValue(selectedMarkingIds[i]);
                 this.styleClassificationField();
             } else {
+                // load all applicable sci and dissemination values
                 this.getSciField().setValue(selectedMarkingIds[i]);
                 this.getDisField().setValue(selectedMarkingIds[i]);
             }
         }
 
+        this.getClassificationField().resumeEvents();
+        this.getSciField().resumeEvents();
+        this.getDisField().resumeEvents();
+
+        // load fgi values
+        var ismformat = responseObj.ismformatData.ismformat;
         if(ismformat.fgisourceOpen) {
+            this.getFgiField().suspendEvents(false);
+            // fgi data is formatted as so: fgi1 fgi2 fgi3 ...
             this.getFgiField().setValue(ismformat.fgisourceOpen.split(' '));
+            this.getFgiField().resumeEvents();
         }
+        // load rel values
         if(ismformat.releasableTo) {
+            this.getRelField().suspendEvents(false);
+            // rel data is formatted as so: rel1 rel2 rel3 ...
             this.getRelField().setValue(ismformat.releasableTo.split(' '));
+            this.getRelField().resumeEvents();
         }
 
         var errors = responseObj.formattedString.errors;
@@ -137,6 +172,11 @@ Ext.define('Savanna.classification.controller.WindowController', {
     },
 
     requestRestrictionsByMarkings: function() {
+        var markings = this.getClassificationMarkings();
+        this.makeRestrictionsAjaxRequest('restrictions/markings', markings, this.onSuccessRestrictionsByMarkings);
+    },
+
+    getClassificationMarkings: function() {
         var classificationLastValue = this.getClassificationField().lastValue;
         var sciLastValue = this.getSciField().lastValue;
         var fgiLastValue = this.getFgiField().lastValue;
@@ -147,13 +187,11 @@ Ext.define('Savanna.classification.controller.WindowController', {
         var dissemMarkings = dissemLastValue ? dissemLastValue.split(', ') : [];
         var markingIds = Ext.Array.merge([classificationLastValue], sciMarkings, dissemMarkings);
 
-        var markings = {
+        return {
             markingIds: markingIds,
             fgiMarkings: fgiLastValue ? fgiLastValue.split(', ') : [],
             relMarkings: relLastValue ? relLastValue.split(', ') : []
         };
-
-        this.makeRestrictionsAjaxRequest('restrictions/markings', markings, this.onSuccessRestrictionsByMarkings);
     },
 
     makeRestrictionsAjaxRequest: function(endpoint, jsonData, successFunction) {
@@ -176,10 +214,22 @@ Ext.define('Savanna.classification.controller.WindowController', {
             var restrictions = responseObj.formattedString.restrictions;
             this.updateForm(errors, restrictions);
         } else {
+            this.getSciField().suspendEvents(false);
             this.getSciField().setValue();
+            this.getSciField().resumeEvents();
+
+            this.getFgiField().suspendEvents(false);
             this.getFgiField().setValue();
+            this.getFgiField().resumeEvents();
+
+            this.getDisField().suspendEvents(false);
             this.getDisField().setValue();
+            this.getDisField().resumeEvents();
+
+            this.getRelField().suspendEvents(false);
             this.getRelField().setValue();
+            this.getRelField().resumeEvents();
+
             this.requestRestrictionsByMarkings();
         }
     },
@@ -195,21 +245,41 @@ Ext.define('Savanna.classification.controller.WindowController', {
             this.getErrorLabel().hide();
             this.getFinishButton().setDisabled(false);
         }
+
+        this.removeNotAllowedSelections(restrictions.notAllowedMarkings);
+
         this.refreshRestrictions(restrictions.notAllowedMarkings);
-        this.setRequiredMarkings(restrictions.requiredMarkings);
+
+        if(restrictions.requiredMarkings) {
+            this.setRequiredMarkings(restrictions.requiredMarkings);
+        }
+
+        this.enableDisableFields(restrictions.notAllowedMarkings);
     },
 
     refreshRestrictions: function(notAllowedMarkings) {
-        this.removeNotAllowedSelections(notAllowedMarkings);
-        this.filterFieldStore(this.getSciField().getStore(), 'id', notAllowedMarkings);
-        this.filterFieldStore(this.getFgiField().getStore(), 'text', notAllowedMarkings);
-        this.filterFieldStore(this.getDisField().getStore(), 'id', notAllowedMarkings);
-        this.filterFieldStore(this.getRelField().getStore(), 'text', notAllowedMarkings)
-        this.enableDisableFields(notAllowedMarkings);
+        this.filterNotAllowedMarkings(this.getSciField(), 'id', notAllowedMarkings);
+        this.filterNotAllowedMarkings(this.getFgiField(), 'text', notAllowedMarkings);
+        this.filterNotAllowedMarkings(this.getDisField(), 'id', notAllowedMarkings);
+        this.filterNotAllowedMarkings(this.getRelField(), 'text', notAllowedMarkings);
+    },
+
+    filterNotAllowedMarkings: function(field, valueField, notAllowedMarkings) {
+        var store = field.getStore();
+        store.clearFilter();
+        store.filter(field.queryFilter);
+        store.filter({
+            filterFn: function(item) {
+                return notAllowedMarkings.indexOf(item.get(valueField)) < 0;
+            }
+        });
     },
 
     setRequiredMarkings: function(requiredMarkings) {
-
+        for(var i = 0; i < requiredMarkings.length; i++) {
+            this.getSciField().setValue(requiredMarkings[i]);
+            this.getDisField().setValue(requiredMarkings[i]);
+        }
     },
 
     removeNotAllowedSelections: function(notAllowedMarkings) {
@@ -233,6 +303,9 @@ Ext.define('Savanna.classification.controller.WindowController', {
     },
 
     enableDisableFields: function(notAllowedMarkings) {
+
+        this.getClassificationField().setDisabled(false);
+
         var sciField = this.getSciField();
         if(sciField.getStore().getCount()) {
             sciField.setDisabled(false);
@@ -262,14 +335,34 @@ Ext.define('Savanna.classification.controller.WindowController', {
         }
     },
 
-    filterFieldStore: function(store, valueField, notAllowedMarkings) {
-        if(store.filters.length > 1) {
-            store.filters.removeAt(1);
-        }
-        store.filter({
-            filterFn: function(item) {
-                return notAllowedMarkings.indexOf(item.get(valueField)) < 0;
-            }
-        });
+    onFinishButtonClick: function(){
+        var markings = this.getClassificationMarkings();
+        this.makeRestrictionsAjaxRequest('restrictions/markings', markings, this.onFinishSuccess);
+        this.getView().hide();
     },
+
+    onFinishSuccess: function(response){
+        var responseObj = Ext.JSON.decode(response.responseText);
+        var portionMarking = responseObj.formattedString.formattedString;
+
+        var event = {
+            portionMarking: portionMarking
+        }
+        EventHub.fireEvent('classificationedited', event);
+        this.getView().destroy();
+    },
+
+    onCancelButtonClick: function(){
+        EventHub.fireEvent('classificationedited');
+        this.getView().destroy();
+    },
+
+    lockFields: function() {
+        this.getClassificationField().setDisabled(true);
+        this.getSciField().setDisabled(true);
+        this.getFgiField().setDisabled(true);
+        this.getDisField().setDisabled(true);
+        this.getRelField().setDisabled(true);
+    }
+
 });
