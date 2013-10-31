@@ -163,7 +163,7 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
                 this.uploadFileViaXMLHttpRequest(this.buildUploadUrl() , file,  uploadGrid, tempId);
                 uploadGrid.store.add({ status:'pending', fileName: file.name , fileSize: file.size , progress:'Queued', fileId: tempId});
             } else {
-                Ext.debug('Not an image: ', file.name);
+                console.log('Not an image: ', file.name);
             }
         }
     },
@@ -203,7 +203,7 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
 
             // TODO: Handle failures
             failure: function (response) {
-                Ext.debug('server-side failure with status code ' + response.status);
+                console.log('server-side failure with status code ' + response.status);
             }
         });
     },
@@ -285,6 +285,16 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
             src: SavannaConfig.savannaUrlRoot + 'rest/document/' + encodeURI(imageURI) + '/original/',
             alt: (image.previewString) ? image.previewString : 'Insert a description',
             title: (image.title) ? image.title : 'Add a Title'
+        });
+        thumbnail.setSrc(SavannaConfig.savannaUrlRoot + 'rest/document/' + encodeURI(imageURI) + '/original/');
+        thumbnail.setAlt((image.previewString) ? image.previewString : 'Insert a description');
+        thumbnail.setTitle((image.title) ? image.title : 'Add a Title');
+        thumbnail.setBodyStyle({
+            backgroundImage: 'url(' + thumbnail.getSrc() + ')',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center center',
+            backgroundSize: 'contain',
+            backgroundColor: 'transparent'
         });
 
         // Persist to the store and add the thumbnail to the slideshow
