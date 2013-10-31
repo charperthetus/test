@@ -85,5 +85,7 @@ Ext.define('Savanna.itemView.controller.ImageBrowserController', {
             backgroundColor: 'transparent'
         });
         jumboMeta.update(description);
+
+        Savanna.app.fireEvent('ItemView:SaveEnable');
     }
 });

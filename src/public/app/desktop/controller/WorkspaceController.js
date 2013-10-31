@@ -47,6 +47,7 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
 
         EventHub.on('open', this.onOpen, this);
         Savanna.app.on('itemview:createitem', this.createItem, this);
+        Savanna.app.on('itemview:itemDeleted', this.deleteModelItem, this);
         return this.callParent(arguments);
     },
 
@@ -151,6 +152,10 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
             width: 850,
             height: 500
         });
+    },
+
+    deleteModelItem: function(tab) {
+        this.getMaintabpanel().remove(tab);
     },
 
     createProcess: function(tabpanel) {
