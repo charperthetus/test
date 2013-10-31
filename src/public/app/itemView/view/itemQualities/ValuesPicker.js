@@ -92,7 +92,8 @@ Ext.define('Savanna.itemView.view.itemQualities.ValuesPicker', {
         {
             text: 'OK',
             itemId: 'okBtn',
-            ui:'commit'
+            ui:'commit',
+            margin:'0 0 10 0'
         },
         {
             text: 'cancel',

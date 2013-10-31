@@ -54,7 +54,6 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
                     width: '100%',
                     margin:'0 10 10 10',
                     cls:'related-item-edit-drop-zone',
-//                    bodyStyle:'width:100%;',
                     layout: {
                         type: 'vbox',
                         align: 'center'

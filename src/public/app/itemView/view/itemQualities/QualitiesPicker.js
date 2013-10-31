@@ -42,7 +42,8 @@ Ext.define('Savanna.itemView.view.itemQualities.QualitiesPicker', {
     items: [
         {
             xtype: 'label',
-            text: 'Available Quality'
+            text: 'AVAILABLE QUALITY',
+            cls:'h3'
         },
         {
             xtype: 'container',
@@ -128,7 +129,8 @@ Ext.define('Savanna.itemView.view.itemQualities.QualitiesPicker', {
         {
             text: 'OK',
             itemId: 'okBtn',
-            ui:'commit'
+            ui:'commit',
+            margin:'0 0 10 0'
         },
         {
             text: 'cancel',

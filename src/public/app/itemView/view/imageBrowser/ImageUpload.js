@@ -19,19 +19,22 @@ Ext.define('Savanna.itemView.view.imageBrowser.ImageUpload', {
   layout: {
         type: 'hbox',
         align: 'middle',
-        pack: 'center'
+        pack: 'center',
+      width:'75%'
   },
-    width:275,
+    width:'100%',
+    margin:'0 0 10 0',
+    padding:'0 10 0 10',
     height:79,
+    bodyCls: 'inner-edit-zone',
     items: [{
         xtype: 'label',
         text: 'Drop Images Here',
         cls:'drag-and-drop',
-        flex: 2
     }, {
         xtype: 'label',
         text: 'OR',
-        flex: 1
+        margin:'0 20 0 20'
     }, {
         xtype: 'button',
         text: 'Upload',

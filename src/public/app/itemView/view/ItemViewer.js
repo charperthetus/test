@@ -70,7 +70,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                 overflowY: 'auto',
                 autoScroll: true,
                 tbar:{
-                    ui:'item-view',
+                    ui:'thetus-toolbar',
                     items:[
                         {
                             xtype: 'button',
@@ -185,7 +185,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                 overflowY: 'auto',
                 autoScroll: true,
                 tbar:{
-                    ui:'item-view',
+                    ui:'thetus-toolbar',
                     items:[
                         {
                             xtype: 'button',
