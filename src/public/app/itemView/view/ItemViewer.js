@@ -82,10 +82,6 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                                     itemId:'newItemButton'
                                 },
                                 {
-                                    text: 'Delete',
-                                    itemId:'deleteItemButton'
-                                },
-                                {
                                     xtype: 'menuseparator'
                                 },
                                 {
@@ -96,15 +92,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                                     xtype: 'menuseparator'
                                 },
                                 {
-                                    text: 'Search Intell',
-                                    itemId:'searchButton'
-                                },
-                                {
                                     xtype: 'menuseparator'
-                                },
-                                {
-                                    text: 'Relationship Picker',
-                                    itemId:'relationshipButton'
                                 }
                             ]
                         },
@@ -160,7 +148,11 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                             {
                                 xtype: 'itemview_imagesgrid',
                                 itemId: 'itemViewImagesGrid',
-                                cls:'white-grid-view-panel'
+                                cls:'white-grid-view-panel',
+                                collapsible: true,
+                                header:{
+                                    ui:'light-blue'
+                                }
                             },
                             {
                                 xtype: 'itemview_view_qualities',
@@ -298,7 +290,11 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                             {
                                 xtype: 'itemview_imagesgrid_edit',
                                 itemId: 'itemViewImagesEdit',
-                                cls:'white-grid-view-panel-edit'
+                                cls:'white-grid-view-panel-edit',
+                                collapsible: true,
+                                header:{
+                                    ui:'light-blue'
+                                }
                             },
                             {
                                 xtype: 'itemview_edit_qualities',
