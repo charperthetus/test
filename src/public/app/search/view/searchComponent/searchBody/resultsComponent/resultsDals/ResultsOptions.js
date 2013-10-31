@@ -4,7 +4,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
 
     requires: [
         'Ext.form.field.Checkbox',
-        'Ext.draw.Text',
+        'Ext.form.Label',
         'Savanna.search.controller.resultsComponent.resultsDals.ResultsOptionsController'
     ],
 
@@ -40,7 +40,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
 
         return [
             {
-                xtype:'text',
+                xtype:'label',
                 itemId: 'dalName',
                 height:20,
                 /*
