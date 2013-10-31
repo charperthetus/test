@@ -30,6 +30,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "ThetusUikit.tip.QuickTip": [],
   "Savanna.modelSearch.view.searchComponent.searchBody.searchDals.SearchOptions": [],
   "Savanna.metadata.view.Classification": [],
+  "Savanna.itemView.view.imageBrowser.ImagesGridEdit": [],
   "Savanna.components.autoComplete.AutoCompleteController": [],
   "Savanna.desktop.view.SavannaWorkspace": [],
   "Savanna.flexpaper.view.FlexpaperEntityWindow": [],
@@ -359,6 +360,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "Savanna.itemView.controller.EditQualitiesController": [],
   "ThetusUikit.ux.form.SearchField": [],
   "Savanna.modelSearch.controller.resultsComponent.resultsDals.ResultsRefineSearchbarController": [],
+  "Savanna.itemView.view.imageBrowser.ImageUpload": [],
   "Savanna.process.model.TemplateGroup": [],
   "Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent.ResultsPreviewContent": [],
   "Savanna.process.layout.StepLayout": [],
@@ -366,6 +368,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "Savanna.search.controller.resultsComponent.resultsDals.ResultsRefineSearchbarController": [],
   "Ext.ux.DataView.LabelEditor": [],
   "Savanna.search.view.searchComponent.SearchToolbar": [],
+  "Savanna.itemView.controller.EditImageBrowserController": [],
   "Ext.ux.grid.filter.StringFilter": [],
   "Savanna.process.view.part.Palette": [],
   "Savanna.metadata.model.Metadata": [],
@@ -436,6 +439,9 @@ Ext.ClassManager.addNameAliasMappings({
   ],
   "Savanna.metadata.view.Classification": [
     "widget.metadata_classification"
+  ],
+  "Savanna.itemView.view.imageBrowser.ImagesGridEdit": [
+    "widget.itemview_imagesgrid_edit"
   ],
   "Savanna.components.autoComplete.AutoCompleteController": [],
   "Savanna.desktop.view.SavannaWorkspace": [
@@ -1001,6 +1007,9 @@ Ext.ClassManager.addNameAliasMappings({
     "widget.thetus-searchfield"
   ],
   "Savanna.modelSearch.controller.resultsComponent.resultsDals.ResultsRefineSearchbarController": [],
+  "Savanna.itemView.view.imageBrowser.ImageUpload": [
+    "widget.itemview_image_upload"
+  ],
   "Savanna.process.model.TemplateGroup": [],
   "Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent.ResultsPreviewContent": [
     "widget.model_search_resultspreviewcontent"
@@ -1014,6 +1023,7 @@ Ext.ClassManager.addNameAliasMappings({
   "Savanna.search.view.searchComponent.SearchToolbar": [
     "widget.search_searchtoolbar"
   ],
+  "Savanna.itemView.controller.EditImageBrowserController": [],
   "Ext.ux.grid.filter.StringFilter": [
     "gridfilter.string"
   ],

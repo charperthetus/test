@@ -159,7 +159,8 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                         items: [                            
                             {
                                 xtype: 'itemview_imagesgrid',
-                                itemId: 'itemViewImagesGrid'
+                                itemId: 'itemViewImagesGrid',
+                                cls:'white-grid-view-panel'
                             },
                             {
                                 xtype: 'itemview_view_qualities',
@@ -296,7 +297,8 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                         items: [
                             {
                                 xtype: 'itemview_imagesgrid_edit',
-                                itemId: 'itemViewImagesEdit'
+                                itemId: 'itemViewImagesEdit',
+                                cls:'white-grid-view-panel-edit'
                             },
                             {
                                 xtype: 'itemview_edit_qualities',

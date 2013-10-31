@@ -89,5 +89,18 @@
     }
   }
 
+  .image-browser-edit-drop-zone{
+    border:2px dashed #959595;
+    padding:0px 10px 0;
+    margin:0 auto 10px;
+    .drag-and-drop{
+      &:before {
+        width: 100%;
+        display: block;
+        text-align: center;
+        position: static;
+      }
+    }
+  }
 
 }
