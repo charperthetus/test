@@ -21,7 +21,9 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
         'Savanna.itemView.view.imageBrowser.ImageThumbnail',
         'Savanna.itemView.view.workflow.WorkflowSelect',
         'Savanna.itemView.view.annotationProperties.AnnotationProperties',
-        'Savanna.itemView.store.ItemViewStoreHelper'
+        'Savanna.itemView.store.ItemViewStoreHelper',
+        'Savanna.metadata.view.Details',
+        'Savanna.sources.view.Sources'
     ],
 
     layout: 'card',
@@ -173,6 +175,25 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                                 }
                             }
                         ]
+                    },
+                    {
+                        xtype: 'panel',
+                        itemId: 'itemInfoPanel',
+                        title: 'details',
+                        width: '30%',
+                        layout: 'vbox',
+                        items: [
+//                            {
+//                                xtype: 'metadata_details',
+//                                itemId: 'itemDetails',
+//                                itemURI: this.itemUri
+//                            },
+                            {
+                                xtype: 'document_sources',
+                                itemId: 'itemSources',
+                                itemURI: this.itemUri
+                            }
+                        ]
                     }
                 ]
             },
@@ -313,6 +334,26 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                                 header: {
                                     ui:'light-blue'
                                 }
+                            }
+                        ]
+                    },
+                    {
+                        xtype: 'panel',
+                        itemId: 'itemInfoPanel',
+                        title: 'details',
+                        width: '30%',
+                        layout: 'vbox',
+                        items: [
+//                            {
+//                                xtype: 'metadata_details',
+//                                itemId: 'itemDetails',
+//                                itemURI: this.itemUri
+//                            },
+                            {
+                                xtype: 'document_sources',
+                                editMode: true,
+                                itemId: 'itemSources',
+                                itemURI: this.itemUri
                             }
                         ]
                     }
