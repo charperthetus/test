@@ -1,30 +1,30 @@
 /**
  * Created with IntelliJ IDEA.
- * User: bjohnson
- * Date: 10/28/13
- * Time: 12:59 PM
+ * User: swatson
+ * Date: 10/23/13
+ * Time: 1:11 PM
  * To change this template use File | Settings | File Templates.
  */
-
-Ext.define('Savanna.itemView.view.itemQualities.ValuesPicker', {
+Ext.define('Savanna.itemView.view.relatedItems.RelationshipPicker', {
     extend: 'Ext.window.Window',
 
-    alias: 'widget.itemview_values_picker',
+    alias: 'widget.itemview_relationship_picker',
 
-    title: 'Add Values',
+    title: 'Add Relationships',
 
     requires: [
         'Savanna.itemView.store.AutoCompleteStore',
-        'Savanna.itemView.controller.ValuesPickerController'
+        'Savanna.itemView.controller.RelationshipPickerController'
     ],
 
-    controller: 'Savanna.itemView.controller.ValuesPickerController',
+    controller: 'Savanna.itemView.controller.RelationshipPickerController',
 
     config: {
         selectionStore: null,
-        valNameArray: [],
-        uri : ""
+        relationshipNameArray: []
     },
+
+    relationshipSelectStore: null,
 
     updatedStore: false,
 
@@ -41,10 +41,9 @@ Ext.define('Savanna.itemView.view.itemQualities.ValuesPicker', {
     items: [
         {
             xtype: 'grid',
-            title: 'Available Values',
+            title: 'Available Relationships',
             padding: '0 0 15 0',
-            itemId: 'availableValuesGroup',
-            height: 285,
+            itemId: 'availableRelationshipGroup',
             width: '100%',
             hideHeaders: true,
             store: this.store,
@@ -56,31 +55,10 @@ Ext.define('Savanna.itemView.view.itemQualities.ValuesPicker', {
                     flex: 1,
                     tpl: Ext.create('Ext.XTemplate',
                         '<tpl if="selected">',
-                            '<input type="checkbox" id="valueCheck" checked/>&nbsp;&nbsp;&nbsp;&nbsp;{label}',
+                        '<input type="checkbox" id="relationshipCheck" checked/>&nbsp;&nbsp;&nbsp;&nbsp;{label}',
                         '<tpl else>',
-                            '<input type="checkbox" id="valueCheck"/>&nbsp;&nbsp;&nbsp;&nbsp;{label}',
+                        '<input type="checkbox" id="relationshipCheck"/>&nbsp;&nbsp;&nbsp;&nbsp;{label}',
                         '</tpl>')
-                }
-            ]
-        },
-        {
-            xtype: 'grid',
-            title: 'Selected Values',
-            itemId: 'selectedValuesGroup',
-            height: 150,
-            width: '100%',
-            hideHeaders: true,
-            store: this.store,
-            renderTo: Ext.getBody(),
-            columns: [
-                {
-                    dataIndex: 'label',
-                    flex: 1
-                },
-                {
-                    xtype: 'templatecolumn',
-                    dataIndex: 'label',
-                    tpl: '<input type="button" value="x" id="removeSelectedValue">'
                 }
             ]
         }
@@ -105,8 +83,8 @@ Ext.define('Savanna.itemView.view.itemQualities.ValuesPicker', {
     afterRender: function () {
         this.callParent(arguments);
         this.store = Ext.create(this.store, {
-            urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/model/search/keyword/property/' + this.uri,
-            paramsObj: {pageStart:0, pageSize:10}
+            urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/model/fakeuri/relationships',
+            paramsObj: {excludeUri:'a', pageStart:0, pageSize:10, alphabetical: true, q: ''}
         });
 
         this.store.load({
@@ -118,20 +96,19 @@ Ext.define('Savanna.itemView.view.itemQualities.ValuesPicker', {
     handleRecordDataRequestSuccess: function (record, operation, success) {
         if (success) {
             var me = this;
-            var valuesSelectStore = Ext.create('Ext.data.JsonStore', {
+            this.relationshipSelectStore = Ext.create('Ext.data.JsonStore', {
                 recordType: this.getSelectionStore().recordType,
                 model: this.getSelectionStore().model
             });
 
             Ext.each(this.store.data.items, function(value) {
-                if (Ext.Array.contains(me.getValNameArray(), value.data.label)) {
+                if (Ext.Array.contains(me.getRelationshipNameArray(), value.data.label)) {
                     value.data.selected = true;
                 }
             });
 
-            valuesSelectStore.add(this.getSelectionStore().getRange());
-            this.queryById('selectedValuesGroup').reconfigure(valuesSelectStore);
-            this.queryById('availableValuesGroup').reconfigure(this.store);
+            this.relationshipSelectStore.add(this.getSelectionStore().getRange());
+            this.queryById('availableRelationshipGroup').reconfigure(this.store);
         }
     }
 });

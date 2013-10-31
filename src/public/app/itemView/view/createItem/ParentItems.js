@@ -23,18 +23,17 @@ Ext.define('Savanna.itemView.view.createItem.ParentItems', {
         'Ext.data.*',
         'Ext.tree.*',
         'Ext.grid.*',
-        'Savanna.components.autoComplete.AutoComplete',
-        'Savanna.itemView.controller.ParentTreeController',
+        'Savanna.itemView.view.createItem.ParentItemsAutoComplete',
         'Savanna.itemView.view.createItem.ParentItemsTreePanel'
     ],
-
-    controller: 'Savanna.itemView.controller.ParentTreeController',
 
     title: 'Item Types',
 
     items: [],
 
     bodyPadding:8,
+
+    layout: 'fit',
 
     initComponent: function () {
         this.items = this.setupItems();
@@ -53,9 +52,17 @@ Ext.define('Savanna.itemView.view.createItem.ParentItems', {
     },
     tbar: [
         {
-            xtype: 'auto_complete',
-            itemId: 'parenttype_autocomplete',
-            width: '100%'
+            xtype: 'parentitems_auto_complete',
+            itemId: 'parentItemAutoChooser',
+            width: '100%',
+            store: Ext.create('Savanna.itemView.store.AutoCompleteStore', {
+                urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/mockModelSearch/keyword/item',
+                paramsObj: {
+                    excludeUri:'asdf',
+                    pageStart:0,
+                    pageSize:500
+                }
+            })
         }
     ]
 });

@@ -11,7 +11,6 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
         'Savanna.itemView.view.header.ViewHeader',
         'Savanna.itemView.view.header.EditHeader',
         'Savanna.itemView.view.itemQualities.EditItemQualities',
-        'Savanna.itemView.view.header.DisplayLabel',
         'Savanna.itemView.view.relatedProcesses.RelatedProcesses',
         'Savanna.itemView.view.relatedItems.ViewRelatedItems',
         'Savanna.itemView.view.relatedItems.EditRelatedItems',
