@@ -1,14 +1,17 @@
-Ext.define('Savanna.itemView.view.imageBrowser.ImagesGrid', {
+Ext.define('Savanna.itemView.view.imageBrowser.ImagesGridEdit', {
     
     extend: 'Ext.panel.Panel',
 
     title: 'Signatures and Observables',
 
-    requires: 'Savanna.itemView.controller.ImageBrowserController',
+    requires: [
+        'Savanna.itemView.controller.EditImageBrowserController',
+        'Savanna.itemView.view.imageBrowser.ImageUpload'
+    ],
     
-    controller: 'Savanna.itemView.controller.ImageBrowserController',
+    controller: 'Savanna.itemView.controller.EditImageBrowserController',
     
-    alias: 'widget.itemview_imagesgrid',
+    alias: 'widget.itemview_imagesgrid_edit',
     
     items: [{
 
@@ -55,5 +58,30 @@ Ext.define('Savanna.itemView.view.imageBrowser.ImagesGrid', {
             itemId: 'navRight',
             height: 100
         }]
+    }, {
+
+        // TODO: Remove this grid and refactor as it's only good for holding a store.
+        xtype: 'grid',
+        itemId: 'uploadStatus',
+        store: Ext.create('Savanna.upload.store.UploadGridStore'),
+        flex:1,
+        width: '100%',
+        borderWidth: 0,
+        viewConfig: {
+            preserveScrollOnRefresh: true
+        },
+        hideHeaders: true,
+        columns: []
+
+    }, {
+        xtype: 'label',
+        flex: 1,
+        itemId: 'uploadStatusMessage',
+        hidden: true
+    
+    }, {
+        // Upload drop zones
+        xtype: 'itemview_image_upload',
+        itemId: 'itemViewUploadImages'
     }]
 });

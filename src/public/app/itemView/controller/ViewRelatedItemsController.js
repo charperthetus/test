@@ -15,36 +15,38 @@ Ext.define('Savanna.itemView.controller.ViewRelatedItemsController', {
 
     control: {
         view: {
-            'ViewRelatedItems:SetupData': 'setupData'
+            'ViewRelatedItems:SetupData': 'setupData',
+            'ViewRelatedItems:AddRelationshipGrid': 'addRelationshipGrid'
         }
     },
 
     setupData: function (items) {
-        var me = this;
-
         Ext.each(items, function (relatedItemsGroup) {
+            this.addRelationshipGrid(relatedItemsGroup);
+        }, this);
+    },
 
-            var grid = Ext.create('Ext.grid.Panel', {
-                itemId: 'relatedItemGrid_' + relatedItemsGroup.get('label').replace(/\s/g,''),
-                store: relatedItemsGroup.valuesStore,
-                columns: [
-                    {
-                        xtype: 'templatecolumn',
-                        tpl: Ext.create('Ext.XTemplate',
-                            '<input type="button" name="{value}" value="{label}" id="openRelatedItem" />'
-                        ),
-                        text: relatedItemsGroup.get('label'),
-                        flex: 1,
-                        sortable: false
-                    }
-                ],
-                listeners: {
-                    itemclick: me.onRelatedItemClick
+    addRelationshipGrid: function (relationship) {
+        var grid = Ext.create('Ext.grid.Panel', {
+            itemId: 'relatedItemGrid_' + relationship.get('label').replace(/\s/g,''),
+            store: relationship.valuesStore,
+            columns: [
+                {
+                    xtype: 'templatecolumn',
+                    tpl: Ext.create('Ext.XTemplate',
+                        '<input type="button" name="{value}" value="{label}" id="openRelatedItem" />'
+                    ),
+                    text: relationship.get('label'),
+                    flex: 1,
+                    sortable: false
                 }
-            });
-
-            me.getView().add(grid);
+            ],
+            listeners: {
+                itemclick: this.onRelatedItemClick
+            }
         });
+
+        this.getView().add(grid);
     },
 
     onRelatedItemClick: function (grid, record, item, index, e, eOpts) {

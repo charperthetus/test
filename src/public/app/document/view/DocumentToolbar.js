@@ -12,44 +12,67 @@ Ext.define("Savanna.document.view.DocumentToolbar", {
         {
             xtype: "toolbar",
             itemId: "tools",
+            height: 33,
+            ui: 'thetus-toolbar',
             hideMode: "display",
+            layout:{
+                pack: 'start'
+            },
             items: [
                 {
-                    text: "Hand",
-                    width: 55,
+                    xtype: 'button',
+                    width:25,
+                    height:25,
+                    cls: 'toolbarButtonFramework',
+                    ui: 'icon-dark',
+                    glyph: 'hand',
                     itemId: "handTool",
-                    ui: 'flat-toolbar-button',
                     tooltip: 'Hand'
-                },
-                {
-                    text: "Select",
-                    width: 60,
+                },{
+                    xtype: 'button',
+                    width:25,
+                    height:25,
+                    cls: 'toolbarButtonFramework',
+                    ui: 'icon-dark',
+                    glyph: 'cursor',
                     itemId: "selectTool",
-                    ui: 'flat-toolbar-button',
                     tooltip: 'Select'
-                },
-                {
-                    text: "Zoom In",
-                    width: 65,
+                },{
+                    xtype: 'button',
+                    width:25,
+                    height:25,
+                    cls: 'toolbarButtonFramework',
+                    ui: 'icon-dark',
+                    glyph: 'zoomIn',
                     itemId: "zoomIn",
-                    ui: 'flat-toolbar-button',
                     tooltip: "Zoom In"
 
                 },
+                //divider
                 {
-                    text: "Zoom Out",
-                    width: 75,
+                    xtype: 'container',
+                    cls: 'toolbarDividerFramework',
+                    width:1,
+                    height:20
+                },{
+                    xtype: 'button',
+                    width:25,
+                    height:25,
+                    cls: 'toolbarButtonFramework',
+                    ui: 'icon-dark',
+                    glyph: 'zoomOut',
                     itemId: "zoomOut",
-                    ui: 'flat-toolbar-button',
                     tooltip: "Zoom Out"
-                },
-                {
-                    text: "Zoom Fit",
-                    width: 70,
+                },{
+                    xtype: 'button',
+                    width:25,
+                    height:25,
+                    cls: 'toolbarButtonFramework',
+                    ui:'icon-dark',
+                    glyph: 'showAll',
                     itemId: "zoomFit",
                     tooltip: "Zoom Fit"
-                },
-                {
+                },{
                     text: "View",
                     itemId: "toolMenu",
                     menu: [
@@ -72,27 +95,32 @@ Ext.define("Savanna.document.view.DocumentToolbar", {
                         }
                     ]
                 },
+                '->',
                 {
-                    text: "Previous",
+                    xtype: 'button',
+                    width:25,
+                    height:25,
+                    ui: 'icon-dark',
+                    cls: 'toolbarButtonFramework',
+                    glyph: 'arrowNavLeft',
                     itemId: "previousPage",
-                    width: 50,
-                    ui: 'flat-toolbar-button',
                     tooltip: 'Previous'
                 },
                 {
-                    text: "Next",
+                    xtype: 'button',
+                    width:25,
+                    height:25,
+                    cls: 'toolbarButtonFramework',
+                    ui: 'icon-dark',
+                    glyph: 'arrowNavRight',
                     itemId: "nextPage",
-                    width: 30,
-                    ui: 'flat-toolbar-button',
                     tooltip: 'Next'
                 },
+                '->',
                 {
                     xtype: "textfield",
                     itemId: "searchText",
-                    ui: 'flat-toolbar-button',
-                    tooltip: 'Search',
-                    size: 15,
-                    width: 70
+                    tooltip: 'Search'
                 },
                 {
                     text: "Search",
@@ -102,16 +130,24 @@ Ext.define("Savanna.document.view.DocumentToolbar", {
                     tooltip: 'Search'
                 },
                 {
-                    text: "Print",
-                    itemId: "printDoc",
-                    ui: 'flat-toolbar-button',
-                    tooltip: 'Print'
+                    xtype: 'button',
+                    width:25,
+                    height:25,
+                    cls: 'toolbarButtonFramework',
+                    ui: 'icon-dark',
+                    glyph: 'export',
+                    itemId: "exportDoc",
+                    tooltip: 'Export'
                 },
                 {
-                    text: "Export",
-                    itemId: "exportDoc",
-                    ui: 'flat-toolbar-button',
-                    tooltip: 'Export'
+                    xtype: 'button',
+                    width:25,
+                    height:25,
+                    cls: 'toolbarButtonFramework',
+                    ui: 'icon-dark',
+                    glyph: 'print',
+                    itemId: "printDoc",
+                    tooltip: 'Print'
                 }
             ]
         }

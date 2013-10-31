@@ -7,7 +7,8 @@
 
 /*                    
 * Runtime
-*/  
+*/
+
 @if $include-ext-toolbar-toolbar {
     @include uikit-button(
         $uikit-ui: 'brand-header-toolbar-small',
@@ -42,7 +43,8 @@
         $uikit-background-gradient-over: $brand-header-button-background-gradient-over,
         $uikit-background-gradient-focus: $brand-header-button-background-gradient-focus,
         $uikit-background-gradient-pressed: $brand-header-button-background-gradient-pressed,
-        $uikit-background-gradient-disabled: $brand-header-button-background-gradient-disabled
+        $uikit-background-gradient-disabled: $brand-header-button-background-gradient-disabled,
+        $uikit-text-decoration: $button-basic-text-decoration
     );
     @include uikit-button(
         $uikit-ui: 'brand-header-toolbar-medium',
@@ -77,7 +79,8 @@
         $uikit-background-gradient-over: $brand-header-button-background-gradient-over,
         $uikit-background-gradient-focus: $brand-header-button-background-gradient-focus,
         $uikit-background-gradient-pressed: $brand-header-button-background-gradient-pressed,
-        $uikit-background-gradient-disabled: $brand-header-button-background-gradient-disabled
+        $uikit-background-gradient-disabled: $brand-header-button-background-gradient-disabled,
+        $uikit-text-decoration: $button-basic-text-decoration
     );
     @include uikit-button(
         $uikit-ui: 'brand-header-toolbar-large',
@@ -112,7 +115,9 @@
         $uikit-background-gradient-over: $brand-header-button-background-gradient-over,
         $uikit-background-gradient-focus: $brand-header-button-background-gradient-focus,
         $uikit-background-gradient-pressed: $brand-header-button-background-gradient-pressed,
-        $uikit-background-gradient-disabled: $brand-header-button-background-gradient-disabled
+        $uikit-background-gradient-disabled: $brand-header-button-background-gradient-disabled,
+        $uikit-text-decoration: $button-basic-text-decoration
+
     );
     @include uikit-button(
         $uikit-ui: 'workspace-header-toolbar-small',
@@ -147,7 +152,8 @@
         $uikit-background-gradient-over: $workspace-header-button-background-gradient-over,
         $uikit-background-gradient-focus: $workspace-header-button-background-gradient-focus,
         $uikit-background-gradient-pressed: $workspace-header-button-background-gradient-pressed,
-        $uikit-background-gradient-disabled: $workspace-header-button-background-gradient-disabled
+        $uikit-background-gradient-disabled: $workspace-header-button-background-gradient-disabled,
+        $uikit-text-decoration: $button-basic-text-decoration
     );
     @include uikit-button(
         $uikit-ui: 'workspace-header-toolbar-medium',
@@ -182,7 +188,8 @@
         $uikit-background-gradient-over: $workspace-header-button-background-gradient-over,
         $uikit-background-gradient-focus: $workspace-header-button-background-gradient-focus,
         $uikit-background-gradient-pressed: $workspace-header-button-background-gradient-pressed,
-        $uikit-background-gradient-disabled: $workspace-header-button-background-gradient-disabled
+        $uikit-background-gradient-disabled: $workspace-header-button-background-gradient-disabled,
+        $uikit-text-decoration: $button-basic-text-decoration
     );
     @include uikit-button(
         $uikit-ui: 'workspace-header-toolbar-large',
@@ -217,12 +224,34 @@
         $uikit-background-gradient-over: $workspace-header-button-background-gradient-over,
         $uikit-background-gradient-focus: $workspace-header-button-background-gradient-focus,
         $uikit-background-gradient-pressed: $workspace-header-button-background-gradient-pressed,
-        $uikit-background-gradient-disabled: $workspace-header-button-background-gradient-disabled
+        $uikit-background-gradient-disabled: $workspace-header-button-background-gradient-disabled,
+        $uikit-text-decoration: $button-basic-text-decoration
+    );
+    
+    @include uikit-button(
+        $uikit-ui: 'toggle-toolbar-small',
+        $uikit-padding: $button-toggle-padding,
+        $uikit-text-padding: $button-toggle-text-padding,
+        $uikit-color: $button-toggle-color-pressed,
+        $uikit-color-pressed: $button-toggle-color-pressed,
+        $uikit-color-over: $button-toggle-color-pressed,
+        $uikit-color-focus: $button-toggle-color-pressed
     );
 }
+
+@include uikit-button(
+$uikit-ui: 'dark-small',
+$uikit-background-color: $new-savanna-tab-button-background-color,
+$uikit-background-color-over: $new-savanna-tab-button-background-color-over,
+$uikit-background-color-focus: $new-savanna-tab-button-background-color-focus,
+$uikit-background-color-pressed: $new-savanna-tab-button-background-color-pressed,
+$uikit-background-color-disabled: $new-savanna-tab-button-background-color-disabled
+
+);
+
 /*
 * Logic  
-*/ 
+*/
 
 
 .logoButtonFramework {
@@ -233,7 +262,7 @@
     height: 38px;
     top:0;
 
-    &:hover, &:active, &:focus, 
+    &:hover, &:active, &:focus,
     .logoButtonFramework.#{$prefix}btn-brand-header-toolbar-large-focus {
         @include opacity(0.85);
     }
@@ -241,99 +270,181 @@
 @mixin thetus-header-icon-button{
   padding: 0;
   .#{$prefix}btn-glyph{
-    color:#777777;
+    color:#888888;
     font-size:20px;
     line-height:27px;
     text-align:center;
     width: 100%;
-    text-shadow:0 1px #808080;
-    &:hover, &:active, &:focus{
-      color:#808080;
-    }
+    text-shadow:0 1px rgba(0,0,0,0.4);
   }
 
 }
+
+@mixin thetus-toolbar-icon-button{
+    padding: 0;
+    .#{$prefix}btn-glyph{
+        color:#454545;
+        opacity:1;
+        font-size:20px;
+        margin:2px 2px 2px 2px;
+        padding: 0 0 0 0;
+        text-align:center;
+        &:hover, &:active, &:focus{
+            color:#808080;
+        }
+    }
+}
+
 .searchButtonFramework,
 .uploadButtonFramework,
-.errorButtonFramework, 
-.helpButtonFramework, 
+.modelSearchButtonFramework,
+.errorButtonFramework,
+.helpButtonFramework,
 .userButtonFramework {
     display:inline-block;
     @include thetus-header-icon-button;
     &:hover, &:active, &:focus{
-      background-color: rgba(36, 36, 36, 0.35);
+      border:1px solid #777777;
+      -webkit-border-radius: 1px;
+      -moz-border-radius: 1px;
+      border-radius: 1px;
     }
 }
+
+.toolbarButtonFramework {
+    @include thetus-toolbar-icon-button;
+    display:inline-block;
+    height: 26px;
+    width: 26px;
+    border: 1px solid #F2F2F2;
+    vertical-align: middle;
+    margin:3px 3px 3px 3px;
+    &:hover, &:active, &:focus{
+        border: 1px solid #333333;
+    }
+    &:select{
+        background-color: rgba(36, 36, 36, 0.35);
+    }
+}
+.toolbarDividerFramework {
+    height: 20px;
+    width: 0.5px;
+    background-color: #454545;
+}
+
+
+
+
+
 
 .errorButtonFramework,
 .helpButtonFramework,
 .userButtonFramework {
-  .#{$prefix}btn-glyph{
-    font-size:16px;
-  }
+    .#{$prefix}btn-glyph{
+        font-size:16px;
+    }
 }
 
 .userButtonFramework{
-  .#{$prefix}btn-arrow {
-    background-image: none;
-    padding-left: 5px;
-    padding-right: 0px;
-    &:before{
-      content:"arrowDDdown";
-      right: 0;
-      top: 11px;
-      font-size: 16px;
-      position: absolute;
-      color:#808080;
+    .#{$prefix}btn-arrow {
+        background-image: none;
+        padding-left: 5px;
+        padding-right: 0px;
+        &:before{
+            content:"arrowDDdown";
+            right: 0;
+            top: 11px;
+            font-size: 16px;
+            position: absolute;
+            color:#808080;
+        }
+        text-shadow:0 1px #999999;
+        &:hover, &:active, &:focus{
+            color:#999999;
+            text-shadow:0 1px #808080;
+        }
     }
-    text-shadow:0 1px #999999;
-    &:hover, &:active, &:focus{
-      colore:#999999;
-      text-shadow:0 1px #808080;
+    .#{$prefix}btn-glyph{
+        text-align: left;
     }
-  }
-  .#{$prefix}btn-glyph{
-    text-align: left;
-  }
 }
 
 .#{$prefix}tab-icon-el{
-  @include thetus-icons;
+    @include thetus-icons;
 }
 
 
-.singleViewButtonFramework, 
-.singleViewButtonFramework:hover, 
-.singleViewButtonFramework:active, 
+.singleViewButtonFramework,
+.singleViewButtonFramework:hover,
+.singleViewButtonFramework:active,
 .singleViewButtonFramework.#{$prefix}btn-workspace-header-toolbar-small-focus,
 .singleViewButtonFramework.#{$prefix}btn-workspace-header-toolbar-small-active,
 .singleViewButtonFramework.#{$prefix}btn-workspace-header-toolbar-small-pressed {
     width: 22px;
     height: 22px;
-  .#{$prefix}btn-button{
-    height:20px;
-  }
-  .#{$prefix}btn-glyph{
-    text-align: center;
-    width:20px;
-    line-height: 20px;
-  }
+    .#{$prefix}btn-button{
+        height:20px;
+    }
+    .#{$prefix}btn-glyph{
+        text-align: center;
+        width:20px;
+        line-height: 20px;
+    }
 }
 
-.splitViewButtonFramework, 
-.splitViewButtonFramework:hover, 
-.splitViewButtonFramework:active, 
+.splitViewButtonFramework,
+.splitViewButtonFramework:hover,
+.splitViewButtonFramework:active,
 .splitViewButtonFramework.#{$prefix}btn-workspace-header-toolbar-small-focus,
 .splitViewButtonFramework.#{$prefix}btn-workspace-header-toolbar-small-active,
 .splitViewButtonFramework.#{$prefix}btn-workspace-header-toolbar-small-pressed {
     width: 22px;
     height: 22px;
-  .#{$prefix}btn-button{
-    height:20px;
+    .#{$prefix}btn-button{
+        height:20px;
+    }
+    .#{$prefix}btn-glyph{
+        text-align: center;
+        width:20px;
+        line-height: 20px;
+    }
+}
+
+.#{$prefix}icon{
+  @each $alt-button-state in pressed, focus, over{
+    &.#{$prefix}btn-#{$alt-button-state} {
+      .#{$prefix}btn-inner{
+        text-decoration:none;
+      }
+    }
   }
-  .#{$prefix}btn-glyph{
+
+  .#{$prefix}btn-inner{
+    text-decoration:none;
+  }
+}
+
+.new-savanna-tab{
+  .#{$prefix}btn-inner{
+    text-decoration:none;
+  }
+  .#{$prefix}btn-arrow{
+    padding-right: 0;
+    width: 25px;
+    &:before {
+    content: "plus";
+    right: 0;
+    font-size: 16px;
+    position: absolute;
     text-align: center;
-    width:20px;
-    line-height: 20px;
+    width: 25px;
+    line-height: 25px;
+    display: block;
+    font-size: 10px;
+    }
+    color:$tab-dark-color;
+    &:hover{
+      opacity:0.5;
+    }
   }
 }

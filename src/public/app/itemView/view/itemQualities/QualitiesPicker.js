@@ -80,9 +80,9 @@ Ext.define('Savanna.itemView.view.itemQualities.QualitiesPicker', {
                     tpl: Ext.create('Ext.XTemplate',
                         '<tpl if="selected">',
 //                            '<tpl if="editable">',
-//                                '<input type="checkbox" id="qualityCheck" checked/>&nbsp;&nbsp;&nbsp;&nbsp;{label}',
+                                '<input type="checkbox" id="qualityCheck" checked/>&nbsp;&nbsp;&nbsp;&nbsp;{label}',
 //                            '<tpl else>',
-                                '<input type="checkbox" id="qualityCheck" checked disabled/>&nbsp;&nbsp;&nbsp;&nbsp;{label}',
+//                                '<input type="checkbox" id="qualityCheck" checked disabled/>&nbsp;&nbsp;&nbsp;&nbsp;{label}',
 //                            '</tpl>',
                         '<tpl else>',
                             '<input type="checkbox" id="qualityCheck"/>&nbsp;&nbsp;&nbsp;&nbsp;{label}',
@@ -141,8 +141,8 @@ Ext.define('Savanna.itemView.view.itemQualities.QualitiesPicker', {
     afterRender: function () {
         this.callParent(arguments);
         this.store = Ext.create(this.store, {
-            urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/mockModelSearch/keyword/qualities',
-            paramsObj: {excludeUri:'', pageStart:0, pageLimit:10, keyword: ''}
+            urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/model/fakeuri/qualities',
+            paramsObj: {excludeUri:'asdf', pageStart:0, pageLimit:10, pageSize: 20, alphabetical: true, q:""}
         });
 
         this.store.load({

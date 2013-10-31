@@ -14,7 +14,7 @@ Ext.define('Savanna.process.view.ProcessEditorComponent', {
         'Savanna.process.view.part.PaletteWindow',
         'Savanna.process.view.part.Toolbar',
         'Savanna.process.view.part.Canvas',
-        'Savanna.process.view.part.MetadataTabPanel',
+        'Savanna.process.view.metadata.MetadataTabPanel',
         'Savanna.process.controller.ProcessController'
     ],
 
@@ -47,7 +47,8 @@ Ext.define('Savanna.process.view.ProcessEditorComponent', {
                 },
                 tbar: [
                     {
-                        xtype: 'process_toolbar'
+                        xtype: 'process_toolbar',
+                        height: 33
                     }
                 ],
                 items:[
