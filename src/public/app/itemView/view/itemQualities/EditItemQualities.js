@@ -32,7 +32,7 @@ Ext.define('Savanna.itemView.view.itemQualities.EditItemQualities', {
             width: '35%',
             store: Ext.create('Savanna.itemView.store.AutoCompleteStore', {
                 urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/model/fakeuri/qualities',
-                paramsObj: {excludeUri:'asdf', pageStart:0, pageLimit:10, pageSize: 20, alphabetical: true}
+                paramsObj: {pageStart:0, pageSize: 20, alphabetical: true}
             })
         },
         {
