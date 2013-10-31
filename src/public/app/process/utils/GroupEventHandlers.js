@@ -43,10 +43,12 @@ Ext.define('Savanna.process.utils.GroupEventHandlers', {
         diagram.startTransaction('onMouseDrop');
         var nodeData = {'category': category, 'text': label};
         nodeData.uri = Savanna.process.utils.ProcessUtils.getURI(nodeData.category);
+        Savanna.process.utils.ProcessUtils.setRepresentsUri(nodeData, data.records[0].uri);
 
         diagram.model.addNodeData(nodeData);
 
         var linkData = {  category: linkType, from: stepGroup.data.uri, to: nodeData.uri };
+        linkData.uri = Savanna.process.utils.ProcessUtils.getURI(linkData.category);
         diagram.model.addLinkData(linkData);
         diagram.commitTransaction('onMouseDrop');
         Savanna.process.utils.ProcessUtils.startTextEdit(diagram, nodeData);
@@ -104,6 +106,7 @@ Ext.define('Savanna.process.utils.GroupEventHandlers', {
             while (iter.next()) {
                 var node = iter.value;
                 var newLink = { category: linkType, from: actionsGroup.data.uri, to: node.data.uri };
+                newLink.uri = Savanna.process.utils.ProcessUtils.getURI(newLink.category);
                 diagram.model.addLinkData(newLink);
             }
 
@@ -136,6 +139,7 @@ Ext.define('Savanna.process.utils.GroupEventHandlers', {
         while (iter.next()) {
             var node = iter.value;
             var newLink = { category: linkType, from: stepGroup.data.uri, to: node.data.uri };
+            newLink.uri = Savanna.process.utils.ProcessUtils.getURI(newLink.category);
             diagram.model.addLinkData(newLink);
         }
 
