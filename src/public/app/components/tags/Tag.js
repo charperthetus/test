@@ -15,7 +15,6 @@ Ext.define('Savanna.components.tags.Tag', {
     style:{
         position:'relative'
     },
-    
     bubbleEvents: [
         'Tag:RemoveSearchTerm',
         'Tag:TagClicked'

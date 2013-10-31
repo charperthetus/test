@@ -10,18 +10,9 @@ Ext.define('Savanna.metadata.view.Classification', {
     extend: 'Savanna.metadata.view.MetadataItemView',
     alias: 'widget.metadata_classification',
 
-    items: [
-    ],
+    requires: ['Savanna.classification.view.ClassificationWindow'],
+
     layout: 'vbox',
-
-    config: {
-        classificationObject: null
-    },
-
-    applyValue: function(value) {
-        // TODO: We'll probably make a service call to load the classification object from here.
-        return value;
-    },
 
     initComponent: function () {
         this.callParent(arguments);
@@ -35,6 +26,15 @@ Ext.define('Savanna.metadata.view.Classification', {
                 me.down('#displayValue').html = (null === me.getValue()) ? '&nbsp;' : me.getValue();
             }
         }, this));
+    },
+
+    makeItems: function () {
+        this.removeAll();
+        if(this.getEditMode()) {
+            this.makeEditViewItems();
+        } else {
+            this.makeViewViewItems();
+        }
     },
 
     makeEditViewItems: function() {
@@ -56,10 +56,16 @@ Ext.define('Savanna.metadata.view.Classification', {
             padding: '0 0 0 180',
             listeners: {
                 click: function () {
-                    // TODO: pop up the classification edit dialog.
+                    var classificationWindow = Ext.create('Savanna.classification.view.ClassificationWindow', {
+                        portionMarking: this.getValue(),
+                        modal: true
+                    });
+                    classificationWindow.show();
+                    classificationWindow.center();
 
-                    console.log('Edit Classification');
-                }
+                    EventHub.on('classificationedited', this.onClassificationChanged, this);
+                },
+                scope: this
             }
         }));
 
@@ -81,6 +87,17 @@ Ext.define('Savanna.metadata.view.Classification', {
             width: '100%'
 
         }));
+    },
+
+    onClassificationChanged: function(event) {
+        EventHub.un('classificationedited', this.onClassificationChanged);
+        if(event) {
+            this.setValue(event.portionMarking);
+
+            if(this.down('#displayValue')) {
+                this.down('#displayValue').setText(this.getValue() ? this.getValue() : '&nbsp;');
+            }
+        }
     }
 
 

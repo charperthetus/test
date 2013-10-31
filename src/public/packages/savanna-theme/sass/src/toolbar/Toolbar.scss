@@ -3,6 +3,7 @@
 *
 * @author lpelofske
 * @edit  eirby 10/22/13
+* @edit  lsanz 10/29/13 - adding default toolbar styles - needs to be moved into uikit at some point.
 */
 
 /*
@@ -56,13 +57,28 @@
   $background-color: $item-view-header-toolbar-background-color
 );
 
+
 @include extjs-toolbar-ui(
-    $ui: 'light-toolbar',
-    $background-color: $toolbar-lightToolbar-background-color
+  $ui: 'thetus-toolbar',
+  $background-color: $item-view-header-toolbar-background-color,
+  $border-width: 0px,
+  $border-color: none
+);
+
+.#{$prefix}toolbar-thetus-toolbar {
+  border-bottom: solid 1px #999999;
+  border-top: solid 1px #999999;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+@include extjs-toolbar-ui(
+  $ui: 'light-toolbar',
+  $background-color: $toolbar-lightToolbar-background-color
 );
 @include extjs-toolbar-ui(
-    $ui: 'dark-toolbar',
-    $background-color: $toolbar-darkToolbar-background-color
+  $ui: 'dark-toolbar',
+  $background-color: $toolbar-darkToolbar-background-color
 );
 
 /*
@@ -89,5 +105,4 @@
   text-transform: uppercase;
   padding-left: 15px
 }
-
 

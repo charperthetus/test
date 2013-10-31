@@ -251,7 +251,7 @@ $uikit-background-color-disabled: $new-savanna-tab-button-background-color-disab
 
 /*
 * Logic  
-*/ 
+*/
 
 
 .logoButtonFramework {
@@ -262,7 +262,7 @@ $uikit-background-color-disabled: $new-savanna-tab-button-background-color-disab
     height: 38px;
     top:0;
 
-    &:hover, &:active, &:focus, 
+    &:hover, &:active, &:focus,
     .logoButtonFramework.#{$prefix}btn-brand-header-toolbar-large-focus {
         @include opacity(0.85);
     }
@@ -270,101 +270,144 @@ $uikit-background-color-disabled: $new-savanna-tab-button-background-color-disab
 @mixin thetus-header-icon-button{
   padding: 0;
   .#{$prefix}btn-glyph{
-    color:#777777;
+    color:#888888;
     font-size:20px;
     line-height:27px;
     text-align:center;
     width: 100%;
-    text-shadow:0 1px #808080;
-    &:hover, &:active, &:focus{
-      color:#808080;
-    }
+    text-shadow:0 1px rgba(0,0,0,0.4);
   }
 
 }
+
+@mixin thetus-toolbar-icon-button{
+    padding: 0;
+    .#{$prefix}btn-glyph{
+        color:#454545;
+        opacity:1;
+        font-size:20px;
+        margin:2px 2px 2px 2px;
+        padding: 0 0 0 0;
+        text-align:center;
+        &:hover, &:active, &:focus{
+            color:#808080;
+        }
+    }
+}
+
 .searchButtonFramework,
 .uploadButtonFramework,
-.errorButtonFramework, 
-.helpButtonFramework, 
+.modelSearchButtonFramework,
+.errorButtonFramework,
+.helpButtonFramework,
 .userButtonFramework {
     display:inline-block;
     @include thetus-header-icon-button;
     &:hover, &:active, &:focus{
-      background-color: rgba(36, 36, 36, 0.35);
+      border:1px solid #777777;
+      -webkit-border-radius: 1px;
+      -moz-border-radius: 1px;
+      border-radius: 1px;
     }
 }
+
+.toolbarButtonFramework {
+    @include thetus-toolbar-icon-button;
+    display:inline-block;
+    height: 26px;
+    width: 26px;
+    border: 1px solid #F2F2F2;
+    vertical-align: middle;
+    margin:3px 3px 3px 3px;
+    &:hover, &:active, &:focus{
+        border: 1px solid #333333;
+    }
+    &:select{
+        background-color: rgba(36, 36, 36, 0.35);
+    }
+}
+.toolbarDividerFramework {
+    height: 20px;
+    width: 0.5px;
+    background-color: #454545;
+}
+
+
+
+
+
 
 .errorButtonFramework,
 .helpButtonFramework,
 .userButtonFramework {
-  .#{$prefix}btn-glyph{
-    font-size:16px;
-  }
+    .#{$prefix}btn-glyph{
+        font-size:16px;
+    }
 }
 
 .userButtonFramework{
-  .#{$prefix}btn-arrow {
-    background-image: none;
-    padding-left: 5px;
-    padding-right: 0px;
-    &:before{
-      content:"arrowDDdown";
-      right: 0;
-      top: 11px;
-      font-size: 16px;
-      position: absolute;
-      color:#808080;
+    .#{$prefix}btn-arrow {
+        background-image: none;
+        padding-left: 5px;
+        padding-right: 0px;
+        &:before{
+            content:"arrowDDdown";
+            right: 0;
+            top: 11px;
+            font-size: 16px;
+            position: absolute;
+            color:#808080;
+        }
+        text-shadow:0 1px #999999;
+        &:hover, &:active, &:focus{
+            color:#999999;
+            text-shadow:0 1px #808080;
+        }
     }
-    text-shadow:0 1px #999999;
-    &:hover, &:active, &:focus{
-      colore:#999999;
-      text-shadow:0 1px #808080;
+    .#{$prefix}btn-glyph{
+        text-align: left;
     }
-  }
-  .#{$prefix}btn-glyph{
-    text-align: left;
-  }
 }
 
 .#{$prefix}tab-icon-el{
-  @include thetus-icons;
+    @include thetus-icons;
 }
 
 
-.singleViewButtonFramework, 
-.singleViewButtonFramework:hover, 
-.singleViewButtonFramework:active, 
+.singleViewButtonFramework,
+.singleViewButtonFramework:hover,
+.singleViewButtonFramework:active,
 .singleViewButtonFramework.#{$prefix}btn-workspace-header-toolbar-small-focus,
 .singleViewButtonFramework.#{$prefix}btn-workspace-header-toolbar-small-active,
 .singleViewButtonFramework.#{$prefix}btn-workspace-header-toolbar-small-pressed {
     width: 22px;
     height: 22px;
-  .#{$prefix}btn-button{
-    height:20px;
-  }
-  .#{$prefix}btn-glyph{
-    text-align: center;
-    width:20px;
-    line-height: 20px;
-  }
+    .#{$prefix}btn-button{
+        height:20px;
+    }
+    .#{$prefix}btn-glyph{
+        text-align: center;
+        width:20px;
+        line-height: 20px;
+    }
 }
 
-.splitViewButtonFramework, 
-.splitViewButtonFramework:hover, 
-.splitViewButtonFramework:active, 
+.splitViewButtonFramework,
+.splitViewButtonFramework:hover,
+.splitViewButtonFramework:active,
 .splitViewButtonFramework.#{$prefix}btn-workspace-header-toolbar-small-focus,
 .splitViewButtonFramework.#{$prefix}btn-workspace-header-toolbar-small-active,
 .splitViewButtonFramework.#{$prefix}btn-workspace-header-toolbar-small-pressed {
     width: 22px;
     height: 22px;
-  .#{$prefix}btn-button{
-    height:20px;
-  }
-  .#{$prefix}btn-glyph{
-    text-align: center;
-    width:20px;
-    line-height: 20px;
-  }
+    .#{$prefix}btn-button{
+        height:20px;
+    }
+    .#{$prefix}btn-glyph{
+        text-align: center;
+        width:20px;
+        line-height: 20px;
+    }
 }
 
 .#{$prefix}icon{
@@ -402,6 +445,23 @@ $uikit-background-color-disabled: $new-savanna-tab-button-background-color-disab
     color:$tab-dark-color;
     &:hover{
       opacity:0.5;
+    }
+  }
+}
+
+.image-browser-control{
+  .#{$prefix}btn-glyph{
+    line-height:98px;
+  }
+}
+#removeSelectedValue, #removeSelectedQuality{
+  @include thetus-icons;
+ &:before{
+   content:'closeRollout';
+ }
+  &:hover{
+    &:before{
+      content:'closeRollover';
     }
   }
 }
