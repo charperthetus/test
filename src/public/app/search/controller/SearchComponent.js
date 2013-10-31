@@ -30,16 +30,14 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         var me = this;
         this.control({
             'search_searchcomponent': {
-                render: this.onSearchRender
+                render: this.onSearchRender,
+                afterrender: this.afterRender
             },
             'search_searchcomponent #toolbarsearchbutton': {
                 click: this.handleSearchSubmit
             },
             'search_searchcomponent #search_reset_button': {
                 click: this.handleNewSearch
-            },
-            'search_searchcomponent #toolbarsearchbutton': {
-                click: this.doSearch
             },
             'search_searchcomponent #searchadvanced_btn': {
                 click: this.showHideMenu
@@ -67,10 +65,10 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                     menu.queryById('advancedsearch_submit').on('click', me.handleSearchSubmit, me);
                 }
             },
-            'search_searchcomponent #optionsbutton': {
+            'search_searchcomponent #searchDalsButton': {
                 click: this.onBodyToolbarClick
             },
-            'search_searchcomponent #resultsbutton': {
+            'search_searchcomponent #searchMapButton': {
                 click: this.onBodyToolbarClick
             },
             'search_searchcomponent #searchMapCanvas': {
@@ -135,6 +133,11 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         search.down('#search_reset_button').setVisible(false);
     },
 
+    afterRender: function (search) {
+        search.down('search_searchbody').setActiveTab('searchresults');
+        search.down('search_searchbody').setActiveTab('mainsearchoptions');
+    },
+
     handleNewSearch: function (elem) {
         var component = this.getSearchComponent(elem);
 
@@ -191,12 +194,9 @@ Ext.define('Savanna.search.controller.SearchComponent', {
          return to the options screen if we're not already there
          */
 
-        if (component.down('#searchbody').currentPanel !== 'searchoptions') {
-            var optionsBtn = component.queryById('optionsbutton');
-            optionsBtn.fireEvent('click', optionsBtn);
+        if (component.down('#searchbody').activeTab !== 'mainsearchoptions') {
+            component.down('search_searchbody').setActiveTab('mainsearchoptions');
         }
-
-        component.down('#searchbodybbar').setVisible(true);
 
         /*
          clear the grid - it's misleading in error states to see results in the grid, even though
@@ -259,24 +259,16 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
     onBodyToolbarClick: function (button) {
         var component = button.findParentByType('search_searchcomponent'),
-            body = component.queryById('searchbody'),
-            options = body.queryById('mainsearchoptions'),
-            results = body.queryById('searchresults'),
-            options_button = component.queryById('optionsbutton'),
-            results_button = component.queryById('resultsbutton');
+            mainsearch = component.queryById('mainsearchoptions'),
+            searchDals_button = mainsearch.queryById('searchDalsButton'),
+            searchMap_button = mainsearch.queryById('searchMapButton');
 
-        if (body.currentPanel !== 'searchoptions' && button === options_button) {
-            options.show();
-            results.hide();
-            body.currentPanel = 'searchoptions';
-            component.down('#searchbodybbar').setVisible(true);
+        if (mainsearch.activeItem !== 'searchdals' && button === searchDals_button){
+            mainsearch.getLayout().setActiveItem('searchdals');
         }
 
-        if (body.currentPanel !== 'results' && button === results_button) {
-            options.hide();
-            results.show();
-            body.currentPanel = 'results';
-            component.down('#searchbodybbar').setVisible(false);
+        if (mainsearch.activeItem !== 'searchMap' && button === searchMap_button){
+            mainsearch.getLayout().setActiveItem('searchMap');
         }
     },
 
@@ -402,7 +394,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
         var component = this.getSearchComponent(elem),
             sources = this.getSelectedDals(component);
-
+            
         this.hideMenu(component);
 
         var searchString = component.queryById('searchbar').buildSearchString(),
@@ -559,9 +551,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
     },
 
     showResultsPage: function (component) {
-        component.down('#searchbodybbar').setVisible(false);
-        var resultsBtn = component.down('#resultsbutton');
-        resultsBtn.fireEvent('click', resultsBtn);
+        component.down('#searchbody').setActiveTab('searchresults');
     },
 
     loadDefaultLayer: function (canvas) {
@@ -601,7 +591,10 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         // Scope: drawFeature
         this.controls.drawFeature.deactivate();
         this.controls.modifyFeature.activate();
-        this.fireEvent('searchPolygonAdded', this);
+        var resultMap = this.up('search_searchbody').down('#resultMapCanvas');
+        if (resultMap.searchLayer) {
+            this.fireEvent('searchPolygonAdded', this);
+        }
     },
 
     onFeatureRemoved: function (event) {

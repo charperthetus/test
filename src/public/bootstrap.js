@@ -81,6 +81,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "Ext.ux.ajax.SimXhr": [],
   "Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent.ResultsDals": [],
   "Savanna.process.model.Template": [],
+  "Savanna.itemView.controller.ParentItemsAutoCompleteController": [],
   "Savanna.search.view.SearchComponent": [],
   "Ext.ux.CellDragDrop": [],
   "Savanna.upload.controller.UploadController": [],
@@ -278,6 +279,7 @@ Ext.ClassManager.addNameAlternateMappings({
     "Ext.ux.Multiselect"
   ],
   "Savanna.crumbnet.store.Graph": [],
+  "Savanna.itemView.view.createItem.ParentItemsAutoComplete": [],
   "Savanna.itemView.model.AutoCompleteModel": [],
   "ThetusUikit.menu.Item": [],
   "Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacets": [],
@@ -326,6 +328,10 @@ Ext.ClassManager.addNameAlternateMappings({
   "Deft.mvc.Application": [
     "Deft.Application"
   ],
+<<<<<<< HEAD
+=======
+  "Savanna.itemView.view.relatedItems.RelationshipPicker": [],
+>>>>>>> SAV-5444: Fully functioning, no errors
   "Savanna.process.view.part.Canvas": [],
   "Savanna.component.DatePicker": [],
   "ThetusUikit.button.Button": [],
@@ -340,7 +346,6 @@ Ext.ClassManager.addNameAlternateMappings({
   "Deft.ioc.Injector": [
     "Deft.Injector"
   ],
-  "Savanna.itemView.controller.ParentTreeController": [],
   "Ext.ux.grid.filter.Filter": [],
   "Savanna.crumbnet.controller.CrumbnetController": [],
   "Savanna.itemView.view.createItem.ParentDetails": [],
@@ -393,7 +398,10 @@ Ext.ClassManager.addNameAlternateMappings({
   "Ext.ux.RowExpander": [],
   "Savanna.view.Viewport": [],
   "Savanna.itemView.view.relatedItems.EditRelatedItems": [],
+<<<<<<< HEAD
   "Savanna.itemView.view.header.AddIntendedUses": [],
+=======
+>>>>>>> SAV-5444: Fully functioning, no errors
   "Savanna.desktop.view.UploadWindow": [],
   "Savanna.itemView.view.relatedItems.AddRelationships": [],
   "Ext.ux.event.Maker": [],
@@ -521,6 +529,7 @@ Ext.ClassManager.addNameAliasMappings({
     "widget.model_search_resultsdals"
   ],
   "Savanna.process.model.Template": [],
+  "Savanna.itemView.controller.ParentItemsAutoCompleteController": [],
   "Savanna.search.view.SearchComponent": [
     "widget.search_searchcomponent"
   ],
@@ -868,6 +877,9 @@ Ext.ClassManager.addNameAliasMappings({
     "widget.multiselectfield"
   ],
   "Savanna.crumbnet.store.Graph": [],
+  "Savanna.itemView.view.createItem.ParentItemsAutoComplete": [
+    "widget.parentitems_auto_complete"
+  ],
   "Savanna.itemView.model.AutoCompleteModel": [],
   "ThetusUikit.menu.Item": [],
   "Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacets": [
@@ -952,6 +964,12 @@ Ext.ClassManager.addNameAliasMappings({
     "widget.model_search_resultsDals_resultsterm"
   ],
   "Deft.mvc.Application": [],
+<<<<<<< HEAD
+=======
+  "Savanna.itemView.view.relatedItems.RelationshipPicker": [
+    "widget.itemview_relationship_picker"
+  ],
+>>>>>>> SAV-5444: Fully functioning, no errors
   "Savanna.process.view.part.Canvas": [
     "widget.process_canvas"
   ],
@@ -968,7 +986,6 @@ Ext.ClassManager.addNameAliasMappings({
   "Savanna.search.store.SearchResults": [],
   "Ext.ux.BoxReorderer": [],
   "Deft.ioc.Injector": [],
-  "Savanna.itemView.controller.ParentTreeController": [],
   "Ext.ux.grid.filter.Filter": [],
   "Savanna.crumbnet.controller.CrumbnetController": [],
   "Savanna.itemView.view.createItem.ParentDetails": [
@@ -1068,6 +1085,7 @@ Ext.ClassManager.addNameAliasMappings({
   "Savanna.itemView.view.relatedItems.EditRelatedItems": [
     "widget.itemview_edit_related_items"
   ],
+<<<<<<< HEAD
   "Savanna.itemView.view.header.AddIntendedUses": [
     "widget.itemview_intendeduses_add_picker"
   ],
@@ -1077,6 +1095,11 @@ Ext.ClassManager.addNameAliasMappings({
   "Savanna.itemView.view.relatedItems.AddRelationships": [
     "widget.itemview_relationship_type_picker"
   ],
+=======
+  "Savanna.desktop.view.UploadWindow": [
+    "widget.desktop_uploadwindow"
+  ],
+>>>>>>> SAV-5444: Fully functioning, no errors
   "Ext.ux.event.Maker": [],
   "Savanna.itemView.controller.QualitiesPickerController": [],
   "Savanna.modelSearch.model.SearchRequest": [],
