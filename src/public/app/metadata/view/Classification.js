@@ -57,7 +57,8 @@ Ext.define('Savanna.metadata.view.Classification', {
             listeners: {
                 click: function () {
                     var classificationWindow = Ext.create('Savanna.classification.view.ClassificationWindow', {
-                        portionMarking: this.getValue()
+                        portionMarking: this.getValue(),
+                        modal: true
                     });
                     classificationWindow.show();
                     classificationWindow.center();
