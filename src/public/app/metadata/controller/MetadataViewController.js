@@ -72,8 +72,10 @@ Ext.define('Savanna.metadata.controller.MetadataViewController', {
             Ext.Array.each(theStore.data.items, function(storeData) {
                 if(storeData.get('key') == key) {
                     if(storeData.get('value') !== metadata.value || ( Ext.isArray(metadata.value) && !Ext.Array.equals(metadata.value, storeData.get('value'))  )) {
+                        // classification must be handled separately
+                        // the sync request will fail if the classification metadata is changed
                         if(key === 'classification') {
-                            me.saveClassification(metadata.getValue());
+                            me.saveClassification();
                         } else {
                             storeData.set('value', metadata.value);
                             stuffChanged = true;
@@ -227,6 +229,7 @@ Ext.define('Savanna.metadata.controller.MetadataViewController', {
     },
 
     onClassificationSaved: function() {
+        // the classification banner controller is listening for this event to be fired
         EventHub.fireEvent('classificationchanged', this.getView().getItemURI());
         this.loadStore();
     },
