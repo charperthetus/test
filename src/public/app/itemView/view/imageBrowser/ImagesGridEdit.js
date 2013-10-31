@@ -43,7 +43,8 @@ Ext.define('Savanna.itemView.view.imageBrowser.ImagesGridEdit', {
             xtype: 'button',
             itemId: 'navLeft',
             height: 100,
-            glyph: 'arrowNavLeft'
+            glyph: 'arrowNavLeft',
+            cls:'image-browser-control'
         }, {
             
             // Thumbnails get put here
@@ -55,6 +56,7 @@ Ext.define('Savanna.itemView.view.imageBrowser.ImagesGridEdit', {
         }, {
             xtype: 'button',
             glyph: 'arrowNavRight',
+            cls:'image-browser-control',
             itemId: 'navRight',
             height: 100
         }]

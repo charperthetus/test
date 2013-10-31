@@ -52,7 +52,10 @@ Ext.define('Savanna.controller.Main', {
                 Savanna.jsessionid = sessionId;
                 mainViewport.remove('login');
 
-                var main = Ext.create('Savanna.desktop.view.SavannaDesktop', { itemId: 'main' });
+                var main = Ext.create('Savanna.desktop.view.SavannaDesktop', {
+                    systemHigh: true,
+                    itemId: 'main'
+                });
 
                 mainViewport.add(main);
 
