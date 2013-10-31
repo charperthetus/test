@@ -47,7 +47,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
                 itemId: 'gridtoolbar',
                 dock: 'top',
                 displayInfo: true
-            },
+            }, '->',
             {
                 hidden: true,
                 xtype: 'button',    //thumb
