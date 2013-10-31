@@ -127,7 +127,7 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
             selectionStore: this.getView().store.getById(storeName).valuesStore,
             valNameArray: valNameArray,
             uri: encodeURI(this.getView().store.getById(storeName).data.predicateUri),
-            storeHelper: this.storeHelper
+            storeHelper: this.getView().storeHelper
         });
 
         vChooser.on('close', this.closedVPicker, this, storeName);
