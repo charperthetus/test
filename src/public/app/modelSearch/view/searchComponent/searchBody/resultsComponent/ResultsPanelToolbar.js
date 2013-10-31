@@ -18,13 +18,6 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
 
     setupItems:function()   {
 
-        var sortStore = Ext.create('Ext.data.Store', {
-            fields: ['sortby', 'name'],
-            data: [
-                {'sortby': 'relevance', 'name': 'Sort by Relevance'}
-            ]
-        });
-
         var countStore = Ext.create('Ext.data.Store', {
             fields: ['count', 'name'],
             data: [
@@ -54,8 +47,9 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
                 itemId: 'gridtoolbar',
                 dock: 'top',
                 displayInfo: true
-            } ,
+            },
             {
+                hidden: true,
                 xtype: 'button',    //thumb
                 enableToggle: true,
                 pressed: true,
@@ -64,6 +58,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
                 itemId: 'singleColumnGridView'
             },
             {
+                hidden: true,
                 xtype: 'button',    //grid
                 enableToggle: true,
                 ui: 'basic',
