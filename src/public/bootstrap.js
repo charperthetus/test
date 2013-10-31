@@ -30,8 +30,8 @@ Ext.ClassManager.addNameAlternateMappings({
   "ThetusUikit.tip.QuickTip": [],
   "Savanna.modelSearch.view.searchComponent.searchBody.searchDals.SearchOptions": [],
   "Savanna.metadata.view.Classification": [],
+  "Savanna.itemView.view.imageBrowser.ImagesGridEdit": [],
   "Savanna.components.autoComplete.AutoCompleteController": [],
-  "Savanna.itemView.controller.AddRelationships": [],
   "Savanna.desktop.view.SavannaWorkspace": [],
   "Savanna.flexpaper.view.FlexpaperEntityWindow": [],
   "Deft.event.LiveEventBus": [
@@ -156,6 +156,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "Savanna.desktop.view.SavannaDesktop": [],
   "Savanna.metadata.view.BooleanList": [],
   "Ext.ux.dd.PanelFieldDragZone": [],
+  "Savanna.itemView.controller.RelationshipPickerController": [],
   "Savanna.search.controller.resultsComponent.resultsDals.ResultsRefineTermsController": [],
   "Savanna.search.model.dalSource.CustomSearchGroup": [
     "DalCustomSearchGroup"
@@ -328,10 +329,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "Deft.mvc.Application": [
     "Deft.Application"
   ],
-<<<<<<< HEAD
-=======
   "Savanna.itemView.view.relatedItems.RelationshipPicker": [],
->>>>>>> SAV-5444: Fully functioning, no errors
   "Savanna.process.view.part.Canvas": [],
   "Savanna.component.DatePicker": [],
   "ThetusUikit.button.Button": [],
@@ -356,15 +354,13 @@ Ext.ClassManager.addNameAlternateMappings({
   "Deft.core.Class": [
     "Deft.Class"
   ],
-  "Savanna.itemView.store.Relationships": [],
-  "Savanna.itemView.view.header.DisplayLabel": [],
   "Savanna.crumbnet.store.Templates": [],
-  "Savanna.itemView.store.IntendedUses": [],
   "Savanna.itemView.view.createItem.ParentItems": [],
   "Savanna.metadata.view.Double": [],
   "Savanna.itemView.controller.EditQualitiesController": [],
   "ThetusUikit.ux.form.SearchField": [],
   "Savanna.modelSearch.controller.resultsComponent.resultsDals.ResultsRefineSearchbarController": [],
+  "Savanna.itemView.view.imageBrowser.ImageUpload": [],
   "Savanna.process.model.TemplateGroup": [],
   "Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent.ResultsPreviewContent": [],
   "Savanna.process.layout.StepLayout": [],
@@ -372,6 +368,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "Savanna.search.controller.resultsComponent.resultsDals.ResultsRefineSearchbarController": [],
   "Ext.ux.DataView.LabelEditor": [],
   "Savanna.search.view.searchComponent.SearchToolbar": [],
+  "Savanna.itemView.controller.EditImageBrowserController": [],
   "Ext.ux.grid.filter.StringFilter": [],
   "Savanna.process.view.part.Palette": [],
   "Savanna.metadata.model.Metadata": [],
@@ -398,12 +395,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "Ext.ux.RowExpander": [],
   "Savanna.view.Viewport": [],
   "Savanna.itemView.view.relatedItems.EditRelatedItems": [],
-<<<<<<< HEAD
-  "Savanna.itemView.view.header.AddIntendedUses": [],
-=======
->>>>>>> SAV-5444: Fully functioning, no errors
   "Savanna.desktop.view.UploadWindow": [],
-  "Savanna.itemView.view.relatedItems.AddRelationships": [],
   "Ext.ux.event.Maker": [],
   "Savanna.itemView.controller.QualitiesPickerController": [],
   "Savanna.modelSearch.model.SearchRequest": [],
@@ -448,8 +440,10 @@ Ext.ClassManager.addNameAliasMappings({
   "Savanna.metadata.view.Classification": [
     "widget.metadata_classification"
   ],
+  "Savanna.itemView.view.imageBrowser.ImagesGridEdit": [
+    "widget.itemview_imagesgrid_edit"
+  ],
   "Savanna.components.autoComplete.AutoCompleteController": [],
-  "Savanna.itemView.controller.AddRelationships": [],
   "Savanna.desktop.view.SavannaWorkspace": [
     "widget.desktop_savannaworkspace"
   ],
@@ -666,6 +660,7 @@ Ext.ClassManager.addNameAliasMappings({
     "widget.metadata_booleanlist"
   ],
   "Ext.ux.dd.PanelFieldDragZone": [],
+  "Savanna.itemView.controller.RelationshipPickerController": [],
   "Savanna.search.controller.resultsComponent.resultsDals.ResultsRefineTermsController": [],
   "Savanna.search.model.dalSource.CustomSearchGroup": [],
   "Savanna.modelSearch.store.ResultsMetadata": [],
@@ -964,12 +959,9 @@ Ext.ClassManager.addNameAliasMappings({
     "widget.model_search_resultsDals_resultsterm"
   ],
   "Deft.mvc.Application": [],
-<<<<<<< HEAD
-=======
   "Savanna.itemView.view.relatedItems.RelationshipPicker": [
     "widget.itemview_relationship_picker"
   ],
->>>>>>> SAV-5444: Fully functioning, no errors
   "Savanna.process.view.part.Canvas": [
     "widget.process_canvas"
   ],
@@ -1003,12 +995,7 @@ Ext.ClassManager.addNameAliasMappings({
     "widget.itemview_imagesgrid"
   ],
   "Deft.core.Class": [],
-  "Savanna.itemView.store.Relationships": [],
-  "Savanna.itemView.view.header.DisplayLabel": [
-    "widget.itemview_displaylabel"
-  ],
   "Savanna.crumbnet.store.Templates": [],
-  "Savanna.itemView.store.IntendedUses": [],
   "Savanna.itemView.view.createItem.ParentItems": [
     "widget.itemview_parenttree"
   ],
@@ -1020,6 +1007,9 @@ Ext.ClassManager.addNameAliasMappings({
     "widget.thetus-searchfield"
   ],
   "Savanna.modelSearch.controller.resultsComponent.resultsDals.ResultsRefineSearchbarController": [],
+  "Savanna.itemView.view.imageBrowser.ImageUpload": [
+    "widget.itemview_image_upload"
+  ],
   "Savanna.process.model.TemplateGroup": [],
   "Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent.ResultsPreviewContent": [
     "widget.model_search_resultspreviewcontent"
@@ -1033,6 +1023,7 @@ Ext.ClassManager.addNameAliasMappings({
   "Savanna.search.view.searchComponent.SearchToolbar": [
     "widget.search_searchtoolbar"
   ],
+  "Savanna.itemView.controller.EditImageBrowserController": [],
   "Ext.ux.grid.filter.StringFilter": [
     "gridfilter.string"
   ],
@@ -1085,21 +1076,9 @@ Ext.ClassManager.addNameAliasMappings({
   "Savanna.itemView.view.relatedItems.EditRelatedItems": [
     "widget.itemview_edit_related_items"
   ],
-<<<<<<< HEAD
-  "Savanna.itemView.view.header.AddIntendedUses": [
-    "widget.itemview_intendeduses_add_picker"
-  ],
   "Savanna.desktop.view.UploadWindow": [
     "widget.desktop_uploadwindow"
   ],
-  "Savanna.itemView.view.relatedItems.AddRelationships": [
-    "widget.itemview_relationship_type_picker"
-  ],
-=======
-  "Savanna.desktop.view.UploadWindow": [
-    "widget.desktop_uploadwindow"
-  ],
->>>>>>> SAV-5444: Fully functioning, no errors
   "Ext.ux.event.Maker": [],
   "Savanna.itemView.controller.QualitiesPickerController": [],
   "Savanna.modelSearch.model.SearchRequest": [],
