@@ -82,7 +82,7 @@ Ext.define('Savanna.itemView.view.itemQualities.ValuesPicker', {
                 {
                     xtype: 'templatecolumn',
                     dataIndex: 'label',
-                    tpl: '<input type="button" value="x" id="removeSelectedValue">'
+                    tpl: '<i type="button" value="x" id="removeSelectedValue"></i>'
                 }
             ]
         }

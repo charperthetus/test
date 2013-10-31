@@ -411,3 +411,14 @@ $uikit-background-color-disabled: $new-savanna-tab-button-background-color-disab
     line-height:98px;
   }
 }
+#removeSelectedValue, #removeSelectedQuality{
+  @include thetus-icons;
+ &:before{
+   content:'closeRollout';
+ }
+  &:hover{
+    &:before{
+      content:'closeRollover';
+    }
+  }
+}

@@ -25,8 +25,8 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
     ],
 
     layout: 'card',
-    margin:'auto',
-    maxWidth:720,
+    maxWidth:1024,
+
     controller: 'Savanna.itemView.controller.ItemViewController',
 
     config: {
