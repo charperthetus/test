@@ -37,9 +37,11 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         deleteItemButton: {
             click: 'onEditDelete'
         },
+        /* commented out for demo
         workflowButton: {
             click: 'onWorkflowSelect'
         },
+        */
         relatedItemsView: {
             'ItemView:OpenItem': 'openItem'
         },
@@ -227,9 +229,9 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
     getItemViewData: function () {
         var tmpStore = Ext.data.StoreManager.lookup(this.store);
-        tmpStore.getProxy().url = this.buildItemDataFetchUrl(tmpStore.getAt(0).data.uri);
+        tmpStore.getProxy().url = this.buildItemDataFetchUrl(this.getView().itemUri);
         if (this.getView().getCreateMode()) {
-            tmpStore.getProxy().setExtraParam("parentUri", tmpStore.getAt(0).data.uri);
+            tmpStore.getProxy().setExtraParam("parentUri", this.getView().itemUri);
         }   else    {
             if(tmpStore.getProxy().extraParams && tmpStore.getProxy().extraParams.parentUri !== null)  {
                 delete tmpStore.getProxy().extraParams.parentUri;
@@ -362,12 +364,15 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         Savanna.app.fireEvent('itemview:createitem', btn);
     },
 
+    /* commented out for demo
+
     onWorkflowSelect: function () {
         Ext.create('Savanna.itemView.view.workflow.WorkflowSelect', {
             width: 500,
             height: 425
         });
     },
+     */
 
     onSearchSelect: function () {
         console.log('search selected');
