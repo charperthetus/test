@@ -12,7 +12,7 @@ SavannaConfig = {
 
     helpUrl: 'http://www.google.com',
 
-    showSystemHighClassification: false,
+    showSystemHighClassification: true,
 
     // Map base layer
     mapBaseLayerUrl: 'http://demo.opengeo.org/geoserver/wms',
