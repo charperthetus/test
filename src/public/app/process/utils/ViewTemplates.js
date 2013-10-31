@@ -34,24 +34,17 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
         return gmake(go.Panel, go.Panel.Auto, this.styler().stepGadget({
             "click": Savanna.process.utils.ProcessUtils.addStep
         }).panel,
-            gmake(go.Shape, this.styler().stepGadget().circle
-
-        ),
-            gmake(go.Shape, this.styler().stepGadget().plusLine)    , {
-            mouseEnter: function(e, obj) {
-                obj.opacity = 0.7;
-                console.log(obj);
-                console.log(obj.memberParts);
-                  var it = obj.memberParts;
-                         while (it.next()) {
-                           var item = it.value;
-                             console.log(item);
-                         }
+            gmake(go.Shape, this.styler().stepGadget().circle, {
+            mouseEnter: function (e, obj) {
+                obj.fill = '#7cc19d';
             },
             mouseLeave: function (e, obj) {
-                obj.opacity = 1.0;
+                obj.fill = '#3d8060';
             }
-        });
+        }
+
+        ),
+            gmake(go.Shape, this.styler().stepGadget().plusLine));
     },
 
     makeDecisionGadget: function () {
@@ -509,7 +502,6 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                     shape.fill = "#454545";
                     shape.stroke = null;
                 }
-
             },
                 gmake(go.Shape, "PlusLine", {
                 desiredSize: new go.Size(7, 7),

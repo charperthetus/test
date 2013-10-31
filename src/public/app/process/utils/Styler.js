@@ -181,7 +181,7 @@ Ext.define('Savanna.process.utils.Styler', {
         var rectangle = {
             "outline": {
                 fill: 'white',
-                stroke: 1,
+                strokeWidth: 1,
                 stroke: 'black',
                 width: 32,
                 height: 32,
