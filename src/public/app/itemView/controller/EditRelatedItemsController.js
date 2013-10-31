@@ -50,12 +50,12 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
                     listeners: {
                         boxready: Ext.bind(this.onDropItemReady, this)
                     },
-                    height: 130,
+                    height:79,
                     width: '100%',
                     margin:'0 10 10 10',
                     cls:'related-item-edit-drop-zone',
                     layout: {
-                        type: 'vbox',
+                        type: 'hbox',
                         align: 'center'
                     },
                     items: [
