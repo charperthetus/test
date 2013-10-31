@@ -16,7 +16,7 @@ Ext.define('Savanna.process.view.part.Palette', {
     model: null,
     palette: null,
 
-    titleAlign: 'center',
+    titleAlign: 'left',
 
     initComponent: function() {
         this.title = this.model.get('title');

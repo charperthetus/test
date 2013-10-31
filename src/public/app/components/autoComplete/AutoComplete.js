@@ -74,7 +74,7 @@ Ext.define('Savanna.components.autoComplete.AutoComplete', {
                         hideTrigger: true,
                         anchor: '100%',
                         flex: 2,
-                        queryParam: 'keyword',
+                        queryParam: 'q',
                         minChars: 1,
                         store: this.store,
                         fieldLabel: this.getPreLabel(),
