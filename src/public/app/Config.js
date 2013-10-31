@@ -24,6 +24,7 @@ Ext.define('Savanna.Config', {
         sc.uploadUrl = rUrl + 'rest/document/upload';
         sc.metadataUrl = rUrl + 'rest/metadata';
         sc.capcoUrl = rUrl + 'rest/capco/';
+        sc.processUrl = rUrl + 'rest/modelProcess'
 
         // TODO: replace this test URL with real endpoint once we have one....
         sc.processTemplatesUrl = 'resources/data/Process.json';

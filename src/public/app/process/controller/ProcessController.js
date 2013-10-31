@@ -83,14 +83,21 @@ Ext.define('Savanna.process.controller.ProcessController', {
 
     constructor: function (options) {
         this.opts = options || {};
-        this.store = Ext.create('Savanna.process.store.Processes');
         this.callParent(arguments);
     },
 
     init: function() {
         //todo: diagram initialization here: setup for checking for a "dirty" process component
-
+        var uri = this.getView().getItemUri();
+        this.store = Ext.create('Savanna.process.store.Processes', {itemUri:uri});
+        if (uri) {
+            this.store.load({callback: this.onStoreLoaded, scope: this});
+        }
         return this.callParent(arguments);
+    },
+
+    onStoreLoaded: function (records) {
+        this.load(this.getCanvas().diagram, records[0]);
     },
 
     toggleExpanded: function(expand) {
@@ -248,7 +255,12 @@ Ext.define('Savanna.process.controller.ProcessController', {
         diagram.addDiagramListener('PartResized', Ext.bind(this.partResized, this));
         diagram.addDiagramListener('TextEdited', Ext.bind(this.textEdited, this));
 
-        this.loadInitialJSON();
+        var uri = this.getView().getItemUri();
+        if (uri) {
+            this.store.load({callback: this.onStoreLoaded, scope: this});
+        } else {
+            this.loadInitialJSON();
+        }
     },
 
     textEdited: function() {
