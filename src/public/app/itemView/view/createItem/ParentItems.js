@@ -24,11 +24,8 @@ Ext.define('Savanna.itemView.view.createItem.ParentItems', {
         'Ext.tree.*',
         'Ext.grid.*',
         'Savanna.itemView.view.createItem.ParentItemsAutoComplete',
-        'Savanna.itemView.controller.ParentTreeController',
         'Savanna.itemView.view.createItem.ParentItemsTreePanel'
     ],
-
-    controller: 'Savanna.itemView.controller.ParentTreeController',
 
     title: 'Item Types',
 
