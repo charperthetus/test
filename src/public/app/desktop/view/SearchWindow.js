@@ -14,9 +14,8 @@ Ext.define('Savanna.desktop.view.SearchWindow', {
     ],
 
     layout: 'fit',
-    maximizable: true,
-    height: 520,
-    width: 680,
+    height: 800,
+    width: 800,
     minWidth: 200,
     minHeight: 100,
     ghost: false,

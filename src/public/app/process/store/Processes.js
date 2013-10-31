@@ -11,21 +11,39 @@ Ext.define('Savanna.process.store.Processes', {
     storeId: 'processStore',
 
     requires: [
-        'Savanna.process.model.Process'
+        'Savanna.process.model.Process',
+        'Savanna.proxy.Cors'
     ],
 
     model: 'Savanna.process.model.Process',
 
     autoSync: false,
 
-    proxy: {
-        type: 'rest',
-            api: {
-                read: SavannaConfig.ureaProcessDataUrl
-//                update: SavannaConfig.savedProcessDataUrl //todo: different endpoint here for updating
-            },
-        reader: {
-            type: 'json'
-        }
+    itemURI: '',
+
+    constructor: function() {
+        this.callParent(arguments);
+
+        this.setProxy({
+            type: 'savanna-cors',
+            url: SavannaConfig.processUrl,
+            modifyRequest: function(request) {
+                if('update' == request.action || 'create' == request.action) {
+                    // Must put, not push.  So sayeth endpoint.
+                    request.method = 'PUT';
+                }
+                return request;
+            }
+
+        });
+    },
+
+    load: function() {
+        // Take this line out to use the Provided URI below.
+        //this.getProxy().url = SavannaConfig.ureaProcessDataUrl;
+        // Put this line back in to use the URI set in the constructor.
+        this.getProxy().url = SavannaConfig.processUrl + '/' + this.itemURI;
+
+        this.callParent(arguments);
     }
 });

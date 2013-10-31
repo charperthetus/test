@@ -36,23 +36,16 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
             text: ' ',
             xtype: 'templatecolumn',
             tpl: new Ext.XTemplate(
-
                 '<div style="position: relative" >',
-                '<div id="hoverDiv" style="visibility: hidden; right: 0;  top: 5px; position: absolute;" ><button class="openButtonClass">Open</button></div>',
-
-                '<!-- column one -->',
-
-                '<div style="float: left; height: 102px; width: 202px;outline: solid 1px #cccccc;" >',
-                '{[this.conditionallyRenderImage(values.primaryImageUrl)]}',
-                '</div>',
-
-                '<!-- column two values.modifiedDate-->',
-                '<div style="margin-left: 216px" >',
-                '<b>{label}</b><br>Modified: {[this.formatDate(values.modifiedDate)]},&nbsp;&nbsp;{modifiedBy}',
-                '<br>Workflow state: {workflowState}&nbsp;&nbsp;Classification: {classification}',
-                '<br>',
-                '<div style="width: 100%;height: 70px;white-space: normal;line-break: normal" >{preview}</div>',
-                '</div>',
+                    '<div class="resultDiv">',
+                        '<div class="sourceDiv">{[this.conditionallyRenderImage(values.primaryImageUrl)]}</div>',
+                        '<div class="grid-cell-title"><strong>{label}</strong></div>',
+                        '<div class="contentDiv">',
+                            'Modified: {[this.formatDate(values.modifiedDate)]},&nbsp;&nbsp;{modifiedBy}<br>',
+                            'Workflow state: {workflowState}&nbsp;&nbsp;Classification: {classification}',
+                        '</div>',
+                    '</div>',
+                    '<div id="hoverDiv" style="visibility: hidden; right: 0;  top: 5px; position: absolute;" ><button id="openButton" class="openButtonClass">Open</button></div>',
                 '</div>',
 
                 {
@@ -63,9 +56,9 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
 
                     conditionallyRenderImage: function (url) {
                         if (url && url.length > 0) {
-                            return '<div  style="background-image: url(\'' + url + '\');width:200px;height:100px;background-position:center;background-size:cover;left: 1;top: 1;" ></div>';
+                            return '<div style="background-image: url(\'' + url + '\');" ></div>';
                         }
-                        return '<div style="width: 100%; height: 100%;text-align:center;line-height: 100px;background-color:  #eeeeee;left: 1px;top: 1px;" >No Image</div>';
+                        return '<div class="no-image">No Image</div>';
                     }
 
                 }
@@ -81,7 +74,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
             enableDrag: true
         }
     },
-
+    hideHeaders: true,
     header: false,
     forceFit: true,
 

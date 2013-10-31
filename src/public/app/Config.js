@@ -16,15 +16,14 @@ Ext.define('Savanna.Config', {
         sc.itemCreateUrl = rUrl + 'rest/model/item/create/';
         sc.itemDestroyUrl = rUrl + 'rest/model/item/';
         sc.itemViewUpdateUrl = rUrl + 'rest/model/item/';
-        sc.modelSearchUrl = rUrl + 'rest/mockModelSearch/keyword/item';
-        sc.mockModelSearch = rUrl + 'rest/mockModelSearch/keyword/item'
+        sc.modelSearchUrl = rUrl + 'rest/model/search/keyword/item';
+        sc.mockModelSearch = rUrl + 'rest/mockModelSearch/keyword/item';
         sc.dalSourcesUrl = rUrl + 'rest/search/sources'; // local dev version: 'resources/data/testSearchDalsWithFormData.json',
         sc.locationSearch = rUrl + '/rest/map/search';   // local dev version: 'resources/data/testSearchLocationSearch.json',
         sc.documentUrl = rUrl + 'rest/document/';
         sc.uploadUrl = rUrl + 'rest/document/upload';
         sc.metadataUrl = rUrl + 'rest/metadata';
         sc.capcoUrl = rUrl + 'rest/capco/';
-        sc.capcoDefaultHighUrl = sc.capcoUrl + 'string/default/high';
 
         // TODO: replace this test URL with real endpoint once we have one....
         sc.processTemplatesUrl = 'resources/data/Process.json';

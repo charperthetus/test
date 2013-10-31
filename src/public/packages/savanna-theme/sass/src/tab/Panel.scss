@@ -1,0 +1,16 @@
+@include uikit-tab (
+	$uikit-ui: 'search-prime-tabs',
+	$uikit-bar-background-color: #666,
+	$uikit-tab-border-color-active: #f1f1f1,
+	$uikit-tab-border: 1px solid transparent,
+	$uikit-tab-border-active: 1px solid transparent,
+	$uikit-tab-border-active-noborder: 1px solid transparent
+);
+ 
+.#{$prefix}tab-search-prime-tabs-active {
+	border-top: 1px solid #fff;
+}
+ 
+.#{$prefix}tab-search-prime-top{
+   border-top: 1px solid #ccc
+}

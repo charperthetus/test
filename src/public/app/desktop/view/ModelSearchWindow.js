@@ -13,12 +13,15 @@ Ext.define('Savanna.desktop.view.ModelSearchWindow', {
         'Savanna.modelSearch.view.SearchComponent'
     ],
 
+    header: {
+        titlePosition: 1,
+        title: 'Model Search'
+    },
 
     ghost: false,
-    title: 'Model Search',
     layout: 'fit',
-    height: 600, //todo: get design input on initial size and minimum size
-    width: 770,
+    height: 800,
+    width: 800,
     minWidth: 200,
     minHeight: 100,
     items: [{

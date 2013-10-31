@@ -25,14 +25,24 @@ Ext.define('Savanna.itemView.store.ParentItemsStore', {
 
         this.callParent(arguments);
 
+        var ReaderClass = Ext.extend(Ext.data.JsonReader, {
+            type:'json',
+            root: 'results',
+
+            readRecords: function(data) {
+                var i = 0, records = data.results, l = records.length;
+                for (i; i < l; i++){
+                    records[i].leaf = !records[i].hasChildren;
+                }
+                return this.callParent([data]);
+            }
+
+        });
+
         this.setProxy({
             type: 'savanna-cors',
-            url: SavannaConfig.itemViewPerspective,
-            reader: {
-                type: 'json',
-                root: 'results',
-                totalProperty: 'size'
-            },
+            url: SavannaConfig.itemViewPerspective + '/183710',
+            reader: new ReaderClass(),
             writer: {
                 type: 'json'
             }

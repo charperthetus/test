@@ -18,6 +18,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
 
     requires: [
         'Savanna.search.controller.resultsComponent.ResultsPanelGridController',
+        'Ext.grid.plugin.DragDrop',
         'Ext.grid.column.Template',
         'Ext.XTemplate'
     ],
@@ -36,21 +37,31 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
             tpl: new Ext.XTemplate(
 
                 '<div style="position: relative" >',
-                '<div id="hoverDiv" style="visibility: hidden; right: 0;  top: 5; position: absolute;" ><button class="openButtonClass">Open</button></div>',
-                '<table>',
-                '<tr><td colspan="2" class="grid-cell-title"><strong>{title}</strong></td></tr>',
-                '<td width="80px"><img src="{documentSource}" hspace="3px"/></td>',
-                '<td>({composite}) - {[this.parseDate(new Date(values.publishedDate))]} - {documentFileName}<br />{previewString}</td>',
-                '</table>',
+                    '<div id="hoverDiv" style="visibility: hidden; right: 0;  top: 5; position: absolute;" ><button class="openButtonClass">Open</button></div>',
+                    '<div class="resultDiv">',
+                        '<div class="sourceDiv"><img src="{documentSource}"/></div>',
+                        '<div class="grid-cell-title"><strong>{title}</strong></div>',
+                        '<div class="contentDiv">({composite}) - {[this.parseDate(new Date(values.publishedDate))]} - {documentFileName}<br />{previewString}</div>',
+                    '</div>',
+                    
                 '</div>',
                 {
                     parseDate: function (v) {
                         return Ext.Date.format(new Date(v), 'F d, Y');
+                        }
                     }
-                }
             )
         }
     ],
+
+    viewConfig: {
+        plugins: {
+            dragGroup: 'SEARCH-ITEMS',
+            ptype: 'gridviewdragdrop',
+            enableDrop: false,
+            enableDrag: true
+        }
+    },
     hideHeaders: true,
     header: false,
     forceFit: true,

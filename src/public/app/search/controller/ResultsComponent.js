@@ -28,8 +28,8 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
                     //Keelan asked that I use UI event bubbling...
                     //The pattern I've been using is for the controller of the child to fire the event on it's controlled view.
                     //Then we catch the event in all the "parent controllers" by listening to events on their controlled views. (See below)
-                    me.component.on('Search:PageSizeChanged', this.onPageSizeChange, this);
-                    me.component.on('Search:SortByChanged', this.onSortOrderChange, this);
+                    me.component.on('search:PageSizeChanged', this.onPageSizeChange, this);
+                    me.component.on('search:SortByChanged', this.onSortOrderChange, this);
                     me.component.on('search:changeSelectedStore', this.changeSelectedStore, this);
 
                     //grid notifications
@@ -121,11 +121,6 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
 
     },
 
-    // The 'Preview Results 1 of xxx' label
-    previewIndexAndTotalLabel: function () {
-        return this.previewWindow().down('#itemIndexAndTotalLabel');
-    },
-
     getCurrentDalId: function () {
         return this.getResultsComponent().currentResultSet.id;
     },
@@ -206,8 +201,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
         var win = me.previewWindow();
         //Show the contents
         win.displayPreview(record.data, recordMetadata.get('datastore'), me.previewIndex, me.resultsStore.totalCount);
-        //Show the index and total
-        me.previewIndexAndTotalLabel().setText('Preview Result ' + (me.previewIndex + 1) + ' of ' + me.resultsStore.totalCount);
+
         //Enable/disable the prev and next buttons
         if (me.previewIndex === 0) {
             me.previewPrevButton().disable();
@@ -582,12 +576,13 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
     },
     addSearchPolygon: function (canvas) {
       var searchLayer = canvas.searchLayer;
+
       //modify resultmap searchLayer to match searchmap searchLayer
       if(searchLayer.features.length > 0){
           var resultMap = canvas.up('search_searchcomponent').down('#resultMapCanvas');
           var layerFeatureArray = searchLayer.features;
-          resultMap.searchLayer.removeAllFeatures();
           var cloneFeature = layerFeatureArray[0].clone();
+          resultMap.searchLayer.removeAllFeatures();
           resultMap.searchLayer.addFeatures(cloneFeature);
       }
     },
@@ -625,8 +620,8 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
         }
         mapCanvas.resultsLayer.addFeatures(searchResultList);
         mapCanvas.controls.selectFeature.activate();
-        mapCanvas.resultsLayer.events.register("featureselected", event, this.displayMapPopUp);
-        mapCanvas.resultsLayer.events.register("featureunselected", event, this.destroyPopUp);
+        mapCanvas.resultsLayer.events.register("featureselected", {}, this.displayMapPopUp);
+        mapCanvas.resultsLayer.events.register("featureunselected", {}, this.destroyPopUp);
 
     },
 

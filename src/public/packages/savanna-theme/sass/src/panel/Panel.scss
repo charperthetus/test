@@ -11,6 +11,14 @@
 
 // /* MIXINS */
 @if $include-panel-uis == true {
+	/* This should go in UIKIT */
+	@include uikit-panel(
+        $uikit-ui: 'dark',
+        $uikit-header-background-color: $dark-gray,
+        $uikit-header-color: $panel-dark-header-color,
+        $uikit-tool-color: $panel-dark-header-color
+    );
+    
     @include uikit-panel(
         $uikit-ui: 'search-prime',
         $uikit-body-color: $medium-gray,
@@ -65,18 +73,6 @@
 		text-align: right;
 	}
 }
-@include uikit-panel (
-  $uikit-ui: 'item-view',
-  $uikit-header-color: $font-color,
-  $uikit-header-font-family: $panel-header-font-family,
-  $uikit-header-font-size: $item-view-panel-header-font-size,
-  $uikit-header-font-weight: $panel-body-font-weight,
-  $uikit-header-line-height: $item-view-panel-header-line-height,
-  $uikit-header-border-color: $item-view-panel-header-border-color,
-  $uikit-header-border-width: $panel-header-border-width,
-  $uikit-header-border-style: $panel-header-border-style,
-  $uikit-header-background-color: $item-view-panel-header-background-color
-);
 
 .item-view-left-column{
   border-right-width:$item-view-left-column-border-width;

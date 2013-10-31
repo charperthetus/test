@@ -25,49 +25,60 @@ Ext.define('Savanna.process.view.part.ItemList', {
     },
 
     title: 'Items',
-    titleAlign: 'center',
+    titleAlign: 'left',
     emptyText: 'Drop items here for use in process steps or search the model to find new items',
-
     hideHeaders: true,
     columns: [
         {
-            dataIndex: 'label'
+            dataIndex: 'label',
+            width: '100%'
         }
     ],
 
     tbar: {
         itemId: 'itemtools',
+        height: 37,
         border: 2,
+        padding: 10,
+        margin: 10,
+        backgroundColor: '#F2F2F2',
         style: {
-            borderStyle: 'dashed'
+            borderStyle: 'dashed',
+            borderColor: '#999999'
         },
         items: [
             {
-                //todo: need drop icon here...
                 xtype: 'label',
-                text: 'Drop Items',
-                cls: ['sub', 'h4', 'bold', 'drag-and-drop']
+                text: 'Items',
+                cls: ['drag-and-drop', 'drag-and-drop-small']
             },
             '->',
             {
                 xtype: 'label',
-                text: 'OR',
-                cls: ['bold']
+                text: 'OR'
             },
             '->',
             {
                 xtype: 'button',
                 itemId: 'searchitems',
-                text: 'Search'
+                glyph: 'modelSearch',
+                ui: 'dark-icon',
+                height: 16,
+                width: 16
             }
         ]
     },
 
     initComponent: function() {
-
         //each instance of this grid needs its own store, otherwise, a change to the store will result in ALL palettes changing
         this.store = Ext.create('Ext.data.Store', {
             model: 'Savanna.process.model.Node',
+            sorters: [
+                {
+                    property: 'label',
+                    direction: 'ASC'
+                }
+            ],
             data: [
                 {
                     'uri': '',
@@ -78,8 +89,7 @@ Ext.define('Savanna.process.view.part.ItemList', {
                     'preview': '',
                     'primaryImageUrl': '',
                     'workflowState': '',
-                    'classification': '',
-                    'key': ''
+                    'classification': ''
                 },
                 {
                     'uri': '',
@@ -90,8 +100,7 @@ Ext.define('Savanna.process.view.part.ItemList', {
                     'preview': '',
                     'primaryImageUrl': '',
                     'workflowState': '',
-                    'classification': '',
-                    'key': ''
+                    'classification': ''
                 },
                 {
                     'uri': '',
@@ -102,8 +111,7 @@ Ext.define('Savanna.process.view.part.ItemList', {
                     'preview': '',
                     'primaryImageUrl': '',
                     'workflowState': '',
-                    'classification': '',
-                    'key': ''
+                    'classification': ''
                 },
                 {
                     'uri': '',
@@ -114,8 +122,7 @@ Ext.define('Savanna.process.view.part.ItemList', {
                     'preview': '',
                     'primaryImageUrl': '',
                     'workflowState': '',
-                    'classification': '',
-                    'key': ''
+                    'classification': ''
                 },
                 {
                     'uri': '',
@@ -126,8 +133,7 @@ Ext.define('Savanna.process.view.part.ItemList', {
                     'preview': '',
                     'primaryImageUrl': '',
                     'workflowState': '',
-                    'classification': '',
-                    'key': ''
+                    'classification': ''
                 }
             ]
         });

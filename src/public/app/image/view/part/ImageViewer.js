@@ -37,50 +37,77 @@ Ext.define('Savanna.image.view.part.ImageViewer', {
 
         me.items = [{
             xtype: 'toolbar',
-            defaults: {
-                tooltipType: 'title'
-            },
+            height: 33,
+            ui: 'thetus-toolbar',
             items: [{
                 xtype: 'button',
+                width:25,
+                height:25,
+                ui: 'icon-dark',
+                cls: 'toolbarButtonFramework',
                 tooltip: me.tooltips.stretchHorizontally,
                 itemId:'fitWideButton',
-                text: 'fit wide',
+                glyph: 'maxWidth',
                 listeners: { click: me.stretchHorizontally, scope: me }
             }, {
                 xtype: 'button',
+                width:25,
+                height:25,
+                ui: 'icon-dark',
+                cls: 'toolbarButtonFramework',
                 tooltip: me.tooltips.stretchVertically,
                 itemId:'fitHighButton',
-                text: 'fit high',
+                glyph: 'maxHeight',
                 listeners: { click: me.stretchVertically, scope: me }
             }, {
                 xtype: 'button',
+                width:25,
+                height:25,
+                ui: 'icon-dark',
+                cls: 'toolbarButtonFramework',
                 tooltip: me.tooltips.stretchOptimally,
                 itemId:'fitToTabButton',
-                text: 'fit to tab',
+                glyph: 'showAll',
                 listeners: { click: me.stretchOptimally, scope: me }
             }, {
                 xtype: 'button',
+                width:25,
+                height:25,
+                ui: 'icon-dark',
+                cls: 'toolbarButtonFramework',
                 tooltip: me.tooltips.zoomIn,
                 itemId:'zoomInButton',
-                text: 'zoom in',
+                glyph: 'zoomIn',
                 listeners: { click: me.zoomIn, scope: me }
             }, {
                 xtype: 'button',
+                width:25,
+                height:25,
+                ui: 'icon-dark',
+                cls: 'toolbarButtonFramework',
                 tooltip: me.tooltips.zoomOut,
                 itemId:'zoomOutButton',
-                text: 'zoom out',
+                glyph: 'zoomOut',
                 listeners: { click: me.zoomOut, scope: me }
             }, {
                 xtype: 'button',
+                width:25,
+                height:25,
+                ui: 'icon-dark',
+                cls: 'toolbarButtonFramework',
                 tooltip: me.tooltips.rotateClockwise,
                 itemId:'rotateClockwiseButton',
-                text: 'rotate clockwise',
+                glyph: 'clockwise',
                 listeners: { click: me.rotateClockwise, scope: me }
             }, {
                 xtype: 'button',
+                width:25,
+                height:25,
+                ui: 'icon-dark',
+                cls: 'toolbarButtonFramework',
                 tooltip: me.tooltips.rotateAntiClockwise,
                 itemId:'rotateCounterClockwiseButton',
-                text: 'rotate counterclockwise',
+                glyph: 'counterClockwise',
                 listeners: { click: me.rotateAntiClockwise, scope: me }
             }]
         }, {
@@ -89,7 +116,7 @@ Ext.define('Savanna.image.view.part.ImageViewer', {
             flex: 1,
             style: {
                 overflow: 'hidden',
-                backgroundColor: '#f2f1f0',
+                backgroundColor: '#fffff',
                 padding: '10px',
                 cursor: 'move'
             },
@@ -98,9 +125,6 @@ Ext.define('Savanna.image.view.part.ImageViewer', {
                 itemId: 'image',
                 mode: 'element',
                 src: me.src,
-                style: {
-                    boxShadow: '0 0 5px 5px #888'
-                },
                 listeners: {
                     render: function (image) {
                         image.el.dom.onload = function () {
@@ -220,7 +244,7 @@ Ext.define('Savanna.image.view.part.ImageViewer', {
 
     mousewheel: function (event) {
         var me = this;
-        var wheelDelta = event.browserEvent.wheelDelta;
+        var wheelDelta = event.getWheelDelta();
         if (wheelDelta >= 0 ){
             me.zoomIn(null, event, null);
         }else{

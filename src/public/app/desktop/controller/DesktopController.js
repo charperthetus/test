@@ -12,7 +12,6 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
         'Savanna.desktop.view.AboutWindow',
         'Savanna.desktop.view.SearchWindow',
         'Savanna.desktop.view.UploadWindow',
-        'Savanna.modelSearch.view.ModelSearch',
         'Savanna.desktop.view.ModelSearchWindow',
         'Savanna.itemView.view.ItemViewer'
     ],
@@ -61,7 +60,7 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
             failure: function(response){
                 //TODO - Add global failure handler
             }
-        })
+        });
 
         Savanna.app.on('initModelSearch', this.displayModelSearch);
 
@@ -130,7 +129,7 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
             failure: function(response){
                 location.href = location.href;
             }
-        });
+        })
 
     },
 

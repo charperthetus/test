@@ -1,23 +1,18 @@
 /* global Ext: false */
 Ext.define('Savanna.image.view.ImageComponent', {
-    extend: 'Ext.panel.Panel',
+    extend: 'Savanna.component.ClassificationPanel',
     alias: 'widget.image_component',
-    imageUri: null,
 
     requires: [
-        'Ext.layout.container.VBox',
-        'Savanna.image.view.part.ImageViewer'
+        'Savanna.image.view.part.ImageViewer',
+        'Savanna.metadata.view.Details'
     ],
 
-    layout: {
-        type: 'vbox'
-    },
-
-    overview: null,
+    layout: 'border',
 
     initComponent: function() {
-        if (this.imageUri){
-            this.loadImage(this.imageUri);
+        if (this.getItemUri()){
+            this.loadImage(this.getItemUri());
         }
         this.width = '100%';
         this.height = '100%';
@@ -29,9 +24,19 @@ Ext.define('Savanna.image.view.ImageComponent', {
             {
                 xtype: 'image_part_imageviewer',
                 itemId: 'imageViewer',
-                flex:1,
-                width: '100%',
+                region: 'center',
+                width: '70%',
                 src: SavannaConfig.documentUrl + imageUri + '/original'
+            },
+            {
+                xtype: 'metadata_details',
+                itemId: 'imageDetails',
+                itemURI: imageUri,
+                collapsible: true,
+                region: 'east',
+                split: true,
+                width: '30%'
+
             }
         ]
     }

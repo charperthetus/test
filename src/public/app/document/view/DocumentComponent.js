@@ -1,5 +1,5 @@
 Ext.define("Savanna.document.view.DocumentComponent", {
-    extend: "Ext.panel.Panel",
+    extend: "Savanna.component.ClassificationPanel",
     alias: "widget.documentcomponent",
     layout: "vbox",
     border: false,
@@ -57,7 +57,8 @@ Ext.define("Savanna.document.view.DocumentComponent", {
     tbar: [
         {
             xtype: "document_toolbar",
-            itemId: "docToolbar"
+            itemId: "docToolbar",
+            width: '100%'
         }
     ]
 });

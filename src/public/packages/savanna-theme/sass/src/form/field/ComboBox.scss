@@ -10,7 +10,6 @@
 	background-color: $button-basic-background-color;
 	@include background-gradient($button-basic-background-color, $button-basic-background-gradient, top);
 	
-	
 	.#{$prefix}form-trigger-wrap{
 		border-width:  $button-basic-border-width;
 		border-color: $button-basic-border-color;
@@ -20,6 +19,7 @@
 		.#{$prefix}form-text{
 			border-width: 0;
 			border-color: transparent;
+			padding-left: 5px;
 		}
 	}
 

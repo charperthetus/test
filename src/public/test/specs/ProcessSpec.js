@@ -2,60 +2,46 @@
  beforeEach: false, afterEach: false, it: false, expect: false, spyOn: false, runs: false, sinon: false, waitsFor: false,
  ThetusTestHelpers: false, Savanna: false,
  go: false */
-Ext.require('Savanna.process.store.Templates');
+Ext.require('Savanna.process.view.ProcessEditorComponent');
+Ext.require('Savanna.process.controller.ProcessController');
 
 describe('Savanna.process', function() {
     var fixtures = {};
 
     beforeEach(function() {
-        fixtures = Ext.clone(ThetusTestHelpers.Fixtures.Process);
-
         ThetusTestHelpers.ExtHelpers.createTestDom();
     });
 
     afterEach(function() {
-        fixtures = null;
         ThetusTestHelpers.ExtHelpers.cleanTestDom();
     });
 
-    describe('Store', function() {
-        var server = null,
-            store = null;
+    describe('ProcessController', function() {
+        var controller = null,
+            componentView = null;
 
         beforeEach(function() {
-            // NOTE: this has to happen BEFORE your create a FakeServer,
-            store = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.process.store.Templates');
-
-            server = new ThetusTestHelpers.FakeServer(sinon);
+            componentView = Ext.create('Savanna.process.view.ProcessEditorComponent', { renderTo: ThetusTestHelpers.ExtHelpers.TEST_HTML_DOM_ID });
+            controller = componentView.getController();
         });
 
         afterEach(function() {
-            server.restore();
+            if (controller) {
+                controller.destroy();
+                controller = null;
+            }
 
-            server = null;
-            store = null;
+            if (componentView) {
+                componentView.destroy();
+                componentView = null;
+            }
         });
 
-        describe('default data loading', function() {
-
-            it('should load data', function() {
-                var readMethod = 'GET';
-
-                expect(store.getTotalCount()).toBe(0);
-
-                var testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(store.getProxy(), 'read', readMethod);
-
-                server.respondWith(readMethod, testUrl, fixtures.defaultPaletteTemplateResponse);
-
-                store.load();
-
-                server.respond({
-                    errorOnInvalidRequest: true
-                });
-
-                expect(store.getTotalCount()).not.toBe(0);
-                expect(store.data.items[0].data.templates).not.toBeNull();
-            });
+        it('controller should not be null', function() {
+            expect(controller).not.toBeNull();
+        });
+        it('the controller should be of the correct type instantiated', function() {
+            expect(controller instanceof Savanna.process.controller.ProcessController).toBeTruthy();
         });
     });
 

@@ -1,0 +1,11 @@
+/*
+ *	@author astump 10/30/2013
+*/
+
+/* This is required for the Tree Panel in Item View to work properly.
+   Talk to Ken Songer or Alison Stump before changing */
+.treepanel-hideexpand {
+	.#{$prefix}tree-expander{
+		visibility: hidden;
+	}
+}

@@ -6,7 +6,7 @@ Ext.define('Savanna.component.ClassificationPanel', {
     ],
 
     config: {
-        itemURI: null
+        itemUri: null
     },
 
     initComponent: function() {
