@@ -314,6 +314,7 @@ Ext.define('Savanna.classification.controller.WindowController', {
         }
 
         var fgiField = this.getFgiField();
+        // disable the fgi field if not allowed markings include FGI_FGI
         if(fgiField.getStore().getCount() && notAllowedMarkings.indexOf('FGI_FGI') < 0) {
             fgiField.setDisabled(false);
         } else {
@@ -328,6 +329,7 @@ Ext.define('Savanna.classification.controller.WindowController', {
         }
 
         var relField = this.getRelField();
+        // disable the rel field if not allowed markings include DISSEM_REL_TO
         if(relField.getStore().getCount() && notAllowedMarkings.indexOf('DISSEM_REL_TO') < 0) {
             relField.setDisabled(false);
         } else {
