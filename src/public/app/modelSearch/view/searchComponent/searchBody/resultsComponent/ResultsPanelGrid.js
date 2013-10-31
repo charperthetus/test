@@ -41,8 +41,9 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
                         '<div class="sourceDiv">{[this.conditionallyRenderImage(values.primaryImageUrl)]}</div>',
                         '<div class="grid-cell-title"><strong>{label}</strong></div>',
                         '<div class="contentDiv">',
-                            'Modified: {[this.formatDate(values.modifiedDate)]},&nbsp;&nbsp;{modifiedBy}<br>',
-                            'Workflow state: {workflowState}&nbsp;&nbsp;Classification: {classification}',
+                      //    sav-5936 remove for demo
+                      //      'Modified: {[this.formatDate(values.modifiedDate)]},&nbsp;&nbsp;{modifiedBy}<br>',
+                      //      'Workflow state: {workflowState}&nbsp;&nbsp;Classification: {classification}',
                         '</div>',
                     '</div>',
                     '<div id="hoverDiv" style="visibility: hidden; right: 0;  top: 5px; position: absolute;" ><button id="openButton" class="openButtonClass">Open</button></div>',
