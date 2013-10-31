@@ -18,6 +18,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
 
     requires: [
         'Savanna.search.controller.resultsComponent.ResultsPanelGridController',
+        'Ext.grid.plugin.DragDrop',
         'Ext.grid.column.Template',
         'Ext.XTemplate'
     ],
@@ -52,6 +53,15 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
             )
         }
     ],
+
+    viewConfig: {
+        plugins: {
+            dragGroup: 'SEARCH-ITEMS',
+            ptype: 'gridviewdragdrop',
+            enableDrop: false,
+            enableDrag: true
+        }
+    },
     hideHeaders: true,
     header: false,
     forceFit: true,
