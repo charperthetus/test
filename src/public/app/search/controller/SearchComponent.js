@@ -543,16 +543,9 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
 
             var searchResultsView = resultsPanel.up('#searchresults');
-            if (action === 'search') {
-                if (dalId === Ext.data.StoreManager.lookup('dalSources').defaultId) {
+            if ((action === 'search' && dalId === Ext.data.StoreManager.lookup('dalSources').defaultId) || action === 'filter') {
 
-                    searchResultsView.fireEvent('search:changeSelectedStore', resultsDal.queryById(dalId));
-                }
-            } else {
-                /*
-                 filtering, action set to 'filter'
-                 */
-                searchResultsView.fireEvent('search:changeSelectedStore',  resultsDal.queryById(dalId));
+                searchResultsView.fireEvent('search:changeSelectedStore', resultsDal.queryById(dalId));
             }
         }
     },
