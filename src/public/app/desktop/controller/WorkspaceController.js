@@ -58,6 +58,7 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
 
     setupSecondaryTabPanel: function() {
         return Ext.create('Savanna.desktop.view.SavannaTabPanel', {
+            cls:'secondPanel',
             itemId: 'secondarytabpanel',
             config: {
                 view: 'split'
