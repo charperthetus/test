@@ -329,14 +329,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "Deft.mvc.Application": [
     "Deft.Application"
   ],
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
   "Savanna.itemView.view.relatedItems.RelationshipPicker": [],
->>>>>>> SAV-5444: Fully functioning, no errors
-=======
-  "Savanna.itemView.view.relatedItems.RelationshipPicker": [],
->>>>>>> New theme, built and refreshed
   "Savanna.process.view.part.Canvas": [],
   "Savanna.component.DatePicker": [],
   "ThetusUikit.button.Button": [],
@@ -402,13 +395,6 @@ Ext.ClassManager.addNameAlternateMappings({
   "Ext.ux.RowExpander": [],
   "Savanna.view.Viewport": [],
   "Savanna.itemView.view.relatedItems.EditRelatedItems": [],
-<<<<<<< HEAD
-<<<<<<< HEAD
-  "Savanna.itemView.view.header.AddIntendedUses": [],
-=======
->>>>>>> SAV-5444: Fully functioning, no errors
-=======
->>>>>>> New theme, built and refreshed
   "Savanna.desktop.view.UploadWindow": [],
   "Ext.ux.event.Maker": [],
   "Savanna.itemView.controller.QualitiesPickerController": [],
@@ -973,18 +959,9 @@ Ext.ClassManager.addNameAliasMappings({
     "widget.model_search_resultsDals_resultsterm"
   ],
   "Deft.mvc.Application": [],
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
   "Savanna.itemView.view.relatedItems.RelationshipPicker": [
     "widget.itemview_relationship_picker"
   ],
->>>>>>> SAV-5444: Fully functioning, no errors
-=======
-  "Savanna.itemView.view.relatedItems.RelationshipPicker": [
-    "widget.itemview_relationship_picker"
-  ],
->>>>>>> New theme, built and refreshed
   "Savanna.process.view.part.Canvas": [
     "widget.process_canvas"
   ],
@@ -1099,27 +1076,9 @@ Ext.ClassManager.addNameAliasMappings({
   "Savanna.itemView.view.relatedItems.EditRelatedItems": [
     "widget.itemview_edit_related_items"
   ],
-<<<<<<< HEAD
-<<<<<<< HEAD
-  "Savanna.itemView.view.header.AddIntendedUses": [
-    "widget.itemview_intendeduses_add_picker"
-  ],
   "Savanna.desktop.view.UploadWindow": [
     "widget.desktop_uploadwindow"
   ],
-  "Savanna.itemView.view.relatedItems.AddRelationships": [
-    "widget.itemview_relationship_type_picker"
-  ],
-=======
-  "Savanna.desktop.view.UploadWindow": [
-    "widget.desktop_uploadwindow"
-  ],
->>>>>>> SAV-5444: Fully functioning, no errors
-=======
-  "Savanna.desktop.view.UploadWindow": [
-    "widget.desktop_uploadwindow"
-  ],
->>>>>>> New theme, built and refreshed
   "Ext.ux.event.Maker": [],
   "Savanna.itemView.controller.QualitiesPickerController": [],
   "Savanna.modelSearch.model.SearchRequest": [],
