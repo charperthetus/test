@@ -24,7 +24,8 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
     ],
 
     layout: 'card',
-
+    margin:'auto',
+    maxWidth:720,
     controller: 'Savanna.itemView.controller.ItemViewController',
 
     config: {
@@ -171,6 +172,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                             {
                                 xtype: 'itemview_annotation_properties',
                                 itemId: 'annotationPropertiesView',
+                                cls:'white-grid-view-panel-edit',
                                 collapsible: true,
                                 header: {
                                     ui:'light-blue'
@@ -302,6 +304,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                             {
                                 xtype: 'itemview_annotation_properties',
                                 itemId: 'annotationPropertiesEdit',
+                                cls:'white-grid-view-panel-edit',
                                 collapsible: true,
                                 header: {
                                     ui:'light-blue'

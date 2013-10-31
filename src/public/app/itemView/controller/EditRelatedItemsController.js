@@ -50,13 +50,9 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
                         borderColor: 'gray',
                         borderStyle: 'dashed'
                     },
-//                    layout: {
-//                        type:'hbox',
-//                        align:'center'
-//                    },
-//                    height: 70,
+                    height: 80,
                     width: 284,
-
+                    cls:'related-item-edit-drop-zone',
                     items: [
                         {
                             xtype: 'label',

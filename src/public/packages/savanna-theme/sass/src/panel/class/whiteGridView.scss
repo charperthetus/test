@@ -26,11 +26,11 @@
   .#{$prefix}grid-row{
     .#{$prefix}grid-cell-inner{
       line-height: 17px;
-      padding: 0 6px 0 12px;
+      padding: 0 6px 0 5px;
     }
     &:last-child{
       .#{$prefix}grid-cell-inner{
-        padding: 0 6px 18px 12px;
+        padding: 0 6px 18px 5px;
       }
     }
   }
