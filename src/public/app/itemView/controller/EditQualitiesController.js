@@ -83,7 +83,7 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
             predicateUri = data.predicateUri ? encodeURI(data.predicateUri): encodeURI(data.uri);
 
             picker = Ext.create('Ext.button.Button', {
-                text: 'Chooser',
+                glyph:'searchBinoculars',
                 itemId: 'valuesChooser',
 
                 listeners: {

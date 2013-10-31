@@ -37,6 +37,8 @@ Ext.define('Savanna.itemView.view.itemQualities.QualitiesPicker', {
 
     layout: 'vbox',
 
+    cls:'value-picker-window',
+
     items: [
         {
             xtype: 'label',
@@ -116,7 +118,7 @@ Ext.define('Savanna.itemView.view.itemQualities.QualitiesPicker', {
                 {
                     xtype: 'templatecolumn',
                     dataIndex: 'label',
-                    tpl: '<input type="button" value="x" id="removeSelectedQuality">'
+                    tpl: '<i type="button" value="x" id="removeSelectedQuality"></i>'
                 }
             ]
         }
@@ -125,7 +127,8 @@ Ext.define('Savanna.itemView.view.itemQualities.QualitiesPicker', {
     buttons: [
         {
             text: 'OK',
-            itemId: 'okBtn'
+            itemId: 'okBtn',
+            ui:'commit'
         },
         {
             text: 'cancel',
