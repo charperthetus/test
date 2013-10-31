@@ -83,7 +83,7 @@
   .related-item-edit-drop-zone{
     border:2px dashed #959595;
     background-color: mix(#fff, #b8edff, 15%) ;
-    padding:18px 10px 0;
+    padding:0px 10px 0;
     .#{$prefix}panel-body{
       background-color: mix(#fff, #b8edff, 15%);
     }
@@ -96,13 +96,13 @@
       background-color: mix(#fff, #b8edff, 15%);
       margin:0 auto !important;
     }
-    .drag-and-drop{
-      &:before {
-        width: 100%;
-        display: block;
-        text-align: center;
-        position: static;
-      }
+  }
+  .drag-and-drop{
+    &:before {
+      width: 100%;
+      display: block;
+      text-align: center;
+      position: static;
     }
   }
 

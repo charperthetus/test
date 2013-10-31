@@ -33,6 +33,7 @@ Ext.define('Savanna.desktop.view.SavannaTabPanel', {
         return [{
             xtype: 'button',
             ui: 'dark',
+            glyph:'plus',
             width:25,
             height:25,
             cls:'new-savanna-tab',

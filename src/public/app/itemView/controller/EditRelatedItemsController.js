@@ -56,7 +56,8 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
                     cls:'related-item-edit-drop-zone',
                     layout: {
                         type: 'hbox',
-                        align: 'center'
+                        align: 'middle',
+                        pack: 'center',
                     },
                     items: [
                         {
@@ -68,6 +69,7 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
                         {
                             xtype: 'label',
                             text: 'OR',
+                            margin:'0 20 0 20',
                             cls:['h2'],
                             height: 20
                         },
@@ -81,7 +83,6 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
                                 urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/model/search/keyword/property/' + encodeURI(relatedItemsGroup.get('predicateUri')),
                                 paramsObj: { pageStart:0, pageSize:20, alphabetical: true }
                             }),
-                            flex: 0,
                             width:200,
                             listeners: {
                                 'AutoComplete:ItemSelected': Ext.bind(this.addRelatedItem, this)
