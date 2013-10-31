@@ -40,33 +40,37 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
                 {
                     xtype: 'label',
                     text: relatedItemsGroup.get('label'),
-                    cls:'h2'
+                    cls:['h2', 'related-item-edit-header'],
+                    width:'100%'
                 },{
                     xtype: 'panel',
                     value: relatedItemsGroup.get('predicateUri'),
                     name: relatedItemsGroup.get('label'),
-                    border: 5,
-                    style: {
-                        borderColor: 'gray',
-                        borderStyle: 'dashed'
-                    },
+                    margin:'0 0 10 0',
                     listeners: {
                         boxready: Ext.bind(this.onDropItemReady, this)
                     },
-
-//                    layout: {
-//                        type:'hbox',
-//                        align:'center'
-//                    },
-//                    height: 70,
-                    width: '75%',
-
+                    height: 130,
+                    width: '100%',
+                    margin:'0 10 10 10',
+                    cls:'related-item-edit-drop-zone',
+//                    bodyStyle:'width:100%;',
+                    layout: {
+                        type: 'vbox',
+                        align: 'center'
+                    },
                     items: [
                         {
                             xtype: 'label',
                             text: 'Drop items here',
                             cls:['drag-and-drop', 'related-items-control'],
-                            height: 40
+                            height: 25
+                        },
+                        {
+                            xtype: 'label',
+                            text: 'OR',
+                            cls:['h2'],
+                            height: 20
                         },
                         {
                             xtype: 'auto_complete',
