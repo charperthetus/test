@@ -12,6 +12,8 @@ Ext.define('Savanna.itemView.view.imageBrowser.ImagesGridEdit', {
     controller: 'Savanna.itemView.controller.EditImageBrowserController',
     
     alias: 'widget.itemview_imagesgrid_edit',
+
+    storeHelper: null,
     
     items: [{
 
