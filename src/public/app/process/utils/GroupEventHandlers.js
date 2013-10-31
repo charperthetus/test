@@ -43,7 +43,7 @@ Ext.define('Savanna.process.utils.GroupEventHandlers', {
         diagram.startTransaction('onMouseDrop');
         var nodeData = {'category': category, 'text': label};
         nodeData.uri = Savanna.process.utils.ProcessUtils.getURI(nodeData.category);
-        Savanna.process.utils.ProcessUtils.setRepresentsUri(nodeData, data.records[0].uri);
+        Savanna.process.utils.ProcessUtils.setRepresentsUri(nodeData, data.records[0].data.uri);
 
         diagram.model.addNodeData(nodeData);
 

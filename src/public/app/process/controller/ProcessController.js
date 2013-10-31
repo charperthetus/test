@@ -14,10 +14,7 @@ Ext.define('Savanna.process.controller.ProcessController', {
         'Savanna.process.store.Processes',
         'Savanna.process.view.part.Overview' //added dynamically later
     ],
-    store: 'Savanna.process.store.Processes',
-    mixins: {
-        storeable: 'Savanna.mixin.Storeable'
-    },
+    store: null,
 
     control: {
         newProcess: {
@@ -86,7 +83,7 @@ Ext.define('Savanna.process.controller.ProcessController', {
 
     constructor: function (options) {
         this.opts = options || {};
-        this.mixins.storeable.initStore.call(this);
+        this.store = Ext.create('Savanna.process.store.Processes');
         this.callParent(arguments);
     },
 
