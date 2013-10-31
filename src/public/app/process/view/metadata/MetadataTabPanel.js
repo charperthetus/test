@@ -21,9 +21,10 @@ Ext.define('Savanna.process.view.metadata.MetadataTabPanel', {
         itemUri: ''
     },
 
-    updateItemUri: function(newURI, oldURI) {
-        // set up the sub views.
-        //'onUriChange'
+    updateItemUri: function(newUri, oldUri) {
+        if(newUri !== oldUri) {
+            this.fireEvent('uriChange', newUri);
+        }
     },
 
     enableTabScroll: true,
