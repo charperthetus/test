@@ -93,9 +93,18 @@ $workspace-header-button-background-gradient-disabled: transparent !default;
 //workspace
 $workspace-header-small-toolbar-button-padding: 0px !default;
 
+/* Button Toggle */
+$button-toggle-padding: 0 !default;
+$button-toggle-text-padding: 0 !default;
+$button-toggle-color-pressed: #333 !default;
+$button-toggle-color-over: $button-toggle-color-pressed !default;
+
 //new-savanna-tab
 $new-savanna-tab-button-background-color: #4c4c4c !default;
 $new-savanna-tab-button-background-color-over: mix(#fff, $new-savanna-tab-button-background-color, 20%) !default;
 $new-savanna-tab-button-background-color-focus: mix(#fff, $new-savanna-tab-button-background-color, 20%) !default;
 $new-savanna-tab-button-background-color-pressed: mix(#fff, $new-savanna-tab-button-background-color, 20%) !default;
 $new-savanna-tab-button-background-color-disabled: mix(#fff, $new-savanna-tab-button-background-color, 20%) !default;
+
+$button-toolbar-glyph-opacity: 1 !default;
+

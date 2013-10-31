@@ -39,6 +39,8 @@ Ext.define('Savanna.itemView.view.relatedItems.RelationshipPicker', {
 
     layout: 'vbox',
 
+    cls:'value-picker-window',
+
     items: [
         {
             xtype: 'grid',
@@ -68,7 +70,8 @@ Ext.define('Savanna.itemView.view.relatedItems.RelationshipPicker', {
     buttons: [
         {
             text: 'OK',
-            itemId: 'okBtn'
+            itemId: 'okBtn',
+            ui:'commit'
         },
         {
             text: 'cancel',

@@ -9,7 +9,9 @@ Ext.define('Savanna.process.view.part.Toolbar', {
     extend: 'Ext.toolbar.Toolbar',
     alias: 'widget.process_toolbar',
 
+    ui:'thetus-toolbar',
     width: '100%',
+    height: 33,
 
     items: [],
 
@@ -82,45 +84,73 @@ Ext.define('Savanna.process.view.part.Toolbar', {
                 itemId: 'merge'
             },
             {
-                text: '+ Alternates',
+                text: 'Add Alternates',
                 tooltip: 'Add alternates group',
                 itemId: 'alts'
             },
             '->', 
             {
+                cls: 'toolbarButtonFramework',
                 glyph: 'zoomIn',
+                width:25,
+                height:25,
+                ui: 'icon-dark',
                 tooltip: 'Zoom In',
                 itemId: 'zoomin'
             },
             {
+                cls: 'toolbarButtonFramework',
                 glyph: 'zoomOut',
+                width:25,
+                height:25,
+                ui: 'icon-dark',
                 tooltip: 'Zoom Out',
                 itemId: 'zoomout'
             },
             {
-                text: 'Fit',
+                cls: 'toolbarButtonFramework',
+                glyph: 'showAll',
+                width:25,
+                height:25,
+                ui: 'icon-dark',
                 tooltip: 'Fit to screen',
                 itemId: 'zoomToFit'
             },
             ' ',
             {
+                cls: 'toolbarButtonFramework',
                 glyph: 'undo',
+                width:25,
+                height:25,
+                ui: 'icon-dark',
                 tooltip: 'Undo',
                 itemId: 'undo'
             },
             {
+                cls: 'toolbarButtonFramework',
                 glyph: 'redo',
+                width:25,
+                height:25,
+                ui: 'icon-dark',
                 tooltip: 'Redo',
                 itemId: 'redo'
             },
             ' ',
             {
-                text: 'Delete',
+                cls: 'toolbarButtonFramework',
+                glyph: 'trash',
+                width:25,
+                height:25,
+                ui: 'icon-dark',
                 tooltip: 'Delete draft',
                 itemId: 'cancelprocess'
             },
             {
-                text: 'Save',
+                cls: 'toolbarButtonFramework',
+                glyph: 'save',
+                width:25,
+                height:25,
+                ui: 'icon-dark',
                 tooltip: 'Save process',
                 itemId: 'saveprocess'
             }

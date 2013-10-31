@@ -20,10 +20,15 @@ Ext.define('Savanna.itemView.view.relatedItems.EditRelatedItems', {
 
     layout: 'vbox',
 
+    layout:{
+        type:'vbox',
+        align:'center'
+    },
+
     tools:[{
         xtype: 'button',
         itemId: 'addRelationshipType',
-        text: '+Add'
+        text: 'Add'
     }]
 
 
