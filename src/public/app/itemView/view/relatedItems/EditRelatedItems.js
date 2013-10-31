@@ -11,11 +11,12 @@ Ext.define('Savanna.itemView.view.relatedItems.EditRelatedItems', {
     alias: 'widget.itemview_edit_related_items',
 
     requires: [
-        'Savanna.itemView.controller.EditRelatedItemsController',
-        'Savanna.itemView.view.relatedItems.RelationshipPicker'
+        'Savanna.itemView.controller.EditRelatedItemsController'
     ],
 
     controller: 'Savanna.itemView.controller.EditRelatedItemsController',
+
+    storeHelper: null,
 
     layout: 'vbox',
 

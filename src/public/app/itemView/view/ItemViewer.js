@@ -1,5 +1,5 @@
 Ext.define('Savanna.itemView.view.ItemViewer', {
-    extend: 'Ext.panel.Panel',
+    extend: 'Savanna.component.ClassificationPanel',
 
     alias: 'widget.itemview_itemviewer',
 
@@ -20,7 +20,8 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
         'Savanna.itemView.view.imageBrowser.ImageThumbnail',
         'Savanna.itemView.view.workflow.WorkflowSelect',
         'Savanna.itemView.view.annotationProperties.AnnotationProperties',
-        'Savanna.itemView.store.ItemViewStoreHelper'
+        'Savanna.component.ClassificationPanel',
+        'Savanna.itemView.store.AutoCompleteStore'
     ],
 
     layout: 'card',
@@ -32,20 +33,6 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
         editMode:false,
         createMode:false
     },
-
-    dockedItems: [{
-        xtype: 'toolbar',
-        dock: 'top',
-        items: [
-            '->',
-            {
-                xtype: 'label',
-                text: 'CLASSIFICATION'
-            },
-            '->'
-        ]
-    }],
-
 
     constructor: function(configs) {
         this.initConfig(configs);  //initializes configs passed in constructor

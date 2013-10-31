@@ -6,14 +6,13 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     ],
 
     requires: [
-        'Savanna.itemView.store.MainItemStore'
+        'Savanna.itemView.store.MainItemStore',
+        'Savanna.itemView.store.ItemViewStoreHelper'
     ],
 
-    store: 'Savanna.itemView.store.MainItemStore',
+    store: null,
 
-    mixins: {
-        storeable: 'Savanna.mixin.Storeable'
-    },
+    storeHelper: null,
 
     control: {
         editModeButton: {
@@ -59,7 +58,8 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
     constructor: function (options) {
         this.opts = options || {};
-        this.mixins.storeable.initStore.call(this);
+        this.store = Ext.create('Savanna.itemView.store.MainItemStore');
+        this.storeHelper = Ext.create('Savanna.itemView.store.ItemViewStoreHelper');
         this.callParent(arguments);
     },
 
@@ -137,6 +137,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     handleRecordDataRequestSuccess: function (record, operation, success) {
         if (success) {
             var me = this;
+            this.storeHelper.init(this.store);
 
             /*
             Header View
@@ -151,6 +152,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
             //ToDo: do what needs to be done for edit version of header
             var headerEditComponent = me.getView().queryById('itemViewHeaderEdit');
             headerEditComponent.queryById('itemNameField').setValue(record[0].data.label);
+            headerEditComponent.storeHelper = this.storeHelper;
             headerEditComponent.store = record[0].propertyGroupsStore.getById('Header').valuesStore;
             headerEditComponent.fireEvent('EditHeader:StoreSet');
 
@@ -178,6 +180,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
             Related Items Edit
              */
             var relatedItemViewEdit = me.getView().queryById('relatedItemsEdit');
+            relatedItemViewEdit.storeHelper = this.storeHelper;
             relatedItemViewEdit.store = record[0].propertyGroupsStore.getById('Related Items').valuesStore;
             relatedItemViewEdit.fireEvent('EditRelatedItems:SetupData', record[0].propertyGroupsStore.getById('Related Items').valuesStore.data.items);
 
@@ -193,6 +196,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
              */
             var qualitiesEditComponent = me.getView().queryById('itemViewPropertiesEdit');
             qualitiesEditComponent.setTitle('Qualities (' + record[0].propertyGroupsStore.getById('Properties').valuesStore.data.length + ')');
+            qualitiesEditComponent.storeHelper = this.storeHelper;
             qualitiesEditComponent.store = record[0].propertyGroupsStore.getById('Properties').valuesStore;
             qualitiesEditComponent.fireEvent('EditQualities:StoreSet');
 
@@ -253,7 +257,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     },
 
     buildItemDataFetchUrl: function (uri) {
-        uri = encodeURI(uri);
+//        uri = encodeURI(uri);
         if(!this.getView().getCreateMode()) {
             return SavannaConfig.itemViewUrl + uri;
         }   else    {
@@ -262,11 +266,9 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     },
 
     openItem: function (itemName, itemUri) {
-        console.log('itemName',itemName);
-        console.log('itemUri', itemUri);
         var itemView = Ext.create('Savanna.itemView.view.ItemViewer', {
             title: itemName,
-            itemUri: itemUri,
+            itemUri: encodeURI(itemUri),
             closable: true,
             autoScroll: true,
             tabConfig: {

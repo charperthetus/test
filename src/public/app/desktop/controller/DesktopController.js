@@ -41,9 +41,6 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
         },
         modelsearchbutton: {
             click: 'displayModelSearch'
-        },
-        itemviewbutton: {
-            click: 'displayDummyItem'
         }
     },
 
@@ -145,18 +142,5 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
         else {
             searchWindow.center();
         }
-    },
-    // TODO: Remove this once Model search can find and select actual items
-    displayDummyItem: function() {
-        var itemView = Ext.create('Savanna.itemView.view.ItemViewer', {
-            title: 'Model Item',
-            itemUri: 'x012f931fec769ca941e8de4f7a674bec2a290937%2FItem',
-            closable: true,
-            autoScroll: true,
-            tabConfig: {
-                ui: 'dark'
-            }
-        });
-        Savanna.app.fireEvent('search:itemSelected', itemView);
     }
 });

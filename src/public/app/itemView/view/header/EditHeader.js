@@ -21,6 +21,8 @@ Ext.define('Savanna.itemView.view.header.EditHeader', {
 
     title: '',
 
+    storeHelper: null,
+
     layout: 'vbox',
 
     margin: 10,

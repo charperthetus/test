@@ -12,8 +12,6 @@ Ext.define('Savanna.itemView.controller.RelationshipPickerController', {
         'Savanna.itemView.view.relatedItems.RelationshipPicker'
     ],
 
-    storeHelper: null,
-
     control: {
         availableRelationshipGroup: {
             itemclick: 'relationshipChecked'
@@ -26,16 +24,10 @@ Ext.define('Savanna.itemView.controller.RelationshipPickerController', {
         }
     },
 
-    init: function() {
-        this.callParent(arguments);
-        this.storeHelper = Ext.create('Savanna.itemView.store.ItemViewStoreHelper');
-        this.storeHelper.init();
-    },
-
     relationshipChecked: function (grid, record, item, index, e, eOpts) {
         if (e.target.checked) {
             // Create a new model for the store, mapping the data to fit the model
-            var newRelationshipModel = this.storeHelper.createNewModelInstance(record.data.label, record.data.uri);
+            var newRelationshipModel = this.getView().getStoreHelper().createNewModelInstance(record.data.label, record.data.uri);
 
             // Add a new model into the store
             this.getView().relationshipSelectStore.add(newRelationshipModel);
