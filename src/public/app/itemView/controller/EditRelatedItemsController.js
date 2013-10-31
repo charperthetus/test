@@ -46,12 +46,7 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
                     xtype: 'panel',
                     value: relatedItemsGroup.get('predicateUri'),
                     name: relatedItemsGroup.get('label'),
-//                    border: 5,
                     margin:'0 0 10 0',
-//                    style: {
-//                        borderColor: 'gray',
-//                        borderStyle: 'dashed'
-//                    },
                     listeners: {
                         boxready: Ext.bind(this.onDropItemReady, this)
                     },
