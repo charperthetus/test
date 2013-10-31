@@ -14,21 +14,28 @@ Ext.define('Savanna.itemView.view.header.EditHeader', {
     controller: 'Savanna.itemView.controller.EditHeaderController',
 
     requires: [
-        'Savanna.itemView.controller.EditHeaderController',
-        'Savanna.itemView.view.header.AddIntendedUses'
+        'Savanna.itemView.controller.EditHeaderController'
     ],
 
     cls: 'itemview',
+
+    title: '',
 
     layout: 'vbox',
 
     margin: 10,
 
-    items: [
+    tools:[
         {
-            xtype: 'itemview_displaylabel',
-            itemId: 'itemDisplayLabelView'
+            xtype: 'textfield',
+            itemId: 'itemNameField'
         },
+        {
+            xtype: 'tbfill'
+        }
+    ],
+
+    items: [
         {
             xtype: 'label',
             text: 'Alias'
@@ -56,8 +63,8 @@ Ext.define('Savanna.itemView.view.header.EditHeader', {
                     showTags: true,
                     itemId: 'addIntendedUseBox',
                     store: Ext.create('Savanna.itemView.store.AutoCompleteStore', {
-                        urlEndPoint: 'http://c2devsav1:8080/c2is2/rest/mockModelSearch/keyword/property/propUri',
-                        paramsObj: {excludeUri:'asdf', pageStart:0, pageLimit:10}
+                        urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/model/search/keyword/property/',
+                        paramsObj: { pageStart:0, pageSize:20, alphabetical: true }
                     }),
                     flex: 1
 
@@ -97,7 +104,7 @@ Ext.define('Savanna.itemView.view.header.EditHeader', {
             itemId: 'itemDescription',
             name: 'description',
             width: '100%',
-            value: 'Hello World.  This is an Rnrm Item Description',
+            value: '',
             grow: true
         }
     ]

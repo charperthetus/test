@@ -13,7 +13,9 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
         'Savanna.itemView.view.header.EditHeader'
     ],
 
-    propNameArray: [],
+    valNameArray: [],
+
+    storeHelper: null,
 
     control: {
         view: {
@@ -41,8 +43,14 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
         }
     },
 
-    storeSet: function () {
+    init: function() {
+        this.callParent(arguments);
+        this.storeHelper = Ext.create('Savanna.itemView.store.ItemViewStoreHelper');
+    },
+
+    storeSet: function (itemName) {
         var me = this;
+        this.storeHelper.init();
 
         Ext.each(me.getView().store.getById('Aliases').data.values, function(value) {
             me.getView().queryById('addAliasBox').addTag(value.label);
@@ -50,8 +58,12 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
 
         Ext.each(me.getView().store.getById('Intended Use').data.values, function(value) {
             me.getView().queryById('addIntendedUseBox').addTag(value.label);
-            me.propNameArray.push(value.label);
+            me.valNameArray.push(value.label);
         });
+
+        me.getView().queryById('addIntendedUseBox').store.getProxy().url += encodeURI(me.getView().store.getById('Intended Use').data.predicateUri);
+
+
         if(me.getView().store.getById('Type').data.values.length)  {
             me.getView().queryById('parentBtn').setText(me.getView().store.getById('Type').data.values[0].label);
         }
@@ -75,7 +87,8 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
             width: 500,
             height: 600,
             selectionStore: this.getView().store.getById("Intended Use").valuesStore,
-            valNameArray: this.propNameArray
+            valNameArray: this.valNameArray,
+            uri: encodeURI(this.getView().store.getById('Intended Use').data.predicateUri)
         });
 
         vChooser.on('close', this.closedVPicker, this);
@@ -83,56 +96,34 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
 
     closedVPicker: function(view) {
         if (view.updatedStore) {
-            this.propNameArray = [];
-            this.getView().store.getById('Intended Use').data.values = [];
+            this.valNameArray = [];
+            Ext.Array.erase(this.getView().store.getById('Intended Use').data.values, 0, this.getView().store.getById('Intended Use').data.values.length);
             this.getView().queryById('addIntendedUseBox').clearTags();
 
             Ext.each(this.getView().store.getById('Intended Use').valuesStore.data.items, function(value) {
                 this.getView().store.getById('Intended Use').data.values.push(value.data);
-                this.propNameArray.push(value.data.label);
+                this.valNameArray.push(value.data.label);
                 this.getView().queryById('addIntendedUseBox').addTag(value.data.label);
             }, this);
-
-
         }
     },
 
     addingAlias: function(tagName, tagData, aView) {
-        this.addingTag(tagName, tagData, this.getView().store.getById('Aliases').data.values);
+        this.storeHelper.addBotLevItemInStore(tagName, tagData, this.getView().store.getById('Aliases'));
     },
 
     removingAlias: function(tagName, aView) {
-        this.removingTag(tagName, this.getView().store.getById('Aliases').data.values);
+        this.storeHelper.removeBotLevItemInStore(tagName, this.getView().store.getById('Aliases'));
     },
 
     addingIntendedUse: function(tagName, tagData, aView) {
-        this.addingTag(tagName, tagData, this.getView().store.getById('Intended Use').data.values);
-        this.propNameArray.push(tagName);
+        this.storeHelper.addBotLevItemInStore(tagName, tagData, this.getView().store.getById('Intended Use'));
+        this.valNameArray.push(tagName);
     },
 
     removingIntendedUse: function(tagName, aView) {
-        this.removingTag(tagName, this.getView().store.getById('Intended Use').data.values);
-        Ext.Array.remove(this.propNameArray, tagName);
-    },
-
-    addingTag: function(tagName, tagData, vals) {
-        var myStore = Ext.data.StoreManager.lookup('Savanna.itemView.store.MainItemStore'),
-            tagUri = tagData ? tagData.uri : null;
-
-        vals.push({editable: true, inheritedFrom: null, label: tagName, id: tagName, uri: tagUri, value: tagName, version: 0});
-    },
-
-    removingTag: function(tagName, values) {
-        for (var i = 0; i < values.length; i++) {
-            if (values[i].label === tagName) {
-                Ext.Array.remove(values, values[i]);
-                break;
-            }
-        }
-    },
-
-    itemUpdateCallback:function(records, action, success)   {
-        console.log(success);
+        this.storeHelper.removeBotLevItemInStore(tagName, this.getView().store.getById('Intended Use'));
+        Ext.Array.remove(this.valNameArray, tagName);
     },
 
     updateDescription: function(comp, e, eOpts) {

@@ -74,7 +74,7 @@ Ext.define('Savanna.components.autoComplete.AutoComplete', {
                         hideTrigger: true,
                         anchor: '100%',
                         flex: 2,
-                        queryParam: 'keyword',
+                        queryParam: 'q',
                         minChars: 1,
                         store: this.store,
                         fieldLabel: this.getPreLabel(),
@@ -97,14 +97,12 @@ Ext.define('Savanna.components.autoComplete.AutoComplete', {
     },
 
     addTag: function (tag) {
-        if (this.queryById('tag_' + tag.replace(/[\s'"]/g, "_")) === null) {
-            var newTag = Ext.create('Savanna.components.tags.Tag', {
-                itemId: 'tag_' + tag.replace(/[\s'"]/g, "_")
-            });
+        var newTag = Ext.create('Savanna.components.tags.Tag', {
+            itemId: 'tag_' + tag.replace(/[\s'"]/g, "_")
+        });
 
-            newTag.setTerm(tag);
-            this.queryById('tagsList').add(newTag);
-        }
+        newTag.setTerm(tag);
+        this.queryById('tagsList').add(newTag);
     },
 
     removeTag: function (view) {

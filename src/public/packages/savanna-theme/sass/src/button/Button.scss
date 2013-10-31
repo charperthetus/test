@@ -7,7 +7,8 @@
 
 /*                    
 * Runtime
-*/  
+*/
+
 @if $include-ext-toolbar-toolbar {
     @include uikit-button(
         $uikit-ui: 'brand-header-toolbar-small',
@@ -42,7 +43,8 @@
         $uikit-background-gradient-over: $brand-header-button-background-gradient-over,
         $uikit-background-gradient-focus: $brand-header-button-background-gradient-focus,
         $uikit-background-gradient-pressed: $brand-header-button-background-gradient-pressed,
-        $uikit-background-gradient-disabled: $brand-header-button-background-gradient-disabled
+        $uikit-background-gradient-disabled: $brand-header-button-background-gradient-disabled,
+        $uikit-text-decoration: $button-basic-text-decoration
     );
     @include uikit-button(
         $uikit-ui: 'brand-header-toolbar-medium',
@@ -77,7 +79,8 @@
         $uikit-background-gradient-over: $brand-header-button-background-gradient-over,
         $uikit-background-gradient-focus: $brand-header-button-background-gradient-focus,
         $uikit-background-gradient-pressed: $brand-header-button-background-gradient-pressed,
-        $uikit-background-gradient-disabled: $brand-header-button-background-gradient-disabled
+        $uikit-background-gradient-disabled: $brand-header-button-background-gradient-disabled,
+        $uikit-text-decoration: $button-basic-text-decoration
     );
     @include uikit-button(
         $uikit-ui: 'brand-header-toolbar-large',
@@ -112,7 +115,9 @@
         $uikit-background-gradient-over: $brand-header-button-background-gradient-over,
         $uikit-background-gradient-focus: $brand-header-button-background-gradient-focus,
         $uikit-background-gradient-pressed: $brand-header-button-background-gradient-pressed,
-        $uikit-background-gradient-disabled: $brand-header-button-background-gradient-disabled
+        $uikit-background-gradient-disabled: $brand-header-button-background-gradient-disabled,
+        $uikit-text-decoration: $button-basic-text-decoration
+
     );
     @include uikit-button(
         $uikit-ui: 'workspace-header-toolbar-small',
@@ -147,7 +152,8 @@
         $uikit-background-gradient-over: $workspace-header-button-background-gradient-over,
         $uikit-background-gradient-focus: $workspace-header-button-background-gradient-focus,
         $uikit-background-gradient-pressed: $workspace-header-button-background-gradient-pressed,
-        $uikit-background-gradient-disabled: $workspace-header-button-background-gradient-disabled
+        $uikit-background-gradient-disabled: $workspace-header-button-background-gradient-disabled,
+        $uikit-text-decoration: $button-basic-text-decoration
     );
     @include uikit-button(
         $uikit-ui: 'workspace-header-toolbar-medium',
@@ -182,7 +188,8 @@
         $uikit-background-gradient-over: $workspace-header-button-background-gradient-over,
         $uikit-background-gradient-focus: $workspace-header-button-background-gradient-focus,
         $uikit-background-gradient-pressed: $workspace-header-button-background-gradient-pressed,
-        $uikit-background-gradient-disabled: $workspace-header-button-background-gradient-disabled
+        $uikit-background-gradient-disabled: $workspace-header-button-background-gradient-disabled,
+        $uikit-text-decoration: $button-basic-text-decoration
     );
     @include uikit-button(
         $uikit-ui: 'workspace-header-toolbar-large',
@@ -217,9 +224,21 @@
         $uikit-background-gradient-over: $workspace-header-button-background-gradient-over,
         $uikit-background-gradient-focus: $workspace-header-button-background-gradient-focus,
         $uikit-background-gradient-pressed: $workspace-header-button-background-gradient-pressed,
-        $uikit-background-gradient-disabled: $workspace-header-button-background-gradient-disabled
+        $uikit-background-gradient-disabled: $workspace-header-button-background-gradient-disabled,
+        $uikit-text-decoration: $button-basic-text-decoration
     );
 }
+
+@include uikit-button(
+$uikit-ui: 'dark-small',
+$uikit-background-color: $new-savanna-tab-button-background-color,
+$uikit-background-color-over: $new-savanna-tab-button-background-color-over,
+$uikit-background-color-focus: $new-savanna-tab-button-background-color-focus,
+$uikit-background-color-pressed: $new-savanna-tab-button-background-color-pressed,
+$uikit-background-color-disabled: $new-savanna-tab-button-background-color-disabled
+
+);
+
 /*
 * Logic  
 */ 
@@ -335,5 +354,44 @@
     text-align: center;
     width:20px;
     line-height: 20px;
+  }
+}
+
+.#{$prefix}icon{
+  @each $alt-button-state in pressed, focus, over{
+    &.#{$prefix}btn-#{$alt-button-state} {
+      .#{$prefix}btn-inner{
+        text-decoration:none;
+      }
+    }
+  }
+
+  .#{$prefix}btn-inner{
+    text-decoration:none;
+  }
+}
+
+.new-savanna-tab{
+  .#{$prefix}btn-inner{
+    text-decoration:none;
+  }
+  .#{$prefix}btn-arrow{
+    padding-right: 0;
+    width: 25px;
+    &:before {
+    content: "plus";
+    right: 0;
+    font-size: 16px;
+    position: absolute;
+    text-align: center;
+    width: 25px;
+    line-height: 25px;
+    display: block;
+    font-size: 10px;
+    }
+    color:$tab-dark-color;
+    &:hover{
+      opacity:0.5;
+    }
   }
 }
