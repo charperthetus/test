@@ -37,6 +37,8 @@ Ext.define('Savanna.itemView.view.itemQualities.ValuesPicker', {
 
     layout: 'vbox',
 
+    cls:'value-picker-window',
+
     items: [
         {
             xtype: 'grid',
@@ -88,7 +90,8 @@ Ext.define('Savanna.itemView.view.itemQualities.ValuesPicker', {
     buttons: [
         {
             text: 'OK',
-            itemId: 'okBtn'
+            itemId: 'okBtn',
+            ui:'commit'
         },
         {
             text: 'cancel',

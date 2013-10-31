@@ -1,0 +1,43 @@
+
+
+.value-picker-window{
+  .#{$prefix}panel-header{
+      background-color: #ffffff;
+      padding: 7px 10px 7px 0px;
+  }
+  .#{$prefix}panel-header-body{
+    .#{$prefix}header-text{
+      color: $dark_font;
+    }
+  }
+  .#{$prefix}panel-body{
+    border-width:1px;
+  }
+  .#{$prefix}header-text-container{
+    padding:0;
+  }
+  .#{$prefix}column-header, .#{$prefix}grid-header-ct{
+    background:none;
+    border-color:transparent;
+  }
+  td, tr, table, .#{$prefix}grid-cell {
+    border-color:transparent;
+  }
+  .#{$prefix}grid-row-selected {
+    .#{$prefix}grid-td {
+      border-style: $grid-row-cell-selected-border-style;
+      border-color: $white-grid-row-cell-selected-border-color;
+      background-color: $white-grid-row-cell-selected-background-color !important;
+    }
+  }
+  .#{$prefix}grid-row-focused .#{$prefix}grid-td {
+    border-top: $grid-cell-border-width $grid-row-focus-border-style $white-grid-row-cell-focus-border-color!important;
+    border-bottom: $grid-cell-border-width $grid-row-focus-border-style $white-grid-row-cell-focus-border-color!important;
+    background-color: $white-grid-row-cell-focus-background-color;
+  }
+
+  .#{$prefix}grid-row-over .#{$prefix}grid-td {
+    border-color: $white-grid-row-cell-over-border-color;
+    background-color: $white-grid-row-cell-over-background-color;
+  }
+}

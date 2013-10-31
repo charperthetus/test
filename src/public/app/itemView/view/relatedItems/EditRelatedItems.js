@@ -26,7 +26,7 @@ Ext.define('Savanna.itemView.view.relatedItems.EditRelatedItems', {
     tools:[{
         xtype: 'button',
         itemId: 'addRelationshipType',
-        text: '+Add'
+        text: 'Add'
     }]
 
 

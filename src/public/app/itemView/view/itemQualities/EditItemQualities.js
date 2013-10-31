@@ -37,7 +37,7 @@ Ext.define('Savanna.itemView.view.itemQualities.EditItemQualities', {
         },
         {
             xtype: 'button',
-            text: 'Chooser',            
+            text: 'Chooser',
             itemId: 'qualitiesChooser'
         },
         {

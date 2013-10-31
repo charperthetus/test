@@ -23,14 +23,18 @@
   td, tr, table, .#{$prefix}grid-cell {
     border-color:transparent;
   }
+
+  .#{$prefix}column-header-inner{
+    padding: 5px 5px 5px 10px;
+  }
   .#{$prefix}grid-row{
     .#{$prefix}grid-cell-inner{
       line-height: 17px;
-      padding: 0 6px 0 5px;
+      padding: 0 6px 0 10px;
     }
     &:last-child{
       .#{$prefix}grid-cell-inner{
-        padding: 0 6px 18px 5px;
+        padding: 0 6px 18px 10px;
       }
     }
   }
@@ -68,4 +72,22 @@
     border-color:silver #d9d9d9 #d9d9d9;
      border-width:1px;
   }
+  &.edit-qualities{
+    .#{$prefix}panel-body{
+      padding:10px;
+    }
+  }
+  .related-item-edit-header{
+    padding:0 10px;
+  }
+  .related-item-edit-drop-zone{
+    border:2px dashed #959595;
+    background-color: mix(#fff, #b8edff, 15%) ;
+    padding:18px 10px 0;
+    .#{$prefix}panel-body{
+      background-color: mix(#fff, #b8edff, 15%);
+    }
+  }
+
+
 }
