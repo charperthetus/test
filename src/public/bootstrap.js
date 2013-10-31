@@ -31,6 +31,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "Savanna.modelSearch.view.searchComponent.searchBody.searchDals.SearchOptions": [],
   "Savanna.metadata.view.Classification": [],
   "Savanna.components.autoComplete.AutoCompleteController": [],
+  "Savanna.itemView.controller.AddRelationships": [],
   "Savanna.desktop.view.SavannaWorkspace": [],
   "Savanna.flexpaper.view.FlexpaperEntityWindow": [],
   "Deft.event.LiveEventBus": [
@@ -154,7 +155,6 @@ Ext.ClassManager.addNameAlternateMappings({
   "Savanna.desktop.view.SavannaDesktop": [],
   "Savanna.metadata.view.BooleanList": [],
   "Ext.ux.dd.PanelFieldDragZone": [],
-  "Savanna.itemView.controller.RelationshipPickerController": [],
   "Savanna.search.controller.resultsComponent.resultsDals.ResultsRefineTermsController": [],
   "Savanna.search.model.dalSource.CustomSearchGroup": [
     "DalCustomSearchGroup"
@@ -326,7 +326,6 @@ Ext.ClassManager.addNameAlternateMappings({
   "Deft.mvc.Application": [
     "Deft.Application"
   ],
-  "Savanna.itemView.view.relatedItems.RelationshipPicker": [],
   "Savanna.process.view.part.Canvas": [],
   "Savanna.component.DatePicker": [],
   "ThetusUikit.button.Button": [],
@@ -352,7 +351,10 @@ Ext.ClassManager.addNameAlternateMappings({
   "Deft.core.Class": [
     "Deft.Class"
   ],
+  "Savanna.itemView.store.Relationships": [],
+  "Savanna.itemView.view.header.DisplayLabel": [],
   "Savanna.crumbnet.store.Templates": [],
+  "Savanna.itemView.store.IntendedUses": [],
   "Savanna.itemView.view.createItem.ParentItems": [],
   "Savanna.metadata.view.Double": [],
   "Savanna.itemView.controller.EditQualitiesController": [],
@@ -391,7 +393,9 @@ Ext.ClassManager.addNameAlternateMappings({
   "Ext.ux.RowExpander": [],
   "Savanna.view.Viewport": [],
   "Savanna.itemView.view.relatedItems.EditRelatedItems": [],
+  "Savanna.itemView.view.header.AddIntendedUses": [],
   "Savanna.desktop.view.UploadWindow": [],
+  "Savanna.itemView.view.relatedItems.AddRelationships": [],
   "Ext.ux.event.Maker": [],
   "Savanna.itemView.controller.QualitiesPickerController": [],
   "Savanna.modelSearch.model.SearchRequest": [],
@@ -437,6 +441,7 @@ Ext.ClassManager.addNameAliasMappings({
     "widget.metadata_classification"
   ],
   "Savanna.components.autoComplete.AutoCompleteController": [],
+  "Savanna.itemView.controller.AddRelationships": [],
   "Savanna.desktop.view.SavannaWorkspace": [
     "widget.desktop_savannaworkspace"
   ],
@@ -652,7 +657,6 @@ Ext.ClassManager.addNameAliasMappings({
     "widget.metadata_booleanlist"
   ],
   "Ext.ux.dd.PanelFieldDragZone": [],
-  "Savanna.itemView.controller.RelationshipPickerController": [],
   "Savanna.search.controller.resultsComponent.resultsDals.ResultsRefineTermsController": [],
   "Savanna.search.model.dalSource.CustomSearchGroup": [],
   "Savanna.modelSearch.store.ResultsMetadata": [],
@@ -948,9 +952,6 @@ Ext.ClassManager.addNameAliasMappings({
     "widget.model_search_resultsDals_resultsterm"
   ],
   "Deft.mvc.Application": [],
-  "Savanna.itemView.view.relatedItems.RelationshipPicker": [
-    "widget.itemview_relationship_picker"
-  ],
   "Savanna.process.view.part.Canvas": [
     "widget.process_canvas"
   ],
@@ -985,7 +986,12 @@ Ext.ClassManager.addNameAliasMappings({
     "widget.itemview_imagesgrid"
   ],
   "Deft.core.Class": [],
+  "Savanna.itemView.store.Relationships": [],
+  "Savanna.itemView.view.header.DisplayLabel": [
+    "widget.itemview_displaylabel"
+  ],
   "Savanna.crumbnet.store.Templates": [],
+  "Savanna.itemView.store.IntendedUses": [],
   "Savanna.itemView.view.createItem.ParentItems": [
     "widget.itemview_parenttree"
   ],
@@ -1062,8 +1068,14 @@ Ext.ClassManager.addNameAliasMappings({
   "Savanna.itemView.view.relatedItems.EditRelatedItems": [
     "widget.itemview_edit_related_items"
   ],
+  "Savanna.itemView.view.header.AddIntendedUses": [
+    "widget.itemview_intendeduses_add_picker"
+  ],
   "Savanna.desktop.view.UploadWindow": [
     "widget.desktop_uploadwindow"
+  ],
+  "Savanna.itemView.view.relatedItems.AddRelationships": [
+    "widget.itemview_relationship_type_picker"
   ],
   "Ext.ux.event.Maker": [],
   "Savanna.itemView.controller.QualitiesPickerController": [],

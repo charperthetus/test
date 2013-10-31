@@ -1,34 +1,39 @@
-/**
- * Created with IntelliJ IDEA.
- * User: ksonger
- * Date: 10/28/13
- * Time: 11:31 AM
- * To change this template use File | Settings | File Templates.
- */
-
-Ext.define('Savanna.itemView.view.createItem.ParentItemsTreePanel' ,{
+Ext.define('Savanna.itemView.view.createItem.ParentItemsTreePanel', {
     extend: 'Ext.tree.Panel',
-    alias : 'widget.itemview_treepanel',
-    store: 'Savanna.itemView.store.ParentItemsStore',
-    requires:   [
-        'Savanna.itemView.store.ParentItemsStore'
+
+    requires: [
+        'Ext.tree.*',
+        'Ext.data.*',
+        'Savanna.itemView.store.ParentItemsStore',
+        'Savanna.itemView.model.ParentItemsTreeModel'
     ],
+
+    alias: 'widget.itemview_treepanel',
+
+    useArrows: true,
+
     titleCollapse: true,
     rootVisible: false,
     width: '100%',
-    height:400,
-    forceFit:true,
+    height: 400,
+    forceFit: true,
     displayField: 'label',
+    rootId: '183710',
 
-    cls: 'treepanel-hideexpand',
+    listeners: {
+        beforeitemclick: function(view, record, item, index, e, eOpts)    {
+            this.store.getProxy().url = SavannaConfig.itemViewPerspective + record.data.id;
 
-    mixins: {
-        storeable: 'Savanna.mixin.Storeable'
+            this.up('itemview_create_item').selectedParentUri = record.get('uri');
+
+            Savanna.app.fireEvent('itemview:treepanel:itemclick', view, record, item, index, e, eOpts);
+        }
     },
 
-    initComponent: function() {
-        this.mixins.storeable.initStore.call(this);
-        this.store.load();
-        this.callParent(arguments);
+    initComponent: function () {
+        Ext.apply(this, {
+            store: new Savanna.itemView.store.ParentItemsStore({})
+        });
+        this.callParent();
     }
 });
