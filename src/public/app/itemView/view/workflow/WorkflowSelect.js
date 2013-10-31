@@ -87,15 +87,15 @@ Ext.define('Savanna.itemView.view.workflow.WorkflowSelect', {
     },
 
     onWorkflowChange: function () {
-        console.log('workflow change event');
+        //console.log('workflow change event');
         this.up('itemview_workflow_select').changeValue = this.lastValue.workflow_options;
     },
     onWorkflowCommit: function () {
-        console.log('workflow commit event, action is: ' + this.up('itemview_workflow_select').changeValue);
+        //console.log('workflow commit event, action is: ' + this.up('itemview_workflow_select').changeValue);
         this.up('itemview_workflow_select').close();
     },
     onWorkflowCancel: function () {
-        console.log('workflow cancel event');
+        //console.log('workflow cancel event');
         this.up('itemview_workflow_select').close();
     }
 });

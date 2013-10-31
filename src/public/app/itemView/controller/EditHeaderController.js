@@ -39,7 +39,8 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
             'AutoComplete:TagRemoved': 'removingIntendedUse'
         },
         itemDescription: {
-            blur: 'updateDescription'
+            blur: 'updateDescription',
+            change: 'saveEnable'
         }
     },
 
@@ -83,6 +84,7 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
     },
 
     onIntendedUsesSelect:function() {
+
         var vChooser = Ext.create('Savanna.itemView.view.itemQualities.ValuesPicker', {
             width: 500,
             height: 600,
@@ -105,29 +107,39 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
                 this.valNameArray.push(value.data.label);
                 this.getView().queryById('addIntendedUseBox').addTag(value.data.label);
             }, this);
+
+            Savanna.app.fireEvent('ItemView:SaveEnable');
         }
     },
 
     addingAlias: function(tagName, tagData, aView) {
         this.storeHelper.addBotLevItemInStore(tagName, tagData, this.getView().store.getById('Aliases'));
+        Savanna.app.fireEvent('ItemView:SaveEnable');
     },
 
     removingAlias: function(tagName, aView) {
         this.storeHelper.removeBotLevItemInStore(tagName, this.getView().store.getById('Aliases'));
+        Savanna.app.fireEvent('ItemView:SaveEnable');
     },
 
     addingIntendedUse: function(tagName, tagData, aView) {
         this.storeHelper.addBotLevItemInStore(tagName, tagData, this.getView().store.getById('Intended Use'));
         this.valNameArray.push(tagName);
+        Savanna.app.fireEvent('ItemView:SaveEnable');
     },
 
     removingIntendedUse: function(tagName, aView) {
         this.storeHelper.removeBotLevItemInStore(tagName, this.getView().store.getById('Intended Use'));
         Ext.Array.remove(this.valNameArray, tagName);
+        Savanna.app.fireEvent('ItemView:SaveEnable');
     },
 
     updateDescription: function(comp, e, eOpts) {
         var myStore = this.getView().store;
         myStore.getById('Description').data.values[0].value = comp.value;
+    },
+
+    saveEnable:function()   {
+        Savanna.app.fireEvent('ItemView:SaveEnable');
     }
 });

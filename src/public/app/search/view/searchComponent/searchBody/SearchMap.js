@@ -31,7 +31,8 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.SearchMap', {
         {
             xtype: 'button',
             itemId: 'drawLocationSearch',
-            glyph: 61772
+            glyph: 'polygonTop',
+            ui: 'basic'
         }
     ],
     dockedItems: [
