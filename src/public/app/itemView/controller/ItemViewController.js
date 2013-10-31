@@ -216,10 +216,11 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
             var imagesBrowserComponent = me.getView().queryById('itemViewImagesGrid'),
                 imagesBrowserComponentEdit = me.getView().queryById('itemViewImagesEdit');            
             
+            imagesBrowserComponent.store = record[0].propertyGroupsStore.getById('Images').valuesStore;
             imagesBrowserComponentEdit.store = record[0].propertyGroupsStore.getById('Images').valuesStore;
             
-            imagesBrowserComponent.fireEvent('ViewImagesGrid:Setup', record[0].propertyGroupsStore.getById('Images').valuesStore.getById('Images').valuesStore.data.items);
-            imagesBrowserComponentEdit.fireEvent('EditImagesGrid:Setup', record[0].propertyGroupsStore.getById('Images').valuesStore.getById('Images').valuesStore.data.items);
+            imagesBrowserComponent.fireEvent('ViewImagesGrid:Setup');
+            imagesBrowserComponentEdit.fireEvent('EditImagesGrid:Setup');
 
             /*
             are we creating a new item?
