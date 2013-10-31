@@ -68,8 +68,12 @@ Ext.define('Savanna.metadata.controller.MetadataViewController', {
             Ext.Array.each(theStore.data.items, function(storeData) {
                 if(storeData.get('key') == key) {
                     if(storeData.get('value') !== metadata.value || ( Ext.isArray(metadata.value) && !Ext.Array.equals(metadata.value, storeData.get('value'))  )) {
-                        storeData.set('value', metadata.value);
-                        stuffChanged = true;
+                        if(key === 'classification') {
+                            me.saveClassification(metadata.getValue());
+                        } else {
+                            storeData.set('value', metadata.value);
+                            stuffChanged = true;
+                        }
                     }
                     return false; // terminate this inner loop
                 }
@@ -199,9 +203,21 @@ Ext.define('Savanna.metadata.controller.MetadataViewController', {
             })
         }
         return fieldView;
+    },
+
+    saveClassification: function(portionMarking) {
+        Ext.Ajax.request({
+            url: SavannaConfig.capcoUrl + this.getView().getItemURI() + ';jsessionid=' + Savanna.jsessionid,
+            method: 'POST',
+            jsonData: Ext.JSON.encode(portionMarking),
+            callback: this.onClassificationSaved,
+            scope: this
+        });
+    },
+
+    onClassificationSaved: function() {
+        EventHub.fireEvent('classificationchanged', this.getView().getItemURI());
     }
-
-
 
 
 });
