@@ -80,7 +80,8 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
     // Convenience handler to generate a new auto-complete
     createNewAutoComplete: function(data) {
         var me = this,
-            predicateUri = data.predicateUri ? Ext.Object.fromQueryString(data.predicateUri): data.uri,
+            predicateUri = data.predicateUri ? encodeURI(data.predicateUri): encodeURI(data.uri);
+
             picker = Ext.create('Ext.button.Button', {
                 text: 'Chooser',
                 itemId: 'valuesChooser',
@@ -96,8 +97,8 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
                 hasControls: true,
                 isClosable: true,
                 store: Ext.create('Savanna.itemView.store.AutoCompleteStore', {
-                    urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/mockModelSearch/keyword/property/' + predicateUri,
-                    paramsObj: { excludeUri:'', pageStart:0, pageLimit:10, keyword: 'asdf' }
+                    urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/model/search/keyword/property/' + predicateUri,
+                    paramsObj: { pageStart:0, pageSize:20, alphabetical: true }
                 })
             });
         this.propNameArray.push(data.label);
@@ -128,7 +129,8 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
             width: 500,
             height: 600,
             selectionStore: this.getView().store.getById(storeName).valuesStore,
-            valNameArray: valNameArray
+            valNameArray: valNameArray,
+            uri: encodeURI(this.getView().store.getById(storeName).data.predicateUri)
         });
 
         vChooser.on('close', this.closedVPicker, this, storeName);
