@@ -34,17 +34,24 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
         return gmake(go.Panel, go.Panel.Auto, this.styler().stepGadget({
             "click": Savanna.process.utils.ProcessUtils.addStep
         }).panel,
-            gmake(go.Shape, this.styler().stepGadget().circle, {
-            mouseEnter: function (e, obj) {
-                obj.fill = '#7cc19d';
-            },
-            mouseLeave: function (e, obj) {
-                obj.fill = '#3d8060';
-            }
-        }
+            gmake(go.Shape, this.styler().stepGadget().circle
 
         ),
-            gmake(go.Shape, this.styler().stepGadget().plusLine));
+            gmake(go.Shape, this.styler().stepGadget().plusLine)    , {
+            mouseEnter: function(e, obj) {
+                obj.opacity = 0.7;
+                console.log(obj);
+                console.log(obj.memberParts);
+                  var it = obj.memberParts;
+                         while (it.next()) {
+                           var item = it.value;
+                             console.log(item);
+                         }
+            },
+            mouseLeave: function (e, obj) {
+                obj.opacity = 1.0;
+            }
+        });
     },
 
     makeDecisionGadget: function () {
@@ -493,35 +500,14 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                     group.isSelected = true;
                 },
                 mouseEnter: function (e, obj) {
-                    var buttonFillOver = '#454545';
-                    var buttonFillOver = '#666666';
-                    var buttonStrokeOver = null;
-
-                    var button = obj;
-                    var diagram = button.diagram;
-                    var shape = button.elt(0); // the border Shape
-                    var brush = button["_buttonFillOver"];
-                    if (brush === undefined) brush = buttonFillOver;
-                    button["_buttonFillNormal"] = shape.fill;
-                    shape.fill = brush;
-                    brush = button["_buttonStrokeOver"];
-                    if (brush === undefined) brush = buttonStrokeOver;
-                    button["_buttonStrokeNormal"] = shape.stroke;
-                    shape.stroke = brush;
-
-
+                    var shape = obj.elt(0);
+                    shape.fill = '#666666';
+                    shape.stroke = null;
                 },
                 mouseLeave: function (e, obj) {
-                    var button = obj;
-                    var diagram = button.diagram;
-                    var shape = button.elt(0); // the border Shape
-                    var brush = button["_buttonFillNormal"];
-                    if (brush === undefined) brush = buttonFillNormal
-                    shape.fill = brush;
-                    brush = button["_buttonStrokeNormal"];
-                    if (brush === undefined) brush = buttonStrokeNormal;
-                    shape.stroke = brush;
-
+                    var shape = obj.elt(0);
+                    shape.fill = "#454545";
+                    shape.stroke = null;
                 }
 
             },
