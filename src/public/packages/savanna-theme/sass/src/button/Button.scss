@@ -227,6 +227,16 @@
         $uikit-background-gradient-disabled: $workspace-header-button-background-gradient-disabled,
         $uikit-text-decoration: $button-basic-text-decoration
     );
+    
+    @include uikit-button(
+        $uikit-ui: 'toggle-toolbar-small',
+        $uikit-padding: $button-toggle-padding,
+        $uikit-text-padding: $button-toggle-text-padding,
+        $uikit-color: $button-toggle-color-pressed,
+        $uikit-color-pressed: $button-toggle-color-pressed,
+        $uikit-color-over: $button-toggle-color-pressed,
+        $uikit-color-focus: $button-toggle-color-pressed
+    );
 }
 
 @include uikit-button(
