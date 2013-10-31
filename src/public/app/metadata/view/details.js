@@ -70,42 +70,15 @@ Ext.define('Savanna.metadata.view.Details', {
         var me = this;
         if(undefined != oldEditMode ) { // don't want to do this on init
             me.down('#wrapperPanel').removeAll();
-            me.getController().createMetadataFields();
+            this.fireEvent('create_metadata_fields', this);
+            this.getController().createMetadataFields();
         }
-    },
-
-    updateItemURI: function(newURI, oldURI) {
-        if(undefined != oldURI ) { // don't want to do this on init
-            this.down('#wrapperPanel').removeAll();
-        }
-        console.log('updateItemURI');
-        this.store.itemURI = newURI;
-        this.store.load({
-            scope: this,
-            callback: function(records, operation, success) {
-                this.getController().createMetadataFields();
-            }
-        });
-
     },
 
     initComponent: function () {
         this.callParent(arguments);
 
         var config = this.initialConfig || {};
-        this.store = Ext.create('Savanna.metadata.store.Metadata');
-
-        if(config.itemURI) {
-            this.setItemURI( config.itemURI );
-
-            this.store.itemURI = config.itemURI;
-            this.store.load({
-                scope: this,
-                callback: function(records, operation, success) {
-                    this.getController().createMetadataFields();
-                }
-            });
-        }
     }
 
 });
