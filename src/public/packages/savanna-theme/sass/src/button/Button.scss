@@ -420,33 +420,33 @@
 }
 
 .new-savanna-tab{
-    .#{$prefix}btn-inner{
-        text-decoration:none;
+  .#{$prefix}btn-inner{
+    text-decoration:none;
+  }
+  .#{$prefix}btn-arrow{
+    padding-right: 0;
+    width: 25px;
+    &:before {
+    content: "plus";
+    right: 0;
+    font-size: 16px;
+    position: absolute;
+    text-align: center;
+    width: 25px;
+    line-height: 25px;
+    display: block;
+    font-size: 10px;
     }
-    .#{$prefix}btn-arrow{
-        padding-right: 0;
-        width: 25px;
-        &:before {
-            content: "plus";
-            right: 0;
-            font-size: 16px;
-            position: absolute;
-            text-align: center;
-            width: 25px;
-            line-height: 25px;
-            display: block;
-            font-size: 10px;
-        }
-        color:$tab-dark-color;
-        &:hover{
-            opacity:0.5;
+    color:$tab-dark-color;
+    &:hover{
+      opacity:0.5;
     }
-}
+  }
 }
 
 .image-browser-control{
   .#{$prefix}btn-glyph{
-    line-height:98px;
+    line-height:78px;
   }
 }
 #removeSelectedValue, #removeSelectedQuality{

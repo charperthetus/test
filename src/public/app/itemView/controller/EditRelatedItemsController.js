@@ -43,14 +43,14 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
                     listeners: {
                         boxready: Ext.bind(this.onDropItemReady, this)
                     },
-                    height: 130,
+                    height:79,
                     width: '100%',
                     margin:'0 10 10 10',
-                    cls:'related-item-edit-drop-zone',
-//                    bodyStyle:'width:100%;',
+                    cls:'related-item-drop-zone',
                     layout: {
-                        type: 'vbox',
-                        align: 'center'
+                        type: 'hbox',
+                        align: 'middle',
+                        pack: 'center'
                     },
                     items: [
                         {
@@ -62,6 +62,7 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
                         {
                             xtype: 'label',
                             text: 'OR',
+                            margin:'0 20 0 20',
                             cls:['h2'],
                             height: 20
                         },
@@ -75,8 +76,7 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
                                 urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/model/search/keyword/property/' + encodeURI(relatedItemsGroup.get('predicateUri')),
                                 paramsObj: { pageStart:0, pageSize:20, alphabetical: true }
                             }),
-                            flex: 0,
-                            width:200,
+                            width:160,
                             listeners: {
                                 'AutoComplete:ItemSelected': Ext.bind(this.addRelatedItem, this)
                             }
@@ -120,7 +120,7 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
             this.getView().storeHelper.updateMainStore(this.getView().store.data.items, "Related Items");
             this.setupData(this.getView().store.data.items);
 //            this.updateTitle();
-            Savanna.app.fireEvent('ItemView:SaveEnable');
+            this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
         }
     },
 
@@ -214,13 +214,13 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
         item.value = itemUri;
         myPanel.add(this.buildAddItem(item, relatedItemGroupName));
         this.getView().storeHelper.addBotLevItemInStore(itemLabel, itemRecord, this.getView().store.getById(relatedItemGroupName));
-        Savanna.app.fireEvent('ItemView:SaveEnable');
+        this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
     },
 
     // Removing the tag from the store on a child auto-complete
     removeItem: function(itemName, groupName) {
         this.getView().storeHelper.removeBotLevItemInStore(itemName, this.getView().store.getById(groupName));
-        Savanna.app.fireEvent('ItemView:SaveEnable');
+        this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
     }
 
 });
