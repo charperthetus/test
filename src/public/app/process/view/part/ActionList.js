@@ -33,8 +33,7 @@ Ext.define('Savanna.process.view.part.ActionList', {
 
     title: 'Actions',
     titleAlign: 'left',
-    emptyText: 'No Actions',
-
+    emptyText: 'No Matches',
     hideHeaders: true,
     columns: [
         {
@@ -44,27 +43,29 @@ Ext.define('Savanna.process.view.part.ActionList', {
     ],
 
     tbar:
-        {   margin: 10,
-            items: [
-                {
-                    //xtype: 'thetus-searchfield',
-                    xtype: 'textfield',
-                    width: 143,
-                    itemId: 'actiontext',
-                    emptyText: 'Find and Add Actions'
-                },
-                {
-                    xtype: 'button',
-                    width:25,
-                    height:25,
-                    cls: 'toolbarButtonFramework',
-                    ui: 'icon-dark',
-                    glyph: 'add',
-                    itemId: "createaction",
-                    tooltip: 'Create',
-                    hidden: true
-                }
-            ]},
+    {   margin: 8,
+        style: {
+            "background": '#F2F2F2'
+        },
+        items: [
+            {
+                xtype: 'textfield',
+                width: 143,
+                itemId: 'actiontext',
+                emptyText: 'Find and Add Actions'
+            },
+            {
+                xtype: 'button',
+                width:25,
+                height:25,
+                cls: 'toolbarButtonFramework',
+                ui: 'icon-dark',
+                glyph: 'add',
+                itemId: "createaction",
+                tooltip: 'Create',
+                hidden: true
+            }
+        ]},
 
     initComponent: function() {
         //each instance of this grid needs its own store otherwise, a change to the store will result in ALL palettes changing

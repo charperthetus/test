@@ -94,7 +94,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
             width: 20,
             fill: 'white'
         })),
-            gmake(go.TextBlock, this.styler().rectangle().textblock, new go.Binding('text', 'text').makeTwoWay())),
+            gmake(go.TextBlock, this.styler().rectangle().textblock, new go.Binding('text', 'label').makeTwoWay())),
             gmake(go.Panel, go.Panel.Spot, {
             background: 'white',
             padding: 2,
@@ -152,7 +152,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
 
         nodeTemplateMap.add('ProcessAction',
             gmake(go.Node, go.Panel.Spot, Savanna.process.utils.ViewTemplates.nodeStyle(),
-            gmake(go.TextBlock, this.styler().circle().textblock, new go.Binding('text', 'text').makeTwoWay(), {
+            gmake(go.TextBlock, this.styler().circle().textblock, new go.Binding('text', 'label').makeTwoWay(), {
             mouseEnter: function (e, obj) {
                 obj.isUnderline = true;
             },
@@ -225,7 +225,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
             column: 1,
             margin: 0
         }),
-            gmake(go.TextBlock, this.styler().diamond().textblock, new go.Binding('text', 'text').makeTwoWay())),
+            gmake(go.TextBlock, this.styler().diamond().textblock, new go.Binding('text', 'label').makeTwoWay())),
             gmake(go.Panel, go.Panel.Spot, {
             background: 'transparent',
             padding: 2,
@@ -295,7 +295,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
             defaultAlignment: go.Spot.Center
         },
             gmake(go.Shape, 'Circle', this.styler().paletteCircle().outline),
-            gmake(go.TextBlock, this.styler().paletteCircle().textblock, new go.Binding('text', 'text').makeTwoWay()))));
+            gmake(go.TextBlock, this.styler().paletteCircle().textblock, new go.Binding('text', 'label').makeTwoWay()))));
 
         paletteTemplateMap.add('ProcessItem',
             gmake(go.Node, go.Panel.Spot, Savanna.process.utils.ViewTemplates.nodeStyle(),
@@ -304,7 +304,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
             defaultAlignment: go.Spot.Center
         },
             gmake(go.Shape, 'Rectangle', this.styler().paletteRectangle().outline),
-            gmake(go.TextBlock, this.styler().paletteRectangle().textblock, new go.Binding('text', 'text').makeTwoWay()))));
+            gmake(go.TextBlock, this.styler().paletteRectangle().textblock, new go.Binding('text', 'label').makeTwoWay()))));
 
         paletteTemplateMap.add('DecisionPoint',
             gmake(go.Node, go.Panel.Spot, Savanna.process.utils.ViewTemplates.nodeStyle(),
@@ -312,7 +312,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
             defaultAlignment: go.Spot.Center
         },
             gmake(go.Shape, 'Diamond', this.styler().paletteDiamond().outline),
-            gmake(go.TextBlock, this.styler().paletteDiamond().textblock, new go.Binding('text', 'text').makeTwoWay()))));
+            gmake(go.TextBlock, this.styler().paletteDiamond().textblock, new go.Binding('text', 'label').makeTwoWay()))));
 
         return paletteTemplateMap;
     },
@@ -345,7 +345,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
             gmake(go.Shape, 'RoundedRectangle', this.styler().linker().roundedRectangle),
             gmake(go.TextBlock, 'Choice', // the label
         this.styler().linker().textblockProcess,
-            new go.Binding('text', 'text').makeTwoWay())), {
+            new go.Binding('text', 'label').makeTwoWay())), {
 
             selectionAdornmentTemplate: gmake(go.Adornment,
                 gmake(go.Shape,
@@ -561,7 +561,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
             this.styler().processModel().panelHorizontal,
         // the SubGraphExpanderButton is a panel that functions as a button to expand or collapse the subGraph
         gmake('PanelExpanderButton'),
-            gmake(go.TextBlock, this.styler().processModel().textblock, new go.Binding('text', 'text').makeTwoWay())),
+            gmake(go.TextBlock, this.styler().processModel().textblock, new go.Binding('text', 'label').makeTwoWay())),
         // create a placeholder to represent the area where the contents of the group are
         gmake(go.Placeholder, this.styler().processModel().placeholder,
 
@@ -703,7 +703,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
             this.styler().processModel().panelHorizontal,
         // the SubGraphExpanderButton is a panel that functions as a button to expand or collapse the subGraph
         gmake('PanelExpanderButton'),
-            gmake(go.TextBlock, this.styler().altsGroup().textblock, new go.Binding('text', 'text').makeTwoWay())),
+            gmake(go.TextBlock, this.styler().altsGroup().textblock, new go.Binding('text', 'label').makeTwoWay())),
             gmake(go.Placeholder, this.styler().altsGroup({
             "mouseDrop": Savanna.process.utils.GroupEventHandlers.onActionGroupMouseDrop
         }).placeholder)),

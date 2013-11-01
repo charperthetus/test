@@ -11,11 +11,11 @@ Ext.define('Savanna.itemView.view.createItem.ParentItemsTreePanel', {
     alias: 'widget.itemview_treepanel',
 
     useArrows: true,
-
     titleCollapse: true,
     rootVisible: false,
     width: '100%',
     height: 400,
+    style: "line-height: 21;",
     forceFit: true,
     displayField: 'label',
     rootId: '183710',

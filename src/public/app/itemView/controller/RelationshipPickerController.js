@@ -41,7 +41,7 @@ Ext.define('Savanna.itemView.controller.RelationshipPickerController', {
             store.remove(store.getById(record.data.label));
         }
 
-        Savanna.app.fireEvent('ItemView:SaveEnable');
+        this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
     },
 
     saveRelationshipSelections: function () {
@@ -49,7 +49,7 @@ Ext.define('Savanna.itemView.controller.RelationshipPickerController', {
         this.getView().getSelectionStore().add(this.getView().relationshipSelectStore.getRange());
         this.getView().updatedStore = true;
         this.getView().close();
-        Savanna.app.fireEvent('ItemView:SaveEnable');
+        this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
     },
 
     cancelRelationshipSelections: function () {

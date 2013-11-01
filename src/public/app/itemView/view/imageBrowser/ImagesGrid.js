@@ -17,7 +17,9 @@ Ext.define('Savanna.itemView.view.imageBrowser.ImagesGrid', {
         itemId: 'imagePrimary',
         layout: 'border',
         height: 300,
-        width: 450,
+        width: '100%',
+        padding:'10',
+        bodyCls:'image-grid-inner-main',
 
         // Image Description Item
         items: [{
@@ -35,13 +37,15 @@ Ext.define('Savanna.itemView.view.imageBrowser.ImagesGrid', {
         height: 100,
         margin: 10,
         overflowX: 'auto',
+        padding:'10',
+        bodyCls:'image-grid-inner-nav',
         
         // Controls and gallery
         items: [{
             xtype: 'button',
             itemId: 'navLeft',
             cls:'image-browser-control',
-            height: 100,
+            height: 80,
             glyph: 'arrowNavLeft'
         }, {
             
@@ -56,7 +60,7 @@ Ext.define('Savanna.itemView.view.imageBrowser.ImagesGrid', {
             glyph: 'arrowNavRight',
             cls:'image-browser-control',
             itemId: 'navRight',
-            height: 100
+            height: 80
         }]
     }]
 });

@@ -103,35 +103,35 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
                 this.getView().queryById('addIntendedUseBox').addTag(value.data.label);
             }, this);
 
-            Savanna.app.fireEvent('ItemView:SaveEnable');
+            this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
         }
     },
 
     addingAlias: function(tagName, tagData, aView) {
         this.getView().storeHelper.addBotLevItemInStore(tagName, tagData, this.getView().store.getById('Aliases'));
-        Savanna.app.fireEvent('ItemView:SaveEnable');
+        this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
     },
 
     removingAlias: function(tagName, aView) {
         this.getView().storeHelper.removeBotLevItemInStore(tagName, this.getView().store.getById('Aliases'));
-        Savanna.app.fireEvent('ItemView:SaveEnable');
+        this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
     },
 
     addingIntendedUse: function(tagName, tagData, aView) {
         this.getView().storeHelper.addBotLevItemInStore(tagName, tagData, this.getView().store.getById('Intended Use'));
         this.valNameArray.push(tagName);
-        Savanna.app.fireEvent('ItemView:SaveEnable');
+        this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
     },
 
     removingIntendedUse: function(tagName, aView) {
         this.getView().storeHelper.removeBotLevItemInStore(tagName, this.getView().store.getById('Intended Use'));
         Ext.Array.remove(this.valNameArray, tagName);
-        Savanna.app.fireEvent('ItemView:SaveEnable');
+        this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
     },
 
     updateDescription: function(comp, e, eOpts) {
         var myStore = this.getView().store;
         myStore.getById('Description').data.values[0].value = comp.value;
-        Savanna.app.fireEvent('ItemView:SaveEnable');
+        this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
     }
 });
