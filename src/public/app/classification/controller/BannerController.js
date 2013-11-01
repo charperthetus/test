@@ -33,6 +33,15 @@ Ext.define('Savanna.classification.controller.BannerController', {
         this.callParent(arguments);
     },
 
+    destroy: function() {
+        // remove listener from event hub
+        EventHub.un('classificationchanged', this.onClassificationChanged, this);
+
+        // allow destruction
+        return this.callParent(arguments);
+    },
+
+
     onSuccess: function(response) {
         var responseData = Ext.JSON.decode(response.responseText);
         if(responseData.formattedStrings) {
