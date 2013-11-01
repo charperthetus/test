@@ -125,16 +125,15 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
      *  form search. 
      */
     setupFileDrop: function() {
-        var me = this;
-        var dropTarget = me.getView().queryById('itemViewUploadImages').getEl(),
+        var dropTarget = this.getView().queryById('itemViewUploadImages').getEl(),
             dropTargetDom = dropTarget.dom;
 
         // Sets up the EXT drop
         if (dropTarget) {
             dropTarget.dropTarget = Ext.create('Ext.dd.DropTarget', dropTarget.dom, {
                 ddGroup: 'SEARCH-ITEMS', // MUST MATCH THE DDGROUP IN SEARCH!!!
-                notifyOver: Ext.Function.bind(me.notifyImageDragHover, me),
-                notifyDrop: Ext.Function.bind(me.notifyImageDragDrop, me)
+                notifyOver: this.notifyImageDragHover,
+                notifyDrop: Ext.bind(this.notifyImageDragDrop, this)
             });
         }
 
