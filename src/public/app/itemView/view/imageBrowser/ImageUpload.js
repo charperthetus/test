@@ -30,7 +30,7 @@ Ext.define('Savanna.itemView.view.imageBrowser.ImageUpload', {
     items: [{
         xtype: 'label',
         text: 'Drop Images Here',
-        cls:'drag-and-drop',
+        cls:'drag-and-drop'
     }, {
         xtype: 'label',
         text: 'OR',

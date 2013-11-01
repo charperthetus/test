@@ -50,7 +50,7 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
                     layout: {
                         type: 'hbox',
                         align: 'middle',
-                        pack: 'center',
+                        pack: 'center'
                     },
                     items: [
                         {

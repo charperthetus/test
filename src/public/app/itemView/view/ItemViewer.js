@@ -61,7 +61,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                 layout:{
                     type: 'hbox',
                     pack: 'start',
-                    align : 'stretch',
+                    align : 'stretch'
                 },
                 overflowY: 'auto',
                 tbar:{
@@ -261,7 +261,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                             {
                                 xtype: 'itemview_edit_header',
                                 itemId: 'itemViewHeaderEdit',
-                                cls:'white-grid-view-panel-edit',
+                                cls:'white-grid-view-panel-edit'
                             },
                             {
                                 xtype: 'itemview_related_processes',
