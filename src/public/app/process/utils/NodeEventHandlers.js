@@ -17,8 +17,7 @@ Ext.define('Savanna.process.utils.NodeEventHandlers', {
         data.records.forEach(function(rec) {
             var obj = rec.data;
             if (obj.type === 'Item') {
-                obj.type = 'ProcessItem';
-                Savanna.process.utils.ProcessUtils.addNode(part, 'ProcessItem', obj.label, true, obj.uri);
+                Savanna.process.utils.ProcessUtils.addNode(part, 'ProcessItem', obj.label, obj.uri, 'ProcessLink');
             }
         });
     },

@@ -325,6 +325,12 @@ Ext.define('Savanna.process.controller.ProcessController', {
 
     notifyDropTarget: function(ddSource, e, data){
         var part = this.getDiagramPart(e);
+
+        if (this.prevOver && this.prevOver.mouseDragLeave) {
+            this.prevOver.mouseDragLeave(e, this.prevOver);
+            this.prevOver = null;
+        }
+
         if (part && part.mouseDrop) {
             return part.mouseDrop(e, part, data);
         }
