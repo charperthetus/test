@@ -13,16 +13,16 @@ Ext.define('Savanna.process.view.part.PaletteWindow', {
         'Ext.layout.container.Accordion',
         'Savanna.process.view.part.ItemList',
         'Savanna.process.view.part.ActionList',
-        'Savanna.process.controller.PaletteController'
+        'Savanna.process.controller.PaletteController',
+        'Savanna.component.layout.VBoxSlide'
     ],
 
     controller: 'Savanna.process.controller.PaletteController',
     resizeHandles :'n s e w nw se sw',
     resizable: true,
     layout: {
-        type: 'accordion',
-        titleCollapse: true,
-        multi: false //do we want to allow multiple sections open at the same time?
+        type: 'vboxSlide',
+        titleCollapse: false
     },
     bodyStyle: {
         "background":'#F2F2F2'
@@ -38,9 +38,6 @@ Ext.define('Savanna.process.view.part.PaletteWindow', {
     closable: false,
     constrain: true, //limit this window to the parent container
     width: 200,
-
-    // Spec says this should be 300px tall but there isn't enough content currently in to make this height look ok, so for now this is 290.
-    height: 290,
     ghost: false,
     items: [],
 
@@ -58,6 +55,9 @@ Ext.define('Savanna.process.view.part.PaletteWindow', {
             {
                 xtype: 'process_itemlist',
                 itemId: 'itemlist',
+                collapsible: true,
+                collapsed:true,
+                width:"100%",
                 header: {
                     xtype: 'header',
                     cls: 'process-header-font',
@@ -75,6 +75,9 @@ Ext.define('Savanna.process.view.part.PaletteWindow', {
             {
                 xtype: 'process_actionlist',
                 itemId: 'actionlist',
+                collapsible: true,
+                collapsed:true,
+                width:"100%",
                 header: {
                     xtype: 'header',
                     cls: 'process-header-font',
