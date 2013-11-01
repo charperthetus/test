@@ -179,11 +179,13 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                     {
                         xtype: 'panel',
                         itemId: 'itemInfoPanel',
-                        title: 'details',
+                        title: 'Details',
                         cls:['white-grid-view-panel-edit', 'item-view-column'],
                         autoScroll: true,
                         width: '30%',
                         layout: 'vbox',
+                        collapsible: true,
+                        collapseDirection: 'left',
                         items: [
 //                            {
 //                                xtype: 'metadata_details',
@@ -326,11 +328,13 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                     {
                         xtype: 'panel',
                         itemId: 'itemInfoPanel',
-                        title: 'details',
+                        title: 'Details',
                         width: '30%',
                         cls:['white-grid-view-panel-edit', 'item-view-column'],
                         autoScroll: true,
                         layout: 'vbox',
+                        collapsible: true,
+                        collapseDirection: 'left',
                         items: [
 //                            {
 //                                xtype: 'metadata_details',

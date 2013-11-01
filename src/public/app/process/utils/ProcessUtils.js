@@ -57,10 +57,13 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
     },
 
     startTextEdit: function(diagram, nodeData) {
-        diagram.clearSelection();
-        var node = diagram.findNodeForData(nodeData);
-        node.isSelected = true;
-        diagram.commandHandler.editTextBlock(node.findObject('TEXT'));
+// Turn off auto starting text edit for now,
+// since it occasionally leads to whole diagram lock ups.
+// Some sort of timing issue perhaps?
+//        diagram.clearSelection();
+//        var node = diagram.findNodeForData(nodeData);
+//        node.isSelected = true;
+//        diagram.commandHandler.editTextBlock(node.findObject('TEXT'));
     },
 
     toggleGadgets: function(obj, show) {
@@ -91,7 +94,7 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         }
     },
 
-    addNode: function(obj, category, description, fromObj, classUri) {
+    addNode: function(obj, category, description, classUri, linkType) {
         var diagram = obj.diagram;
         diagram.startTransaction('addNode');
         var tobj = obj.part;
@@ -105,23 +108,19 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
 
         diagram.model.addNodeData(nodeData);
 
-        var linkData;
-        if (fromObj) {
-            linkData = { category: 'ProcessLink', from: tobj.data.uri, to: nodeData.uri };
-        } else {
-            linkData = { category: 'ProcessLink', from: nodeData.uri, to: tobj.data.uri };
-        }
+        var linkData = { category: linkType, from: tobj.data.uri, to: nodeData.uri };
         if (tobj.category == 'DecisionPoint') {
             linkData.visible = true;
         }
         linkData.uri = Savanna.process.utils.ProcessUtils.getURI('ProcessLink');
         diagram.model.addLinkData(linkData);
+
         diagram.commitTransaction('addNode');
         Savanna.process.utils.ProcessUtils.startTextEdit(diagram, nodeData);
     },
 
     addDecision: function(e, obj) {
-        Savanna.process.utils.ProcessUtils.addNode(obj, 'DecisionPoint', 'Decision', true);
+        Savanna.process.utils.ProcessUtils.addNode(obj, 'DecisionPoint', 'Decision', null, 'ProcessLink');
     },
 
     addStepPart: function(obj, category, label, linkType) {
@@ -175,14 +174,14 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         Savanna.process.utils.ProcessUtils.startTextEdit(diagram, nodeData);
     },
 
-    addAction: function(e, obj) {
+    addAction: function(obj, label, classUri) {
         var diagram = obj.diagram;
         diagram.startTransaction('addAction');
 
-        var tobj = obj.panel.panel.part;
-        var nodeData = {'category': 'ProcessAction', 'label': 'Action', 'group':tobj.data.uri};
+        var tobj = obj.part;
+        var nodeData = {'category': 'ProcessAction', 'label': label, 'group':tobj.data.uri};
         nodeData.uri = Savanna.process.utils.ProcessUtils.getURI(nodeData.category);
-        Savanna.process.utils.ProcessUtils.setRepresentsUri(nodeData, null);
+        Savanna.process.utils.ProcessUtils.setRepresentsUri(nodeData, classUri);
         diagram.model.addNodeData(nodeData);
 
         diagram.commitTransaction('addAction');

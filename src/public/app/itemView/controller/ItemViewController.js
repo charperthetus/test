@@ -52,6 +52,9 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         },
         itemViewHeaderEdit: {
             'ItemView:OpenItem': 'openItem'
+        },
+        view: {
+            'ItemView:SaveEnable': 'onSaveEnable'
         }
     },
 
@@ -71,7 +74,6 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
             this.getItemViewData();
         }
 
-        Savanna.app.on('ItemView:SaveEnable', this.onSaveEnable, this);
         return this.callParent(arguments);
     },
 
