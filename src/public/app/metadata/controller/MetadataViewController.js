@@ -103,7 +103,7 @@ Ext.define('Savanna.metadata.controller.MetadataViewController', {
             this.getMetadata_edit_button().show();
         }
 
-        var itemUri = this.getView().getItemURI();
+        var itemUri = this.getView().itemURI;
         if(itemUri) {
             this.store = Ext.create('Savanna.metadata.store.Metadata', {
                 itemURI: itemUri
