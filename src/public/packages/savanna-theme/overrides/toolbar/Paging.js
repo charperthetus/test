@@ -9,7 +9,7 @@ Ext.define('Savanna-Theme.toolbar.Paging', {
      * formatted using the braced numbers {0}-{2} as tokens that are replaced by the values for start, end and total
      * respectively. These tokens should be preserved when overriding this string if showing those values is desired.
      */
-    displayMsg : '',
+    displayMsg : 'Results: {0} - {1} of {2}',
     //</locale>
 
     //<locale>
@@ -111,7 +111,8 @@ Ext.define('Savanna-Theme.toolbar.Paging', {
             iconCls: Ext.baseCSSPrefix + 'tbar-page-prev',
             disabled: true,
             handler: me.movePrevious,
-            scope: me
+            scope: me,
+            margins: '0 -8 0 -8'
         },
         me.beforePageText,
         {
@@ -129,7 +130,7 @@ Ext.define('Savanna-Theme.toolbar.Paging', {
             // mark it as not a field so the form will not catch it when getting fields
             isFormField: false,
             width: me.inputItemWidth,
-            margins: '-1 2 3 2',
+            margins: '0',
             listeners: {
                 scope: me,
                 keydown: me.onPagingKeyDown,
@@ -138,7 +139,8 @@ Ext.define('Savanna-Theme.toolbar.Paging', {
         },{
             xtype: 'tbtext',
             itemId: 'afterTextItem',
-            text: Ext.String.format(me.afterPageText, 1)
+            text: Ext.String.format(me.afterPageText, 1),
+            margins: '0 0 0 -5'
         }, {
             itemId: 'next',
             tooltip: me.nextText,
@@ -146,7 +148,8 @@ Ext.define('Savanna-Theme.toolbar.Paging', {
             iconCls: Ext.baseCSSPrefix + 'tbar-page-next',
             disabled: true,
             handler: me.moveNext,
-            scope: me
+            scope: me,
+            margins: '0 -5 0 -3'
         }, {
             itemId: 'last',
             tooltip: me.lastText,
@@ -154,7 +157,8 @@ Ext.define('Savanna-Theme.toolbar.Paging', {
             iconCls: Ext.baseCSSPrefix + 'tbar-page-last',
             disabled: true,
             handler: me.moveLast,
-            scope: me
+            scope: me,
+            margins: '0 -5 0 -5'
         }, {
             itemId: 'refresh',
             tooltip: me.refreshText,
@@ -162,7 +166,8 @@ Ext.define('Savanna-Theme.toolbar.Paging', {
             iconCls: Ext.baseCSSPrefix + 'tbar-loading',
             handler: me.doRefresh,
             scope: me,
-            hidden: true
+            hidden: true,
+            margins: '0 0 0 -5'
         }];
     }
 });

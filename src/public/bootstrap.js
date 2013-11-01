@@ -157,6 +157,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "Savanna.metadata.view.BooleanList": [],
   "Ext.ux.dd.PanelFieldDragZone": [],
   "Savanna.itemView.controller.RelationshipPickerController": [],
+  "Savanna.sources.controller.Sources": [],
   "Savanna.search.controller.resultsComponent.resultsDals.ResultsRefineTermsController": [],
   "Savanna.search.model.dalSource.CustomSearchGroup": [
     "DalCustomSearchGroup"
@@ -205,7 +206,6 @@ Ext.ClassManager.addNameAlternateMappings({
   "Ext.ux.event.Player": [],
   "Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsPanelToolbar": [],
   "Savanna.modelSearch.view.searchComponent.searchBody.searchMap.Canvas": [],
-  "Savanna.itemView.store.ParentItemStore": [],
   "Savanna.metadata.view.Details": [],
   "Savanna.upload.view.UploadComponent": [],
   "Savanna.metadata.store.Metadata": [],
@@ -288,6 +288,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "Savanna.modelSearch.controller.resultsComponent.ResultsPanelGridController": [],
   "Savanna.modelSearch.store.ModelSearchStore": [],
   "Savanna.modelSearch.model.dalSource.CustomSearchParameter": [],
+  "Savanna.classification.controller.WindowController": [],
   "Ext.ux.event.RecorderManager": [],
   "Ext.ux.ProgressBarPager": [],
   "Savanna.metadata.view.Title": [],
@@ -354,6 +355,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "Deft.core.Class": [
     "Deft.Class"
   ],
+  "Savanna.itemView.store.ItemLockStore": [],
   "Savanna.crumbnet.store.Templates": [],
   "Savanna.itemView.view.createItem.ParentItems": [],
   "Savanna.metadata.view.Double": [],
@@ -366,6 +368,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "Savanna.process.layout.StepLayout": [],
   "Savanna.map.view.MapComponent": [],
   "Savanna.search.controller.resultsComponent.resultsDals.ResultsRefineSearchbarController": [],
+  "Savanna.classification.view.ClassificationWindow": [],
   "Ext.ux.DataView.LabelEditor": [],
   "Savanna.search.view.searchComponent.SearchToolbar": [],
   "Savanna.itemView.controller.EditImageBrowserController": [],
@@ -402,6 +405,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "Savanna.itemView.view.ItemViewer": [],
   "Savanna.modelSearch.view.searchComponent.searchBody.searchMap.SearchLocationComboBox": [],
   "Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineSearchbar": [],
+  "Savanna.sources.view.Sources": [],
   "Savanna.crumbnet.model.Template": [],
   "Savanna.search.store.ResultsMetadata": [],
   "Savanna.itemView.view.workflow.WorkflowSelect": [],
@@ -413,6 +417,7 @@ Ext.ClassManager.addNameAlternateMappings({
   ],
   "Savanna.document.view.DocumentComponent": [],
   "Savanna.modelSearch.view.searchComponent.searchBar.SearchForm": [],
+  "Savanna.classification.store.OptionsStore": [],
   "Savanna.itemView.model.KVPairGroupModel": [],
   "Deft.promise.Promise": [
     "Deft.Promise"
@@ -661,6 +666,7 @@ Ext.ClassManager.addNameAliasMappings({
   ],
   "Ext.ux.dd.PanelFieldDragZone": [],
   "Savanna.itemView.controller.RelationshipPickerController": [],
+  "Savanna.sources.controller.Sources": [],
   "Savanna.search.controller.resultsComponent.resultsDals.ResultsRefineTermsController": [],
   "Savanna.search.model.dalSource.CustomSearchGroup": [],
   "Savanna.modelSearch.store.ResultsMetadata": [],
@@ -749,7 +755,6 @@ Ext.ClassManager.addNameAliasMappings({
   "Savanna.modelSearch.view.searchComponent.searchBody.searchMap.Canvas": [
     "widget.model_search_map_canvas"
   ],
-  "Savanna.itemView.store.ParentItemStore": [],
   "Savanna.metadata.view.Details": [
     "widget.metadata_details"
   ],
@@ -884,6 +889,7 @@ Ext.ClassManager.addNameAliasMappings({
   "Savanna.modelSearch.controller.resultsComponent.ResultsPanelGridController": [],
   "Savanna.modelSearch.store.ModelSearchStore": [],
   "Savanna.modelSearch.model.dalSource.CustomSearchParameter": [],
+  "Savanna.classification.controller.WindowController": [],
   "Ext.ux.event.RecorderManager": [
     "widget.eventrecordermanager"
   ],
@@ -995,6 +1001,7 @@ Ext.ClassManager.addNameAliasMappings({
     "widget.itemview_imagesgrid"
   ],
   "Deft.core.Class": [],
+  "Savanna.itemView.store.ItemLockStore": [],
   "Savanna.crumbnet.store.Templates": [],
   "Savanna.itemView.view.createItem.ParentItems": [
     "widget.itemview_parenttree"
@@ -1019,6 +1026,7 @@ Ext.ClassManager.addNameAliasMappings({
     "widget.map_component"
   ],
   "Savanna.search.controller.resultsComponent.resultsDals.ResultsRefineSearchbarController": [],
+  "Savanna.classification.view.ClassificationWindow": [],
   "Ext.ux.DataView.LabelEditor": [],
   "Savanna.search.view.searchComponent.SearchToolbar": [
     "widget.search_searchtoolbar"
@@ -1091,6 +1099,9 @@ Ext.ClassManager.addNameAliasMappings({
   "Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineSearchbar": [
     "widget.model_search_resultsDals_resultsrefine"
   ],
+  "Savanna.sources.view.Sources": [
+    "widget.document_sources"
+  ],
   "Savanna.crumbnet.model.Template": [],
   "Savanna.search.store.ResultsMetadata": [],
   "Savanna.itemView.view.workflow.WorkflowSelect": [
@@ -1107,6 +1118,9 @@ Ext.ClassManager.addNameAliasMappings({
   ],
   "Savanna.modelSearch.view.searchComponent.searchBar.SearchForm": [
     "widget.model_searchbar_form"
+  ],
+  "Savanna.classification.store.OptionsStore": [
+    "widget.classification_options_store"
   ],
   "Savanna.itemView.model.KVPairGroupModel": [],
   "Deft.promise.Promise": [],

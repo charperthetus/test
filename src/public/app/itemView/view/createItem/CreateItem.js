@@ -14,17 +14,10 @@ Ext.define('Savanna.itemView.view.createItem.CreateItem', {
     requires: [
         'Savanna.itemView.view.createItem.ParentDetails',
         'Savanna.itemView.view.createItem.ParentItems',
-        'Savanna.itemView.controller.CreateItemController',
-        'Savanna.itemView.store.ParentItemStore'
+        'Savanna.itemView.controller.CreateItemController'
     ],
 
-    store: 'Savanna.itemView.store.ParentItemStore',
-
     controller: 'Savanna.itemView.controller.CreateItemController',
-
-    mixins: {
-        storeable: 'Savanna.mixin.Storeable'
-    },
 
     title: 'Create Item',
 
@@ -36,36 +29,30 @@ Ext.define('Savanna.itemView.view.createItem.CreateItem', {
 
     items:[],
 
-    onStoreLoad:function()  {
-
-
-        this.add(
-            Ext.create('Savanna.itemView.view.createItem.ParentItems', {
-                itemId:'create_leftPanel',
-                store:this.store,
+    setupItems:function()  {
+        var content = [
+            {
+                xtype: 'itemview_parenttree',
+                itemId:'parentItemsTreePanel',
+                cls:'create-item-coloumn',
                 flex:1
-            })
-        );
-
-        this.add(
-            Ext.create('Savanna.itemView.view.createItem.ParentDetails', {
-                itemId:'create_rightPanel',
-                store:this.store,
+            },
+            {
+                xtype: 'itemview_parentdetails',
+                itemId:'parentItemsDetailsPanel',
+                cls:'create-item-coloumn',
                 flex:2
-            })
-        );
+            }
+        ];
 
-
-
+        return content;
     },
 
     initComponent: function () {
 
+        this.items = this.setupItems();
+
         this.buttons = this.setupButtons();
-
-        this.mixins.storeable.initStore.call(this);
-
-        this.store.load();
 
         this.callParent(arguments);
     },
@@ -74,48 +61,15 @@ Ext.define('Savanna.itemView.view.createItem.CreateItem', {
         var btns = [
             {
                 text: 'OK',
-                listeners: {
-                    'click': this.onParentItemCommit
-                }
+                itemId: 'commitBtn',
+                ui:'commit',
+                margin:'0 0 10 0'
             },
             {
                 text: 'CANCEL',
-                listeners: {
-                    'click': this.onParentItemCancel
-                }
+                itemId:'cancelBtn'
             }
         ];
         return btns;
-    },
-
-    onParentItemCommit:function()   {
-
-        if(this.up('itemview_create_item').selectedParentUri)  {
-            var itemView = Ext.create('Savanna.itemView.view.ItemViewer', {
-                title: 'Model Item',
-                itemUri: this.up('itemview_create_item').selectedParentUri,
-                editMode: true,
-                createMode:true,
-                closable: true,
-                autoScroll: true,
-                tabConfig: {
-                    ui: 'dark'
-                }
-            });
-            Savanna.app.fireEvent('search:itemSelected', itemView);
-        }   else    {
-            console.log('no uri for parent item');
-        }
-
-
-        this.up('itemview_create_item').close();
-    },
-
-    handleRecordDataRequestSuccess: function (record, operation, success) {
-
-    },
-
-    onParentItemCancel:function()   {
-        this.up('itemview_create_item').close();
     }
 });

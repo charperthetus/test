@@ -25,6 +25,8 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
             border:false,
             items: [
                 {
+                    //sav-5935 removing for demo, when boolean search expressions are working, this can be shown.
+                    hidden: true,
                     // adding thetus-searchfield removes the necessity for a submit button.
                     xtype: 'thetus-searchfield',
                     width: 168,
@@ -37,6 +39,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
             ]
         }
     ],
+
     tbar:   [
         {
             xtype: 'tbtext',

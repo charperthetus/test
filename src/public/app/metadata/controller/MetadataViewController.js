@@ -35,10 +35,15 @@ Ext.define('Savanna.metadata.controller.MetadataViewController', {
         },
         metadata_cancel_button: {
             click: 'handleCancel'
+        },
+        view: {
+            create_metadata_fields: 'createMetadataFields'
         }
 
 
     },
+
+    store: null,
 
     handleEditMode: function (button) {
         this.getMetadata_save_button().show();
@@ -60,7 +65,7 @@ Ext.define('Savanna.metadata.controller.MetadataViewController', {
         this.getMetadata_edit_button().show();
 
         var me = this;
-        var theStore = this.getView().getStore();
+        var theStore = this.store;
         var  stuffChanged = false;
         Ext.Array.each(me.getView().down('#wrapperPanel').items.items, function(metadata) {
             var key = metadata.key;
@@ -68,8 +73,12 @@ Ext.define('Savanna.metadata.controller.MetadataViewController', {
             Ext.Array.each(theStore.data.items, function(storeData) {
                 if(storeData.get('key') == key) {
                     if(storeData.get('value') !== metadata.value || ( Ext.isArray(metadata.value) && !Ext.Array.equals(metadata.value, storeData.get('value'))  )) {
-                        storeData.set('value', metadata.value);
-                        stuffChanged = true;
+                        if(key === 'classification') {
+                            me.saveClassification(metadata.getValue());
+                        } else {
+                            storeData.set('value', metadata.value);
+                            stuffChanged = true;
+                        }
                     }
                     return false; // terminate this inner loop
                 }
@@ -92,15 +101,22 @@ Ext.define('Savanna.metadata.controller.MetadataViewController', {
             this.getMetadata_cancel_button().hide();
             this.getMetadata_edit_button().show();
         }
+
+        var itemUri = this.getView().getItemURI();
+        if(itemUri) {
+            this.store = Ext.create('Savanna.metadata.store.Metadata', {
+                itemURI: itemUri
+            });
+            this.loadStore();
+        }
         return this.callParent(arguments);
     },
 
     createMetadataFields: function() {
         var me = this;
-
         // TODO: need to create and add a classification thing.
 
-        Ext.Array.each(me.getView().store.data.items, function(metadata) {
+        Ext.Array.each(this.store.data.items, function(metadata) {
             var typeToAdd = me.getTypeFromName(metadata.data.type, metadata.data.key);
 
             if('' != typeToAdd) {
@@ -199,9 +215,31 @@ Ext.define('Savanna.metadata.controller.MetadataViewController', {
             })
         }
         return fieldView;
+    },
+
+    saveClassification: function(portionMarking) {
+        Ext.Ajax.request({
+            url: SavannaConfig.capcoUrl + this.getView().getItemURI() + ';jsessionid=' + Savanna.jsessionid,
+            method: 'POST',
+            jsonData: Ext.JSON.encode(portionMarking),
+            callback: this.onClassificationSaved,
+            scope: this
+        });
+    },
+
+    onClassificationSaved: function() {
+        EventHub.fireEvent('classificationchanged', this.getView().getItemURI());
+        this.loadStore();
+    },
+
+    loadStore: function() {
+        this.store.load({
+            scope: this,
+            callback: function(records, operation, success) {
+                this.createMetadataFields();
+            }
+        });
     }
-
-
 
 
 });

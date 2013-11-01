@@ -193,7 +193,7 @@ Ext.define('Savanna.modelSearch.controller.SearchComponent', {
         component.down('#resultsdals').removeAll();
 
 
-         /*
+        /*
          clear the grid - it's misleading in error states to see results in the grid, even though
          the search request has failed for one reason or another
          */
@@ -301,7 +301,7 @@ Ext.define('Savanna.modelSearch.controller.SearchComponent', {
         return sources;
     },
 
-    buildSearchObject: function (searchString, dal, currentDalPanel, mapView) {
+    buildSearchObject: function (searchString, dal) {
 
 
         var searchObj = {
@@ -387,7 +387,7 @@ Ext.define('Savanna.modelSearch.controller.SearchComponent', {
                 checked = dals.queryById(dalId).query('checkbox')[0].getValue();    // has this checkbox been selected in search options?
 
             if (checked) {  // checked, or always search the default dal
-
+                source.data.facetFilterCriteria = [];
                 searchObj = this.buildSearchObject(searchString, source, currentDalPanel, mapView);
 
                 this.buildAndLoadResultsStore(source, component, searchObj, 'search');
@@ -439,10 +439,10 @@ Ext.define('Savanna.modelSearch.controller.SearchComponent', {
 
         if (!success) {
             var errorString = (operation.error && operation.error.statusText) ? " Error: " + operation.error && operation.error.statusText + " " : " Unknown Error ",
-                statusString = (operation.error && (operation.error.status != 0) ) ? " Status: " + operation.error && operation.error.status + " " : " Unknown Status ";
+                requestStatus = (operation.error && (operation.error.status != 0) ) ? " Status: " + operation.error && operation.error.status + " " : " Unknown Status ";
 
             Ext.Error.raise({
-                msg: 'The DAL "' + dalId + '" may be unavailable. ' + errorString + " " + statusString
+                msg: 'The DAL "' + dalId + '" may be unavailable. ' + errorString + " " + requestStatus
             });
         } else {
 
@@ -528,13 +528,13 @@ Ext.define('Savanna.modelSearch.controller.SearchComponent', {
         canvas.drawFeature = drawFeature;
     },
 
-    onFeatureAdded: function (event) {
+    onFeatureAdded: function () {
         // Scope: drawFeature
         this.drawFeature.deactivate();
         this.fireEvent('searchPolygonAdded', this);
     },
 
-    onFeatureRemoved: function (event) {
+    onFeatureRemoved: function () {
         this.fireEvent('searchPolygonRemoved', this);
     },
 

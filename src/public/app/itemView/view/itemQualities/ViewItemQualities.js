@@ -11,7 +11,7 @@ Ext.define('Savanna.itemView.view.itemQualities.ViewItemQualities', {
 
     alias: 'widget.itemview_view_qualities',
 
-    store: 'Savanna.itemView.store.MainItemStore',
+    store: null,
 
     title: 'Qualities (#)',
 
@@ -32,7 +32,7 @@ Ext.define('Savanna.itemView.view.itemQualities.ViewItemQualities', {
             sortable: false,
             tpl: Ext.create('Ext.XTemplate',
                 '<tpl for="values" between=",&nbsp;&nbsp;">',
-                    '{value}',
+                    '{label}',
                 '</tpl>')
         }
     ]

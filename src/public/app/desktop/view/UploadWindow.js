@@ -14,7 +14,6 @@ Ext.define('Savanna.desktop.view.UploadWindow', {
     ],
 
     header: {
-        titlePosition: 1,
         title: 'Upload'
     },
     layout:'fit',

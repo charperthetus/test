@@ -19,30 +19,47 @@ Ext.define('Savanna.process.store.Processes', {
 
     autoSync: false,
 
-    itemURI: '',
+    config: {
+        itemUri: ''
+    },
 
     constructor: function() {
         this.callParent(arguments);
+
+        var me = this;
 
         this.setProxy({
             type: 'savanna-cors',
             url: SavannaConfig.processUrl,
             modifyRequest: function(request) {
-                if('update' == request.action || 'create' == request.action) {
+                if('update' == request.action) {
                     // Must put, not push.  So sayeth endpoint.
                     request.method = 'PUT';
                 }
                 return request;
+            },
+            afterRequest: function (request, success) {
+                if (success && request.method === 'POST') {
+                    var records = request.records;
+                    var rec = records[0];
+                    var uri = rec.get('uri');
+                    me.setItemUri(encodeURIComponent(uri));
+                    me.setupUrl();
+                }
             }
-
         });
     },
 
-    load: function() {
+    setupUrl: function() {
         // Take this line out to use the Provided URI below.
         //this.getProxy().url = SavannaConfig.ureaProcessDataUrl;
         // Put this line back in to use the URI set in the constructor.
-        this.getProxy().url = SavannaConfig.processUrl + '/' + this.itemURI;
+        this.getProxy().url = SavannaConfig.processUrl + '/' + encodeURI(this.getItemUri());
+
+    },
+
+    load: function() {
+        this.setupUrl();
 
         this.callParent(arguments);
     }

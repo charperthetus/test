@@ -47,6 +47,8 @@ Ext.define('Savanna.itemView.controller.ViewRelatedItemsController', {
         });
 
         this.getView().add(grid);
+
+        Savanna.app.fireEvent('ItemView:SaveEnable');
     },
 
     onRelatedItemClick: function (grid, record, item, index, e, eOpts) {

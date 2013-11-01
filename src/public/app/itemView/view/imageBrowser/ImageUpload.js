@@ -14,7 +14,7 @@ Ext.define('Savanna.itemView.view.imageBrowser.ImageUpload', {
         'Ext.container.Container'
     ],
 
-    cls:'image-browser-edit-drop-zone',
+    cls:'image-browser-drop-zone',
 
   layout: {
         type: 'hbox',
