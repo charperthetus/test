@@ -157,7 +157,7 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
     addResult: function(e, obj) {
         var category = 'ProcessItem';
         var label = 'Result';
-        var linkType = 'ProcessLink';
+        var linkType = 'OutputLink';
         var diagram = obj.diagram;
         diagram.startTransaction('addResult');
         var actionGroup = obj.part;
@@ -208,9 +208,12 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         diagram.model.addNodeData(action);
 
         var tobj = obj.part;
-        var newLink = { category: 'ProcessLink', from: tobj.data.uri, to: step.uri };
+        var newLink = {from: tobj.data.uri, to: step.uri };
         if (tobj.category == 'DecisionPoint') {
             newLink.visible = true;
+            newLink.category = 'ProcessLink';
+        } else {
+            newLink.category = 'InputLink';
         }
         newLink.uri = Savanna.process.utils.ProcessUtils.getURI('ProcessLink');
         diagram.model.addLinkData(newLink);

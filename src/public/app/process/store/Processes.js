@@ -26,6 +26,8 @@ Ext.define('Savanna.process.store.Processes', {
     constructor: function() {
         this.callParent(arguments);
 
+        var me = this;
+
         this.setProxy({
             type: 'savanna-cors',
             url: SavannaConfig.processUrl,
@@ -35,16 +37,29 @@ Ext.define('Savanna.process.store.Processes', {
                     request.method = 'PUT';
                 }
                 return request;
+            },
+            afterRequest: function (request, success) {
+                if (success && request.method === 'POST') {
+                    var records = request.records;
+                    var rec = records[0];
+                    var uri = rec.get('uri');
+                    me.setItemUri(encodeURIComponent(uri));
+                    me.setupUrl();
+                }
             }
-
         });
     },
 
-    load: function() {
+    setupUrl: function() {
         // Take this line out to use the Provided URI below.
         //this.getProxy().url = SavannaConfig.ureaProcessDataUrl;
         // Put this line back in to use the URI set in the constructor.
         this.getProxy().url = SavannaConfig.processUrl + '/' + encodeURI(this.getItemUri());
+
+    },
+
+    load: function() {
+        this.setupUrl();
 
         this.callParent(arguments);
     }
