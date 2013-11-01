@@ -64,6 +64,19 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
     dropAreaActive: false,
 
     /////////////////////////////////
+    // Helpers
+    /////////////////////////////////
+    // Helper to build the URL
+    buildUploadUrl: function(forPolling){
+        var url = SavannaConfig.uploadUrl;
+        if (forPolling){
+            url += '/status';
+        }
+        url += ';jsessionid=' + Savanna.jsessionid;
+        return url;
+    },
+
+    /////////////////////////////////
     // Setup
     /////////////////////////////////
     init: function() {
@@ -87,14 +100,16 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
 
         // Sets up the HTML Drop (for file upload)
         if (typeof window.FileReader !== 'undefined') {
-
             dropTargetDom.ondragover = function () {
                 return false;
             };
-
             dropTargetDom.ondrop = Ext.bind(this.fileDropHandler, this, [dropTarget], true);
         }
     },
+
+    /////////////////////////////
+    // Drag Handlers
+    /////////////////////////////
     // Check if the Ext Item can be droped by its contentType
     notifyImageDragHover: function(ddSource, e, data) {
         //don't allow anything other than an Item to be dropped into the item palette
@@ -120,6 +135,10 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
         e.preventDefault();
         this.uploadFiles(e.dataTransfer.files);
     },
+
+    ////////////////////////
+    // File Upload
+    ////////////////////////
     // Launch file browser, does so by 'clicking' the hidden HTML input[type=file]
     chooseFilesHandler: function() {
         var fileBrowser = this.getView().queryById('fileBrowserButton');
@@ -130,15 +149,6 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
     // Handles the the Upload button completion event
     fileBrowserChangeHandler: function(fileBrowserButton, event) {
         this.uploadFiles(event.target.files);
-    },
-    // Helper to build the URL
-    buildUploadUrl: function(forPolling){
-        var url = SavannaConfig.uploadUrl;
-        if (forPolling){
-            url += '/status';
-        }
-        url += ';jsessionid=' + Savanna.jsessionid;
-        return url;
     },
     // Iterates over the files uploaded and ignores ones that aren't images
     uploadFiles: function(files){

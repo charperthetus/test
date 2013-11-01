@@ -1,5 +1,15 @@
+/*
+ *  Savanna.itemView.controller.ImageBrowserController
+ * 
+ *  Controller to handle browsing images in the image browser.
+ *  This class is also extended by the Edit version, so edits here
+ *  will impact that controller as well. Requires the ImagesThumbnail
+ *  since they're added dynamically based on the store.
+ */
 Ext.define('Savanna.itemView.controller.ImageBrowserController', {
     extend: 'Deft.mvc.ViewController',
+
+    requires: ['Savanna.itemView.view.imageBrowser.ImagesThumbnail'],
 
     view: 'Savanna.itemView.view.imageBrowser.ImagesGrid',
 
@@ -35,63 +45,140 @@ Ext.define('Savanna.itemView.controller.ImageBrowserController', {
         }
     },
 
-    // Note: that this gets called anytime the view changes (edit/view mode)
-    buildImageGallery: function() {
-        var me = this,
-            images = this.getView().store.getById('Images').valuesStore.data.items;
+    //////////////////////////
+    // Helpers 
+    //////////////////////////
 
+    /* 
+     * Build Image Url
+     *
+     * Takes a image URI and encodes it with the proper rest endpoing
+     *
+     * @param {string} Image URI [thetus%2EArtifactOntology%3AYellowPalmOilContainer%2FModelItemXML]
+     */
+    buildImageUrl: function(imageURI) {
+        return SavannaConfig.savannaUrlRoot + 'rest/document/' + encodeURI(imageURI) + '/original/';
+    },
+
+    //////////////////////////
+    // Image Gallery
+    //////////////////////////
+
+    /*
+     * Build Image Gallery
+     *
+     * Clears out the thumbnail panel and iterates over the images store to build a gallery.
+     * Since this gets run when exiting edit mode, we need to clear the browser and fetch any new images.
+     *
+     * @param none
+     */
+    buildImageGallery: function() {
+        var images = this.getView().store.getById('Images').valuesStore.data.items;
+
+        // Discontinue building if there are no images
+        if(images.length === 0) { return; }
+
+        // Remove any previous images
         this.clearImageBrowser();
 
+        /* 
+         * 1 - Iterate over the images store and create the thumbnail.
+         * 2 - Call addImageToBrowser after creation.
+         * 3 - If it's the primary image, fire off onChangeImage to load it into the jumbo
+         */
         Ext.Array.each(images, function(image) {
             var imageMeta = (image.raw) ? image.raw : image.data;
             var thumbnail = Ext.create('Savanna.itemView.view.imageBrowser.ImageThumbnail', {
-                src: SavannaConfig.savannaUrlRoot + 'rest/document/' + encodeURI(imageMeta.uri) + '/original/',
+                src: this.buildImageUrl(imageMeta.uri),
                 alt: imageMeta.description,
                 title: imageMeta.label
             });
-            me.addImageToBrowser(thumbnail);
-
+            this.addImageToBrowser(thumbnail);
             if (imageMeta.primaryImage) {
-                me.onChangeImage(null, image);
+                this.onChangeImage(null, image);
             }
-        });
+        }, this);
     },
+
+    /*
+     *  Clear Image Browser
+     *
+     *  Clears the images in the thumbnail panel.
+     *
+     *  @param {none}
+     */
     clearImageBrowser: function() {
         this.getView().queryById('thumbnailList').items.clear();
     },
+
+    /*
+     *  Add Image to Browser
+     *
+     *  Adds a image to the thumbnail list
+     *
+     *  @param {image} The Ext Thumbnail class (view)
+     */
     addImageToBrowser: function(image){
-        this.getView().queryById('thumbnailList').add(image);
+        if(image) {
+            this.getView().queryById('thumbnailList').add(image);            
+        }
     },
-    // Scroll Left Button
+
+    /*
+     *  On Nav Left
+     *
+     *  Button handler responsbile for scrolling the thumbnails left
+     *
+     *  @param {none}
+     */
     onNavLeft: function() {
         var gallery = this.getView().queryById('thumbnailList');
         gallery.scrollBy(-450, 0, true);
     },
-    // Scroll Right Button
+
+    /*
+     *  On Nav Right
+     *
+     *  Button handler responsible for scrolling the thumbnails right
+     */
     onNavRight: function() {
         var gallery = this.getView().queryById('thumbnailList');
         gallery.scrollBy(450, 0, true);
     },
-    // Selecting an image to expand
+
+    /*
+     *  On Change Image
+     *
+     *  Handler for expanding the thumbnail image to the jumbotron.
+     *  It does so by getting the image url, title, and description and 
+     *  setting the jumbo's panel background-style to have that image.
+     *
+     *  @param {btn} The Ext Image that was clicked
+     *  @param {iamge} The image object passed with the click. Looks for the alt and src properties
+     */
     onChangeImage: function(btn, image) {
+
+        // Setup and sanitation
         var selectedImage = image.src,
-            title = (image.title) ? image.title : 'No title',
             description = (image.alt) ? image.alt : 'No description',
-            jumboImage = this.getView().queryById('imagePrimary'),
-            jumboMeta = this.getView().queryById('imageText'),
+            jumboTron = this.getView().queryById('imagePrimary'),
+            jumboDescription = this.getView().queryById('imageText'),
             imageWidth = image.naturalWidth,
             imageHeight = image.naturalHeight;
 
-        var backgroundSize = (imageWidth < jumboImage.width && imageHeight < jumboImage.height) ? 'inherit' : 'contain';
+        // Check the image to see if we need to shrink it down
+        var backgroundSize = (imageWidth < jumboTron.width && imageHeight < jumboTron.height) ? 'inherit' : 'contain';
         
         // In order to display text over an image, the image is used as a background image on a panel
-        jumboImage.setBodyStyle({
+        jumboTron.setBodyStyle({
             backgroundImage: 'url(' + selectedImage + ')',
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center center',
             backgroundSize: backgroundSize,
             backgroundColor: 'transparent'
         });
-        jumboMeta.update(description);
+
+        // Add the description
+        jumboDescription.update(description);
     }
 });
