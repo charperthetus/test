@@ -34,25 +34,33 @@ Ext.define('Savanna.itemView.controller.ImageBrowserController', {
             }
         }
     },
-    buildImageGallery: function(images) {
-        var me = this,
-            thumbnailDimensions = {
-                width: 100,
-                height: 100
-            };
-        
-        Ext.Array.each(images, function() {
-            var thumbnail = Ext.create('Savanna.itemView.view.imageBrowser.ImageThumbnail', {
-                src: SavannaConfig.savannaUrlRoot + 'rest/document/' + encodeURI(this.raw.uri) + '/thumbnail/',
-                alt: this.raw.description,
-                title: this.raw.label
-            });
-            me.getView().queryById('thumbnailList').add(thumbnail);
 
-            if (this.raw.primaryImage) {
-                me.onChangeImage(null, this);
+    // Note: that this gets called anytime the view changes (edit/view mode)
+    buildImageGallery: function() {
+        var me = this,
+            images = this.getView().store.getById('Images').valuesStore.data.items;
+
+        this.clearImageBrowser();
+
+        Ext.Array.each(images, function(image) {
+            var imageMeta = (image.raw) ? image.raw : image.data;
+            var thumbnail = Ext.create('Savanna.itemView.view.imageBrowser.ImageThumbnail', {
+                src: SavannaConfig.savannaUrlRoot + 'rest/document/' + encodeURI(imageMeta.uri) + '/original/',
+                alt: imageMeta.description,
+                title: imageMeta.label
+            });
+            me.addImageToBrowser(thumbnail);
+
+            if (imageMeta.primaryImage) {
+                me.onChangeImage(null, image);
             }
         });
+    },
+    clearImageBrowser: function() {
+        this.getView().queryById('thumbnailList').items.clear();
+    },
+    addImageToBrowser: function(image){
+        this.getView().queryById('thumbnailList').add(image);
     },
     // Scroll Left Button
     onNavLeft: function() {

@@ -14,10 +14,7 @@ Ext.define('Savanna.process.controller.ProcessController', {
         'Savanna.process.store.Processes',
         'Savanna.process.view.part.Overview' //added dynamically later
     ],
-    store: 'Savanna.process.store.Processes',
-    mixins: {
-        storeable: 'Savanna.mixin.Storeable'
-    },
+    store: null,
 
     control: {
         newProcess: {
@@ -86,14 +83,18 @@ Ext.define('Savanna.process.controller.ProcessController', {
 
     constructor: function (options) {
         this.opts = options || {};
-        this.mixins.storeable.initStore.call(this);
         this.callParent(arguments);
     },
 
     init: function() {
         //todo: diagram initialization here: setup for checking for a "dirty" process component
-
+        var uri = this.getView().getItemUri();
+        this.store = Ext.create('Savanna.process.store.Processes', {itemUri:uri});
         return this.callParent(arguments);
+    },
+
+    onStoreLoaded: function (records) {
+        this.load(this.getCanvas().diagram, records[0]);
     },
 
     toggleExpanded: function(expand) {
@@ -148,7 +149,8 @@ Ext.define('Savanna.process.controller.ProcessController', {
     },
 
     clear: function(diagram, textarea) {
-        var newProcess = {'class': 'go.GraphLinksModel', 'nodeKeyProperty': 'uri', 'nodeDataArray': [{'uri':-1, 'category':'Start'}], 'linkDataArray': []};
+        var newProcess = {'class': 'go.GraphLinksModel', 'nodeKeyProperty': 'uri', 'nodeDataArray': [{'category':'Start'}], 'linkDataArray': []};
+        newProcess.nodeDataArray[0].uri = Savanna.process.utils.ProcessUtils.getURI('Start');
         newProcess.uri = Savanna.process.utils.ProcessUtils.getURI('ProcessModel');
         this.store.add(newProcess);
         this.load(diagram, this.store.first());
@@ -252,7 +254,12 @@ Ext.define('Savanna.process.controller.ProcessController', {
         diagram.addDiagramListener('PartResized', Ext.bind(this.partResized, this));
         diagram.addDiagramListener('TextEdited', Ext.bind(this.textEdited, this));
 
-        this.loadInitialJSON();
+        var uri = this.getView().getItemUri();
+        if (uri) {
+            this.store.load({callback: this.onStoreLoaded, scope: this});
+        } else {
+            this.loadInitialJSON();
+        }
     },
 
     textEdited: function() {

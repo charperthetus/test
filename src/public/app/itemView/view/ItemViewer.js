@@ -21,32 +21,26 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
         'Savanna.itemView.view.imageBrowser.ImageThumbnail',
         'Savanna.itemView.view.workflow.WorkflowSelect',
         'Savanna.itemView.view.annotationProperties.AnnotationProperties',
-        'Savanna.itemView.store.ItemViewStoreHelper'
+        'Savanna.component.ClassificationPanel',
+        'Savanna.itemView.store.AutoCompleteStore',
+        'Savanna.itemView.store.ItemLockStore',
+        'Savanna.itemView.store.ItemViewStoreHelper',
+        'Savanna.metadata.view.Details',
+        'Savanna.sources.view.Sources'
     ],
 
     layout: 'card',
+    maxWidth:1024,
 
     controller: 'Savanna.itemView.controller.ItemViewController',
 
     config: {
         itemUri: null,
         editMode:false,
-        createMode:false
+        itemStore:null,
+        lockStore:null,
+        selectedParentUri: null
     },
-
-    dockedItems: [{
-        xtype: 'toolbar',
-        dock: 'top',
-        items: [
-            '->',
-            {
-                xtype: 'label',
-                text: 'CLASSIFICATION'
-            },
-            '->'
-        ]
-    }],
-
 
     constructor: function(configs) {
         this.initConfig(configs);  //initializes configs passed in constructor
@@ -55,6 +49,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
 
     initComponent: function() {
         this.items = this.buildItems();
+        this.lockStore = Ext.create('Savanna.itemView.store.ItemLockStore');
         this.callParent(arguments);
     },
 
@@ -83,10 +78,12 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                                 {
                                     xtype: 'menuseparator'
                                 },
+                                /* commented out for demo
                                 {
                                     text: 'Workflow',
                                     itemId:'workflowButton'
                                 },
+                                */
                                 {
                                     xtype: 'menuseparator'
                                 },
@@ -147,6 +144,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                             {
                                 xtype: 'itemview_imagesgrid',
                                 itemId: 'itemViewImagesGrid',
+                                cls:'white-grid-view-panel',
                                 collapsible: true,
                                 header:{
                                     ui:'light-blue'
@@ -164,10 +162,38 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                             {
                                 xtype: 'itemview_annotation_properties',
                                 itemId: 'annotationPropertiesView',
+                                cls:'white-grid-view-panel-edit',
                                 collapsible: true,
                                 header: {
                                     ui:'light-blue'
                                 }
+                            }
+                        ]
+                    },
+                    {
+                        xtype: 'panel',
+                        itemId: 'itemInfoPanel',
+                        title: 'details',
+                        width: '30%',
+                        header:{
+                            ui:'light-blue'
+                        },
+                        layout: 'vbox',
+                        items: [
+//                            {
+//                                xtype: 'metadata_details',
+//                                itemId: 'itemDetails',
+//                                itemURI: this.itemUri
+//                            },
+                            {
+                                xtype: 'document_sources',
+                                editMode: false,
+                                itemId: 'itemSources',
+                                header:{
+                                    ui:'light-blue'
+                                },
+
+                                itemURI: this.itemUri
                             }
                         ]
                     }
@@ -196,27 +222,6 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                                 {
                                     text: 'Delete',
                                     itemId:'deleteItemButton'
-                                },
-                                {
-                                    xtype: 'menuseparator'
-                                },
-                                {
-                                    text: 'Workflow',
-                                    itemId:'workflowButton'
-                                },
-                                {
-                                    xtype: 'menuseparator'
-                                },
-                                {
-                                    text: 'Search Intell',
-                                    itemId:'searchButton'
-                                },
-                                {
-                                    xtype: 'menuseparator'
-                                },
-                                {
-                                    text: 'Relationship Picker',
-                                    itemId:'relationshipButton'
                                 }
                             ]
                         },
@@ -267,11 +272,11 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                                 }
                             },
                             {
-                                //Todo: create related items component here
                                 xtype: 'itemview_edit_related_items',
                                 itemId: 'relatedItemsEdit',
                                 cls:'white-grid-view-panel-edit',
                                 collapsible: true,
+                                padding:'0 0 10 0',
                                 title: 'Related Items (#)',
                                 header:{
                                     ui:'light-blue'
@@ -286,6 +291,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                             {
                                 xtype: 'itemview_imagesgrid_edit',
                                 itemId: 'itemViewImagesEdit',
+                                cls:'white-grid-view-panel-edit',
                                 collapsible: true,
                                 header:{
                                     ui:'light-blue'
@@ -294,7 +300,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                             {
                                 xtype: 'itemview_edit_qualities',
                                 itemId: 'itemViewPropertiesEdit',
-                                cls:'white-grid-view-panel-edit',
+                                cls:['white-grid-view-panel-edit', 'edit-qualities'],
                                 collapsible: true,
                                 header:{
                                     ui:'light-blue'
@@ -303,10 +309,37 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                             {
                                 xtype: 'itemview_annotation_properties',
                                 itemId: 'annotationPropertiesEdit',
+                                cls:'white-grid-view-panel-edit',
                                 collapsible: true,
                                 header: {
                                     ui:'light-blue'
                                 }
+                            }
+                        ]
+                    },
+                    {
+                        xtype: 'panel',
+                        itemId: 'itemInfoPanel',
+                        title: 'details',
+                        width: '30%',
+                        layout: 'vbox',
+                        header:{
+                            ui:'light-blue'
+                        },
+                        items: [
+//                            {
+//                                xtype: 'metadata_details',
+//                                itemId: 'itemDetails',
+//                                itemURI: this.itemUri
+//                            },
+                            {
+                                xtype: 'document_sources',
+                                editMode: true,
+                                itemId: 'itemSources',
+                                header:{
+                                    ui:'light-blue'
+                                },
+                                itemURI: this.itemUri
                             }
                         ]
                     }

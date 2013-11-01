@@ -14,7 +14,6 @@ Ext.define('Savanna.desktop.view.ModelSearchWindow', {
     ],
 
     header: {
-        titlePosition: 1,
         title: 'Model Search'
     },
 

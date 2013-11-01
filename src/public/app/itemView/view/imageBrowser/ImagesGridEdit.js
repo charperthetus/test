@@ -12,6 +12,8 @@ Ext.define('Savanna.itemView.view.imageBrowser.ImagesGridEdit', {
     controller: 'Savanna.itemView.controller.EditImageBrowserController',
     
     alias: 'widget.itemview_imagesgrid_edit',
+
+    storeHelper: null,
     
     items: [{
 
@@ -43,7 +45,8 @@ Ext.define('Savanna.itemView.view.imageBrowser.ImagesGridEdit', {
             xtype: 'button',
             itemId: 'navLeft',
             height: 100,
-            glyph: 'arrowNavLeft'
+            glyph: 'arrowNavLeft',
+            cls:'image-browser-control'
         }, {
             
             // Thumbnails get put here
@@ -55,6 +58,7 @@ Ext.define('Savanna.itemView.view.imageBrowser.ImagesGridEdit', {
         }, {
             xtype: 'button',
             glyph: 'arrowNavRight',
+            cls:'image-browser-control',
             itemId: 'navRight',
             height: 100
         }]

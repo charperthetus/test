@@ -5,38 +5,25 @@
  * Time: 11:57 AM
  * To change this template use File | Settings | File Templates.
  */
-Ext.define('Savanna.process.view.metadata.MetadataTabPanel', {
+Ext.define('Savanna.process.view.part.MetadataTabPanel', {
     extend: 'Ext.tab.Panel',
     alias: 'widget.process_metadata',
 
     requires: [
         'Ext.tab.Panel',
-        'Savanna.metadata.view.Details',
-        'Savanna.process.controller.MetadataController'
+        'Savanna.metadata.view.Details'
     ],
     header: {
         ui: 'dark'
     },
-    controller: 'Savanna.process.controller.MetadataController',
-
-    config: {
-        itemUri: ''
-    },
-
-    updateItemUri: function(newUri, oldUri) {
-        if(newUri !== oldUri) {
-            this.fireEvent('uriChange', newUri);
-        }
-    },
-
     enableTabScroll: true,
     items: [
         {
-            title:'Details',
-            itemId:'processMetadataPanel',
-            width:'100%',
-            height:'100%'
+            title: 'Details',
+            xtype: 'metadata_details'//,
+            //itemURI: 'SolrJdbc%252FRich%252F4b494622-0fbe-4f8f-a542-d4a06f9b7620'
         },
+        { title: 'Comments' },
         { title: 'JSON',
             xtype:'panel',
             layout:'vbox',
