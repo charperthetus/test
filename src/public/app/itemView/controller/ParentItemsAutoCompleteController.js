@@ -18,16 +18,14 @@ Ext.define('Savanna.itemView.controller.ParentItemsAutoCompleteController', {
         }
     },
     handleAutoCompleteSelect: function (combo, records, eOpts) {
-
         this.getView().fireEvent('AutoComplete:ItemSelected', records[0].data.label, records[0].data, this.getView());
         combo.setValue("");
 
         this.getView().up('itemview_create_item').close();
 
         if(records[0].data.uri)  {
-
             var itemView = Ext.create('Savanna.itemView.view.ItemViewer', {
-                title: 'Model Item',
+                title: records[0].data.label,
                 itemUri: records[0].data.uri,
                 editMode: true,
                 createMode:true,
