@@ -1,5 +1,5 @@
 Ext.define('Savanna.itemView.view.ItemViewer', {
-    extend: 'Savanna.component.ClassificationPanel',
+    extend: 'Ext.panel.Panel',
 
     alias: 'widget.itemview_itemviewer',
 
@@ -23,7 +23,10 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
         'Savanna.itemView.view.annotationProperties.AnnotationProperties',
         'Savanna.component.ClassificationPanel',
         'Savanna.itemView.store.AutoCompleteStore',
-        'Savanna.itemView.store.ItemLockStore'
+        'Savanna.itemView.store.ItemLockStore',
+        'Savanna.itemView.store.ItemViewStoreHelper',
+        'Savanna.metadata.view.Details',
+        'Savanna.sources.view.Sources'
     ],
 
     layout: 'card',
@@ -166,6 +169,33 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                                 }
                             }
                         ]
+                    },
+                    {
+                        xtype: 'panel',
+                        itemId: 'itemInfoPanel',
+                        title: 'details',
+                        width: '30%',
+                        header:{
+                            ui:'light-blue'
+                        },
+                        layout: 'vbox',
+                        items: [
+//                            {
+//                                xtype: 'metadata_details',
+//                                itemId: 'itemDetails',
+//                                itemURI: this.itemUri
+//                            },
+                            {
+                                xtype: 'document_sources',
+                                editMode: false,
+                                itemId: 'itemSources',
+                                header:{
+                                    ui:'light-blue'
+                                },
+
+                                itemURI: this.itemUri
+                            }
+                        ]
                     }
                 ]
             },
@@ -192,21 +222,6 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                                 {
                                     text: 'Delete',
                                     itemId:'deleteItemButton'
-                                },
-                                {
-                                    xtype: 'menuseparator'
-                                },
-                                /* commented out for demo
-                                 {
-                                 text: 'Workflow',
-                                 itemId:'workflowButton'
-                                 },
-                                 */
-                                {
-                                    xtype: 'menuseparator'
-                                },
-                                {
-                                    xtype: 'menuseparator'
                                 }
                             ]
                         },
@@ -299,6 +314,32 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                                 header: {
                                     ui:'light-blue'
                                 }
+                            }
+                        ]
+                    },
+                    {
+                        xtype: 'panel',
+                        itemId: 'itemInfoPanel',
+                        title: 'details',
+                        width: '30%',
+                        layout: 'vbox',
+                        header:{
+                            ui:'light-blue'
+                        },
+                        items: [
+//                            {
+//                                xtype: 'metadata_details',
+//                                itemId: 'itemDetails',
+//                                itemURI: this.itemUri
+//                            },
+                            {
+                                xtype: 'document_sources',
+                                editMode: true,
+                                itemId: 'itemSources',
+                                header:{
+                                    ui:'light-blue'
+                                },
+                                itemURI: this.itemUri
                             }
                         ]
                     }
