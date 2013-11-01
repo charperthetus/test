@@ -242,13 +242,10 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
      *  @param {files} Array of files
      */
     uploadFiles: function(files){
-        var uploadGrid = this.getView().queryById('uploadStatus');
-
         Ext.Array.each(files, function(file) {
             if(file.type.indexOf('image') !== -1){
                 this.currentlyUploadingCount++;
-                var tempId = Ext.id();
-                this.uploadFileViaXMLHttpRequest(file, tempId);
+                this.uploadFileViaXMLHttpRequest(file);
             } else {
                 this.handleException('File Upload: File is not an image: ', file.name);
             }
@@ -258,27 +255,50 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
     /*
      *  Upload File Via XML
      *
-     *  Handles uploading a single file and accepts
+     *  Handles uploading a single file and accepts the file formdata as well as tempID
+     *
+     *  @param {file} The file passed in the file change event
+     *  @param {tempId} an ID that we've assigned to match it later
      */
-    uploadFileViaXMLHttpRequest:function(file, tempId) {
-        var formData = new FormData();
-        formData.append(file.name, file);
+    uploadFileViaXMLHttpRequest:function(file) {
         
-        var xhr = new XMLHttpRequest();
+        // Setup
+        var formData = new FormData(),
+            xhr = new XMLHttpRequest();
+        
+        // Operations
+        formData.append(file.name, file);
         xhr.open('POST', this.buildUploadUrl(), true);
         xhr.cors = true;
-        xhr.onload = Ext.bind(this.onUploadRequestLoad,this,[tempId],true );              
-        xhr.send(formData);  // multipart/form-data
+        xhr.onload = Ext.bind(this.onUploadRequestLoad, this);              
+        xhr.send(formData);
     },
-    onUploadRequestLoad: function(status){
-        var pollingId =  Ext.decode(status.target.response);
 
+    /*
+     *  On Upload Requst
+     *
+     *  Handles the response from upload file and sets an ID for the upload to
+     *  track down the line when polling.
+     *
+     *  @param {xhr} The XMLHttpRequest Object
+     */
+    onUploadRequestLoad: function(xhr){
+        var pollingId =  Ext.decode(xhr.target.response);
         this.currentPollingIds.push(pollingId);
-        if (this.currentlyPolling === false){
+        if (!this.currentlyPolling) {
             this.pollForDocuments();
             this.currentlyPolling = true;
         }
     },
+
+    /*
+     *  Poll for Documents
+     *
+     *  A helper method for the AJAX polling request. Takes no parameters, but
+     *  looks at the internal currentPollingIds for POST data.
+     *
+     *  @param {none}
+     */
     pollForDocuments: function(){
         Ext.Ajax.request({
             url: this.buildUploadUrl(true),
@@ -287,26 +307,28 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
             headers: {
                 'Accept': 'application/json'
             },
-            jsonData: this.buildJSONStringArray(this.currentPollingIds) ,
-            success: Ext.bind(this.onBatchPollingRequestLoad, this , [], true ),
 
-            // TODO: Handle failures
+            // The JSON object representing the polling ID's
+            jsonData: Ext.JSON.encode(this.currentPollingIds),
+
+            // Success Handler
+            success: Ext.bind(this.onBatchPollingRequestLoad, this),
+
+            // Failure (server failure)
             failure: function (response) {
-                console.log('server-side failure with status code ' + response.status);
+                this.handleException('Upload Error: Failed to fetch upload status of documents, with status code ' + response.status);
             }
         });
     },
-    buildJSONStringArray:function(array){ // Make my arra valid json.
-        var jsonString = '[';
-        for (var i = 0 ; i < array.length ; i++ ){
-            jsonString += '"' + array[i] + '"';
-            if (i !== array.length - 1){
-                jsonString += ',';
-            }
-        }
-        jsonString += ']';
-        return jsonString;
-    },
+
+    /*
+     *  On Batch Polling Request
+     *
+     *  Maintains peristance with the local variables set above based on the response from the service.
+     *  This is a good candidate for refactor, since it's doing a lot of logic.
+     *
+     *  @param {response} The response object from the service call
+     */
     onBatchPollingRequestLoad: function(response){
         var responseObject = Ext.decode(response.responseText);
         for(var i = this.currentPollingIds.length - 1 ; i >= 0 ; i--){
@@ -338,6 +360,16 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
         }
         this.updateUploadLabel();
     },
+
+    /* 
+     *  Update Upload Label
+     *
+     *  Updates the "Uploading (X of X)" label in the view.
+     *  Takes no parameters, and checks the currentlyPollingIds and currentlyUploadingCount for status.
+     *  Also responsible for showing and hiding the label based on the results.
+     *
+     *  @param {none}
+     */
     updateUploadLabel: function() {
         var uploadStatus = this.getView().queryById('uploadStatusMessage');
         uploadStatus.show();
@@ -349,6 +381,16 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
             uploadStatus.hide();
         }
     },
+
+    /*
+     *  Handle New Image
+     *
+     *  Puts the newly added image into the thumbnail gallery and persists to the local store.
+     *  This gets called on both newly uploaded images and drag and drop images from search, so
+     *  titles and descriptions may be present and need to be checked.
+     *
+     *  @param {image} Object containing the image data (uri, title, or documentUri properties)
+     */
     handleNewImage: function(image){
 
         // Check to see if this was dragged from Search or from Upload. The URI is under a different key in each
@@ -364,7 +406,7 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
 
         // Create the view for the image thumbnail
         var thumbnail = Ext.create('Savanna.itemView.view.imageBrowser.ImageThumbnail', {
-            src: SavannaConfig.savannaUrlRoot + 'rest/document/' + encodeURI(imageURI) + '/original/',
+            src: this.buildImageUrl(imageURI),
             alt: (image.previewString) ? image.previewString : 'Insert a description',
             title: (image.title) ? image.title : 'Add a Title'
         });
@@ -373,6 +415,5 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
         this.addImageToBrowser(thumbnail);
         this.showSlideshowImages();
         this.getView().storeHelper.addBotLevItemInStore(imageTitle, imageModel, this.getView().store.getById('Images'));
-        this.onChangeImage(null, thumbnail);
     }
 });
