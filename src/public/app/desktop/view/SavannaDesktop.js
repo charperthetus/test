@@ -40,14 +40,6 @@ Ext.define('Savanna.desktop.view.SavannaDesktop', {
                 height:29,
                 margin:'3 0 0 0',
                 glyph:'search'
-            }, {
-                itemId: 'uploadbutton',
-                cls:'uploadButtonFramework',
-                ui:'brand-header',
-                width: 29,
-                height:29,
-                margin:'3 0 0 0',
-                glyph:'upload'
             },{
                 itemId: 'modelsearchbutton',
                 cls:'modelSearchButtonFramework',
@@ -56,6 +48,14 @@ Ext.define('Savanna.desktop.view.SavannaDesktop', {
                 height:29,
                 margin:'3 0 0 0',
                 glyph:'modelSearch'
+                },{
+                itemId: 'uploadbutton',
+                cls:'uploadButtonFramework',
+                ui:'brand-header',
+                width: 29,
+                height:29,
+                margin:'3 0 0 0',
+                glyph:'upload'
             },
             {
                  // TODO: This is just a shim to load items. Once model search is functional, remove it

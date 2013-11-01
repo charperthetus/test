@@ -33,6 +33,14 @@ Ext.define('Savanna.itemView.view.createItem.ParentItems', {
 
     bodyPadding:8,
 
+    header: {
+        xtype: 'header',
+        cls: 'item-header-font',
+        style: {
+            "background": '#FFFFFF'
+        }
+    },
+
     layout: 'fit',
 
     initComponent: function () {
@@ -55,6 +63,7 @@ Ext.define('Savanna.itemView.view.createItem.ParentItems', {
             xtype: 'parentitems_auto_complete',
             itemId: 'parentItemAutoChooser',
             width: '100%',
+            margin: 10,
             store: Ext.create('Savanna.itemView.store.AutoCompleteStore', {
                 urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/mockModelSearch/keyword/item',
                 paramsObj: {
