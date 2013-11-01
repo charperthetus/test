@@ -406,40 +406,44 @@
 }
 
 .#{$prefix}icon{
-    @each $alt-button-state in pressed, focus, over{
-        &.#{$prefix}btn-#{$alt-button-state} {
-            .#{$prefix}btn-inner{
-                text-decoration:none;
-            }
-        }
-    }
-
-    .#{$prefix}btn-inner{
+  @each $alt-button-state in pressed, focus, over{
+    &.#{$prefix}btn-#{$alt-button-state} {
+      .#{$prefix}btn-inner{
         text-decoration:none;
+      }
     }
+  }
+
+  .#{$prefix}btn-inner{
+    text-decoration:none;
+  }
 }
 
 .new-savanna-tab{
   .#{$prefix}btn-inner{
     text-decoration:none;
   }
+  .#{$prefix}btn-glyph{
+    color:$tab-dark-color;
+    line-height:25px;
+    width: 25px;
+    text-align: center;
+    font-size: 10px;
+    &:hover{
+      opacity:0.5;
+    }
+  }
   .#{$prefix}btn-arrow{
     padding-right: 0;
     width: 25px;
     &:before {
-    content: "plus";
-    right: 0;
     font-size: 16px;
     position: absolute;
     text-align: center;
     width: 25px;
     line-height: 25px;
-    display: block;
+    display: none;
     font-size: 10px;
-    }
-    color:$tab-dark-color;
-    &:hover{
-      opacity:0.5;
     }
   }
 }

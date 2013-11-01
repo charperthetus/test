@@ -77,6 +77,9 @@
 .item-view-column{
   border-right-width:$item-view-left-column-border-width;
   border-right-style: $item-view-left-column-border-style;
+  &:last-child{
+    border-right-width:0;
+  }
 }
 
 .itemview{
