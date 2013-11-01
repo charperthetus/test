@@ -90,9 +90,6 @@ Ext.define('Savanna.process.controller.ProcessController', {
         //todo: diagram initialization here: setup for checking for a "dirty" process component
         var uri = this.getView().getItemUri();
         this.store = Ext.create('Savanna.process.store.Processes', {itemUri:uri});
-        if (uri) {
-            this.store.load({callback: this.onStoreLoaded, scope: this});
-        }
         return this.callParent(arguments);
     },
 

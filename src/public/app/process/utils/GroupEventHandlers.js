@@ -34,8 +34,7 @@ Ext.define('Savanna.process.utils.GroupEventHandlers', {
         }
     },
 
-    onMouseDrop: function(e, ddSource, data, diagram, part) {
-        var stepGroup = part;
+    onMouseDrop: function(e, ddSource, data, diagram, stepGroup) {
 
         var category = 'ProcessItem';
         var label = data.records[0].data.label;
