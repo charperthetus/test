@@ -990,9 +990,8 @@ describe('Search Results', function () {
             it('should populate the map with search results', function () {
                 var scope = searchComponent.down('#resultsdals');
                 var resultsMap = searchComponent.down('#resultMapCanvas');
-                var results = {};
-                results.store = searchStore;
-                resultsController.loadPointsFromStore(results, scope);
+                scope.store = searchStore;
+                resultsController.loadPointsFromStore(scope);
                 expect(resultsMap.resultsLayer.features.length > 0).toBeTruthy();
             });
         });
