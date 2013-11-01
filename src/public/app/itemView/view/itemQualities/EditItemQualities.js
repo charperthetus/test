@@ -19,7 +19,11 @@ Ext.define('Savanna.itemView.view.itemQualities.EditItemQualities', {
 
     layout: 'vbox',
 
+    storeHelper: null,
+
     width: '100%',
+
+    padding:'10 0 10 0',
 
     tbar: [
         {

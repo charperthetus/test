@@ -6,9 +6,10 @@ Ext.define('Savanna.process.utils.ProcessViewFactory', {
 
     getComponentForType: function(type, uri, label){
         if (type.toLowerCase() == 'process'){
+            var encoded = encodeURIComponent(uri);
             return Ext.create('Savanna.process.view.ProcessEditorComponent', {
                 title: label,
-                // someday we will need a uri  itemUri: encodeURI(uri),
+                itemUri: encoded
             });
         }else {
             return null;

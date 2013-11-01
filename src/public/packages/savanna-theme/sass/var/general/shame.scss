@@ -10,3 +10,11 @@
 @import 'shame/popup';
 @import 'shame/DalStatusIcon';
 @import 'shame/ResultsPanelGrid';
+@import 'shame/ProcessEditor';
+@import 'shame/ItemViewer';
+
+
+// This is needed until we get an actual divider in center of the app
+.secondPanel {
+  border-left: 1px solid #333 !important;
+}

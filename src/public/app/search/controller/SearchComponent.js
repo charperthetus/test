@@ -514,8 +514,23 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             if (action === 'search') {
                 /*
                  add an object tying the dal and store together for referencing
-                 */
-                resultsPanel.up('#searchresults').allResultSets.push(resultsObj);
+
+                We were getting duplicate resultsObjects in the allResultsSet--This is where it happens.  These duplications were causing duplicate facets.
+                Ideally we would not fire off two searches in a row.
+                */
+               var found = false;
+               //replace results if they exist.
+               Ext.each(resultsPanel.up('#searchresults').allResultSets, function (resultset, index) {
+                   if (resultset.id === dalId) {
+                       resultsPanel.up('#searchresults').allResultSets[index] = resultsObj;
+                       found = true;
+                   }
+               });
+
+               //...if not, just add the results.
+               if(!found){
+                   resultsPanel.up('#searchresults').allResultSets.push(resultsObj);
+               }
 
                 /*
                  When results are returned fire event:

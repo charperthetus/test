@@ -34,19 +34,21 @@ Ext.define('Savanna.process.utils.GroupEventHandlers', {
         }
     },
 
-    onMouseDrop: function(e, ddSource, data, diagram, part) {
-        var stepGroup = part;
-
+    onMouseDrop: function(e, obj, data) {
+        var stepGoup = obj.part;
+        var diagram = stepGroup.diagram;
         var category = 'ProcessItem';
         var label = data.records[0].data.label;
         var linkType = 'ProcessLink';
         diagram.startTransaction('onMouseDrop');
-        var nodeData = {'category': category, 'text': label};
+        var nodeData = {'category': category, 'label': label};
         nodeData.uri = Savanna.process.utils.ProcessUtils.getURI(nodeData.category);
+        Savanna.process.utils.ProcessUtils.setRepresentsUri(nodeData, data.records[0].data.uri);
 
         diagram.model.addNodeData(nodeData);
 
         var linkData = {  category: linkType, from: stepGroup.data.uri, to: nodeData.uri };
+        linkData.uri = Savanna.process.utils.ProcessUtils.getURI(linkData.category);
         diagram.model.addLinkData(linkData);
         diagram.commitTransaction('onMouseDrop');
         Savanna.process.utils.ProcessUtils.startTextEdit(diagram, nodeData);
@@ -54,15 +56,13 @@ Ext.define('Savanna.process.utils.GroupEventHandlers', {
 
     // when the selection is dropped into a Group, add the selected Parts into that Group;
     // if it fails, cancel the tool, rolling back any changes
-    onActionGroupMouseDrop: function (e, obj) {
-        var diagram = obj.diagram;
-        var actionGroup = obj.part;
-        var ok = actionGroup.addMembers(diagram.selection, true);
-        if (ok) {
-            actionGroup.expandSubGraph();
-        } else {
-            diagram.currentTool.doCancel();
-        }
+    onActionGroupMouseDrop: function (e, obj, data) {
+        data.records.forEach(function(rec) {
+            var dropObj = rec.data;
+            if (dropObj.type === 'Action') {
+                Savanna.process.utils.ProcessUtils.addAction(obj, dropObj.label, dropObj.uri);
+            }
+        });
     },
 
     onMouseHold: function(e, group) {
@@ -92,54 +92,32 @@ Ext.define('Savanna.process.utils.GroupEventHandlers', {
         obj.areaBackground = null;
     },
 
-    onNodeMouseDrop: function(obj, linkType) {
-        var diagram = obj.diagram;
-        var actionsGroup = obj.part;
-        var stepGroup = actionsGroup ? actionsGroup.containingGroup : null;
-        var ok = stepGroup.addMembers(diagram.selection, true);
-        if (ok) {
-            diagram.startTransaction("onNodeMouseDrop");
-
-            var iter = diagram.selection.iterator;
-            while (iter.next()) {
-                var node = iter.value;
-                var newLink = { category: linkType, from: actionsGroup.data.uri, to: node.data.uri };
-                diagram.model.addLinkData(newLink);
+    onNodeMouseDrop: function(obj, data, linkType) {
+        data.records.forEach(function(rec) {
+            var dropObj = rec.data;
+            if (dropObj.type === 'Item') {
+                Savanna.process.utils.ProcessUtils.addNode(obj, 'ProcessItem', dropObj.label, dropObj.uri, linkType);
             }
-
-            diagram.commitTransaction('onNodeMouseDrop');
-        } else {
-            diagram.currentTool.doCancel();
-        }
+        });
     },
 
-    onParticipantMouseDrop:function(e, obj) {
-        Savanna.process.utils.GroupEventHandlers.onNodeMouseDrop(obj, 'ToolLink');
+    onParticipantMouseDrop:function(e, obj, data) {
+        Savanna.process.utils.GroupEventHandlers.onNodeMouseDrop(obj, data, 'ToolLink');
     },
 
-    onInputMouseDrop:function(e, obj) {
-        Savanna.process.utils.GroupEventHandlers.onNodeMouseDrop(obj, 'InputLink');
+    onInputMouseDrop:function(e, obj, data) {
+        Savanna.process.utils.GroupEventHandlers.onNodeMouseDrop(obj, data, 'InputLink');
     },
 
-    onByproductMouseDrop:function(e, obj) {
-        Savanna.process.utils.GroupEventHandlers.onNodeMouseDrop(obj, 'ByproductLink');
+    onByproductMouseDrop:function(e, obj, data) {
+        Savanna.process.utils.GroupEventHandlers.onNodeMouseDrop(obj, data, 'ByproductLink');
     },
 
-    onResultMouseDrop:function(e, obj) {
-        var linkType = 'ProcessLink';
-        var diagram = obj.diagram;
+    onResultMouseDrop:function(e, obj, data) {
         var actionsGroup = obj.part;
         var stepGroup = actionsGroup ? actionsGroup.containingGroup : null;
-        diagram.startTransaction("onResultMouseDrop");
 
-        var iter = diagram.selection.iterator;
-        while (iter.next()) {
-            var node = iter.value;
-            var newLink = { category: linkType, from: stepGroup.data.uri, to: node.data.uri };
-            diagram.model.addLinkData(newLink);
-        }
-
-        diagram.commitTransaction('onResultMouseDrop');
+        Savanna.process.utils.GroupEventHandlers.onNodeMouseDrop(stepGroup, data, 'OutputLink');
      }
 
 });

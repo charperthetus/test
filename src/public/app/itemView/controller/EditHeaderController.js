@@ -15,8 +15,6 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
 
     valNameArray: [],
 
-    storeHelper: null,
-
     control: {
         view: {
             'EditHeader:StoreSet': 'storeSet'
@@ -39,19 +37,12 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
             'AutoComplete:TagRemoved': 'removingIntendedUse'
         },
         itemDescription: {
-            blur: 'updateDescription',
-            change: 'saveEnable'
+            blur: 'updateDescription'
         }
-    },
-
-    init: function() {
-        this.callParent(arguments);
-        this.storeHelper = Ext.create('Savanna.itemView.store.ItemViewStoreHelper');
     },
 
     storeSet: function (itemName) {
         var me = this;
-        this.storeHelper.init();
 
         Ext.each(me.getView().store.getById('Aliases').data.values, function(value) {
             me.getView().queryById('addAliasBox').addTag(value.label);
@@ -81,16 +72,20 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
     openParentChooser: function() {
         //ToDo: build and connect the chooser
         console.log('open a chooser for a parent here');
+//        Ext.create('Savanna.itemView.view.createItem.CreateItem', {
+//            width: 850,
+//            height: 500
+//        });
     },
 
     onIntendedUsesSelect:function() {
-
         var vChooser = Ext.create('Savanna.itemView.view.itemQualities.ValuesPicker', {
             width: 500,
             height: 600,
             selectionStore: this.getView().store.getById("Intended Use").valuesStore,
             valNameArray: this.valNameArray,
-            uri: encodeURI(this.getView().store.getById('Intended Use').data.predicateUri)
+            uri: encodeURI(this.getView().store.getById('Intended Use').data.predicateUri),
+            storeHelper: this.getView().storeHelper
         });
 
         vChooser.on('close', this.closedVPicker, this);
@@ -108,38 +103,35 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
                 this.getView().queryById('addIntendedUseBox').addTag(value.data.label);
             }, this);
 
-            Savanna.app.fireEvent('ItemView:SaveEnable');
+            this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
         }
     },
 
     addingAlias: function(tagName, tagData, aView) {
-        this.storeHelper.addBotLevItemInStore(tagName, tagData, this.getView().store.getById('Aliases'));
-        Savanna.app.fireEvent('ItemView:SaveEnable');
+        this.getView().storeHelper.addBotLevItemInStore(tagName, tagData, this.getView().store.getById('Aliases'));
+        this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
     },
 
     removingAlias: function(tagName, aView) {
-        this.storeHelper.removeBotLevItemInStore(tagName, this.getView().store.getById('Aliases'));
-        Savanna.app.fireEvent('ItemView:SaveEnable');
+        this.getView().storeHelper.removeBotLevItemInStore(tagName, this.getView().store.getById('Aliases'));
+        this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
     },
 
     addingIntendedUse: function(tagName, tagData, aView) {
-        this.storeHelper.addBotLevItemInStore(tagName, tagData, this.getView().store.getById('Intended Use'));
+        this.getView().storeHelper.addBotLevItemInStore(tagName, tagData, this.getView().store.getById('Intended Use'));
         this.valNameArray.push(tagName);
-        Savanna.app.fireEvent('ItemView:SaveEnable');
+        this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
     },
 
     removingIntendedUse: function(tagName, aView) {
-        this.storeHelper.removeBotLevItemInStore(tagName, this.getView().store.getById('Intended Use'));
+        this.getView().storeHelper.removeBotLevItemInStore(tagName, this.getView().store.getById('Intended Use'));
         Ext.Array.remove(this.valNameArray, tagName);
-        Savanna.app.fireEvent('ItemView:SaveEnable');
+        this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
     },
 
     updateDescription: function(comp, e, eOpts) {
         var myStore = this.getView().store;
         myStore.getById('Description').data.values[0].value = comp.value;
-    },
-
-    saveEnable:function()   {
-        Savanna.app.fireEvent('ItemView:SaveEnable');
+        this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
     }
 });

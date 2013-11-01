@@ -7,10 +7,16 @@
  */
 
 Ext.define('Savanna.itemView.store.ItemViewStoreHelper', {
+    store: null,
     mainStore: null,
 
-    init: function() {
-        this.mainStore = Ext.data.StoreManager.lookup('Savanna.itemView.store.MainItemStore').getAt(0).data.propertyGroups;
+    init: function(store) {
+        this.store = store;
+        this.mainStore = store.getAt(0).data.propertyGroups;
+    },
+
+    itemUri: function() {
+        return this.store.getAt(0).data.uri;
     },
 
     updateMainStore: function(store, componentName) {

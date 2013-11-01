@@ -14,10 +14,7 @@ Ext.define('Savanna.process.controller.ProcessController', {
         'Savanna.process.store.Processes',
         'Savanna.process.view.part.Overview' //added dynamically later
     ],
-    store: 'Savanna.process.store.Processes',
-    mixins: {
-        storeable: 'Savanna.mixin.Storeable'
-    },
+    store: null,
 
     control: {
         newProcess: {
@@ -86,14 +83,18 @@ Ext.define('Savanna.process.controller.ProcessController', {
 
     constructor: function (options) {
         this.opts = options || {};
-        this.mixins.storeable.initStore.call(this);
         this.callParent(arguments);
     },
 
     init: function() {
         //todo: diagram initialization here: setup for checking for a "dirty" process component
-
+        var uri = this.getView().getItemUri();
+        this.store = Ext.create('Savanna.process.store.Processes', {itemUri:uri});
         return this.callParent(arguments);
+    },
+
+    onStoreLoaded: function (records) {
+        this.load(this.getCanvas().diagram, records[0]);
     },
 
     toggleExpanded: function(expand) {
@@ -148,7 +149,8 @@ Ext.define('Savanna.process.controller.ProcessController', {
     },
 
     clear: function(diagram, textarea) {
-        var newProcess = {'class': 'go.GraphLinksModel', 'nodeKeyProperty': 'uri', 'nodeDataArray': [{'uri':-1, 'category':'Start'}], 'linkDataArray': []};
+        var newProcess = {'class': 'go.GraphLinksModel', 'nodeKeyProperty': 'uri', 'nodeDataArray': [{'category':'Start'}], 'linkDataArray': []};
+        newProcess.nodeDataArray[0].uri = Savanna.process.utils.ProcessUtils.getURI('Start');
         newProcess.uri = Savanna.process.utils.ProcessUtils.getURI('ProcessModel');
         this.store.add(newProcess);
         this.load(diagram, this.store.first());
@@ -250,7 +252,12 @@ Ext.define('Savanna.process.controller.ProcessController', {
         diagram.addDiagramListener('PartResized', Ext.bind(this.partResized, this));
         diagram.addDiagramListener('TextEdited', Ext.bind(this.textEdited, this));
 
-        this.loadInitialJSON();
+        var uri = this.getView().getItemUri();
+        if (uri) {
+            this.store.load({callback: this.onStoreLoaded, scope: this});
+        } else {
+            this.loadInitialJSON();
+        }
     },
 
     textEdited: function() {
@@ -293,9 +300,23 @@ Ext.define('Savanna.process.controller.ProcessController', {
         }
     },
 
+    prevOver: null,
+
     notifyOverTarget: function(ddSource, e, data){
         var part = this.getDiagramPart(e);
+
+        // simulate mouseDragLeave behavior
+        if (this.prevOver != part) {
+            if (this.prevOver && this.prevOver.mouseDragLeave) {
+                this.prevOver.mouseDragLeave(e, this.prevOver);
+            }
+        }
+        this.prevOver = part;
+
         if (part && part.mouseDrop) {
+            if (part.mouseDragEnter) {
+                part.mouseDragEnter(e, part);
+            }
             return Ext.dd.DropZone.prototype.dropAllowed;
         } else {
             return Ext.dd.DropZone.prototype.dropNotAllowed; //currently, say we can't drop anywhere in the canvas
@@ -304,8 +325,14 @@ Ext.define('Savanna.process.controller.ProcessController', {
 
     notifyDropTarget: function(ddSource, e, data){
         var part = this.getDiagramPart(e);
+
+        if (this.prevOver && this.prevOver.mouseDragLeave) {
+            this.prevOver.mouseDragLeave(e, this.prevOver);
+            this.prevOver = null;
+        }
+
         if (part && part.mouseDrop) {
-            return part.mouseDrop(e,ddSource, data, this.getCanvas().diagram, part);
+            return part.mouseDrop(e, part, data);
         }
     },
 
@@ -318,7 +345,7 @@ Ext.define('Savanna.process.controller.ProcessController', {
             diagram = this.getCanvas().diagram,
             diagramCoordinate = diagram.transformViewToDoc(new go.Point(x,y));
 
-        return diagram.findPartAt(diagramCoordinate); //may be null
+        return diagram.findObjectAt(diagramCoordinate); //may be null
     },
 
     togglePalette: function() {
