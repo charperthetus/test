@@ -22,7 +22,8 @@ Ext.define('Savanna.itemView.view.itemQualities.QualitiesPicker', {
 
     config: {
         selectionStore: null,
-        propNameArray: []
+        propNameArray: [],
+        storeHelper: null
     },
 
     updatedStore: false,
@@ -37,6 +38,8 @@ Ext.define('Savanna.itemView.view.itemQualities.QualitiesPicker', {
 
     layout: 'vbox',
 
+    cls:'value-picker-window',
+
     items: [
         {
             xtype: 'label',
@@ -49,16 +52,20 @@ Ext.define('Savanna.itemView.view.itemQualities.QualitiesPicker', {
             items: [
                 {
                     xtype: 'textfield',
+                    itemId: 'filterQualitiesField',
                     flex: 1,
-                    emptyText: 'Find a Quality'
+                    emptyText: 'Find a Quality',
+                    enableKeyEvents: true
                 },
                 {
                     xtype: 'button',
-                    text: 'Search'
+                    text: 'Search',
+                    itemId: 'searchQualitiesBtn'
                 },
                 {
                     xtype: 'button',
-                    text: 'Clear'
+                    text: 'Clear',
+                    itemId: 'clearQualitiesFilter'
                 }
             ]
         },
@@ -110,13 +117,13 @@ Ext.define('Savanna.itemView.view.itemQualities.QualitiesPicker', {
                     flex: 1,
                     tpl: Ext.create('Ext.XTemplate',
                         '<tpl for="values" between=", ">',
-                            '{value}',
+                            '{label}',
                         '</tpl>')
                 },
                 {
                     xtype: 'templatecolumn',
                     dataIndex: 'label',
-                    tpl: '<input type="button" value="x" id="removeSelectedQuality">'
+                    tpl: '<i type="button" value="x" id="removeSelectedQuality"></i>'
                 }
             ]
         }
@@ -125,7 +132,8 @@ Ext.define('Savanna.itemView.view.itemQualities.QualitiesPicker', {
     buttons: [
         {
             text: 'OK',
-            itemId: 'okBtn'
+            itemId: 'okBtn',
+            ui:'commit'
         },
         {
             text: 'cancel',
@@ -141,8 +149,8 @@ Ext.define('Savanna.itemView.view.itemQualities.QualitiesPicker', {
     afterRender: function () {
         this.callParent(arguments);
         this.store = Ext.create(this.store, {
-            urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/model/fakeuri/qualities',
-            paramsObj: {excludeUri:'asdf', pageStart:0, pageLimit:10, pageSize: 20, alphabetical: true, q:""}
+            urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/model/' + encodeURI(this.getStoreHelper().itemUri()) + '/qualities',
+            paramsObj: {pageStart:0, pageSize: 100, alphabetical: true}
         });
 
         this.store.load({

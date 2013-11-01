@@ -28,8 +28,8 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
                     //Keelan asked that I use UI event bubbling...
                     //The pattern I've been using is for the controller of the child to fire the event on it's controlled view.
                     //Then we catch the event in all the "parent controllers" by listening to events on their controlled views. (See below)
-                    me.component.on('Search:PageSizeChanged', this.onPageSizeChange, this);
-                    me.component.on('Search:SortByChanged', this.onSortOrderChange, this);
+                    me.component.on('search:PageSizeChanged', this.onPageSizeChange, this);
+                    me.component.on('search:SortByChanged', this.onSortOrderChange, this);
                     me.component.on('search:changeSelectedStore', this.changeSelectedStore, this);
 
                     //grid notifications
@@ -296,7 +296,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
 
     onItemClick: function (view, rec, node, index, e) {  //other parameter options
         //TODO - the way of getting this button is wrong, refactor
-        if (e && e.target && e.target.className == 'openButtonClass') {
+        if (e && e.target && e.target.className.indexOf('openButtonClass') != -1) {
             EventHub.fireEvent('open', {uri: rec.data.uri, type: rec.data.contentType, label: rec.data.title});
         }
     },
@@ -576,12 +576,13 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
     },
     addSearchPolygon: function (canvas) {
       var searchLayer = canvas.searchLayer;
+
       //modify resultmap searchLayer to match searchmap searchLayer
       if(searchLayer.features.length > 0){
           var resultMap = canvas.up('search_searchcomponent').down('#resultMapCanvas');
           var layerFeatureArray = searchLayer.features;
-          resultMap.searchLayer.removeAllFeatures();
           var cloneFeature = layerFeatureArray[0].clone();
+          resultMap.searchLayer.removeAllFeatures();
           resultMap.searchLayer.addFeatures(cloneFeature);
       }
     },

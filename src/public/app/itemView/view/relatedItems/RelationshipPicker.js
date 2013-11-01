@@ -21,7 +21,8 @@ Ext.define('Savanna.itemView.view.relatedItems.RelationshipPicker', {
 
     config: {
         selectionStore: null,
-        relationshipNameArray: []
+        relationshipNameArray: [],
+        storeHelper: null
     },
 
     relationshipSelectStore: null,
@@ -37,6 +38,8 @@ Ext.define('Savanna.itemView.view.relatedItems.RelationshipPicker', {
     width: '100%',
 
     layout: 'vbox',
+
+    cls:'value-picker-window',
 
     items: [
         {
@@ -67,7 +70,8 @@ Ext.define('Savanna.itemView.view.relatedItems.RelationshipPicker', {
     buttons: [
         {
             text: 'OK',
-            itemId: 'okBtn'
+            itemId: 'okBtn',
+            ui:'commit'
         },
         {
             text: 'cancel',
@@ -83,8 +87,8 @@ Ext.define('Savanna.itemView.view.relatedItems.RelationshipPicker', {
     afterRender: function () {
         this.callParent(arguments);
         this.store = Ext.create(this.store, {
-            urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/model/fakeuri/relationships',
-            paramsObj: {excludeUri:'a', pageStart:0, pageSize:10, alphabetical: true, q: ''}
+            urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/model/' + encodeURI(this.getStoreHelper().itemUri()) + '/relationships',
+            paramsObj: {pageStart:0, pageSize:100, alphabetical: true}
         });
 
         this.store.load({

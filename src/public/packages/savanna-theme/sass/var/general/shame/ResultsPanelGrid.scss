@@ -3,7 +3,18 @@
  *	@date 10/30/2013
  *	@descriptiong This is a homeless bit of code. This sets the proper styling for Search/ModelSearch results
  */
-
+.openButtonClass{
+	right: 0;  
+	top: 5px; 
+	position: absolute;
+	
+	&.showBtn{
+		visibility: visible;
+	}
+	&.hideBtn{
+		visibility: hidden;
+	}
+}
  .resultDiv {
  	position: relative;
  	max-height: 113px;

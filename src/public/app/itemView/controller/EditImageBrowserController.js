@@ -1,9 +1,7 @@
 Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
-    extend: 'Deft.mvc.ViewController',
-
-    requires: [
-        'Savanna.itemView.store.ItemViewStoreHelper'
-    ],
+    
+    // This grabs base scrolling code from ImageBrowserController so we don't have to re-write it
+    extend: 'Savanna.itemView.controller.ImageBrowserController',
 
     view: 'Savanna.itemView.view.imageBrowser.ImagesGridEdit',
 
@@ -65,29 +63,36 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
     currentlyUploadingCount: 0,
     dropAreaActive: false,
 
-    // Store Helper for persisting
-    storeHelper: null,
-
-    /////////
+    /////////////////////////////////
     // Setup
-    /////////
+    /////////////////////////////////
     init: function() {
         this.callParent(arguments);
         this.setupFileDrop();
-        this.setupExtDrop();
-        this.storeHelper = Ext.create('Savanna.itemView.store.ItemViewStoreHelper');
     },
-
-    // Setup the Ext Drop Handler
-    setupExtDrop: function() {
+    // Setup the Ext Drop Handler and the native HTML drop handler
+    setupFileDrop: function() {
         var me = this;
-        var dropTarget = me.getView().queryById('itemViewUploadImages').getEl();
+        var dropTarget = me.getView().queryById('itemViewUploadImages').getEl(),
+            dropTargetDom = dropTarget.dom;
+
+        // Sets up the EXT drop
         if (dropTarget) {
             dropTarget.dropTarget = Ext.create('Ext.dd.DropTarget', dropTarget.dom, {
-                ddGroup: 'SEARCH-ITEMS',
+                ddGroup: 'SEARCH-ITEMS', // MUST MATCH THE DD IN SEARCH!!!
                 notifyOver: Ext.Function.bind(me.notifyImageDragHover, me),
                 notifyDrop: Ext.Function.bind(me.notifyImageDragDrop, me)
             });
+        }
+
+        // Sets up the HTML Drop (for file upload)
+        if (typeof window.FileReader !== 'undefined') {
+
+            dropTargetDom.ondragover = function () {
+                return false;
+            };
+
+            dropTargetDom.ondrop = Ext.bind(this.fileDropHandler, this, [dropTarget], true);
         }
     },
     // Check if the Ext Item can be droped by its contentType
@@ -106,22 +111,9 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
             return false;
         } else {
             // Add the image to the browser
-            this.createNewImage(data.records[0].data);
+            this.handleNewImage(data.records[0].data);
         }
         return true;
-    },
-    // Setting up the dropzone for uploading files, calls fileDropHandler
-    setupFileDrop: function() {
-        var panel = this.getView().queryById('itemViewUploadImages');
-        if (typeof window.FileReader !== 'undefined') {
-            var dropArea = panel.getEl().dom;
-
-            dropArea.ondragover = function () {
-                return false;
-            };
-
-            dropArea.ondrop = Ext.bind(this.fileDropHandler, this, [panel], true);
-        }
     },
     // Prevent the default behaviour of the browser (opening the image), and start the upload chain
     fileDropHandler: function(e) {
@@ -129,15 +121,15 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
         this.uploadFiles(e.dataTransfer.files);
     },
     // Launch file browser, does so by 'clicking' the hidden HTML input[type=file]
-    chooseFilesHandler: function(button) {
+    chooseFilesHandler: function() {
         var fileBrowser = this.getView().queryById('fileBrowserButton');
         var input  = Ext.dom.Query.selectNode('[type=\'file\']', fileBrowser.getEl().dom);
         input.multiple = true;
         input.click();
     },
     // Handles the the Upload button completion event
-    fileBrowserChangeHandler: function(fileBrowserButton,event) {
-        this.uploadFiles(event.target.files, fileBrowserButton);
+    fileBrowserChangeHandler: function(fileBrowserButton, event) {
+        this.uploadFiles(event.target.files);
     },
     // Helper to build the URL
     buildUploadUrl: function(forPolling){
@@ -149,14 +141,13 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
         return url;
     },
     // Iterates over the files uploaded and ignores ones that aren't images
-    uploadFiles: function(files,component){
+    uploadFiles: function(files){
         var file;
 
         var uploadGrid = this.getView().queryById('uploadStatus');
 
         for (var i = 0 ; i < files.length ; i++){
             file = files[i];
-
             // Check if file is an image before uploading
             if(file.type.indexOf('image') !== -1){
                 this.currentlyUploadingCount++;
@@ -164,7 +155,7 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
                 this.uploadFileViaXMLHttpRequest(this.buildUploadUrl() , file,  uploadGrid, tempId);
                 uploadGrid.store.add({ status:'pending', fileName: file.name , fileSize: file.size , progress:'Queued', fileId: tempId});
             } else {
-                console.debug('Not an image: ', file.name);
+                console.log('Not an image: ', file.name);
             }
         }
     },
@@ -203,8 +194,8 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
             success: Ext.bind(this.onBatchPollingRequestLoad, this , [uploadGrid], true ),
 
             // TODO: Handle failures
-            failure: function (response, opts) {
-                console.debug('server-side failure with status code ' + response.status);
+            failure: function (response) {
+                console.log('server-side failure with status code ' + response.status);
             }
         });
     },
@@ -239,7 +230,7 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
                 this.currentPollingIds.splice(i,1);
                 if (documentStatus.status === 'completed') { 
                     this.ingestedCount++;
-                    this.createNewImage(documentStatus);
+                    this.handleNewImage(documentStatus);
                 } else {
                     this.failedCount++;
                 } 
@@ -269,69 +260,28 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
             uploadStatus.hide();
         }
     },
+    handleNewImage: function(image){
+        // Check to see if this was dragged from Search or from Upload. The URI is under a different key in each
+        var imageURI = (image.uri) ? image.uri : image.documentUri,
+            imageTitle = (image.title) ? image.title : image.documentUri;
 
-    //////////////////
-    // IMAGE BROWSING
-    //////////////////
-    buildImageGallery: function(images) {
-        var me = this;
-        // TODO: Abstract this out.
-        Ext.Array.each(images, function() {
-            var thumbnail = Ext.create('Savanna.itemView.view.imageBrowser.ImageThumbnail', {
-                src: SavannaConfig.savannaUrlRoot + 'rest/document/' + encodeURI(this.raw.uri) + '/original/',
-                alt: this.raw.description,
-                title: this.raw.label
-            });
-            me.addImageToBrowser(thumbnail);
+        // The store helper expects argument #2 to be an object representing the model, this sets that up
+        var imageModel = {
+            title: imageTitle,
+            uri: imageURI,
+            comment: null
+        };
 
-            if (this.raw.primaryImage) {
-                me.onChangeImage(null, this);
-            }
-        });
-    },
-    createNewImage: function(image){
+        // Create the view for the image thumbnail
         var thumbnail = Ext.create('Savanna.itemView.view.imageBrowser.ImageThumbnail', {
-            src: SavannaConfig.savannaUrlRoot + 'rest/document/' + encodeURI(image.uri) + '/original/',
+            src: SavannaConfig.savannaUrlRoot + 'rest/document/' + encodeURI(imageURI) + '/original/',
             alt: (image.previewString) ? image.previewString : 'Insert a description',
             title: (image.title) ? image.title : 'Add a Title'
         });
-        this.addImageToBrowser(thumbnail);
-        //this.storeHelper.addBotLevItemInStore(image.title, image, this.getView().store);
-        this.onChangeImage(null, thumbnail);
-    },
-    addImageToBrowser: function(image){
-        this.getView().queryById('thumbnailList').add(image);
-    },
-    // Scroll Left Button
-    onNavLeft: function() {
-        var gallery = this.getView().queryById('thumbnailList');
-        gallery.scrollBy(-450, 0, true);
-    },
-    // Scroll Right Button
-    onNavRight: function() {
-        var gallery = this.getView().queryById('thumbnailList');
-        gallery.scrollBy(450, 0, true);
-    },
-    // Selecting an image to expand
-    onChangeImage: function(btn, image) {
-        var selectedImage = image.src,
-            title = (image.title) ? image.title : 'No title',
-            description = (image.alt) ? image.alt : 'No description',
-            jumboImage = this.getView().queryById('imagePrimary'),
-            jumboMeta = this.getView().queryById('imageText'),
-            imageWidth = image.naturalWidth,
-            imageHeight = image.naturalHeight;
 
-        var backgroundSize = (imageWidth < jumboImage.width && imageHeight < jumboImage.height) ? 'inherit' : 'contain';
-        
-        // In order to display text over an image, the image is used as a background image on a panel
-        jumboImage.setBodyStyle({
-            backgroundImage: 'url(' + selectedImage + ')',
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'center center',
-            backgroundSize: backgroundSize,
-            backgroundColor: 'transparent'
-        });
-        jumboMeta.update(description);
+        // Persist to the store and add the thumbnail to the slideshow
+        this.addImageToBrowser(thumbnail);
+        this.getView().storeHelper.addBotLevItemInStore(imageTitle, imageModel, this.getView().store.getById('Images'));
+        this.onChangeImage(null, thumbnail);
     }
 });

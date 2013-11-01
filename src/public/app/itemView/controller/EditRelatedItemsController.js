@@ -12,6 +12,8 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
         'Savanna.itemView.view.relatedItems.EditRelatedItems'
     ],
 
+    requires: ['Savanna.itemView.view.relatedItems.RelationshipPicker'],
+
     control: {
         view: {
             'EditRelatedItems:SetupData': 'setupData'
@@ -23,16 +25,7 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
 
     relationshipNameArray: [],
 
-    storeHelper: null,
-
-    init: function() {
-        this.callParent(arguments);
-        this.storeHelper = Ext.create('Savanna.itemView.store.ItemViewStoreHelper');
-    },
-
     setupData: function (items) {
-        this.storeHelper.init();
-
         Ext.each(items, function (relatedItemsGroup) {
             this.relationshipNameArray.push(relatedItemsGroup.get('label'));
 
@@ -40,33 +33,37 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
                 {
                     xtype: 'label',
                     text: relatedItemsGroup.get('label'),
-                    cls:'h2'
+                    cls:['h2', 'related-item-edit-header'],
+                    width:'100%'
                 },{
                     xtype: 'panel',
                     value: relatedItemsGroup.get('predicateUri'),
                     name: relatedItemsGroup.get('label'),
-                    border: 5,
-                    style: {
-                        borderColor: 'gray',
-                        borderStyle: 'dashed'
-                    },
+                    margin:'0 0 10 0',
                     listeners: {
                         boxready: Ext.bind(this.onDropItemReady, this)
                     },
-
-//                    layout: {
-//                        type:'hbox',
-//                        align:'center'
-//                    },
-//                    height: 70,
-                    width: '75%',
-
+                    height: 130,
+                    width: '100%',
+                    margin:'0 10 10 10',
+                    cls:'related-item-edit-drop-zone',
+//                    bodyStyle:'width:100%;',
+                    layout: {
+                        type: 'vbox',
+                        align: 'center'
+                    },
                     items: [
                         {
                             xtype: 'label',
                             text: 'Drop items here',
                             cls:['drag-and-drop', 'related-items-control'],
-                            height: 40
+                            height: 25
+                        },
+                        {
+                            xtype: 'label',
+                            text: 'OR',
+                            cls:['h2'],
+                            height: 20
                         },
                         {
                             xtype: 'auto_complete',
@@ -109,7 +106,8 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
             width: 500,
             height: 600,
             selectionStore: this.getView().store,
-            relationshipNameArray: this.relationshipNameArray
+            relationshipNameArray: this.relationshipNameArray,
+            storeHelper: this.getView().storeHelper
         });
 
         addNewRelationship.on('close', this.closedRPicker, this);
@@ -119,9 +117,10 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
         if (view.updatedStore) {
             this.getView().removeAll();
             this.relationshipNameArray = [];
-            this.storeHelper.updateMainStore(this.getView().store.data.items, "Related Items");
+            this.getView().storeHelper.updateMainStore(this.getView().store.data.items, "Related Items");
             this.setupData(this.getView().store.data.items);
 //            this.updateTitle();
+            Savanna.app.fireEvent('ItemView:SaveEnable');
         }
     },
 
@@ -214,12 +213,14 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
         item.label = itemLabel;
         item.value = itemUri;
         myPanel.add(this.buildAddItem(item, relatedItemGroupName));
-        this.storeHelper.addBotLevItemInStore(itemLabel, itemRecord, this.getView().store.getById(relatedItemGroupName))
+        this.getView().storeHelper.addBotLevItemInStore(itemLabel, itemRecord, this.getView().store.getById(relatedItemGroupName));
+        Savanna.app.fireEvent('ItemView:SaveEnable');
     },
 
     // Removing the tag from the store on a child auto-complete
     removeItem: function(itemName, groupName) {
-        this.storeHelper.removeBotLevItemInStore(itemName, this.getView().store.getById(groupName));
+        this.getView().storeHelper.removeBotLevItemInStore(itemName, this.getView().store.getById(groupName));
+        Savanna.app.fireEvent('ItemView:SaveEnable');
     }
 
 });

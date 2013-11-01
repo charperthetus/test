@@ -23,7 +23,7 @@ Ext.define('Savanna.desktop.view.SavannaDesktop', {
             xtype: 'button',
             height: 44,
             ui: 'brand-header'
-            }, {
+        }, {
             xtype: 'toolbar',
             flex: 1,
             ui:'brand-header',
@@ -40,7 +40,7 @@ Ext.define('Savanna.desktop.view.SavannaDesktop', {
                 height:29,
                 margin:'3 0 0 0',
                 glyph:'search'
-                }, {
+            }, {
                 itemId: 'uploadbutton',
                 cls:'uploadButtonFramework',
                 ui:'brand-header',
@@ -48,64 +48,59 @@ Ext.define('Savanna.desktop.view.SavannaDesktop', {
                 height:29,
                 margin:'3 0 0 0',
                 glyph:'upload'
-                },{
-                // TODO: Change this out to a button or remove it depending on where MS lives
+            },{
                 itemId: 'modelsearchbutton',
                 cls:'modelSearchButtonFramework',
-                ui:'brand-header',
-                scale: 'medium',
-                text: 'Model Search'
-                },{
-                // TODO: This is just a shim to load items. Once model search is functional, remove it
-                itemId: 'itemviewbutton',
-                cls:'itemViewButtonFramework',
-                ui:'brand-header',
-                scale: 'medium',
-                text: 'Dummy Item'
-                }]
-        }, 
-        {
-            xtype: 'toolbar',
-            scale: 'medium',
-            ui:'brand-header',
-            layout: {
-                defaultMargins:'5'
-            },
-            items: [
-            // TODO: when development is ready for error messages, uncomment this block for alert button
-            // {
-            //     itemId: 'errorbutton',
-            //     cls:'errorButtonFramework',
-            //     ui:'brand-header',
-            //     scale: 'medium'
-            // }, 
-            /*{ //TODO - commented until we have a real help link to point to.
-                itemId: 'helpbutton',
-                cls:'helpButtonFramework',
                 ui:'brand-header',
                 width: 29,
                 height:29,
                 margin:'3 0 0 0',
-                glyph:'help'
-            },*/
+                glyph:'modelSearch'
+            }
+            ]
+        },
             {
-                itemId: 'userbutton',
-                cls:'userButtonFramework',
+                xtype: 'toolbar',
+                scale: 'medium',
                 ui:'brand-header',
-                width: 36,
-                height: 29,
-                margin:'3 0 0 0',
-                glyph:'silhouette',
-                menu: {
-                    items: [{
-                        itemId: 'currentuser'
-                    }, {
-                        text: 'Log Out',
-                        itemId: 'savannalogout'
+                layout: {
+                    defaultMargins:'5'
+                },
+                items: [
+                    // TODO: when development is ready for error messages, uncomment this block for alert button
+                    // {
+                    //     itemId: 'errorbutton',
+                    //     cls:'errorButtonFramework',
+                    //     ui:'brand-header',
+                    //     scale: 'medium'
+                    // },
+                    /*{ //TODO - commented until we have a real help link to point to.
+                     itemId: 'helpbutton',
+                     cls:'helpButtonFramework',
+                     ui:'brand-header',
+                     width: 29,
+                     height:29,
+                     margin:'3 0 0 0',
+                     glyph:'help'
+                     },*/
+                    {
+                        itemId: 'userbutton',
+                        cls:'userButtonFramework',
+                        ui:'brand-header',
+                        width: 36,
+                        height: 29,
+                        margin:'3 0 0 0',
+                        glyph:'silhouette',
+                        menu: {
+                            items: [{
+                                itemId: 'currentuser'
+                            }, {
+                                text: 'Log Out',
+                                itemId: 'savannalogout'
+                            }]
+                        }
                     }]
-                }
             }]
-        }]
     },
     items: [
         {

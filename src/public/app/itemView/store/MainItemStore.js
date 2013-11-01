@@ -18,6 +18,8 @@ Ext.define('Savanna.itemView.store.MainItemStore', {
 
     storeId: 'mainItem',
 
+    addSessionId: false,
+
     constructor: function () {
 
         this.callParent(arguments);
@@ -33,8 +35,11 @@ Ext.define('Savanna.itemView.store.MainItemStore', {
             },
             modifyRequest: function(request) {
                 if('update' == request.action) {
-                    console.log('------------ UPDATE ------------');
                     request.method = 'PUT';
+                }
+                if('destroy' == request.action) {
+                    request.url = request.url.replace((request.url.substr(request.url.indexOf(';jsessionid='))), '');
+                    request.method = 'DELETE';
                 }
                 return request;
             }

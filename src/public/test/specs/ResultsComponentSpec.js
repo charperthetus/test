@@ -52,6 +52,8 @@ describe('Search Results', function () {
             resultsController = Savanna.controller.Factory.getController('Savanna.search.controller.ResultsComponent');
 
             searchController = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
+            
+            searchComponent.down('search_searchbody').setActiveTab('searchresults');
         });
 
         afterEach(function () {
@@ -90,7 +92,7 @@ describe('Search Results', function () {
 
             it('should apply a select handler to the "Results Per Page" combobox', function () {
                 var combo = resultsComponent.down('#resultsPageSizeCombobox');
-
+                
                 combo.removeListener('select');
 
                 resultsController.init();
@@ -570,7 +572,6 @@ describe('Search Results', function () {
                         });
 
                         it('should show and hide From and To date pickers when Custom is and is not selected', function () {
-
                             myRadio.queryById('date_custom').setValue(true);  // custom
 
                             expect(myPanel.collapsed).toBeFalsy();
@@ -613,7 +614,7 @@ describe('Search Results', function () {
                 var searchStore;
 
                 beforeEach(function () {
-
+                    console.log(searchComponent);
                     searchStore = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.SearchResults', { autoLoad: false });
 
                     // now set up server to get store data
@@ -703,14 +704,12 @@ describe('Search Results', function () {
 
                     view.updateDalStatus('mockDAL', 'success');
 
+
                     /* Changed to now test for the class based loading icons */
                     var myDal = view.queryById('mockDAL'),
-                        myClasses = myDal.down('#dalStatusIcon').getEl().getAttribute('class'),
-                        myClassReg = /\bicon-success\b/,
-                        successEval = myClassReg.test(myClasses);
+                        myClasses = myDal.down('#dalStatusIcon').hasCls('icon-success');
 
-                    expect(successEval).toEqual(true);
-
+                    expect(myClasses).toEqual(true);
                 });
 
                 it('should select a fail indicator if passed a "false" value', function () {
@@ -731,11 +730,9 @@ describe('Search Results', function () {
 
                     /* Changed to now test for the class based loading icons */
                     var myDal = view.queryById('mockDAL'),
-                        myClasses = myDal.down('#dalStatusIcon').getEl().getAttribute('class'),
-                        myClassReg = /\bicon-alert\b/,
-                        failureEval = myClassReg.test(myClasses);
+                        myClasses = myDal.down('#dalStatusIcon').hasCls('icon-alert');
 
-                    expect(failureEval).toEqual(true);
+                    expect(myClasses).toEqual(true);
                 });
 
                 it('should set the DAL item label based on a DAL id and status', function () {

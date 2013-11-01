@@ -1,15 +1,19 @@
 Ext.define('Savanna.itemView.view.imageBrowser.ImagesGridEdit', {
     
-    extend: 'Ext.container.Container',
+    extend: 'Ext.panel.Panel',
+
+    title: 'Signatures and Observables',
 
     requires: [
-        'Savanna.itemView.controller.ImageBrowserController',
+        'Savanna.itemView.controller.EditImageBrowserController',
         'Savanna.itemView.view.imageBrowser.ImageUpload'
     ],
     
     controller: 'Savanna.itemView.controller.EditImageBrowserController',
     
     alias: 'widget.itemview_imagesgrid_edit',
+
+    storeHelper: null,
     
     items: [{
 
@@ -41,7 +45,8 @@ Ext.define('Savanna.itemView.view.imageBrowser.ImagesGridEdit', {
             xtype: 'button',
             itemId: 'navLeft',
             height: 100,
-            glyph: 'arrowNavLeft'
+            glyph: 'arrowNavLeft',
+            cls:'image-browser-control'
         }, {
             
             // Thumbnails get put here
@@ -53,6 +58,7 @@ Ext.define('Savanna.itemView.view.imageBrowser.ImagesGridEdit', {
         }, {
             xtype: 'button',
             glyph: 'arrowNavRight',
+            cls:'image-browser-control',
             itemId: 'navRight',
             height: 100
         }]

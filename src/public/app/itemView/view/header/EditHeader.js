@@ -21,6 +21,8 @@ Ext.define('Savanna.itemView.view.header.EditHeader', {
 
     title: '',
 
+    storeHelper: null,
+
     layout: 'vbox',
 
     margin: 10,
@@ -71,8 +73,8 @@ Ext.define('Savanna.itemView.view.header.EditHeader', {
                 },
                 {
                     xtype: 'button',
-                    text: 'Chooser',
-                    itemId: 'intendedUseChooserBtn'
+                    itemId: 'intendedUseChooserBtn',
+                    glyph:'searchBinoculars'
                 }
             ]
         },
@@ -94,7 +96,7 @@ Ext.define('Savanna.itemView.view.header.EditHeader', {
                 {
                     xtype: 'button',
                     itemId: 'parentChooser',
-                    text: "Chooser"
+                    glyph:'searchBinoculars'
                 }
             ]
         },

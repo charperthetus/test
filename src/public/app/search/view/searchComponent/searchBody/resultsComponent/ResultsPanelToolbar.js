@@ -9,7 +9,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
         'Ext.data.Store',
         'Savanna.search.controller.resultsComponent.ResultsPanelToolbarController'
     ],
-
+    
     initComponent: function () {
         Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
         this.items = this.setupItems();
@@ -46,12 +46,12 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
                 ui: 'combo-button',
                 width: 150
 
-            },{
+            }, {
                 xtype: 'pagingtoolbar',
                 itemId: 'gridtoolbar',
                 dock: 'top',
                 displayInfo: true
-            }, {
+            },'->', {
                 glyph: 'list',
                 itemId: 'results_listViewButton',
                 ui:"basic"

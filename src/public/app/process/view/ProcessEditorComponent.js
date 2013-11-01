@@ -48,7 +48,8 @@ Ext.define('Savanna.process.view.ProcessEditorComponent', {
                 },
                 tbar: [
                     {
-                        xtype: 'process_toolbar'
+                        xtype: 'process_toolbar',
+                        height: 33
                     }
                 ],
                 items:[
