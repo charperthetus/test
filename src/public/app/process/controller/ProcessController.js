@@ -293,9 +293,23 @@ Ext.define('Savanna.process.controller.ProcessController', {
         }
     },
 
+    prevOver: null,
+
     notifyOverTarget: function(ddSource, e, data){
         var part = this.getDiagramPart(e);
+
+        // simulate mouseDragLeave behavior
+        if (this.prevOver != part) {
+            if (this.prevOver && this.prevOver.mouseDragLeave) {
+                this.prevOver.mouseDragLeave(e, this.prevOver);
+            }
+        }
+        this.prevOver = part;
+
         if (part && part.mouseDrop) {
+            if (part.mouseDragEnter) {
+                part.mouseDragEnter(e, part);
+            }
             return Ext.dd.DropZone.prototype.dropAllowed;
         } else {
             return Ext.dd.DropZone.prototype.dropNotAllowed; //currently, say we can't drop anywhere in the canvas
@@ -305,7 +319,7 @@ Ext.define('Savanna.process.controller.ProcessController', {
     notifyDropTarget: function(ddSource, e, data){
         var part = this.getDiagramPart(e);
         if (part && part.mouseDrop) {
-            return part.mouseDrop(e,ddSource, data, this.getCanvas().diagram, part);
+            return part.mouseDrop(e, part, data);
         }
     },
 
@@ -318,7 +332,7 @@ Ext.define('Savanna.process.controller.ProcessController', {
             diagram = this.getCanvas().diagram,
             diagramCoordinate = diagram.transformViewToDoc(new go.Point(x,y));
 
-        return diagram.findPartAt(diagramCoordinate); //may be null
+        return diagram.findObjectAt(diagramCoordinate); //may be null
     },
 
     togglePalette: function() {

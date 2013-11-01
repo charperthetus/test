@@ -13,20 +13,13 @@ Ext.define('Savanna.process.utils.NodeEventHandlers', {
         Savanna.process.utils.ProcessUtils.toggleGadgets(obj, false);
     },
 
-    onMouseDrop: function (e, src, data, diagram, part) {
+    onMouseDrop: function (e, part, data) {
         data.records.forEach(function(rec) {
-            var obj = rec.data,
-                newNode = {
-                    part: part,
-                    diagram: diagram
-                };
-            //todo: this really should happen when the drag is initiated
-            if (obj.type === "Item") {
-                obj.type = "ProcessItem";
-            } else if (obj.type === "Action") {
-                obj.type = "ProcessAction";
+            var obj = rec.data;
+            if (obj.type === 'Item') {
+                obj.type = 'ProcessItem';
+                Savanna.process.utils.ProcessUtils.addNode(part, 'ProcessItem', obj.label, true, obj.uri);
             }
-            Savanna.process.utils.ProcessUtils.addNode(newNode, obj.type, obj.label, true, obj.uri);
         });
     },
 
