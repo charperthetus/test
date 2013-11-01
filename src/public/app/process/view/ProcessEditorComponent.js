@@ -71,7 +71,7 @@ Ext.define('Savanna.process.view.ProcessEditorComponent', {
                 xtype: 'process_metadata',
                 itemId: 'metadata',
                 region: 'east',
-                layout: 'fit',
+                height:'100%',
                 width: '30%', //todo: DI should apply the appropriate styling for the sidebar
                 collapsible: true,
                 headerPosition: 'left',

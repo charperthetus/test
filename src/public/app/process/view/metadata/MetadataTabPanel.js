@@ -11,11 +11,13 @@ Ext.define('Savanna.process.view.metadata.MetadataTabPanel', {
 
     requires: [
         'Ext.tab.Panel',
-        'Savanna.metadata.view.Details'
+        'Savanna.metadata.view.Details',
+        'Savanna.process.controller.MetadataController'
     ],
     header: {
         ui: 'dark'
     },
+    controller: 'Savanna.process.controller.MetadataController',
 
     config: {
         itemUri: ''
@@ -30,7 +32,10 @@ Ext.define('Savanna.process.view.metadata.MetadataTabPanel', {
     enableTabScroll: true,
     items: [
         {
-//testing commit
+            title:'Details',
+            itemId:'processMetadataPanel',
+            width:'100%',
+            height:'100%'
         },
         { title: 'JSON',
             xtype:'panel',
