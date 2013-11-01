@@ -13,8 +13,6 @@ Ext.define('Savanna.itemView.controller.QualitiesPickerController', {
         'Savanna.itemView.view.itemQualities.QualitiesPicker'
     ],
 
-    storeHelper: null,
-
     control: {
         availableQualitiesGroup: {
             itemclick: 'qualityChecked'
@@ -27,19 +25,41 @@ Ext.define('Savanna.itemView.controller.QualitiesPickerController', {
         },
         cancelBtn: {
             click: 'cancelQualitySelections'
+        },
+        filterQualitiesField: {
+            keydown: 'filterKeydown'
+        },
+        searchQualitiesBtn: {
+            click: 'filterQualities'
+        },
+        clearQualitiesFilter: {
+            click: 'clearFilter'
         }
     },
 
-    init: function() {
-        this.callParent(arguments);
-        this.storeHelper = Ext.create('Savanna.itemView.store.ItemViewStoreHelper');
-        this.storeHelper.init();
+    filterKeydown: function(field, e, eOpts) {
+        if (e.keyCode === Ext.EventObject.ENTER) {
+            if (field.getValue().trim().length) {
+                this.filterQualities();
+            }
+        }
+    },
+
+    filterQualities: function () {
+        this.getView().store.getProxy().extraParams.q = this.getView().queryById('filterQualitiesField').getValue();
+        this.getView().store.reload();
+    },
+
+    clearFilter: function() {
+        this.getView().queryById('filterQualitiesField').setValue("");
+        this.getView().store.getProxy().extraParams.q = "";
+        this.getView().store.reload();
     },
 
     qualityChecked: function (grid, record, item, index, e, eOpts) {
         if (e.target.checked) {
             // Create a new model for the store, mapping the data to fit the model
-            var newQualitiesModel = this.storeHelper.createNewModelInstance(record.data.label, record.data.uri);
+            var newQualitiesModel = this.getView().getStoreHelper().createNewModelInstance(record.data.label, record.data.uri);
 
             // Add a new model into the store
             this.getView().queryById('selectedQualitiesGroup').store.add(newQualitiesModel);

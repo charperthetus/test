@@ -1,5 +1,5 @@
 Ext.define('Savanna.itemView.view.ItemViewer', {
-    extend: 'Ext.panel.Panel',
+    extend: 'Savanna.component.ClassificationPanel',
 
     alias: 'widget.itemview_itemviewer',
 
@@ -21,7 +21,8 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
         'Savanna.itemView.view.imageBrowser.ImageThumbnail',
         'Savanna.itemView.view.workflow.WorkflowSelect',
         'Savanna.itemView.view.annotationProperties.AnnotationProperties',
-        'Savanna.itemView.store.ItemViewStoreHelper',
+        'Savanna.component.ClassificationPanel',
+        'Savanna.itemView.store.AutoCompleteStore',
         'Savanna.itemView.store.ItemLockStore'
     ],
 
@@ -33,24 +34,10 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
     config: {
         itemUri: null,
         editMode:false,
-        createMode:false,
+        itemStore:null,
         lockStore:null,
         selectedParentUri: null
     },
-
-    dockedItems: [{
-        xtype: 'toolbar',
-        dock: 'top',
-        items: [
-            '->',
-            {
-                xtype: 'label',
-                text: 'CLASSIFICATION'
-            },
-            '->'
-        ]
-    }],
-
 
     constructor: function(configs) {
         this.initConfig(configs);  //initializes configs passed in constructor
@@ -59,10 +46,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
 
     initComponent: function() {
         this.items = this.buildItems();
-
-
         this.lockStore = Ext.create('Savanna.itemView.store.ItemLockStore');
-
         this.callParent(arguments);
     },
 

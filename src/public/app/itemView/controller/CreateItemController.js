@@ -13,40 +13,53 @@ Ext.define('Savanna.itemView.controller.CreateItemController', {
         'Savanna.itemView.view.createItem.CreateItem'
     ],
 
-    control:    {
-        commitBtn:  {
+    control: {
+        commitBtn: {
             click: 'onParentItemCommit'
         },
-        cancelBtn:  {
+        cancelBtn: {
             click: 'onParentItemCancel'
         }
     },
 
-    onParentItemCommit:function()   {
+    itemStore: null,
 
-        if(this.getView().selectedParentUri)  {
-            var itemView = Ext.create('Savanna.itemView.view.ItemViewer', {
-                title: 'Model Item',
-                itemUri: this.getView().selectedParentUri,
-                editMode: true,
-                createMode:true,
-                closable: true,
-                autoScroll: true,
-                tabConfig: {
-                    ui: 'dark'
-                }
-            });
-            Savanna.app.fireEvent('search:itemSelected', itemView);
-        }   else    {
-            console.log('no uri for parent item');
-        }
+    requires: [
+        'Savanna.itemView.store.MainItemStore'
+    ],
 
+    onParentItemCommit: function () {
 
+        this.itemStore = Ext.create('Savanna.itemView.store.MainItemStore');
+
+        this.itemStore.getProxy().url = SavannaConfig.itemCreateUrl;
+        this.itemStore.getProxy().setExtraParam("parentUri", this.getView().selectedParentUri);
+
+        this.itemStore.load({
+            scope: this,
+            callback: this.handleCreateSuccess
+        });
+    },
+
+    onParentItemCancel: function () {
         this.getView().close();
     },
 
-    onParentItemCancel:function()   {
+    handleCreateSuccess: function (records, operation, success) {
+        var itemView = Ext.create('Savanna.itemView.view.ItemViewer', {
+            title: records[0].data.label,
+            itemUri: records[0].data.uri,
+            itemStore: this.itemStore,
+            editMode: true,
+            closable: true,
+            autoScroll: true,
+            tabConfig: {
+                ui: 'dark'
+            }
+        });
+        Savanna.app.fireEvent('search:itemSelected', itemView);
+
         this.getView().close();
+
     }
 });
-

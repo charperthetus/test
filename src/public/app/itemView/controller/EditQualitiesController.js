@@ -15,8 +15,6 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
 
     propNameArray: [],
 
-    storeHelper: null,
-
     // NOTE: There are multiple auto-complete forms on this controller, 
     //       so be careful when listening for events, you might capture
     //       more than you bargained for.
@@ -45,15 +43,9 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
         }
     },
 
-    init: function() {
-        this.callParent(arguments);
-        this.storeHelper = Ext.create('Savanna.itemView.store.ItemViewStoreHelper');
-    },
-
     // This is for the main (static) auto-complete form.
     storeSet: function() {
         var me = this;
-        this.storeHelper.init();
 
         // Generate a new form control for each predicate in the store
         Ext.each(me.getView().store.data.items, function(item) {
@@ -72,7 +64,7 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
             var newProp = this.createNewAutoComplete(propData);
             this.getView().add(newProp);
             this.propNameArray.push(propName);
-            this.storeHelper.addGroupItemInStore("Properties", propName, propData.uri, this.getView().store);
+            this.getView().storeHelper.addGroupItemInStore("Properties", propName, propData.uri, this.getView().store);
             this.updateTitle();
         }
     },
@@ -80,7 +72,7 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
     // Convenience handler to generate a new auto-complete
     createNewAutoComplete: function(data) {
         var me = this,
-            predicateUri = data.predicateUri ? encodeURI(data.predicateUri): encodeURI(data.uri);
+            predicateUri = data.predicateUri ? encodeURI(data.predicateUri): encodeURI(data.uri),
 
             picker = Ext.create('Ext.button.Button', {
                 glyph:'searchBinoculars',
@@ -111,14 +103,14 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
     // When a new tag is added on a child auto-complete
     // add the tag to the store
     addTag: function(tagName, tagData, aView) {
-        this.storeHelper.addBotLevItemInStore(tagName, tagData, this.getView().store.getById(aView.preLabel));
+        this.getView().storeHelper.addBotLevItemInStore(tagName, tagData, this.getView().store.getById(aView.preLabel))
         Savanna.app.fireEvent('ItemView:SaveEnable');
     },
 
     // When a tag is removed on a child auto-complete
     // remove the tag from the store
     removeTag: function(tagName, aView) {
-        this.storeHelper.removeBotLevItemInStore(tagName, this.getView().store.getById(aView.preLabel));
+        this.getView().storeHelper.removeBotLevItemInStore(tagName, this.getView().store.getById(aView.preLabel));
         Savanna.app.fireEvent('ItemView:SaveEnable');
     },
 
@@ -134,7 +126,8 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
             height: 600,
             selectionStore: this.getView().store.getById(storeName).valuesStore,
             valNameArray: valNameArray,
-            uri: encodeURI(this.getView().store.getById(storeName).data.predicateUri)
+            uri: encodeURI(this.getView().store.getById(storeName).data.predicateUri),
+            storeHelper: this.getView().storeHelper
         });
 
         vChooser.on('close', this.closedVPicker, this, storeName);
@@ -159,7 +152,8 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
             width: 500,
             height: 600,
             selectionStore: this.getView().store,
-            propNameArray: this.propNameArray
+            propNameArray: this.propNameArray,
+            storeHelper: this.getView().storeHelper
         });
         qChooser.on('close', this.closedQPicker, this);
     },
@@ -168,14 +162,14 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
         if (view.updatedStore) {
             this.getView().removeAll();
             this.propNameArray = [];
-            this.storeHelper.updateMainStore(this.getView().store.data.items, "Properties");
+            this.getView().storeHelper.updateMainStore(this.getView().store.data.items, "Properties");
             this.storeSet();
             this.updateTitle();
         }
     },
 
     removePredicate: function(view) {
-        this.storeHelper.removeGroupItemInStore("Properties", view.preLabel, this.getView().store);
+        this.getView().storeHelper.removeGroupItemInStore("Properties", view.preLabel, this.getView().store);
         Ext.Array.remove(this.propNameArray, view.preLabel);
         this.updateTitle();
     },
