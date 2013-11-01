@@ -36,6 +36,7 @@ Ext.define('Savanna.itemView.view.imageBrowser.ImagesGridEdit', {
         xtype: 'panel',
         itemId: 'thumbnailGallery',
         layout: 'hbox',
+        hidden: true,
         height: 100,
         margin: 10,
         overflowX: 'auto',
@@ -62,21 +63,6 @@ Ext.define('Savanna.itemView.view.imageBrowser.ImagesGridEdit', {
             itemId: 'navRight',
             height: 100
         }]
-    }, {
-
-        // TODO: Remove this grid and refactor as it's only good for holding a store.
-        xtype: 'grid',
-        itemId: 'uploadStatus',
-        store: Ext.create('Savanna.upload.store.UploadGridStore'),
-        flex:1,
-        width: '100%',
-        borderWidth: 0,
-        viewConfig: {
-            preserveScrollOnRefresh: true
-        },
-        hideHeaders: true,
-        columns: []
-
     }, {
         xtype: 'label',
         flex: 1,

@@ -9,8 +9,6 @@
 Ext.define('Savanna.itemView.controller.ImageBrowserController', {
     extend: 'Deft.mvc.ViewController',
 
-    requires: ['Savanna.itemView.view.imageBrowser.ImagesThumbnail'],
-
     view: 'Savanna.itemView.view.imageBrowser.ImagesGrid',
 
     control: {
@@ -76,7 +74,12 @@ Ext.define('Savanna.itemView.controller.ImageBrowserController', {
         var images = this.getView().store.getById('Images').valuesStore.data.items;
 
         // Discontinue building if there are no images
-        if(images.length === 0) { return; }
+        if(images.length === 0) { 
+            this.hideSlideshowImages(); 
+            return false;
+        }
+
+        this.showSlideshowImages();
 
         // Remove any previous images
         this.clearImageBrowser();
@@ -99,7 +102,12 @@ Ext.define('Savanna.itemView.controller.ImageBrowserController', {
             }
         }, this);
     },
-
+    hideSlideshowImages: function() {
+        this.getView().queryById('thumbnailGallery').hide();
+    },
+    showSlideshowImages: function() {
+        this.getView().queryById('thumbnailGallery').show();
+    },
     /*
      *  Clear Image Browser
      *

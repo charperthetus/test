@@ -1,6 +1,14 @@
+/*
+ *  Savanna.itemView.controller.EditImageBrowserController
+ *
+ *  Edit Images Browser Contoller handles dragging and dropping images from search
+ *  as well as uploading new images. It extends the Image Browser Controller for
+ *  sliding and clicking on images, so edits to how that functions need to be made there.
+ *
+ *  @author Joel Griffith jgriffith@thetus.com
+ */
 Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
     
-    // This grabs base scrolling code from ImageBrowserController so we don't have to re-write it
     extend: 'Savanna.itemView.controller.ImageBrowserController',
 
     view: 'Savanna.itemView.view.imageBrowser.ImagesGridEdit',
@@ -55,35 +63,67 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
         }
     },
 
-    // Properties used for uploading images
+    ///////////////////////////////////
+    // Private Variables and Configs
+    ///////////////////////////////////
     currentPollingIds: [],
     currentlyPolling: false,
     ingestedCount: 0,
     failedCount: 0,
     currentlyUploadingCount: 0,
-    dropAreaActive: false,
 
     /////////////////////////////////
     // Helpers
     /////////////////////////////////
-    // Helper to build the URL
-    buildUploadUrl: function(forPolling){
+
+    /*
+     *  Build Upload URL
+     *
+     *  Builds the uplaod status URL as well as the standard Upload URL.
+     *  Adds the jsessionid as well.
+     *
+     *  @param {isCheckingStatus} Boolean, to check status
+     */
+    buildUploadUrl: function(isCheckingStatus) {
         var url = SavannaConfig.uploadUrl;
-        if (forPolling){
+        if (isCheckingStatus){
             url += '/status';
         }
         url += ';jsessionid=' + Savanna.jsessionid;
-        return url;
+        return (url);
+    },
+
+    /*
+     *  Handle Exception
+     *
+     *  Abstraction to handle exceptions, currently just logs them in the console.
+     *
+     *  @param {message} String of the exception
+     */
+    handleException: function(message) {
+        Ext.log(message);
     },
 
     /////////////////////////////////
     // Setup
     /////////////////////////////////
+
+    /*
+     *  Init
+     *
+     *  Calls parent class, setups up the drop zones
+     */
     init: function() {
         this.callParent(arguments);
         this.setupFileDrop();
     },
-    // Setup the Ext Drop Handler and the native HTML drop handler
+
+    /*
+     *  Setup File Drop
+     *
+     *  Setups up both the File System drop (new images), and the drag and drop
+     *  form search. 
+     */
     setupFileDrop: function() {
         var me = this;
         var dropTarget = me.getView().queryById('itemViewUploadImages').getEl(),
@@ -92,13 +132,13 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
         // Sets up the EXT drop
         if (dropTarget) {
             dropTarget.dropTarget = Ext.create('Ext.dd.DropTarget', dropTarget.dom, {
-                ddGroup: 'SEARCH-ITEMS', // MUST MATCH THE DD IN SEARCH!!!
+                ddGroup: 'SEARCH-ITEMS', // MUST MATCH THE DDGROUP IN SEARCH!!!
                 notifyOver: Ext.Function.bind(me.notifyImageDragHover, me),
                 notifyDrop: Ext.Function.bind(me.notifyImageDragDrop, me)
             });
         }
 
-        // Sets up the HTML Drop (for file upload)
+        // Sets up the File System Drop (for file upload)
         if (typeof window.FileReader !== 'undefined') {
             dropTargetDom.ondragover = function () {
                 return false;
@@ -110,7 +150,15 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
     /////////////////////////////
     // Drag Handlers
     /////////////////////////////
-    // Check if the Ext Item can be droped by its contentType
+
+    /*
+     *  Notify Image Drag Hover
+     *
+     *  Method that determines if the item can be dropped. Must return
+     *  either dropAllowed or dropNotAllowed so the UI can reflect if an item is droppable.
+     *
+     *  @params (ddSrouce, e, data) All passed by ExtJS, see their docs for details.
+     */
     notifyImageDragHover: function(ddSource, e, data) {
         //don't allow anything other than an Item to be dropped into the item palette
         if (data.records[0].data.contentType === 'Image') {
@@ -119,7 +167,15 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
             return Ext.dd.DropZone.prototype.dropNotAllowed;
         }
     },
-    // The Ext Drop Event, checks again if it's an image
+
+    /*
+     *  Notifiy Image Drag Drop
+     *
+     *  Method that, if false, prevents the drop from occuring (and the item animates back to
+     *  it's origin). If it can drop, then the handler is fired.
+     *
+     *  @params (ddSrouce, e, data) ExtJS Event data, see docs.
+     */
     notifyImageDragDrop: function(ddSource, e, data) {
         if(data.records[0].data.contentType !== 'Image'){
             // Prevent dropping
@@ -130,69 +186,100 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
         }
         return true;
     },
-    // Prevent the default behaviour of the browser (opening the image), and start the upload chain
+
+    /*
+     *  File Drop Handler
+     *
+     *  Prevents the default behaviour (opening the image in the browser, new tab), and calls
+     *  uploadFiles with the event data.
+     *
+     *  @param {e} Browser event, passed automatically by the drag action.
+     */
     fileDropHandler: function(e) {
         e.preventDefault();
         this.uploadFiles(e.dataTransfer.files);
     },
 
     ////////////////////////
-    // File Upload
+    // File Upload Button
     ////////////////////////
-    // Launch file browser, does so by 'clicking' the hidden HTML input[type=file]
+    
+    /*
+     *  Chose File Handler
+     *
+     *  Queries the view for the hidden <input type='file'> button and simulates a click.
+     *  This method is called when a user clicks the dummy button present in the view.
+     *  See events above for how this is called
+     *  
+     *  @param {none}
+     */
     chooseFilesHandler: function() {
         var fileBrowser = this.getView().queryById('fileBrowserButton');
         var input  = Ext.dom.Query.selectNode('[type=\'file\']', fileBrowser.getEl().dom);
         input.multiple = true;
         input.click();
     },
-    // Handles the the Upload button completion event
+
+    /*
+     *  File Browser Change Handler
+     *
+     *  Called when a change event happens on the <input type='file'> button. This
+     *  Triggers the internal methods for handling the action.
+     *
+     *  @param {fileBrowserButton, event} Passed by the browser.
+     */
     fileBrowserChangeHandler: function(fileBrowserButton, event) {
         this.uploadFiles(event.target.files);
     },
-    // Iterates over the files uploaded and ignores ones that aren't images
-    uploadFiles: function(files){
-        var file;
 
+    /*
+     *  Upload Files
+     *
+     *  Handles both the file upload button and drag and drop events. Iterates over and
+     *  checks to see if they're and image type, adds them to the currentlyUploadingCount,
+     *  assigns them a tempID, and uploads the file.
+     *  
+     *  @param {files} Array of files
+     */
+    uploadFiles: function(files){
         var uploadGrid = this.getView().queryById('uploadStatus');
 
-        for (var i = 0 ; i < files.length ; i++){
-            file = files[i];
-            // Check if file is an image before uploading
+        Ext.Array.each(files, function(file) {
             if(file.type.indexOf('image') !== -1){
                 this.currentlyUploadingCount++;
                 var tempId = Ext.id();
-                this.uploadFileViaXMLHttpRequest(this.buildUploadUrl() , file,  uploadGrid, tempId);
-                uploadGrid.store.add({ status:'pending', fileName: file.name , fileSize: file.size , progress:'Queued', fileId: tempId});
+                this.uploadFileViaXMLHttpRequest(file, tempId);
             } else {
-                console.log('Not an image: ', file.name);
+                this.handleException('File Upload: File is not an image: ', file.name);
             }
-        }
+        }, this);
     },
-    // Creates the XMLHTTPRequest
-    uploadFileViaXMLHttpRequest:function(url, file, uploadGrid, tempId) {
+
+    /*
+     *  Upload File Via XML
+     *
+     *  Handles uploading a single file and accepts
+     */
+    uploadFileViaXMLHttpRequest:function(file, tempId) {
         var formData = new FormData();
         formData.append(file.name, file);
+        
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', url, true);
+        xhr.open('POST', this.buildUploadUrl(), true);
         xhr.cors = true;
-        xhr.onload = Ext.bind(this.onUploadRequestLoad,this,[uploadGrid, tempId],true );              
+        xhr.onload = Ext.bind(this.onUploadRequestLoad,this,[tempId],true );              
         xhr.send(formData);  // multipart/form-data
     },
-    onUploadRequestLoad: function(status, uploadGrid, tempId){
+    onUploadRequestLoad: function(status){
         var pollingId =  Ext.decode(status.target.response);
 
-        // replace the tempId with the pollingId
-        var modelIndex = uploadGrid.store.find('fileId',tempId);
-        var model = uploadGrid.store.getAt(modelIndex);
-        model.data.fileId = pollingId;
         this.currentPollingIds.push(pollingId);
         if (this.currentlyPolling === false){
-            this.pollForDocuments(uploadGrid);
+            this.pollForDocuments();
             this.currentlyPolling = true;
         }
     },
-    pollForDocuments: function(uploadGrid){
+    pollForDocuments: function(){
         Ext.Ajax.request({
             url: this.buildUploadUrl(true),
             method: 'POST',
@@ -201,7 +288,7 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
                 'Accept': 'application/json'
             },
             jsonData: this.buildJSONStringArray(this.currentPollingIds) ,
-            success: Ext.bind(this.onBatchPollingRequestLoad, this , [uploadGrid], true ),
+            success: Ext.bind(this.onBatchPollingRequestLoad, this , [], true ),
 
             // TODO: Handle failures
             failure: function (response) {
@@ -220,7 +307,7 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
         jsonString += ']';
         return jsonString;
     },
-    onBatchPollingRequestLoad: function(response, response2, uploadGrid){
+    onBatchPollingRequestLoad: function(response){
         var responseObject = Ext.decode(response.responseText);
         for(var i = this.currentPollingIds.length - 1 ; i >= 0 ; i--){
             var pollingId = this.currentPollingIds[i];
@@ -229,13 +316,6 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
                 continue;                           //polling immediately, one may not be returned yet
             }
             // Update my store
-            var modelIndex = uploadGrid.store.find('fileId',pollingId);
-            var model = uploadGrid.store.getAt(modelIndex);
-            model.data.status = (documentStatus.status !== 'unknown') ? documentStatus.status : 'pending';
-            model.data.progress = (documentStatus.statusText !== 'unknown') ? documentStatus.statusText : 'Uploading Image';
-            if (!(model.data.docUri) && documentStatus.documentUri){
-                model.data.docUri = documentStatus.documentUri;
-            }
             if (documentStatus.status === 'completed' || documentStatus.status === 'failed' ){
                 this.currentPollingIds.splice(i,1);
                 if (documentStatus.status === 'completed') { 
@@ -249,7 +329,7 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
         if (this.currentPollingIds.length > 0){
             var me = this;
             var interval = setInterval(function() {
-                me.pollForDocuments(uploadGrid);
+                me.pollForDocuments();
                 // always clear interval
                 clearInterval(interval);
             }, 5000);
@@ -257,7 +337,6 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
             this.currentlyPolling = false;
         }
         this.updateUploadLabel();
-        uploadGrid.getView().refresh();
     },
     updateUploadLabel: function() {
         var uploadStatus = this.getView().queryById('uploadStatusMessage');
@@ -271,6 +350,7 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
         }
     },
     handleNewImage: function(image){
+
         // Check to see if this was dragged from Search or from Upload. The URI is under a different key in each
         var imageURI = (image.uri) ? image.uri : image.documentUri,
             imageTitle = (image.title) ? image.title : image.documentUri;
@@ -291,6 +371,7 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
 
         // Persist to the store and add the thumbnail to the slideshow
         this.addImageToBrowser(thumbnail);
+        this.showSlideshowImages();
         this.getView().storeHelper.addBotLevItemInStore(imageTitle, imageModel, this.getView().store.getById('Images'));
         this.onChangeImage(null, thumbnail);
     }
