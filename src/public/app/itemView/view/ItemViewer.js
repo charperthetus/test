@@ -181,6 +181,9 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                         itemId: 'itemInfoPanel',
                         title: 'details',
                         width: '30%',
+                        header:{
+                            ui:'light-blue'
+                        },
                         layout: 'vbox',
                         items: [
 //                            {
@@ -190,7 +193,12 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
 //                            },
                             {
                                 xtype: 'document_sources',
+                                editMode: false,
                                 itemId: 'itemSources',
+                                header:{
+                                    ui:'light-blue'
+                                },
+
                                 itemURI: this.itemUri
                             }
                         ]
@@ -343,6 +351,9 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                         title: 'details',
                         width: '30%',
                         layout: 'vbox',
+                        header:{
+                            ui:'light-blue'
+                        },
                         items: [
 //                            {
 //                                xtype: 'metadata_details',
@@ -353,6 +364,9 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                                 xtype: 'document_sources',
                                 editMode: true,
                                 itemId: 'itemSources',
+                                header:{
+                                    ui:'light-blue'
+                                },
                                 itemURI: this.itemUri
                             }
                         ]

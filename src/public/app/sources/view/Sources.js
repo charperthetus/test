@@ -39,6 +39,8 @@ Ext.define('Savanna.sources.view.Sources', {
         },{
             xtype: 'container',
             itemId: 'supportingResourcesDrop',
+            cls:'related-item-edit-drop-zone',
+
             border: 5,
             style: {
                 borderColor: 'gray',
