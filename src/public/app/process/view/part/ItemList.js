@@ -31,7 +31,8 @@ Ext.define('Savanna.process.view.part.ItemList', {
     columns: [
         {
             dataIndex: 'label',
-            width: '100%'
+            width: '100%',
+            minWidth: 175
         }
     ],
 
@@ -42,15 +43,19 @@ Ext.define('Savanna.process.view.part.ItemList', {
         padding: 10,
         margin: 10,
         backgroundColor: '#F2F2F2',
+        ui: 'drop-zone-toolbar',
         style: {
             borderStyle: 'dashed',
-            borderColor: '#999999'
+            borderColor: '#999999',
+            backgroundColor: '#F2F2F2'
         },
         items: [
+            '->',
             {
                 xtype: 'label',
                 text: 'Items',
-                cls: ['drag-and-drop', 'drag-and-drop-small']
+                cls: ['drag-and-drop', 'drag-and-drop-small'],
+                tooltip: 'Drop items'
             },
             '->',
             {
@@ -63,9 +68,11 @@ Ext.define('Savanna.process.view.part.ItemList', {
                 itemId: 'searchitems',
                 glyph: 'modelSearch',
                 ui: 'dark-icon',
+                tooltip: 'Click to search the model.',
                 height: 16,
                 width: 16
-            }
+            },
+            '->'
         ]
     },
 
