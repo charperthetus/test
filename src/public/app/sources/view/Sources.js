@@ -36,7 +36,7 @@ Ext.define('Savanna.sources.view.Sources', {
             xtype: 'label',
             text: 'Supporting Resources (#)',
             cls:'h2',
-            margin:'0 10 0 10'
+            padding:'0 10 0 10',
         },{
             xtype: 'panel',
             itemId: 'supportingResourcesDrop',

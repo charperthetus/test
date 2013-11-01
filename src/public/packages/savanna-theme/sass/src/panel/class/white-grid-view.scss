@@ -73,12 +73,10 @@
   }
   .image-grid-inner-main{
     border:1px solid #999999;
-    background: url(itemview/image-grid-placeholder.svg);
+    background-image: url(images/itemview/image-grid-placeholder.svg);
     background-size: contain;
-  }
-
-  .image-grid-inner-nav{
-    border:1px solid #999999;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
   }
 
   .supporting-resources-drop-zone{
