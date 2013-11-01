@@ -23,6 +23,8 @@ Ext.define('Savanna.itemView.view.itemQualities.EditItemQualities', {
 
     width: '100%',
 
+    padding:'10 0 10 0',
+
     tbar: [
         {
             xtype: 'auto_complete',

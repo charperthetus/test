@@ -7,7 +7,8 @@
  *
  */
 
-@import 'class/whiteGridView';
+@import 'class/white-grid-view';
+@import 'class/create-item-coloumn';
 
 .#{$prefix}grid-cell-inner {
 	/* These can be removed with new UIKit */

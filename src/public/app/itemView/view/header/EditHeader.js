@@ -19,27 +19,28 @@ Ext.define('Savanna.itemView.view.header.EditHeader', {
 
     cls: 'itemview',
 
-    title: '',
-
     storeHelper: null,
 
     layout: 'vbox',
 
+    header:false,
+
     margin: 10,
 
-    tools:[
+
+    items: [
+        {
+            xtype: 'label',
+            margin: "0 0 0 0",
+            text: 'Title'
+        },
         {
             xtype: 'textfield',
             itemId: 'itemNameField'
         },
         {
-            xtype: 'tbfill'
-        }
-    ],
-
-    items: [
-        {
             xtype: 'label',
+            margin: "15 0 0 0",
             text: 'Alias'
         },
         {
