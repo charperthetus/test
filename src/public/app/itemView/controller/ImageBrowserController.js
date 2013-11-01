@@ -73,13 +73,11 @@ Ext.define('Savanna.itemView.controller.ImageBrowserController', {
     buildImageGallery: function() {
         var images = this.getView().store.getById('Images').valuesStore.data.items;
 
-        // Discontinue building if there are no images
+        // Discontinue building if there are no images, and hide the slideshow area
         if(images.length === 0) { 
             this.hideSlideshowImages(); 
             return false;
         }
-
-        this.showSlideshowImages();
 
         // Remove any previous images
         this.clearImageBrowser();
@@ -101,13 +99,31 @@ Ext.define('Savanna.itemView.controller.ImageBrowserController', {
                 this.onChangeImage(null, image);
             }
         }, this);
+
+        // Once images are loaded, show the images
+        this.showSlideshowImages();
     },
+
+    /*
+     *  Hide Slideshow Images
+     *
+     *  Method that hides the slideshow part of Jumbotron
+     *  @param {none}
+     */
     hideSlideshowImages: function() {
         this.getView().queryById('thumbnailGallery').hide();
     },
+
+    /*
+     *  Show Slideshow Images
+     *
+     *  Method that shows the slideshow part of Jumbotron
+     *  @param {none}
+     */
     showSlideshowImages: function() {
         this.getView().queryById('thumbnailGallery').show();
     },
+
     /*
      *  Clear Image Browser
      *
