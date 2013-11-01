@@ -3,10 +3,6 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
     // This grabs base scrolling code from ImageBrowserController so we don't have to re-write it
     extend: 'Savanna.itemView.controller.ImageBrowserController',
 
-    requires: [
-        'Savanna.itemView.store.ItemViewStoreHelper'
-    ],
-
     view: 'Savanna.itemView.view.imageBrowser.ImagesGridEdit',
 
     control: {
@@ -67,16 +63,12 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
     currentlyUploadingCount: 0,
     dropAreaActive: false,
 
-    // Store Helper for persisting
-    storeHelper: null,
-
     /////////////////////////////////
     // Setup
     /////////////////////////////////
     init: function() {
         this.callParent(arguments);
         this.setupFileDrop();
-        this.storeHelper = Ext.create('Savanna.itemView.store.ItemViewStoreHelper');
     },
     // Setup the Ext Drop Handler and the native HTML drop handler
     setupFileDrop: function() {
@@ -163,7 +155,7 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
                 this.uploadFileViaXMLHttpRequest(this.buildUploadUrl() , file,  uploadGrid, tempId);
                 uploadGrid.store.add({ status:'pending', fileName: file.name , fileSize: file.size , progress:'Queued', fileId: tempId});
             } else {
-                Ext.debug('Not an image: ', file.name);
+                console.log('Not an image: ', file.name);
             }
         }
     },
@@ -203,7 +195,7 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
 
             // TODO: Handle failures
             failure: function (response) {
-                Ext.debug('server-side failure with status code ' + response.status);
+                console.log('server-side failure with status code ' + response.status);
             }
         });
     },
@@ -289,7 +281,7 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
 
         // Persist to the store and add the thumbnail to the slideshow
         this.addImageToBrowser(thumbnail);
-        this.storeHelper.addBotLevItemInStore(imageTitle, imageModel, this.getView().store.getById('Images'));
+        this.getView().storeHelper.addBotLevItemInStore(imageTitle, imageModel, this.getView().store.getById('Images'));
         this.onChangeImage(null, thumbnail);
     }
 });

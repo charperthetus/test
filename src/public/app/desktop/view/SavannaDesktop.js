@@ -56,14 +56,6 @@ Ext.define('Savanna.desktop.view.SavannaDesktop', {
                 height:29,
                 margin:'3 0 0 0',
                 glyph:'modelSearch'
-            },
-            {
-                 // TODO: This is just a shim to load items. Once model search is functional, remove it
-                 itemId: 'itemviewbutton',
-                 cls:'itemViewButtonFramework',
-                 ui:'brand-header',
-                 scale: 'medium',
-                 text: 'Dummy Item'
             }
             ]
         },

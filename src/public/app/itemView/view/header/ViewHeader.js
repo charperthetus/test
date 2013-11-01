@@ -15,7 +15,7 @@ Ext.define('Savanna.itemView.view.header.ViewHeader', {
 
     title: 'Header',
 
-    store: 'Savanna.itemView.store.MainItemStore',
+    store: null,
 
     controller: 'Savanna.itemView.controller.ViewHeaderController',
 

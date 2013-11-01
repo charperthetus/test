@@ -40,6 +40,8 @@ Ext.define('Savanna.itemView.controller.ImageBrowserController', {
         var me = this,
             images = this.getView().store.getById('Images').valuesStore.data.items;
 
+        this.clearImageBrowser();
+
         Ext.Array.each(images, function(image) {
             var imageMeta = (image.raw) ? image.raw : image.data;
             var thumbnail = Ext.create('Savanna.itemView.view.imageBrowser.ImageThumbnail', {
@@ -53,6 +55,9 @@ Ext.define('Savanna.itemView.controller.ImageBrowserController', {
                 me.onChangeImage(null, image);
             }
         });
+    },
+    clearImageBrowser: function() {
+        this.getView().queryById('thumbnailList').items.clear();
     },
     addImageToBrowser: function(image){
         this.getView().queryById('thumbnailList').add(image);

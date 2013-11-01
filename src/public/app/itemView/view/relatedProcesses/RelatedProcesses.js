@@ -13,7 +13,7 @@ Ext.define('Savanna.itemView.view.relatedProcesses.RelatedProcesses', {
 
     alias: 'widget.itemview_related_processes',
 
-    store: 'Savanna.itemView.store.MainItemStore',
+    store: null,
 
     title: 'Participated in Process (#)',
 

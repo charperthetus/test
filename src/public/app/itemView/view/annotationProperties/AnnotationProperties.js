@@ -11,7 +11,7 @@ Ext.define('Savanna.itemView.view.annotationProperties.AnnotationProperties', {
 
     alias: 'widget.itemview_annotation_properties',
 
-    store: 'Savanna.itemView.store.MainItemStore',
+    store: null,
 
     title: 'Additional Properties (#)',
 
