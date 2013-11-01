@@ -18,9 +18,12 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.searchMap.Canvas', {
 
     controls: null,
 
+    baseLayer: SavannaConfig.mapDefaultBaseLayer,
+
     initComponent: function() {
 
         this.map = new OpenLayers.Map({
+            projection: new OpenLayers.Projection(this.baseLayer.projection),
             controls: [
                 new OpenLayers.Control.Navigation(),
                 new OpenLayers.Control.PanZoomBar({
@@ -35,7 +38,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.searchMap.Canvas', {
     onRender: function () {
         this.callParent(arguments);
         this.map.render(this.getEl().dom);
-        this.map.setCenter(new OpenLayers.LonLat.fromString(SavannaConfig.mapDefaultCenter), SavannaConfig.mapDefaultZoom);
+        this.map.setCenter(new OpenLayers.LonLat.fromString(this.baseLayer.center), this.baseLayer.zoom);
     }
 });
 

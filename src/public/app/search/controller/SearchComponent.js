@@ -208,6 +208,18 @@ Ext.define('Savanna.search.controller.SearchComponent', {
          hide Start New Search button
          */
         component.down('#search_reset_button').setVisible(false);
+
+        // Clear Map: Search Results and  location search polygon
+        //search options > location is in a tab so check if it exists
+        if (component.down('#searchMapCanvas').searchLayer){
+            component.down('#searchMapCanvas').searchLayer.removeAllFeatures();
+        }
+
+        //clear result layer
+        if (component.down('#resultMapCanvas').resultsLayer){
+            component.down('#resultMapCanvas').resultsLayer.removeAllFeatures();
+            component.fireEvent('clearPopUpOnNewSearch', event, component.down('search_resultscomponent'));
+        }
     },
 
     clearSearch: function (elem) {
@@ -311,14 +323,27 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             'displayLabel': searchString
         });
 
-        if ((typeof mapView != 'undefined') && mapView &&  mapView.searchLayer) {
+        if ((typeof mapView != 'undefined') && mapView && mapView.searchLayer) {
             if (mapView.searchLayer.features.length > 0){
                 var polyVo = {};
                 var polyRings = [];
                 var vertices = mapView.searchLayer.features[0].geometry.getVertices();
-                for (var i = 0; i < vertices.length; i++) {
-                    var point = [vertices[i].x, vertices[i].y];
-                    polyRings.push(point);
+                if (mapView.baseLayer.projection != 'EPSG:4326'){
+                    var currentProjection = new OpenLayers.Projection(mapView.baseLayer.projection);
+                    var resultsProjection = new OpenLayers.Projection("EPSG:4326");
+                    for (var i = 0; i < vertices.length; i++) {
+                        var newPoint = new OpenLayers.LonLat(vertices[i].x, vertices[i].y);
+                        newPoint.transform(currentProjection, resultsProjection);
+                        //polygonVo for solr expects lat, long format
+                        newPoint = [newPoint.lat, newPoint.lon];
+                        polyRings.push(newPoint);
+                    }
+                } else {
+                    for (var j = 0; j < vertices.length; j++) {
+                        //polygonVo for solr expects lat, long format
+                        var point = [vertices[j].y, vertices[j].x];
+                        polyRings.push(point);
+                    }
                 }
                 polyVo.coordinates = [polyRings];
                 polyVo.type = 'Polygon';
@@ -517,12 +542,6 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                  */
                 resultsPanel.up('#searchresults').allResultSets.push(resultsObj);
 
-                /*
-                 When results are returned fire event:
-                 Event listened to on the ResultComponent controller to add points to result map
-                 */
-                resultsDal.fireEvent('mapNewSearchResults', resultsObj, resultsDal);
-
                 if (store.facetValueSummaries !== null) {
                     resultsDal.createDalFacets(dalId);
                 }
@@ -555,8 +574,14 @@ Ext.define('Savanna.search.controller.SearchComponent', {
     },
 
     loadDefaultLayer: function (canvas) {
-        canvas.map.addLayer(new OpenLayers.Layer.WMS(SavannaConfig.mapBaseLayerLabel,
-            SavannaConfig.mapBaseLayerUrl, {layers: SavannaConfig.mapBaseLayerName}));
+        switch (canvas.baseLayer.type){
+            case 'WMS':
+                canvas.map.addLayer(new OpenLayers.Layer.WMS(canvas.baseLayer.layerLabel, canvas.baseLayer.url, {layers: canvas.baseLayer.layerName}));
+                break;
+            case 'XYZ':
+                canvas.map.addLayer(new OpenLayers.Layer.XYZ(canvas.baseLayer.layerLabel, canvas.baseLayer.url, {layers: canvas.baseLayer.layerName}));
+                break;
+        }
     },
 
     loadVectorLayer: function (canvas) {
@@ -602,7 +627,13 @@ Ext.define('Savanna.search.controller.SearchComponent', {
     },
 
     onFeatureModified: function (event) {
-        this.fireEvent('searchPolygonAdded', this);
+        var resultMap = this.up('search_searchcomponent').down('#resultMapCanvas');
+        if (resultMap.searchLayer) {
+            this.fireEvent('searchPolygonAdded', this);
+        } else {
+
+        }
+
     },
 
     onMapCanvasResize: function (canvas) {
@@ -633,8 +664,12 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         var viewBox = comboBoxButton.viewBox;
         var mapCanvas = comboBoxButton.parentComboBox.up('search_searchmap').down('search_map_canvas');
         var extent = new OpenLayers.Bounds(viewBox.west, viewBox.south, viewBox.east, viewBox.north);
+        if (mapCanvas.baseLayer.projection != 'EPSG:4326'){
+            var currentProjection = new OpenLayers.Projection(mapCanvas.baseLayer.projection);
+            var resultsProjection = new OpenLayers.Projection("EPSG:4326");
+            extent.transform(resultsProjection, currentProjection);
+        }
         mapCanvas.map.zoomToExtent(extent, true);
-        console.log(mapCanvas.map.maxExtent);
     },
 
     enableZoomMenu: function (button) {
