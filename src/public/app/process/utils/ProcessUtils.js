@@ -57,10 +57,13 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
     },
 
     startTextEdit: function(diagram, nodeData) {
-        diagram.clearSelection();
-        var node = diagram.findNodeForData(nodeData);
-        node.isSelected = true;
-        diagram.commandHandler.editTextBlock(node.findObject('TEXT'));
+// Turn off auto starting text edit for now,
+// since it occasionally leads to whole diagram lock ups.
+// Some sort of timing issue perhaps?
+//        diagram.clearSelection();
+//        var node = diagram.findNodeForData(nodeData);
+//        node.isSelected = true;
+//        diagram.commandHandler.editTextBlock(node.findObject('TEXT'));
     },
 
     toggleGadgets: function(obj, show) {
@@ -182,7 +185,7 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         diagram.model.addNodeData(nodeData);
 
         diagram.commitTransaction('addAction');
-//        Savanna.process.utils.ProcessUtils.startTextEdit(diagram, nodeData);
+        Savanna.process.utils.ProcessUtils.startTextEdit(diagram, nodeData);
 
     },
 
