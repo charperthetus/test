@@ -77,7 +77,8 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
             picker = Ext.create('Ext.button.Button', {
                 glyph:'searchBinoculars',
                 itemId: 'valuesChooser',
-
+                height:43,
+                cls:'edit-qualities-button',
                 listeners: {
                     click: me.launchValuesChooser.bind(me, data.label)
                 }
