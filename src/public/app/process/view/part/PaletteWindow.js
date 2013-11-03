@@ -43,11 +43,11 @@ Ext.define('Savanna.process.view.part.PaletteWindow', {
         return [
             {
                 xtype: 'process_itemlist',
-                itemId: 'itemlist'
+                itemId: 'itemList'
             },
             {
                 xtype: 'process_actionlist',
-                itemId: 'actionlist'
+                itemId: 'actionList'
             }
         ];
     }
