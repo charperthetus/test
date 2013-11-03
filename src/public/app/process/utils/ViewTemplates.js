@@ -108,7 +108,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                             new go.Binding('text', 'label').makeTwoWay())
                     ),
                     gmake(go.Panel, go.Panel.Spot, {
-                            background: 'white',
+                            background: 'transparent',
                             padding: 2,
                             stretch: go.GraphObject.Fill
                         },
@@ -570,7 +570,6 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                     isSubGraphExpanded: false
                 }, new go.Binding('isSubGraphExpanded', 'isSubGraphExpanded').makeTwoWay(),
                 gmake(go.Panel, go.Panel.Vertical,
-                    // the main object is a Panel that surrounds a TextBlock with a rectangular Shape
                     gmake(go.Panel, go.Panel.Auto, {
                             name: 'BODY',
                             background: 'white'
@@ -694,6 +693,9 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
             gmake(go.Group, go.Panel.Auto, {
                     background: 'transparent',
                     computesBoundsAfterDrag: true,
+                    mouseEnter: Ext.bind(this.onMouseEnter, this),
+                    mouseLeave: Ext.bind(this.onMouseLeave, this),
+                    selectionChanged: Ext.bind(this.onGroupSelectionChange, this),
                     mouseDrop: Ext.bind(this.onAltsMouseDrop, this),
                     // define the group's internal layout
                     layout: gmake(go.GridLayout, this.styler().altsGroup().gridLayout),
@@ -701,16 +703,40 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                     isSubGraphExpanded: true,
                     wasSubGraphExpanded: true
                 },
-                gmake(go.Shape, 'RoundedRectangle', this.styler().altsGroup().roundedRectangle),
                 gmake(go.Panel, go.Panel.Vertical,
-                    gmake(go.Panel, go.Panel.Horizontal,
-                        this.styler().processModel().panelHorizontal,
-                        // the SubGraphExpanderButton is a panel that functions as a button to expand or collapse the subGraph
-                        gmake('PanelExpanderButton'),
-                        gmake(go.TextBlock, this.styler().altsGroup().textblock, new go.Binding('text', 'label').makeTwoWay())),
-                    gmake(go.Placeholder, this.styler().altsGroup({
-                    }).placeholder)),
-                this.makeTopPort()
+                    gmake(go.Panel, go.Panel.Auto, {
+                            name: 'BODY',
+                            background: 'white'
+                        },
+                        gmake(go.Shape, 'RoundedRectangle', this.styler().altsGroup().roundedRectangle),
+                        gmake(go.Panel, go.Panel.Vertical,
+                            gmake(go.Panel, go.Panel.Horizontal,
+                                this.styler().processModel().panelHorizontal,
+                                // the SubGraphExpanderButton is a panel that functions as a button to expand or collapse the subGraph
+                                gmake('PanelExpanderButton'),
+                                gmake(go.TextBlock, this.styler().altsGroup().textblock, new go.Binding('text', 'label').makeTwoWay())),
+                            gmake(go.Placeholder, this.styler().altsGroup({
+                            }).placeholder)
+                        )
+                    ),
+                    gmake(go.Panel, go.Panel.Spot, {
+                            background: 'white',
+                            padding: 2,
+                            stretch: go.GraphObject.Fill
+                        },
+                        gmake(go.TextBlock, '', {
+                            alignment: new go.Spot(0, 0)
+                        }),
+                        this.makeTopPort(),
+                        this.makeStepGadget(),
+                        this.makeDecisionGadget()
+                    )
+                ), {
+                    selectionAdornmentTemplate: gmake(go.Adornment, 'Auto',
+                        gmake(go.Shape, 'RoundedRectangle',
+                            this.styler().processModel().selectionAdornment),
+                        gmake(go.Placeholder))
+                }
             )
         ); // end AltsGroup
 
