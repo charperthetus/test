@@ -65,6 +65,36 @@
     border-color: $white-grid-row-cell-over-border-color;
     background-color: $white-grid-row-cell-over-background-color;
   }
+
+  .item-view-header-header{
+    .#{$prefix}header-text{
+      font-size: 20px;
+    }
+  }
+  .image-grid-inner-main{
+    border:1px solid #999999;
+    background-image: url(images/itemview/image-grid-placeholder.svg);
+    background-size: contain;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+  }
+
+  .supporting-resources-drop-zone{
+    .inner-edit-zone{
+      border:2px dashed #959595;
+      padding:0px 10px 0;
+      margin:0 auto !important;
+    }
+  }
+
+  .drag-and-drop{
+    &:before {
+      width: 100%;
+      display: block;
+      text-align: center;
+      position: static;
+    }
+  }
 }
 .white-grid-view-panel-edit{
   @extend .white-grid-view-panel;
@@ -80,30 +110,23 @@
   .related-item-edit-header{
     padding:0 10px;
   }
-  .related-item-edit-drop-zone{
-    border:2px dashed #959595;
-    background-color: mix(#fff, #b8edff, 15%) ;
-    padding:18px 10px 0;
-    .#{$prefix}panel-body{
-      background-color: mix(#fff, #b8edff, 15%);
-    }
-  }
-
-  .image-browser-edit-drop-zone{
+  .related-item-drop-zone{
     border:2px dashed #959595;
     padding:0px 10px 0;
-    margin:0 auto 10px;
-    .drag-and-drop{
-      &:before {
-        width: 100%;
-        display: block;
-        text-align: center;
-        position: static;
-      }
+  }
+
+  .image-browser-drop-zone{
+    .inner-edit-zone{
+      border:2px dashed #959595;
+      padding:0px 10px 0;
+      margin:0 auto !important;
     }
   }
 
   .#{$prefix}btn-glyph{
     color:$dark_font;
   }
+
+
 }
+
