@@ -61,7 +61,7 @@ Ext.define('Savanna.process.view.part.ActionList', {
                 cls: 'toolbarButtonFramework',
                 ui: 'icon-dark',
                 glyph: 'add',
-                itemId: "createaction",
+                itemId: "createAction",
                 tooltip: 'Create',
                 hidden: true
             }
