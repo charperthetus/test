@@ -337,10 +337,31 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                         new go.Binding('text', 'label').makeTwoWay())
                 ), {
                     selectionAdornmentTemplate: gmake(go.Adornment,
-                        gmake(go.Shape,
-                            this.styler().linker().arrowheadProcess),
-                        gmake(go.Shape,
-                            this.styler().linker().arrowheadProcess))
+                        gmake(go.Shape, this.styler().linker().arrowheadProcess),
+                        gmake(go.Shape, this.styler().linker().arrowheadProcess))
+
+                }
+            )
+        );
+
+        linkTemplateMap.add('OutputLink',
+            gmake(go.Link, {
+                    routing: go.Link.AvoidsNodes,
+                    curve: go.Link.JumpOver,
+                    corner: 5,
+                    toShortLength: 4,
+                    relinkableFrom: false,
+                    relinkableTo: false,
+                    reshapable: false
+                },
+                gmake(go.Shape, // the link path shape
+                    this.styler().addTo('linker', 'linkpathProcess', 'isPanelMain', true).linker().linkpathProcess),
+                gmake(go.Shape, // the arrowhead
+                    this.styler().linker().arrowheadProcess),
+                {
+                    selectionAdornmentTemplate: gmake(go.Adornment,
+                        gmake(go.Shape, this.styler().linker().arrowheadProcess),
+                        gmake(go.Shape, this.styler().linker().arrowheadProcess))
 
                 }
             )
@@ -476,6 +497,10 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
 
     onActionGroupMouseDrop: function (e, obj, data) {
         this.utils().onActionMouseDrop(obj, data);
+    },
+
+    onAltsMouseDrop: function (e, obj, data) {
+        this.utils().onAltsMouseDrop(obj, data);
     },
 
 
@@ -669,6 +694,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
             gmake(go.Group, go.Panel.Auto, {
                     background: 'transparent',
                     computesBoundsAfterDrag: true,
+                    mouseDrop: Ext.bind(this.onAltsMouseDrop, this),
                     // define the group's internal layout
                     layout: gmake(go.GridLayout, this.styler().altsGroup().gridLayout),
                     // the group begins expanded

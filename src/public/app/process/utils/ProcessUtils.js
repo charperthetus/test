@@ -107,6 +107,18 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         this.startTextEdit(diagram, nodeData);
     },
 
+    addAlternate: function(obj, label, classUri) {
+        var diagram = obj.diagram;
+        diagram.startTransaction('addAlternate');
+        var altsGroup = obj.part;
+        var nodeData = {category: 'ProcessItem', label: label, group: altsGroup.data.uri };
+        nodeData.uri = this.getURI(nodeData.category);
+        this.setRepresentsUri(nodeData, classUri);
+        diagram.model.addNodeData(nodeData);
+        diagram.commitTransaction('addAlternate');
+        this.startTextEdit(diagram, nodeData);
+    },
+
     addDecision: function(e, obj) {
         this.addNode(obj, 'DecisionPoint', 'Decision', null, 'ProcessLink');
     },
@@ -391,6 +403,17 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
                 me.addAction(obj, dropObj.label, dropObj.uri);
             }
         });
+    },
+
+    onAltsMouseDrop: function(obj, data) {
+        var me = this;
+        data.records.forEach(function(rec) {
+            var dropObj = rec.data;
+            if (dropObj.type === 'Item') {
+                me.addAlternate(obj, dropObj.label, dropObj.uri);
+            }
+        });
+
     }
 
 });
