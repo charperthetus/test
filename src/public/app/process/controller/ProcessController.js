@@ -20,20 +20,11 @@ Ext.define('Savanna.process.controller.ProcessController', {
         newProcess: {
             click: 'clearJSONClick'
         },
-        expandsteps: {
+        expandSteps: {
             click: 'expandStepsClick'
         },
-        collapsesteps: {
+        collapseSteps: {
             click: 'collapseStepsClick'
-        },
-        loadJSON: {
-            click: 'loadJSONClick'
-        },
-        saveJSON: {
-            click: 'saveJSONClick'
-        },
-        clearJSON: {
-            click: 'clearJSONClick'
         },
         canvas: {
             boxready: 'initCanvas'
@@ -52,19 +43,19 @@ Ext.define('Savanna.process.controller.ProcessController', {
         alts: {
             click: 'handleAlts'
         },
-        zoomin: {
+        zoomIn: {
             click: 'zoomIn'
         },
-        zoomout: {
+        zoomOut: {
             click: 'zoomOut'
         },
         zoomToFit: {
             click: 'zoomToFit'
         },
-        cancelprocess: {
+        cancelProcess: {
             click: 'onCancel'
         },
-        saveprocess: {
+        saveProcess: {
             click: 'onSave'
         },
         view: {
@@ -100,9 +91,9 @@ Ext.define('Savanna.process.controller.ProcessController', {
     toggleExpanded: function(expand) {
         var diagram = this.getCanvas().diagram;
         diagram.startTransaction('toggleExpanded');
-        var iter = diagram.nodes;
-        while ( iter.next() ){
-            var node = iter.value;
+        var iterator = diagram.nodes;
+        while ( iterator.next() ){
+            var node = iterator.value;
             if (node instanceof go.Group) {
                 node.isSubGraphExpanded = expand;
             }
@@ -115,28 +106,9 @@ Ext.define('Savanna.process.controller.ProcessController', {
     collapseStepsClick: function() {
         this.toggleExpanded(false);
     },
-    loadJSONClick: function() {
-        var diagram = this.getCanvas().diagram;
-        var textarea = this.getMetadata().down('#JSONtextarea');
 
-        var str = textarea.value;
-        diagram.model = go.Model.fromJson(str);
-        diagram.undoManager.isEnabled = true;
-    },
-    saveJSONClick: function() {
-        var metadata = this.getMetadata();
-        this.showDiagramJSON(this.getCanvas().diagram, metadata.down('#JSONtextarea'));
-    },
     clearJSONClick: function() {
-        var metadata = this.getMetadata();
-        var textArea = metadata.down('#JSONtextarea');
-        this.clear(this.getCanvas().diagram, textArea);
-    },
-
-    // Show the diagram's model in JSON format that the user may have edited
-    showDiagramJSON: function(diagram, textarea) {
-        var str = diagram.model.toJson();
-        textarea.setValue(str);
+        this.clear(this.getCanvas().diagram);
     },
 
     load: function(diagram, rec) {
@@ -148,13 +120,12 @@ Ext.define('Savanna.process.controller.ProcessController', {
         diagram.undoManager.isEnabled = true;
     },
 
-    clear: function(diagram, textarea) {
+    clear: function(diagram) {
         var newProcess = {'class': 'go.GraphLinksModel', 'nodeKeyProperty': 'uri', 'nodeDataArray': [{'category':'Start'}], 'linkDataArray': []};
         newProcess.nodeDataArray[0].uri = Savanna.process.utils.ProcessUtils.getURI('Start');
         newProcess.uri = Savanna.process.utils.ProcessUtils.getURI('ProcessModel');
         this.store.add(newProcess);
         this.load(diagram, this.store.first());
-        this.showDiagramJSON(diagram, textarea);
     },
 
     handleUndo: function() {
@@ -302,7 +273,7 @@ Ext.define('Savanna.process.controller.ProcessController', {
 
     prevOver: null,
 
-    notifyOverTarget: function(ddSource, e, data){
+    notifyOverTarget: function(ddSource, e){
         var part = this.getDiagramPart(e);
 
         // simulate mouseDragLeave behavior
@@ -332,7 +303,7 @@ Ext.define('Savanna.process.controller.ProcessController', {
         }
 
         if (part && part.mouseDrop) {
-            return part.mouseDrop(e, part, data);
+            part.mouseDrop(e, part, data);
         }
     },
 

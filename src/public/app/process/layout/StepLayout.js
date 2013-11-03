@@ -23,9 +23,9 @@ StepLayout.prototype.doLayout = function(coll) {
     var countToolNodes = 0;
     var countByproductNodes = 0;
 
-    var iter = coll.iterator;
-    while (iter.next()) {
-        var part = iter.value;
+    var iterator = coll.iterator;
+    while (iterator.next()) {
+        var part = iterator.value;
         if (part instanceof go.Link) {
             switch (part.category) {
                 case 'ToolLink':

@@ -85,19 +85,19 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
     addNode: function(obj, category, description, classUri, linkType) {
         var diagram = obj.diagram;
         diagram.startTransaction('addNode');
-        var tobj = obj.part;
+        var clickedNode = obj.part;
         var nodeData = {'category': category, 'label': description};
         nodeData.uri = this.getURI(category);
         this.setRepresentsUri(nodeData, classUri);
 
-        if (tobj.data.group) {
-            nodeData.group = tobj.data.group;
+        if (clickedNode.data.group) {
+            nodeData.group = clickedNode.data.group;
         }
 
         diagram.model.addNodeData(nodeData);
 
-        var linkData = { category: linkType, from: tobj.data.uri, to: nodeData.uri };
-        if (tobj.category == 'DecisionPoint') {
+        var linkData = { category: linkType, from: clickedNode.data.uri, to: nodeData.uri };
+        if (clickedNode.category == 'DecisionPoint') {
             linkData.visible = true;
         }
         linkData.uri = this.getURI('ProcessLink');
@@ -178,8 +178,8 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         var diagram = obj.diagram;
         diagram.startTransaction('addAction');
 
-        var tobj = obj.part;
-        var nodeData = {'category': 'ProcessAction', 'label': label, 'group':tobj.data.uri};
+        var actionsGroup = obj.part;
+        var nodeData = {'category': 'ProcessAction', 'label': label, 'group':actionsGroup.data.uri};
         nodeData.uri = this.getURI(nodeData.category);
         this.setRepresentsUri(nodeData, classUri);
         diagram.model.addNodeData(nodeData);
@@ -206,9 +206,9 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         this.setRepresentsUri(action, null);
         diagram.model.addNodeData(action);
 
-        var tobj = obj.part;
-        var newLink = {from: tobj.data.uri, to: step.uri };
-        if (tobj.category == 'DecisionPoint') {
+        var clickedNode = obj.part;
+        var newLink = {from: clickedNode.data.uri, to: step.uri };
+        if (clickedNode.category == 'DecisionPoint') {
             newLink.visible = true;
             newLink.category = 'ProcessLink';
         } else {
@@ -231,11 +231,11 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         }
 
         var category = null,
-            iter = diagram.selection.iterator,
+            iterator = diagram.selection.iterator,
             node = null;
 
-        while (iter.next()) {
-            node = iter.value;
+        while (iterator.next()) {
+            node = iterator.value;
 
             if (!category) {
                 category = node.data.category;
@@ -278,9 +278,9 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
 
         var prevNodeNames = [];
         var outputNode;
-        iter = diagram.selection.iterator;
-        while (iter.next()) {
-            node = iter.value;
+        iterator = diagram.selection.iterator;
+        while (iterator.next()) {
+            node = iterator.value;
             var nodeText = node.data.label;
             var newLink = { category: 'ProcessLink', from: node.data.uri, to: mergeNode.uri };
             newLink.uri = this.getURI('ProcessLink');

@@ -47,7 +47,6 @@ Ext.define('Savanna.process.view.part.ActionList', {
         {   margin: 10,
             items: [
                 {
-                    //xtype: 'thetus-searchfield',
                     xtype: 'textfield',
                     width: 143,
                     itemId: 'actionText',
