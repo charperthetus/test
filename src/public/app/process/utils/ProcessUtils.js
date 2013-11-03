@@ -383,7 +383,16 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         diagram.commitTransaction('addAlts');
 
         Savanna.process.utils.ProcessUtils.startTextEdit(diagram, altsGroupData);
-    }
+    },
+
+    onNodeMouseDrop: function(obj, data, linkType) {
+        data.records.forEach(function(rec) {
+            var dropObj = rec.data;
+            if (dropObj.type === 'Item') {
+                Savanna.process.utils.ProcessUtils.addNode(obj, 'ProcessItem', dropObj.label, dropObj.uri, linkType);
+            }
+        });
+    },
 
 
 });

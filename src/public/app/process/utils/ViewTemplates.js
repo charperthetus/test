@@ -5,7 +5,6 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
     requires: [
         'Savanna.process.layout.StepLayout',
         'Savanna.process.utils.GroupEventHandlers',
-        'Savanna.process.utils.NodeEventHandlers',
         'Savanna.process.utils.ProcessUtils',
         'Savanna.process.utils.Styler'
     ],
@@ -14,13 +13,35 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
         return Savanna.process.utils.Styler;
     },
 
+    utils: function () {
+        return Savanna.process.utils.ProcessUtils;
+    },
+
+    //node event handlers
+    onNodeMouseEnter: function(e, obj) {
+        this.utils().toggleGadgets(obj, true);
+    },
+
+    onNodeMouseLeave: function(e, obj) {
+        this.utils().toggleGadgets(obj, false);
+    },
+
+    onNodeMouseDrop: function(e, obj, data) {
+        this.utils().onNodeMouseDrop(obj, data, 'ProcessLink');
+    },
+
+    onNodeSelectionChange: function(e, obj) {
+        this.utils().toggleGadgets(obj, false);
+        this.utils().toggleBackground(obj);
+    },
+
     nodeStyle: function () {
         return {
             // handle mouse enter/leave events to show/hide the gadgets
-            mouseEnter: Savanna.process.utils.NodeEventHandlers.onMouseEnter,
-            mouseLeave: Savanna.process.utils.NodeEventHandlers.onMouseLeave,
-            mouseDrop: Savanna.process.utils.NodeEventHandlers.onMouseDrop,
-            selectionChanged: Savanna.process.utils.NodeEventHandlers.onSelectionChange
+            mouseEnter: Ext.bind(this.onNodeMouseEnter, this),
+            mouseLeave: Ext.bind(this.onNodeMouseLeave, this),
+            mouseDrop: Ext.bind(this.onNodeMouseDrop, this),
+            selectionChanged: Ext.bind(this.onNodeSelectionChange, this)
         };
     },
 

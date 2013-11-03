@@ -345,7 +345,11 @@ Ext.define('Savanna.process.controller.ProcessController', {
             diagram = this.getCanvas().diagram,
             diagramCoordinate = diagram.transformViewToDoc(new go.Point(x,y));
 
-        return diagram.findObjectAt(diagramCoordinate); //may be null
+        var object = diagram.findObjectAt(diagramCoordinate);
+        while (object && !object.mouseDrop) {
+            object = object.panel;
+        }
+        return object; //may be null
     },
 
     togglePalette: function() {
