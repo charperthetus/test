@@ -939,7 +939,7 @@ Ext.define('Savanna.process.utils.Styler', {
                 mouseDragLeave: function (e, obj) {
                     obj.background = 'transparent';
                 },
-                mouseDrop: null //Savanna.process.utils.GroupEventHandlers.onActionGroupMouseDrop
+                mouseDrop: null
             }
         };
 
@@ -978,7 +978,7 @@ Ext.define('Savanna.process.utils.Styler', {
                 mouseDragLeave: function (e, obj) {
                     obj.background = 'transparent';
                 },
-                mouseDrop: null //Savanna.process.utils.GroupEventHandlers.onActionGroupMouseDrop
+                mouseDrop: null
             }
         };
 

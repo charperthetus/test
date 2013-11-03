@@ -4,7 +4,6 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
 
     requires: [
         'Savanna.process.layout.StepLayout',
-        'Savanna.process.utils.GroupEventHandlers',
         'Savanna.process.utils.ProcessUtils',
         'Savanna.process.utils.Styler'
     ],
@@ -18,11 +17,11 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
     },
 
     //node event handlers
-    onNodeMouseEnter: function(e, obj) {
+    onMouseEnter: function(e, obj) {
         this.utils().toggleGadgets(obj, true);
     },
 
-    onNodeMouseLeave: function(e, obj) {
+    onMouseLeave: function(e, obj) {
         this.utils().toggleGadgets(obj, false);
     },
 
@@ -30,19 +29,9 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
         this.utils().onNodeMouseDrop(obj, data, 'ProcessLink');
     },
 
-    onNodeSelectionChange: function(e, obj) {
+    onNodeSelectionChange: function(obj) {
         this.utils().toggleGadgets(obj, false);
         this.utils().toggleBackground(obj);
-    },
-
-    nodeStyle: function () {
-        return {
-            // handle mouse enter/leave events to show/hide the gadgets
-            mouseEnter: Ext.bind(this.onNodeMouseEnter, this),
-            mouseLeave: Ext.bind(this.onNodeMouseLeave, this),
-            mouseDrop: Ext.bind(this.onNodeMouseDrop, this),
-            selectionChanged: Ext.bind(this.onNodeSelectionChange, this)
-        };
     },
 
     makeTopPort: function () {
@@ -52,7 +41,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
     makeStepGadget: function () {
         var gmake = go.GraphObject.make;
         return gmake(go.Panel, go.Panel.Auto,
-            this.styler().stepGadget({click: Savanna.process.utils.ProcessUtils.addStep}).panel,
+            this.styler().stepGadget({click: Ext.bind(this.utils().addStep, this.utils())}).panel,
             gmake(go.Shape, this.styler().stepGadget().circle, {
                     mouseEnter: function (e, obj) {
                         obj.fill = '#7cc19d';
@@ -69,7 +58,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
     makeDecisionGadget: function () {
         var gmake = go.GraphObject.make;
         return gmake(go.Panel, go.Panel.Auto,
-            this.styler().decisionGadget({click: Savanna.process.utils.ProcessUtils.addDecision}).panel,
+            this.styler().decisionGadget({click: Ext.bind(this.utils().addDecision, this.utils())}).panel,
             gmake(go.Shape, this.styler().decisionGadget().diamond, {
                 mouseEnter: function (e, obj) {
                     obj.fill = '#f9ba6e';
@@ -88,7 +77,11 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
 
         // define the Node templates for regular nodes
         nodeTemplateMap.add('ProcessItem',
-            gmake(go.Node, 'Vertical', Savanna.process.utils.ViewTemplates.nodeStyle(), {
+            gmake(go.Node, 'Vertical', {
+                    // handle mouse enter/leave events to show/hide the gadgets
+                    mouseEnter: Ext.bind(this.onMouseEnter, this),
+                    mouseLeave: Ext.bind(this.onMouseLeave, this),
+                    selectionChanged: Ext.bind(this.onNodeSelectionChange, this),
                     defaultStretch: go.GraphObject.Horizontal,
                     selectionObjectName: 'BODY'
                 },
@@ -124,8 +117,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                         this.makeStepGadget(),
                         this.makeDecisionGadget()
                     )
-                ),
-                {
+                ), {
                     selectionAdornmentTemplate: gmake(go.Adornment, 'Auto',
                         gmake(go.Shape, 'RoundedRectangle',
                             this.styler().processModel().selectionAdornment),
@@ -135,7 +127,12 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
         );
 
         nodeTemplateMap.add('Start',
-            gmake(go.Node, 'Vertical', Savanna.process.utils.ViewTemplates.nodeStyle(), {
+            gmake(go.Node, 'Vertical', {
+                    // handle mouse enter/leave events to show/hide the gadgets
+                    mouseEnter: Ext.bind(this.onMouseEnter, this),
+                    mouseLeave: Ext.bind(this.onMouseLeave, this),
+                    mouseDrop: Ext.bind(this.onNodeMouseDrop, this),
+                    selectionChanged: Ext.bind(this.onNodeSelectionChange, this),
                     defaultStretch: go.GraphObject.Horizontal,
                     selectionObjectName: 'BODY'
                 },
@@ -159,8 +156,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                         this.makeStepGadget(),
                         this.makeDecisionGadget()
                     )
-                ),
-                {
+                ), {
                     selectionAdornmentTemplate: gmake(go.Adornment, 'Auto',
                         gmake(go.Shape, 'RoundedRectangle',
                             this.styler().start().selectionAdornment),
@@ -170,7 +166,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
         );
 
         nodeTemplateMap.add('ProcessAction',
-            gmake(go.Node, go.Panel.Spot, Savanna.process.utils.ViewTemplates.nodeStyle(),
+            gmake(go.Node, go.Panel.Spot,
                 gmake(go.TextBlock, this.styler().circle().textblock, new go.Binding('text', 'label').makeTwoWay(), {
                     mouseEnter: function (e, obj) {
                         obj.isUnderline = true;
@@ -178,8 +174,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                     mouseLeave: function (e, obj) {
                         obj.isUnderline = false;
                     }
-                }),
-                {
+                }), {
                     selectionAdornmentTemplate: gmake(go.Adornment, 'Auto',
                         gmake(go.Shape, 'RoundedRectangle',
                             this.styler().start().selectionAdornment),
@@ -189,7 +184,12 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
         );
 
         nodeTemplateMap.add('DecisionPoint',
-            gmake(go.Node, 'Vertical', Savanna.process.utils.ViewTemplates.nodeStyle(), {
+            gmake(go.Node, 'Vertical', {
+                    // handle mouse enter/leave events to show/hide the gadgets
+                    mouseEnter: Ext.bind(this.onMouseEnter, this),
+                    mouseLeave: Ext.bind(this.onMouseLeave, this),
+                    mouseDrop: Ext.bind(this.onNodeMouseDrop, this),
+                    selectionChanged: Ext.bind(this.onNodeSelectionChange, this),
                     defaultStretch: go.GraphObject.Horizontal,
                     selectionObjectName: 'BODY'
                 },
@@ -256,8 +256,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                         this.makeStepGadget(),
                         this.makeDecisionGadget()
                     )
-                ),
-                {
+                ), {
                     selectionAdornmentTemplate: gmake(go.Adornment, 'Auto',
                         gmake(go.Shape, 'RoundedRectangle',
                             this.styler().start().selectionAdornment),
@@ -268,7 +267,12 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
         );
 
         nodeTemplateMap.add('MergePoint',
-            gmake(go.Node, 'Vertical', Savanna.process.utils.ViewTemplates.nodeStyle(), {
+            gmake(go.Node, 'Vertical', {
+                    // handle mouse enter/leave events to show/hide the gadgets
+                    mouseEnter: Ext.bind(this.onMouseEnter, this),
+                    mouseLeave: Ext.bind(this.onMouseLeave, this),
+                    mouseDrop: Ext.bind(this.onNodeMouseDrop, this),
+                    selectionChanged: Ext.bind(this.onNodeSelectionChange, this),
                     defaultStretch: go.GraphObject.Horizontal,
                     selectionObjectName: 'BODY'
                 },
@@ -291,8 +295,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                         this.makeStepGadget(),
                         this.makeDecisionGadget()
                     )
-                ),
-                {
+                ), {
                     selectionAdornmentTemplate: gmake(go.Adornment, 'Auto',
                         gmake(go.Shape, 'RoundedRectangle',
                             this.styler().start().selectionAdornment),
@@ -332,8 +335,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                     gmake(go.TextBlock, 'Choice', // the label
                         this.styler().linker().textblockProcess,
                         new go.Binding('text', 'label').makeTwoWay())
-                ),
-                {
+                ), {
                     selectionAdornmentTemplate: gmake(go.Adornment,
                         gmake(go.Shape,
                             this.styler().linker().arrowheadProcess),
@@ -444,6 +446,39 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
         );
     },
 
+    //group event handlers
+    onGroupSelectionChange: function(obj) {
+        this.utils().toggleGadgets(obj, false);
+    },
+
+    onStepMouseDrop: function(e, obj, data) {
+        this.utils().onNodeMouseDrop(obj, data, 'OutputLink');
+    },
+
+    onParticipantMouseDrop:function(e, obj, data) {
+        this.utils().onNodeMouseDrop(obj, data, 'ToolLink');
+    },
+
+    onInputMouseDrop:function(e, obj, data) {
+        this.utils().onNodeMouseDrop(obj, data, 'InputLink');
+    },
+
+    onByproductMouseDrop:function(e, obj, data) {
+        this.utils().onNodeMouseDrop(obj, data, 'ByproductLink');
+    },
+
+    onResultMouseDrop:function(e, obj, data) {
+        var actionsGroup = obj.part;
+        var stepGroup = actionsGroup ? actionsGroup.containingGroup : null;
+
+        this.utils().onNodeMouseDrop(stepGroup, data, 'OutputLink');
+    },
+
+    onActionGroupMouseDrop: function (e, obj, data) {
+        this.utils().onActionMouseDrop(obj, data);
+    },
+
+
     generateGroupTemplateMap: function () {
         var gmake = go.GraphObject.make;
         var groupTemplateMap = new go.Map();
@@ -497,20 +532,13 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
         groupTemplateMap.add('ProcessModel',
             gmake(go.Group, go.Panel.Auto, {
                     defaultStretch: go.GraphObject.Horizontal,
-                    selectionObjectName: 'BODY'
-                }, {
+                    selectionObjectName: 'BODY',
                     background: 'white',
-                    mouseEnter: Savanna.process.utils.GroupEventHandlers.onMouseEnter,
-                    mouseLeave: Savanna.process.utils.GroupEventHandlers.onMouseLeave,
-                    selectionChanged: Savanna.process.utils.GroupEventHandlers.onSelectionChange,
-                    // highlight when dragging into the Group
-                    mouseDragEnter: Savanna.process.utils.GroupEventHandlers.onMouseDragEnter,
-                    mouseDragLeave: Savanna.process.utils.GroupEventHandlers.onMouseDragLeave,
-                    mouseHold: Savanna.process.utils.GroupEventHandlers.onMouseHold,
+                    mouseEnter: Ext.bind(this.onMouseEnter, this),
+                    mouseLeave: Ext.bind(this.onMouseLeave, this),
+                    selectionChanged: Ext.bind(this.onGroupSelectionChange, this),
+                    mouseDrop: Ext.bind(this.onStepMouseDrop, this),
                     computesBoundsAfterDrag: true,
-                    // when the selection is dropped into a Group, add the selected Parts into that Group;
-                    // if it fails, cancel the tool, rolling back any changes
-                    memberValidation: Savanna.process.utils.GroupEventHandlers.memberValidation,
                     // define the group's internal layout
                     layout: gmake(StepLayout),
                     // the group begins unexpanded;
@@ -556,8 +584,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                         this.makeStepGadget(),
                         this.makeDecisionGadget()
                     )
-                ),
-                {
+                ), {
                     selectionAdornmentTemplate: gmake(go.Adornment, 'Auto',
                         gmake(go.Shape, 'RoundedRectangle',
                             this.styler().processModel().selectionAdornment),
@@ -571,12 +598,6 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
             gmake(go.Group, go.Panel.Spot, {
                     background: 'transparent',
                     computesBoundsAfterDrag: true,
-                    mouseEnter: Savanna.process.utils.GroupEventHandlers.onMouseEnter,
-                    mouseLeave: Savanna.process.utils.GroupEventHandlers.onMouseLeave,
-                    // highlight when dragging into the Group
-                    mouseDragEnter: Savanna.process.utils.GroupEventHandlers.onMouseDragEnter,
-                    mouseDragLeave: Savanna.process.utils.GroupEventHandlers.onMouseDragLeave,
-                    memberValidation: Savanna.process.utils.GroupEventHandlers.actionsGroupMemberValidation,
                     // define the group's internal layout
                     layout: gmake(go.GridLayout,
                         this.styler().internalGroup().gridLayout),
@@ -594,7 +615,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                 gmake(go.Panel, go.Panel.Auto,
                     gmake(go.Shape, 'RoundedRectangle', this.styler().internalGroup().roundedRectangle),
                     gmake(go.Placeholder, this.styler().internalGroup({
-                        'mouseDrop': Savanna.process.utils.GroupEventHandlers.onActionGroupMouseDrop
+                        mouseDrop: Ext.bind(this.onActionGroupMouseDrop, this)
                     }).placeholder),
                     gmake(go.Shape, {
                         geometryString: 'F M16.5,9l-5,4v-2c-9,0-10-5-10-6c2,4,9,2,10,2V5L16.5,9z',
@@ -605,7 +626,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                         stroke: null
                     })),
                 this.makeAdornment(go.Spot.Left, new go.Point(0, 0), 180,
-                    Savanna.process.utils.GroupEventHandlers.onParticipantMouseDrop, Savanna.process.utils.ProcessUtils.addParticipant, {
+                    Ext.bind(this.onParticipantMouseDrop, this), Ext.bind(this.utils().addParticipant, this.utils()), {
                         geometryString: 'F M16.554,15.638c-0.18,0.181-0.482,0.479-0.482,0.479s-0.301,0.3-0.483,0.48 c-0.181,0.179-0.766,0.193-0.962-0.004c-0.194-0.194-2.45-2.465-2.45-2.465l-0.48-0.483c0,0-0.781,0.179-0.961-0.003 c-0.18-0.182-0.3-0.301-0.3-0.301s-0.179-0.181,0.032-0.39c0.211-0.21,0.753-0.749,0.753-0.749l-1.928-1.94L8.198,11.35 c0.255,0.496,0.411,1.052,0.409,1.649c-0.006,2-1.631,3.614-3.631,3.61c-0.324-0.001-0.633-0.059-0.932-0.141l1.911-1.899 L5.51,12.457l-2.108-0.456l-1.906,1.895c-0.077-0.295-0.131-0.6-0.129-0.919C1.375,10.977,3,9.36,5,9.366 c0.665,0.003,1.279,0.196,1.814,0.51l1.055-1.048L4.479,5.417l-1.2-0.724L2.32,3.729L1.304,1.862l0.302-0.3l0.302-0.298L3.767,2.29 l0.96,0.965l0.717,1.203l3.389,3.411l1.059-1.052C9.581,6.28,9.391,5.665,9.393,5c0.006-2,1.631-3.615,3.631-3.609 c0.324,0.002,0.634,0.058,0.932,0.14l-1.911,1.9l0.445,2.11l2.108,0.457l1.906-1.895c0.077,0.296,0.131,0.602,0.129,0.92 c-0.006,2-1.631,3.616-3.631,3.61c-0.597-0.002-1.152-0.162-1.648-0.42l-1.096,1.09l1.929,1.941c0,0,0.543-0.54,0.753-0.751c0.212-0.208,0.391-0.028,0.391-0.028s0.121,0.12,0.3,0.303c0.18,0.18-0.003,0.961-0.003,0.961l0.479,0.482c0,0,2.256,2.269,2.451,2.466C16.752,14.873,16.734,15.458,16.554,15.638z',
                         minSize: new go.Size(14, 14),
                         maxSize: new go.Size(14, 14),
@@ -614,7 +635,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                         stroke: null
                     }, 'Participants', new go.Point(17, 58)),
                 this.makeAdornment(go.Spot.Top, new go.Point(0, 0), 270,
-                    Savanna.process.utils.GroupEventHandlers.onInputMouseDrop, Savanna.process.utils.ProcessUtils.addInput, {
+                    Ext.bind(this.onInputMouseDrop, this), Ext.bind(this.utils().addInput, this.utils()), {
                         geometryString: 'F M7,5V3h4v2H7z M11,9V6H7v3H11z M13,9H5l4,6L13,9z',
                         maxSize: new go.Size(13, 17),
                         minSize: new go.Size(13, 17),
@@ -623,7 +644,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                         stroke: null
                     } , 'Inputs', new go.Point(27, 12)),
                 this.makeAdornment(go.Spot.Right, new go.Point(36, 0), 0,
-                    Savanna.process.utils.GroupEventHandlers.onByproductMouseDrop, Savanna.process.utils.ProcessUtils.addByproduct, {
+                    Ext.bind(this.onByproductMouseDrop, this), Ext.bind(this.utils().addByproduct, this.utils()), {
                         geometryString: 'F M16.072,13.243 11.828,8.998 16.071,4.756 13.241,1.929 9,6.171 4.758,1.929 1.928,4.756 6.172,9 1.928,13.243 4.758,16.071 9,11.829 13.242,16.071z',
                         minSize: new go.Size(15, 15),
                         maxSize: new go.Size(15, 15),
@@ -632,7 +653,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                         stroke: null
                     }, 'Byproducts', new go.Point(17, 58)),
                 this.makeAdornment(go.Spot.Bottom, new go.Point(0, 36), 90,
-                    Savanna.process.utils.GroupEventHandlers.onResultMouseDrop, Savanna.process.utils.ProcessUtils.addResult, {
+                    Ext.bind(this.onResultMouseDrop, this), Ext.bind(this.utils().addResult, this.utils()), {
                         geometryString: 'F M7,5V3h4v2H7z M11,9V6H7v3H11z M13,9H5l4,6L13,9z',
                         maxSize: new go.Size(13, 17),
                         minSize: new go.Size(13, 17),
@@ -648,12 +669,6 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
             gmake(go.Group, go.Panel.Auto, {
                     background: 'transparent',
                     computesBoundsAfterDrag: true,
-                    mouseEnter: Savanna.process.utils.GroupEventHandlers.onMouseEnter,
-                    mouseLeave: Savanna.process.utils.GroupEventHandlers.onMouseLeave,
-                    // highlight when dragging into the Group
-                    mouseDragEnter: Savanna.process.utils.GroupEventHandlers.onMouseDragEnter,
-                    mouseDragLeave: Savanna.process.utils.GroupEventHandlers.onMouseDragLeave,
-                    memberValidation: Savanna.process.utils.GroupEventHandlers.altsGroupMemberValidation,
                     // define the group's internal layout
                     layout: gmake(go.GridLayout, this.styler().altsGroup().gridLayout),
                     // the group begins expanded
@@ -668,11 +683,8 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                         gmake('PanelExpanderButton'),
                         gmake(go.TextBlock, this.styler().altsGroup().textblock, new go.Binding('text', 'label').makeTwoWay())),
                     gmake(go.Placeholder, this.styler().altsGroup({
-                        mouseDrop: Savanna.process.utils.GroupEventHandlers.onActionGroupMouseDrop
                     }).placeholder)),
-                this.makeTopPort(),
-                this.makeStepGadget(),
-                this.makeDecisionGadget()
+                this.makeTopPort()
             )
         ); // end AltsGroup
 
