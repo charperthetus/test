@@ -37,15 +37,22 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
             xtype: 'templatecolumn',
             tpl: new Ext.XTemplate(
                 '<div style="position: relative" >',
-                    '<div class="resultDiv">',
-                        '<div class="sourceDiv">{[this.conditionallyRenderImage(values.primaryImageUrl)]}</div>',
-                        '<div class="grid-cell-title"><strong>{label}</strong></div>',
-                        '<div class="contentDiv">',
-                            'Modified: {[this.formatDate(values.modifiedDate)]},&nbsp;&nbsp;{modifiedBy}<br>',
-                            'Workflow state: {workflowState}&nbsp;&nbsp;Classification: {classification}',
-                        '</div>',
-                    '</div>',
-                    '<div id="hoverDiv" style="visibility: hidden; right: 0;  top: 5px; position: absolute;" ><button id="openButton" class="openButtonClass">Open</button></div>',
+                '<div class="resultDiv">',
+                '<div class="sourceDiv">{[this.conditionallyRenderImage(values.primaryImageUrl)]}</div>',
+                '<div class="grid-cell-title"><strong>{label}</strong></div>',
+                '<div class="contentDiv">',
+                //Sean just added modified date in.
+                'Modified: {[this.formatDate(values.modifiedDate)]}<br>',
+
+                //,&nbsp;&nbsp;{modifiedBy}<br>'
+                //      'Workflow state: {workflowState}&nbsp;&nbsp;Classification: {classification}',
+
+
+                '<div style="width: 100%;height: 70px;white-space: normal;line-break: normal" >{preview}</div>',
+                '</div>',
+                '</div>',
+
+                '<div id="hoverDiv" style="visibility: hidden; right: 0;  top: 5px; position: absolute;" ><button id="openButton" class="openButtonClass">Open</button></div>',
                 '</div>',
 
                 {

@@ -19,17 +19,19 @@ Ext.define('Savanna.itemView.view.itemQualities.EditItemQualities', {
 
     layout: 'vbox',
 
+    storeHelper: null,
+
     width: '100%',
 
+    padding:'10 0 10 0',
+
     tbar: [
-        {
-            xtype: 'tbfill'
-        },
         {
             xtype: 'auto_complete',
             itemId: 'addPropAutoChooser',
             labelType: 'Click to Add a Property',
-            width: '35%',
+            margin:'10 0 0 0',
+            width: '66%',
             store: Ext.create('Savanna.itemView.store.AutoCompleteStore', {
                 urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/model/fakeuri/qualities',
                 paramsObj: {pageStart:0, pageSize: 20, alphabetical: true}
@@ -37,7 +39,7 @@ Ext.define('Savanna.itemView.view.itemQualities.EditItemQualities', {
         },
         {
             xtype: 'button',
-            text: 'Chooser',            
+            glyph: 'searchBinoculars',
             itemId: 'qualitiesChooser'
         },
         {

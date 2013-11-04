@@ -644,6 +644,8 @@ Ext.define('Savanna.component.BoxSelect', {
             me.inputEl.focus();
             if (!me.pinList) {
                 me.inputEl.dom.value = '';
+                me.queryFilter.setValue('');
+                delete me.lastQuery;
             }
             if (me.selectOnFocus) {
                 me.inputEl.dom.select();

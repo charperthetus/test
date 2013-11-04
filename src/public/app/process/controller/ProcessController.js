@@ -14,29 +14,17 @@ Ext.define('Savanna.process.controller.ProcessController', {
         'Savanna.process.store.Processes',
         'Savanna.process.view.part.Overview' //added dynamically later
     ],
-    store: 'Savanna.process.store.Processes',
-    mixins: {
-        storeable: 'Savanna.mixin.Storeable'
-    },
+    store: null,
 
     control: {
         newProcess: {
             click: 'clearJSONClick'
         },
-        expandsteps: {
+        expandSteps: {
             click: 'expandStepsClick'
         },
-        collapsesteps: {
+        collapseSteps: {
             click: 'collapseStepsClick'
-        },
-        loadJSON: {
-            click: 'loadJSONClick'
-        },
-        saveJSON: {
-            click: 'saveJSONClick'
-        },
-        clearJSON: {
-            click: 'clearJSONClick'
         },
         canvas: {
             boxready: 'initCanvas'
@@ -55,19 +43,19 @@ Ext.define('Savanna.process.controller.ProcessController', {
         alts: {
             click: 'handleAlts'
         },
-        zoomin: {
+        zoomIn: {
             click: 'zoomIn'
         },
-        zoomout: {
+        zoomOut: {
             click: 'zoomOut'
         },
         zoomToFit: {
             click: 'zoomToFit'
         },
-        cancelprocess: {
+        cancelProcess: {
             click: 'onCancel'
         },
-        saveprocess: {
+        saveProcess: {
             click: 'onSave'
         },
         view: {
@@ -86,22 +74,26 @@ Ext.define('Savanna.process.controller.ProcessController', {
 
     constructor: function (options) {
         this.opts = options || {};
-        this.mixins.storeable.initStore.call(this);
         this.callParent(arguments);
     },
 
     init: function() {
         //todo: diagram initialization here: setup for checking for a "dirty" process component
-
+        var uri = this.getView().getItemUri();
+        this.store = Ext.create('Savanna.process.store.Processes', {itemUri:uri});
         return this.callParent(arguments);
+    },
+
+    onStoreLoaded: function (records) {
+        this.load(this.getCanvas().diagram, records[0]);
     },
 
     toggleExpanded: function(expand) {
         var diagram = this.getCanvas().diagram;
         diagram.startTransaction('toggleExpanded');
-        var iter = diagram.nodes;
-        while ( iter.next() ){
-            var node = iter.value;
+        var iterator = diagram.nodes;
+        while ( iterator.next() ){
+            var node = iterator.value;
             if (node instanceof go.Group) {
                 node.isSubGraphExpanded = expand;
             }
@@ -114,28 +106,9 @@ Ext.define('Savanna.process.controller.ProcessController', {
     collapseStepsClick: function() {
         this.toggleExpanded(false);
     },
-    loadJSONClick: function() {
-        var diagram = this.getCanvas().diagram;
-        var textarea = this.getMetadata().down('#JSONtextarea');
 
-        var str = textarea.value;
-        diagram.model = go.Model.fromJson(str);
-        diagram.undoManager.isEnabled = true;
-    },
-    saveJSONClick: function() {
-        var metadata = this.getMetadata();
-        this.showDiagramJSON(this.getCanvas().diagram, metadata.down('#JSONtextarea'));
-    },
     clearJSONClick: function() {
-        var metadata = this.getMetadata();
-        var textArea = metadata.down('#JSONtextarea');
-        this.clear(this.getCanvas().diagram, textArea);
-    },
-
-    // Show the diagram's model in JSON format that the user may have edited
-    showDiagramJSON: function(diagram, textarea) {
-        var str = diagram.model.toJson();
-        textarea.setValue(str);
+        this.clear(this.getCanvas().diagram);
     },
 
     load: function(diagram, rec) {
@@ -147,12 +120,12 @@ Ext.define('Savanna.process.controller.ProcessController', {
         diagram.undoManager.isEnabled = true;
     },
 
-    clear: function(diagram, textarea) {
-        var newProcess = {'class': 'go.GraphLinksModel', 'nodeKeyProperty': 'uri', 'nodeDataArray': [{'uri':-1, 'category':'Start'}], 'linkDataArray': []};
+    clear: function(diagram) {
+        var newProcess = {'class': 'go.GraphLinksModel', 'nodeKeyProperty': 'uri', 'nodeDataArray': [{'category':'Start'}], 'linkDataArray': []};
+        newProcess.nodeDataArray[0].uri = Savanna.process.utils.ProcessUtils.getURI('Start');
         newProcess.uri = Savanna.process.utils.ProcessUtils.getURI('ProcessModel');
         this.store.add(newProcess);
         this.load(diagram, this.store.first());
-        this.showDiagramJSON(diagram, textarea);
     },
 
     handleUndo: function() {
@@ -250,7 +223,12 @@ Ext.define('Savanna.process.controller.ProcessController', {
         diagram.addDiagramListener('PartResized', Ext.bind(this.partResized, this));
         diagram.addDiagramListener('TextEdited', Ext.bind(this.textEdited, this));
 
-        this.loadInitialJSON();
+        var uri = this.getView().getItemUri();
+        if (uri) {
+            this.store.load({callback: this.onStoreLoaded, scope: this});
+        } else {
+            this.loadInitialJSON();
+        }
     },
 
     textEdited: function() {
@@ -293,9 +271,23 @@ Ext.define('Savanna.process.controller.ProcessController', {
         }
     },
 
-    notifyOverTarget: function(ddSource, e, data){
+    prevOver: null,
+
+    notifyOverTarget: function(ddSource, e){
         var part = this.getDiagramPart(e);
+
+        // simulate mouseDragLeave behavior
+        if (this.prevOver != part) {
+            if (this.prevOver && this.prevOver.mouseDragLeave) {
+                this.prevOver.mouseDragLeave(e, this.prevOver);
+            }
+        }
+        this.prevOver = part;
+
         if (part && part.mouseDrop) {
+            if (part.mouseDragEnter) {
+                part.mouseDragEnter(e, part);
+            }
             return Ext.dd.DropZone.prototype.dropAllowed;
         } else {
             return Ext.dd.DropZone.prototype.dropNotAllowed; //currently, say we can't drop anywhere in the canvas
@@ -304,8 +296,14 @@ Ext.define('Savanna.process.controller.ProcessController', {
 
     notifyDropTarget: function(ddSource, e, data){
         var part = this.getDiagramPart(e);
+
+        if (this.prevOver && this.prevOver.mouseDragLeave) {
+            this.prevOver.mouseDragLeave(e, this.prevOver);
+            this.prevOver = null;
+        }
+
         if (part && part.mouseDrop) {
-            return part.mouseDrop(e,ddSource, data, this.getCanvas().diagram, part);
+            part.mouseDrop(e, part, data);
         }
     },
 
@@ -318,7 +316,11 @@ Ext.define('Savanna.process.controller.ProcessController', {
             diagram = this.getCanvas().diagram,
             diagramCoordinate = diagram.transformViewToDoc(new go.Point(x,y));
 
-        return diagram.findPartAt(diagramCoordinate); //may be null
+        var object = diagram.findObjectAt(diagramCoordinate);
+        while (object && !object.mouseDrop) {
+            object = object.panel;
+        }
+        return object; //may be null
     },
 
     togglePalette: function() {

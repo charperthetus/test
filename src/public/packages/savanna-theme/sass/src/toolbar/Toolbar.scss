@@ -65,11 +65,19 @@
   $border-color: none
 );
 
+@include extjs-toolbar-ui(
+  $ui: 'drop-zone-toolbar',
+  $border-width: $drop-zone-toolbar-border
+);
+
 .#{$prefix}toolbar-thetus-toolbar {
-  border-bottom: solid 1px #999999;
-  border-top: solid 1px #999999;
-  padding-left: 8px;
-  padding-right: 8px;
+  .#{$prefix}box-inner{
+    border-bottom: solid 1px #999999;
+    border-top: solid 1px #999999;
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
 }
 
 @include extjs-toolbar-ui(

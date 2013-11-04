@@ -23,7 +23,8 @@ Ext.define('Savanna.itemView.view.itemQualities.ValuesPicker', {
     config: {
         selectionStore: null,
         valNameArray: [],
-        uri : ""
+        uri : "",
+        storeHelper: null
     },
 
     updatedStore: false,
@@ -37,6 +38,8 @@ Ext.define('Savanna.itemView.view.itemQualities.ValuesPicker', {
     width: '100%',
 
     layout: 'vbox',
+
+    cls:'value-picker-window',
 
     items: [
         {
@@ -80,7 +83,7 @@ Ext.define('Savanna.itemView.view.itemQualities.ValuesPicker', {
                 {
                     xtype: 'templatecolumn',
                     dataIndex: 'label',
-                    tpl: '<input type="button" value="x" id="removeSelectedValue">'
+                    tpl: '<i type="button" value="x" id="removeSelectedValue"></i>'
                 }
             ]
         }
@@ -89,7 +92,9 @@ Ext.define('Savanna.itemView.view.itemQualities.ValuesPicker', {
     buttons: [
         {
             text: 'OK',
-            itemId: 'okBtn'
+            itemId: 'okBtn',
+            ui:'commit',
+            margin:'0 0 10 0'
         },
         {
             text: 'cancel',
@@ -106,7 +111,7 @@ Ext.define('Savanna.itemView.view.itemQualities.ValuesPicker', {
         this.callParent(arguments);
         this.store = Ext.create(this.store, {
             urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/model/search/keyword/property/' + this.uri,
-            paramsObj: {pageStart:0, pageSize:10}
+            paramsObj: {pageStart:0, pageSize:100, alphabetical: true}
         });
 
         this.store.load({

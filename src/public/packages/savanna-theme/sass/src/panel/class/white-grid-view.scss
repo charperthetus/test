@@ -1,0 +1,132 @@
+/*
+ *  Sets custom item view  panel.Table (grid) styles
+ *
+ *	@author eirby
+ *
+ */
+
+.white-grid-view-panel{
+  input[type="button"]{
+    border: 0;
+    background: transparent;
+    color: #2694be;
+    cursor: pointer;
+    padding-left: 0px;
+    &:hover, &:active, &:focus{
+      text-decoration: underline;
+    }
+  }
+  .#{$prefix}column-header, .#{$prefix}grid-header-ct{
+    background:none;
+    border-color:transparent;
+  }
+  td, tr, table, .#{$prefix}grid-cell {
+    border-color:transparent;
+  }
+
+  .#{$prefix}column-header-inner{
+    padding: 5px 5px 5px 10px;
+  }
+  .#{$prefix}grid-row{
+    .#{$prefix}grid-cell-inner{
+      line-height: 17px;
+      padding: 0 6px 0 10px;
+    }
+    &:last-child{
+      .#{$prefix}grid-cell-inner{
+        padding: 0 6px 18px 10px;
+      }
+    }
+  }
+  .#{$prefix}column-header-over,
+  .#{$prefix}column-header-sort-ASC,
+  .#{$prefix}column-header-sort-DESC {
+    background:none;
+  }
+  .#{$prefix}column-header-over, .#{$prefix}column-header-open {
+    .#{$prefix}column-header-trigger {
+      display: none;
+    }
+  }
+  .#{$prefix}grid-row-selected {
+    .#{$prefix}grid-td {
+      border-style: $grid-row-cell-selected-border-style;
+      border-color: $white-grid-row-cell-selected-border-color;
+      background-color: $white-grid-row-cell-selected-background-color !important;
+    }
+  }
+  .#{$prefix}grid-row-focused .#{$prefix}grid-td {
+    border-top: $grid-cell-border-width $grid-row-focus-border-style $white-grid-row-cell-focus-border-color!important;
+    border-bottom: $grid-cell-border-width $grid-row-focus-border-style $white-grid-row-cell-focus-border-color!important;
+    background-color: $white-grid-row-cell-focus-background-color;
+  }
+
+  .#{$prefix}grid-row-over .#{$prefix}grid-td {
+    border-color: $white-grid-row-cell-over-border-color;
+    background-color: $white-grid-row-cell-over-background-color;
+  }
+
+  .item-view-header-header{
+    .#{$prefix}header-text{
+      font-size: 20px;
+    }
+  }
+  .image-grid-inner-main{
+    border:1px solid #999999;
+    background-image: url(images/itemview/image-grid-placeholder.svg);
+    background-size: contain;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+  }
+
+  .supporting-resources-drop-zone{
+    .inner-edit-zone{
+      border:2px dashed #959595;
+      padding:0px 10px 0;
+      margin:0 auto !important;
+    }
+  }
+
+  .drag-and-drop{
+    &:before {
+      width: 100%;
+      display: block;
+      text-align: center;
+      position: static;
+    }
+  }
+}
+.white-grid-view-panel-edit{
+  @extend .white-grid-view-panel;
+   input[type="text"]{
+    border-color:silver #d9d9d9 #d9d9d9;
+     border-width:1px;
+  }
+  &.edit-qualities{
+    .#{$prefix}panel-body{
+      padding:10px;
+    }
+  }
+  .related-item-edit-header{
+    padding:0 10px;
+  }
+  .related-item-drop-zone{
+    border:2px dashed #959595;
+    padding:0px 10px 0;
+  }
+
+  .image-browser-drop-zone{
+    .inner-edit-zone{
+      border:2px dashed #959595;
+      padding:0px 10px 0;
+      margin:0 auto !important;
+    }
+  }
+
+  .#{$prefix}btn-glyph{
+    color:$dark_font;
+  }
+
+
+}
+

@@ -24,7 +24,13 @@ Ext.define('Savanna.itemView.view.createItem.ParentDetails', {
     ],
 
     title: 'Selection',
-
+    header: {
+        xtype: 'header',
+        cls: 'item-header-font',
+        style: {
+            "background": '#FFFFFF'
+        }
+    },
     layout: 'fit',
 
     items: [],

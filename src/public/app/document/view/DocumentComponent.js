@@ -1,7 +1,7 @@
 Ext.define("Savanna.document.view.DocumentComponent", {
     extend: "Savanna.component.ClassificationPanel",
     alias: "widget.documentcomponent",
-    layout: "vbox",
+    layout: "hbox",
     border: false,
     itemUri: null,
     docViewId: null,
@@ -45,6 +45,8 @@ Ext.define("Savanna.document.view.DocumentComponent", {
                 }
             }
         );
+
+        this.down('#imageDetails').setItemURI(this.itemUri);
     },
     items: [
         {
@@ -52,6 +54,14 @@ Ext.define("Savanna.document.view.DocumentComponent", {
             itemId: "docBody",
             width: '100%',
             flex: 1
+        },
+        {
+            xtype: 'metadata_details',
+            itemId: 'imageDetails',
+            collapsible: true,
+            region: 'east',
+            split: true,
+            width: '30%'
         }
     ],
     tbar: [

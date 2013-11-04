@@ -6,14 +6,6 @@
  * To change this template use File | Settings | File Templates.
  */
 
-/**
- * Created with IntelliJ IDEA.
- * User: ksonger
- * Date: 10/24/13
- * Time: 3:26 PM
- * To change this template use File | Settings | File Templates.
- */
-
 Ext.define('Savanna.itemView.view.createItem.ParentItems', {
     extend: 'Ext.panel.Panel',
 
@@ -32,6 +24,14 @@ Ext.define('Savanna.itemView.view.createItem.ParentItems', {
     items: [],
 
     bodyPadding:8,
+
+    header: {
+        xtype: 'header',
+        cls: 'item-header-font',
+        style: {
+            "background": '#FFFFFF'
+        }
+    },
 
     layout: 'fit',
 
@@ -55,6 +55,7 @@ Ext.define('Savanna.itemView.view.createItem.ParentItems', {
             xtype: 'parentitems_auto_complete',
             itemId: 'parentItemAutoChooser',
             width: '100%',
+            margin: 10,
             store: Ext.create('Savanna.itemView.store.AutoCompleteStore', {
                 urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/mockModelSearch/keyword/item',
                 paramsObj: {

@@ -12,7 +12,7 @@ SavannaConfig = {
 
     helpUrl: 'http://www.google.com',
 
-    resourcesPathPrefix: '',
+    showSystemHighClassification: true,
 
     /**
      WMS base layer

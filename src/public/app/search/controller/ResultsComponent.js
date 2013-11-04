@@ -312,7 +312,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
 
     onItemClick: function (view, rec, node, index, e) {  //other parameter options
         //TODO - the way of getting this button is wrong, refactor
-        if (e && e.target && e.target.className == 'openButtonClass') {
+        if (e && e.target && e.target.className.indexOf('openButtonClass') != -1) {
             EventHub.fireEvent('open', {uri: rec.data.uri, type: rec.data.contentType, label: rec.data.title});
         }
     },

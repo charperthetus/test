@@ -45,7 +45,7 @@ Ext.define('Savanna.search.store.SearchResults', {
                 //The thumbnail url needs to be set
                 var i = 0, records = data.results, l = records.length;
                 for (i; i < l; i++){
-                    records[i].documentSource = SavannaConfig.documentUrl + encodeURI(records[i].uri) + '/thumbnail?maxWidth=80&maxHeight=60';
+                    records[i].documentSource = SavannaConfig.documentUrl + encodeURI(records[i].uri) + '/thumbnail?maxWidth=113&maxHeight=76';
                 }
                 return this.callParent([data]);
             }

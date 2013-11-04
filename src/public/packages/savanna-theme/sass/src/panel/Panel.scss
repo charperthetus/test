@@ -74,7 +74,16 @@
 	}
 }
 
-.item-view-left-column{
+.item-view-column{
   border-right-width:$item-view-left-column-border-width;
   border-right-style: $item-view-left-column-border-style;
+  &:last-child{
+    border-right-width:0;
+  }
 }
+
+.itemview{
+  margin:0 auto !important;
+  border: 1px solid #999;
+}
+

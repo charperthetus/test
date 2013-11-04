@@ -46,12 +46,12 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
                 ui: 'combo-button',
                 width: 150
 
-            },{
+            }, {
                 xtype: 'pagingtoolbar',
                 itemId: 'gridtoolbar',
                 dock: 'top',
                 displayInfo: true
-            }, {
+            },'->', {
                 glyph: 'list',
                 itemId: 'results_listViewButton',
                 ui:"basic"

@@ -44,11 +44,11 @@ Ext.define('Savanna.process.view.part.Toolbar', {
                     '-',
                     {
                          text: 'Save',
-                         itemId: 'saveprocess'
+                         itemId: 'saveProcess'
                     },
                     {
                          text: 'Delete',
-                         itemId: 'cancelprocess'
+                         itemId: 'cancelProcess'
                     },
                     '-',
                     {
@@ -58,11 +58,11 @@ Ext.define('Savanna.process.view.part.Toolbar', {
                     '-',
                     {
                          text: 'Expand All Steps',
-                         itemId: 'expandsteps'
+                         itemId: 'expandSteps'
                     },
                     {
                          text: 'Collapse All Steps',
-                         itemId: 'collapsesteps'
+                         itemId: 'collapseSteps'
                     },
                     '-',
                     {
@@ -96,7 +96,7 @@ Ext.define('Savanna.process.view.part.Toolbar', {
                 height:25,
                 ui: 'icon-dark',
                 tooltip: 'Zoom In',
-                itemId: 'zoomin'
+                itemId: 'zoomIn'
             },
             {
                 cls: 'toolbarButtonFramework',
@@ -105,7 +105,7 @@ Ext.define('Savanna.process.view.part.Toolbar', {
                 height:25,
                 ui: 'icon-dark',
                 tooltip: 'Zoom Out',
-                itemId: 'zoomout'
+                itemId: 'zoomOut'
             },
             {
                 cls: 'toolbarButtonFramework',
@@ -143,7 +143,7 @@ Ext.define('Savanna.process.view.part.Toolbar', {
                 height:25,
                 ui: 'icon-dark',
                 tooltip: 'Delete draft',
-                itemId: 'cancelprocess'
+                itemId: 'cancelProcess'
             },
             {
                 cls: 'toolbarButtonFramework',
@@ -152,7 +152,7 @@ Ext.define('Savanna.process.view.part.Toolbar', {
                 height:25,
                 ui: 'icon-dark',
                 tooltip: 'Save process',
-                itemId: 'saveprocess'
+                itemId: 'saveProcess'
             }
         ];
     }

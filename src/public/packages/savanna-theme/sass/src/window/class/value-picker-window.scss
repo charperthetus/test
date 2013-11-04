@@ -1,20 +1,20 @@
-/*
- *  Sets custom item view  panel.Table (grid) styles
- *
- *	@author eirby
- *
- */
 
-.white-grid-view-panel{
-  input[type="button"]{
-    border: 0;
-    background: transparent;
-    color: #2694be;
-    cursor: pointer;
-    padding-left: 0px;
-    &:hover, &:active, &:focus{
-      text-decoration: underline;
+
+.value-picker-window{
+  .#{$prefix}panel-header{
+      background-color: #ffffff;
+      padding: 7px 10px 7px 0px;
+  }
+  .#{$prefix}panel-header-body{
+    .#{$prefix}header-text{
+      color: $dark_font;
     }
+  }
+  .#{$prefix}panel-body{
+    border-width:1px;
+  }
+  .#{$prefix}header-text-container{
+    padding:0;
   }
   .#{$prefix}column-header, .#{$prefix}grid-header-ct{
     background:none;
@@ -22,27 +22,6 @@
   }
   td, tr, table, .#{$prefix}grid-cell {
     border-color:transparent;
-  }
-  .#{$prefix}grid-row{
-    .#{$prefix}grid-cell-inner{
-      line-height: 17px;
-      padding: 0 6px 0 12px;
-    }
-    &:last-child{
-      .#{$prefix}grid-cell-inner{
-        padding: 0 6px 18px 12px;
-      }
-    }
-  }
-  .#{$prefix}column-header-over,
-  .#{$prefix}column-header-sort-ASC,
-  .#{$prefix}column-header-sort-DESC {
-    background:none;
-  }
-  .#{$prefix}column-header-over, .#{$prefix}column-header-open {
-    .#{$prefix}column-header-trigger {
-      display: none;
-    }
   }
   .#{$prefix}grid-row-selected {
     .#{$prefix}grid-td {
@@ -61,11 +40,6 @@
     border-color: $white-grid-row-cell-over-border-color;
     background-color: $white-grid-row-cell-over-background-color;
   }
-}
-.white-grid-view-panel-edit{
-  @extend .white-grid-view-panel;
-   input[type="text"]{
-    border-color:silver #d9d9d9 #d9d9d9;
-     border-width:1px;
-  }
+
+
 }

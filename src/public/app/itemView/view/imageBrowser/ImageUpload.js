@@ -14,25 +14,34 @@ Ext.define('Savanna.itemView.view.imageBrowser.ImageUpload', {
         'Ext.container.Container'
     ],
 
-    layout: 'hbox',
+    cls:'image-browser-drop-zone',
 
-    style: {
-        border: '5px dotted #ccc'
-    },
-
+  layout: {
+        type: 'hbox',
+        align: 'middle',
+        pack: 'center',
+      width:'75%'
+  },
+    width:'100%',
+    margin:'0 0 10 0',
+    padding:'0 10 0 10',
+    height:79,
+    bodyCls: 'inner-edit-zone',
     items: [{
         xtype: 'label',
         text: 'Drop Images Here',
-        flex: 2
+        cls:'drag-and-drop'
     }, {
         xtype: 'label',
         text: 'OR',
-        flex: 1
+        margin:'0 20 0 20'
     }, {
         xtype: 'button',
         text: 'Upload',
-        itemId: 'uploadImagesButton',
-        flex: 2
+//        width:25,
+        ui:'commit',
+        itemId: 'uploadImagesButton'
+//        flex: 2
     }, {
         xtype: 'filebutton',
         itemId: 'fileBrowserButton',

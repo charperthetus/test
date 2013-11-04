@@ -10,3 +10,15 @@
 @import 'shame/popup';
 @import 'shame/DalStatusIcon';
 @import 'shame/ResultsPanelGrid';
+@import 'shame/ProcessEditor';
+@import 'shame/ItemViewer';
+
+
+// This is needed until we get an actual divider in center of the app
+.secondPanel {
+  border-left: 1px solid #333 !important;
+}
+// This is necessary to keep the upload grid rows from resizing. This causes the scroll position to be off and the grid scrolls on update
+.uploadGridRow td {
+  height: 50px;
+}

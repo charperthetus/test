@@ -13,8 +13,6 @@ Ext.define('Savanna.itemView.controller.ValuesPickerController', {
         'Savanna.itemView.view.itemQualities.ValuesPicker'
     ],
 
-    storeHelper: null,
-
     control: {
         availableValuesGroup: {
             itemclick: 'valueChecked'
@@ -30,16 +28,10 @@ Ext.define('Savanna.itemView.controller.ValuesPickerController', {
         }
     },
 
-    init: function() {
-        this.callParent(arguments);
-        this.storeHelper = Ext.create('Savanna.itemView.store.ItemViewStoreHelper');
-        this.storeHelper.init();
-    },
-
     valueChecked: function (grid, record, item, index, e, eOpts) {
         if (e.target.checked) {
             // Create a new model for the store, mapping the data to fit the model
-            var newValuesModel = this.storeHelper.createNewBottomLevelModelInstance(record.data.label, record.data.uri);
+            var newValuesModel = this.getView().getStoreHelper().createNewBottomLevelModelInstance(record.data.label, record.data.uri);
 
             // Add a new model into the store
             this.getView().queryById('selectedValuesGroup').store.add(newValuesModel);
@@ -52,6 +44,8 @@ Ext.define('Savanna.itemView.controller.ValuesPickerController', {
             var store = this.getView().queryById('selectedValuesGroup').store;
             store.remove(store.getById(record.data.label));
         }
+
+        this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
     },
 
     valueRemoved: function (grid, record, item, index, e, eOpts) {
@@ -70,6 +64,8 @@ Ext.define('Savanna.itemView.controller.ValuesPickerController', {
 
             this.getView().queryById('availableValuesGroup').reconfigure(this.getView().store);
             grid.store.remove(grid.store.getById(record.data.label));
+
+            this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
         }
     },
 
@@ -78,6 +74,7 @@ Ext.define('Savanna.itemView.controller.ValuesPickerController', {
         this.getView().getSelectionStore().add(this.getView().queryById('selectedValuesGroup').store.getRange());
         this.getView().updatedStore = true;
         this.getView().close();
+        this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
     },
 
     cancelValueSelections: function () {

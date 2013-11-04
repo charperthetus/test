@@ -6,7 +6,7 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         'Ext.data.UuidGenerator'
     ],
 
-    knownUriTypes: ['DecisionPoint', 'ProcessModel', 'ProcessAction', 'ProcessItem', 'InternalGroup', 'MergePoint'],
+    knownUriTypes: ['Start', 'DecisionPoint', 'ProcessModel', 'ProcessAction', 'ProcessItem', 'InternalGroup', 'MergePoint', 'ProcessLink'],
 
     getURI: function(category) {
         // by convention, category names are the same as the URI type
@@ -15,25 +15,43 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         }
         var uuid = Ext.data.IdGenerator.get('uuid').generate();
         return 'x' + uuid  + '/' + category;
-    },
+     },
 
-    getActionsGroup: function(group) {
-        var actionsGroup = null;
-        var iter = group.memberParts;
-        while (iter.next()) {
-            if (iter.value.category == "InternalGroup") {
-                actionsGroup = iter.value;
-                break;
+    setRepresentsUri: function(data, classUri) {
+        if (data && (data.category === 'ProcessAction' || data.category === 'ProcessItem'))
+        {
+            if (!classUri) {
+                if (data.category === 'ProcessAction') {
+                    classUri = 'lib%2EEventOntology%3AAct%2FModelItemXML';
+                } else {
+                    classUri = 'lib%2Esnap%3AObject%2FModelItemXML';
+                }
             }
+
+            // make a real instance
+            Ext.Ajax.request({
+                url: SavannaConfig.itemViewUrl + encodeURI(classUri) + '/instance;jsessionid=' + Savanna.jsessionid,
+                method: 'GET',
+                success: function(response){
+                    var message = Ext.decode(response.responseText);
+                    data.representsItemUri = message.uri;
+                },
+                failure: function(response){
+                    console.log('Server Side Failure: ' + response.status);
+                }
+            });
         }
-        return actionsGroup;
+
     },
 
     startTextEdit: function(diagram, nodeData) {
-        diagram.clearSelection();
-        var node = diagram.findNodeForData(nodeData);
-        node.isSelected = true;
-        diagram.commandHandler.editTextBlock(node.findObject('TEXT'));
+// Turn off auto starting text edit for now,
+// since it occasionally leads to whole diagram lock ups.
+// Some sort of timing issue perhaps?
+//        diagram.clearSelection();
+//        var node = diagram.findNodeForData(nodeData);
+//        node.isSelected = true;
+//        diagram.commandHandler.editTextBlock(node.findObject('TEXT'));
     },
 
     toggleGadgets: function(obj, show) {
@@ -64,57 +82,45 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         }
     },
 
-    addNode: function(obj, category, description, fromObj, classUri) {
-        var reallyAddNode = function(uri) {
-            var diagram = obj.diagram;
-            diagram.startTransaction('addNode');
-            var tobj = obj.part;
-            var nodeData = {'category': category, 'text': description};
-            if (uri) {
-                nodeData.representsItemUri = uri;
-            }
-            nodeData.uri = Savanna.process.utils.ProcessUtils.getURI(category);
+    addNode: function(obj, category, description, classUri, linkType) {
+        var diagram = obj.diagram;
+        diagram.startTransaction('addNode');
+        var clickedNode = obj.part;
+        var nodeData = {'category': category, 'label': description};
+        nodeData.uri = this.getURI(category);
+        this.setRepresentsUri(nodeData, classUri);
 
-            if (tobj.data.group) {
-                nodeData.group = tobj.data.group;
-            }
-
-            diagram.model.addNodeData(nodeData);
-
-            var linkData;
-            if (fromObj) {
-                linkData = { category: 'ProcessLink', from: tobj.data.uri, to: nodeData.uri };
-            } else {
-                linkData = { category: 'ProcessLink', from: nodeData.uri, to: tobj.data.uri };
-            }
-            if (tobj.category == 'DecisionPoint') {
-                linkData.visible = true;
-            }
-            diagram.model.addLinkData(linkData);
-            diagram.commitTransaction('addNode');
-            Savanna.process.utils.ProcessUtils.startTextEdit(diagram, nodeData);
-        };
-
-        if (classUri) {
-            // make a real instance
-            Ext.Ajax.request({
-                url: SavannaConfig.itemViewUrl + encodeURI(classUri) + '/instance;jsessionid=' + Savanna.jsessionid,
-                method: 'GET',
-                success: function(response){
-                    var message = Ext.decode(response.responseText);
-                    reallyAddNode(message.uri);
-                },
-                failure: function(response){
-                    console.log('Server Side Failure: ' + response.status);
-                }
-            });
-        } else {
-            reallyAddNode(null); // make a fake node
+        if (clickedNode.data.group) {
+            nodeData.group = clickedNode.data.group;
         }
+
+        diagram.model.addNodeData(nodeData);
+
+        var linkData = { category: linkType, from: clickedNode.data.uri, to: nodeData.uri };
+        if (clickedNode.category == 'DecisionPoint') {
+            linkData.visible = true;
+        }
+        linkData.uri = this.getURI('ProcessLink');
+        diagram.model.addLinkData(linkData);
+
+        diagram.commitTransaction('addNode');
+        this.startTextEdit(diagram, nodeData);
+    },
+
+    addAlternate: function(obj, label, classUri) {
+        var diagram = obj.diagram;
+        diagram.startTransaction('addAlternate');
+        var altsGroup = obj.part;
+        var nodeData = {category: 'ProcessItem', label: label, group: altsGroup.data.uri };
+        nodeData.uri = this.getURI(nodeData.category);
+        this.setRepresentsUri(nodeData, classUri);
+        diagram.model.addNodeData(nodeData);
+        diagram.commitTransaction('addAlternate');
+        this.startTextEdit(diagram, nodeData);
     },
 
     addDecision: function(e, obj) {
-        Savanna.process.utils.ProcessUtils.addNode(obj, 'DecisionPoint', 'Decision', true);
+        this.addNode(obj, 'DecisionPoint', 'Decision', null, 'ProcessLink');
     },
 
     addStepPart: function(obj, category, label, linkType) {
@@ -122,63 +128,64 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         diagram.startTransaction('addStepPart');
         var actionGroup = obj.part;
         var stepGroup = actionGroup.containingGroup;
-        var nodeData = {'category': category, 'text': label, 'group': stepGroup.data.uri};
-        nodeData.uri = Savanna.process.utils.ProcessUtils.getURI(nodeData.category);
+        var nodeData = {'category': category, 'label': label, 'group': stepGroup.data.uri};
+        nodeData.uri = this.getURI(nodeData.category);
+        this.setRepresentsUri(nodeData, null);
 
         diagram.model.addNodeData(nodeData);
 
         var linkData = {  category: linkType, from: actionGroup.data.uri, to: nodeData.uri };
+        linkData.uri = this.getURI('ProcessLink');
         diagram.model.addLinkData(linkData);
         diagram.commitTransaction('addStepPart');
-        Savanna.process.utils.ProcessUtils.startTextEdit(diagram, nodeData);
+        this.startTextEdit(diagram, nodeData);
     },
 
     addInput: function(e, obj) {
-        Savanna.process.utils.ProcessUtils.addStepPart(obj, 'ProcessItem', 'Input', 'InputLink');
+        this.addStepPart(obj, 'ProcessItem', 'Input', 'InputLink');
     },
 
     addParticipant: function(e, obj) {
-        Savanna.process.utils.ProcessUtils.addStepPart(obj, 'ProcessItem', 'Participant', 'ToolLink');
+        this.addStepPart(obj, 'ProcessItem', 'Participant', 'ToolLink');
     },
 
     addByproduct: function(e, obj) {
-        Savanna.process.utils.ProcessUtils.addStepPart(obj, 'ProcessItem', 'Byproduct', 'ByproductLink');
+        this.addStepPart(obj, 'ProcessItem', 'Byproduct', 'ByproductLink');
     },
 
     addResult: function(e, obj) {
         var category = 'ProcessItem';
         var label = 'Result';
-        var linkType = 'ProcessLink';
+        var linkType = 'OutputLink';
         var diagram = obj.diagram;
         diagram.startTransaction('addResult');
         var actionGroup = obj.part;
         var stepGroup = actionGroup.containingGroup;
-        var nodeData = {'category': category, 'text': label};
-        nodeData.uri = Savanna.process.utils.ProcessUtils.getURI(nodeData.category);
+        var nodeData = {'category': category, 'label': label};
+        nodeData.uri = this.getURI(nodeData.category);
+        this.setRepresentsUri(nodeData, null);
 
         diagram.model.addNodeData(nodeData);
 
         var linkData = {  category: linkType, from: stepGroup.data.uri, to: nodeData.uri };
+        linkData.uri = this.getURI('ProcessLink');
         diagram.model.addLinkData(linkData);
         diagram.commitTransaction('addResult');
-        Savanna.process.utils.ProcessUtils.startTextEdit(diagram, nodeData);
+        this.startTextEdit(diagram, nodeData);
     },
 
-    addEnd: function(e, obj) {
-        Savanna.process.utils.ProcessUtils.addNode(obj, 'End', 'End', true);
-    },
-
-    addAction: function(e, obj) {
+    addAction: function(obj, label, classUri) {
         var diagram = obj.diagram;
         diagram.startTransaction('addAction');
 
-        var tobj = obj.panel.panel.part;
-        var nodeData = {'category': 'ProcessAction', 'text': 'Action', 'group':tobj.data.uri};
-        nodeData.uri = Savanna.process.utils.ProcessUtils.getURI(nodeData.category);
+        var actionsGroup = obj.part;
+        var nodeData = {'category': 'ProcessAction', 'label': label, 'group':actionsGroup.data.uri};
+        nodeData.uri = this.getURI(nodeData.category);
+        this.setRepresentsUri(nodeData, classUri);
         diagram.model.addNodeData(nodeData);
 
         diagram.commitTransaction('addAction');
-        Savanna.process.utils.ProcessUtils.startTextEdit(diagram, nodeData);
+        this.startTextEdit(diagram, nodeData);
 
     },
 
@@ -186,32 +193,37 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         var diagram = obj.diagram;
         diagram.startTransaction('addStep');
 
-        var step = {'category': 'ProcessModel', 'text': 'Description', 'isGroup': true, 'isSubGraphExpanded': true};
-        step.uri = Savanna.process.utils.ProcessUtils.getURI(step.category);
+        var step = {'category': 'ProcessModel', 'label': 'Description', 'isGroup': true, 'isSubGraphExpanded': true};
+        step.uri = this.getURI(step.category);
         diagram.model.addNodeData(step);
 
         var actionsGroup = {'category': 'InternalGroup', 'isGroup': true, 'group': step.uri};
-        actionsGroup.uri = Savanna.process.utils.ProcessUtils.getURI(actionsGroup.category);
+        actionsGroup.uri = this.getURI(actionsGroup.category);
         diagram.model.addNodeData(actionsGroup);
 
-        var action = {'category': 'ProcessAction', 'text': 'Action', 'group': actionsGroup.uri};
-        action.uri = Savanna.process.utils.ProcessUtils.getURI(action.category);
+        var action = {'category': 'ProcessAction', 'label': 'Action', 'group': actionsGroup.uri};
+        action.uri = this.getURI(action.category);
+        this.setRepresentsUri(action, null);
         diagram.model.addNodeData(action);
 
-        var tobj = obj.part;
-        var newLink = { category: 'ProcessLink', from: tobj.data.uri, to: step.uri };
-        if (tobj.category == 'DecisionPoint') {
+        var clickedNode = obj.part;
+        var newLink = {from: clickedNode.data.uri, to: step.uri };
+        if (clickedNode.category == 'DecisionPoint') {
             newLink.visible = true;
+            newLink.category = 'ProcessLink';
+        } else {
+            newLink.category = 'InputLink';
         }
+        newLink.uri = this.getURI('ProcessLink');
         diagram.model.addLinkData(newLink);
         diagram.commitTransaction('addStep');
-        Savanna.process.utils.ProcessUtils.startTextEdit(diagram, step);
+        this.startTextEdit(diagram, step);
     },
 
     addMerge: function(diagram) {
         if (diagram.selection.count < 2){
             Ext.Msg.show({
-                title: 'Merge Error',
+                title: 'Join Error',
                 msg: 'Select at least two item to merge.', //todo: get final wording for error
                 buttons: Ext.Msg.OK
             });
@@ -219,11 +231,11 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         }
 
         var category = null,
-            iter = diagram.selection.iterator,
+            iterator = diagram.selection.iterator,
             node = null;
 
-        while (iter.next()) {
-            node = iter.value;
+        while (iterator.next()) {
+            node = iterator.value;
 
             if (!category) {
                 category = node.data.category;
@@ -231,7 +243,7 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
 
             if (node.data.category != category) {
                 Ext.Msg.show({
-                    title: 'Merge Error',
+                    title: 'Join Error',
                     msg: 'Select items that are of the same type to merge.', //todo: get final wording for error
                     buttons: Ext.Msg.OK
                 });
@@ -241,7 +253,7 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
 
             if (node.containingGroup) {
                 Ext.Msg.show({
-                    title: 'Merge Error',
+                    title: 'Join Error',
                     msg: 'Select items that are not inside a step to merge.', //todo: get final wording for error
                     buttons: Ext.Msg.OK
                 });
@@ -250,7 +262,7 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
 
             if (node.data.category == 'ProcessItem' && node.findLinksOutOf().count > 0) {
                 Ext.Msg.show({
-                    title: 'Merge Error',
+                    title: 'Join Error',
                     msg: 'Select items that have no children to merge.', //todo: get final wording for error
                     buttons: Ext.Msg.OK
                 });
@@ -260,28 +272,30 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
 
         diagram.startTransaction('addMerge');
 
-        var mergeNode = {'category': 'MergePoint', 'text': ''};
-        mergeNode.uri = Savanna.process.utils.ProcessUtils.getURI(mergeNode.category);
+        var mergeNode = {'category': 'MergePoint', 'label': ''};
+        mergeNode.uri = this.getURI(mergeNode.category);
         diagram.model.addNodeData(mergeNode);
 
         var prevNodeNames = [];
         var outputNode;
-        iter = diagram.selection.iterator;
-        while (iter.next()) {
-            node = iter.value;
-            var nodeText = node.data.text;
+        iterator = diagram.selection.iterator;
+        while (iterator.next()) {
+            node = iterator.value;
+            var nodeText = node.data.label;
             var newLink = { category: 'ProcessLink', from: node.data.uri, to: mergeNode.uri };
+            newLink.uri = this.getURI('ProcessLink');
             diagram.model.addLinkData(newLink);
 
             if (!(node instanceof go.Group)){
                 if (!Ext.Array.contains(prevNodeNames, nodeText)) {
                     Ext.Array.include(prevNodeNames, nodeText);
 
-                    outputNode = {'category': 'ProcessItem', 'text': nodeText};
-                    outputNode.uri = Savanna.process.utils.ProcessUtils.getURI(outputNode.category);
+                    outputNode = {'category': 'ProcessItem', 'label': nodeText};
+                    outputNode.uri = this.getURI(outputNode.category);
                     diagram.model.addNodeData(outputNode);
 
                     var otherLink = { category: 'ProcessLink', from: mergeNode.uri, to: outputNode.uri };
+                    otherLink.uri = this.getURI('ProcessLink');
                     diagram.model.addLinkData(otherLink);
                 }
             }
@@ -332,11 +346,11 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
 
         diagram.startTransaction('addAlts');
 
-        var altsGroupData = {'category': 'AltsGroup', 'text': 'Alternates', 'isGroup': true};
+        var altsGroupData = {'category': 'AltsGroup', 'label': 'Alternates', 'isGroup': true};
         if (selItem.containingGroup) {
             altsGroupData.group = selItem.containingGroup.data.uri;
         }
-        altsGroupData.uri = Savanna.process.utils.ProcessUtils.getURI(altsGroupData.category);
+        altsGroupData.uri = this.getURI(altsGroupData.category);
         diagram.model.addNodeData(altsGroupData);
 
         var altsGroup = diagram.findNodeForData(altsGroupData);
@@ -368,8 +382,38 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
 
         diagram.commitTransaction('addAlts');
 
-        Savanna.process.utils.ProcessUtils.startTextEdit(diagram, altsGroupData);
-    }
+        this.startTextEdit(diagram, altsGroupData);
+    },
 
+    onNodeMouseDrop: function(obj, data, linkType) {
+        var me = this;
+        data.records.forEach(function(rec) {
+            var dropObj = rec.data;
+            if (dropObj.type === 'Item') {
+                me.addNode(obj, 'ProcessItem', dropObj.label, dropObj.uri, linkType);
+            }
+        });
+    },
+
+    onActionMouseDrop: function (obj, data) {
+        var me = this;
+        data.records.forEach(function(rec) {
+            var dropObj = rec.data;
+            if (dropObj.type === 'Action') {
+                me.addAction(obj, dropObj.label, dropObj.uri);
+            }
+        });
+    },
+
+    onAltsMouseDrop: function(obj, data) {
+        var me = this;
+        data.records.forEach(function(rec) {
+            var dropObj = rec.data;
+            if (dropObj.type === 'Item') {
+                me.addAlternate(obj, dropObj.label, dropObj.uri);
+            }
+        });
+
+    }
 
 });

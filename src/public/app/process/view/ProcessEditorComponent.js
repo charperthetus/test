@@ -6,10 +6,11 @@
  * To change this template use File | Settings | File Templates.
  */
 Ext.define('Savanna.process.view.ProcessEditorComponent', {
-    extend: 'Ext.panel.Panel',
+    extend: 'Savanna.component.ClassificationPanel',
     alias: 'widget.process_component',
 
     requires: [
+        'Savanna.component.ClassificationPanel',
         'Ext.layout.container.Border',
         'Savanna.process.view.part.PaletteWindow',
         'Savanna.process.view.part.Toolbar',
@@ -62,8 +63,8 @@ Ext.define('Savanna.process.view.ProcessEditorComponent', {
                         xtype: 'process_palettewindow',
                         itemId: 'palette',
                         autoShow: true,
-                        x: 0 //DI needs to position this window correctly
-                        
+                        x: 15, //DI needs to position this window correctly
+                        y: 15
                     }
                 ]
             },
