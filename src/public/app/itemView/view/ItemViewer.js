@@ -218,6 +218,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                         collapsible: true,
                         collapseDirection: 'left',
                         collapseMode:'header',
+                        resizable:true,
                         headerPosition:'left',
                         items: [
 //                            {
@@ -399,6 +400,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                         collapsible: true,
                         collapseDirection: 'left',
                         collapseMode:'header',
+                        resizable:true,
                         headerPosition:'left',
                         items: [
 //                            {
