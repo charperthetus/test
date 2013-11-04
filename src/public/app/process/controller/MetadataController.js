@@ -13,9 +13,12 @@ Ext.define('Savanna.process.controller.MetadataController', {
 
     control: {
         view: {
-            uriChange: 'onUriChange'
+            //uriChange: 'onUriChange'
         },
-        processMetadataPanel: true,
+        processMetadata: true,
+        //processSidepanel: true,
+        stepMetadata: true,
+        itemMetadata: true,
 
         processDetails: {
             live: true,
@@ -35,34 +38,36 @@ Ext.define('Savanna.process.controller.MetadataController', {
         this.callParent(arguments);
         this.setDiagram(this.getView().up('process_component').down('#canvas').diagram);
 
-        this.getDiagram().addDiagramListener('ChangedSelection', Ext.bind(this.processSelectionChanged, this));
+        this.getDiagram().addDiagramListener('ChangedSelection', Ext.bind(this.selectionChanged, this));
 
         return;
     },
 
-    onUriChange: function(itemUri) {
+    selectionChanged: function(e) {
         //determine type
-        var items;
-        if (itemUri.indexOf('ProcessModel') !== -1){
 
-            if(1 === this.getDiagram().selection.count) {
-                items = this.setUpProcessStepDetails(itemUri);
-            } else {
-                items = this.setUpProcessDetails(itemUri);
-            }
-        }else if (itemUri.indexOf('Item') !== -1){
-            items = this.setUpProcessDetails(itemUri);
-        }else{
-            items = [{xtype:'label',text:'Unrecognized Uri'}];
+    if(1 === this.getDiagram().selection.count) {
+    var itemUri = this.getDiagram().selection.first().data.representsUri;
+        console.log('this.getDiagram().selection.first()', this.getDiagram().selection.first());
+        if (itemUri.indexOf('ProcessModel') !== -1){
+         // this is a step
+        } else if (itemUri.indexOf('Item') !== -1) {
+         // this is an item
+        } else {
+         //we don't know what this is yet
         }
-       this.getProcessMetadataPanel().add(items);
+    } else {
+        this.setUpProcessDetails(null);
+    }
+
+
     },
 
 
     setUpProcessDetails: function(itemUri) {
         // get proper info from service for item configs
 
-        if( null === processUri ) {
+        if( null === itemUri ) {
             this.setProcessUri( itemUri );
             var description = 'Item Uri is ' + itemUri;
             var pd0 = Ext.create('Savanna.process.view.metadata.ProcessDetails', {
@@ -74,12 +79,12 @@ Ext.define('Savanna.process.controller.MetadataController', {
                 label: itemUri,
                 description: description//,
             });
+            getProcessMetadataPanel().items = [pd0, pd1];
         } else {
             // show the process details panel
+            getProcessSidepanel().child('#processMetadata').tab.show();
         }
 
-
-       return [pd0, pd1];
     },
 
     setUpProcessStepDetails: function(itemUri) {

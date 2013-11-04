@@ -23,21 +23,21 @@ Ext.define('Savanna.process.view.metadata.MetadataTabPanel', {
     controller: 'Savanna.process.controller.MetadataController',
 
     config: {
-        itemUri: ''
+//        itemUri: ''
     },
 
-    updateItemUri: function(newUri, oldUri) {
-        if(newUri !== oldUri) {
-            this.fireEvent('uriChange', newUri);
-        }
-    },
+//    updateItemUri: function(newUri, oldUri) {
+//        if(newUri !== oldUri) {
+//            this.fireEvent('uriChange', newUri);
+//        }
+//    },
 
     enableTabScroll: true,
     items: [
         {
-            xtype: 'tabpanel',
             title:'Details',
-            itemId:'processMetadataPanel',
+            xtype: 'tabpanel',
+            itemId:'hiddenTabPanel',
             width:'100%',
             height:'100%',
             items: [

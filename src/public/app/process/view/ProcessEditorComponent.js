@@ -70,6 +70,7 @@ Ext.define('Savanna.process.view.ProcessEditorComponent', {
             },
             {
                 xtype: 'process_metadata',
+                itemId: 'processSidepanel',
                 region: 'east',
                 collapsible: true,
                 headerPosition: 'left',
@@ -78,7 +79,7 @@ Ext.define('Savanna.process.view.ProcessEditorComponent', {
                 autoScroll: true,
                 split: true,
                 height:'100%',
-                width: '30%' //todo: DI should apply the appropriate styling for the sidebar
+                width: '30%'
             }
         ];
     }
