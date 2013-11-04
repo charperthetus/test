@@ -150,7 +150,7 @@ Ext.define('Savanna.upload.controller.UploadController', {
             headers: {
                 'Accept': 'application/json'
             },
-            jsonData: this.buildJSONStringArray(this.currentPollingIds) ,
+            jsonData: Ext.JSON.encode(this.currentPollingIds) ,
             success: Ext.bind(this.onBatchPollingRequestLoad, this , [uploadGrid], true ),
             failure: function (response, opts) {
                 console.log('server-side failure with status code ' + response.status);
@@ -178,6 +178,7 @@ Ext.define('Savanna.upload.controller.UploadController', {
                 this.currentPollingIds.splice(i,1);
                 (documentStatus.status === 'completed') ? this.ingestedCount++ : this.failedCount++;
             }
+            model.commit();//clears dirty cell flag
         }
 
         if (this.currentPollingIds.length > 0){
@@ -239,18 +240,6 @@ Ext.define('Savanna.upload.controller.UploadController', {
         }
         url += ';jsessionid=' + Savanna.jsessionid;
         return url;
-    },
-
-    buildJSONStringArray:function(array){ // Make my arra valid json.
-        var jsonString = '['
-        for (var i = 0 ; i < array.length ; i++ ){
-            jsonString += '"' + array[i] + '"';
-            if (i !== array.length - 1){
-                jsonString += ',';
-            }
-        }
-        jsonString += ']';
-        return jsonString;
     }
 
 });

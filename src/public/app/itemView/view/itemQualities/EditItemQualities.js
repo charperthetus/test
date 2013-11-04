@@ -30,6 +30,7 @@ Ext.define('Savanna.itemView.view.itemQualities.EditItemQualities', {
             xtype: 'auto_complete',
             itemId: 'addPropAutoChooser',
             labelType: 'Click to Add a Property',
+            margin:'10 0 0 0',
             width: '66%',
             store: Ext.create('Savanna.itemView.store.AutoCompleteStore', {
                 urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/model/fakeuri/qualities',
