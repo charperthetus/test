@@ -121,9 +121,9 @@ Ext.define('Savanna.process.controller.PaletteController', {
     },
 
     //create and add a new Action to the palette
-    addNewPaletteAction: function(titleText, categoryText) {
+    addNewPaletteAction: function(titleText, categoryText, uri) {
         if (categoryText === "Action") {
-            this.getActionList().store.add(this.createPaletteNode(categoryText, titleText, null));
+            this.getActionList().store.add(this.createPaletteNode(categoryText, titleText, uri));
         }
     },
 
