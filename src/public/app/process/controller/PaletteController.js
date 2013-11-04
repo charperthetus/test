@@ -71,7 +71,7 @@ Ext.define('Savanna.process.controller.PaletteController', {
     },
 
     notifyActionPaletteOverTarget: function(ddSource, e, data) {
-        //don't allow anything other than an Item to be dropped into the item palette
+        //don't allow anything other than an action to be dropped into the action palette
         if (this.dragDataIsAction(data)) {
             return Ext.dd.DropZone.prototype.dropAllowed;
         } else {
@@ -100,13 +100,13 @@ Ext.define('Savanna.process.controller.PaletteController', {
     notifyActionPaletteDropTarget: function(ddSource, e, data) {
         //only create a new palette action if the dragged data does not already exist in the palette
 
-        //too bad we can't use the itemListHasDupes() function, but if the drag data has multiple records, then we
+        //too bad we can't use the actionList HasDupes() function, but if the drag data has multiple records, then we
         //need to do the dupe check for each one and add it if we can (unless we want to abort the whole drag if just
-        //one drag item is invalid)
+        //one drag action is invalid)
         var me = this;
         data.records.forEach(function(rec) {
             var obj = rec.data;
-            var store = me.getItemList().store;
+            var store = me.getActionList().store;
             if (store.findRecord('uri', obj.uri) || store.findRecord('label', obj.label)) {
                 //already exists...don't do anything
             } else {
@@ -154,7 +154,7 @@ Ext.define('Savanna.process.controller.PaletteController', {
     },
 
     onActionListReady: function() {
-        //listen for beforedrop on the item grid view (to prevent user from reordering rows and to prevent dupes)
+        //listen for beforedrop on the action grid view (to prevent user from reordering rows and to prevent dupes)
         this.getActionList().getView().on('beforedrop', this.beforeActionDrop, this);
     },
 
@@ -178,7 +178,7 @@ Ext.define('Savanna.process.controller.PaletteController', {
     },
 
     beforeActionDrop: function(node, data) {
-        //check to see if the user is dragging an item in the same grid view (i.e. reordering rows).
+        //check to see if the user is dragging an action in the same grid view (i.e. reordering rows).
         //if so, disallow it
         var actionList = this.getActionList(),
             returnVal = true;
@@ -187,7 +187,7 @@ Ext.define('Savanna.process.controller.PaletteController', {
             returnVal = false;
         } else if (this.actionListHasDupes(data)) {
             //if the dragged data already exists in the action list, disallow it to prevent duplicate records
-            //(note - in the case of multiple drag items then this will prevent drop if even just one is a dupe)
+            //(note - in the case of multiple drag actions then this will prevent drop if even just one is a dupe)
             returnVal = false;
         } else if (!this.dragDataIsAction(data)) {
             //if the dragged data is not an Action then don't allow it to be dropped on the Action palette
