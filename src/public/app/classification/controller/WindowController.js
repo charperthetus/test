@@ -30,7 +30,7 @@ Ext.define('Savanna.classification.controller.WindowController', {
 
     init: function() {
         // lock the fields while data is loading
-        this.lockFields();
+        this.hideFields();
 
         // verify whether classification options have already been loaded
         var options = Ext.getStore('classificationOptions');
@@ -359,12 +359,11 @@ Ext.define('Savanna.classification.controller.WindowController', {
         this.getView().destroy();
     },
 
-    lockFields: function() {
-        this.getClassificationField().setDisabled(true);
-        this.getSciField().setDisabled(true);
-        this.getFgiField().setDisabled(true);
-        this.getDisField().setDisabled(true);
-        this.getRelField().setDisabled(true);
+    hideFields: function() {
+        this.getSciField().hide();
+        this.getFgiField().hide();
+        this.getDisField().hide();
+        this.getRelField().hide();
     }
 
 });
