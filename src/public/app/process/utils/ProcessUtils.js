@@ -128,7 +128,7 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         diagram.startTransaction('addStepPart');
         var actionGroup = obj.part;
         var stepGroup = actionGroup.containingGroup;
-        var nodeData = {'category': category, 'label': label, 'group': stepGroup.data.uri};
+        var nodeData = {category: category, label: label, group: stepGroup.data.uri, isOptional: false};
         nodeData.uri = this.getURI(nodeData.category);
         this.setRepresentsUri(nodeData, null);
 
@@ -193,7 +193,7 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         var diagram = obj.diagram;
         diagram.startTransaction('addStep');
 
-        var step = {'category': 'ProcessModel', 'label': 'Description', 'isGroup': true, 'isSubGraphExpanded': true};
+        var step = {category: 'ProcessModel', label: 'Description', isGroup: true, isSubGraphExpanded: true, isOptional: false};
         step.uri = this.getURI(step.category);
         diagram.model.addNodeData(step);
 
@@ -414,6 +414,22 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
             }
         });
 
+    },
+
+    toggleOptional: function(diagram) {
+        var firstObj = diagram.selection.first();
+        var optional = !firstObj.data.isOptional;
+
+        diagram.startTransaction('toggleOptional');
+        var iterator = diagram.selection.iterator;
+        while (iterator.next()) {
+            var obj = iterator.value;
+            if (obj instanceof go.Node) {
+                obj.data.isOptional = optional;
+                obj.updateTargetBindings('isOptional');
+            }
+        }
+        diagram.commitTransaction('toggleOptional');
     }
 
 });
