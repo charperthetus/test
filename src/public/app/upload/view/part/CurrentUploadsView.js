@@ -64,7 +64,10 @@ Ext.define('Savanna.upload.view.part.CurrentUploadsView', {
                 width: '100%',
                 borderWidth: 0,
                 viewConfig: {
-                    preserveScrollOnRefresh: true
+                    preserveScrollOnRefresh: true,
+                    getRowClass: function(record, rowIndex, rowParams, store){
+                        return 'uploadGridRow';
+                    }
                 },
                 columns: [{
                     text: ' ',

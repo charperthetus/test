@@ -18,3 +18,7 @@
 .secondPanel {
   border-left: 1px solid #333 !important;
 }
+// This is necessary to keep the upload grid rows from resizing. This causes the scroll position to be off and the grid scrolls on update
+.uploadGridRow td {
+  height: 50px;
+}
