@@ -13,6 +13,7 @@ Ext.define('Savanna.process.model.Link', {
         { name: 'to',       type: 'string' },
         { name: 'category', type: 'string' },
         { name: 'label',    type: 'string' },
+        { name: 'uri',      type: 'string' },
         { name: 'visible',  type: 'string' }
     ]
 });

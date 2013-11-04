@@ -54,7 +54,7 @@ Ext.define('Savanna.process.view.part.PaletteWindow', {
         return [
             {
                 xtype: 'process_itemlist',
-                itemId: 'itemlist',
+                itemId: 'itemList',
                 collapsible: true,
                 collapsed:true,
                 width:"100%",
@@ -74,7 +74,7 @@ Ext.define('Savanna.process.view.part.PaletteWindow', {
 
             {
                 xtype: 'process_actionlist',
-                itemId: 'actionlist',
+                itemId: 'actionList',
                 collapsible: true,
                 collapsed:true,
                 width:"100%",

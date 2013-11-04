@@ -37,7 +37,7 @@ Ext.define('Savanna.process.view.part.ItemList', {
     ],
 
     tbar: {
-        itemId: 'itemtools',
+        itemId: 'itemTools',
         height: 37,
         border: 2,
         padding: 10,
@@ -65,7 +65,7 @@ Ext.define('Savanna.process.view.part.ItemList', {
             '->',
             {
                 xtype: 'button',
-                itemId: 'searchitems',
+                itemId: 'searchItems',
                 glyph: 'modelSearch',
                 ui: 'dark-icon',
                 tooltip: 'Click to search the model.',
