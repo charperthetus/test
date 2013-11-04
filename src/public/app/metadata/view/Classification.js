@@ -12,19 +12,17 @@ Ext.define('Savanna.metadata.view.Classification', {
 
     requires: ['Savanna.classification.view.ClassificationWindow'],
 
-    layout: 'vbox',
+    layout: 'hbox',
+
+    padding: '0 10 10 10',
 
     initComponent: function () {
         this.callParent(arguments);
         var me = this;
 
         me.on('beforerender', Ext.bind(function() {
-           if(me.down('#labelItem')) {
-                me.down('#labelItem').setText(me.getDisplayLabel() + ':');
-            }
-            if(me.down('#displayValue')) {
-                me.down('#displayValue').setValue((null === me.getValue()) ? '&nbsp;' : me.getValue());
-            }
+            me.down('#displayValue').setFieldLabel(me.getDisplayLabel());
+            me.down('#displayValue').setValue((null === me.getValue()) ? '&nbsp;' : me.getValue());
         }, this));
     },
 
@@ -38,51 +36,36 @@ Ext.define('Savanna.metadata.view.Classification', {
     },
 
     makeEditViewItems: function() {
-        var me = this;
-        var labelAndButtonContainer = Ext.create('Ext.form.Panel', {
-            itemId: 'labelAndButtonContainer',
-            layout: 'fit',
-            width: "100%",
-            border: false,
-            tbar: [{
-                    xtype: 'label',
-                    itemId: 'labelItem',
-                    cls: 'label'
-                }, '->',
-                {
-                    text: 'Edit',
-                    listeners: {
-                        click: function () {
-                            var classificationWindow = Ext.create('Savanna.classification.view.ClassificationWindow', {
-                                portionMarking: this.getValue(),
-                                modal: true
-                            });
-                            classificationWindow.show();
-                            classificationWindow.center();
+        this.makeViewViewItems();
 
-                            EventHub.on('classificationedited', this.onClassificationChanged, this);
-                        },
-                        scope: this
-                    }
-                }]
+        var classificationEditBtn = Ext.create('Ext.Button', {
+            text: 'Edit',
+            listeners: {
+                click: function () {
+                    var classificationWindow = Ext.create('Savanna.classification.view.ClassificationWindow', {
+                        portionMarking: this.getValue(),
+                        modal: true
+                    });
+                    classificationWindow.show();
+                    classificationWindow.center();
+
+                    EventHub.on('classificationedited', this.onClassificationChanged, this);
+                },
+                scope: this
+            }
         });
-        labelAndButtonContainer.add(Ext.create('Ext.form.field.Display', {
-            itemId: 'displayValue',
-            width: '100%'
-        }));
-        this.add(labelAndButtonContainer);
+        this.add(classificationEditBtn);
     },
 
     makeViewViewItems: function() {
-        this.add(Ext.create('Ext.form.Label', {
-            itemId: 'labelItem',
-            cls: 'label'
-        }));
-        this.add(Ext.create('Ext.form.field.Display', {
+        var labelAndButtonContainer = Ext.create('Ext.form.field.Display', {
             itemId: 'displayValue',
-            width: '100%'
-
-        }));
+            layout: 'vbox',
+            labelCls: 'label',
+            flex: 10,
+            labelPad: 2
+        });
+        this.add(labelAndButtonContainer);
     },
 
     onClassificationChanged: function(event) {
