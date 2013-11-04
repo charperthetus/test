@@ -37,7 +37,8 @@ Ext.define('Savanna.metadata.controller.MetadataViewController', {
             click: 'handleCancel'
         },
         view: {
-            create_metadata_fields: 'createMetadataFields'
+            create_metadata_fields: 'createMetadataFields',
+            update_Uri: 'updateUri'
         }
 
 
@@ -102,7 +103,7 @@ Ext.define('Savanna.metadata.controller.MetadataViewController', {
             this.getMetadata_edit_button().show();
         }
 
-        var itemUri = this.getView().getItemURI();
+        var itemUri = this.getView().itemURI;
         if(itemUri) {
             this.store = Ext.create('Savanna.metadata.store.Metadata', {
                 itemURI: itemUri
@@ -239,6 +240,18 @@ Ext.define('Savanna.metadata.controller.MetadataViewController', {
                 this.createMetadataFields();
             }
         });
+    },
+
+    updateUri: function(itemUri) {
+        if(this.store) {
+            this.store.itemURI = itemUri;
+            this.loadStore();
+        } else {
+            this.store = Ext.create('Savanna.metadata.store.Metadata', {
+                itemURI: itemUri
+            });
+            this.loadStore();
+        }
     }
 
 

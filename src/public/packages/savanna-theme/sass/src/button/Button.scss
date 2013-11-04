@@ -464,3 +464,10 @@
     }
   }
 }
+
+.edit-qualities-button{
+  .#{$prefix}btn-glyph{
+    line-height:43px;
+    height:43px;
+  }
+}
