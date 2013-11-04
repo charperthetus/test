@@ -77,7 +77,9 @@ Ext.define("Savanna.document.controller.DocumentController", {
         $FlexPaper(this.dvId).prevPage();
     },
     onSinglePageView:function() {
+	this.currentPageNumber = $FlexPaper(this.dvId).getCurrPage();
         $FlexPaper(this.dvId).switchMode("Portrait");
+	Savanna.app.fireEvent('pageViewChange', this.currentPageNumber);
         this.currentView='Portrait';
     },
     onThumbView:function() {
@@ -85,8 +87,12 @@ Ext.define("Savanna.document.controller.DocumentController", {
         this.currentView='Tile';
     },
     onTwoPageView:function() {
-        $FlexPaper(this.dvId).switchMode("TwoPage");
-        this.currentView ='TwoPage';
+	
+	this.currentPageNumber = $FlexPaper(this.dvId).getCurrPage();
+	$FlexPaper(this.dvId).switchMode("TwoPage");
+	Savanna.app.fireEvent('pageViewChange', this.currentPageNumber);
+	this.currentView ='TwoPage';
+       
     },
     onSearchDoc : function() {
         var searchText = this.getSearchText().getValue();
