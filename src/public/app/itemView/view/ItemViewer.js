@@ -30,7 +30,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
     ],
 
     layout: 'card',
-    maxWidth:1024,
+
 
     controller: 'Savanna.itemView.controller.ItemViewController',
 
@@ -60,7 +60,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                 itemId:'itemviewer_viewtab',
                 layout:{
                     type: 'hbox',
-                    pack: 'start',
+                    pack: 'end',
                     align : 'stretch'
                 },
                 overflowY: 'auto',
@@ -102,82 +102,109 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                 },
                 items:  [
                     {
-                        xtype: 'panel',
-                        cls: 'item-view-column',
-                        flex: 1,
-                        layout:'anchor',
-                        autoScroll: true,
-                        items: [
+                        xtype:'panel',
+                        flex:1,
+                        layout:{
+                            type: 'hbox',
+                            pack: 'center',
+                            align : 'stretch'
+                        },
+                        items:[
                             {
-                                xtype: 'itemview_view_header',
-                                itemId: 'itemViewHeaderView',
-                                cls:'white-grid-view-panel',
+                                xtype:'panel',
+                                flex:1,
+                                maxWidth:1024,
+                                cls: 'itemview',
+                                layout:{
+                                    type: 'hbox',
+                                    pack: 'center',
+                                    align : 'stretch'
+                                },
+                                items:[
+                                    {
+                                        xtype: 'panel',
+                                        cls: 'item-view-column',
+                                        flex:1,
+                                        layout:'anchor',
+                                        autoScroll: true,
+                                        items: [
+                                            {
+                                                xtype: 'itemview_view_header',
+                                                itemId: 'itemViewHeaderView',
+                                                cls:'white-grid-view-panel',
 
-                                header:{
-                                    ui:'item-view',
-                                    height:48,
-                                    padding:'0 0 0 10',
-                                    cls:'item-view-header-header'
-                                }
-                            },
-                            {
-                                xtype: 'itemview_related_processes',
-                                itemId: 'relatedProcessesView',
-                                cls:'white-grid-view-panel',
-                                collapsible: true,
-                                header:{
-                                    ui:'light-blue'
-                                }
-                            },
-                            {
-                                //Todo: create related items component here
-                                xtype: 'itemview_view_related_items',
-                                itemId: 'relatedItemsView',
-                                cls:'white-grid-view-panel',
-                                collapsible: true,
-                                title: 'Related Items (#)',
-                                header:{
-                                    ui:'light-blue'
-                                }
+                                                header:{
+                                                    ui:'item-view',
+                                                    height:48,
+                                                    padding:'0 0 0 10',
+                                                    cls:'item-view-header-header'
+                                                }
+                                            },
+                                            {
+                                                xtype: 'itemview_related_processes',
+                                                itemId: 'relatedProcessesView',
+                                                cls:'white-grid-view-panel',
+                                                collapsible: true,
+                                                header:{
+                                                    ui:'light-blue'
+                                                }
+                                            },
+                                            {
+                                                //Todo: create related items component here
+                                                xtype: 'itemview_view_related_items',
+                                                itemId: 'relatedItemsView',
+                                                cls:'white-grid-view-panel',
+                                                collapsible: true,
+                                                title: 'Related Items (#)',
+                                                header:{
+                                                    ui:'light-blue'
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        xtype: 'panel',
+                                        cls: 'item-view-column',
+                                        flex:1,
+                                        layout:'anchor',
+                                        autoScroll: true,
+                                        items: [
+                                            {
+                                                xtype: 'itemview_imagesgrid',
+                                                itemId: 'itemViewImagesGrid',
+                                                cls:'white-grid-view-panel',
+                                                collapsible: true,
+                                                header:{
+                                                    ui:'light-blue'
+                                                }
+                                            },
+                                            {
+                                                xtype: 'itemview_view_qualities',
+                                                itemId: 'itemViewPropertiesView',
+                                                cls:'white-grid-view-panel',
+                                                collapsible: true,
+                                                header:{
+                                                    ui:'light-blue'
+                                                }
+                                            },
+                                            {
+                                                xtype: 'itemview_annotation_properties',
+                                                itemId: 'annotationPropertiesView',
+                                                cls:'white-grid-view-panel-edit',
+                                                collapsible: true,
+                                                header: {
+                                                    ui:'light-blue'
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ]
+
                             }
+
                         ]
                     },
-                    {
-                        xtype: 'panel',
-                        cls: 'item-view-column',
-                        flex: 1,
-                        layout:'anchor',
-                        autoScroll: true,
-                        items: [                            
-                            {
-                                xtype: 'itemview_imagesgrid',
-                                itemId: 'itemViewImagesGrid',
-                                cls:'white-grid-view-panel',
-                                collapsible: true,
-                                header:{
-                                    ui:'light-blue'
-                                }
-                            },
-                            {
-                                xtype: 'itemview_view_qualities',
-                                itemId: 'itemViewPropertiesView',
-                                cls:'white-grid-view-panel',
-                                collapsible: true,
-                                header:{
-                                    ui:'light-blue'
-                                }
-                            },
-                            {
-                                xtype: 'itemview_annotation_properties',
-                                itemId: 'annotationPropertiesView',
-                                cls:'white-grid-view-panel-edit',
-                                collapsible: true,
-                                header: {
-                                    ui:'light-blue'
-                                }
-                            }
-                        ]
-                    },
+
                     {
                         xtype: 'panel',
                         itemId: 'itemInfoPanel',
@@ -185,9 +212,13 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                         cls:['white-grid-view-panel-edit', 'item-view-column'],
                         autoScroll: true,
                         width: '30%',
+                        minWidth:256,
+                        maxWidth:412,
                         layout: 'vbox',
                         collapsible: true,
                         collapseDirection: 'left',
+                        collapseMode:'header',
+                        headerPosition:'left',
                         items: [
 //                            {
 //                                xtype: 'metadata_details',
@@ -260,85 +291,115 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                 },
                 items:  [
                     {
-                        xtype: 'panel',
-                        cls: 'item-view-column',
-                        flex: 1,
-                        layout:'anchor',
-                        autoScroll: true,
-                        items: [
+                        xtype:'panel',
+                        flex:1,
+                        layout:{
+                            type: 'hbox',
+                            pack: 'center',
+                            align : 'stretch'
+                        },
+                        items:[
                             {
-                                xtype: 'itemview_edit_header',
-                                itemId: 'itemViewHeaderEdit',
-                                cls:'white-grid-view-panel-edit'
-                            },
-                            {
-                                xtype: 'itemview_related_processes',
-                                itemId: 'relatedProcessesViewEdit',
-                                cls:'white-grid-view-panel-edit',
-                                collapsible: true,
-                                header:{
-                                    ui:'light-blue'
-                                }
-                            },
-                            {
-                                xtype: 'itemview_edit_related_items',
-                                itemId: 'relatedItemsEdit',
-                                cls:'white-grid-view-panel-edit',
-                                collapsible: true,
-                                padding:'0 0 10 0',
-                                title: 'Related Items (#)',
-                                header:{
-                                    ui:'light-blue'
-                                }
+                                xtype:'panel',
+                                flex:1,
+                                maxWidth:1024,
+                                cls: 'itemview',
+                                layout:{
+                                    type: 'hbox',
+                                    pack: 'center',
+                                    align : 'stretch'
+                                },
+                                items:[
+                                    {
+                                        xtype: 'panel',
+                                        cls: 'item-view-column',
+                                        flex:1,
+                                        layout:'anchor',
+                                        autoScroll: true,
+                                        items: [
+                                            {
+                                                xtype: 'itemview_edit_header',
+                                                itemId: 'itemViewHeaderEdit',
+                                                cls:'white-grid-view-panel-edit'
+                                            },
+                                            {
+                                                xtype: 'itemview_related_processes',
+                                                itemId: 'relatedProcessesViewEdit',
+                                                cls:'white-grid-view-panel-edit',
+                                                collapsible: true,
+                                                header:{
+                                                    ui:'light-blue'
+                                                }
+                                            },
+                                            {
+                                                xtype: 'itemview_edit_related_items',
+                                                itemId: 'relatedItemsEdit',
+                                                cls:'white-grid-view-panel-edit',
+                                                collapsible: true,
+                                                padding:'0 0 10 0',
+                                                title: 'Related Items (#)',
+                                                header:{
+                                                    ui:'light-blue'
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        xtype: 'panel',
+                                        cls: 'item-view-column',
+                                        flex:1,
+                                        layout:'anchor',
+                                        autoScroll: true,
+                                        items: [
+                                            {
+                                                xtype: 'itemview_imagesgrid_edit',
+                                                itemId: 'itemViewImagesEdit',
+                                                cls:'white-grid-view-panel-edit',
+                                                collapsible: true,
+                                                header:{
+                                                    ui:'light-blue'
+                                                }
+                                            },
+                                            {
+                                                xtype: 'itemview_edit_qualities',
+                                                itemId: 'itemViewPropertiesEdit',
+                                                cls:['white-grid-view-panel-edit', 'edit-qualities'],
+                                                collapsible: true,
+                                                header:{
+                                                    ui:'light-blue'
+                                                }
+                                            },
+                                            {
+                                                xtype: 'itemview_annotation_properties',
+                                                itemId: 'annotationPropertiesEdit',
+                                                cls:'white-grid-view-panel-edit',
+                                                collapsible: true,
+                                                header: {
+                                                    ui:'light-blue'
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ]
                             }
+
                         ]
                     },
-                    {
-                        xtype: 'panel',
-                        cls: 'item-view-column',
-                        flex: 1,
-                        layout:'anchor',
-                        autoScroll: true,
-                        items: [
-                            {
-                                xtype: 'itemview_imagesgrid_edit',
-                                itemId: 'itemViewImagesEdit',
-                                cls:'white-grid-view-panel-edit',
-                                collapsible: true,
-                                header:{
-                                    ui:'light-blue'
-                                }
-                            },
-                            {
-                                xtype: 'itemview_edit_qualities',
-                                itemId: 'itemViewPropertiesEdit',
-                                cls:['white-grid-view-panel-edit', 'edit-qualities'],
-                                collapsible: true,
-                                header:{
-                                    ui:'light-blue'
-                                }
-                            },
-                            {
-                                xtype: 'itemview_annotation_properties',
-                                itemId: 'annotationPropertiesEdit',
-                                cls:'white-grid-view-panel-edit',
-                                collapsible: true,
-                                header: {
-                                    ui:'light-blue'
-                                }
-                            }
-                        ]
-                    },
+
                     {
                         xtype: 'panel',
                         itemId: 'itemInfoPanel',
                         title: 'Details',
                         width: '30%',
+                        minWidth:256,
+                        maxWidth:412,
                         cls:['white-grid-view-panel-edit', 'item-view-column'],
                         autoScroll: true,
                         layout: 'vbox',
                         collapsible: true,
                         collapseDirection: 'left',
+                        collapseMode:'header',
+                        headerPosition:'left',
                         items: [
 //                            {
 //                                xtype: 'metadata_details',
