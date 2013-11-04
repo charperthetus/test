@@ -10,30 +10,18 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.searchMap.FeaturePopU
     alias: 'widget.search_featurepopup',
 
     height: 175,
-
     width: 375,
-
     style: {
-        'overflow': "visible",
-        'background': 'blue'
+        'overflow': "visible"
     },
     store: [],
-
     layout: 'vbox',
-
     currentIndex: null,
-
     data: {},
-
     scroll: 'vertical',
-
     toFrontOnShow: false,
-
-
     hidden: true,
-
     header: false,
-
     defaults: {
         // applied to each contained panel
         border: false
@@ -52,13 +40,15 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.searchMap.FeaturePopU
             },
             '->',
             {
-                id: 'mapResultPrev',
+                xtype: 'button',
+                itemId: 'mapResultPrev',
                 text: '<',
                 direction: 'prev',
                 disabled: true
             },
             {
-                id: 'mapResultNext',
+                xtype: 'button',
+                itemId: 'mapResultNext',
                 direction: 'next',
                 text: '>',
                 disabled: true

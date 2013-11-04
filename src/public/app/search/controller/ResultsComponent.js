@@ -52,7 +52,6 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
                 'click': this.onDalReset
             },
             'search_searchcomponent #resultMapCanvas': {
-                beforerender: this.loadDefaultLayer,
                 afterrender: this.loadVectorLayer,
                 resize: this.onMapCanvasResize
             },
@@ -452,18 +451,6 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
         }
     },
 
-    loadDefaultLayer: function (canvas) {
-        
-        switch (canvas.baseLayer.type){
-            case 'WMS':
-                canvas.map.addLayer(new OpenLayers.Layer.WMS(canvas.baseLayer.layerLabel, canvas.baseLayer.url, {layers: canvas.baseLayer.layerName}));
-                break;
-            case 'XYZ':
-                canvas.map.addLayer(new OpenLayers.Layer.XYZ(canvas.baseLayer.layerLabel, canvas.baseLayer.url, {layers: canvas.baseLayer.layerName}));
-                break;
-        }   
-    },
-
     onMapCanvasResize: function (canvas) {
         canvas.map.updateSize();
     },
@@ -574,23 +561,17 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
         canvas.controls = {
             hoverFeature : new OpenLayers.Control.SelectFeature(
                 canvas.resultsLayer, {hover: true}
-            )/*,
-            selectFeature : new OpenLayers.Control.SelectFeature(
-                canvas.resultsLayer, {hover: false, clickout: true, highlightOnly: true}
-            )*/
+            )
         };
 
         // Add controls to map
         for(var key in canvas.controls) {
             canvas.map.addControl(canvas.controls[key])
         }
-        
 
        /* This checks to see if the searchMap exists and then fire
         the event to add the search polygon
         */
-
-
         if (canvas.up('search_searchcomponent').down('searchMapCanvas')) {
             var searchMap = canvas.up('search_searchcomponent').down('searchMapCanvas');
             searchMap.fireEvent('searchPolygonAdded', this);
@@ -611,6 +592,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
                 break;
         }
     },
+
     addSearchPolygon: function (canvas) {
       var searchLayer = canvas.searchLayer;
 
@@ -645,9 +627,10 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
                     Check to see if the projection of the base layer is EPSG:4326. Convert vector layer otherwise.
                     */
 
-                    var newPoint = null;
-                    if (mapCanvas.baseLayer.projection != 'EPSG:4326'){
-                        var currentProjection = new OpenLayers.Projection(mapCanvas.baseLayer.projection);
+                    var newPoint = {};
+                    var baseLayer = SavannaConfig.mapDefaultBaseLayer;
+                    if (baseLayer.projection != 'EPSG:4326'){
+                        var currentProjection = new OpenLayers.Projection(baseLayer.projection);
                         var resultsProjection = new OpenLayers.Projection("EPSG:4326");
                         newPoint = new OpenLayers.LonLat(resultPoints[j].longitude, resultPoints[j].latitude);
                         newPoint.transform(resultsProjection, currentProjection);
@@ -707,14 +690,14 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
 
     setPopUpTemplate: function (event, featurePopUp, controller){
         featurePopUp.store = [];
-        var tempData = event.feature.cluster;
+        var clusterStoreData = event.feature.cluster;
         var uniqueResults = {};
         var uriCount = 0;
         // pivot the cluster feature data into an object
         // object will have keys named by unique uri_location
         // object key value will be an object that stores the aggregated data about the document in the cluster
-        for (var i = 0; i < tempData.length; i++) {
-            var uriKey = tempData[i].data.uri + "_" + tempData[i].data.name;
+        for (var i = 0; i < clusterStoreData.length; i++) {
+            var uriKey = clusterStoreData[i].data.uri + "_" + clusterStoreData[i].data.name;
             //if the unique uri_location exits
             if (uniqueResults[uriKey]) {
                 uniqueResults[uriKey].count += 1;
@@ -722,14 +705,14 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
                 uriCount += 1;
                 uniqueResults[uriKey] = {
                     'count' : 1,
-                    'title' : tempData[i].data.title,
-                    'uri' : tempData[i].data.uri,
-                    'contentType': tempData[i].data.contentType,
-                    'previewString' : tempData[i].data.previewString,
-                    'name' : tempData[i].data.name,
-                    'publishedDate' : tempData[i].data.publishedDate,
-                    'composite' : tempData[i].data.composite,
-                    'fileType' : tempData[i].data.fileType
+                    'title' : clusterStoreData[i].data.title,
+                    'uri' : clusterStoreData[i].data.uri,
+                    'contentType': clusterStoreData[i].data.contentType,
+                    'previewString' : clusterStoreData[i].data.previewString,
+                    'name' : clusterStoreData[i].data.name,
+                    'publishedDate' : clusterStoreData[i].data.publishedDate,
+                    'composite' : clusterStoreData[i].data.composite,
+                    'fileType' : clusterStoreData[i].data.fileType
                 }
             }
         }
@@ -798,8 +781,8 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
         featurePopUp.down('#popup-location-text').setText('Location: ' + data.name);
         featurePopUp.down('#popup-preview-text').setText(data.composite + ' - ' + this.parseDate(new Date(data.publishedDate)) + ' - ' + data.fileType + ' - ' + data.previewString);
         featurePopUp.update(featurePopUp.store[featurePopUp.currentIndex]);
-        Ext.getCmp('mapResultPrev').setDisabled((featurePopUp.currentIndex > 0)? false:true);
-        Ext.getCmp('mapResultNext').setDisabled((featurePopUp.currentIndex < featurePopUp.store.length -1)? false:true);
+        featurePopUp.down('#mapResultPrev').setDisabled((featurePopUp.currentIndex > 0)? false:true);
+        featurePopUp.down('#mapResultNext').setDisabled((featurePopUp.currentIndex < featurePopUp.store.length -1)? false:true);
         featurePopUp.updateLayout();
     },
 

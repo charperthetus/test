@@ -72,7 +72,6 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                 click: this.onBodyToolbarClick
             },
             'search_searchcomponent #searchMapCanvas': {
-                beforerender: this.loadDefaultLayer,
                 afterrender: this.loadVectorLayer,
                 resize: this.onMapCanvasResize
             },
@@ -327,21 +326,23 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             if (mapView.searchLayer.features.length > 0){
                 var polyVo = {};
                 var polyRings = [];
-                var vertices = mapView.searchLayer.features[0].geometry.getVertices();
-                if (mapView.baseLayer.projection != 'EPSG:4326'){
-                    var currentProjection = new OpenLayers.Projection(mapView.baseLayer.projection);
+                var baseLayer = SavannaConfig.mapDefaultBaseLayer;
+                var searchLayerPolygon = mapView.searchLayer.features[0].geometry;
+                if (baseLayer.projection != 'EPSG:4326'){
+                    var currentProjection = new OpenLayers.Projection(baseLayer.projection);
                     var resultsProjection = new OpenLayers.Projection("EPSG:4326");
+                    searchLayerPolygon.transform(currentProjection, resultsProjection);
+                    var vertices = searchLayerPolygon.getVertices();
                     for (var i = 0; i < vertices.length; i++) {
-                        var newPoint = new OpenLayers.LonLat(vertices[i].x, vertices[i].y);
-                        newPoint.transform(currentProjection, resultsProjection);
                         //polygonVo for solr expects lat, long format
-                        newPoint = [newPoint.lat, newPoint.lon];
+                        var newPoint = [vertices[i].y, vertices[i].x];
                         polyRings.push(newPoint);
                     }
                 } else {
-                    for (var j = 0; j < vertices.length; j++) {
+                    var searchVertices = searchLayerPolygon.getVertices();
+                    for (var j = 0; j < searchVertices.length; j++) {
                         //polygonVo for solr expects lat, long format
-                        var point = [vertices[j].y, vertices[j].x];
+                        var point = [searchVertices[j].y, searchVertices[j].x];
                         polyRings.push(point);
                     }
                 }
@@ -588,17 +589,6 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         component.down('#searchbody').setActiveTab('searchresults');
     },
 
-    loadDefaultLayer: function (canvas) {
-        switch (canvas.baseLayer.type){
-            case 'WMS':
-                canvas.map.addLayer(new OpenLayers.Layer.WMS(canvas.baseLayer.layerLabel, canvas.baseLayer.url, {layers: canvas.baseLayer.layerName}));
-                break;
-            case 'XYZ':
-                canvas.map.addLayer(new OpenLayers.Layer.XYZ(canvas.baseLayer.layerLabel, canvas.baseLayer.url, {layers: canvas.baseLayer.layerName}));
-                break;
-        }
-    },
-
     loadVectorLayer: function (canvas) {
         // Add a feature layer to the map.
         var searchLayer = new OpenLayers.Layer.Vector('searchLayer');
@@ -645,10 +635,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         var resultMap = this.up('search_searchcomponent').down('#resultMapCanvas');
         if (resultMap.searchLayer) {
             this.fireEvent('searchPolygonAdded', this);
-        } else {
-
         }
-
     },
 
     onMapCanvasResize: function (canvas) {
@@ -679,8 +666,9 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         var viewBox = comboBoxButton.viewBox;
         var mapCanvas = comboBoxButton.parentComboBox.up('search_searchmap').down('search_map_canvas');
         var extent = new OpenLayers.Bounds(viewBox.west, viewBox.south, viewBox.east, viewBox.north);
-        if (mapCanvas.baseLayer.projection != 'EPSG:4326'){
-            var currentProjection = new OpenLayers.Projection(mapCanvas.baseLayer.projection);
+        var baseLayer = SavannaConfig.mapDefaultBaseLayer;
+        if (baseLayer.projection != 'EPSG:4326'){
+            var currentProjection = new OpenLayers.Projection(baseLayer.projection);
             var resultsProjection = new OpenLayers.Projection("EPSG:4326");
             extent.transform(resultsProjection, currentProjection);
         }

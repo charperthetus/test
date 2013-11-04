@@ -614,7 +614,6 @@ describe('Search Results', function () {
                 var searchStore;
 
                 beforeEach(function () {
-                    console.log(searchComponent);
                     searchStore = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.SearchResults', { autoLoad: false });
 
                     // now set up server to get store data
@@ -988,10 +987,10 @@ describe('Search Results', function () {
             });
 
             it('should populate the map with search results', function () {
-                var scope = searchComponent.down('#resultsdals');
+                var resultDal = searchComponent.down('#resultsdals');
                 var resultsMap = searchComponent.down('#resultMapCanvas');
-                scope.store = searchStore;
-                resultsController.loadPointsFromStore(scope);
+                resultDal.store = searchStore;
+                resultsController.loadPointsFromStore(resultDal);
                 expect(resultsMap.resultsLayer.features.length > 0).toBeTruthy();
             });
         });
