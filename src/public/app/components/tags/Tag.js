@@ -11,6 +11,8 @@ Ext.define('Savanna.components.tags.Tag', {
     closable: true,
 
     ui:'grey',
+
+    margin:'1',
     
     style:{
         position:'relative'
