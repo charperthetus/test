@@ -7,3 +7,12 @@
 		margin-bottom: $form-item-smallSpacing-margin-bottom;
 	}
 }
+
+.errorLabel {
+  text-align: center;
+  text-transform: uppercase;
+  color : $error_font;
+  border: 1px solid $error_font;
+  padding: 10px;
+  display: inline-block;
+}

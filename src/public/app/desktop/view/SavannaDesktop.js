@@ -56,6 +56,15 @@ Ext.define('Savanna.desktop.view.SavannaDesktop', {
                 height:29,
                 margin:'3 0 0 0',
                 glyph:'upload'
+            }  ,
+            {
+                itemId: 'testbutton',
+                cls:'uploadButtonFramework',
+                ui:'brand-header',
+                width: 29,
+                height:29,
+                margin:'3 0 0 0',
+                glyph:'trash'
             }
             ]
         },

@@ -13,9 +13,10 @@ Ext.define('Savanna.classification.view.ClassificationWindow', {
 
     title: 'Edit Classification',
 
-    layout: 'vbox',
+    layout: 'anchor',
     width: 480,
     height: 526,
+    padding:15,
 
     bbar: [
         '->',
@@ -32,18 +33,28 @@ Ext.define('Savanna.classification.view.ClassificationWindow', {
         }
     ],
 
-    items: [
+    items: [{
+        xtype: 'fieldcontainer',
+        layout: 'anchor',
+        anchor: '100%',
+        defaults: {
+            layout: "100%"
+        },
+        fieldDefaults: {
+            labelAlign: 'top',
+            labelWidth: 100
+        },
+        items: [
         {
             xtype: 'label',
             itemId: 'errorLabel',
-            hidden: true
-        },
-        {
-            xtype: 'label',
-            text: 'Classification'
+            hidden: true,
+            cls:'errorLabel',
+            anchor: '100%'
         },
         {
             xtype: 'combo',
+            fieldLabel: 'Classification',
             itemId: 'classificationField',
             queryMode: 'local',
             store: {
@@ -54,14 +65,11 @@ Ext.define('Savanna.classification.view.ClassificationWindow', {
             allowBlank: false,
             forceSelection: true,
             editable: false,
-            width: '100%'
-        },
-        {
-            xtype: 'label',
-            text: 'SCI'
+            anchor: '100%'
         },
         {
             xtype: 'boxselect',
+            fieldLabel: 'SCI',
             itemId: 'sciField',
             queryMode: 'local',
             store: {
@@ -73,14 +81,11 @@ Ext.define('Savanna.classification.view.ClassificationWindow', {
             filterPickList: true,
             pinList: false,
             grow: true,
-            width: '100%'
-        },
-        {
-            xtype: 'label',
-            text: 'FGI'
+            anchor: '100%'
         },
         {
             xtype: 'boxselect',
+            fieldLabel: 'FGI',
             itemId: 'fgiField',
             queryMode: 'local',
             store: {
@@ -91,14 +96,11 @@ Ext.define('Savanna.classification.view.ClassificationWindow', {
             filterPickList: true,
             pinList: false,
             grow: true,
-            width: '100%'
-        },
-        {
-            xtype: 'label',
-            text: 'Dissemination'
+            anchor: '100%'
         },
         {
             xtype: 'boxselect',
+            fieldLabel: 'Dissemination',
             itemId: 'disField',
             queryMode: 'local',
             store: {
@@ -110,14 +112,11 @@ Ext.define('Savanna.classification.view.ClassificationWindow', {
             filterPickList: true,
             pinList: false,
             grow: true,
-            width: '100%'
-        },
-        {
-            xtype: 'label',
-            text: 'Release TO'
+            anchor: '100%'
         },
         {
             xtype: 'boxselect',
+            fieldLabel: 'Release TO',
             itemId: 'relField',
             queryMode: 'local',
             store: {
@@ -128,7 +127,9 @@ Ext.define('Savanna.classification.view.ClassificationWindow', {
             filterPickList: true,
             pinList: false,
             grow: true,
-            width: '100%'
+            anchor: '100%'
         }
     ]
+}
+]
 });

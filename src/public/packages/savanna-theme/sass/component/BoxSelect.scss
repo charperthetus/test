@@ -32,27 +32,60 @@ ul.x-boxselect-list.x-boxselect-singleselect {
   display: block;
 }
 .x-boxselect-item {
-  -moz-border-radius: 6px; -webkit-border-radius: 6px; border-radius: 6px; o-border-radius: 6px; khtml-border-radius: 6px; border: 1px solid #CAD8F3;
   padding: 0px 1px 0px 5px !important;
   margin: 1px 1px 1px 0;
-  background-color: #DEE7F8;
+  color: #f2f2f2;
+  background-color: #4c4c4c;
   cursor: default;
 }
 .x-field:not(.x-item-disabled) .x-boxselect-item:hover {
-  background: #BBCEF1;
-  border: 1px solid #6D95E0;
+  background: #5a5a5a;
+  border: 1px solid #5a5a5a;
 }
 .x-field:not(.x-item-disabled) .x-boxselect-item.selected {
-  border: 1px solid #316AD3 !important;
-  background: #658FDC !important;
+  border: 1px solid #5c5c5c !important;
+  background: #5c5c5c !important;
 }
 .x-boxselect-item-text {
   line-height: 16px;
   padding-right: 20px !important;
+  color:#F2f2f2;
 }
 .x-boxselect-item-close {
-  cursor: pointer;
+
+  font-family: 'thetus-icons';
+  speak: none;
+  -webkit-font-feature-settings: "liga","dlig";
+  -moz-font-feature-settings: "liga=1, dlig=1";
+  -moz-font-feature-settings: "liga","dlig";
+  -ms-font-feature-settings: "liga","dlig";
+  -o-font-feature-settings: "liga","dlig";
+  font-feature-settings: "liga","dlig";
+  text-rendering: optimizeLegibility;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  text-decoration: none;
+  font-size: 16px;
+  width: 12px;
+  height: 14px;
+  background-image: none;
 }
+
+.x-boxselect-item-close:before{
+  content: "closeRollout";
+  position: absolute;
+  cursor: pointer;
+  right: 0;
+  top: -2px;
+  color: #8c8c8c;
+  font-size: 18px;
+  line-height: 14px;
+}
+
 .x-boxselect-hideselections .x-boundlist-selected {
   display: none;
 }
