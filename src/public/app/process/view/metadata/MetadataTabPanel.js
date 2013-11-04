@@ -12,7 +12,10 @@ Ext.define('Savanna.process.view.metadata.MetadataTabPanel', {
     requires: [
         'Ext.tab.Panel',
         'Savanna.metadata.view.Details',
-        'Savanna.process.controller.MetadataController'
+        'Savanna.process.controller.MetadataController',
+        'Savanna.process.view.metadata.FullProcessSidePanel',
+        'Savanna.process.view.metadata.ProcessStepSidePanel',
+        'Savanna.process.view.metadata.ProcessItemSidePanel'
     ],
     header: {
         ui: 'dark'
@@ -32,10 +35,25 @@ Ext.define('Savanna.process.view.metadata.MetadataTabPanel', {
     enableTabScroll: true,
     items: [
         {
+            xtype: 'tabpanel',
             title:'Details',
             itemId:'processMetadataPanel',
             width:'100%',
-            height:'100%'
+            height:'100%',
+            items: [
+                {
+                    xtype: 'full_process_metadata',
+                    itemId: 'processMetadata'
+                },
+                {
+                    xtype: 'process_step_metadata',
+                    itemId: 'stepMetadata'
+                },
+                {
+                    xtype: 'process_item_metadata',
+                    itemId: 'itemMetadata'
+                }
+            ]
         },
         { title: 'JSON',
             xtype:'panel',

@@ -29,8 +29,6 @@ Ext.define('Savanna.process.controller.ProcessController', {
         canvas: {
             boxready: 'initCanvas'
         },
-        metadata: {
-        },
         undo: {
             click: 'handleUndo'
         },
