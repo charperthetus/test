@@ -127,7 +127,7 @@ Ext.define('Savanna.process.controller.ProcessController', {
         this.store.add(newProcess);
         this.load(diagram, this.store.first());
 
-        this.getView().down('#metadata').setItemUri(Savanna.process.utils.ProcessUtils.getURI('ProcessModel'));
+        this.getView().down('#processMetadata').setItemUri(Savanna.process.utils.ProcessUtils.getURI('ProcessModel'));
     },
 
     handleUndo: function() {

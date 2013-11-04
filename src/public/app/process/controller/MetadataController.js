@@ -2,8 +2,14 @@ Ext.define('Savanna.process.controller.MetadataController', {
     extend: 'Deft.mvc.ViewController',
 
     requires: [
-        'Savanna.process.view.metadata.ProcessDetails'
+        'Savanna.process.view.metadata.ProcessDetails',
+        'Savanna.itemView.view.header.EditHeader'
     ],
+
+    config: {
+        diagram: null,
+        processUri: null
+    },
 
     control: {
         view: {
@@ -26,16 +32,24 @@ Ext.define('Savanna.process.controller.MetadataController', {
     },
 
     init: function() {
-        return this.callParent(arguments);
+        this.callParent(arguments);
+        this.setDiagram(this.getView().up('process_component').down('#canvas').diagram);
+
+        this.getDiagram().addDiagramListener('ChangedSelection', Ext.bind(this.processSelectionChanged, this));
+
+        return;
     },
 
     onUriChange: function(itemUri) {
         //determine type
         var items;
         if (itemUri.indexOf('ProcessModel') !== -1){
-            items = this.setUpProcessDetails(itemUri);
-        }else if (itemUri.indexOf('ProcessStep') !== -1){ //TODO: not sure of the types of uris we're looking for here
-            items = this.setUpProcessDetails(itemUri);
+
+            if(1 === this.getDiagram().selection.count) {
+                items = this.setUpProcessStepDetails(itemUri);
+            } else {
+                items = this.setUpProcessDetails(itemUri);
+            }
         }else if (itemUri.indexOf('Item') !== -1){
             items = this.setUpProcessDetails(itemUri);
         }else{
@@ -48,16 +62,23 @@ Ext.define('Savanna.process.controller.MetadataController', {
     setUpProcessDetails: function(itemUri) {
         // get proper info from service for item configs
 
-        var description = 'Item Uri is ' + itemUri;
-        var pd0 = Ext.create('Savanna.process.view.metadata.ProcessDetails', {
-            label: itemUri,
-            description: description//,
-            //
-        });
-        var pd1 = Ext.create('Savanna.process.view.metadata.ProcessDetails', {
-            label: itemUri,
-            description: description//,
-        });
+        if( null === processUri ) {
+            this.setProcessUri( itemUri );
+            var description = 'Item Uri is ' + itemUri;
+            var pd0 = Ext.create('Savanna.process.view.metadata.ProcessDetails', {
+                label: itemUri,
+                description: description//,
+                //
+            });
+            var pd1 = Ext.create('Savanna.process.view.metadata.ProcessDetails', {
+                label: itemUri,
+                description: description//,
+            });
+        } else {
+            // show the process details panel
+        }
+
+
        return [pd0, pd1];
     },
 
@@ -74,5 +95,9 @@ Ext.define('Savanna.process.controller.MetadataController', {
 
     processLabelChangeHandler: function(text, newValue, oldValue, eOpts) {
         console.log(arguments);
+    },
+
+    processSelectionChanged: function(e) {
+        console.log('selection size', this.getDiagram().selection.count);
     }
 });

@@ -69,15 +69,30 @@ Ext.define('Savanna.process.view.ProcessEditorComponent', {
                 ]
             },
             {
-                xtype: 'process_metadata',
-                itemId: 'metadata',
+                xtype: 'tabpanel',
                 region: 'east',
-                height:'100%',
-                width: '30%', //todo: DI should apply the appropriate styling for the sidebar
                 collapsible: true,
                 headerPosition: 'left',
                 collapseMode: 'header',
-                split: true
+                overflowY: 'auto',
+                autoScroll: true,
+                split: true,
+                height:'100%',
+                width: '30%', //todo: DI should apply the appropriate styling for the sidebar
+                items: [
+                    {
+                        xtype: 'process_metadata',
+                        itemId: 'processMetadata'
+                    },
+                    {
+                        xtype: 'process_metadata',
+                        itemId: 'stepMetadata'
+                    },
+                    {
+                        xtype: 'process_metadata',
+                        itemId: 'itemMetadata'
+                    }
+                ]
             }
         ];
     }
