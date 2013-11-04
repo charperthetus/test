@@ -75,7 +75,6 @@ Ext.define('Savanna.metadata.view.Details', {
         if(undefined != oldEditMode ) { // don't want to do this on init
             me.down('#wrapperPanel').removeAll();
             this.fireEvent('create_metadata_fields', this);
-            this.getController().createMetadataFields();
         }
     },
 
