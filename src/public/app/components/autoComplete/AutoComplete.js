@@ -93,7 +93,7 @@ Ext.define('Savanna.components.autoComplete.AutoComplete', {
                 itemId: 'tagsList',
                 width: '100%',
                 items: [],
-                margin:'2 0 0 0'
+                margin:'1 0 0 0'
             }
         ];
     },
