@@ -17,7 +17,6 @@ Ext.define('Savanna.sources.view.Sources', {
     layout: 'vbox',
     width: "100%",
     border: false,
-    padding: '0 3 0 3',
     itemId: '',
     collapsible: true,
 
@@ -35,23 +34,29 @@ Ext.define('Savanna.sources.view.Sources', {
     items: [
         {
             xtype: 'label',
-            text: 'Supporting Resources (#)'
+            text: 'Supporting Resources (#)',
+            cls:'h2',
+            padding:'0 10 0 10'
         },{
-            xtype: 'container',
+            xtype: 'panel',
             itemId: 'supportingResourcesDrop',
-            cls:'related-item-edit-drop-zone',
-
-            border: 5,
-            style: {
-                borderColor: 'gray',
-                borderStyle: 'solid'
+            cls:'supporting-resources-drop-zone',
+            layout: {
+                type: 'hbox',
+                align: 'middle',
+                pack: 'center',
+                width:'75%'
             },
-            height: 100,
-            width: '100%',
+            width:'100%',
+            margin:'0 0 10 0',
+            padding:'0 10 0 10',
+            height:79,
+            bodyCls: 'inner-edit-zone',
             items: [
                 {
                     xtype: 'label',
-                    text: 'Drop items here'
+                    text: 'Drop items here',
+                    cls:'drag-and-drop'
                 }
             ]
         }

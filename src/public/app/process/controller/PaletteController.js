@@ -17,22 +17,23 @@ Ext.define('Savanna.process.controller.PaletteController', {
     },
 
     control: {
-        searchitems: {
+        searchItems: {
             click: 'onItemSearchClick'
         },
-        itemlist: {
+        itemList: {
             boxready: 'onItemListReady'
         },
-        actionlist: {
-            filterchange: 'onFilterChange'
+        actionList: {
+            filterchange: 'onFilterChange',
+            boxready: 'onActionListReady'
         },
-        actiontext: {
+        actionText: {
             change: 'onActionTextChange'
         },
-        createaction: {
+        createAction: {
             click: 'onCreateActionClick'
         },
-        itemtools: {
+        itemTools: {
             boxready: 'onItemToolbarReady'
         }
     },
@@ -43,9 +44,9 @@ Ext.define('Savanna.process.controller.PaletteController', {
 
     onItemToolbarReady: function() {
         var me = this;
-        var listElement = me.getItemtools().getEl();
+        var listElement = me.getItemTools().getEl();
         if (listElement) {
-            me.getItemlist().dropTarget = Ext.create('Ext.dd.DropTarget', listElement.dom, {
+            me.getItemList().dropTarget = Ext.create('Ext.dd.DropTarget', listElement.dom, {
                 ddGroup: 'RNRM-ITEMS',
                 notifyOver: Ext.Function.bind(me.notifyItemPaletteOverTarget, me),
                 notifyDrop: Ext.Function.bind(me.notifyItemPaletteDropTarget, me)
@@ -71,10 +72,11 @@ Ext.define('Savanna.process.controller.PaletteController', {
         var me = this;
         data.records.forEach(function(rec) {
             var obj = rec.data;
-            if (me.getItemlist().store.findRecord('label', obj.label)) { //todo: this should be uri when it is available
+            var store = me.getItemList().store;
+            if (store.findRecord('uri', obj.uri) || store.findRecord('label', obj.label)) {
                 //already exists...don't do anything
             } else {
-                me.addNewPaletteItem(obj.label, obj.type);
+                me.addNewPaletteItem(obj.label, obj.type, obj.uri);
             }
         });
     },
@@ -85,7 +87,7 @@ Ext.define('Savanna.process.controller.PaletteController', {
     },
 
     onActionTextChange: function(field, newValue) {
-        var list = this.getActionlist();
+        var list = this.getActionList();
         list.getSelectionModel().deselectAll(); //necessary to do here and in onFilterChange for some reason
         list.store.clearFilter();
         list.store.filter([{
@@ -96,20 +98,20 @@ Ext.define('Savanna.process.controller.PaletteController', {
     },
 
     onFilterChange: function(/*store, filters, eOpts*/) {
-        this.getActionlist().getSelectionModel().deselectAll();
+        this.getActionList().getSelectionModel().deselectAll();
         //show the create Action button when the user has entered text but no filtered results are found
-        if (this.getActionlist().store.getCount() == 0 && this.getActiontext().getValue() != '') {
-            this.getCreateaction().show();
+        if (this.getActionList().store.getCount() == 0 && this.getActionText().getValue() != '') {
+            this.getCreateAction().show();
         } else {
-            this.getCreateaction().hide();
+            this.getCreateAction().hide();
         }
     },
 
     onCreateActionClick: function() {
         //create a new Model instance for an Action with the user typed text
-        var titleText = this.getActiontext().getValue();
+        var titleText = this.getActionText().getValue();
         this.addNewPaletteAction(titleText);
-        this.getActiontext().setValue(''); //clear the text which will fire a filter change and toggle the create btn
+        this.getActionText().setValue(''); //clear the text which will fire a filter change and toggle the create btn
     },
 
     //create and add a new Action to the palette
@@ -118,22 +120,22 @@ Ext.define('Savanna.process.controller.PaletteController', {
             categoryText = 'ProcessAction';
         }
         categoryText = (categoryText === "Action") ? 'ProcessAction' : categoryText; //is there a better JS way to do this?
-        this.getActionlist().store.add(this.createPaletteNode(categoryText, titleText));
+        this.getActionList().store.add(this.createPaletteNode(categoryText, titleText, null));
     },
 
     //create and add a new Item to the palette
-    addNewPaletteItem: function(titleText, categoryText) {
+    addNewPaletteItem: function(titleText, categoryText, uri) {
         if (categoryText === null || categoryText === "Item") {
             categoryText = 'ProcessItem';
         }
         if (categoryText === 'ProcessItem') { //make sure no other non-item type was passed in here
-            this.getItemlist().store.add(this.createPaletteNode(categoryText, titleText));
+            this.getItemList().store.add(this.createPaletteNode(categoryText, titleText, uri));
         }
     },
 
-    createPaletteNode: function(categoryText, labelText) {
+    createPaletteNode: function(categoryText, labelText, uri) {
         return Ext.create('Savanna.process.model.Node', {
-            uri:                Savanna.process.utils.ProcessUtils.getURI(categoryText),
+            uri:                uri,
             label:              labelText,
             type:               categoryText,
             modifiedBy:         '',
@@ -147,13 +149,18 @@ Ext.define('Savanna.process.controller.PaletteController', {
 
     onItemListReady: function() {
         //listen for beforedrop on the item grid view (to prevent user from reordering rows and to prevent dupes)
-        this.getItemlist().getView().on('beforedrop', this.beforeItemDrop, this);
+        this.getItemList().getView().on('beforedrop', this.beforeItemDrop, this);
+    },
+
+    onActionListReady: function() {
+        //listen for beforedrop on the item grid view (to prevent user from reordering rows and to prevent dupes)
+        this.getActionList().getView().on('beforedrop', this.beforeActionDrop, this);
     },
 
     beforeItemDrop: function(node, data) {
         //check to see if the user is dragging an item in the same grid view (i.e. reordering rows).
         //if so, disallow it
-        var itemList = this.getItemlist(),
+        var itemList = this.getItemList(),
             returnVal = true;
 
         if (itemList.view === data.view) {
@@ -169,12 +176,44 @@ Ext.define('Savanna.process.controller.PaletteController', {
         return returnVal;
     },
 
+    beforeActionDrop: function(node, data) {
+        //check to see if the user is dragging an item in the same grid view (i.e. reordering rows).
+        //if so, disallow it
+        var actionList = this.getActionList(),
+            returnVal = true;
+
+        if (actionList.view === data.view) {
+            returnVal = false;
+        } else if (this.actionListHasDupes(data)) {
+            //if the dragged data already exists in the action list, disallow it to prevent duplicate records
+            //(note - in the case of multiple drag items then this will prevent drop if even just one is a dupe)
+            returnVal = false;
+        } else if (!this.dragDataIsAction(data)) {
+            //if the dragged data is not an Action then don't allow it to be dropped on the Action palette
+            returnVal = false;
+        }
+        return returnVal;
+    },
+
     itemListHasDupes: function(data) {
-        var itemList = this.getItemlist(),
+        var store = this.getItemList().store,
             returnVal = false;
         data.records.forEach(function(rec) {
             var obj = rec.data;
-            if (itemList.store.findRecord('label', obj.label)) { //todo: this should be uri when it is available
+            if (store.findRecord('label', obj.label) || store.findRecord('uri', obj.uri)) {
+                //already exists...don't do anything
+                returnVal = true;
+            }
+        });
+        return returnVal;
+    },
+
+    actionListHasDupes: function(data) {
+        var store = this.getActionList().store,
+            returnVal = false;
+        data.records.forEach(function(rec) {
+            var obj = rec.data;
+            if (store.findRecord('label', obj.label) || store.findRecord('uri', obj.uri)) {
                 //already exists...don't do anything
                 returnVal = true;
             }
@@ -187,6 +226,17 @@ Ext.define('Savanna.process.controller.PaletteController', {
         data.records.forEach(function(rec) {
             var obj = rec.data;
             if (obj.type !== 'Item' && obj.type !== 'ProcessItem') {
+                returnVal = false
+            }
+        });
+        return returnVal;
+    },
+
+    dragDataIsAction: function(data) {
+        var returnVal = true;
+        data.records.forEach(function(rec) {
+            var obj = rec.data;
+            if (obj.type !== 'Action' && obj.type !== 'ProcessAction') {
                 returnVal = false
             }
         });

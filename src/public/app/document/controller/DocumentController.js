@@ -1,5 +1,6 @@
 Ext.define("Savanna.document.controller.DocumentController", {
     extend: 'Deft.mvc.ViewController',
+    currentView: 'Portrait',
     currentTool: 'hand',
     dvId: null,
     control: {
@@ -62,8 +63,12 @@ Ext.define("Savanna.document.controller.DocumentController", {
         $FlexPaper(this.dvId).setZoom($FlexPaper(this.dvId).scale - .2);
     },
     onZoomFit: function() {
+        //TODO:Need to discuss with thetus regarding single and two page with zoom fit
         $FlexPaper(this.dvId).fitHeight();
-        $FlexPaper(this.dvId).fitwidth();
+        if( this.currentView != 'TwoPage') {
+            $FlexPaper(this.dvId).fitwidth();
+        }
+
     },
     onNextPage : function() {
         $FlexPaper(this.dvId).nextPage();
@@ -73,12 +78,15 @@ Ext.define("Savanna.document.controller.DocumentController", {
     },
     onSinglePageView:function() {
         $FlexPaper(this.dvId).switchMode("Portrait");
+        this.currentView='Portrait';
     },
     onThumbView:function() {
         $FlexPaper(this.dvId).switchMode("Tile");
+        this.currentView='Tile';
     },
     onTwoPageView:function() {
         $FlexPaper(this.dvId).switchMode("TwoPage");
+        this.currentView ='TwoPage';
     },
     onSearchDoc : function() {
         var searchText = this.getSearchText().getValue();

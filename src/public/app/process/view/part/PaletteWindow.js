@@ -13,28 +13,39 @@ Ext.define('Savanna.process.view.part.PaletteWindow', {
         'Ext.layout.container.Accordion',
         'Savanna.process.view.part.ItemList',
         'Savanna.process.view.part.ActionList',
-        'Savanna.process.controller.PaletteController'
+        'Savanna.process.controller.PaletteController',
+        'Savanna.component.layout.VBoxSlide'
     ],
 
     controller: 'Savanna.process.controller.PaletteController',
-
+    resizeHandles :'n s e w nw se sw',
+    resizable: true,
     layout: {
-        type: 'accordion',
-        titleCollapse: true,
-        multi: false //do we want to allow multiple sections open at the same time?
+        type: 'vboxSlide',
+        titleCollapse: false
+    },
+    bodyStyle: {
+        "background":'#F2F2F2'
+    },
+    header: {
+        xtype: 'header',
+        height: 20,
+        style: {
+            "background": '#5c5c5c'
+        }
     },
     modal: false,
     closable: false,
     constrain: true, //limit this window to the parent container
     width: 200,
-    height: 300,
+    ghost: false,
     items: [],
 
     initComponent: function() {
         this.items = this.setupItems();
         this.callParent(arguments);
     },
-    
+
     floating: {
         shadow: false
     },
@@ -43,11 +54,42 @@ Ext.define('Savanna.process.view.part.PaletteWindow', {
         return [
             {
                 xtype: 'process_itemlist',
-                itemId: 'itemlist'
+                itemId: 'itemList',
+                collapsible: true,
+                collapsed:true,
+                width:"100%",
+                header: {
+                    xtype: 'header',
+                    cls: 'process-header-font',
+                    style: {
+                        "background": '#F2F2F2',
+                        "padding": '5px'
+                    }
+                },
+                bodyStyle: {
+                    "background": '#F2F2F2',
+                    "padding": '10px'
+                }
             },
+
             {
                 xtype: 'process_actionlist',
-                itemId: 'actionlist'
+                itemId: 'actionList',
+                collapsible: true,
+                collapsed:true,
+                width:"100%",
+                header: {
+                    xtype: 'header',
+                    cls: 'process-header-font',
+                    style: {
+                        "background": '#F2F2F2',
+                        "padding": '5px'
+                    }
+                },
+                bodyStyle: {
+                    "background": '#F2F2F2',
+                    "padding": '10px'
+                }
             }
         ];
     }
