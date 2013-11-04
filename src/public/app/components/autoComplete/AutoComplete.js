@@ -59,7 +59,7 @@ Ext.define('Savanna.components.autoComplete.AutoComplete', {
     buildItems: function() {
         // If autocomplete has additional controls, generate a space to insert them.
         var closeButton = (this.getIsClosable()) ? Ext.create('Ext.button.Button', { glyph: 'closeRollover', itemId: 'closeautocomplete', height:43,
-            cls:'edit-qualities-button', }) : {};
+            cls:'edit-qualities-button' }) : {};
 
         return [
             {
