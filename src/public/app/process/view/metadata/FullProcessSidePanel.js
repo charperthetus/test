@@ -8,5 +8,33 @@
 
 Ext.define('Savanna.process.view.metadata.FullProcessSidePanel', {
     extend: 'Ext.panel.Panel',
-    alias: 'widget.full_process_metadata'
+    alias: 'widget.full_process_metadata',
+
+    overflowY: 'auto',
+
+    items: [
+        {
+            xtype: 'textfield',
+            value: 'Process Title'
+        },
+        {
+            xtype: 'textarea',
+            fieldLabel: 'Process Description',
+            labelAlign: 'top'
+        },
+        {
+            xtype: 'label',
+            text: 'image browser'
+        },
+        {
+            xtype: 'panel',
+            collapsible: true,
+            title: 'Metadata'
+        },
+        {
+            xtype: 'panel',
+            collapsible: true,
+            title: 'Sources'
+        }
+    ]
 });

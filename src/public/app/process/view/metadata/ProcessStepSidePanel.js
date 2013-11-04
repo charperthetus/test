@@ -8,5 +8,37 @@
 
 Ext.define('Savanna.process.view.metadata.ProcessStepSidePanel', {
     extend: 'Ext.panel.Panel',
-    alias: 'widget.process_step_metadata'
+    alias: 'widget.process_step_metadata',
+
+    overflowY: 'auto',
+
+    items: [
+        {
+            xtype: 'textfield',
+            value: 'Step Title'
+        },
+        {
+            xtype: 'label',
+            text: 'Duration'
+        },
+        {
+            xtype: 'label',
+            text: '1h 15m'
+        },
+        {
+            xtype: 'textarea',
+            fieldLabel: 'Description',
+            labelAlign: 'top',
+            text: 'Far far away, behind the word mountains'
+        },
+        {
+            xtype: 'label',
+            text: 'image browser'
+        },
+        {
+            xtype: 'panel',
+            collapsible: true,
+            title: 'Actions'
+        }
+    ]
 });
