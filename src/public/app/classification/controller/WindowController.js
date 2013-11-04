@@ -308,32 +308,32 @@ Ext.define('Savanna.classification.controller.WindowController', {
 
         var sciField = this.getSciField();
         if(sciField.getStore().getCount()) {
-            sciField.setDisabled(false);
+            sciField.show();
         } else {
-            sciField.setDisabled(true);
+            sciField.hide();
         }
 
         var fgiField = this.getFgiField();
         // disable the fgi field if not allowed markings include FGI_FGI
         if(fgiField.getStore().getCount() && notAllowedMarkings.indexOf('FGI_FGI') < 0) {
-            fgiField.setDisabled(false);
+            fgiField.show();
         } else {
-            fgiField.setDisabled(true);
+            fgiField.hide();
         }
 
         var disField = this.getDisField();
         if(disField.getStore().getCount()) {
-            disField.setDisabled(false);
+            disField.show();
         } else {
-            disField.setDisabled(true);
+            disField.hide();
         }
 
         var relField = this.getRelField();
         // disable the rel field if not allowed markings include DISSEM_REL_TO
         if(relField.getStore().getCount() && notAllowedMarkings.indexOf('DISSEM_REL_TO') < 0) {
-            relField.setDisabled(false);
+            relField.show();
         } else {
-            relField.setDisabled(true);
+            relField.hide();
         }
     },
 
