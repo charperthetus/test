@@ -13,9 +13,9 @@ Ext.define('Savanna.process.view.metadata.MetadataTabPanel', {
         'Ext.tab.Panel',
         'Savanna.metadata.view.Details',
         'Savanna.process.controller.MetadataController',
-        'Savanna.process.view.metadata.FullProcessSidePanel',
-        'Savanna.process.view.metadata.ProcessStepSidePanel',
-        'Savanna.process.view.metadata.ProcessItemSidePanel'
+        'Savanna.process.view.metadata.FullProcessMetadata',
+        'Savanna.process.view.metadata.ProcessStepMetadata',
+        'Savanna.process.view.metadata.ProcessItemMetadata'
     ],
     header: {
         ui: 'dark'
@@ -43,7 +43,7 @@ Ext.define('Savanna.process.view.metadata.MetadataTabPanel', {
             items: [
                 {
                     xtype: 'full_process_metadata',
-                    itemId: 'processMetadata'
+                    itemId: 'fullProcessMetadata'
                 },
                 {
                     xtype: 'process_step_metadata',

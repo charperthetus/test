@@ -2,7 +2,6 @@ Ext.define('Savanna.process.controller.MetadataController', {
     extend: 'Deft.mvc.ViewController',
 
     requires: [
-        'Savanna.process.view.metadata.ProcessDetails',
         'Savanna.itemView.view.header.EditHeader'
     ],
 
@@ -13,10 +12,11 @@ Ext.define('Savanna.process.controller.MetadataController', {
 
     control: {
         view: {
+            processUriChange: 'setUpProcessDetails'
             //uriChange: 'onUriChange'
         },
-        processMetadata: true,
-        //processSidepanel: true,
+        hiddenTabPanel: true,
+        fullProcessMetadata: true,
         stepMetadata: true,
         itemMetadata: true,
 
@@ -44,50 +44,47 @@ Ext.define('Savanna.process.controller.MetadataController', {
     },
 
     selectionChanged: function(e) {
-        //determine type
 
-    if(1 === this.getDiagram().selection.count) {
-    var itemUri = this.getDiagram().selection.first().data.representsUri;
-        console.log('this.getDiagram().selection.first()', this.getDiagram().selection.first());
-        if (itemUri.indexOf('ProcessModel') !== -1){
-         // this is a step
-        } else if (itemUri.indexOf('Item') !== -1) {
-         // this is an item
+        if(1 === this.getDiagram().selection.count) {
+            var itemUri = this.getDiagram().selection.first().data.uri;
+            console.log('this.getDiagram().selection.first()', this.getDiagram().selection.first().data.uri);
+            if (itemUri.indexOf('ProcessModel') !== -1){
+             // this is a step
+                console.log('This is a step');
+                this.setUpStepDetails();
+            } else if (itemUri.indexOf('Item') !== -1) {
+             // this is an item
+                console.log('This is an item');
+                this.setUpItemDetails();
+            } else {
+                console.log('we dont know what this is yet');
+                this.setUpProcessDetails(null);
+             //we don't know what this is yet
+            }
         } else {
-         //we don't know what this is yet
+            console.log('This is process');
+            this.setUpProcessDetails(null);
         }
-    } else {
-        this.setUpProcessDetails(null);
-    }
-
-
     },
 
 
     setUpProcessDetails: function(itemUri) {
         // get proper info from service for item configs
-
-        if( null === itemUri ) {
+        console.log('setUpProcessDetails');
+        if( null !== itemUri ) {
             this.setProcessUri( itemUri );
-            var description = 'Item Uri is ' + itemUri;
-            var pd0 = Ext.create('Savanna.process.view.metadata.ProcessDetails', {
-                label: itemUri,
-                description: description//,
-                //
-            });
-            var pd1 = Ext.create('Savanna.process.view.metadata.ProcessDetails', {
-                label: itemUri,
-                description: description//,
-            });
-            getProcessMetadataPanel().items = [pd0, pd1];
+            // need to populate the full_process_metadata
+
+            //getProcessMetadata().tab.show();
+
         } else {
             // show the process details panel
-            getProcessSidepanel().child('#processMetadata').tab.show();
+            this.getFullProcessMetadata().tab.show();
         }
 
     },
 
-    setUpProcessStepDetails: function(itemUri) {
+    setUpStepDetails: function(itemUri) {
     },
 
     setUpItemDetails: function(itemUri) {

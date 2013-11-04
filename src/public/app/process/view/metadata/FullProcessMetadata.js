@@ -6,7 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 
-Ext.define('Savanna.process.view.metadata.FullProcessSidePanel', {
+Ext.define('Savanna.process.view.metadata.FullProcessMetadata', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.full_process_metadata',
 

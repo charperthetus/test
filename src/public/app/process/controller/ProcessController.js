@@ -125,7 +125,7 @@ Ext.define('Savanna.process.controller.ProcessController', {
         this.store.add(newProcess);
         this.load(diagram, this.store.first());
 
-        this.getView().down('#hiddenTabPanel').fireEvent('uriChange', Savanna.process.utils.ProcessUtils.getURI('ProcessModel'));
+        this.getView().down('#processSidepanel').fireEvent('processUriChange', Savanna.process.utils.ProcessUtils.getURI('ProcessModel'));
     },
 
     handleUndo: function() {
