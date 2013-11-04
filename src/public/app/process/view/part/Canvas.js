@@ -14,10 +14,6 @@ Ext.define('Savanna.process.view.part.Canvas', {
         'Savanna.process.utils.ViewTemplates'
     ],
 
-    mixins: {
-        storeable: 'Savanna.mixin.Storeable'
-    },
-
     diagram: null,
 
     onRender: function() {

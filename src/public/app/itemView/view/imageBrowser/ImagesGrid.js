@@ -33,11 +33,11 @@ Ext.define('Savanna.itemView.view.imageBrowser.ImagesGrid', {
         xtype: 'panel',
         itemId: 'thumbnailGallery',
         layout: 'hbox',
+        hidden: true,
         height: 100,
-        margin: 10,
+        width: '100%',
         overflowX: 'auto',
-        padding:'10',
-        bodyCls:'image-grid-inner-nav',
+        padding:'0 10 10 10',
         
         // Controls and gallery
         items: [{
