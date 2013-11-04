@@ -51,7 +51,7 @@ Ext.define('Savanna.process.view.part.ActionList', {
             {
                 xtype: 'textfield',
                 width: 143,
-                itemId: 'actiontext',
+                itemId: 'actionText',
                 emptyText: 'Find and Add Actions'
             },
             {
