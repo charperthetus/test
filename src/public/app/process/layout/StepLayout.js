@@ -23,9 +23,9 @@ StepLayout.prototype.doLayout = function(coll) {
     var countToolNodes = 0;
     var countByproductNodes = 0;
 
-    var iter = coll.iterator;
-    while (iter.next()) {
-        var part = iter.value;
+    var iterator = coll.iterator;
+    while (iterator.next()) {
+        var part = iterator.value;
         if (part instanceof go.Link) {
             switch (part.category) {
                 case 'ToolLink':
@@ -54,7 +54,7 @@ StepLayout.prototype.doLayout = function(coll) {
         }
     }
 
-    this.diagram.startTransaction("StepLayout");
+    this.diagram.startTransaction('StepLayout');
 
     var toolLayout = gmake(go.TreeLayout, {angle: 180, arrangement: go.TreeLayout.ArrangementFixedRoots, layerSpacing:24});
     var maxSideNodes = Math.max(countToolNodes, countByproductNodes);
@@ -66,5 +66,5 @@ StepLayout.prototype.doLayout = function(coll) {
     inputLayout.doLayout(inputParts);
     byproductLayout.doLayout(byproductParts);
 
-    this.diagram.commitTransaction("StepLayout");
+    this.diagram.commitTransaction('StepLayout');
 };

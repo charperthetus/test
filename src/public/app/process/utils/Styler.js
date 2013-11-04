@@ -21,10 +21,10 @@ Ext.define('Savanna.process.utils.Styler', {
      * 
      * - Defining Shapes
      * Say you create a shape and now you need to apply the default style to it.  gmake(go.Shape, 'Rectangle', this.styler.rectangle().outline),
-     * That will grab the outline default configs from the recantagle and return it as a JSON to apply to the Go Shape.  
+     * That will grab the outline default configs from the rectangle and return it as a JSON to apply to the Go Shape.
      *  
      *  - Overridding when Defining Shapes
-     * You can override a JSON property by passing a JSON parameter with the recantagle call.  gmake(go.Shape, 'Rectangle', this.styler.rectangle( {"fillColor":"red"} ).outline),
+     * You can override a JSON property by passing a JSON parameter with the rectangle call.  gmake(go.Shape, 'Rectangle', this.styler.rectangle( {"fillColor":"red"} ).outline),
      * You will need to make sure the function supports then property you want to override.  Use the rectangle class as an example to add / extend this concept to other JSON.
      *  
      * - Adding to a JSON
@@ -168,7 +168,7 @@ Ext.define('Savanna.process.utils.Styler', {
             } else if (tag === 'adornments') {
                 return adornments;
             } else {
-                //Returns back in the log you are not passing a tag that exisit.
+                //Returns back in the log you are not passing a tag that exists.
                 return null;
             }
         }
@@ -205,7 +205,7 @@ Ext.define('Savanna.process.utils.Styler', {
         /* 
          * @private
          * rectangleShape
-         * Allows you to maniplute JSON for the shape and then returns the JSON you called to be used.
+         * Allows you to manipulate JSON for the shape and then returns the JSON you called to be used.
          * @param json - JSON - Accepted Lookup keys defined below. ( Optional Parameter )
          *      - fillColor
          *      - textStroke
@@ -256,7 +256,7 @@ Ext.define('Savanna.process.utils.Styler', {
         /* 
          * @private
          * rectanglePalette
-         * Allows you to maniplute JSON for the shape and then returns the JSON you called to be used.
+         * Allows you to manipulate JSON for the shape and then returns the JSON you called to be used.
          * @return JSON
          */
         var paletteInternalRectangle = function () {
@@ -293,7 +293,7 @@ Ext.define('Savanna.process.utils.Styler', {
         /* 
          * @private
          * x
-         * Allows you to maniplute JSON for the shape and then returns the JSON you called to be used.  
+         * Allows you to manipulate JSON for the shape and then returns the JSON you called to be used.
          * @return JSON
          */
         var stepGadgetShape = function (json) {
@@ -339,7 +339,7 @@ Ext.define('Savanna.process.utils.Styler', {
         /* 
          * @private
          * x
-         * Allows you to maniplute JSON for the shape and then returns the JSON you called to be used.  
+         * Allows you to manipulate JSON for the shape and then returns the JSON you called to be used.
          * @return JSON
          */
         var decisionGadgetShape = function (json) {
@@ -377,7 +377,7 @@ Ext.define('Savanna.process.utils.Styler', {
         /* 
          * @private
          * x
-         * Allows you to maniplute JSON for the shape and then returns the JSON you called to be used.  
+         * Allows you to manipulate JSON for the shape and then returns the JSON you called to be used.
          * @return JSON
          */
         var topPortShape = function () {
@@ -467,7 +467,7 @@ Ext.define('Savanna.process.utils.Styler', {
         /* 
          * @private
          * x
-         * Allows you to maniplute JSON for the shape and then returns the JSON you called to be used.  
+         * Allows you to manipulate JSON for the shape and then returns the JSON you called to be used.
          * @return JSON
          */
         var adornmentsShape = function (json) {
@@ -536,7 +536,7 @@ Ext.define('Savanna.process.utils.Styler', {
         /* 
          * @private
          * circleShape
-         * Allows you to maniplute JSON for the shape and then returns the JSON you called to be used.  
+         * Allows you to manipulate JSON for the shape and then returns the JSON you called to be used.
          * @return JSON
          */
         var circleShape = function () {
@@ -569,7 +569,7 @@ Ext.define('Savanna.process.utils.Styler', {
         /* 
          * @private
          * circlePalette
-         * Allows you to maniplute JSON for the shape and then returns the JSON you called to be used.
+         * Allows you to manipulate JSON for the shape and then returns the JSON you called to be used.
          * @return JSON
          */
         var paletteInternalCircle = function () {
@@ -592,7 +592,7 @@ Ext.define('Savanna.process.utils.Styler', {
         /* 
          * @private
          * customShape
-         * Allows you to maniplute JSON for the shape and then returns the JSON you called to be used.
+         * Allows you to manipulate JSON for the shape and then returns the JSON you called to be used.
          * @return JSON
          */
         var customShape = function () {
@@ -630,7 +630,7 @@ Ext.define('Savanna.process.utils.Styler', {
         /* 
          * @private
          * startShape
-         * Allows you to maniplute JSON for the shape and then returns the JSON you called to be used.
+         * Allows you to manipulate JSON for the shape and then returns the JSON you called to be used.
          * @return JSON
          */
         var startShape = function () {
@@ -659,7 +659,7 @@ Ext.define('Savanna.process.utils.Styler', {
         /* 
          * @private
          * endShape
-         * Allows you to maniplute JSON for the shape and then returns the JSON you called to be used.
+         * Allows you to manipulate JSON for the shape and then returns the JSON you called to be used.
          * @return JSON
          */
         var endShape = function () {
@@ -709,7 +709,7 @@ Ext.define('Savanna.process.utils.Styler', {
         /* 
          * @private
          * diamondShape
-         * Allows you to maniplute JSON for the shape and then returns the JSON you called to be used.
+         * Allows you to manipulate JSON for the shape and then returns the JSON you called to be used.
          * @return JSON
          */
         var diamondShape = function () {
@@ -762,7 +762,7 @@ Ext.define('Savanna.process.utils.Styler', {
         /* 
          * @private
          * diamondShape
-         * Allows you to maniplute JSON for the shape and then returns the JSON you called to be used.
+         * Allows you to manipulate JSON for the shape and then returns the JSON you called to be used.
          * @return JSON
          */
         var mergeDiamondShape = function () {
@@ -796,7 +796,7 @@ Ext.define('Savanna.process.utils.Styler', {
         /* 
          * @private
          * diamondPalette
-         * Allows you to maniplute JSON for the shape and then returns the JSON you called to be used.
+         * Allows you to manipulate JSON for the shape and then returns the JSON you called to be used.
          * @return JSON
          */
         var paletteInternalDiamond = function () {
@@ -827,7 +827,7 @@ Ext.define('Savanna.process.utils.Styler', {
         /* 
          * @private
          * commentShape
-         * Allows you to maniplute JSON for the shape and then returns the JSON you called to be used.
+         * Allows you to manipulate JSON for the shape and then returns the JSON you called to be used.
          * @return JSON
          */
         var commentShape = function () {
@@ -886,7 +886,7 @@ Ext.define('Savanna.process.utils.Styler', {
         /* 
          * @private
          * processModelShape
-         * Allows you to maniplute JSON for the shape and then returns the JSON you called to be used.
+         * Allows you to manipulate JSON for the shape and then returns the JSON you called to be used.
          * @return JSON
          */
         var processModelShape = function () {
@@ -939,7 +939,7 @@ Ext.define('Savanna.process.utils.Styler', {
                 mouseDragLeave: function (e, obj) {
                     obj.background = 'transparent';
                 },
-                mouseDrop: null //Savanna.process.utils.GroupEventHandlers.onActionGroupMouseDrop
+                mouseDrop: null
             }
         };
 
@@ -978,14 +978,14 @@ Ext.define('Savanna.process.utils.Styler', {
                 mouseDragLeave: function (e, obj) {
                     obj.background = 'transparent';
                 },
-                mouseDrop: null //Savanna.process.utils.GroupEventHandlers.onActionGroupMouseDrop
+                mouseDrop: null
             }
         };
 
         /*
          * @private
          * internalGroupShape
-         * Allows you to maniplute JSON for the shape and then returns the JSON you called to be used.
+         * Allows you to manipulate JSON for the shape and then returns the JSON you called to be used.
          * @param json - JSON - Accepted Lookup keys defined below. ( Optional Parameter )
          *      - clickByproduct
          *      - mouseDragEnter
@@ -1032,7 +1032,7 @@ Ext.define('Savanna.process.utils.Styler', {
         /*
          * @private
          * altsGroupShape
-         * Allows you to maniplute JSON for the shape and then returns the JSON you called to be used.
+         * Allows you to manipulate JSON for the shape and then returns the JSON you called to be used.
          * @param json - JSON - Accepted Lookup keys defined below. ( Optional Parameter )
          *      - mouseDrop
          * @return JSON
@@ -1160,7 +1160,7 @@ Ext.define('Savanna.process.utils.Styler', {
         /* 
          * @private
          * linkTemplate
-         * Allows you to maniplute JSON for the shape and then returns the JSON you called to be used.
+         * Allows you to manipulate JSON for the shape and then returns the JSON you called to be used.
          * @param json - JSON - Accepted Lookup keys defined below. ( Optional Parameter )
          *      - click
          * @return JSON
