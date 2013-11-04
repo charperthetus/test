@@ -297,7 +297,6 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                         xtype: 'panel',
                         cls: 'item-view-column',
                         flex: 1,
-                        layout:'fit',
                         layout:'anchor',
                         autoScroll: true,
                         items: [
