@@ -19,9 +19,9 @@ Ext.define('Savanna.metadata.view.StringList', {
 
         me.on('beforerender', Ext.bind(function() {
             if(me.getEditable() && me.getEditMode()) {
-                //me.down('#displayLabelItem').text = me.displayLabel + ':';
+                me.setTitle(me.displayLabel + ':');
             } else {
-                me.down('#displayLabelItem').text = me.displayLabel + ':';
+                me.setTitle(me.displayLabel + ':');
             }
         }, this));
     },
@@ -34,57 +34,47 @@ Ext.define('Savanna.metadata.view.StringList', {
         if (0 === me.getValue().length) {
             me.value.push('');
         }
-        var fieldLabelValue = me.displayLabel + ':';
-
-        var stackAndAddContainer = Ext.create('Ext.container.Container', {
+        
+        var stackAndAddContainer = Ext.create('Ext.form.FieldSet', {
             itemId: 'stackandaddcontainer',
             layout: 'vbox',
-            width: "100%",
+            width: '100%',
             border: false
         });
 
-        var stackContainer = Ext.create('Ext.container.Container', {
-            itemId: 'stackcontainer',
-            layout: 'vbox',
-            width: "100%",
-            border: false
-        });
-        me.createEditItems(stackContainer, fieldLabelValue);
-        stackAndAddContainer.add(stackContainer);
-
+        me.createEditItems(stackAndAddContainer);
+        
         var newItemButton = Ext.create('Ext.Button', {
             text: 'Add',
-            padding: '0 0 0 180',
+            cls: 'stringList-addBtn',
             listeners: {
                 click: function () {
                     me.addNewItem();
                 }
             }
         });
-        stackAndAddContainer.add(newItemButton);
         me.add(stackAndAddContainer);
-
+        me.add(newItemButton);
     },
 
-    createEditItems: function(stackContainer, firstFieldLabelValue) {
+    createEditItems: function(stackContainer) {
         var me = this;
         var cloneArray = Ext.Array.clone(me.getValue());
         Ext.Array.each(cloneArray, function(stringElement, index, allItems) {
             var editAndDeleteContainer = me.makeEditAndDeleteContainer(index);
-            me.makeEditAndDeleteItem(index, editAndDeleteContainer, stringElement, firstFieldLabelValue, allItems );
+            me.makeEditAndDeleteItem(index, editAndDeleteContainer, stringElement, allItems );
             stackContainer.add(editAndDeleteContainer);
-
-            firstFieldLabelValue = '&nbsp;';
         });
 
     },
 
     makeEditAndDeleteContainer: function(index) {
-        return Ext.create('Ext.container.Container', {
+        return Ext.create('Ext.form.FieldContainer', {
             layout: 'hbox',
-            width: "100%",
+            width: '100%',
             itemId: 'EandDContainer' + parseInt(index, 10),
-            border: false
+            border: false,
+            flex: 1
         });
     },
 
@@ -113,20 +103,17 @@ Ext.define('Savanna.metadata.view.StringList', {
     },
 
     clearAndRecreate: function() {
-        this.down('#stackcontainer').removeAll();
-        var fieldLabelValue = this.displayLabel + ':';
-        this.createEditItems(this.down('#stackcontainer'), fieldLabelValue);
+        this.down('#stackandaddcontainer').removeAll();
+        this.createEditItems(this.down('#stackandaddcontainer'));
     },
 
-    makeEditAndDeleteItem: function(index, container, stringElement, fieldLabelValue, allItems) {
+    makeEditAndDeleteItem: function(index, container, stringElement, allItems) {
         var me = this;
         var textField = Ext.create('Ext.form.field.Text', {
             allowBlank: true,
-            width: '90%',
-            labelWidth: 180,
+            flex: 9,
             value: stringElement,
-            labelSeparator: '', // we'll just append it to the label itself.  Saves trouble on all the items after the first.
-
+            
             listeners: {
                 blur: function(d) {
                     allItems[index] = d.getValue().trim();
@@ -134,11 +121,11 @@ Ext.define('Savanna.metadata.view.StringList', {
                 }
             }
         });
-        textField.fieldLabel = fieldLabelValue;
         container.add(textField);
 
         var deleteButton = Ext.create('Ext.Button', {
             text: 'X',
+            flex: 1,
             listeners: {
                 click: function() {
                     me.deleteItem(index);
@@ -151,26 +138,16 @@ Ext.define('Savanna.metadata.view.StringList', {
 
     makeViewViewItems: function() {
         var me = this;
-        this.add(Ext.create('Ext.form.Label', {
-            itemId: 'displayLabelItem',
-            width: 180,
-            minWidth: 180,
-            height: 25
-        }));
-
-        var contains = Ext.create('Ext.container.Container', {
-            layout: 'vbox',
-            width: "100%",
+        
+        var contains = Ext.create('Ext.form.FieldContainer', {
+            layout: 'form',
+            width: '100%',
             border: false
         });
         if(null !== me.value && 0 !== me.value.length) {
             Ext.Array.each(me.value, function(stringElement) {
-                var theLabel = Ext.create('Ext.form.Label', {
-                    text: '',
-                    width: "100%",
-                    height: 25
-                });
-                theLabel.setText( stringElement );
+                var theLabel = Ext.create('Ext.form.field.Display', {});
+                theLabel.setValue( stringElement );
                 contains.add( theLabel );
             });
         }

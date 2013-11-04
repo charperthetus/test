@@ -40,8 +40,6 @@ Ext.define('Savanna.metadata.controller.MetadataViewController', {
             create_metadata_fields: 'createMetadataFields',
             update_Uri: 'updateUri'
         }
-
-
     },
 
     store: null,
@@ -253,6 +251,4 @@ Ext.define('Savanna.metadata.controller.MetadataViewController', {
             this.loadStore();
         }
     }
-
-
 });

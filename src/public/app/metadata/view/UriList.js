@@ -18,27 +18,7 @@ Ext.define('Savanna.metadata.view.UriList', {
         var me = this;
 
         this.on('beforerender', Ext.bind(function() {
-            me.down('#displayLabelItem').text = me.displayLabel + ':';
-//            if(null !== me.value && 0 != me.value.length) {
-//                Ext.Array.each(me.value, function(stringElement) {
-//                    var theLabel = Ext.create('Ext.form.Label', {
-//                        text: '',
-//                        width: "100%"
-//                    });
-//
-//                    // TODO: This conversion is probably not correct.  Need to decode it properly.
-//                    // If you change this, check Uri.js for similar.
-//                    var decoded = stringElement.replace('%2F', '/', 'g');
-//                    theLabel.setText( decoded );
-//                    me.add( theLabel );
-//                });
-//            } else {
-//                me.add( Ext.create('Ext.form.Label', {
-//                                    html: '&nbsp;',
-//                                    width: "100%"
-//                                })
-//                );
-//            }
+            me.setTitle(me.displayLabel + ':');
         }, this));
     },
 
@@ -48,33 +28,21 @@ Ext.define('Savanna.metadata.view.UriList', {
 
     makeViewViewItems: function() {
         var me = this;
-        this.add(Ext.create('Ext.form.Label', {
-            itemId: 'displayLabelItem',
-            width: 180,
-            minWidth: 180,
-            height: 25
-        }));
-
-        var contains = Ext.create('Ext.container.Container', {
-            layout: 'vbox',
-            width: "100%",
-            border: false
-        });
-        if(null !== me.value && 0 != me.value.length) {
+        if(null !== me.value && 0 !== me.value.length) {
             Ext.Array.each(me.value, function(stringElement) {
-                var theLabel = Ext.create('Ext.form.Label', {
-                    text: '',
-                    width: "100%",
-                    height: 25
+                var theLabel = Ext.create('Ext.form.field.Display', {
+                    // text: '',
+                    // width: "100%",
+                    // height: 25
                 });
 
                 // TODO: This conversion is probably not correct.  Need to decode it properly.
                 var decoded = stringElement.replace('%2F', '/', 'g');
-                theLabel.setText( decoded );
-                contains.add( theLabel );
+                theLabel.setValue( decoded );
+                me.add( theLabel );
             });
         }
-        me.add(contains);
+        // me.add(contains);
 
     }
 

@@ -1,0 +1,38 @@
+/*
+ *	@author astump
+ *	@date 10/30/2013
+ *	@descriptiong This is a homeless bit of code. Sets styling for MetaData panels 
+ *				   I'm not proud of this.
+ */
+
+.x-panel-body-off-white{
+	.x-fieldset{
+		margin-bottom: 10px;
+		
+		.x-fieldset{
+			padding: 0px;
+			margin: 0px;
+		}
+ 	}
+	legend.x-fieldset-header, .label {
+		font-weight: bold;
+		float: left;
+		padding: 0;
+	}
+	.x-fieldset-header-text{
+ 		font-weight: bold;
+ 	}
+	
+	.x-form-display-field{
+		line-height: inherit;
+	}
+
+	.shortResult .x-fieldset-body{
+		width: initial !important;
+	}
+
+	.stringList-addBtn{
+		float: right;
+		margin-right: 10%;
+	}
+}
