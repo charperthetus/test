@@ -64,24 +64,11 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.searchMap.FeaturePopU
             xtype: 'toolbar',
             itemId: 'popup-preview-toolbar',
             items: [
-                {
-                    xtype: 'button',
-                    itemId: 'openThumbButton',
-                    disabled: true,
-                    text: 'Thumbnail'
-                },
-                '-',
+                '->',
                 {
                     xtype: 'button',
                     itemId: 'openDocButton',
                     text: 'Open'
-
-                },
-                '->',
-                {
-                    xtype: 'button',
-                    itemId: 'popup-preview-button',
-                    text:'Preview'
 
                 }]
         }

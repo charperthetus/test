@@ -207,6 +207,20 @@ Ext.define('Savanna.search.controller.SearchComponent', {
          hide Start New Search button
          */
         component.down('#search_reset_button').setVisible(false);
+    },
+
+    clearSearch: function (elem) {
+        var component = elem.up('search_searchcomponent');
+
+        var form = elem.findParentByType('search_searchcomponent').down('#searchbar');
+
+        var formField = form.queryById('searchadvanced_menu').queryById('form_container');
+
+        Ext.Array.each(formField.query('searchadvanced_textfield'), function (field) {
+            if (field.xtype === 'searchadvanced_textfield') {
+                field.setValue('');
+            }
+        });
 
         // Clear Map: Search Results and  location search polygon
         //search options > location is in a tab so check if it exists
@@ -219,18 +233,6 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             component.down('#resultMapCanvas').resultsLayer.removeAllFeatures();
             component.fireEvent('clearPopUpOnNewSearch', event, component.down('search_resultscomponent'));
         }
-    },
-
-    clearSearch: function (elem) {
-        var form = elem.findParentByType('search_searchcomponent').down('#searchbar');
-
-        var formField = form.queryById('searchadvanced_menu').queryById('form_container');
-
-        Ext.Array.each(formField.query('searchadvanced_textfield'), function (field) {
-            if (field.xtype === 'searchadvanced_textfield') {
-                field.setValue('');
-            }
-        });
 
     },
 

@@ -71,14 +71,8 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
             'search_searchcomponent #mapResultPrev': {
                 'click': this.navigateMapResult
             },
-            'search_searchcomponent #openThumbButton': {
-                'click': this.mapShowDocumentThumbnail
-            },
             'search_searchcomponent #openDocButton': {
                 'click': this.mapOpenDocument
-            },
-            'search_searchcomponent #popup-preview-button': {
-                'click': this.mapOpenDocumentPreview
             },
             'search_searchcomponent search_resultscomponent': {
                 'clearPopUpOnNewSearch': this.hidePopUp
@@ -794,35 +788,9 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
         return title;
     },
 
-    mapShowDocumentThumbnail: function (button) {
-        var documentDetails = this.getPopupDocumentRecord(button);
-        /*
-        Disabled until design for thumbnail view is finalized
-         */
-    },
-
     mapOpenDocument: function (button) {
         var documentDetails = this.getPopupDocumentRecord(button);
         EventHub.fireEvent('open', documentDetails);
-    },
-
-    mapOpenDocumentPreview: function (button) {
-        var me = Savanna.controller.Factory.getController('Savanna.search.controller.ResultsComponent');
-        var documentDetails = this.getPopupDocumentRecord(button);
-        me.resultsStore = button.up('search_searchcomponent').down('search_resultspanelgrid').store;
-
-        var record = me.resultsStore.query('uri', documentDetails.uri).items[0],
-            recordMetadata;
-
-        if(me.getResultsComponent().currentResultSet.metadata)   {
-            recordMetadata = me.getResultsComponent().currentResultSet.metadata.getById(record.data.uri);
-        }
-
-        me.setIsWaitingForPreviewResults ( false );
-
-        var win = me.previewWindow();
-        //Show the contents
-        win.displayPreview(record.data, recordMetadata.get('datastore'), record.index, me.resultsStore.totalCount);
     },
 
     getPopupDocumentRecord: function (button) {
