@@ -72,7 +72,7 @@ Ext.define('Savanna.process.controller.MetadataController', {
             this.setProcessUri( itemUri );
             // need to populate the full_process_metadata
 
-            //getProcessMetadata().tab.show();
+            this.getFullProcessMetadata().fireEvent('processUriChanged', itemUri);
 
         } else {
             // show the process details panel
