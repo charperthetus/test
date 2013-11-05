@@ -17,7 +17,8 @@ Ext.define('Savanna.process.view.part.Canvas', {
     ],
 
     diagram: null,
-    textEditor: null,
+    itemTextEditor: null,
+    actionTextEditor: null,
 
     onRender: function() {
         var domElem;
@@ -25,8 +26,28 @@ Ext.define('Savanna.process.view.part.Canvas', {
         this.callParent(arguments);
 
         domElem = Ext.DomHelper.insertHtml('afterBegin', this.getEl().dom, '<div class="go-graph" style="width: 100%; height: 100%; position: absolute;"></div>');
-
         this.diagram = new go.Diagram(domElem);
+
+        this.itemTextEditor = Ext.create('Savanna.process.view.part.TypeAhead', {
+                itemId: 'itemTextEditor',
+                diagram: this.diagram,
+                store: Ext.create('Savanna.process.store.TypeAheadStore', {
+                    paramsObj: { pageStart: 0, pageSize: 20, alphabetical: true, type: "Item" }
+                })
+            }
+        );
+        this.add(this.itemTextEditor);
+
+        this.actionTextEditor  = Ext.create('Savanna.process.view.part.TypeAhead', {
+                itemId: 'actionTextEditor',
+                diagram: this.diagram,
+                store: Ext.create('Savanna.process.store.TypeAheadStore', {
+                    paramsObj: { pageStart: 0, pageSize: 20, alphabetical: true, type: "Action" }
+                })
+            }
+        );
+        this.add(this.actionTextEditor);
+
         this.diagram.nodeTemplateMap = Savanna.process.utils.ViewTemplates.generateNodeTemplateMap();
         this.diagram.linkTemplateMap = Savanna.process.utils.ViewTemplates.generateLinkTemplateMap();
         this.diagram.groupTemplateMap = Savanna.process.utils.ViewTemplates.generateGroupTemplateMap();
@@ -61,18 +82,5 @@ Ext.define('Savanna.process.view.part.Canvas', {
         //mouseUpTools
         toolManager.contextMenuTool.enabled = false;
         toolManager.clickCreatingTool.enabled = false;
-
-        this.textEditor = Ext.create('Savanna.process.view.part.TypeAhead',
-            {
-                id: 'customTextEditor',
-                diagram: this.diagram,
-                store: Ext.create('Savanna.process.store.TypeAheadStore', {
-                    urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/model/search/keyword/item',
-                    paramsObj: { pageStart: 0, pageSize: 20, alphabetical: true }
-                })
-            }
-        );
-
-        this.add(this.textEditor);
     }
 });
