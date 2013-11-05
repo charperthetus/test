@@ -25,7 +25,7 @@ Ext.define('Savanna.process.controller.FullProcessMetadataController', {
         processDescription: true,
         imageBrowser: true,
         detailsPanel: true,
-        sourcesPanel: true
+        itemSources: true
 
     },
 

@@ -35,6 +35,7 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
 
     onOpenBtnClick: function() {
         console.log('open item');
+        EventHub.fireEvent('open', {uri: this.store.getAt(0).data.uri, type: 'Item', label: this.store.getAt(0).data.label});
     },
 
     onUriChanged: function(processUri) {
