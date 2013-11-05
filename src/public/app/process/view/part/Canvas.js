@@ -7,14 +7,17 @@
  */
 /* global Ext: false, go: false, Savanna: false */
 Ext.define('Savanna.process.view.part.Canvas', {
-    extend: 'Ext.Component',
+    extend: 'Ext.container.Container',
     alias: 'widget.process_canvas',
 
     requires: [
-        'Savanna.process.utils.ViewTemplates'
+        'Savanna.process.store.TypeAheadStore',
+        'Savanna.process.utils.ViewTemplates',
+        'Savanna.process.view.part.TypeAhead'
     ],
 
     diagram: null,
+    textEditor: null,
 
     onRender: function() {
         var domElem;
@@ -58,5 +61,34 @@ Ext.define('Savanna.process.view.part.Canvas', {
         //mouseUpTools
         toolManager.contextMenuTool.enabled = false;
         toolManager.clickCreatingTool.enabled = false;
+
+        var diagram = this.diagram;
+        this.textEditor = Ext.create('Savanna.process.view.part.TypeAhead',
+            {
+                id: 'customTextEditor',
+                listeners: {
+                    afterrender: function (c) {
+                        var domEl = c.getEl().dom;
+                        var toolManager = diagram.toolManager;
+                        toolManager.textEditingTool.defaultTextEditor = domEl;
+                        domEl.style.visibility = 'hidden';
+                        domEl.onActivate = function () {
+                            domEl.style.visibility = '';
+                            //this.value = toolManager.textEditingTool.textBlock.text;
+                            var loc = toolManager.textEditingTool.textBlock.getDocumentPoint(go.Spot.TopLeft);
+                            var pos = diagram.transformDocToView(loc);
+                            domEl.style.left = pos.x + "px";
+                            domEl.style.top = pos.y + "px";
+                        }
+                    }
+                },
+                store: Ext.create('Savanna.process.store.TypeAheadStore', {
+                    urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/model/search/keyword/item',
+                    paramsObj: { pageStart: 0, pageSize: 20, alphabetical: true }
+                })
+            }
+        );
+
+        this.add(this.textEditor);
     }
 });
