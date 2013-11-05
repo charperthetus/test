@@ -298,6 +298,9 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                     {
                         xtype:'panel',
                         flex:1,
+                        bodyStyle:{
+                            backgroundColor:"#f2f2f2"
+                        },
                         layout:{
                             type: 'hbox',
                             pack: 'center',
