@@ -68,7 +68,7 @@ Ext.define('Savanna.desktop.view.SavannaWorkspace', {
             height: '100%',
             items: [
                 {
-                    xtype: 'startpage',
+                    xtype: 'desktop_startpage',
                     title: 'Start',
                     closable: true
                 }
