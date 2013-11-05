@@ -1,10 +1,6 @@
 Ext.define('Savanna.process.controller.MetadataController', {
     extend: 'Deft.mvc.ViewController',
 
-    requires: [
-        'Savanna.itemView.view.header.EditHeader'
-    ],
-
     config: {
         diagram: null,
         processUri: null

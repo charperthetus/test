@@ -10,6 +10,10 @@ Ext.define('Savanna.process.view.metadata.FullProcessMetadata', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.full_process_metadata',
 
+    requires: ['Savanna.process.controller.FullProcessMetadataController'],
+
+    controller: 'Savanna.process.controller.FullProcessMetadataController',
+
     overflowY: 'auto',
 
     items: [
