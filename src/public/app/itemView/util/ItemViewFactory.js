@@ -6,7 +6,7 @@ Ext.define('Savanna.itemView.util.ItemViewFactory', {
 
     getComponentForType: function(type, uri, label, otherParams){
         var editMode = false;
-        if(otherParams.hasOwnProperty('editMode')){
+        if(otherParams && otherParams.hasOwnProperty('editMode')){
             editMode = otherParams.editMode;
         }
         if (type.toLowerCase() == 'item'){
