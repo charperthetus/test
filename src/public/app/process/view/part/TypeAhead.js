@@ -2,7 +2,8 @@ Ext.define('Savanna.process.view.part.TypeAhead', {
     extend: 'Ext.form.ComboBox',
 
     requires: [
-        'Ext.form.ComboBox'
+        'Ext.form.ComboBox',
+        'Savanna.process.utils.ProcessUtils'
     ],
 
     config: {
@@ -16,7 +17,6 @@ Ext.define('Savanna.process.view.part.TypeAhead', {
     displayField: 'label',
     enableKeyEvents: true,
     hideTrigger: true,
-
 
     listeners: {
         afterrender: { fn: 'setup'}
@@ -45,6 +45,15 @@ Ext.define('Savanna.process.view.part.TypeAhead', {
             // clear out the store when we are done with it,
             // so that it will always start fresh the next time
             me.store.loadData([],false);
+        };
+        domEl.onCommit = function(textBlock) {
+            var selArray = c.lastSelection;
+            var selItem = selArray[0]; //multi-select is not allowed on this combo box.
+            if (selItem.data.label === c.getValue()) {
+                var node = textBlock.part;
+                //todo: change this to call changeRepresentsUri when the new endpoint for that is finished
+                Savanna.process.utils.ProcessUtils.setRepresentsUri(node.data, selItem.data.uri);
+            }
         };
         domEl.value = function() {
             return c.getValue();
