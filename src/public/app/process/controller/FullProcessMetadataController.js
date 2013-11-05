@@ -25,10 +25,10 @@ Ext.define('Savanna.process.controller.FullProcessMetadataController', {
 
 
     onUriChanged: function(processUri) {
-        console.log('onUriChanged',processUri);
+        console.log('onUriChanged',encodeURIComponent(processUri));
 
         this.store = Ext.create('Savanna.itemView.store.MainItemStore');
-        this.store.getProxy().url = this.buildItemDataFetchUrl(processUri);
+        this.store.getProxy().url = this.buildItemDataFetchUrl(encodeURIComponent(processUri));
 
         this.store.load({
             scope: this,

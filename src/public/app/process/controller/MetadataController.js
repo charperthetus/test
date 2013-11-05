@@ -88,6 +88,9 @@ Ext.define('Savanna.process.controller.MetadataController', {
 
     setUpItemDetails: function(itemUri) {
         // need to populate item panel
+        console.log('****** setUpItemDetails ready to fire event');
+        this.getItemMetadata().fireEvent('processUriChanged', itemUri);
+
         this.getHiddenTabPanel().setActiveTab(this.getItemMetadata());
     },
 
