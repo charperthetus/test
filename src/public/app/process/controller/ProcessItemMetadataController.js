@@ -37,13 +37,13 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
     },
 
     buildItemDataFetchUrl: function (uri) {
-        return SavannaConfig.itemViewUrl + uri;
+        return SavannaConfig.itemViewUrl + encodeURI(uri);
     },
 
     handleRecordDataRequestSuccess: function(record, operation, success) {
         console.log('handleRecordDataRequestSuccess item');
         if(success) {
-            console.log('We Win!');
+            console.log('Item wins too!', record.data);
         }
     }
 

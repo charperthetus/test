@@ -25,22 +25,22 @@ Ext.define('Savanna.process.controller.FullProcessMetadataController', {
 
 
     onUriChanged: function(processUri) {
-        console.log('onUriChanged',encodeURIComponent(processUri));
+        console.log('FullProcessMetadataController onUriChanged',processUri);
 
         this.store = Ext.create('Savanna.itemView.store.MainItemStore');
-        this.store.getProxy().url = this.buildItemDataFetchUrl(encodeURIComponent(processUri));
+        this.store.getProxy().url = this.buildItemDataFetchUrl(processUri);
 
         this.store.load({
             scope: this,
-            callback: this.handleRecordDataRequestSuccess
+            callback: this.handleRecordDataRequestResponse
         });
     },
 
     buildItemDataFetchUrl: function (uri) {
-        return SavannaConfig.itemViewUrl + uri;
+        return SavannaConfig.itemViewUrl + encodeURI(uri);
     },
 
-    handleRecordDataRequestSuccess: function(record, operation, success) {
+    handleRecordDataRequestResponse: function(record, operation, success) {
         console.log('handleRecordDataRequestSuccess');
         if(success) {
             console.log('We Win!');
