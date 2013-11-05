@@ -8,7 +8,6 @@ Ext.define('Savanna.modelSearch.view.searchComponent.SearchBody', {
     requires: [
         'Ext.tab.Panel',
         'Savanna.modelSearch.view.searchComponent.searchBody.SearchDals',
-        'Savanna.modelSearch.view.searchComponent.searchBody.SearchMap',
         'Savanna.modelSearch.view.searchComponent.searchBody.ResultsComponent',
         /*
          Why is this needed?  If the controller is listed in the requires for the view,
@@ -49,11 +48,6 @@ Ext.define('Savanna.modelSearch.view.searchComponent.SearchBody', {
                             cls: 'search-dal',
                             itemId:'searchdals',
                             xtype: 'model_search_searchdals'
-                        },
-                        {
-                            title: 'Location',
-                            itemId: 'searchMap',
-                            xtype: 'model_search_searchmap'
                         }
                     ]
                 }

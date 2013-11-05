@@ -1,7 +1,7 @@
 Ext.define('Savanna.map.controller.MapController', {
-    extend: 'Ext.app.Controller',
+    extend: 'Deft.mvc.ViewController',
 
-    views: [
+    requires: [
         'Savanna.map.view.MapComponent',
         'Savanna.map.view.part.Canvas'
     ],
