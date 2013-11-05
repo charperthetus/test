@@ -9,8 +9,6 @@ Ext.define('Savanna.metadata.view.Details', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.metadata_details',
 
-    requires: ['Ext.layout.container.Fit'],
-
     itemId: 'detailsPanel',
 
     height: '100%',

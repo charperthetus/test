@@ -10,8 +10,7 @@ Ext.define('Savanna.metadata.view.Classification', {
     extend: 'Savanna.metadata.view.MetadataItemView',
     alias: 'widget.metadata_classification',
 
-    requires: [ 'Savanna.classification.view.ClassificationWindow', 
-                'Ext.layout.container.HBox'],
+    requires: [ 'Savanna.classification.view.ClassificationWindow'],
 
     layout: 'hbox',
 

@@ -10,8 +10,6 @@ Ext.define('Savanna.metadata.view.Title', {
     extend: 'Savanna.metadata.view.MetadataItemView',
     alias: 'widget.metadata_title',
 
-    requires: ['Ext.layout.container.HBox'],
-
     initComponent: function () {
         this.callParent(arguments);
         var me = this;

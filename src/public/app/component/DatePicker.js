@@ -56,8 +56,6 @@
 Ext.define('Savanna.component.DatePicker', {
     extend: 'Ext.form.FieldContainer',
 
-    requires: ['Ext.layout.container.HBox', 'Ext.layout.container.VBox'],
-
     // Defualt Configs
     layout: 'hbox',
     width: '100%',

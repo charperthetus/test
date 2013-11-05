@@ -10,9 +10,7 @@ Ext.define('Savanna.metadata.view.StringList', {
     extend: 'Savanna.metadata.view.MetadataItemView',
     alias: 'widget.metadata_stringlist',
 
-    requires: [ 'Ext.layout.container.VBox',
-                'Ext.layout.container.HBox',
-                'Ext.layout.container.Form'],
+    requires: ['Ext.layout.container.Form'],
 
     initComponent: function () {
         this.callParent(arguments);
