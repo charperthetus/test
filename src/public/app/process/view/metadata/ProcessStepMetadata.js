@@ -10,6 +10,8 @@ Ext.define('Savanna.process.view.metadata.ProcessStepMetadata', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.process_step_metadata',
 
+    controller: 'Savanna.process.controller.ProcessStepMetadataController',
+
     overflowY: 'auto',
 
     items: [

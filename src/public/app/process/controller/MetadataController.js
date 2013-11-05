@@ -50,7 +50,7 @@ Ext.define('Savanna.process.controller.MetadataController', {
             if (itemUri.indexOf('ProcessModel') !== -1){
              // this is a step
                 console.log('This is a step');
-                this.setUpStepDetails();
+                this.setUpStepDetails(itemUri);
             } else if (itemUri.indexOf('Item') !== -1) {
              // this is an item
                 console.log('This is an item');
@@ -86,7 +86,7 @@ Ext.define('Savanna.process.controller.MetadataController', {
     setUpStepDetails: function(itemUri) {
         this.getStepMetadata().show();
 
-        this.getStepMetadata().fireEvent('processUriChanged', itemUri);
+        this.getStepMetadata().fireEvent('stepUriChanged', itemUri);
         this.getHiddenTabPanel().setActiveTab(this.getStepMetadata());
     },
 
