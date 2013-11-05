@@ -32,8 +32,8 @@ Ext.define('Savanna.process.view.metadata.ProcessStepMetadata', {
             text: 'Far far away, behind the word mountains'
         },
         {
-            xtype: 'label',
-            text: 'image browser'
+            xtype: 'itemview_imagesgrid_edit',
+            header: false
         },
         {
             xtype: 'panel',

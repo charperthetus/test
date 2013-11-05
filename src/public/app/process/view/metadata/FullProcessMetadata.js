@@ -29,18 +29,18 @@ Ext.define('Savanna.process.view.metadata.FullProcessMetadata', {
             itemId: 'processDescription'
         },
         {
-            xtype: 'label',
-            text: 'image browser',
-            itemId: 'imageBrowser'
+            xtype: 'itemview_imagesgrid_edit',
+            itemId: 'imageBrowser',
+            header: false
         },
         {
-            xtype: 'panel',
+            xtype: 'metadata_details',
             collapsible: true,
             title: 'Metadata',
             itemId: 'detailsPanel'
         },
         {
-            xtype: 'panel',
+            xtype: 'document_sources',
             collapsible: true,
             title: 'Sources',
             itemId: 'sourcesPanel'

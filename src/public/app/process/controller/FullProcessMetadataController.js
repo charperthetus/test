@@ -46,7 +46,4 @@ Ext.define('Savanna.process.controller.FullProcessMetadataController', {
             console.log('We Win!');
         }
     }
-
-
-
 });

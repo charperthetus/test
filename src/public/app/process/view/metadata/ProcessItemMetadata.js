@@ -86,7 +86,7 @@ Ext.define('Savanna.process.view.metadata.ProcessItemMetadata', {
             ]
         },
         {
-            xtype: 'panel',
+            xtype: 'itemview_edit_qualities',
             collapsible: true,
             title: 'Properties'
         }
