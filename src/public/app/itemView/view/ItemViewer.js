@@ -411,7 +411,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                             {
                                 xtype: 'document_sources',
                                 editMode: true,
-                                itemId: 'itemSourcesEdit',
+                                itemId: 'itemSources',
                                 header:{
                                     ui:'light-blue'
                                 },
