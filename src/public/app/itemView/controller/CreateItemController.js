@@ -48,6 +48,10 @@ Ext.define('Savanna.itemView.controller.CreateItemController', {
     },
 
     handleCreateSuccess: function (records, operation, success) {
+        /*
+         EventHub.fireEvent('open', {uri: records[0].data.uri, label: records[0].data.label, type: 'item'}, {editMode:true});
+         this.getView().close();
+         */
         var itemView = Ext.create('Savanna.itemView.view.ItemViewer', {
             title: records[0].data.label,
             itemUri: records[0].data.uri,
@@ -60,6 +64,8 @@ Ext.define('Savanna.itemView.controller.CreateItemController', {
             }
         });
         Savanna.app.fireEvent('search:itemSelected', itemView);
+
+        this.getView().close();
 
     }
 });

@@ -17,7 +17,6 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
         },
         maintabpanel: {
             beforetabclosemenu: 'onBeforeTabCloseMenu',
-            createdetails: 'createDetails',
             createprocess: 'createProcess',
             createitem: 'createItem',
             singleview: 'onSingleView',
@@ -31,7 +30,6 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
             live: true,
             listeners: {
                 beforetabclosemenu: 'onBeforeTabCloseMenu',
-                createdetails: 'createDetails',
                 createprocess: 'createProcess',
                 createitem: 'createItem',
                 singleview: 'onSingleView',
@@ -42,19 +40,14 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
     },
 
     init: function() {
-        //TODO - this is temporary until open is fully working
-        Savanna.app.on('search:itemselected', this.showItemView, this);
-
         EventHub.on('open', this.onOpen, this);
-        Savanna.app.on('itemview:createitem', this.createItem, this);
-        Savanna.app.on('itemview:itemDeleted', this.deleteModelItem, this);
-        return this.callParent(arguments);
-    },
+        EventHub.on('close', this.onClose, this);
 
-    //TODO - this is temporary until open is fully working
-    showItemView: function (itemView) {
-        this.getMaintabpanel().add(itemView);
-        this.getMaintabpanel().setActiveTab(itemView)
+        //TODO - This needs to be changed to handle generic new items instead of listening for each type
+        EventHub.on('createitem', this.createItem, this);
+        EventHub.on('createprocess', this.onCreateProcess, this);
+
+        return this.callParent(arguments);
     },
 
     setupSecondaryTabPanel: function() {
@@ -131,8 +124,8 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
         }
     },
 
-    onOpen: function(event){
-        var component = ComponentManager.getComponentForType(event.type, event.uri, event.label),
+    onOpen: function(event, otherParams){
+        var component = ComponentManager.getComponentForType(event.type, event.uri, event.label, otherParams),
             tabPanel = this.getMaintabpanel();
         if (component){
             component.closable = true;
@@ -148,15 +141,23 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
     },
 
     createItem: function() {
-
         Ext.create('Savanna.itemView.view.createItem.CreateItem', {
             width: 850,
             height: 500
         });
     },
 
-    deleteModelItem: function(tab) {
-        this.getMaintabpanel().remove(tab);
+    onClose: function(tab) {
+        var mtp = this.getMaintabpanel();
+        if (tab.isDescendantOf(mtp)){
+            mtp.remove(tab);
+        }else{
+            this.getSecondarytabpanel().remove(tab);
+        }
+    },
+
+    onCreateProcess: function(){
+        this.createProcess(this.getMaintabpanel());
     },
 
     createProcess: function(tabpanel) {
@@ -172,24 +173,6 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
         tabpanel.doLayout();
         tabpanel.setActiveTab(tab);
     },
-
-    createDetails: function(tabpanel) {
-        var details = Ext.create('Savanna.metadata.view.Details', {
-            title: 'Untitled Details',
-            //itemURI: 'SolrJdbc%252FRich%252F061aedc6-d88c-497e-81dc-77d809b3262c',
-            //itemURI: 'SolrJdbc%252FRich%252Fca1035f5-8ede-4415-ab75-e58956121819',
-            //itemURI: 'SolrJdbc%252FRich%252F2fa25cdf-9aab-471f-85b6-5359c0cd0dfd',
-            itemURI: 'SolrJdbc%252FText%252F9d62ad60-f453-4215-b8bc-c4c1398b84a4',
-            closable: true,
-            tabConfig: {
-                ui: 'dark'
-            }
-        });
-        var tab = tabpanel.add(details);
-        tabpanel.doLayout();
-        tabpanel.setActiveTab(tab);
-    },
-
     onBeforeTabCloseMenu: function(tabpanel, menu) {
         var view = tabpanel.config.view;
         if(view == 'single') {
@@ -200,5 +183,13 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
             menu.child('*[text="single view"]').show();
             menu.child('*[text="split view"]').hide();
         }
+    },
+    destroy: function() {
+        EventHub.un('open', this.onOpen, this);
+        EventHub.un('close', this.onClose, this);
+
+        EventHub.un('createitem', this.createItem, this);
+        EventHub.un('createprocess', this.onCreateProcess, this);
+
     }
 });

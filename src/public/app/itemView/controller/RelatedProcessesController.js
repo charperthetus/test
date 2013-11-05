@@ -11,16 +11,7 @@ Ext.define('Savanna.itemView.controller.RelatedProcessesController', {
     },
     openRelatedProcesses: function( grid, record, item, index, e, eOpts) {
         if (e.target.id == "openProcess") {
-            var itemView = Ext.create('Savanna.itemView.view.ItemViewer', {
-                title: e.target.value,
-                itemUri: e.target.name,
-                closable: true,
-                autoScroll: true,
-                tabConfig: {
-                    ui: 'dark'
-                }
-            });
-            Savanna.app.fireEvent('search:itemSelected', itemView);
+            EventHub.fireEvent('open', {uri: e.target.name, label: e.target.value, type: 'process'});
         }
     }
 });
