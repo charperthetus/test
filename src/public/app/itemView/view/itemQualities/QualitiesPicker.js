@@ -162,8 +162,6 @@ Ext.define('Savanna.itemView.view.itemQualities.QualitiesPicker', {
     },
 
     handleRecordDataRequestSuccess: function (record, operation, success) {
-
-        console.log(record);
         if (success) {
             var me = this;
             var qualitiesSelectStore = Ext.create('Ext.data.JsonStore', {
