@@ -79,15 +79,19 @@ Ext.define('Savanna.process.controller.MetadataController', {
 
         } else {
             // show the process details panel
-            this.getFullProcessMetadata().tab.show();
+            this.getHiddenTabPanel().setActiveTab(this.getFullProcessMetadata());
         }
 
     },
 
     setUpStepDetails: function(itemUri) {
+        console.log('setUpStepDetails');
+        this.getHiddenTabPanel().setActiveTab(this.getStepMetadata());
     },
 
     setUpItemDetails: function(itemUri) {
+        console.log('setUpItemDetails');
+        this.getHiddenTabPanel().setActiveTab(this.getItemMetadata());
     },
 
     addProcessDetailsListeners: function(process_details) {
