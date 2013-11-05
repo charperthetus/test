@@ -32,21 +32,21 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.searchMap.Canvas', {
         Geocache TMS (TMS2) layers require the resolution of the map to be overriden.
          */
 
-        if (SavannaConfig.mapDefaultBaseLayer.resolutions) {
-            this.map.resolutions = SavannaConfig.mapDefaultBaseLayer.resolutions;
-        }
-
         this.callParent(arguments);
     },
 
     beforeRender: function () {
         var baseLayer = SavannaConfig.mapDefaultBaseLayer;
+        this.map.maxResolution = (baseLayer.projection === 'EPSG:4326') ? 0.703125 : 156543.03390625;
         switch (baseLayer.type){
             case 'WMS':
                 this.map.addLayer(new OpenLayers.Layer.WMS(baseLayer.layerLabel, baseLayer.url, {layers: baseLayer.layerName}));
                 break;
             case 'XYZ':
                 this.map.addLayer(new OpenLayers.Layer.XYZ(baseLayer.layerLabel, baseLayer.url, {layers: baseLayer.layerName}));
+                break;
+            case 'TMS':
+                this.map.addLayer(new OpenLayers.Layer.TMS(baseLayer.layerName, baseLayer.url, {layername: baseLayer.layerName, type: baseLayer.imgType}));
                 break;
             /*
              The case is for the GeoCache TMS layers

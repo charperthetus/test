@@ -459,9 +459,9 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
         ////////////////////////////////////////
         //Begin setting up style for result layer
         var colors = {
-            low: 'rgb(181, 226, 140)',
-            middle: 'rgb(241, 211, 87)',
-            high: 'rgb(253, 156, 115)'
+            low: '#B5E28C',
+            middle: '#F1D357',
+            high: '#FD9C73'
         };
 
         var singleRule =  new OpenLayers.Rule({
@@ -668,8 +668,8 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
         }
 
         mapCanvas.controls.hoverFeature.activate();
-        mapCanvas.resultsLayer.events.register('featureselected', event, Ext.bind(this.displayMapPopUp, this, [mapCanvas], true));
-        mapCanvas.resultsLayer.events.register('featureunselected', event, Ext.bind(this.hidePopUp, this, [mapCanvas], true));
+        mapCanvas.resultsLayer.events.register('featureselected', null, Ext.bind(this.displayMapPopUp, this, [mapCanvas], true));
+        mapCanvas.resultsLayer.events.register('featureunselected', null, Ext.bind(this.hidePopUp, this, [mapCanvas], true));
 
     },
 
@@ -840,6 +840,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
     
     gridStoreLoad: function (grid) {
         var me = Savanna.controller.Factory.getController('Savanna.search.controller.ResultsComponent');
+        var event = null;
         me.hidePopUp(event, grid);
         me.loadPointsFromStore(grid);
     }

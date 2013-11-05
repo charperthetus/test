@@ -7,8 +7,8 @@
 SavannaConfig = {
     // Root for all REST calls
 //    savannaUrlRoot: 'http://c2aptsav1:8080/c2is2/',
-    savannaUrlRoot: 'http://c2devsav1:8080/c2is2/',
-//    savannaUrlRoot: 'http://thedevsav1:8080/SavannaX/',
+//    savannaUrlRoot: 'http://c2devsav1:8080/c2is2/',
+    savannaUrlRoot: 'http://thedevsav1:8080/SavannaX/',
 
     helpUrl: 'http://www.google.com',
 
@@ -48,16 +48,22 @@ SavannaConfig = {
     mapDefaultBaseLayer: {
         url: 'http://geocache.grayhive.org/tms/',
         projection: 'EPSG:4326',
-        resolutions: [0.703125, 0.3515625, 0.17578125, 0.087890625,
-            0.0439453125, 0.02197265625, 0.010986328125,
-            0.0054931640625, 0.00274658203125, 0.001373291015625,
-            0.0006866455078125, 0.00034332275390625, 0.000171661376953125,
-            0.0000858306884765625, 0.00004291534423828125, 0.000021457672119140625,
-            0.00000268220901489257, 0.000010728836059570312, 0.000005364418029785156],
         type: 'TMS2',
         imgType: 'png',
         layerName: 'vmap',
-        center: '0, 0',
+        center: '0,0',
         zoom: 1
     }
+
+
+//    mapDefaultBaseLayer: {
+//        url: 'http://tilecache.osgeo.org/wms-c/Basic.py/',
+//        projection: 'EPSG:4326',
+//        type: 'TMS',
+//        imgType: 'png',
+//        layerName: 'basic',
+//        center: '0,0',
+//        zoom: 1
+//    }
+
 };
