@@ -71,7 +71,8 @@ Ext.define('Savanna.itemView.view.relatedItems.RelationshipPicker', {
         {
             text: 'OK',
             itemId: 'okBtn',
-            ui:'commit'
+            ui:'commit',
+            margin:'0 0 10 0'
         },
         {
             text: 'cancel',
