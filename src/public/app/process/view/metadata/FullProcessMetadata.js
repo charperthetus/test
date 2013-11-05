@@ -10,7 +10,11 @@ Ext.define('Savanna.process.view.metadata.FullProcessMetadata', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.full_process_metadata',
 
-    requires: ['Savanna.process.controller.FullProcessMetadataController'],
+    requires: [
+        'Savanna.process.controller.FullProcessMetadataController',
+        'Savanna.itemView.view.imageBrowser.ImagesGridEdit',
+        'Savanna.sources.view.Sources'
+    ],
 
     controller: 'Savanna.process.controller.FullProcessMetadataController',
 
@@ -44,9 +48,9 @@ Ext.define('Savanna.process.view.metadata.FullProcessMetadata', {
         },
         {
             xtype: 'document_sources',
-            collapsible: true,
-            title: 'Sources',
-            itemId: 'sourcesPanel'
+            editMode: true,
+            itemId: 'sourcesPanel',
+            itemURI: 'xx%2FItem'
         }
     ]
 });

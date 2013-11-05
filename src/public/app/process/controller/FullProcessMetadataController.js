@@ -10,6 +10,12 @@ Ext.define('Savanna.process.controller.FullProcessMetadataController', {
     extend: 'Deft.mvc.ViewController',
 
     store: null,
+    storeHelper: null,
+
+    requires: [
+        'Savanna.itemView.store.MainItemStore',
+        'Savanna.itemView.store.ItemViewStoreHelper'
+    ],
 
     control: {
         view: {
@@ -26,6 +32,7 @@ Ext.define('Savanna.process.controller.FullProcessMetadataController', {
 
     onUriChanged: function(processUri) {
         this.store = Ext.create('Savanna.itemView.store.MainItemStore');
+        this.storeHelper = Ext.create('Savanna.itemView.store.ItemViewStoreHelper');
         this.store.getProxy().url = this.buildItemDataFetchUrl(processUri);
 
         this.store.load({
@@ -42,9 +49,12 @@ Ext.define('Savanna.process.controller.FullProcessMetadataController', {
     handleRecordDataRequestResponse: function(record, operation, success) {
         if(success) {
             console.log('We Win!');
+            this.storeHelper.init(this.store);
             this.getProcessTitle().setValue(this.store.getAt(0).data.label);
             this.getProcessDescription().setValue(this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Description').valuesStore.getAt(0).data.value);
-
+            this.getImageBrowser().storeHelper = this.storeHelper;
+            this.getImageBrowser().store = record[0].propertyGroupsStore.getById('Images').valuesStore;
+            this.getImageBrowser().fireEvent('EditImagesGrid:Setup', record[0].propertyGroupsStore.getById('Images').valuesStore.getById('Images').valuesStore.data.items);
         }
     }
 });

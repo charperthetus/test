@@ -43,10 +43,11 @@ Ext.define('Savanna.process.controller.MetadataController', {
             var itemCategory = this.getDiagram().selection.first().data.category;
             switch(itemCategory) {
                 case 'ProcessModel':
+                case 'InternalGroup':
                     // this is a step
                     this.setUpStepDetails(itemUri);
                     break;
-                case 'Item':
+                case 'ProcessItem':
                     // this is an item
                     //console.log('This is an item');
                     this.setUpItemDetails(itemUri);

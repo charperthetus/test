@@ -11,7 +11,8 @@ Ext.define('Savanna.process.view.metadata.ProcessItemMetadata', {
     alias: 'widget.process_item_metadata',
 
     requires: [
-        'Savanna.process.controller.ProcessItemMetadataController'
+        'Savanna.process.controller.ProcessItemMetadataController',
+        'Savanna.itemView.view.itemQualities.EditItemQualities'
     ],
 
     controller: 'Savanna.process.controller.ProcessItemMetadataController',
@@ -25,11 +26,13 @@ Ext.define('Savanna.process.view.metadata.ProcessItemMetadata', {
             items: [
                 {
                     xtype: 'textfield',
-                    value: 'RNRM Item Name'
+                    value: 'RNRM Item Name',
+                    itemId: 'itemTitle'
                 },
                 {
                     xtype: 'button',
-                    label: 'Open'
+                    label: 'Open',
+                    itemId: 'openBtn'
                 }
             ]
         },
@@ -39,11 +42,13 @@ Ext.define('Savanna.process.view.metadata.ProcessItemMetadata', {
             items: [
                 {
                     xtype: 'textarea',
-                    text: 'Body Paragraph Closed.  Content far far away.'
+                    text: 'Body Paragraph Closed.  Content far far away.',
+                    itemId: 'itemDescription'
                 },
                 {
                     xtype: 'label',
-                    text: 'Image'
+                    text: 'Image',
+                    itemId: 'itemPrimeImage'
                 }
             ]
         },
@@ -54,7 +59,8 @@ Ext.define('Savanna.process.view.metadata.ProcessItemMetadata', {
             items: [
                 {
                     xtype: 'textfield',
-                    value: 'Individual Title'
+                    value: 'Individual Title',
+                    itemId: 'itemInstanceTitle'
                 },
                 {
                     xtype: 'combo',
@@ -81,14 +87,16 @@ Ext.define('Savanna.process.view.metadata.ProcessItemMetadata', {
                     xtype: 'textarea',
                     fieldLabel: 'Description',
                     labelAlign: 'top',
-                    text: 'Far far away, behind the word mountains'
+                    text: 'Far far away, behind the word mountains',
+                    itemId: 'itemInstanceDescription'
                 }
             ]
         },
         {
             xtype: 'itemview_edit_qualities',
             collapsible: true,
-            title: 'Properties'
+            title: 'Properties',
+            itemId: 'itemQualities'
         }
     ]
 });
