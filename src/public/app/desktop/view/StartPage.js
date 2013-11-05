@@ -3,6 +3,7 @@ Ext.define('Savanna.desktop.view.StartPage', {
     alias: 'widget.startpage',
     controller: 'Savanna.desktop.controller.StartPageController',
     requires: [
+        'Savanna.desktop.controller.StartPageController',
         'Savanna.desktop.view.StartPageItem'
     ],
     layout: {
