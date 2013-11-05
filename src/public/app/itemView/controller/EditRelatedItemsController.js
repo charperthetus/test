@@ -98,7 +98,7 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
                 myPanel.add(this.buildAddItem(item, relatedItemsGroup.get('label')));
             }, this);
         }, this);
-        this.updateHeader(items.length);
+        this.updateHeader();
     },
 
     addRelationshipType: function() {
@@ -119,7 +119,6 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
             this.relationshipNameArray = [];
             this.getView().storeHelper.updateMainStore(this.getView().store.data.items, 'Related Items');
             this.setupData(this.getView().store.data.items);
-            this.updateHeader(this.getView().store.data.items.length);
             this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
         }
     },
@@ -215,6 +214,7 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
         myPanel.add(this.buildAddItem(item, relatedItemGroupName));
         this.getView().storeHelper.addBotLevItemInStore(itemLabel, itemRecord, this.getView().store.getById(relatedItemGroupName));
         this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
+        this.updateHeader();
     },
 
     // Removing the tag from the store on a child auto-complete
@@ -223,14 +223,15 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
         this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
     },
 
-    updateHeader: function (number) {
-        var titlePre = 'Related Items (',
+    // Iterates over the bottom-level leafs in the store and adds the number to the header.
+    updateHeader: function () {
+        var number = (this.getView().storeHelper.getBotLevItemInStore(this.getView().store).length || 0),
+            titlePre = 'Related Items (',
             titlePost = ')',
             title = this.getView();
 
         if (title) {
             title.setTitle(titlePre + number + titlePost);
         }
-    },
-
+    }
 });

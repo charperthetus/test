@@ -311,6 +311,8 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
          Related Items View
          */
         var relatedItemView = me.getView().queryById('relatedItemsView');
+        relatedItemView.storeHelper = this.storeHelper;
+        relatedItemView.store = record.propertyGroupsStore.getById('Related Items').valuesStore;
         relatedItemView.fireEvent('ViewRelatedItems:SetupData', record.propertyGroupsStore.getById('Related Items').valuesStore.data.items);
 
         /*

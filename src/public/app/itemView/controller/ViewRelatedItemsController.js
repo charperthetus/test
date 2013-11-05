@@ -24,12 +24,13 @@ Ext.define('Savanna.itemView.controller.ViewRelatedItemsController', {
         Ext.each(items, function (relatedItemsGroup) {
             this.addRelationshipGrid(relatedItemsGroup);
         }, this);
-        this.updateHeader(items.length || 0);
-    },
+        this.updateHeader();
+    },    
 
-    updateHeader: function (number) {
-        console.debug('running');
-        var titlePre = 'Related Items (',
+    // Iterates over the bottom-level leafs in the store and adds the number to the header.
+    updateHeader: function () {
+        var number = this.getView().storeHelper.getBotLevItemInStore(this.getView().store).length || 0,
+            titlePre = 'Related Items (',
             titlePost = ')',
             title = this.getView();
 
