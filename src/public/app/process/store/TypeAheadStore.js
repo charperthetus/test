@@ -10,6 +10,7 @@ Ext.define('Savanna.process.store.TypeAheadStore', {
     extend: 'Ext.data.JsonStore',
 
     requires: [
+        'Ext.data.JsonStore',
         'Ext.data.proxy.Rest',
         'Savanna.process.model.TypeAheadModel',
         'Savanna.proxy.Cors'

@@ -28,6 +28,11 @@ Ext.define('Savanna.process.view.part.Canvas', {
         domElem = Ext.DomHelper.insertHtml('afterBegin', this.getEl().dom, '<div class="go-graph" style="width: 100%; height: 100%; position: absolute;"></div>');
         this.diagram = new go.Diagram(domElem);
 
+        this.diagram.nodeTemplateMap = Savanna.process.utils.ViewTemplates.generateNodeTemplateMap();
+        this.diagram.linkTemplateMap = Savanna.process.utils.ViewTemplates.generateLinkTemplateMap();
+        this.diagram.groupTemplateMap = Savanna.process.utils.ViewTemplates.generateGroupTemplateMap();
+
+        var diagram = this.diagram;
         this.itemTextEditor = Ext.create('Savanna.process.view.part.TypeAhead', {
                 itemId: 'itemTextEditor',
                 diagram: this.diagram,
@@ -36,6 +41,9 @@ Ext.define('Savanna.process.view.part.Canvas', {
                 })
             }
         );
+        this.itemTextEditor.addListener('boxready', function (c) {
+                diagram.nodeTemplateMap.add('ProcessItem', Savanna.process.utils.ViewTemplates.generateItemNodeTemplate(c.getEl().dom));
+            });
         this.add(this.itemTextEditor);
 
         this.actionTextEditor  = Ext.create('Savanna.process.view.part.TypeAhead', {
@@ -46,11 +54,10 @@ Ext.define('Savanna.process.view.part.Canvas', {
                 })
             }
         );
+        this.actionTextEditor.addListener('boxready', function (c) {
+                diagram.nodeTemplateMap.add('ProcessAction', Savanna.process.utils.ViewTemplates.generateActionNodeTemplate(c.getEl().dom));
+            });
         this.add(this.actionTextEditor);
-
-        this.diagram.nodeTemplateMap = Savanna.process.utils.ViewTemplates.generateNodeTemplateMap();
-        this.diagram.linkTemplateMap = Savanna.process.utils.ViewTemplates.generateLinkTemplateMap();
-        this.diagram.groupTemplateMap = Savanna.process.utils.ViewTemplates.generateGroupTemplateMap();
 
         // have mouse wheel events zoom in and out instead of scroll up and down
    //     this.diagram.toolManager.mouseWheelBehavior = go.ToolManager.WheelZoom;
