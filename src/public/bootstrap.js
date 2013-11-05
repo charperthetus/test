@@ -60,6 +60,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "Savanna.process.utils.ViewTemplates": [],
   "Savanna.search.view.searchComponent.searchBody.ResultsComponent": [],
   "Savanna.crumbnet.model.Graph": [],
+  "Savanna.desktop.controller.StartPageController": [],
   "Deft.promise.Resolver": [
     "Deft.Resolver"
   ],
@@ -105,6 +106,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "Savanna.process.model.Process": [],
   "Savanna.map.view.part.Canvas": [],
   "Savanna.itemView.controller.ItemViewController": [],
+  "Savanna.desktop.view.StartPageItem": [],
   "Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacet": [],
   "Savanna.image.util.ImageViewFactory": [],
   "Ext.ux.grid.filter.BooleanFilter": [],
@@ -161,8 +163,8 @@ Ext.ClassManager.addNameAlternateMappings({
     "DalCustomSearchGroup"
   ],
   "Savanna.modelSearch.store.ResultsMetadata": [],
-  "Savanna.modelSearch.controller.SearchDals": [],
   "Ext.ux.GMapPanel": [],
+  "Savanna.modelSearch.controller.SearchDals": [],
   "Savanna.process.view.part.ActionList": [],
   "Savanna.classification.view.ClassificationBanner": [],
   "Savanna.itemView.view.imageBrowser.ImageThumbnail": [],
@@ -281,6 +283,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "Savanna.itemView.view.createItem.ParentItemsAutoComplete": [],
   "Savanna.itemView.model.AutoCompleteModel": [],
   "ThetusUikit.menu.Item": [],
+  "Savanna.desktop.view.StartPage": [],
   "Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacets": [],
   "Savanna.modelSearch.store.DalSources": [],
   "Savanna.modelSearch.controller.resultsComponent.ResultsPanelGridController": [],
@@ -496,6 +499,7 @@ Ext.ClassManager.addNameAliasMappings({
     "widget.search_resultscomponent"
   ],
   "Savanna.crumbnet.model.Graph": [],
+  "Savanna.desktop.controller.StartPageController": [],
   "Deft.promise.Resolver": [],
   "Savanna.component.ClassificationPanel": [],
   "Savanna.itemView.model.ParentItemsTreeModel": [],
@@ -573,6 +577,9 @@ Ext.ClassManager.addNameAliasMappings({
     "widget.map_canvas"
   ],
   "Savanna.itemView.controller.ItemViewController": [],
+  "Savanna.desktop.view.StartPageItem": [
+    "widget.startpageitem"
+  ],
   "Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacet": [
     "widget.model_search_resultsDals_resultsfacet"
   ],
@@ -665,10 +672,10 @@ Ext.ClassManager.addNameAliasMappings({
   "Savanna.search.controller.resultsComponent.resultsDals.ResultsRefineTermsController": [],
   "Savanna.search.model.dalSource.CustomSearchGroup": [],
   "Savanna.modelSearch.store.ResultsMetadata": [],
-  "Savanna.modelSearch.controller.SearchDals": [],
   "Ext.ux.GMapPanel": [
     "widget.gmappanel"
   ],
+  "Savanna.modelSearch.controller.SearchDals": [],
   "Savanna.process.view.part.ActionList": [
     "widget.process_actionlist"
   ],
@@ -877,6 +884,9 @@ Ext.ClassManager.addNameAliasMappings({
   ],
   "Savanna.itemView.model.AutoCompleteModel": [],
   "ThetusUikit.menu.Item": [],
+  "Savanna.desktop.view.StartPage": [
+    "widget.desktop_startpage"
+  ],
   "Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacets": [
     "widget.search_resultsDals_resultsfacets"
   ],
