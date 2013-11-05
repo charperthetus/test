@@ -20,15 +20,7 @@ Ext.define('Savanna.itemView.store.MainItemStore', {
 
     addSessionId: false,
 
-    updateJson: function() {
-        var writer = Ext.create('Ext.data.writer.Json');
-        var record = Ext.getStore('MainItemStore').first();
-        console.log(writer, record);
-        return (writer.getRecordData(record))
-    },
-
     constructor: function () {
-        var me = this;
         this.callParent(arguments);
 
         this.setProxy({
@@ -42,8 +34,6 @@ Ext.define('Savanna.itemView.store.MainItemStore', {
             },
             modifyRequest: function(request) {
                 if('update' == request.action) {
-                    //request.url = SavannaConfig.itemViewUrl
-                    //request.jsonData = me.updateJson()
                     request.method = 'PUT';
                 }
                 if('destroy' == request.action) {
