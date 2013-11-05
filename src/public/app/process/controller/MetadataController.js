@@ -18,7 +18,7 @@ Ext.define('Savanna.process.controller.MetadataController', {
             boxready: 'addFullProcessMetadataListeners'
         },
         stepMetadata: true,
-        itemMetadata: true,
+        itemMetadata: true
 
      },
 
@@ -32,8 +32,6 @@ Ext.define('Savanna.process.controller.MetadataController', {
         this.setDiagram(this.getView().up('process_component').down('#canvas').diagram);
 
         this.getDiagram().addDiagramListener('ChangedSelection', Ext.bind(this.selectionChanged, this));
-
-        return;
     },
 
     selectionChanged: function(e) {
@@ -63,17 +61,16 @@ Ext.define('Savanna.process.controller.MetadataController', {
         }
     },
 
-
     setUpProcessDetails: function(itemUri) {
         // get proper info from service for item configs
-        console.log('MetadataController setUpProcessDetails');
+        console.log('MetadataController setUpProcessDetails', itemUri);
         if( null !== itemUri ) {
             this.setProcessUri( itemUri );
-            // need to populate the full_process_metadata
-
+            this.getFullProcessMetadata().show();
             this.getFullProcessMetadata().fireEvent('processUriChanged', itemUri);
+            this.getHiddenTabPanel().setActiveTab(this.getFullProcessMetadata());
         } else {
-            // show the process details panel
+            this.getFullProcessMetadata().show();
             this.getHiddenTabPanel().setActiveTab(this.getFullProcessMetadata());
         }
     },

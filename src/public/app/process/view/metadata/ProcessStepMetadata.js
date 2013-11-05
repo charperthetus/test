@@ -41,7 +41,8 @@ Ext.define('Savanna.process.view.metadata.ProcessStepMetadata', {
             fieldLabel: 'Description',
             labelAlign: 'top',
             text: 'Far far away, behind the word mountains',
-            itemId: 'stepDescription'
+            itemId: 'stepDescription',
+            width: '100%'
         },
         {
             xtype: 'itemview_imagesgrid_edit',

@@ -42,6 +42,11 @@ Ext.define('Savanna.process.view.metadata.MetadataTabPanel', {
             height:'100%',
             items: [
                 {
+                    xtype: 'label',
+                    itemId: 'nothingHereLabel',
+                    text: 'No Process information available'
+                },
+                {
                     xtype: 'full_process_metadata',
                     itemId: 'fullProcessMetadata'
                 },
