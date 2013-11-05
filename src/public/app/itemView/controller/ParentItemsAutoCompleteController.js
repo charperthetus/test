@@ -24,19 +24,7 @@ Ext.define('Savanna.itemView.controller.ParentItemsAutoCompleteController', {
         this.getView().up('itemview_create_item').close();
 
         if(records[0].data.uri)  {
-            var itemView = Ext.create('Savanna.itemView.view.ItemViewer', {
-                title: records[0].data.label,
-                itemUri: records[0].data.uri,
-                editMode: true,
-                createMode:true,
-                closable: true,
-                autoScroll: true,
-                tabConfig: {
-                    ui: 'dark'
-                }
-            });
-            Savanna.app.fireEvent('search:itemSelected', itemView);
-
+            EventHub.fireEvent('open', {uri: records[0].data.uri, label: records[0].data.label, type: 'item'}, {editMode: true});
         }   else    {
             console.log('no uri for parent item');
         }
