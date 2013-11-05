@@ -615,51 +615,79 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
     },
 
     loadPointsFromStore: function (grid) {
-        var searchResults = grid.store.data.items;
-        var searchResultList = [];
         var mapCanvas = grid.up('search_searchcomponent').down('#resultMapCanvas');
-        for (var i = 0; i < searchResults.length; i++) {
-            var resultPoints = searchResults[i].data.latLonPairs;
-            if (resultPoints !== null) {
-                for (var j = 0; j < resultPoints.length; j++) {
-
-                    /*
-                    Check to see if the projection of the base layer is EPSG:4326. Convert vector layer otherwise.
-                    */
-
-                    var newPoint = {};
-                    var baseLayer = SavannaConfig.mapDefaultBaseLayer;
-                    if (baseLayer.projection != 'EPSG:4326'){
-                        var currentProjection = new OpenLayers.Projection(baseLayer.projection);
-                        var resultsProjection = new OpenLayers.Projection("EPSG:4326");
-                        newPoint = new OpenLayers.LonLat(resultPoints[j].longitude, resultPoints[j].latitude);
-                        newPoint.transform(resultsProjection, currentProjection);
-                    } else {
-                        newPoint.lon = resultPoints[j].longitude;
-                        newPoint.lat = resultPoints[j].latitude;
-                    }
-
-                    /*
-                    Push the new vector point to the to the searchResultList Array
-                     */
-
-                    searchResultList.push(new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(newPoint.lon, newPoint.lat), {
-                        'title': searchResults[i].data.title,
-                        'previewString': searchResults[i].data.previewString,
-                        'contentType': searchResults[i].data.contentType,
-                        'uri': searchResults[i].data.uri,
-                        'composite': searchResults[i].data.composite,
-                        'publishedDate': searchResults[i].data.publishedDate,
-                        'fileType': searchResults[i].data.fileType,
-                        'name': resultPoints[j].name
-                    }));
-                }
-            }
-        }
         if (mapCanvas.resultsLayer.features.length > 0) {
             mapCanvas.resultsLayer.removeAllFeatures();
         }
+        var searchResults = grid.store.data.items;
+        var searchResultList = [];
+        for (var i = 0; i < searchResults.length; i++) {
+            var resultPoints = searchResults[i].data.latLonPairs;
+            if (resultPoints !== null) {
+                var baseLayer = SavannaConfig.mapDefaultBaseLayer;
+                var currentProjection,
+                    resultsProjection;
+                var transform = false;
+                var uniqueResults = {};
 
+                /*
+                 Check to see if the projection of the base layer is EPSG:4326. Convert vector layer otherwise.
+                 */
+
+                if (baseLayer.projection != 'EPSG:4326'){
+                    currentProjection = new OpenLayers.Projection(baseLayer.projection);
+                    resultsProjection = new OpenLayers.Projection("EPSG:4326");
+                    transform = true;
+                }
+
+                /*
+                Eliminate duplicate points
+                 */
+
+                for (var j = 0; j < resultPoints.length; j++) {
+                    var uriKey = searchResults[i].data.uri + "_" + resultPoints[j].name;
+                    //if the unique uri_location exits
+                    if (uniqueResults[uriKey]) {
+                        uniqueResults[uriKey].count += 1;
+                    } else {
+                        uniqueResults[uriKey] = {
+                            'count' : 1,
+                            'title' : searchResults[i].data.title,
+                            'uri' : searchResults[i].data.uri,
+                            'contentType': searchResults[i].data.contentType,
+                            'previewString' : searchResults[i].data.previewString,
+                            'name' : resultPoints[j].name,
+                            'publishedDate' : searchResults[i].data.publishedDate,
+                            'composite' : searchResults[i].data.composite,
+                            'fileType' : searchResults[i].data.fileType,
+                            'latitude' : resultPoints[j].latitude,
+                            'longitude' : resultPoints[j].longitude
+                        }
+                    }
+                }
+
+                /*
+                 Push the new vector point to the to the searchResultList Array
+                 */
+
+                for (var key in uniqueResults){
+                    var newItem = uniqueResults[key];
+                    var newPoint = new OpenLayers.LonLat(newItem.longitude, newItem.latitude);
+                    if (transform) {newPoint.transform(resultsProjection, currentProjection)}
+                    searchResultList.push(new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(newPoint.lon, newPoint.lat), {
+                        'title': newItem.title,
+                        'previewString': newItem.previewString,
+                        'contentType': newItem.contentType,
+                        'uri': newItem.uri,
+                        'composite': newItem.composite,
+                        'publishedDate': newItem.publishedDate,
+                        'fileType': newItem.fileType,
+                        'name': newItem.name
+                    }));
+                }
+
+            }
+        }
         mapCanvas.resultsLayer.addFeatures(searchResultList);
 
         if (mapCanvas.resultsLayer.events.listeners.featureselected){
@@ -689,39 +717,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
     },
 
     setPopUpTemplate: function (event, featurePopUp, controller){
-        featurePopUp.store = [];
-        var clusterStoreData = event.feature.cluster;
-        var uniqueResults = {};
-        var uriCount = 0;
-        // pivot the cluster feature data into an object
-        // object will have keys named by unique uri_location
-        // object key value will be an object that stores the aggregated data about the document in the cluster
-        for (var i = 0; i < clusterStoreData.length; i++) {
-            var uriKey = clusterStoreData[i].data.uri + "_" + clusterStoreData[i].data.name;
-            //if the unique uri_location exits
-            if (uniqueResults[uriKey]) {
-                uniqueResults[uriKey].count += 1;
-            } else {
-                uriCount += 1;
-                uniqueResults[uriKey] = {
-                    'count' : 1,
-                    'title' : clusterStoreData[i].data.title,
-                    'uri' : clusterStoreData[i].data.uri,
-                    'contentType': clusterStoreData[i].data.contentType,
-                    'previewString' : clusterStoreData[i].data.previewString,
-                    'name' : clusterStoreData[i].data.name,
-                    'publishedDate' : clusterStoreData[i].data.publishedDate,
-                    'composite' : clusterStoreData[i].data.composite,
-                    'fileType' : clusterStoreData[i].data.fileType
-                }
-            }
-        }
-
-        //put pivot cluster object back into an array
-        for (var key in uniqueResults){
-                var newItem = uniqueResults[key];
-                featurePopUp.store.push(newItem)
-        }
+        featurePopUp.store = event.feature.cluster;
         featurePopUp.currentIndex = 0;
         controller.setPopUpContent(featurePopUp);
     },
@@ -775,7 +771,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
     },
 
     setPopUpContent: function (featurePopUp){
-        var data = featurePopUp.store[featurePopUp.currentIndex];
+        var data = featurePopUp.store[featurePopUp.currentIndex].data;
         featurePopUp.down('#popup-index-count').setText('Result ' + (featurePopUp.currentIndex + 1) + ' of ' + featurePopUp.store.length);
         featurePopUp.down('#popup-title').setText(this.parseTitle(data.title));
         featurePopUp.down('#popup-location-text').setText('Location: ' + data.name);
@@ -812,11 +808,10 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
 
     mapOpenDocumentPreview: function (button) {
         var me = Savanna.controller.Factory.getController('Savanna.search.controller.ResultsComponent');
-        var featurePopUp = button.up('search_featurepopup');
         var documentDetails = this.getPopupDocumentRecord(button);
         me.resultsStore = button.up('search_searchcomponent').down('search_resultspanelgrid').store;
 
-        var record = me.resultsStore.query('uri', featurePopUp.store[featurePopUp.currentIndex].uri).items[0],
+        var record = me.resultsStore.query('uri', documentDetails.uri).items[0],
             recordMetadata;
 
         if(me.getResultsComponent().currentResultSet.metadata)   {
@@ -832,9 +827,9 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
 
     getPopupDocumentRecord: function (button) {
         var featurePopUp = button.up('search_featurepopup');
-        var uri = featurePopUp.store[featurePopUp.currentIndex].uri;
-        var contentType = featurePopUp.store[featurePopUp.currentIndex].contentType;
-        var title = featurePopUp.store[featurePopUp.currentIndex].title;
+        var uri = featurePopUp.store[featurePopUp.currentIndex].data.uri;
+        var contentType = featurePopUp.store[featurePopUp.currentIndex].data.contentType;
+        var title = featurePopUp.store[featurePopUp.currentIndex].data.title;
         return {uri: uri, type: contentType, label: title}
     },
     

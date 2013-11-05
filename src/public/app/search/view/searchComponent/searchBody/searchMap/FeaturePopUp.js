@@ -34,8 +34,9 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.searchMap.FeaturePopU
         items: [
             {
                 xtype: 'label',
-                width: 240,
                 itemId: 'popup-index-count',
+                padding: '0 0 0 5',
+                width: 240,
                 cls: 'map popup content'
             },
             '->',
@@ -103,7 +104,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.searchMap.FeaturePopU
         {
             xtype: 'label',
             itemId: 'popup-preview-text',
-            padding: '0 0 0 5',
+            padding: '0 5 0 5',
             width: '100%',
             cls: 'map popup content'
         }
