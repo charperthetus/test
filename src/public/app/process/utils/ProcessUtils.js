@@ -416,6 +416,7 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
 
     },
 
+    optionalCategories: ['ProcessModel', 'ProcessAction', 'ProcessItem'],
     toggleOptional: function(diagram) {
         var firstObj = diagram.selection.first();
         var optional = !firstObj.data.isOptional;
@@ -424,7 +425,7 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         var iterator = diagram.selection.iterator;
         while (iterator.next()) {
             var obj = iterator.value;
-            if (obj instanceof go.Node) {
+            if (this.optionalCategories.indexOf(obj.category) >= 0) {
                 obj.data.isOptional = optional;
                 obj.updateTargetBindings('isOptional');
             }
