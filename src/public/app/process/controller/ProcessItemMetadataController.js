@@ -34,12 +34,16 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
     },
 
     buildItemDataFetchUrl: function (uri) {
-        return SavannaConfig.itemViewUrl + encodeURI(uri);
+        //return SavannaConfig.itemViewUrl + encodeURI(uri);
+        return SavannaConfig.mockItemViewUrl + encodeURI(uri);
     },
 
     handleRecordDataRequestSuccess: function(record, operation, success) {
         if(success) {
             console.log('Item wins too!', record.data);
+            this.getProcessTitle().setValue(this.store.getAt(0).data.label);
+            this.getProcessDescription().setValue(this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Description').valuesStore.getAt(0).data.value);
+
         }
     }
 

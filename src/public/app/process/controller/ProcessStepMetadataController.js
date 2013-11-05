@@ -13,12 +13,12 @@ Ext.define('Savanna.process.controller.ProcessStepMetadataController', {
     control: {
         view: {
             stepUriChanged: 'onUriChanged'
-        }//,
-//        processTitle: true,
-//        processDescription: true,
-//        imageBrowser: true,
-//        detailsPanel: true,
-//        sourcesPanel: true
+        },
+        stepTitle: true,
+        durationLabel: true,
+        stepDescription: true,
+        stepImageBrowser: true,
+        stepActions: true
 
     },
 
@@ -34,12 +34,15 @@ Ext.define('Savanna.process.controller.ProcessStepMetadataController', {
     },
 
     buildItemDataFetchUrl: function (uri) {
-        return SavannaConfig.itemViewUrl + encodeURI(uri);
+        //return SavannaConfig.itemViewUrl + encodeURI(uri);
+        return SavannaConfig.mockItemViewUrl + encodeURI(uri);
     },
 
     handleRecordDataRequestSuccess: function(record, operation, success) {
         if(success) {
             console.log('Step wins too!', record.data);
+            this.getStepTitle().setValue(this.store.getAt(0).data.label);
+            this.getStepDescription().setValue(this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Description').valuesStore.getAt(0).data.value);
         }
     }
 
