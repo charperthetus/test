@@ -19,12 +19,9 @@ Ext.define('Savanna.metadata.view.Double', {
 
         me.on('beforerender', Ext.bind(function() {
             if(me.getEditable() && me.getEditMode()) {
-                if(me.down('#editLabelItem')) {
-                    me.down('#editLabelItem').html = me.getDisplayLabel() + ':';
-                }
+                me.setTitle(me.getDisplayLabel() + ':');
                 if(me.down('#displayValueEdit')) {
                     me.down('#displayValueEdit').setValue(me.getValue().toString());
-                    //me.down('#displayValueEdit').fieldLabel = me.getDisplayLabel();
                     me.down('#displayValueEdit').regex = /^[0-9]*.[0-9]*$/;
                     me.down('#displayValueEdit').maskRe = /[\d\.]/i;
                     me.down('#displayValueEdit').listeners = {
@@ -35,11 +32,10 @@ Ext.define('Savanna.metadata.view.Double', {
 
                 }
             } else {
-                if(me.down('#displayLabelItem')) {
-                    me.down('#displayLabelItem').html = me.getDisplayLabel() + ':&nbsp;&nbsp;';
-                }
+                me.setTitle(me.getDisplayLabel() + ':&nbsp;&nbsp;');
+                
                 if(me.down('#displayValue')) {
-                    me.down('#displayValue').html = (null === me.getValue()) ? '&nbsp;' : me.getValue().toLocaleString();
+                    me.down('#displayValue').setValue((null === me.getValue()) ? '&nbsp;' : me.getValue().toLocaleString());
                 }
             }
         }, this));
