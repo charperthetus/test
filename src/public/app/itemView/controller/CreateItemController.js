@@ -39,6 +39,8 @@ Ext.define('Savanna.itemView.controller.CreateItemController', {
             scope: this,
             callback: this.handleCreateSuccess
         });
+
+        this.getView().close();
     },
 
     onParentItemCancel: function () {
@@ -58,8 +60,6 @@ Ext.define('Savanna.itemView.controller.CreateItemController', {
             }
         });
         Savanna.app.fireEvent('search:itemSelected', itemView);
-
-        this.getView().close();
 
     }
 });
