@@ -97,7 +97,9 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                                 fill: 'white',
                                 height: 32,
                                 width: 32
-                            }),
+                            }, new go.Binding('strokeDashArray', 'isOptional', function(isOptional) {
+                                return isOptional? [8,8] : [];
+                            })),
                             gmake(go.Shape, 'Cube1', this.styler().rectangle().outline, {
                                 height: 20,
                                 width: 20,
@@ -166,7 +168,16 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
         );
 
         nodeTemplateMap.add('ProcessAction',
-            gmake(go.Node, go.Panel.Spot,
+            gmake(go.Node, go.Panel.Auto,
+                gmake(go.Shape, 'Rectangle', {
+                    stroke: null,
+                    fill: null,
+                    strokeWidth: 1
+                }, new go.Binding('strokeDashArray', 'isOptional', function(isOptional) {
+                    return isOptional? [8,8] : [];
+                }), new go.Binding('stroke', 'isOptional', function(isOptional) {
+                    return isOptional? 'black' : null;
+                })),
                 gmake(go.TextBlock, this.styler().circle().textblock, new go.Binding('text', 'label').makeTwoWay(), {
                     mouseEnter: function (e, obj) {
                         obj.isUnderline = true;
@@ -174,7 +185,8 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                     mouseLeave: function (e, obj) {
                         obj.isUnderline = false;
                     }
-                }), {
+                }),
+                {
                     selectionAdornmentTemplate: gmake(go.Adornment, 'Auto',
                         gmake(go.Shape, 'RoundedRectangle',
                             this.styler().start().selectionAdornment),
@@ -575,6 +587,9 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                             background: 'white'
                         },
                         gmake(go.Shape, 'RoundedRectangle', this.styler().processModel().roundedRectangle,
+                            new go.Binding('strokeDashArray', 'isOptional', function(isOptional) {
+                                return isOptional ? [8,8] : [];
+                            }),
                             new go.Binding('stroke', 'isSelected', function (sel) {
                                 if (sel) return 'transparent';
                                 else return '#999999';
