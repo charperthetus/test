@@ -33,9 +33,7 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
         uploadbutton: {
             click: 'displayUploadDialog'
         },
-        testbutton: {
-            click: 'dummyTestCodeDeleteMe'
-        },
+
         //TODO - commented until we have a real help page to link to
 //        helpbutton: {
 //            click: 'launchHelp'
@@ -146,14 +144,5 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
         else {
             searchWindow.center();
         }
-    },
-    dummyTestCodeDeleteMe : function (){
-       var window = Ext.create('Savanna.classification.view.ClassificationWindow',{
-           portionMarking: "U",
-           modal: true
-       });
-
-        window.show();
-        window.center();
     }
 });
