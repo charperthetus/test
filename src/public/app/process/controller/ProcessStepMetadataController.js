@@ -24,11 +24,8 @@ Ext.define('Savanna.process.controller.ProcessStepMetadataController', {
 
 
     onUriChanged: function(processUri) {
-        console.log('Step onUriChanged',processUri);
-
         this.store = Ext.create('Savanna.itemView.store.MainItemStore');
         this.store.getProxy().url = this.buildItemDataFetchUrl(processUri);
-        console.log('item this.store.getProxy().url',this.store.getProxy().url);
 
         this.store.load({
             scope: this,
@@ -41,7 +38,6 @@ Ext.define('Savanna.process.controller.ProcessStepMetadataController', {
     },
 
     handleRecordDataRequestSuccess: function(record, operation, success) {
-        console.log('handleRecordDataRequestSuccess step');
         if(success) {
             console.log('Step wins too!', record.data);
         }

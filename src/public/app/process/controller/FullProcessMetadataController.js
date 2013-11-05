@@ -25,8 +25,6 @@ Ext.define('Savanna.process.controller.FullProcessMetadataController', {
 
 
     onUriChanged: function(processUri) {
-        console.log('FullProcessMetadataController onUriChanged',processUri);
-
         this.store = Ext.create('Savanna.itemView.store.MainItemStore');
         this.store.getProxy().url = this.buildItemDataFetchUrl(processUri);
 
@@ -41,7 +39,6 @@ Ext.define('Savanna.process.controller.FullProcessMetadataController', {
     },
 
     handleRecordDataRequestResponse: function(record, operation, success) {
-        console.log('handleRecordDataRequestSuccess');
         if(success) {
             console.log('We Win!');
         }
