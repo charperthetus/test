@@ -40,10 +40,10 @@ ul.x-boxselect-list.x-boxselect-singleselect {
 }
 .x-field:not(.x-item-disabled) .x-boxselect-item:hover {
   background: #5a5a5a;
-  border: 1px solid #5a5a5a;
+  //border: 1px solid #5a5a5a;
 }
 .x-field:not(.x-item-disabled) .x-boxselect-item.selected {
-  border: 1px solid #5c5c5c !important;
+  //border: 1px solid #5c5c5c !important;
   background: #5c5c5c !important;
 }
 .x-boxselect-item-text {
@@ -70,9 +70,12 @@ ul.x-boxselect-list.x-boxselect-singleselect {
   -webkit-font-smoothing: antialiased;
   text-decoration: none;
   font-size: 16px;
+}
+
+.x-tab-default .x-boxselect-item-close  {
   width: 12px;
   height: 14px;
-  background-image: none;
+  background-image: none !important;
 }
 
 .x-boxselect-item-close:before{
@@ -80,11 +83,13 @@ ul.x-boxselect-list.x-boxselect-singleselect {
   position: absolute;
   cursor: pointer;
   right: 0;
-  top: -2px;
+  top: -4px;
   color: #8c8c8c;
   font-size: 18px;
   line-height: 14px;
 }
+
+
 
 .x-boxselect-hideselections .x-boundlist-selected {
   display: none;

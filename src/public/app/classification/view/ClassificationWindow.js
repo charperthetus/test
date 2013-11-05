@@ -12,6 +12,7 @@ Ext.define('Savanna.classification.view.ClassificationWindow', {
     },
 
     title: 'Edit Classification',
+    cls: "classification",
 
     layout: 'anchor',
     width: 480,
