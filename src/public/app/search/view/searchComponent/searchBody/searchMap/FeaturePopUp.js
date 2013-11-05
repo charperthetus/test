@@ -10,76 +10,94 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.searchMap.FeaturePopU
     alias: 'widget.search_featurepopup',
 
     height: 175,
-
     width: 375,
-
     style: {
         'overflow': "visible"
     },
     store: [],
-
+    layout: 'vbox',
     currentIndex: null,
-
     data: {},
-
     scroll: 'vertical',
-
-    //floating: true,
-
     toFrontOnShow: false,
-
     hidden: true,
-
     header: false,
-
     defaults: {
         // applied to each contained panel
         border: false
     },
 
-    tpl: ['<div style="position: relative" >',
-        '<div id="hoverDivTop" style=" right: 0;  top: 5; position: absolute;" ><button id="popupTestDiv" class="button popUpThumb">TN</button><button class="button popUpAddUnsorted">AU</button><button class="button popUpOpen">OF</button></div>',
-        '<table>',
-        '<tr><td colspan="2" class="map-popup-title"><strong>{[this.parseTitle(values.title)]}</strong></td></tr>',
-        '<tr><td colspan="2" class="map-popup-text">Location: {name}</td></tr>',
-        '<tr><td colspan="2" class="map-popup-text">Mentions: {count}</td></tr>',
-        '<td class="map-popup-text">({composite}) - {[this.parseDate(new Date(values.publishedDate))]} - {fileType} - {previewString}</td>',
-        '</table>',
-        '</div>',
-        '<div id="hoverDivBottom" style=" right: 0;  bottom: 5; position: absolute;" ><button class="buttonpopUpPreview">Preview</button></div>',
-        {
-            parseDate: function (v) {
-                return Ext.Date.format(new Date(v), 'F d, Y');
+    tbar: {
+        itemId:'popup-top-toolbar',
+        height: 35,
+        width: '100%',
+        items: [
+            {
+                xtype: 'label',
+                itemId: 'popup-index-count',
+                padding: '0 0 0 5',
+                width: 240,
+                cls: 'map popup content'
+            },
+            '->',
+            {
+                xtype: 'button',
+                itemId: 'mapResultPrev',
+                text: '<',
+                direction: 'prev',
+                disabled: true
+            },
+            {
+                xtype: 'button',
+                itemId: 'mapResultNext',
+                direction: 'next',
+                text: '>',
+                disabled: true
             }
-        },
+
+        ]
+    },
+
+    dockedItems: [
         {
-            parseTitle: function (v) {
-                var title =  (v.length > 40) ? v.substring(0,40) + "..." : v;
-                return title;
-            }
+            dock: 'bottom',
+            xtype: 'toolbar',
+            itemId: 'popup-preview-toolbar',
+            items: [
+                '->',
+                {
+                    xtype: 'button',
+                    itemId: 'openDocButton',
+                    text: 'Open'
+
+                }]
         }
     ],
 
-
-    bbar: {
-        itemId:'popuptoolbar',
-        height: 35,
-        items: [
-
+    items: [
         {
-            id: 'mapResultPrev',
-            text: 'Back',
-            direction: 'prev',
-            disabled: true
+            xtype: 'text',
+            itemId: 'popup-title',
+            padding: '0 0 5 5',
+            cls: 'map-popup-title'
         },
-        '->',
         {
-            id: 'mapResultNext',
-            direction: 'next',
-            text: 'Next',
-            disabled: true
+            xtype: 'text',
+            itemId: 'popup-location-text',
+            padding: '0 0 0 5',
+            width: '100%',
+            cls: 'map popup content'
+        },
+        {
+            xtype: 'label',
+            itemId: 'popup-preview-text',
+            padding: '0 5 0 5',
+            width: '100%',
+            cls: 'map popup content'
         }
-    ]},
+
+
+    ],
 
     refresh:function(){
         var renderSelector = Ext.query('button.popUpPreview');
