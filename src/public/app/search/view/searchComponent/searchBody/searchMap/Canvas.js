@@ -37,7 +37,6 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.searchMap.Canvas', {
 
     beforeRender: function () {
         var baseLayer = SavannaConfig.mapDefaultBaseLayer;
-        this.map.maxResolution = (baseLayer.projection === 'EPSG:4326') ? 0.703125 : 156543.03390625;
         switch (baseLayer.type){
             case 'WMS':
                 this.map.addLayer(new OpenLayers.Layer.WMS(baseLayer.layerLabel, baseLayer.url, {layers: baseLayer.layerName}));
@@ -46,12 +45,14 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.searchMap.Canvas', {
                 this.map.addLayer(new OpenLayers.Layer.XYZ(baseLayer.layerLabel, baseLayer.url, {layers: baseLayer.layerName}));
                 break;
             case 'TMS':
+                this.map.maxResolution = baseLayer.maxResolution
                 this.map.addLayer(new OpenLayers.Layer.TMS(baseLayer.layerName, baseLayer.url, {layername: baseLayer.layerName, type: baseLayer.imgType}));
                 break;
             /*
              The case is for the GeoCache TMS layers
              */
             case 'TMS2':
+                this.map.maxResolution = baseLayer.maxResolution
                 this.map.addLayer(new OpenLayers.Layer.TMS(baseLayer.layerName, baseLayer.url, {layername: baseLayer.layerName, type: baseLayer.imgType, 'getURL': this.createGeoCacheUrl}));
                 break;
         }

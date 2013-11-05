@@ -48,6 +48,7 @@ SavannaConfig = {
     mapDefaultBaseLayer: {
         url: 'http://geocache.grayhive.org/tms/',
         projection: 'EPSG:4326',
+        maxResolution: 0.703125,
         type: 'TMS2',
         imgType: 'png',
         layerName: 'vmap',
@@ -59,6 +60,7 @@ SavannaConfig = {
 //    mapDefaultBaseLayer: {
 //        url: 'http://tilecache.osgeo.org/wms-c/Basic.py/',
 //        projection: 'EPSG:4326',
+//        maxResolution: 0.703125,
 //        type: 'TMS',
 //        imgType: 'png',
 //        layerName: 'basic',
