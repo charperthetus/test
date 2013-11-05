@@ -251,7 +251,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
     handleRecordDelete: function (responseObj) {
 
-        Savanna.app.fireEvent('itemview:itemDeleted', this.getView());
+        EventHub.fireEvent('close', this.getView());
 
         if (!responseObj.operations[0].success) {
             Ext.Error.raise({
@@ -384,7 +384,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     },
 
     onNewItemClick: function (btn) {
-        Savanna.app.fireEvent('itemview:createitem', btn);
+        EventHub.fireEvent('createitem');
     },
 
     /* commented out for demo
@@ -406,17 +406,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     },
 
     openItem: function (itemName, itemUri) {
-        var itemView = Ext.create('Savanna.itemView.view.ItemViewer', {
-            title: itemName,
-            itemUri: encodeURI(itemUri),
-            closable: true,
-            autoScroll: true,
-            tabConfig: {
-                ui: 'dark'
-            }
-        });
-
-        Savanna.app.fireEvent('search:itemSelected', itemView);
+        EventHub.fireEvent('open', {uri:itemUri, label: itemName, type:'item'});
     },
     deleteRelatedItem: function (itemName, itemUri) {
 
