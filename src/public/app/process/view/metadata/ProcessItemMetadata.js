@@ -10,6 +10,12 @@ Ext.define('Savanna.process.view.metadata.ProcessItemMetadata', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.process_item_metadata',
 
+    requires: [
+        'Savanna.process.controller.ProcessItemMetadataController'
+    ],
+
+    controller: 'Savanna.process.controller.ProcessItemMetadataController',
+
     overflowY: 'auto',
 
     items: [

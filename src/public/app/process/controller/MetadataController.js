@@ -45,6 +45,7 @@ Ext.define('Savanna.process.controller.MetadataController', {
 
         if(1 === this.getDiagram().selection.count) {
             var itemUri = this.getDiagram().selection.first().data.uri;
+            itemUri = encodeURIComponent(itemUri);
             console.log('this.getDiagram().selection.first()', this.getDiagram().selection.first().data.uri);
             if (itemUri.indexOf('ProcessModel') !== -1){
              // this is a step
@@ -53,7 +54,7 @@ Ext.define('Savanna.process.controller.MetadataController', {
             } else if (itemUri.indexOf('Item') !== -1) {
              // this is an item
                 console.log('This is an item');
-                this.setUpItemDetails();
+                this.setUpItemDetails(itemUri);
             } else {
                 console.log('we dont know what this is yet');
                 this.setUpProcessDetails(null);
@@ -68,6 +69,7 @@ Ext.define('Savanna.process.controller.MetadataController', {
 
     setUpProcessDetails: function(itemUri) {
         // get proper info from service for item configs
+        console.log('MetadataController setUpProcessDetails');
         if( null !== itemUri ) {
             this.setProcessUri( itemUri );
             // need to populate the full_process_metadata
@@ -82,12 +84,17 @@ Ext.define('Savanna.process.controller.MetadataController', {
     },
 
     setUpStepDetails: function(itemUri) {
-        // need to populate step panel
+        this.getStepMetadata().show();
+
+        this.getStepMetadata().fireEvent('processUriChanged', itemUri);
         this.getHiddenTabPanel().setActiveTab(this.getStepMetadata());
     },
 
     setUpItemDetails: function(itemUri) {
-        // need to populate item panel
+        this.getItemMetadata().show();
+
+        console.log('****** setUpItemDetails ready to fire event', itemUri);
+        this.getItemMetadata().fireEvent('processUriChanged', itemUri);
         this.getHiddenTabPanel().setActiveTab(this.getItemMetadata());
     },
 
