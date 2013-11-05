@@ -236,6 +236,9 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
                 msg: 'Updating record failed.'
             })
         }
+        var itemViewViewtab = this.getView().queryById('itemviewer_viewtab');
+        itemViewViewtab.doLayout();
+
     },
 
     getItemViewData: function () {
