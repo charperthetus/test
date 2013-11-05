@@ -219,6 +219,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
                 relatedItemView.fireEvent('ViewRelatedItems:AddRelationshipGrid', group);
             }
         }, this);
+        relatedItemView.fireEvent('ViewRelatedItems:SetupData', this.store.getAt(0).propertyGroupsStore.getById('Related Items').valuesStore.data.items);
 
 
         this.store.getAt(0).setDirty();

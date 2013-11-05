@@ -45,7 +45,6 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
                     },
                     height:79,
                     width: '100%',
-                    margin:'0 10 10 10',
                     cls:'related-item-drop-zone',
                     layout: {
                         type: 'hbox',
@@ -99,9 +98,10 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
                 myPanel.add(this.buildAddItem(item, relatedItemsGroup.get('label')));
             }, this);
         }, this);
+        this.updateHeader(items.length);
     },
 
-    addRelationshipType: function(btn) {
+    addRelationshipType: function() {
         var addNewRelationship = Ext.create('Savanna.itemView.view.relatedItems.RelationshipPicker', {
             width: 500,
             height: 600,
@@ -117,9 +117,9 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
         if (view.updatedStore) {
             this.getView().removeAll();
             this.relationshipNameArray = [];
-            this.getView().storeHelper.updateMainStore(this.getView().store.data.items, "Related Items");
+            this.getView().storeHelper.updateMainStore(this.getView().store.data.items, 'Related Items');
             this.setupData(this.getView().store.data.items);
-//            this.updateTitle();
+            this.updateHeader(this.getView().store.data.items.length);
             this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
         }
     },
@@ -148,7 +148,7 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
                     value: item.label
                 }
             ]
-        }
+        };
     },
     onDropItemReady: function(container){
         var myDropBox = container.getEl();
@@ -179,7 +179,7 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
         data.records.forEach(function(rec) {
             var obj = rec.data;
             // TODO check to make sure item doesn't already exist
-            this.addRelatedItem(obj.label, obj, container.down('#addRelatedItem'))
+            this.addRelatedItem(obj.label, obj, container.down('#addRelatedItem'));
         }, this);
     },
     dragDataIsItem: function(data) {
@@ -187,7 +187,7 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
         data.records.forEach(function(rec) {
             var obj = rec.data;
             if (obj.type !== 'Item') {
-                returnVal = false
+                returnVal = false;
             }
         });
         return returnVal;
@@ -221,6 +221,16 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
     removeItem: function(itemName, groupName) {
         this.getView().storeHelper.removeBotLevItemInStore(itemName, this.getView().store.getById(groupName));
         this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
-    }
+    },
+
+    updateHeader: function (number) {
+        var titlePre = 'Related Items (',
+            titlePost = ')',
+            title = this.getView();
+
+        if (title) {
+            title.setTitle(titlePre + number + titlePost);
+        }
+    },
 
 });
