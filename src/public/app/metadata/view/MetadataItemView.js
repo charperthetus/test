@@ -8,15 +8,12 @@
 
 
 Ext.define('Savanna.metadata.view.MetadataItemView', {
-    extend: 'Ext.container.Container',
+    extend: 'Ext.form.FieldSet',
+    
     alias: 'widget.metadata_itemview',
-
-    layout: 'hbox',
-    width: "100%",
+    
     border: false,
-    padding: '0 3 0 3',
     itemId: '',
-
     config: {
         editMode: false,
 
@@ -28,12 +25,14 @@ Ext.define('Savanna.metadata.view.MetadataItemView', {
         editable: true,
         type: ''
     },
+    width: '100%',
 
     applyEditMode: function(editMode) {
-        if(this.getEditable())
+        if(this.getEditable()){
             return editMode;
-        else
+        } else {
             return undefined;
+        }  
     },
 
     initValues: function(config) {
@@ -65,20 +64,12 @@ Ext.define('Savanna.metadata.view.MetadataItemView', {
 
     makeEditViewItems: function() {
         var me = this;
-        this.layout = 'vbox';
-        this.add(Ext.create('Ext.form.Label', {
-            itemId: 'editLabelItem',
-            width: '100%',
-            //minWidth: 180,
-            height: 25
-        }));
+        me.setTitle('');
 
         this.add(Ext.create('Ext.form.field.TextArea', {
-            //fieldLabel: '',
             itemId: 'displayValueEdit',
             allowBlank: true,
             width: '100%',
-            //labelWidth: 180,
             grow: true,
             growAppend: '',
             rows: 0,
@@ -86,7 +77,6 @@ Ext.define('Savanna.metadata.view.MetadataItemView', {
             growMax: 200,
             listeners: {
                 blur: function(d) {
-                    //console.log('Item Blur');
                     var newVal = d.getValue().trim();
                     me.setValue(newVal);
                 }
@@ -95,17 +85,8 @@ Ext.define('Savanna.metadata.view.MetadataItemView', {
     },
 
     makeViewViewItems: function() {
-        this.layout = 'hbox';
-        this.add(Ext.create('Ext.form.Label', {
-            itemId: 'displayLabelItem',
-            //width: 180,
-            //minWidth: 180,
-            height: 25
-        }));
-        this.add(Ext.create('Ext.form.Label', {
-            itemId: 'displayValue',
-            width: '100%'
-
+        this.add(Ext.create('Ext.form.field.Display', {
+            itemId: 'displayValue'
         }));
     }
 });
