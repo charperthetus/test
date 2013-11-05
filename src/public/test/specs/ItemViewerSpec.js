@@ -149,9 +149,9 @@ describe('Item Viewer', function () {
 
             it('should fire an "open" event when clicking a related item', function() {
                 var clickEvent = { target: { value: 'title', name: 'uristring', id: 'openRelatedItem' } };
-                spyOn(Savanna.app, 'fireEvent');
+                spyOn(EventHub, 'fireEvent');
                 itemviewController.onRelatedItemClick(null, null, null, null, clickEvent);
-                expect(Savanna.app.fireEvent).toHaveBeenCalled();
+                expect(EventHub.fireEvent).toHaveBeenCalled();
             });
         });
     });
@@ -159,18 +159,18 @@ describe('Item Viewer', function () {
     describe('Header View Controller', function() {
         it('should fire an "open" event when clicking a parent item', function() {
             var clickEvent = { target: { value: 'title', name: 'uristring', id: 'openParentItem' } };
-            spyOn(Savanna.app, 'fireEvent');
+            spyOn(EventHub, 'fireEvent');
             itemviewComponent.down('itemview_view_header').getController().openParentItem(null, null, null, null, clickEvent);
-            expect(Savanna.app.fireEvent).toHaveBeenCalled();
+            expect(EventHub.fireEvent).toHaveBeenCalled();
         });
     });
 
     describe('Related Processes Controller', function() {
         it('should fire an "open" event when clicking a process', function() {
             var clickEvent = { target: { value: 'title', name: 'uristring', id: 'openProcess' } };
-            spyOn(Savanna.app, 'fireEvent');
+            spyOn(EventHub, 'fireEvent');
             itemviewComponent.down('itemview_related_processes').getController().openRelatedProcesses(null, null, null, null, clickEvent);
-            expect(Savanna.app.fireEvent).toHaveBeenCalled();
+            expect(EventHub.fireEvent).toHaveBeenCalled();
         });
 
     });
