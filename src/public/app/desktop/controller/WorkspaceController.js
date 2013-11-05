@@ -45,7 +45,7 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
 
         //TODO - This needs to be changed to handle generic new items instead of listening for each type
         EventHub.on('createitem', this.createItem, this);
-        EventHub.on('createprocess', function(){this.createProcess(this.getMaintabpanel())}, this);
+        EventHub.on('createprocess', this.onCreateProcess, this);
 
         return this.callParent(arguments);
     },
@@ -156,6 +156,10 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
         }
     },
 
+    onCreateProcess: function(){
+        this.createProcess(this.getMaintabpanel());
+    },
+
     createProcess: function(tabpanel) {
         var process = Ext.create('Savanna.process.view.ProcessEditorComponent', {
             title: 'Untitled Process',
@@ -179,5 +183,13 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
             menu.child('*[text="single view"]').show();
             menu.child('*[text="split view"]').hide();
         }
+    },
+    destroy: function() {
+        EventHub.un('open', this.onOpen, this);
+        EventHub.un('close', this.onClose, this);
+
+        EventHub.un('createitem', this.createItem, this);
+        EventHub.un('createprocess', this.onCreateProcess, this);
+
     }
 });
