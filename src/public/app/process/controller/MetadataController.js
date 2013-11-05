@@ -11,7 +11,9 @@ Ext.define('Savanna.process.controller.MetadataController', {
             processUriChange: 'setUpProcessDetails'
             //uriChange: 'onUriChange'
         },
-        hiddenTabPanel: true,
+        hiddenTabPanel: {
+            boxready: 'onBeforeHiddenPanelShow'
+        },
         fullProcessMetadata: true,
         stepMetadata: true,
         itemMetadata: true,
@@ -66,7 +68,6 @@ Ext.define('Savanna.process.controller.MetadataController', {
 
     setUpProcessDetails: function(itemUri) {
         // get proper info from service for item configs
-        console.log('setUpProcessDetails');
         if( null !== itemUri ) {
             this.setProcessUri( itemUri );
             // need to populate the full_process_metadata
@@ -81,12 +82,12 @@ Ext.define('Savanna.process.controller.MetadataController', {
     },
 
     setUpStepDetails: function(itemUri) {
-        console.log('setUpStepDetails');
+        // need to populate step panel
         this.getHiddenTabPanel().setActiveTab(this.getStepMetadata());
     },
 
     setUpItemDetails: function(itemUri) {
-        console.log('setUpItemDetails');
+        // need to populate item panel
         this.getHiddenTabPanel().setActiveTab(this.getItemMetadata());
     },
 
@@ -101,5 +102,9 @@ Ext.define('Savanna.process.controller.MetadataController', {
 
     processSelectionChanged: function(e) {
         console.log('selection size', this.getDiagram().selection.count);
+    },
+
+    onBeforeHiddenPanelShow: function() {
+        this.getHiddenTabPanel().getTabBar().setVisible(false);
     }
 });
