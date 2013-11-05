@@ -29,7 +29,12 @@ Ext.define('Savanna.process.store.TypeAheadStore', {
         this.setProxy({
             type: 'savanna-cors',
             url: this.getUrlEndPoint(),
-            extraParams: this.getParamsObj(),
+//            extraParams: this.getParamsObj(),
+
+            pageParam: null,
+            startParam: null,
+            limitParam: null,
+            filterParam: null,
 
             reader: {
                 type: 'json',
