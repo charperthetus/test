@@ -31,7 +31,7 @@ Ext.define('Savanna.process.view.metadata.ProcessItemMetadata', {
                 },
                 {
                     xtype: 'button',
-                    label: 'Open',
+                    text: 'Open',
                     itemId: 'openBtn'
                 }
             ]
