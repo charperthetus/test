@@ -59,7 +59,8 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
             }
         });
 
-        Savanna.app.on('initModelSearch', this.displayModelSearch);
+        EventHub.on('openModelSearch', this.displayModelSearch);
+        EventHub.on('openSearch', this.displaySearch);
 
         return this.callParent(arguments);
     },
