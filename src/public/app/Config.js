@@ -25,6 +25,8 @@ Ext.define('Savanna.Config', {
         sc.capcoUrl = rUrl + 'rest/capco/';
         sc.processUrl = rUrl + 'rest/modelProcess'
 
+        sc.mockItemViewUrl = rUrl + 'rest/model/mock/item/';
+
         // TODO: replace this test URL with real endpoint once we have one....
         sc.processTemplatesUrl = 'resources/data/Process.json';
         sc.metadataTestDataUrl = 'resources/data/Metadata.json';

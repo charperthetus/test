@@ -25,6 +25,32 @@
         $uikit-body-background-color: $medium-gray
     );
     
+    @include uikit-panel(
+        $uikit-ui: 'off-white',
+        $uikit-header-background-color: #f2f2f2,
+        $uikit-header-color: #333,
+        $uikit-header-border-color: #cccccc,
+    	$uikit-header-border-width: 1px 0,
+    	$uikit-header-padding: 7px,
+    	$uikit-header-line-height: 14px,
+    	$uikit-header-text-transform: capitalize,
+    	$uikit-body-background-color: #f2f2f2,
+    	$uikit-body-padding: 4px,
+    	$uikit-tool-color: #333
+    );
+    
+    @include uikit-panel (
+	  $uikit-ui: 'item-view',
+	  $uikit-header-color: $font-color,
+	  $uikit-header-font-family: $panel-header-font-family,
+	  $uikit-header-font-size: $item-view-panel-header-font-size,
+	  $uikit-header-font-weight: $panel-body-font-weight,
+	  $uikit-header-line-height: $item-view-panel-header-line-height,
+	  $uikit-header-border-color: $item-view-panel-header-border-color,
+	  $uikit-header-border-style: $panel-header-border-style,
+	  $uikit-header-background-color: $item-view-panel-header-background-color
+	 );
+    
 	// /* 
 	//  * This is the solution for search option and result facets until these can be changed 
 	//  * from 'accordion panels' to 'form field set groups'. 
@@ -64,25 +90,27 @@
 	    $uikit-body-border-color: $panel-resultfacet-body-border-color,
 	    $uikit-tool-color: $panel-resultfacet-header-color
 	);
+	
 	@include uikit-panel(
         $uikit-ui: 'left-padding',
         $uikit-body-padding: $panel-leftpadding-body-padding
     );
 
 	.#{$prefix}panel-body-search-dal-group{
-		text-align: right;
-	}
-}
+		text-align: right
+	};
+};
 
-.item-view-column{
-  border-right-width:$item-view-left-column-border-width;
+.item-view-column {
+  border-right-width: $item-view-left-column-border-width;
   border-right-style: $item-view-left-column-border-style;
+  
   &:last-child{
-    border-right-width:0;
+    border-right-width: 0;
   }
 }
 
-.itemview{
+.itemview {
   border: 1px solid #999;
 }
 

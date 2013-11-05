@@ -41,6 +41,9 @@ Ext.define('Savanna.process.controller.ProcessController', {
         alts: {
             click: 'handleAlts'
         },
+        optional: {
+            click: 'toggleOptional'
+        },
         zoomIn: {
             click: 'zoomIn'
         },
@@ -82,6 +85,10 @@ Ext.define('Savanna.process.controller.ProcessController', {
         return this.callParent(arguments);
     },
 
+    utils: function() {
+        return Savanna.process.utils.ProcessUtils;
+    },
+
     onStoreLoaded: function (records) {
         this.load(this.getCanvas().diagram, records[0]);
     },
@@ -120,8 +127,8 @@ Ext.define('Savanna.process.controller.ProcessController', {
 
     clear: function(diagram) {
         var newProcess = {'class': 'go.GraphLinksModel', 'nodeKeyProperty': 'uri', 'nodeDataArray': [{'category':'Start'}], 'linkDataArray': []};
-        newProcess.nodeDataArray[0].uri = Savanna.process.utils.ProcessUtils.getURI('Start');
-        newProcess.uri = Savanna.process.utils.ProcessUtils.getURI('ProcessModel');
+        newProcess.nodeDataArray[0].uri = this.utils().getURI('Start');
+        newProcess.uri = this.utils().getURI('ProcessModel');
         this.store.add(newProcess);
         this.load(diagram, this.store.first());
 
@@ -137,11 +144,15 @@ Ext.define('Savanna.process.controller.ProcessController', {
     },
 
     handleMerge: function() {
-        Savanna.process.utils.ProcessUtils.addMerge(this.getCanvas().diagram);
+        this.utils().addMerge(this.getCanvas().diagram);
     },
 
     handleAlts: function() {
-        Savanna.process.utils.ProcessUtils.addAlts(this.getCanvas().diagram);
+        this.utils().addAlts(this.getCanvas().diagram);
+    },
+
+    toggleOptional: function() {
+        this.utils().toggleOptional(this.getCanvas().diagram);
     },
 
     zoomIn: function() {

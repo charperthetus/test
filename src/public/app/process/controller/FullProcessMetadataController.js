@@ -25,8 +25,6 @@ Ext.define('Savanna.process.controller.FullProcessMetadataController', {
 
 
     onUriChanged: function(processUri) {
-        console.log('FullProcessMetadataController onUriChanged',processUri);
-
         this.store = Ext.create('Savanna.itemView.store.MainItemStore');
         this.store.getProxy().url = this.buildItemDataFetchUrl(processUri);
 
@@ -37,13 +35,16 @@ Ext.define('Savanna.process.controller.FullProcessMetadataController', {
     },
 
     buildItemDataFetchUrl: function (uri) {
-        return SavannaConfig.itemViewUrl + encodeURI(uri);
+        //return SavannaConfig.itemViewUrl + encodeURI(uri);
+        return SavannaConfig.mockItemViewUrl + encodeURI(uri);
     },
 
     handleRecordDataRequestResponse: function(record, operation, success) {
-        console.log('handleRecordDataRequestSuccess');
         if(success) {
             console.log('We Win!');
+            this.getProcessTitle().setValue(this.store.getAt(0).data.label);
+            this.getProcessDescription().setValue(this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Description').valuesStore.getAt(0).data.value);
+
         }
     }
 });

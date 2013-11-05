@@ -10,21 +10,19 @@ Ext.define('Savanna.metadata.view.Classification', {
     extend: 'Savanna.metadata.view.MetadataItemView',
     alias: 'widget.metadata_classification',
 
-    requires: ['Savanna.classification.view.ClassificationWindow'],
+    requires: [ 'Savanna.classification.view.ClassificationWindow'],
 
-    layout: 'vbox',
+    layout: 'hbox',
+
+    padding: '0 10 10 10',
 
     initComponent: function () {
         this.callParent(arguments);
         var me = this;
 
         me.on('beforerender', Ext.bind(function() {
-            if(me.down('#labelItem')) {
-                me.down('#labelItem').html = me.getDisplayLabel() + ':';
-            }
-            if(me.down('#displayValue')) {
-                me.down('#displayValue').html = (null === me.getValue()) ? '&nbsp;' : me.getValue();
-            }
+            me.down('#displayValue').setFieldLabel(me.getDisplayLabel());
+            me.down('#displayValue').setValue((null === me.getValue()) ? '&nbsp;' : me.getValue());
         }, this));
     },
 
@@ -38,22 +36,10 @@ Ext.define('Savanna.metadata.view.Classification', {
     },
 
     makeEditViewItems: function() {
-        var me = this;
-        var labelAndButtonContainer = Ext.create('Ext.container.Container', {
-            itemId: 'labelAndButtonContainer',
-            layout: 'hbox',
-            width: "100%",
-            border: false
-        });
+        this.makeViewViewItems();
 
-        labelAndButtonContainer.add(Ext.create('Ext.form.Label', {
-            itemId: 'labelItem',
-            height: 25
-        }));
-
-        labelAndButtonContainer.add( Ext.create('Ext.Button', {
+        var classificationEditBtn = Ext.create('Ext.button.Button', {
             text: 'Edit',
-            padding: '0 0 0 180',
             listeners: {
                 click: function () {
                     var classificationWindow = Ext.create('Savanna.classification.view.ClassificationWindow', {
@@ -67,26 +53,19 @@ Ext.define('Savanna.metadata.view.Classification', {
                 },
                 scope: this
             }
-        }));
-
-        this.add(labelAndButtonContainer);
-
-        this.add(Ext.create('Ext.form.Label', {
-            itemId: 'displayValue',
-            width: '100%'
-        }));
+        });
+        this.add(classificationEditBtn);
     },
 
     makeViewViewItems: function() {
-        this.add(Ext.create('Ext.form.Label', {
-            itemId: 'labelItem',
-            height: 25
-        }));
-        this.add(Ext.create('Ext.form.Label', {
+        var labelAndButtonContainer = Ext.create('Ext.form.field.Display', {
             itemId: 'displayValue',
-            width: '100%'
-
-        }));
+            layout: 'vbox',
+            labelCls: 'label',
+            flex: 10,
+            labelPad: 2
+        });
+        this.add(labelAndButtonContainer);
     },
 
     onClassificationChanged: function(event) {
@@ -95,7 +74,7 @@ Ext.define('Savanna.metadata.view.Classification', {
             this.setValue(event.portionMarking);
 
             if(this.down('#displayValue')) {
-                this.down('#displayValue').setText(this.getValue() ? this.getValue() : '&nbsp;');
+                this.down('#displayValue').setValue(this.getValue() ? this.getValue() : '&nbsp;');
             }
         }
     }

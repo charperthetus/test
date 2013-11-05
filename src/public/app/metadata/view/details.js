@@ -8,6 +8,7 @@
 Ext.define('Savanna.metadata.view.Details', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.metadata_details',
+
     itemId: 'detailsPanel',
 
     height: '100%',
@@ -19,47 +20,56 @@ Ext.define('Savanna.metadata.view.Details', {
 
     requires: [
         'Savanna.metadata.controller.MetadataViewController',
-        'Savanna.metadata.store.Metadata'
-    ],
+        'Savanna.metadata.store.Metadata',
+        'Ext.form.Panel',
+        'Ext.button.Button'],
 
     controller: 'Savanna.metadata.controller.MetadataViewController',
 
+    header: {
+        ui: 'light-blue'
+    },
+    collapseMode : 'header',   
+    headerPosition: 'left',
+    collapsedCls : 'light-blue',
 
     items: [
         {
-            xtype: 'panel',
+            xtype: 'form',
             itemId: 'wrapperPanel',
             title: 'Information',
             header: {
-                ui: 'light-blue'
+                ui: 'off-white'
             },
+            ui: 'off-white',
             height: '100%',
             width: '100%',
             layout: 'vbox',
             collapsible: true,
             overflowY: 'auto',
-            tbar: [
-                '->',
-                {
-                    xtype:    'button',
-                    text:     'Edit',
-                    itemId:   'metadata_edit_button'
-                },
-                {
-                    xtype:    'button',
-                    text:     'Save',
-                    itemId:   'metadata_save_button'
-                },
-                {
-                    xtype:    'button',
-                    text:     'Cancel',
-                    itemId:   'metadata_cancel_button'
-                }
-            ],
+            tbar: {
+                ui: 'off-white',
+                items: [
+                    '->',
+                    {
+                        xtype:    'button',
+                        text:     'Edit',
+                        itemId:   'metadata_edit_button'
+                    },
+                    {
+                        xtype:    'button',
+                        text:     'Save',
+                        itemId:   'metadata_save_button'
+                    },
+                    {
+                        xtype:    'button',
+                        text:     'Cancel',
+                        itemId:   'metadata_cancel_button'
+                    }
+            ]},
             autoScroll: true
         }
     ],
-
 
     config: {
         editMode: false,

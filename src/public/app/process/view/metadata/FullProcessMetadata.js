@@ -20,13 +20,16 @@ Ext.define('Savanna.process.view.metadata.FullProcessMetadata', {
         {
             xtype: 'textfield',
             value: 'Process Title',
-            itemId: 'processTitle'
+            itemId: 'processTitle',
+            enableKeyEvents: true
         },
         {
             xtype: 'textarea',
             fieldLabel: 'Process Description',
             labelAlign: 'top',
-            itemId: 'processDescription'
+            itemId: 'processDescription',
+            width: '100%',
+            enableKeyEvents: true
         },
         {
             xtype: 'itemview_imagesgrid_edit',

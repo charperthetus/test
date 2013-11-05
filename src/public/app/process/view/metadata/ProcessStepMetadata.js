@@ -10,35 +10,43 @@ Ext.define('Savanna.process.view.metadata.ProcessStepMetadata', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.process_step_metadata',
 
+    controller: 'Savanna.process.controller.ProcessStepMetadataController',
+
     overflowY: 'auto',
 
     items: [
         {
             xtype: 'textfield',
-            value: 'Step Title'
+            value: 'Step Title',
+            itemId: 'stepTitle'
         },
         {
             xtype: 'label',
-            text: 'Duration'
+            text: 'Duration',
+            itemId: 'durationLabel'
         },
         {
             xtype: 'label',
-            text: '1h 15m'
+            text: '1h 15m',
+            itemId: 'tempLabel'
         },
         {
             xtype: 'textarea',
             fieldLabel: 'Description',
             labelAlign: 'top',
-            text: 'Far far away, behind the word mountains'
+            text: 'Far far away, behind the word mountains',
+            itemId: 'stepDescription'
         },
         {
             xtype: 'itemview_imagesgrid_edit',
-            header: false
+            header: false,
+            itemId: 'stepImageBrowser'
         },
         {
             xtype: 'panel',
             collapsible: true,
-            title: 'Actions'
+            title: 'Actions',
+            itemId: 'stepActions'
         }
     ]
 });

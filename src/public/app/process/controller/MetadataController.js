@@ -14,17 +14,12 @@ Ext.define('Savanna.process.controller.MetadataController', {
         hiddenTabPanel: {
             boxready: 'onBeforeHiddenPanelShow'
         },
-        fullProcessMetadata: true,
+        fullProcessMetadata:  {
+            boxready: 'addFullProcessMetadataListeners'
+        },
         stepMetadata: true,
         itemMetadata: true,
 
-        processDetails: {
-            live: true,
-            selector: 'process_details',
-            listeners: {
-                boxready: 'addProcessDetailsListeners'
-            }
-        }
      },
 
     constructor: function (options) {
@@ -44,24 +39,25 @@ Ext.define('Savanna.process.controller.MetadataController', {
     selectionChanged: function(e) {
 
         if(1 === this.getDiagram().selection.count) {
-            var itemUri = this.getDiagram().selection.first().data.uri;
-            itemUri = encodeURIComponent(itemUri);
-            console.log('this.getDiagram().selection.first()', this.getDiagram().selection.first().data.uri);
-            if (itemUri.indexOf('ProcessModel') !== -1){
-             // this is a step
-                console.log('This is a step');
-                this.setUpStepDetails();
-            } else if (itemUri.indexOf('Item') !== -1) {
-             // this is an item
-                console.log('This is an item');
-                this.setUpItemDetails(itemUri);
-            } else {
-                console.log('we dont know what this is yet');
-                this.setUpProcessDetails(null);
-             //we don't know what this is yet
+            var itemUri = encodeURIComponent(this.getDiagram().selection.first().data.uri);
+            var itemCategory = this.getDiagram().selection.first().data.category;
+            switch(itemCategory) {
+                case 'ProcessModel':
+                    // this is a step
+                    this.setUpStepDetails(itemUri);
+                    break;
+                case 'Item':
+                    // this is an item
+                    //console.log('This is an item');
+                    this.setUpItemDetails(itemUri);
+                    break;
+                default:
+                    console.log("we don't know what this is yet", itemUri);
+                    this.setUpProcessDetails(null);
+                    break;
             }
         } else {
-            console.log('This is process');
+            // if nothing is selected, we'll use the whole process
             this.setUpProcessDetails(null);
         }
     },
@@ -75,40 +71,37 @@ Ext.define('Savanna.process.controller.MetadataController', {
             // need to populate the full_process_metadata
 
             this.getFullProcessMetadata().fireEvent('processUriChanged', itemUri);
-
         } else {
             // show the process details panel
             this.getHiddenTabPanel().setActiveTab(this.getFullProcessMetadata());
         }
-
     },
 
     setUpStepDetails: function(itemUri) {
         this.getStepMetadata().show();
 
-        this.getStepMetadata().fireEvent('processUriChanged', itemUri);
+        this.getStepMetadata().fireEvent('stepUriChanged', itemUri);
         this.getHiddenTabPanel().setActiveTab(this.getStepMetadata());
     },
 
     setUpItemDetails: function(itemUri) {
         this.getItemMetadata().show();
 
-        console.log('****** setUpItemDetails ready to fire event', itemUri);
         this.getItemMetadata().fireEvent('processUriChanged', itemUri);
         this.getHiddenTabPanel().setActiveTab(this.getItemMetadata());
     },
 
-    addProcessDetailsListeners: function(process_details) {
+    addFullProcessMetadataListeners: function(process_details) {
         process_details.down('#processTitle').addListener('change', this.processLabelChangeHandler);
         process_details.down('#processDescription').addListener('change', this.processLabelChangeHandler);
     },
 
     processLabelChangeHandler: function(text, newValue, oldValue, eOpts) {
-        console.log(arguments);
+        console.log('processLabelChangeHandler', arguments);
     },
 
     processSelectionChanged: function(e) {
-        console.log('selection size', this.getDiagram().selection.count);
+        console.log('processSelectionChanged selection size', this.getDiagram().selection.count);
     },
 
     onBeforeHiddenPanelShow: function() {
