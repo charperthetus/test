@@ -7,3 +7,19 @@
 		margin-bottom: $form-item-smallSpacing-margin-bottom;
 	}
 }
+
+.errorLabel {
+  text-align: center;
+  text-transform: uppercase;
+  color : $error_font;
+  border: 1px solid $error_font;
+  padding: 10px;
+  display: inline-block;
+}
+
+
+// this is for overriding label margin for capco only
+.classification label {
+  margin-bottom: 4px;
+  font-weight: bold;
+}
