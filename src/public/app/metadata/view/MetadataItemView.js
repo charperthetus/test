@@ -9,11 +9,9 @@
 
 Ext.define('Savanna.metadata.view.MetadataItemView', {
     extend: 'Ext.form.FieldSet',
-    requires: [
-        'Ext.form.field.Display', 
-        'Ext.form.field.TextArea'
-    ],
+    
     alias: 'widget.metadata_itemview',
+    
     border: false,
     itemId: '',
     config: {

@@ -8,6 +8,9 @@
 Ext.define('Savanna.metadata.view.Details', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.metadata_details',
+
+    requires: ['Ext.layout.container.Fit'],
+
     itemId: 'detailsPanel',
 
     height: '100%',
@@ -19,8 +22,9 @@ Ext.define('Savanna.metadata.view.Details', {
 
     requires: [
         'Savanna.metadata.controller.MetadataViewController',
-        'Savanna.metadata.store.Metadata'
-    ],
+        'Savanna.metadata.store.Metadata',
+        'Ext.form.Panel',
+        'Ext.button.Button'],
 
     controller: 'Savanna.metadata.controller.MetadataViewController',
 

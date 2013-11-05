@@ -10,9 +10,6 @@ Ext.define('Savanna.metadata.view.IntegerList', {
     extend: 'Savanna.metadata.view.MetadataItemView',
     alias: 'widget.metadata_integerlist',
 
-    items: [
-    ],
-
     initComponent: function () {
         this.callParent(arguments);
         var me = this;

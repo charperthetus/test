@@ -10,9 +10,6 @@ Ext.define('Savanna.metadata.view.UriList', {
     extend: 'Savanna.metadata.view.MetadataItemView',
     alias: 'widget.metadata_urilist',
 
-    items: [
-    ],
-
     initComponent: function () {
         this.callParent(arguments);
         var me = this;

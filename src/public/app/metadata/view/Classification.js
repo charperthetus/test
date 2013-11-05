@@ -10,7 +10,8 @@ Ext.define('Savanna.metadata.view.Classification', {
     extend: 'Savanna.metadata.view.MetadataItemView',
     alias: 'widget.metadata_classification',
 
-    requires: ['Savanna.classification.view.ClassificationWindow'],
+    requires: [ 'Savanna.classification.view.ClassificationWindow', 
+                'Ext.layout.container.HBox'],
 
     layout: 'hbox',
 
@@ -38,7 +39,7 @@ Ext.define('Savanna.metadata.view.Classification', {
     makeEditViewItems: function() {
         this.makeViewViewItems();
 
-        var classificationEditBtn = Ext.create('Ext.Button', {
+        var classificationEditBtn = Ext.create('Ext.button.Button', {
             text: 'Edit',
             listeners: {
                 click: function () {

@@ -10,9 +10,6 @@ Ext.define('Savanna.metadata.view.BooleanList', {
     extend: 'Savanna.metadata.view.MetadataItemView',
     alias: 'widget.metadata_booleanlist',
 
-    items: [
-    ],
-
     initComponent: function () {
         this.callParent(arguments);
         var me = this;

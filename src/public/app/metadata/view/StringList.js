@@ -10,8 +10,9 @@ Ext.define('Savanna.metadata.view.StringList', {
     extend: 'Savanna.metadata.view.MetadataItemView',
     alias: 'widget.metadata_stringlist',
 
-    items: [
-    ],
+    requires: [ 'Ext.layout.container.VBox',
+                'Ext.layout.container.HBox',
+                'Ext.layout.container.Form'],
 
     initComponent: function () {
         this.callParent(arguments);
@@ -44,7 +45,7 @@ Ext.define('Savanna.metadata.view.StringList', {
 
         me.createEditItems(stackAndAddContainer);
         
-        var newItemButton = Ext.create('Ext.Button', {
+        var newItemButton = Ext.create('Ext.button.Button', {
             text: 'Add',
             cls: 'stringList-addBtn',
             listeners: {
@@ -123,7 +124,7 @@ Ext.define('Savanna.metadata.view.StringList', {
         });
         container.add(textField);
 
-        var deleteButton = Ext.create('Ext.Button', {
+        var deleteButton = Ext.create('Ext.button.Button', {
             text: 'X',
             flex: 1,
             listeners: {
