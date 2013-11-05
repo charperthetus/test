@@ -24,17 +24,13 @@ Ext.define('Savanna.process.controller.PaletteController', {
             boxready: 'onItemListReady'
         },
         actionList: {
-            filterchange: 'onFilterChange',
             boxready: 'onActionListReady'
-        },
-        actionText: {
-            change: 'onActionTextChange'
-        },
-        createAction: {
-            click: 'onCreateActionClick'
         },
         itemTools: {
             boxready: 'onItemToolbarReady'
+        },
+        actionTools: {
+            boxready: 'onActionToolbarReady'
         }
     },
 
@@ -54,9 +50,29 @@ Ext.define('Savanna.process.controller.PaletteController', {
         }
     },
 
+    onActionToolbarReady: function() {
+        var listElement = this.getActionTools().getEl();
+        if (listElement) {
+            this.getActionList().dropTarget = Ext.create('Ext.dd.DropTarget', listElement.dom, {
+                ddGroup: 'RNRM-ITEMS',
+                notifyOver: Ext.Function.bind(this.notifyActionPaletteOverTarget, this),
+                notifyDrop: Ext.Function.bind(this.notifyActionPaletteDropTarget, this)
+            });
+        }
+    },
+
     notifyItemPaletteOverTarget: function(ddSource, e, data) {
         //don't allow anything other than an Item to be dropped into the item palette
         if (this.dragDataIsItem(data)) {
+            return Ext.dd.DropZone.prototype.dropAllowed;
+        } else {
+            return Ext.dd.DropZone.prototype.dropNotAllowed;
+        }
+    },
+
+    notifyActionPaletteOverTarget: function(ddSource, e, data) {
+        //don't allow anything other than an action to be dropped into the action palette
+        if (this.dragDataIsAction(data)) {
             return Ext.dd.DropZone.prototype.dropAllowed;
         } else {
             return Ext.dd.DropZone.prototype.dropNotAllowed;
@@ -81,54 +97,39 @@ Ext.define('Savanna.process.controller.PaletteController', {
         });
     },
 
+    notifyActionPaletteDropTarget: function(ddSource, e, data) {
+        //only create a new palette action if the dragged data does not already exist in the palette
+
+        //too bad we can't use the actionList HasDupes() function, but if the drag data has multiple records, then we
+        //need to do the dupe check for each one and add it if we can (unless we want to abort the whole drag if just
+        //one drag action is invalid)
+        var me = this;
+        data.records.forEach(function(rec) {
+            var obj = rec.data;
+            var store = me.getActionList().store;
+            if (store.findRecord('uri', obj.uri) || store.findRecord('label', obj.label)) {
+                //already exists...don't do anything
+            } else {
+                me.addNewPaletteAction(obj.label, obj.type, obj.uri);
+            }
+        });
+    },
+
     onItemSearchClick: function() {
         //have the app fire the event so it can be caught by the controller that handles showing the model search dialog
         Savanna.app.fireEvent('initModelSearch');
     },
 
-    onActionTextChange: function(field, newValue) {
-        var list = this.getActionList();
-        list.getSelectionModel().deselectAll(); //necessary to do here and in onFilterChange for some reason
-        list.store.clearFilter();
-        list.store.filter([{
-            property: 'label', //in the future possible filter on alias/description
-            anyMatch: true,
-            value   : newValue
-        } ]);
-    },
-
-    onFilterChange: function(/*store, filters, eOpts*/) {
-        this.getActionList().getSelectionModel().deselectAll();
-        //show the create Action button when the user has entered text but no filtered results are found
-        if (this.getActionList().store.getCount() == 0 && this.getActionText().getValue() != '') {
-            this.getCreateAction().show();
-        } else {
-            this.getCreateAction().hide();
-        }
-    },
-
-    onCreateActionClick: function() {
-        //create a new Model instance for an Action with the user typed text
-        var titleText = this.getActionText().getValue();
-        this.addNewPaletteAction(titleText);
-        this.getActionText().setValue(''); //clear the text which will fire a filter change and toggle the create btn
-    },
-
     //create and add a new Action to the palette
-    addNewPaletteAction: function(titleText, categoryText) {
-        if (categoryText === null) {
-            categoryText = 'ProcessAction';
+    addNewPaletteAction: function(titleText, categoryText, uri) {
+        if (categoryText === "Action") {
+            this.getActionList().store.add(this.createPaletteNode(categoryText, titleText, uri));
         }
-        categoryText = (categoryText === "Action") ? 'ProcessAction' : categoryText; //is there a better JS way to do this?
-        this.getActionList().store.add(this.createPaletteNode(categoryText, titleText, null));
     },
 
     //create and add a new Item to the palette
     addNewPaletteItem: function(titleText, categoryText, uri) {
-        if (categoryText === null || categoryText === "Item") {
-            categoryText = 'ProcessItem';
-        }
-        if (categoryText === 'ProcessItem') { //make sure no other non-item type was passed in here
+        if (categoryText === 'Item') {
             this.getItemList().store.add(this.createPaletteNode(categoryText, titleText, uri));
         }
     },
@@ -153,7 +154,7 @@ Ext.define('Savanna.process.controller.PaletteController', {
     },
 
     onActionListReady: function() {
-        //listen for beforedrop on the item grid view (to prevent user from reordering rows and to prevent dupes)
+        //listen for beforedrop on the action grid view (to prevent user from reordering rows and to prevent dupes)
         this.getActionList().getView().on('beforedrop', this.beforeActionDrop, this);
     },
 
@@ -177,7 +178,7 @@ Ext.define('Savanna.process.controller.PaletteController', {
     },
 
     beforeActionDrop: function(node, data) {
-        //check to see if the user is dragging an item in the same grid view (i.e. reordering rows).
+        //check to see if the user is dragging an action in the same grid view (i.e. reordering rows).
         //if so, disallow it
         var actionList = this.getActionList(),
             returnVal = true;
@@ -186,7 +187,7 @@ Ext.define('Savanna.process.controller.PaletteController', {
             returnVal = false;
         } else if (this.actionListHasDupes(data)) {
             //if the dragged data already exists in the action list, disallow it to prevent duplicate records
-            //(note - in the case of multiple drag items then this will prevent drop if even just one is a dupe)
+            //(note - in the case of multiple drag actions then this will prevent drop if even just one is a dupe)
             returnVal = false;
         } else if (!this.dragDataIsAction(data)) {
             //if the dragged data is not an Action then don't allow it to be dropped on the Action palette

@@ -5,13 +5,6 @@
  * Time: 9:10 AM
  * To change this template use File | Settings | File Templates.
  */
-/**
- * Created with IntelliJ IDEA.
- * User: bcannon
- * Date: 10/20/13
- * Time: 9:51 PM
- * To change this template use File | Settings | File Templates.
- */
 Ext.define('Savanna.process.view.part.ActionList', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.process_actionlist',
@@ -24,7 +17,7 @@ Ext.define('Savanna.process.view.part.ActionList', {
         plugins: {
             ptype: 'gridviewdragdrop',
             dragGroup: 'RNRM-ITEMS',
-            dropGroup: 'RNRM-ACTIONS', //change to RNRM-ITEMS if we ever want to drag Actions from ModelSearch
+            dropGroup: 'RNRM-ITEMS',
             enableDrop: true,
             enableDrag: true
         },
@@ -33,7 +26,7 @@ Ext.define('Savanna.process.view.part.ActionList', {
 
     title: 'Actions',
     titleAlign: 'left',
-    emptyText: 'No Matches',
+    emptyText: 'Drop actions here for use in process steps or search the model to find new actions',
     hideHeaders: true,
     columns: [
         {
@@ -43,28 +36,43 @@ Ext.define('Savanna.process.view.part.ActionList', {
     ],
 
     tbar:
-    {   margin: 8,
+    {
+        itemId: 'actionTools',
+        height: 37,
+        border: 2,
+        padding: 10,
+        margin: 10,
+        backgroundColor: '#F2F2F2',
+        ui: 'drop-zone-toolbar',
         style: {
-            "background": '#F2F2F2'
+            borderStyle: 'dashed',
+            borderColor: '#999999',
+            backgroundColor: '#F2F2F2'
         },
         items: [
+            '->',
             {
-                xtype: 'textfield',
-                width: 143,
-                itemId: 'actionText',
-                emptyText: 'Find and Add Actions'
+                xtype: 'label',
+                text: 'Actions',
+                cls: ['drag-and-drop', 'drag-and-drop-small'],
+                tooltip: 'Drop actions'
             },
+            '->',
+            {
+                xtype: 'label',
+                text: 'OR'
+            },
+            '->',
             {
                 xtype: 'button',
-                width:25,
-                height:25,
-                cls: 'toolbarButtonFramework',
-                ui: 'icon-dark',
-                glyph: 'add',
-                itemId: "createAction",
-                tooltip: 'Create',
-                hidden: true
-            }
+                itemId: 'searchItems',
+                glyph: 'modelSearch',
+                ui: 'dark-icon',
+                tooltip: 'Click to search the model.',
+                height: 16,
+                width: 16
+            },
+            '->'
         ]},
 
     initComponent: function() {
