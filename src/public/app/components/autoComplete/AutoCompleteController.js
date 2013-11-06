@@ -32,22 +32,26 @@ Ext.define('Savanna.components.autoComplete.AutoCompleteController', {
         }
     },
 
-    filterSpecialCharacters: function(value) {
-        return value.replace(/[^a-z0-9\s]/gi, '_');
-    },
-
     handleRemoveTagClick: function (value, view) {
         this.getView().removeTag(view);
         this.getView().fireEvent('AutoComplete:TagRemoved', value, this.getView());
     },
 
     handleAutoCompleteTextKeyUp: function (field, evt) {
-        // Check enter key and field value
-        if ( evt.keyCode !== Ext.EventObject.ENTER || !field.getValue().trim().length || this.getView().hasNoStore ) {
-            return false;
+        // Check enter key
+        if (evt.keyCode === Ext.EventObject.ENTER) {
+            
+            // Check if there is value, and hasNoStore is TRUE
+            if (field.getValue().trim().length && this.getView().hasNoStore) {
+                Ext.Array.each(this.getView().queryById('tagsList').items.items, function(item) {
+                    if (item.text === field.getValue()) {
+                        return false;
+                    }
+                });
+                this.setupNewTag(field);
+            }
+            field.reset();
         }
-        console.log(this.getView().queryById('tagslist').items);
-        field.reset();
     },
 
     setupNewTag: function (field) {
