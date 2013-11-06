@@ -36,11 +36,11 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         deleteItemButton: {
             click: 'onEditDelete'
         },
-        /* commented out for demo
-         workflowButton: {
-         click: 'onWorkflowSelect'
-         },
-         */
+
+        workflowButton: {
+            click: 'onWorkflowSelect'
+        },
+
         relatedItemsView: {
             'ItemView:OpenItem': 'openItem'
         },
@@ -138,7 +138,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         this.getView().getLayout().setActiveItem(0);
         this.getView().setEditMode(!this.getView().getEditMode());
 
-        this.unlockItem(this.store.getAt(0).data.uri)
+        this.unlockItem(this.store.getAt(0).data.uri);
     },
 
     onEditDelete: function () {
@@ -147,8 +147,6 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         if (this.store.getProxy().extraParams && this.store.getProxy().extraParams.parentUri !== null) {
             delete this.store.getProxy().extraParams.parentUri;
         }
-
-        this.store.addSessionId = false;
 
         var record = this.store.getAt(0);
         this.store.remove(record);
@@ -199,21 +197,21 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         var headerComponent = this.getView().queryById('itemViewHeaderView');
         headerComponent.setTitle(this.store.getAt(0).data.label);
         headerComponent.reconfigure(this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore);
-        
+
         var qualitiesComponent = this.getView().queryById('itemViewPropertiesView');
         qualitiesComponent.reconfigure(this.store.getAt(0).propertyGroupsStore.getById('Properties').valuesStore);
 
 
         var imagesBrowserComponent = this.getView().queryById('itemViewImagesGrid'),
             imagesBrowserComponentEdit = this.getView().queryById('itemViewImagesEdit');
-        
+
         imagesBrowserComponent.fireEvent('ViewImagesGrid:Setup');
         imagesBrowserComponentEdit.fireEvent('EditImagesGrid:Setup');
 
         var relatedItemView = this.getView().queryById('relatedItemsView');
-        Ext.each(this.store.getAt(0).propertyGroupsStore.getById('Related Items').valuesStore.data.items, function(group){
-            if (relatedItemView.queryById('relatedItemGrid_' + group.get('label').replace(/\s/g,''))) {
-                relatedItemView.queryById('relatedItemGrid_' + group.get('label').replace(/\s/g,'')).reconfigure(group.valuesStore);
+        Ext.each(this.store.getAt(0).propertyGroupsStore.getById('Related Items').valuesStore.data.items, function (group) {
+            if (relatedItemView.queryById('relatedItemGrid_' + group.get('label').replace(/\s/g, ''))) {
+                relatedItemView.queryById('relatedItemGrid_' + group.get('label').replace(/\s/g, '')).reconfigure(group.valuesStore);
             }
             else {
                 relatedItemView.fireEvent('ViewRelatedItems:AddRelationshipGrid', group);
@@ -274,7 +272,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
     updateViewWithStoreData: function (record) {
         var me = this;
-            this.storeHelper.init(this.store);
+        this.storeHelper.init(this.store);
 
         /*
          Header View
@@ -372,7 +370,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         }
         else {
             /*
-            Server down..?
+             Server down..?
              */
             Ext.Error.raise({
                 msg: 'No record return for item URI.'
@@ -384,15 +382,14 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         EventHub.fireEvent('createitem');
     },
 
-    /* commented out for demo
 
-     onWorkflowSelect: function () {
-     Ext.create('Savanna.itemView.view.workflow.WorkflowSelect', {
-     width: 500,
-     height: 425
-     });
-     },
-     */
+    onWorkflowSelect: function () {
+        Ext.create('Savanna.itemView.view.workflow.WorkflowSelect', {
+            width: 500,
+            height: 425
+        });
+    },
+
 
     onSearchSelect: function () {
         //console.log('search selected');
@@ -403,7 +400,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     },
 
     openItem: function (itemName, itemUri) {
-        EventHub.fireEvent('open', {uri:itemUri, label: itemName, type:'item'});
+        EventHub.fireEvent('open', {uri: itemUri, label: itemName, type: 'item'});
     },
     deleteRelatedItem: function (itemName, itemUri) {
 

@@ -10,8 +10,8 @@ Ext.define('Savanna.itemView.store.ItemLockStore', {
     extend: 'Ext.data.JsonStore',
 
     requires: [
-        'Ext.data.proxy.Rest',
-        'Savanna.proxy.Cors'
+        'Ext.data.Rest',
+        'Savanna.Cors'
     ],
 
     storeId: 'itemLock',
@@ -25,6 +25,10 @@ Ext.define('Savanna.itemView.store.ItemLockStore', {
         this.setProxy({
             type: 'savanna-cors',
             url: SavannaConfig.itemLockUrl,
+            noCache: false,
+            startParam: undefined,
+            limitParam: undefined,
+            pageParam: undefined,
             reader: {
                 type: 'json'
             },
@@ -34,21 +38,14 @@ Ext.define('Savanna.itemView.store.ItemLockStore', {
             modifyRequest: function (request) {
                 if ('read' == request.action) {
                     request.method = 'GET';
-                    /*
-                    clean up the request..?
-                     */
-                    request.url = request.url.replace((request.url.substr(request.url.indexOf(';jsessionid='))), '');
                 }
 
                 if ('destroy' == request.action) {
                     request.method = 'DELETE';
-                    /*
-                     clean up the request..?
-                     */
-                    request.url = request.url.replace((request.url.substr(request.url.indexOf(';jsessionid='))), '');
                 }
                 return request;
             }
         });
     }
-});
+})
+;
