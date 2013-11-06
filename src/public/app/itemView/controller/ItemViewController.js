@@ -130,7 +130,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     },
 
     onEditDelete: function () {
-        this.store.getProxy().url = SavannaConfig.itemDeleteUrl + this.store.getAt(0).data.uri;
+        this.store.getProxy().url = SavannaConfig.itemDeleteUrl + encodeURI(this.store.getAt(0).data.uri);
 
         if (this.store.getProxy().extraParams && this.store.getProxy().extraParams.parentUri !== null) {
             delete this.store.getProxy().extraParams.parentUri;
