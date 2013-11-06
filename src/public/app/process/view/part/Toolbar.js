@@ -83,12 +83,7 @@ Ext.define('Savanna.process.view.part.Toolbar', {
                 tooltip: 'Join selected items together',
                 itemId: 'merge'
             },
-            {
-                text: 'Add Alternates',
-                tooltip: 'Add alternates group',
-                itemId: 'alts'
-            },
-            '->', 
+            '->',
             {
                 cls: 'toolbarButtonFramework',
                 glyph: 'zoomIn',

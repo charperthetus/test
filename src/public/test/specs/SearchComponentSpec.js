@@ -317,7 +317,7 @@ describe('Search Component', function () {
 
                 expect(component.down('#resultsdals').items.items.length).toBe(0);
                 
-                expect(component.down('#searchbody').getActiveTab().itemId === 'mainsearchoptions').toBeTruthy());
+                expect(component.down('#searchbody').getActiveTab().itemId === 'mainsearchoptions').toBeTruthy();
 
                 expect(component.down('search_resultspanelgrid').items.items[0].dataSource.data.items.length).toBe(0);
             });

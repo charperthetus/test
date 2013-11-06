@@ -167,7 +167,25 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
         var me = this;
         var radioButtonConfigs = [];
         var radioCount = 0;
-        //  { boxLabel: 'Any Time', itemId: 'date_all', name: facetID, inputValue: 'all', checked: true },
+
+        //Special case 'Any Time' filter because this is more efficient than creating a special filter on the server.
+        // since we don't get this from the server we need to insert the total count.
+        var total = this.searchResults.store.totalCount;
+        var radioButtonAnyTime = {
+            boxLabel: 'Any Time' + ' (' + total + ')',
+            name: me.facet.key,   //group name
+            inputValue: "AnyTime",
+            id: 'checkbox_' + me.facet.key + '_' + String(Ext.id()),
+            checked: (radioCount == 0),
+            /*
+             added to resolve defect SAV-5380.  Needs design to assign a class.
+             */
+            style: {'white-space': 'nowrap' }
+        };
+        radioCount++;
+        radioButtonConfigs.push(radioButtonAnyTime);
+
+        //add facets based on values from server
         Ext.each(this.facet.facetValues, function (facetobj) {
 
             var radioButton = {
@@ -203,38 +221,49 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
         return radioButtonConfigs;
     },
 
-
-    deleteFilter: function(filter) {
-        var filters = me.dal.data.facetFilterCriteria;
-
-    },
-
     getActualValue:function(value){
         return value[this.facet.key];
     },
 
-    onDateRangeChange: function (radioGroup, newValue, oldValue) {
+    onDateRangeChange: function (radioGroup, newValue) { //oldValue is a third parameter
         var customDates = radioGroup.up('#facets_' + this.facet.key).queryById('customDatesPanel');
 
         var newValueString = this.getActualValue(newValue);
-        var oldValueString = this.getActualValue(oldValue);
+        var filters = this.getFilters();
+        var filterKey = this.facet.key;
+
+        //Special case anytime here:
+        if(newValueString === "AnyTime"){
+
+            //Since we are removing, we need to iterate from end to beginning
+            var len = filters.length;
+            var filterIndex;
+            for (filterIndex = len - 1;  filterIndex >= 0; filterIndex--) {
+                var filter = filters[filterIndex];
+                if (filter.key === filterKey) {
+                    Ext.Array.remove(filters, filter);
+                    break;
+                }
+            }
+            //Update the search results
+            this.doFilter(this);
+            return;
+        }
 
         var newIsCustom = ( newValueString == "custom");
 
         if (!newIsCustom) {
             customDates.collapse();
             customDates.collapsed = true;
-            var filters = this.getFilters();
-            var filterKey = this.facet.key;
             var newFilter =  {key: filterKey, values: [{value: newValueString}]};
             var filterFound = false;
             Ext.each(filters, function (range, index) {
-                           if (range.key === filterKey) {
-                               // replace it, do not add another
-                               filters[index] = newFilter;
-                               filterFound = true;
-                           }
-                       });
+                if (range.key === filterKey) {
+                    // replace it, do not add another
+                    filters[index] = newFilter;
+                    filterFound = true;
+                }
+            });
             if(!filterFound){
                 filters.push(newFilter);
             }
@@ -242,7 +271,8 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
         } else {
             customDates.expand();
             customDates.collapsed = false;
-            //the new search will be kicked off by the date picker close event
+            //re-query each time the custom date facet is opened, not just when the dates change.
+            this.doCustomDateSearch();
         }
     },
 
@@ -259,13 +289,19 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
     //Called from date picker
     doCustomDateSearch: function () {
 
+        //Note: We let the user select any date for the end and start dates and we will
+        // turn it into a valid range.  Server doesn't handle this so we fix it on the client.
+
         var startDate = this.queryById('fromDate').getValue(),
             endDate = this.queryById('toDate').getValue(),
             fieldName = this.query('form')[0].itemId.replace('facets_', ''),
+            smallerTime = Math.min(startDate.getTime(), endDate.getTime()),
+            largerTime = Math.max(startDate.getTime(), endDate.getTime()),
+
             newDateRange = {
                 key: fieldName,
                 values: [
-                    { valueMin: startDate.getTime(), valueMax: endDate.getTime()}
+                    { valueMin: smallerTime, valueMax: largerTime}
                 ]
             },
             updateExisting = false,
@@ -294,8 +330,9 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
         }
     },
 
+    //string filter change
     onFacetFilterChange: function (btn) {
-        return this.onFacetFilterChangeHelper(btn.value, btn.inputValue, true);
+        this.onFacetFilterChangeHelper(btn.value, btn.inputValue, true);
     },
 
     onFacetFilterChangeHelper: function (isChecked, inputValue, doTheSearch) {

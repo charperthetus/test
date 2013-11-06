@@ -28,11 +28,13 @@ Ext.define('Savanna.process.view.part.ItemList', {
     titleAlign: 'left',
     emptyText: 'Drop items here for use in process steps or search the model to find new items',
     hideHeaders: true,
+    style: {
+        backgroundColor: '#F2F2F2'
+    },
     columns: [
         {
             dataIndex: 'label',
-            width: '100%',
-            minWidth: 175
+            width: 178
         }
     ],
 

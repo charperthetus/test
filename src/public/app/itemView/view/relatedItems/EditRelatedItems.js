@@ -18,9 +18,7 @@ Ext.define('Savanna.itemView.view.relatedItems.EditRelatedItems', {
 
     storeHelper: null,
 
-    layout: 'vbox',
-
-    layout:{
+    layout: {
         type:'vbox',
         align:'center'
     },

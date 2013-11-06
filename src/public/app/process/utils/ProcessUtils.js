@@ -6,7 +6,7 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         'Ext.data.UuidGenerator'
     ],
 
-    knownUriTypes: ['Start', 'DecisionPoint', 'ProcessModel', 'ProcessAction', 'ProcessItem', 'InternalGroup', 'MergePoint', 'ProcessLink'],
+    knownUriTypes: ['Start', 'DecisionPoint', 'ProcessModel', 'ProcessAction', 'ProcessItem', 'InternalGroup', 'MergePoint', 'ProcessLink', 'AltsGroup'],
 
     getURI: function(category) {
         // by convention, category names are the same as the URI type
@@ -27,6 +27,8 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
                     classUri = 'lib%2Esnap%3AObject%2FModelItemXML';
                 }
             }
+
+            data.representsClassUri = classUri;
 
             // make a real instance
             Ext.Ajax.request({
@@ -128,7 +130,7 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         diagram.startTransaction('addStepPart');
         var actionGroup = obj.part;
         var stepGroup = actionGroup.containingGroup;
-        var nodeData = {'category': category, 'label': label, 'group': stepGroup.data.uri};
+        var nodeData = {category: category, label: label, group: stepGroup.data.uri, isOptional: false};
         nodeData.uri = this.getURI(nodeData.category);
         this.setRepresentsUri(nodeData, null);
 
@@ -193,7 +195,7 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         var diagram = obj.diagram;
         diagram.startTransaction('addStep');
 
-        var step = {'category': 'ProcessModel', 'label': 'Description', 'isGroup': true, 'isSubGraphExpanded': true};
+        var step = {category: 'ProcessModel', label: 'Description', isGroup: true, isSubGraphExpanded: true, isOptional: false};
         step.uri = this.getURI(step.category);
         diagram.model.addNodeData(step);
 
@@ -387,33 +389,56 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
 
     onNodeMouseDrop: function(obj, data, linkType) {
         var me = this;
-        data.records.forEach(function(rec) {
-            var dropObj = rec.data;
-            if (dropObj.type === 'Item') {
-                me.addNode(obj, 'ProcessItem', dropObj.label, dropObj.uri, linkType);
-            }
-        });
+        if (data) {
+            data.records.forEach(function(rec) {
+                var dropObj = rec.data;
+                if (dropObj.type === 'Item') {
+                    me.addNode(obj, 'ProcessItem', dropObj.label, dropObj.uri, linkType);
+                }
+            });
+        }
     },
 
     onActionMouseDrop: function (obj, data) {
         var me = this;
-        data.records.forEach(function(rec) {
-            var dropObj = rec.data;
-            if (dropObj.type === 'Action') {
-                me.addAction(obj, dropObj.label, dropObj.uri);
-            }
-        });
+        if (data) {
+            data.records.forEach(function(rec) {
+                var dropObj = rec.data;
+                if (dropObj.type === 'Action') {
+                    me.addAction(obj, dropObj.label, dropObj.uri);
+                }
+            });
+        }
     },
 
     onAltsMouseDrop: function(obj, data) {
         var me = this;
-        data.records.forEach(function(rec) {
-            var dropObj = rec.data;
-            if (dropObj.type === 'Item') {
-                me.addAlternate(obj, dropObj.label, dropObj.uri);
-            }
-        });
+        if (data) {
+            data.records.forEach(function(rec) {
+                var dropObj = rec.data;
+                if (dropObj.type === 'Item') {
+                    me.addAlternate(obj, dropObj.label, dropObj.uri);
+                }
+            });
+        }
 
+    },
+
+    optionalCategories: ['ProcessModel', 'ProcessAction', 'ProcessItem'],
+    toggleOptional: function(diagram) {
+        var firstObj = diagram.selection.first();
+        var optional = !firstObj.data.isOptional;
+
+        diagram.startTransaction('toggleOptional');
+        var iterator = diagram.selection.iterator;
+        while (iterator.next()) {
+            var obj = iterator.value;
+            if (this.optionalCategories.indexOf(obj.category) >= 0) {
+                obj.data.isOptional = optional;
+                obj.updateTargetBindings('isOptional');
+            }
+        }
+        diagram.commitTransaction('toggleOptional');
     }
 
 });

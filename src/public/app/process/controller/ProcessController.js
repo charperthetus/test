@@ -18,7 +18,7 @@ Ext.define('Savanna.process.controller.ProcessController', {
 
     control: {
         newProcess: {
-            click: 'clearJSONClick'
+            click: 'newProcessClick'
         },
         expandSteps: {
             click: 'expandStepsClick'
@@ -29,8 +29,6 @@ Ext.define('Savanna.process.controller.ProcessController', {
         canvas: {
             boxready: 'initCanvas'
         },
-        metadata: {
-        },
         undo: {
             click: 'handleUndo'
         },
@@ -39,9 +37,6 @@ Ext.define('Savanna.process.controller.ProcessController', {
         },
         merge: {
             click: 'handleMerge'
-        },
-        alts: {
-            click: 'handleAlts'
         },
         zoomIn: {
             click: 'zoomIn'
@@ -84,6 +79,10 @@ Ext.define('Savanna.process.controller.ProcessController', {
         return this.callParent(arguments);
     },
 
+    utils: function() {
+        return Savanna.process.utils.ProcessUtils;
+    },
+
     onStoreLoaded: function (records) {
         this.load(this.getCanvas().diagram, records[0]);
     },
@@ -100,9 +99,15 @@ Ext.define('Savanna.process.controller.ProcessController', {
         }
         diagram.commitTransaction('toggleExpanded');
     },
+
+    newProcessClick: function() {
+        EventHub.fireEvent('createprocess');
+    },
+
     expandStepsClick: function() {
         this.toggleExpanded(true);
     },
+
     collapseStepsClick: function() {
         this.toggleExpanded(false);
     },
@@ -122,10 +127,12 @@ Ext.define('Savanna.process.controller.ProcessController', {
 
     clear: function(diagram) {
         var newProcess = {'class': 'go.GraphLinksModel', 'nodeKeyProperty': 'uri', 'nodeDataArray': [{'category':'Start'}], 'linkDataArray': []};
-        newProcess.nodeDataArray[0].uri = Savanna.process.utils.ProcessUtils.getURI('Start');
-        newProcess.uri = Savanna.process.utils.ProcessUtils.getURI('ProcessModel');
+        newProcess.nodeDataArray[0].uri = this.utils().getURI('Start');
+        newProcess.uri = this.utils().getURI('ProcessModel');
         this.store.add(newProcess);
         this.load(diagram, this.store.first());
+
+        this.getView().down('#processSidepanel').fireEvent('processUriChange', encodeURIComponent(Savanna.process.utils.ProcessUtils.getURI('ProcessModel')));
     },
 
     handleUndo: function() {
@@ -137,11 +144,15 @@ Ext.define('Savanna.process.controller.ProcessController', {
     },
 
     handleMerge: function() {
-        Savanna.process.utils.ProcessUtils.addMerge(this.getCanvas().diagram);
+        this.utils().addMerge(this.getCanvas().diagram);
     },
 
     handleAlts: function() {
-        Savanna.process.utils.ProcessUtils.addAlts(this.getCanvas().diagram);
+        this.utils().addAlts(this.getCanvas().diagram);
+    },
+
+    toggleOptional: function() {
+        this.utils().toggleOptional(this.getCanvas().diagram);
     },
 
     zoomIn: function() {
@@ -171,16 +182,19 @@ Ext.define('Savanna.process.controller.ProcessController', {
                 if(button == 'yes'){
                     //discard changes and close
                     me.confirmClosed = true;
+                    me.getView().down('#processSidepanel').fireEvent('processclose');
                     panel[panel.closeAction]();
                 } else if (button == 'no') {
                     //save and close
                     me.onSave();
+                    me.getView().down('#processSidepanel').fireEvent('processclose');
                     panel[panel.closeAction]();
                 } else {
                     //do nothing, leave the process open
                 }
             }
         });
+
         return false;
     },
 
@@ -231,9 +245,11 @@ Ext.define('Savanna.process.controller.ProcessController', {
         }
     },
 
-    textEdited: function() {
-        // reset our textarea selection so that we do not have anything selected yet
-        this.getCanvas().diagram.toolManager.textEditingTool.currentTextEditor.setSelectionRange(0,0);
+    textEdited: function(e) {
+        var curTextEdit = e.diagram.toolManager.textEditingTool.currentTextEditor;
+        if (curTextEdit.hasOwnProperty('onCommit')) {
+            curTextEdit['onCommit'](e.subject);
+        }
     },
 
     partResized: function(diagramEvent) {

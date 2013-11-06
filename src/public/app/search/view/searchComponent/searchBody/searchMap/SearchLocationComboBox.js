@@ -13,8 +13,6 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.searchMap.SearchLocat
     queryParam: 'q',
     matchFieldWidth: false,
     shrinkWrap: 3,
-    //Not implemented: will append a floating footer to page results
-    //pageSize: 1,
 
     requires: [
         'Ext.XTemplate',
@@ -33,7 +31,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.searchMap.SearchLocat
             return '<table class="searchMapLocationResults">' +
                 '<tr valign="top">' +
                 '<td width="50">' +
-                '<input type="image" name="zoomToLocButton" style="align-top" src="./resources/images/searchicon.png"/></td>' +
+                '<i class="locationButtonI" name="zoomToLocButton"></i></td>' +
                 '<td>' +
                 '<b>{name}</b> <br />' +
                 'Loc: {administrativeNames}  <br />' +
@@ -41,7 +39,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.searchMap.SearchLocat
                 'Pop: {population}' +
                 '</td>' +
                 '</tr>' +
-                '</table> <hr>';
+                '</table>';
         },
 
         listeners: {
@@ -50,7 +48,6 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.searchMap.SearchLocat
             }
             ,
             'beforerender': function(c) {
-                console.log('Render called ',c );
                 c.pagingToolbar = Ext.create(Ext.toolbar.Toolbar, {border: 3, style: {
                     borderColor: 'black'
                 }});

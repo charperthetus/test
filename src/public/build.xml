@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project name="Savanna" default=".help">
 
+    <property environment="env"/>
+
     <!-- Exclude config files.  Order matters; must be before the import
     <target name="-before-init">
        <property name="build.operations">
@@ -15,6 +17,14 @@
     limit your changes to this file.
     -->
     <import file="${basedir}/.sencha/app/build-impl.xml"/>
+
+    <target name="-after-init">
+        <condition property="project.build_number" value="${env.BUILD_NUMBER}" else="dev">
+            <isset property="env.BUILD_NUMBER"/>
+        </condition>
+        <echo>Version: ${project.version}_${project.build_number}</echo>
+        <replace file="app/Config.js" token="${version}" value="${project.version}_${project.build_number}"/>
+    </target>
 
     <!--
     The following targets can be provided to inject logic before and/or after key steps

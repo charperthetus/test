@@ -36,11 +36,11 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         deleteItemButton: {
             click: 'onEditDelete'
         },
-        /* commented out for demo
-         workflowButton: {
-         click: 'onWorkflowSelect'
-         },
-         */
+
+        workflowButton: {
+            click: 'onWorkflowSelect'
+        },
+
         relatedItemsView: {
             'ItemView:OpenItem': 'openItem'
         },
@@ -83,48 +83,37 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         }
     },
 
-    lockItem: function (uri) {
-        this.getView().lockStore.getProxy().url = SavannaConfig.itemLockUrl + uri;
-        this.getView().lockStore.load({
-            callback: Ext.bind(this.onItemLockCallback, this, [], true)
+    lockItem: function (uri, lock) {
+
+        var act = 'DELETE';
+        if(lock)    {
+            act = 'GET';
+        }
+        Ext.Ajax.request({
+            url: SavannaConfig.itemLockUrl + encodeURI(uri) +';jsessionid=' + Savanna.jsessionid,
+            method: act,
+            cors: true,
+            headers: {
+                'Accept': '*/*'
+            },
+            disableCaching: false,
+
+            success: function (response) {
+                //console.log('lock/unlock successful');
+            },
+
+            failure: function (response) {
+                Ext.Error.raise({
+                    msg: 'Error locking or unlocking file.'
+                });
+            }
         });
-    },
-
-    unlockItem: function (uri) {
-        this.getView().lockStore.getProxy().url = SavannaConfig.itemLockUrl + uri;
-        var record = this.getView().lockStore.getAt(0);
-        if (record) {
-            this.getView().lockStore.remove(record);
-            this.getView().lockStore.sync({
-                callback: Ext.bind(this.onItemUnlockCallback, this, [], true)
-            });
-        } else {
-            Ext.Error.raise({
-                msg: 'No record found to unlock - lock for edit may have failed.'
-            });
-        }
-
-    },
-
-    onItemLockCallback: function (records, operation, success) {
-        if (!success) {
-            Ext.Error.raise({
-                msg: 'Locking record failed.'
-            });
-        }
-    },
-
-    onItemUnlockCallback: function (responseObj) {
-        if (!responseObj.operations[0].success) {
-            Ext.Error.raise({
-                msg: 'Failed to unlock the item.'
-            })
-        }
     },
 
     toggleEditMode: function (btn) {
         if (!this.getView().getEditMode()) {
             this.getView().getLayout().setActiveItem(1);
+            this.lockItem(this.store.getAt(0).data.uri, true);
             this.lockItem(this.store.getAt(0).data.uri);
             var itemSourceComponentEdit = this.getView().queryById('itemSourcesEdit').queryById('listOfSources')
             itemSourceComponentEdit.reconfigure(this.store.getAt(0).propertyGroupsStore.getById('Sources').valuesStore.getById('Source Document').valuesStore);
@@ -141,17 +130,15 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         this.getView().getLayout().setActiveItem(0);
         this.getView().setEditMode(!this.getView().getEditMode());
 
-        this.unlockItem(this.store.getAt(0).data.uri)
+        this.lockItem(this.store.getAt(0).data.uri, false);
     },
 
     onEditDelete: function () {
-        this.store.getProxy().url = SavannaConfig.itemDeleteUrl + this.store.getAt(0).data.uri;
+        this.store.getProxy().url = SavannaConfig.itemDeleteUrl + encodeURI(this.store.getAt(0).data.uri);
 
         if (this.store.getProxy().extraParams && this.store.getProxy().extraParams.parentUri !== null) {
             delete this.store.getProxy().extraParams.parentUri;
         }
-
-        this.store.addSessionId = false;
 
         var record = this.store.getAt(0);
         this.store.remove(record);
@@ -202,7 +189,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         var headerComponent = this.getView().queryById('itemViewHeaderView');
         headerComponent.setTitle(this.store.getAt(0).data.label);
         headerComponent.reconfigure(this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore);
-        
+
         var qualitiesComponent = this.getView().queryById('itemViewPropertiesView');
         qualitiesComponent.reconfigure(this.store.getAt(0).propertyGroupsStore.getById('Properties').valuesStore);
 
@@ -211,19 +198,20 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
         var imagesBrowserComponent = this.getView().queryById('itemViewImagesGrid'),
             imagesBrowserComponentEdit = this.getView().queryById('itemViewImagesEdit');
-        
+
         imagesBrowserComponent.fireEvent('ViewImagesGrid:Setup');
         imagesBrowserComponentEdit.fireEvent('EditImagesGrid:Setup');
 
         var relatedItemView = this.getView().queryById('relatedItemsView');
-        Ext.each(this.store.getAt(0).propertyGroupsStore.getById('Related Items').valuesStore.data.items, function(group){
-            if (relatedItemView.queryById('relatedItemGrid_' + group.get('label').replace(/\s/g,''))) {
-                relatedItemView.queryById('relatedItemGrid_' + group.get('label').replace(/\s/g,'')).reconfigure(group.valuesStore);
+        Ext.each(this.store.getAt(0).propertyGroupsStore.getById('Related Items').valuesStore.data.items, function (group) {
+            if (relatedItemView.queryById('relatedItemGrid_' + group.get('label').replace(/\s/g, ''))) {
+                relatedItemView.queryById('relatedItemGrid_' + group.get('label').replace(/\s/g, '')).reconfigure(group.valuesStore);
             }
             else {
                 relatedItemView.fireEvent('ViewRelatedItems:AddRelationshipGrid', group);
             }
         }, this);
+        relatedItemView.fireEvent('ViewRelatedItems:SetupData', this.store.getAt(0).propertyGroupsStore.getById('Related Items').valuesStore.data.items);
 
 
         this.store.getAt(0).setDirty();
@@ -241,6 +229,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
                 msg: 'Updating record failed.'
             })
         }
+
     },
 
     getItemViewData: function () {
@@ -255,7 +244,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
     handleRecordDelete: function (responseObj) {
 
-        Savanna.app.fireEvent('itemview:itemDeleted', this.getView());
+        EventHub.fireEvent('close', this.getView());
 
         if (!responseObj.operations[0].success) {
             Ext.Error.raise({
@@ -315,6 +304,8 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
          Related Items View
          */
         var relatedItemView = me.getView().queryById('relatedItemsView');
+        relatedItemView.storeHelper = this.storeHelper;
+        relatedItemView.store = record.propertyGroupsStore.getById('Related Items').valuesStore;
         relatedItemView.fireEvent('ViewRelatedItems:SetupData', record.propertyGroupsStore.getById('Related Items').valuesStore.data.items);
 
         /*
@@ -387,31 +378,22 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
          */
         if (me.getView().getEditMode()) {
             me.getView().getLayout().setActiveItem(1);
-            me.lockItem(record.data.uri);
-        }
-        else {
-            /*
-            Server down..?
-             */
-            Ext.Error.raise({
-                msg: 'No record return for item URI.'
-            })
+            me.lockItem(record.data.uri, true);
         }
     },
 
     onNewItemClick: function (btn) {
-        Savanna.app.fireEvent('itemview:createitem', btn);
+        EventHub.fireEvent('createitem');
     },
 
-    /* commented out for demo
 
-     onWorkflowSelect: function () {
-     Ext.create('Savanna.itemView.view.workflow.WorkflowSelect', {
-     width: 500,
-     height: 425
-     });
-     },
-     */
+    onWorkflowSelect: function () {
+        Ext.create('Savanna.itemView.view.workflow.WorkflowSelect', {
+            width: 500,
+            height: 425
+        });
+    },
+
 
     onSearchSelect: function () {
         //console.log('search selected');
@@ -422,17 +404,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     },
 
     openItem: function (itemName, itemUri) {
-        var itemView = Ext.create('Savanna.itemView.view.ItemViewer', {
-            title: itemName,
-            itemUri: encodeURI(itemUri),
-            closable: true,
-            autoScroll: true,
-            tabConfig: {
-                ui: 'dark'
-            }
-        });
-
-        Savanna.app.fireEvent('search:itemSelected', itemView);
+        EventHub.fireEvent('open', {uri: itemUri, label: itemName, type: 'item'});
     },
     deleteRelatedItem: function (itemName, itemUri) {
 

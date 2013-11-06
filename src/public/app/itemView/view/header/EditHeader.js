@@ -36,7 +36,8 @@ Ext.define('Savanna.itemView.view.header.EditHeader', {
         },
         {
             xtype: 'textfield',
-            itemId: 'itemNameField'
+            itemId: 'itemNameField',
+            width:'100%'
         },
         {
             xtype: 'label',

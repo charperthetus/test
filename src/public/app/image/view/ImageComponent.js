@@ -36,7 +36,6 @@ Ext.define('Savanna.image.view.ImageComponent', {
                 region: 'east',
                 split: true,
                 width: '30%'
-
             }
         ]
     }
