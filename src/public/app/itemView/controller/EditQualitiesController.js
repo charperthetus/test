@@ -50,7 +50,7 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
 
         // Generate a new form control for each predicate in the store
         Ext.each(me.getView().store.data.items, function(item) {
-            ¡newProp = me.createNewAutoComplete(item.data);
+            newProp = me.createNewAutoComplete(item.data);
 
             // Generate the assertions (tags in this case) for the predicate
             Ext.each(item.data.values, function(value) {
