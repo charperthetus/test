@@ -23,6 +23,7 @@ Ext.define('Savanna.desktop.view.ModelSearchWindow', {
     width: 800,
     minWidth: 200,
     minHeight: 100,
+    restrictHeader: true,
     items: [{
         xtype: 'model_search_searchcomponent',
         itemId: 'searchcomponent'
