@@ -12,15 +12,26 @@ Ext.define('Savanna.sources.controller.Sources', {
         'Savanna.sources.view.Sources'
     ],
 
+    init: function() {
+        this.callParent(arguments);
+    },
+
     control: {
+        listOfSources: {
+            live: true,
+            listeners: {
+                itemclick: 'openSourceDocument'
+            }
+        },
         supportingResourcesDrop: {
-            boxready: 'onDropItemReady'
+              boxready: 'onDropItemReady'
         }
     },
 
-
-    init: function() {
-        this.callParent(arguments);
+    openSourceDocument: function( grid, record, item, index, e, eOpts) {
+        if (e.target.id === "openResourceDoc") {
+            EventHub.fireEvent('open', {uri: e.target.name, type: 'Rich', label: e.target.label});
+        }
     },
 
     onDropItemReady: function(container){
@@ -44,31 +55,26 @@ Ext.define('Savanna.sources.controller.Sources', {
     },
 
     notifyItemDropTarget: function(ddSource, e, data, container) {
-        //only create a new palette item if the dragged data does not already exist in the palette
 
-        //too bad we can't use the itemListHasDupes() function, but if the drag data has multiple records, then we
-        //need to do the dupe check for each one and add it if we can (unless we want to abort the whole drag if just
-        //one drag item is invalid)
         data.records.forEach(function(rec) {
-            var obj = rec.data;
-            var documentTitle = 'Document';
-            if (obj.title){
-                documentTitle = obj.title;
-            }
-            var documentSource = decodeURI(obj.documentSource);
-                if (obj.contentType === 'Rich' || obj.contentType === 'Text') {
-                    var test = container.up('itemview_itemviewer').query('document_sources');
-                    Ext.each(test, function(container){
-                        container.add({
-                            xtype: 'button',
-                            text: documentTitle,
-                            handler: function() {
-                                EventHub.fireEvent('open', {uri: obj.uri, type: obj.contentType, label: obj.title});
-                            }
-                        })
-                    })
-                }
+            this.getView().storeHelper.addBotLevItemInStore(rec.data.title, rec.data, this.getView().store.getById('Source Document'));
+            this.getView().storeHelper.fetchMainStore().getAt(0).setDirty();
+            this.getView().storeHelper.fetchMainStore().sync({
+                callback: Ext.bind(this.onEditDoneCallback, this, [], true)
+            });
         }, this);
+        this.getView().addSourcesGrid(this.getView().store)
+
+    },
+
+    onEditDoneCallback: function (records, operation, success) {
+        if (!success) {
+            //Ext.Error.raise({
+            //    msg: 'Updating record failed.'
+            //})
+        } else {
+            //this.getView().getById('listOfSources').reconfigure(this.store);
+        }
     },
 
     dragDataIsItem: function(data) {
@@ -81,4 +87,5 @@ Ext.define('Savanna.sources.controller.Sources', {
         });
         return returnVal;
     }
+
 });
