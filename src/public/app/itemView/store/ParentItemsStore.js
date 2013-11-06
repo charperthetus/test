@@ -42,6 +42,7 @@ Ext.define('Savanna.itemView.store.ParentItemsStore', {
         this.setProxy({
             type: 'savanna-cors',
             url: SavannaConfig.itemViewPerspective + '/183710',
+            noCache: false,
             startParam: undefined,
             limitParam: undefined,
             pageParam: undefined,

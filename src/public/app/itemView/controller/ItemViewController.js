@@ -83,49 +83,37 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         }
     },
 
-    lockItem: function (uri) {
-        this.getView().lockStore.getProxy().url = SavannaConfig.itemLockUrl + uri;
-        this.getView().lockStore.load({
-            callback: Ext.bind(this.onItemLockCallback, this, [], true)
+    lockItem: function (uri, lock) {
+
+        var act = 'DELETE';
+        if(lock)    {
+            act = 'GET';
+        }
+        Ext.Ajax.request({
+            url: SavannaConfig.itemLockUrl + encodeURI(uri) +';jsessionid=' + Savanna.jsessionid,
+            method: act,
+            cors: true,
+            headers: {
+                'Accept': '*/*'
+            },
+            disableCaching: false,
+
+            success: function (response) {
+                //console.log('lock/unlock successful');
+            },
+
+            failure: function (response) {
+                Ext.Error.raise({
+                    msg: 'Error locking or unlocking file.'
+                });
+            }
         });
-    },
-
-    unlockItem: function (uri) {
-        this.getView().lockStore.getProxy().url = SavannaConfig.itemLockUrl + uri;
-        var record = this.getView().lockStore.getAt(0);
-        if (record) {
-            this.getView().lockStore.remove(record);
-            this.getView().lockStore.sync({
-                callback: Ext.bind(this.onItemUnlockCallback, this, [], true)
-            });
-        } else {
-            Ext.Error.raise({
-                msg: 'No record found to unlock - lock for edit may have failed.'
-            });
-        }
-
-    },
-
-    onItemLockCallback: function (records, operation, success) {
-        if (!success) {
-            Ext.Error.raise({
-                msg: 'Locking record failed.'
-            });
-        }
-    },
-
-    onItemUnlockCallback: function (responseObj) {
-        if (!responseObj.operations[0].success) {
-            Ext.Error.raise({
-                msg: 'Failed to unlock the item.'
-            })
-        }
     },
 
     toggleEditMode: function (btn) {
         if (!this.getView().getEditMode()) {
             this.getView().getLayout().setActiveItem(1);
-            this.lockItem(this.store.getAt(0).data.uri);
+            this.lockItem(this.store.getAt(0).data.uri, true);
         } else {
             this.getView().getLayout().setActiveItem(0);
         }
@@ -138,7 +126,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         this.getView().getLayout().setActiveItem(0);
         this.getView().setEditMode(!this.getView().getEditMode());
 
-        this.unlockItem(this.store.getAt(0).data.uri);
+        this.lockItem(this.store.getAt(0).data.uri, false);
     },
 
     onEditDelete: function () {
@@ -366,7 +354,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
          */
         if (me.getView().getEditMode()) {
             me.getView().getLayout().setActiveItem(1);
-            me.lockItem(record.data.uri);
+            me.lockItem(record.data.uri, true);
         }
         else {
             /*

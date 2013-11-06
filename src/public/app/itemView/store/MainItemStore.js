@@ -27,6 +27,7 @@ Ext.define('Savanna.itemView.store.MainItemStore', {
         this.setProxy({
             type: 'savanna-cors',
             url: SavannaConfig.itemViewUrl,
+            noCache: false,
             startParam: undefined,
             limitParam: undefined,
             pageParam: undefined,
