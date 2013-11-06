@@ -85,10 +85,29 @@ Ext.define('Savanna.components.autoComplete.AutoCompleteController', {
         });        
         return result;
     },
+
+    /*
+     *  Setup New Tag
+     *
+     *  Abstraction that handles the events of adding a new tag. Takes the View as a 
+     *  argument to build up the event.
+     *
+     *  @param field {object} The ExtJS Input View
+     */
     setupNewTag: function (field) {
         field.findParentByType('auto_complete').addTag(field.getValue());
-        this.getView().fireEvent('AutoComplete:ItemSelected', field, null, this.getView());        
+        this.getView().fireEvent('AutoComplete:ItemSelected', field.getValue(), null, this.getView());        
     },
+
+    /*
+     *  Handle Auto Complete Select
+     *
+     *  Event handler for when a user selects a value return inside the auto-complete list.
+     *  Fires it's own event after checking if the tag is already present.
+     *
+     *  @param combo {object} The ExtJS Auto-Select Object (view)
+     *  @param records {array} The records returned from the event
+     */
     handleAutoCompleteSelect: function (combo, records) {
         if (!this.tagIsPresent(records[0].data.label)) {
             if (this.getView().showTags) {
@@ -100,6 +119,14 @@ Ext.define('Savanna.components.autoComplete.AutoCompleteController', {
 
         combo.setValue('');
     },
+
+    /*
+     *  Close form
+     *
+     *  Method that destroys the view and fires an even that the view is gone.
+     *
+     *  @param {none}
+     */
     closeForm: function() {
         this.getView().fireEvent('AutoComplete:Destroyed', this.getView());
         this.getView().destroy();
