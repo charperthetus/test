@@ -1,7 +1,7 @@
 .customDatePanel{
 	margin-left: 5px;
 	
-	&:nth-child(n+2){
+	.x-anchor-form-item:nth-child(n+2){
 		margin-top: -15px;
 	}
 	
