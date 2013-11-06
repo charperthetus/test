@@ -62,7 +62,9 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
                 items: [
                     {
                         xtype: 'box',
-                        itemId: 'statusIcon'
+                        itemId: 'statusIcon',
+                        width: 15,
+                        height: 15
                     },
 
                     {
@@ -78,9 +80,8 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
     },
 
     /*
-     tried to give this a more intuitive name - it swaps the store assigned to our grid
-     based on whichever DAL the user selects from the left-hand panel, pages to the current
-     page, and re-binds the paging toolbar.
+     swaps the store assigned to our grids
+     based on whichever DAL the user selects from the left-hand panel, , and re-binds the paging toolbar.
      */
     updateGridStore: function (store) {
 
@@ -95,8 +96,6 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
         gridMulti.reconfigure(store);
         gridMulti.queryById('gridtoolbar').bindStore(store);
     },
-
-
 
     setErrorText: function (text) {
         var grid = this.queryById('resultspanelgrid');

@@ -167,7 +167,25 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
         var me = this;
         var radioButtonConfigs = [];
         var radioCount = 0;
-        //  { boxLabel: 'Any Time', itemId: 'date_all', name: facetID, inputValue: 'all', checked: true },
+
+        //Special case 'Any Time' filter because this is more efficient than creating a special filter on the server.
+        // since we don't get this from the server we need to insert the total count.
+        var total = this.searchResults.store.totalCount;
+        var radioButtonAnyTime = {
+            boxLabel: 'Any Time' + ' (' + total + ')',
+            name: me.facet.key,   //group name
+            inputValue: "AnyTime",
+            id: 'checkbox_' + me.facet.key + '_' + String(Ext.id()),
+            checked: (radioCount == 0),
+            /*
+             added to resolve defect SAV-5380.  Needs design to assign a class.
+             */
+            style: {'white-space': 'nowrap' }
+        };
+        radioCount++;
+        radioButtonConfigs.push(radioButtonAnyTime);
+
+        //add facets based on values from server
         Ext.each(this.facet.facetValues, function (facetobj) {
 
             var radioButton = {
@@ -203,38 +221,49 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
         return radioButtonConfigs;
     },
 
-
-    deleteFilter: function(filter) {
-        var filters = me.dal.data.facetFilterCriteria;
-
-    },
-
     getActualValue:function(value){
         return value[this.facet.key];
     },
 
-    onDateRangeChange: function (radioGroup, newValue, oldValue) {
+    onDateRangeChange: function (radioGroup, newValue) { //oldValue is a third parameter
         var customDates = radioGroup.up('#facets_' + this.facet.key).queryById('customDatesPanel');
 
         var newValueString = this.getActualValue(newValue);
-        var oldValueString = this.getActualValue(oldValue);
+        var filters = this.getFilters();
+        var filterKey = this.facet.key;
+
+        //Special case anytime here:
+        if(newValueString === "AnyTime"){
+
+            //Since we are removing, we need to iterate from end to beginning
+            var len = filters.length;
+            var filterIndex;
+            for (filterIndex = len - 1;  filterIndex >= 0; filterIndex--) {
+                var filter = filters[filterIndex];
+                if (filter.key === filterKey) {
+                    Ext.Array.remove(filters, filter);
+                    break;
+                }
+            }
+            //Update the search results
+            this.doFilter(this);
+            return;
+        }
 
         var newIsCustom = ( newValueString == "custom");
 
         if (!newIsCustom) {
             customDates.collapse();
             customDates.collapsed = true;
-            var filters = this.getFilters();
-            var filterKey = this.facet.key;
             var newFilter =  {key: filterKey, values: [{value: newValueString}]};
             var filterFound = false;
             Ext.each(filters, function (range, index) {
-                           if (range.key === filterKey) {
-                               // replace it, do not add another
-                               filters[index] = newFilter;
-                               filterFound = true;
-                           }
-                       });
+                if (range.key === filterKey) {
+                    // replace it, do not add another
+                    filters[index] = newFilter;
+                    filterFound = true;
+                }
+            });
             if(!filterFound){
                 filters.push(newFilter);
             }
@@ -294,8 +323,9 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
         }
     },
 
+    //string filter change
     onFacetFilterChange: function (btn) {
-        return this.onFacetFilterChangeHelper(btn.value, btn.inputValue, true);
+        this.onFacetFilterChangeHelper(btn.value, btn.inputValue, true);
     },
 
     onFacetFilterChangeHelper: function (isChecked, inputValue, doTheSearch) {
