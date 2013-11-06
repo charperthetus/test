@@ -271,7 +271,8 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
         } else {
             customDates.expand();
             customDates.collapsed = false;
-            //the new search will be kicked off by the date picker close event
+            //re-query each time the custom date facet is opened, not just when the dates change.
+            this.doCustomDateSearch();
         }
     },
 
