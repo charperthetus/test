@@ -219,6 +219,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
                 relatedItemView.fireEvent('ViewRelatedItems:AddRelationshipGrid', group);
             }
         }, this);
+        relatedItemView.fireEvent('ViewRelatedItems:SetupData', this.store.getAt(0).propertyGroupsStore.getById('Related Items').valuesStore.data.items);
 
 
         this.store.getAt(0).setDirty();
@@ -236,6 +237,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
                 msg: 'Updating record failed.'
             })
         }
+
     },
 
     getItemViewData: function () {
@@ -310,6 +312,8 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
          Related Items View
          */
         var relatedItemView = me.getView().queryById('relatedItemsView');
+        relatedItemView.storeHelper = this.storeHelper;
+        relatedItemView.store = record.propertyGroupsStore.getById('Related Items').valuesStore;
         relatedItemView.fireEvent('ViewRelatedItems:SetupData', record.propertyGroupsStore.getById('Related Items').valuesStore.data.items);
 
         /*
