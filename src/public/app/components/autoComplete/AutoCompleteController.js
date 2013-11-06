@@ -42,7 +42,6 @@ Ext.define('Savanna.components.autoComplete.AutoCompleteController', {
      *  @param View {object} The Extjs View object being clicked
      */
     handleRemoveTagClick: function (value, view) {
-        console.log(arguments);
         this.getView().removeTag(view);
         this.getView().fireEvent('AutoComplete:TagRemoved', value, this.getView());
     },
@@ -87,9 +86,7 @@ Ext.define('Savanna.components.autoComplete.AutoCompleteController', {
         return result;
     },
     setupNewTag: function (field) {
-        if(this.getView().showTags){
-            field.findParentByType('auto_complete').addTag(field.getValue());            
-        }
+        field.findParentByType('auto_complete').addTag(field.getValue());
         this.getView().fireEvent('AutoComplete:ItemSelected', field, null, this.getView());        
     },
     handleAutoCompleteSelect: function (combo, records) {
