@@ -10,8 +10,8 @@ Ext.define('Savanna.itemView.store.ItemLockStore', {
     extend: 'Ext.data.JsonStore',
 
     requires: [
-        'Ext.data.Rest',
-        'Savanna.Cors'
+        'Ext.data.proxy.Rest',
+        'Savanna.proxy.Cors'
     ],
 
     storeId: 'itemLock',
@@ -25,7 +25,6 @@ Ext.define('Savanna.itemView.store.ItemLockStore', {
         this.setProxy({
             type: 'savanna-cors',
             url: SavannaConfig.itemLockUrl,
-            noCache: false,
             startParam: undefined,
             limitParam: undefined,
             pageParam: undefined,
