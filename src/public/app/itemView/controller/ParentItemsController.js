@@ -1,4 +1,3 @@
-
 Ext.define('Savanna.itemView.controller.ParentItemsController', {
     extend: 'Deft.mvc.ViewController',
 
@@ -10,57 +9,47 @@ Ext.define('Savanna.itemView.controller.ParentItemsController', {
         filterParentItemsField: {
             keydown: 'filterKeydown'
         },
-        searchParentItemsBtn: {
-            click: 'filterQualities'
-        },
-        clearParentItemsBtn:    {
+        clearParentItemsBtn: {
             click: 'closeTypeAhead'
         },
-        parentitems_results:    {
+        parentitems_results: {
             itemclick: 'selectParentItemUri',
             itemdblclick: 'getParentItemResult'
         }
     },
 
-    requires: [
-
-    ],
-
-    filterKeydown: function(field, e, eOpts) {
-        if(!this.getView().filtering)   {
-            this.getView().filtering = true;
-            var me = this;
-            me.getView().taInt = setInterval(me.checkFiltering, 200);
-            Ext.defer(function(){this.getView().filtering = false;}, this.getView().typeaheadDelay);
+    filterKeydown: function (field, e, eOpts) {
+        this.getView().filtering = true;
+        var me = this;
+        if (me.getView().taInt) {
+            clearTimeout(me.getView().taInt);
         }
+        me.getView().taInt = setTimeout(me.resetFiltering, this.getView().typeaheadDelay, me);
     },
 
-    checkFiltering:function()   {
-        if(!this.getView().filtering)   {
-            clearInterval(me.getView().taInt);
-            this.filterQualities();
+    resetFiltering: function (me) {
+        if (me.getView().filtering) {
+            me.getView().filtering = false;
+            me.filterQualities();
         }
     },
 
     filterQualities: function () {
-        if(!this.getView().filtering)   {
-            this.getView().getLayout().setActiveItem(1);
-            this.getView().queryById('parentitems_results').store.getProxy().extraParams.q = this.getView().queryById('filterParentItemsField').getValue();
-            this.getView().queryById('parentitems_results').store.reload();
-        }
+        this.getView().getLayout().setActiveItem(1);
+        this.getView().queryById('parentitems_results').store.getProxy().extraParams.q = this.getView().queryById('filterParentItemsField').getValue();
+        this.getView().queryById('parentitems_results').store.reload();
     },
 
-    closeTypeAhead: function()  {
+    closeTypeAhead: function () {
         this.getView().queryById('filterParentItemsField').setValue('');
         this.getView().getLayout().setActiveItem(0);
     },
 
-    selectParentItemUri:function(grid, record, item, index, e, eOpts)  {
+    selectParentItemUri: function (grid, record, item, index, e, eOpts) {
         this.getView().up('itemview_create_item').selectedParentUri = record.get('uri');
     },
 
     getParentItemResult: function (grid, record, item, index, e, eOpts) {
-
 
 
         var itemStore = Ext.create('Savanna.itemView.store.MainItemStore');
@@ -77,7 +66,7 @@ Ext.define('Savanna.itemView.controller.ParentItemsController', {
     },
 
     handleCreateSuccess: function (records, operation, success) {
-        EventHub.fireEvent('open', {uri: records[0].data.uri, label: records[0].data.label, type: 'item'}, {editMode:true});
+        EventHub.fireEvent('open', {uri: records[0].data.uri, label: records[0].data.label, type: 'item'}, {editMode: true});
     }
 });
 

@@ -98,11 +98,6 @@ Ext.define('Savanna.itemView.view.createItem.ParentItems', {
                 },
                 {
                     xtype: 'button',
-                    text: 'Search',
-                    itemId: 'searchParentItemsBtn'
-                },
-                {
-                    xtype: 'button',
                     text: 'X',
                     itemId: 'clearParentItemsBtn'
                 }
