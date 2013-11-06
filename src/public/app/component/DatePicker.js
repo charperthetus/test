@@ -315,7 +315,7 @@ Ext.define('Savanna.component.DatePicker', {
      * @return - this returns the current day from the day input field
      */
     getDay: function() {
-        return this.items.items[5].value;
+        return this.down('#DatePicker-Day').getValue();
     },
 
     /*
@@ -323,7 +323,7 @@ Ext.define('Savanna.component.DatePicker', {
      * @return - this returns the current hour from the hour input field
      */
     getHour: function() {
-        return this.items.items[6].value;
+        return this.down('#DatePicker-Hour').getValue();
     },
 
     /*
@@ -331,7 +331,7 @@ Ext.define('Savanna.component.DatePicker', {
      * @return - this returns the current minute from the minute input field
      */
     getMinute: function() {
-        return this.items.items[7].value;
+        return this.down('#DatePicker-Min').getValue();
     },
 
     /*
@@ -339,7 +339,7 @@ Ext.define('Savanna.component.DatePicker', {
      * @return - this returns the current month from the month input field
      */
     getMonth: function() {
-        return this.items.items[8].value;
+        return this.down('#DatePicker-Month').getValue();
     },
 
     /*
@@ -347,7 +347,7 @@ Ext.define('Savanna.component.DatePicker', {
      * @return - this returns the abbr value/ html text shown from the month input field
      */
     getMonthAbbr: function() {
-        return this.items.items[8].displayValue;
+        return this.down('#DatePicker-Month').displayValue;
     },
 
     /*
@@ -355,7 +355,7 @@ Ext.define('Savanna.component.DatePicker', {
      * @return - this returns the current year from the year input field
      */
     getYear: function() {
-        return this.items.items[9].value;
+        return this.down('#DatePicker-Year').getValue();
     },
 
     /*
@@ -428,7 +428,7 @@ Ext.define('Savanna.component.DatePicker', {
              */
             var checkHour = function(t){
                 if ( t > 24 ){
-                    me.items.items[6].markInvalid('Hour is Invalid!');
+                    me.down('#DatePicker-Hour').markInvalid('Hour is Invalid!');
                     return 1;
                 } else {
                     return 0;
@@ -444,7 +444,7 @@ Ext.define('Savanna.component.DatePicker', {
              */
             var checkMinute = function(t){
                 if ( t > 60 ){
-                    me.items.items[7].markInvalid('Hour is Invalid!');
+                    me.down('#DatePicker-Min').markInvalid('Minute is Invalid!');
                     return 1;
                 } else {
                     return 0;
@@ -472,13 +472,13 @@ Ext.define('Savanna.component.DatePicker', {
                 // make sure we did not have any illegal, month or day values that the date constructor, coerced into valid values.
                 if (date.getMonth() != month || date.getFullYear() != year || date.getDate() != day) {
                     if ( date.getDate() != day ){
-                        me.items.items[5].markInvalid('Day is Invalid!');
+                        me.down('#DatePicker-Day').markInvalid('Day is Invalid!');
                     }
                     else if ( date.getMonth() != month ){
-                        me.items.items[8].markInvalid('Month is Invalid!');
+                        me.down('#DatePicker-Month').markInvalid('Month is Invalid!');
                     }
                     else if ( date.getFullYear() != year ){
-                        me.items.items[9].markInvalid('Year is Invalid!');
+                        me.down('#DatePicker-Year').markInvalid('Year is Invalid!');
                     }
 
 
@@ -516,13 +516,9 @@ Ext.define('Savanna.component.DatePicker', {
         //Run the validtion checker passing in all the inputs.
         e = validateMe(d, h, m, n, y);
 
-        me.items.items[8].findInStore();
+        me.down('#DatePicker-Month').findInStore();
 
         //Checks the error count and if 0 errors then return true that the date is valid.
-        if (e > 0) {
-            return false;
-        } else {
-            return true;
-        }
+        return e <= 0;
     }
 });
