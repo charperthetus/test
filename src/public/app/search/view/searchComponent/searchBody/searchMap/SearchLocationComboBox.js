@@ -13,8 +13,6 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.searchMap.SearchLocat
     queryParam: 'q',
     matchFieldWidth: false,
     shrinkWrap: 3,
-    //Not implemented: will append a floating footer to page results
-    //pageSize: 1,
 
     requires: [
         'Ext.XTemplate',
@@ -50,7 +48,6 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.searchMap.SearchLocat
             }
             ,
             'beforerender': function(c) {
-                console.log('Render called ',c );
                 c.pagingToolbar = Ext.create(Ext.toolbar.Toolbar, {border: 3, style: {
                     borderColor: 'black'
                 }});
