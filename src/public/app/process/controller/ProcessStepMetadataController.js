@@ -18,7 +18,8 @@ Ext.define('Savanna.process.controller.ProcessStepMetadataController', {
 
     control: {
         view: {
-            stepUriChanged: 'onUriChanged'
+            stepUriChanged: 'onUriChanged',
+            savechanges: 'onSaveChanges'
         },
         stepTitle: true,
         durationLabel: true,
@@ -54,6 +55,11 @@ Ext.define('Savanna.process.controller.ProcessStepMetadataController', {
             this.getStepImageBrowser().store = record[0].propertyGroupsStore.getById('Images').valuesStore;
             this.getStepImageBrowser().fireEvent('EditImagesGrid:Setup', record[0].propertyGroupsStore.getById('Images').valuesStore.getById('Images').valuesStore.data.items);
         }
+    },
+
+    onSaveChanges: function() {
+        // TODO: save the existing set of changes, if any
+        console.log('ProcessStepMetadataController saveChanges');
     }
 
 

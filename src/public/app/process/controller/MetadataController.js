@@ -108,7 +108,7 @@ Ext.define('Savanna.process.controller.MetadataController', {
 
     saveChanges: function() {
         // TODO: save the existing set of changes, if any
-        console.log('saveChanges');
+        this.getHiddenPanel().getLayout().getActiveItem().fireEvent('savechanges');
     },
 
     onProcessClose: function() {

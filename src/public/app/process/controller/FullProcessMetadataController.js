@@ -19,7 +19,8 @@ Ext.define('Savanna.process.controller.FullProcessMetadataController', {
 
     control: {
         view: {
-            processUriChanged: 'onUriChanged'
+            processUriChanged: 'onUriChanged',
+            savechanges: 'onSaveChanges'
         },
         processTitle: true,
         processDescription: true,
@@ -55,5 +56,11 @@ Ext.define('Savanna.process.controller.FullProcessMetadataController', {
             this.getImageBrowser().store = record[0].propertyGroupsStore.getById('Images').valuesStore;
             this.getImageBrowser().fireEvent('EditImagesGrid:Setup', record[0].propertyGroupsStore.getById('Images').valuesStore.getById('Images').valuesStore.data.items);
         }
+    },
+
+    onSaveChanges: function() {
+        // TODO: save the existing set of changes, if any
+        console.log('FullProcessMetadataController saveChanges');
     }
+
 });

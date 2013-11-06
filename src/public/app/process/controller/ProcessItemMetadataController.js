@@ -18,7 +18,8 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
 
     control: {
         view: {
-            processUriChanged: 'onUriChanged'
+            processUriChanged: 'onUriChanged',
+            savechanges: 'onSaveChanges'
         },
         openBtn: {
             click: 'onOpenBtnClick'
@@ -63,5 +64,10 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
             this.getItemQualities().store = record[0].propertyGroupsStore.getById('Properties').valuesStore;
             this.getItemQualities().fireEvent('EditQualities:StoreSet');
         }
+    },
+
+    onSaveChanges: function() {
+        // TODO: save the existing set of changes, if any
+        console.log('ProcessItemMetadataController saveChanges');
     }
 });
