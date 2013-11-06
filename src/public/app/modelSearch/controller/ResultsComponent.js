@@ -42,12 +42,6 @@ Ext.define('Savanna.modelSearch.controller.ResultsComponent', {
                     me.component.on('search:grid:itemmouseenter', this.onItemMouseEnter, this);
                     me.component.on('search:grid:itemmouseleave', this.onItemMouseLeave, this);
 
-
-                    //The exception is for popups....
-                    //We can listen for events fired in  a popup this way (just like we did in Flex).
-                    var dispatcher = this.previewWindow();
-                    dispatcher.on('search:previewNextButton', this.onNextItemPreview, this);
-                    dispatcher.on('search:previewPrevButton', this.onPrevItemPreview, this);
                 }
             },
 
@@ -128,7 +122,11 @@ Ext.define('Savanna.modelSearch.controller.ResultsComponent', {
     },
 
     getCurrentDalId: function () {
-        return this.getResultsComponent().currentResultSet.id;
+        var resultSet = this.getResultsComponent().currentResultSet;
+        if(resultSet){
+            return resultSet.id;
+        }
+        return 'SolrJdbc';
     },
 
     getIsWaitingForPreviewResults: function () {
@@ -287,7 +285,7 @@ Ext.define('Savanna.modelSearch.controller.ResultsComponent', {
     },
 
     //double click handler
-    onItemDoubleClick: function (grid, record, node, index) {
+    onItemDoubleClick: function (grid, record) {
         this.openUri(record);
     },
 
@@ -377,6 +375,12 @@ Ext.define('Savanna.modelSearch.controller.ResultsComponent', {
         var searchComponent = this.getResultsComponent().findParentByType('model_search_searchcomponent');
         var currentDalPanel = searchComponent.down('#searchdals').queryById(id);
         var searchString = searchComponent.queryById('searchbar').buildSearchString();
+
+        //When we get a new size, we start again at page 1--like google.
+        if(searchController.resultsStore.pageSize != newSize) {
+            searchController.resultsStore.currentPage = 1;
+        }
+
         var searchObj = searchController.buildSearchObject(searchString, dalRecord, currentDalPanel);
 
         dalRecord.set('resultsPerPage', newSize);
@@ -385,14 +389,14 @@ Ext.define('Savanna.modelSearch.controller.ResultsComponent', {
 
     },
 
-    onSingleColumnGridView: function (button) {
+    onSingleColumnGridView: function () {
         var grid = this.getGrid();
         var multiGrid = this.getMultiGrid();
         grid.show();
         multiGrid.hide();
     },
 
-    onMultiColumnGridView: function (button) {
+    onMultiColumnGridView: function () {
         var grid = this.getGrid();
         var multiGrid = this.getMultiGrid();
         grid.hide();
@@ -411,7 +415,7 @@ Ext.define('Savanna.modelSearch.controller.ResultsComponent', {
         Ext.each(component.allResultSets, function (resultSet) {
             if (resultSet.id === dal.itemId) {
 
-                component.queryById('resultspanel').updateGridStore(resultSet);
+                component.queryById('resultspanel').updateGridStore(resultSet.store);
 
                 component.currentResultSet = resultSet;
 
@@ -443,6 +447,7 @@ Ext.define('Savanna.modelSearch.controller.ResultsComponent', {
                 return false;
             }
         }
+        return false;
     },
 
     handleSearchSubmit: function (btn) {

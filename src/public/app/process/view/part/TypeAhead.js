@@ -49,7 +49,7 @@ Ext.define('Savanna.process.view.part.TypeAhead', {
         domEl.onCommit = function(textBlock) {
             var selArray = c.lastSelection;
             var selItem = selArray[0]; //multi-select is not allowed on this combo box.
-            if (selItem.data.label === c.getValue()) {
+            if (selItem && selItem.data.label === c.getValue()) {
                 var node = textBlock.part;
                 //todo: change this to call changeRepresentsUri when the new endpoint for that is finished
                 Savanna.process.utils.ProcessUtils.setRepresentsUri(node.data, selItem.data.uri);
