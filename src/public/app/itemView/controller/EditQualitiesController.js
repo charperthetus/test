@@ -45,13 +45,16 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
 
     // This is for the main (static) auto-complete form.
     storeSet: function() {
-        var me = this;
+        var me = this,
+            newProp;
 
         // Generate a new form control for each predicate in the store
         Ext.each(me.getView().store.data.items, function(item) {
-            var newProp = me.createNewAutoComplete(item.data);
+            newProp = me.createNewAutoComplete(item.data);
+
+            // Generate the assertions (tags in this case) for the predicate
             Ext.each(item.data.values, function(value) {
-                newProp.addTag(value.label);
+                newProp.addTag(value.label, value.editable);
             });
             me.getView().add(newProp);
         });
@@ -96,7 +99,7 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
             });
         this.propNameArray.push(data.label);
         newProp.child('container').insert(1, picker);
-        this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
+//        this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
 
         return newProp;
     },
@@ -105,14 +108,14 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
     // add the tag to the store
     addTag: function(tagName, tagData, aView) {
         this.getView().storeHelper.addBotLevItemInStore(tagName, tagData, this.getView().store.getById(aView.preLabel))
-        this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
+//        this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
     },
 
     // When a tag is removed on a child auto-complete
     // remove the tag from the store
     removeTag: function(tagName, aView) {
         this.getView().storeHelper.removeBotLevItemInStore(tagName, this.getView().store.getById(aView.preLabel));
-        this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
+//        this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
     },
 
     launchValuesChooser: function(storeName) {
@@ -144,7 +147,7 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
                 this.getView().queryById('prop_' + propName.replace(/[\s'"]/g, "_")).addTag(value.data.label);
             }, this);
 
-            this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
+//            this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
         }
     },
 
@@ -177,6 +180,6 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
 
     updateTitle: function() {
         this.getView().setTitle('Qualities (' + this.getView().store.data.items.length + ')');
-        this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
+//        this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
     }
 });
