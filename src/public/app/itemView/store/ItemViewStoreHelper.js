@@ -19,6 +19,10 @@ Ext.define('Savanna.itemView.store.ItemViewStoreHelper', {
         return this.store.getAt(0).data.uri;
     },
 
+    fetchMainStore: function() {
+        return this.store;
+    },
+
     updateMainStore: function(store, componentName) {
         for (var i = 0; i < this.mainStore.length; i++) {
             if (this.mainStore[i].label === componentName) {
@@ -62,11 +66,32 @@ Ext.define('Savanna.itemView.store.ItemViewStoreHelper', {
         }
     },
 
+    /*
+     *  Get Bottom Leaf Store
+     *
+     *  Returns a collection of "leafs" from a store. This iterates three levels
+     *  deep and returns an Array of values.
+     *
+     *  @param {store} The store object to iterate over
+     */
+    getBotLevItemInStore: function(store) {
+        var results = [];
+        Ext.Array.each(store, function(model) {
+            Ext.Array.each(model.data.items, function(values) {
+                Ext.Array.each(values.data.values, function(leaf) {
+                    results.push(leaf);
+                });
+            });
+        });
+        return results;
+    },
+
     addBotLevItemInStore: function(tagName, tagData, store) {
         var tagUri = tagData ? tagData.uri : null;
         var tagModel = this.createNewBottomLevelModelInstance(tagName, tagUri);
         store.data.values.push(tagModel.data);
         store.valuesStore.add(tagModel);
+        console.log(this.store)
     },
 
     removeBotLevItemInStore: function(tagName, store) {

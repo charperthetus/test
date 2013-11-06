@@ -21,7 +21,6 @@ Ext.define('Savanna.itemView.store.MainItemStore', {
     addSessionId: false,
 
     constructor: function () {
-
         this.callParent(arguments);
 
         this.setProxy({

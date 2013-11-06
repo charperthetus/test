@@ -17,7 +17,8 @@ Ext.define('Savanna.desktop.view.StartPage', {
             items: [
                 {
                     xtype: 'image',
-                    src: '/resources/images/discover.jpg'
+                    src: '/resources/images/discover.jpg',
+                    height: 254 //This needed to be set explicitly otherwise on the first draw it doesn't show
                 },
                 {
                     xtype: 'label',
@@ -46,7 +47,8 @@ Ext.define('Savanna.desktop.view.StartPage', {
             items: [
                 {
                     xtype: 'image',
-                    src: '/resources/images/create.jpg'
+                    src: '/resources/images/create.jpg',
+                    height: 254
                 },
                 {
                     xtype: 'label',

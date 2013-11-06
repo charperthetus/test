@@ -24,6 +24,19 @@ Ext.define('Savanna.itemView.controller.ViewRelatedItemsController', {
         Ext.each(items, function (relatedItemsGroup) {
             this.addRelationshipGrid(relatedItemsGroup);
         }, this);
+        this.updateHeader();
+    },    
+
+    // Iterates over the bottom-level leafs in the store and adds the number to the header.
+    updateHeader: function () {
+        var number = this.getView().storeHelper.getBotLevItemInStore(this.getView().store).length || 0,
+            titlePre = 'Related Items (',
+            titlePost = ')',
+            title = this.getView();
+
+        if (title) {
+            title.setTitle(titlePre + number + titlePost);
+        }
     },
 
     addRelationshipGrid: function (relationship) {
@@ -47,7 +60,6 @@ Ext.define('Savanna.itemView.controller.ViewRelatedItemsController', {
         });
 
         this.getView().add(grid);
-
         this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
     },
 
