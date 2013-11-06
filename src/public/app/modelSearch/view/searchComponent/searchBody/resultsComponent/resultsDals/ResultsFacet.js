@@ -288,13 +288,19 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
     //Called from date picker
     doCustomDateSearch: function () {
 
+        //Note: We let the user select any date for the end and start dates and we will
+        // turn it into a valid range.  Server doesn't handle this so we fix it on the client.
+
         var startDate = this.queryById('fromDate').getValue(),
             endDate = this.queryById('toDate').getValue(),
             fieldName = this.query('form')[0].itemId.replace('facets_', ''),
+            smallerTime = Math.min(startDate.getTime(), endDate.getTime()),
+            largerTime = Math.max(startDate.getTime(), endDate.getTime()),
+
             newDateRange = {
                 key: fieldName,
                 values: [
-                    { valueMin: startDate.getTime(), valueMax: endDate.getTime()}
+                    { valueMin: smallerTime, valueMax: largerTime}
                 ]
             },
             updateExisting = false,

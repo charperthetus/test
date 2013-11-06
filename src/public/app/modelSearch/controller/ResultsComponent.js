@@ -375,6 +375,12 @@ Ext.define('Savanna.modelSearch.controller.ResultsComponent', {
         var searchComponent = this.getResultsComponent().findParentByType('model_search_searchcomponent');
         var currentDalPanel = searchComponent.down('#searchdals').queryById(id);
         var searchString = searchComponent.queryById('searchbar').buildSearchString();
+
+        //When we get a new size, we start again at page 1--like google.
+        if(searchController.resultsStore.pageSize != newSize) {
+            searchController.currentPage = 1;
+        }
+
         var searchObj = searchController.buildSearchObject(searchString, dalRecord, currentDalPanel);
 
         dalRecord.set('resultsPerPage', newSize);
