@@ -25,29 +25,13 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
                 'render': function (search) {
                     me.component = search;  // temporary measure, pending deft conversion next week
 
-                    //Keelan asked that I use UI event bubbling...
                     //The pattern I've been using is for the controller of the child to fire the event on it's controlled view.
                     //Then we catch the event in all the "parent controllers" by listening to events on their controlled views. (See below)
                     me.component.on('search:PageSizeChanged', this.onPageSizeChange, this);
                     me.component.on('search:SortByChanged', this.onSortOrderChange, this);
                     me.component.on('search:changeSelectedStore', this.changeSelectedStore, this);
-
-                    //grid notifications
-                    me.component.on('search:grid:itemdblclick', this.onItemPreview, this);
-                    me.component.on('search:grid:itemclick', this.onItemClick, this);
-                    me.component.on('search:grid:itemmouseenter', this.onItemMouseEnter, this);
-                    me.component.on('search:grid:itemmouseleave', this.onItemMouseLeave, this);
-
-
-                    //The exception is for popups....
-                    //We can listen for events fired in  a popup this way (just like we did in Flex).
-                    var dispatcher = this.previewWindow();
-                    dispatcher.on('search:previewNextButton', this.onNextItemPreview, this);
-                    dispatcher.on('search:previewPrevButton', this.onPrevItemPreview, this);
                 }
             },
-
-
             'search_resultscomponent #resultsFacetsReset': {
                 'click': this.onDalReset
             },
@@ -77,15 +61,9 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
             'search_searchcomponent search_resultscomponent': {
                 'clearPopUpOnNewSearch': this.hidePopUp
             }
-
         });
 
     },
-
-
-
-    //Index to show in preview in range: 0 to store.totalCount.
-    previewIndex: 0,
 
     //The grid with the results.
     resultsGrid: null,
@@ -93,16 +71,9 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
     //Results store
     resultsStore: null,
 
-    //True if we are waiting for some preview results to show up.
-    _isWaitingForPreviewResults: false,
-
     getResultsComponent: function () {
         return this.component;
     },
-
-    //True if we are waiting for some preview results to show up.
-    _isWaitingForDocumentMetadata: false,
-
 
     // Get the grid component.
     getGrid: function () {
@@ -114,226 +85,9 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
         return  this.getGrid().store;
     },
 
-    //the window that holds the preview content
-    previewWindow: function () {
-        return  this.getResultsComponent().queryById('resultspreviewwindow');
-    },
-
-    //previous button on the preview window
-    previewPrevButton: function () {
-        return this.previewWindow().down('#previewPrevButton');
-    },
-
-    //next button on the preview window
-    previewNextButton: function () {
-        return this.previewWindow().down('#previewNextButton');
-
-    },
-
     getCurrentDalId: function () {
         return this.getResultsComponent().currentResultSet.id;
     },
-
-    getIsWaitingForPreviewResults: function () {
-        return this._isWaitingForPreviewResults;
-    },
-
-    setIsWaitingForPreviewResults: function (value) {
-        this._isWaitingForPreviewResults = value;
-    },
-
-    getIsWaitingForDocumentMetadata: function () {
-        return this._isWaitingForDocumentMetadata;
-    },
-
-    setIsWaitingForDocumentMetadata: function (value) {
-        this._isWaitingForDocumentMetadata = value;
-    },
-
-    //Loads the store based on current store settings
-    getNewPreviewRecords: function () {
-        this.resultsStore = this.getGridStore();
-        var me = this;
-        this.resultsStore.load({
-            scope: this,
-            callback: function() {
-                me.updatePreviewHelper();
-            }
-        });
-    },
-
-    //The store uses an index that is zero-based such that the first record of the current page has index zero (range is 0 to pageSize - 1).
-    // The previewIndex is zero-based but has the range 0 to totalResults - 1.
-    getStoreIndexOfPreviewIndex: function () {
-        return  this.previewIndex % this.resultsStore.pageSize;
-    },
-
-    pageOfCurrentPreviewIndex: function () {
-        if (!this.resultsStore) {
-            this.resultsStore = this.getGridStore();
-        }
-        if (this.previewIndex >= (this.resultsStore.currentPage) * this.resultsStore.pageSize) {
-            return this.resultsStore.currentPage + 1;
-        } else if (this.previewIndex < (this.resultsStore.currentPage - 1) * this.resultsStore.pageSize) {
-            return this.resultsStore.currentPage - 1;
-        }
-        return this.resultsStore.currentPage;
-    },
-
-    updatePreviewHelper: function () {
-
-        var me = Savanna.controller.Factory.getController('Savanna.search.controller.ResultsComponent');
-        me.resultsGrid = me.getGrid();
-        me.resultsStore = me.getGridStore();
-
-        var record = me.resultsStore.getAt(me.getStoreIndexOfPreviewIndex()),
-            recordMetadata;
-
-        if(me.getResultsComponent().currentResultSet.metadata)   {
-            recordMetadata = me.getResultsComponent().currentResultSet.metadata.getById(record.data.uri);
-        }
-
-        //this can happen when you hit next > 10 times/sec
-        if(!record || !recordMetadata){
-            setTimeout(me.updatePreviewHelper, 500);
-            if(!record) {
-                me.setIsWaitingForPreviewResults ( true );
-            }
-            if(!recordMetadata) {
-                me.setIsWaitingForDocumentMetadata ( true );
-            }
-        }
-
-        me.setIsWaitingForPreviewResults ( false );
-
-
-        var win = me.previewWindow();
-        //Show the contents
-        win.displayPreview(record.data, recordMetadata.get('datastore'), me.previewIndex, me.resultsStore.totalCount);
-
-        //Enable/disable the prev and next buttons
-        if (me.previewIndex === 0) {
-            me.previewPrevButton().disable();
-        } else {
-            me.previewPrevButton().enable();
-        }
-        if (me.previewIndex === me.resultsStore.totalCount - 1) {
-            me.previewNextButton().disable();
-        } else {
-            me.previewNextButton().enable();
-        }
-    },
-
-    getDocumentMetadata: function (results, uris) {
-
-
-        this.setIsWaitingForDocumentMetadata ( true );
-
-        var metadataStore = Ext.create('Savanna.search.store.ResultsMetadata', {
-            storeId: 'searchMetadata_' + results.id,
-            pageSize: results.store.pageSize
-        });
-
-        metadataStore.proxy.jsonData = Ext.JSON.encode(uris);  // attach the metadata request object
-
-        metadataStore.load({
-            callback: Ext.bind(this.metadataCallback, this, [results], true)
-        });
-    },
-
-    metadataCallback: function (records, operation, success, results) {
-
-        for (var record in records) {
-
-            if (records.hasOwnProperty(record)) {
-                var obj = records[record];
-
-                var metaStore = Ext.create('Ext.data.Store', {
-                    model: 'Savanna.search.model.ResultMetadata'
-                });
-                for (var elem in obj.raw) {
-                    if (obj.raw.hasOwnProperty(elem)) {
-                        var elem_obj = obj.raw[elem];
-                        var metaPropertiesStore = Ext.create('Savanna.metadata.store.Metadata');
-                        for (var prop in elem_obj) {
-                            if (elem_obj.hasOwnProperty(prop)) {
-                                metaPropertiesStore.add(elem_obj[prop]);
-                            }
-                        }
-                        metaStore.add({id: elem, datastore: metaPropertiesStore});
-                    }
-                }
-                results.metadata = metaStore;
-
-                this.setIsWaitingForDocumentMetadata ( false );
-            }
-        }
-    },
-
-    updatePreview: function (){
-        this.resultsGrid = this.getGrid();
-        this.resultsStore = this.getGridStore();
-        if(this.getIsWaitingForPreviewResults() || this.getIsWaitingForDocumentMetadata()){
-            return;
-        }
-
-        //Make sure the record is paged in.
-        var containingPage = this.pageOfCurrentPreviewIndex();
-        if (this.resultsStore.currentPage !== containingPage) {
-            this.resultsStore.currentPage = containingPage;
-            this.getNewPreviewRecords();
-        } else {
-
-            this.updatePreviewHelper();
-        }
-    },
-
-    onItemPreview: function (grid, record, node, index) {
-        this.resultsGrid = grid;
-        this.resultsStore = grid.store;
-        //gaaaahhh    the index passed in does not include all the pages that have come before.
-        //gaaaahhh*10 the current page is 1-based.
-        this.previewIndex = index + (this.resultsStore.currentPage - 1) * (this.resultsStore.pageSize);
-        this.updatePreview();
-    },
-
-    onItemMouseEnter: function (view, rec, node) {    // other parameters: , index, e, options
-        if (node) {
-            node.querySelector('#hoverDiv').style.visibility = 'visible';
-        }
-    },
-
-    onItemClick: function (view, rec, node, index, e) {  //other parameter options
-        //TODO - the way of getting this button is wrong, refactor
-        if (e && e.target && e.target.className.indexOf('openButtonClass') != -1) {
-            EventHub.fireEvent('open', {uri: rec.data.uri, type: rec.data.contentType, label: rec.data.title});
-        }
-    },
-
-    onItemMouseLeave: function (view, rec, node) {  // other parameters: , index, e, options
-        if (node) {
-            node.querySelector('#hoverDiv').style.visibility = 'hidden';
-        }
-    },
-
-    onNextItemPreview: function () {
-        if (this.previewIndex >= this.resultsStore.totalCount) {
-            return;
-        } else {
-            this.previewIndex++;
-            this.updatePreview();
-        }
-    },
-
-    onPrevItemPreview: function () {
-        if (this.previewIndex <= 0) {
-            return;
-        } else {
-            this.previewIndex--;
-            this.updatePreview();
-        }
-    },
-
 
     onDalReset: function (btn) {
         var id = this.getCurrentDalId();
