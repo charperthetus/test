@@ -723,6 +723,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
         var popUpAnchor = Ext.get(dom[0]);
         popUpAnchor.removeCls("top left right bottom");
         var mapBox = mapCanvas.getBox(true);
+        var shift;
         var top = null;
         var left = null;
         var ancLeft = null;
@@ -737,10 +738,22 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
 
         if (horizontalOffset === 'right') {
             left = locationPx.x - elSize.width;
-            ancLeft = elSize.width - anchorSize.width;
+            if (left < 0) {
+                shift = Math.abs(locationPx.x - elSize.width) + 5;
+                left = left + shift;
+                ancLeft = elSize.width - anchorSize.width - shift;
+            } else {
+                ancLeft = elSize.width - anchorSize.width;
+            }
         } else {
             left = locationPx.x;
-            ancLeft = 0;
+            if (left + elSize.width > mapBox.width) {
+                shift = (left + elSize.width + 5) - (mapBox.width);
+                left = left - shift;
+                ancLeft = 0 + shift;
+            } else {
+                ancLeft = 0;
+            }
         }
         if (verticalOffset === 'bottom') {
             top = locationPx.y - (elSize.height + anchorSize.height);
