@@ -70,7 +70,6 @@ Ext.ClassManager.addNameAlternateMappings({
   "Deft.promise.Chain": [
     "Deft.Chain"
   ],
-  "Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent.ResultsMap": [],
   "Savanna.itemView.view.createItem.ParentItemsTreePanel": [],
   "Savanna.Config": [],
   "Savanna.process.view.part.Overview": [],
@@ -91,7 +90,6 @@ Ext.ClassManager.addNameAlternateMappings({
   "Deft.mixin.Controllable": [],
   "Ext.ux.grid.filter.NumericFilter": [],
   "Savanna.itemView.controller.ViewRelatedItemsController": [],
-  "Savanna.modelSearch.view.searchComponent.searchBody.SearchMap": [],
   "Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsPreviewContent": [],
   "Savanna.itemView.util.ItemViewFactory": [],
   "Savanna.process.store.Processes": [],
@@ -144,8 +142,8 @@ Ext.ClassManager.addNameAlternateMappings({
   "Savanna.modelSearch.controller.ResultsComponent": [],
   "Ext.ux.FieldReplicator": [],
   "Savanna.itemView.model.PropertyGroupModel": [],
-  "Savanna.modelSearch.view.SearchComponent": [],
   "Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineSearchbar": [],
+  "Savanna.modelSearch.view.SearchComponent": [],
   "Deft.mixin.Injectable": [],
   "Savanna.metadata.view.UriList": [],
   "Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsPanel": [],
@@ -205,7 +203,6 @@ Ext.ClassManager.addNameAlternateMappings({
   "Savanna.crumbnet.view.part.Toolbar": [],
   "Ext.ux.event.Player": [],
   "Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsPanelToolbar": [],
-  "Savanna.modelSearch.view.searchComponent.searchBody.searchMap.Canvas": [],
   "Savanna.metadata.view.Details": [],
   "Savanna.upload.view.UploadComponent": [],
   "Savanna.metadata.store.Metadata": [],
@@ -375,6 +372,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "Savanna.itemView.controller.EditImageBrowserController": [],
   "Ext.ux.grid.filter.StringFilter": [],
   "Savanna.metadata.model.Metadata": [],
+  "Savanna.itemView.view.createItem.TypeAheadResults": [],
   "Savanna.modelSearch.view.searchComponent.SearchBody": [],
   "Savanna.crumbnet.utils.ExtendedLink": [],
   "Savanna.components.autoComplete.AutoComplete": [],
@@ -403,7 +401,6 @@ Ext.ClassManager.addNameAlternateMappings({
   "Savanna.itemView.controller.QualitiesPickerController": [],
   "Savanna.modelSearch.model.SearchRequest": [],
   "Savanna.itemView.view.ItemViewer": [],
-  "Savanna.modelSearch.view.searchComponent.searchBody.searchMap.SearchLocationComboBox": [],
   "Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineSearchbar": [],
   "Savanna.sources.view.Sources": [],
   "Savanna.crumbnet.model.Template": [],
@@ -418,10 +415,10 @@ Ext.ClassManager.addNameAlternateMappings({
   "Savanna.document.view.DocumentComponent": [],
   "Savanna.modelSearch.view.searchComponent.searchBar.SearchForm": [],
   "Savanna.classification.store.OptionsStore": [],
-  "Savanna.itemView.model.KVPairGroupModel": [],
   "Deft.promise.Promise": [
     "Deft.Promise"
   ],
+  "Savanna.itemView.model.KVPairGroupModel": [],
   "Ext.ux.DataTip": [],
   "Savanna.modelSearch.view.searchComponent.searchBody.SearchDals": [],
   "Savanna.view.Login": [],
@@ -504,9 +501,6 @@ Ext.ClassManager.addNameAliasMappings({
   "Savanna.itemView.model.ParentItemsTreeModel": [],
   "Savanna.itemView.model.IntendedUses": [],
   "Deft.promise.Chain": [],
-  "Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent.ResultsMap": [
-    "widget.model_search_resultsmap"
-  ],
   "Savanna.itemView.view.createItem.ParentItemsTreePanel": [
     "widget.itemview_treepanel"
   ],
@@ -547,9 +541,6 @@ Ext.ClassManager.addNameAliasMappings({
     "gridfilter.numeric"
   ],
   "Savanna.itemView.controller.ViewRelatedItemsController": [],
-  "Savanna.modelSearch.view.searchComponent.searchBody.SearchMap": [
-    "widget.model_search_searchmap"
-  ],
   "Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsPreviewContent": [
     "widget.search_resultspreviewcontent"
   ],
@@ -640,11 +631,11 @@ Ext.ClassManager.addNameAliasMappings({
   "Savanna.modelSearch.controller.ResultsComponent": [],
   "Ext.ux.FieldReplicator": [],
   "Savanna.itemView.model.PropertyGroupModel": [],
-  "Savanna.modelSearch.view.SearchComponent": [
-    "widget.model_search_searchcomponent"
-  ],
   "Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineSearchbar": [
     "widget.search_resultsDals_resultsrefine"
+  ],
+  "Savanna.modelSearch.view.SearchComponent": [
+    "widget.model_search_searchcomponent"
   ],
   "Deft.mixin.Injectable": [],
   "Savanna.metadata.view.UriList": [
@@ -752,9 +743,6 @@ Ext.ClassManager.addNameAliasMappings({
   "Ext.ux.event.Player": [],
   "Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsPanelToolbar": [
     "widget.search_resultspaneltoolbar"
-  ],
-  "Savanna.modelSearch.view.searchComponent.searchBody.searchMap.Canvas": [
-    "widget.model_search_map_canvas"
   ],
   "Savanna.metadata.view.Details": [
     "widget.metadata_details"
@@ -1038,6 +1026,9 @@ Ext.ClassManager.addNameAliasMappings({
     "gridfilter.string"
   ],
   "Savanna.metadata.model.Metadata": [],
+  "Savanna.itemView.view.createItem.TypeAheadResults": [
+    "widget.itemview_typeahead_results"
+  ],
   "Savanna.modelSearch.view.searchComponent.SearchBody": [
     "widget.model_searchbody"
   ],
@@ -1092,9 +1083,6 @@ Ext.ClassManager.addNameAliasMappings({
   "Savanna.itemView.view.ItemViewer": [
     "widget.itemview_itemviewer"
   ],
-  "Savanna.modelSearch.view.searchComponent.searchBody.searchMap.SearchLocationComboBox": [
-    "widget.model_search_searchlocationcombobox"
-  ],
   "Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineSearchbar": [
     "widget.model_search_resultsDals_resultsrefine"
   ],
@@ -1121,8 +1109,8 @@ Ext.ClassManager.addNameAliasMappings({
   "Savanna.classification.store.OptionsStore": [
     "widget.classification_options_store"
   ],
-  "Savanna.itemView.model.KVPairGroupModel": [],
   "Deft.promise.Promise": [],
+  "Savanna.itemView.model.KVPairGroupModel": [],
   "Ext.ux.DataTip": [
     "plugin.datatip"
   ],

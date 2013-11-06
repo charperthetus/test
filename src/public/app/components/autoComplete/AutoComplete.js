@@ -98,9 +98,11 @@ Ext.define('Savanna.components.autoComplete.AutoComplete', {
         ];
     },
 
-    addTag: function (tag) {
+    addTag: function (tag, editable) {
         var newTag = Ext.create('Savanna.components.tags.Tag', {
-            itemId: 'tag_' + tag.replace(/[\s'"]/g, "_")
+            itemId: 'tag_' + tag.replace(/[\s'"]/g, "_"),
+            disabled: ( editable !== undefined ) ? !editable : false,
+            tip: 'I\'m a tooltip'
         });
 
         newTag.setTerm(tag);
@@ -108,6 +110,9 @@ Ext.define('Savanna.components.autoComplete.AutoComplete', {
     },
 
     removeTag: function (view) {
+        if(view.disabled) {
+            return false; // Disabled 
+        }
         var myTag = view.itemId;
         this.queryById('tagsList').remove(myTag);
     },
