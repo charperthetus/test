@@ -11,7 +11,7 @@ Ext.define('Savanna.process.controller.MetadataController', {
             processUriChange: 'setUpProcessDetails',
             processclose: 'onProcessClose'
         },
-        hiddenTabPanel: {
+        hiddenPanel: {
             boxready: 'onBeforeHiddenPanelShow'
         },
         fullProcessMetadata:  {
@@ -65,14 +65,13 @@ Ext.define('Savanna.process.controller.MetadataController', {
 
     setUpProcessDetails: function(itemUri) {
         // get proper info from service for item configs
-        console.log('MetadataController setUpProcessDetails', itemUri);
         if( null !== itemUri ) {
             this.setProcessUri( itemUri );
-            this.getHiddenTabPanel().setActiveTab(this.getFullProcessMetadata());
+            this.getHiddenPanel().getLayout().setActiveItem(this.getFullProcessMetadata());
             this.getFullProcessMetadata().fireEvent('processUriChanged', itemUri);
         } else {
             // show the process details panel
-            this.getHiddenTabPanel().setActiveTab(this.getFullProcessMetadata());
+            this.getHiddenPanel().getLayout().setActiveItem(this.getFullProcessMetadata());
         }
     },
 
@@ -80,14 +79,14 @@ Ext.define('Savanna.process.controller.MetadataController', {
         this.getStepMetadata().show();
 
         this.getStepMetadata().fireEvent('stepUriChanged', itemUri);
-        this.getHiddenTabPanel().setActiveTab(this.getStepMetadata());
+        this.getHiddenPanel().getLayout().setActiveItem(this.getStepMetadata());
     },
 
     setUpItemDetails: function(itemUri) {
         this.getItemMetadata().show();
 
         this.getItemMetadata().fireEvent('processUriChanged', itemUri);
-        this.getHiddenTabPanel().setActiveTab(this.getItemMetadata());
+        this.getHiddenPanel().getLayout().setActiveItem(this.getItemMetadata());
     },
 
     addFullProcessMetadataListeners: function(process_details) {
@@ -104,7 +103,7 @@ Ext.define('Savanna.process.controller.MetadataController', {
     },
 
     onBeforeHiddenPanelShow: function() {
-        this.getHiddenTabPanel().getTabBar().setVisible(false);
+        //this.getHiddenPanel().getTabBar().setVisible(false);
     },
 
     saveChanges: function() {
@@ -113,6 +112,6 @@ Ext.define('Savanna.process.controller.MetadataController', {
     },
 
     onProcessClose: function() {
-
+        this.saveChanges();
     }
 });

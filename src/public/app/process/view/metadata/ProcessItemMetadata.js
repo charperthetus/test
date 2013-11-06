@@ -7,7 +7,7 @@
  */
 
 Ext.define('Savanna.process.view.metadata.ProcessItemMetadata', {
-    extend: 'Ext.panel.Panel',
+    extend: 'Ext.form.Panel',
     alias: 'widget.process_item_metadata',
 
     requires: [
