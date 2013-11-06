@@ -17,15 +17,75 @@ Ext.define('Savanna.sources.controller.Sources', {
     },
 
     control: {
-        view: {
-            itemclick: 'openSourceDocument'
+        listOfSources: {
+            live: true,
+            listeners: {
+                itemclick: 'openSourceDocument'
+            }
+        },
+        supportingResourcesDrop: {
+              boxready: 'onDropItemReady'
         }
     },
 
     openSourceDocument: function( grid, record, item, index, e, eOpts) {
-        if (e.target.id == "openSourceDoc") {
-            EventHub.fireEvent('open', {uri: e.target.name, type: e.target.data-doctype, label: e.target.label});
+        if (e.target.id === "openResourceDoc") {
+            EventHub.fireEvent('open', {uri: e.target.name, type: 'Rich', label: e.target.label});
         }
+    },
+
+    onDropItemReady: function(container){
+        var myDropBox = container.getEl();
+        if (myDropBox){
+            container.dropTarget = Ext.create('Ext.dd.DropTarget', myDropBox.dom, {
+                ddGroup: 'SEARCH-ITEMS',
+                notifyOver: Ext.bind(this.notifyItemOverTarget, this),
+                notifyDrop: Ext.bind(this.notifyItemDropTarget, this, container, true)
+            });
+        }
+    },
+
+    notifyItemOverTarget: function(ddSource, e, data) {
+        //don't allow anything other than an Item to be dropped into the item palette
+        if (this.dragDataIsItem(data)) {
+            return Ext.dd.DropZone.prototype.dropAllowed;
+        } else {
+            return Ext.dd.DropZone.prototype.dropNotAllowed;
+        }
+    },
+
+    notifyItemDropTarget: function(ddSource, e, data, container) {
+
+        data.records.forEach(function(rec) {
+            this.getView().storeHelper.addBotLevItemInStore(rec.data.title, rec.data, this.getView().store.getById('Source Document'));
+            this.getView().storeHelper.fetchMainStore().getAt(0).setDirty();
+            this.getView().storeHelper.fetchMainStore().sync({
+                callback: Ext.bind(this.onEditDoneCallback, this, [], true)
+            });
+        }, this);
+        this.getView().addSourcesGrid(this.getView().store)
+
+    },
+
+    onEditDoneCallback: function (records, operation, success) {
+        if (!success) {
+            //Ext.Error.raise({
+            //    msg: 'Updating record failed.'
+            //})
+        } else {
+            //this.getView().getById('listOfSources').reconfigure(this.store);
+        }
+    },
+
+    dragDataIsItem: function(data) {
+        var returnVal = true;
+        data.records.forEach(function(rec) {
+            var obj = rec.data;
+            if (obj.contentType !== 'Rich' && obj.contentType !== 'Text') {
+                returnVal = false
+            }
+        });
+        return returnVal;
     }
 
 });

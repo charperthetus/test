@@ -27,9 +27,7 @@ Ext.define('Savanna.sources.view.Sources', {
 
     storeHelper: null,
 
-    config: {
-        store: null
-    },
+    store: null,
 
     items: [
         {
@@ -53,87 +51,42 @@ Ext.define('Savanna.sources.view.Sources', {
                     text: 'Drop items here',
                     cls:'drag-and-drop'
                 }
-            ],
-            listeners: {
-                boxready: 'onDropItemReady'
-            }
-        },
-        {
-            xtype: 'grid',
-            itemId: 'listOfSources',
-
-            store: null,
-
-            title: 'Supporting Resources (#)',
-
-            hideHeaders: true,
-
-            columns: [
-                {
-                    xtype: 'templatecolumn',
-                    dataIndex: 'values',
-                    sortable: false,
-                    tpl: Ext.create('Ext.XTemplate',
-                        '<tpl for="values" between=",&nbsp;&nbsp;">',
-                            '<input type="button" data-doctype="{type}" name="{value}" value="{label}" id="openResourceDoc" />',
-                        '</tpl>'
-                    )
-                }
             ]
         }
 
+
     ],
 
-    onDropItemReady: function(container){
-        var myDropBox = container.getEl();
-        if (myDropBox){
-            container.dropTarget = Ext.create('Ext.dd.DropTarget', myDropBox.dom, {
-                ddGroup: 'SEARCH-ITEMS',
-                notifyOver: Ext.bind(this.notifyItemOverTarget, this),
-                notifyDrop: Ext.bind(this.notifyItemDropTarget, this, container, true)
-            });
-        }
-    },
+    addSourcesGrid: function(store){
+        if (this.queryById('listOfSources') === null ){
+            this.add({
+                xtype: 'grid',
+                itemId: 'listOfSources',
+                width: '100%',
+                height: 285,
+                renderTo: Ext.getBody(),
+                store: store,
 
-    notifyItemOverTarget: function(ddSource, e, data) {
-        //don't allow anything other than an Item to be dropped into the item palette
-        if (this.dragDataIsItem(data)) {
-            return Ext.dd.DropZone.prototype.dropAllowed;
-        } else {
-            return Ext.dd.DropZone.prototype.dropNotAllowed;
-        }
-    },
+                title: 'Supporting Resources (' + store.count() + ')',
 
-    notifyItemDropTarget: function(ddSource, e, data, container) {
+                hideHeaders: true,
 
-        data.records.forEach(function(rec) {
-            storeHelper.addBotLevItemInStore(rec.data.label, rec.data, this.store);
-            this.store.getAt(0).setDirty();
-            this.store.sync({
-                callback: Ext.bind(this.onEditDoneCallback, this, [], true)
-            });
-        }, this);
-    },
-
-    onEditDoneCallback: function (records, operation, success) {
-        if (!success) {
-            Ext.Error.raise({
-                msg: 'Updating record failed.'
+                columns: [
+                    {
+                        xtype: 'templatecolumn',
+                        dataIndex: 'values',
+                        flex: 1,
+                        sortable: false,
+                        tpl: Ext.create('Ext.XTemplate',
+                            '<tpl for="values">',
+                            '<input type="button" name="{uri}" value="{label}" id="openResourceDoc" />',
+                            '</tpl>'
+                        )
+                    }
+                ]
             })
         } else {
-            //this.getById('listOfSources').reconfigure(this.store);
+            this.queryById('listOfSources').reconfigure(store);
         }
-    },
-
-    dragDataIsItem: function(data) {
-        var returnVal = true;
-        data.records.forEach(function(rec) {
-            var obj = rec.data;
-            if (obj.contentType !== 'Rich' && obj.contentType !== 'Text') {
-                returnVal = false
-            }
-        });
-        return returnVal;
     }
-
 });

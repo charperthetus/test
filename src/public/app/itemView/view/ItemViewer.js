@@ -221,20 +221,13 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                         resizable:true,
                         headerPosition:'left',
                         items: [
-//                            {
-//                                xtype: 'metadata_details',
-//                                itemId: 'itemDetails',
-//                                itemURI: this.itemUri
-//                            },
                             {
                                 xtype: 'document_sources',
                                 editMode: false,
                                 itemId: 'itemSources',
                                 header:{
                                     ui:'light-blue'
-                                },
-
-                                itemURI: this.itemUri
+                                }
                             }
                         ]
                     }
@@ -403,19 +396,13 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                         resizable:true,
                         headerPosition:'left',
                         items: [
-//                            {
-//                                xtype: 'metadata_details',
-//                                itemId: 'itemDetails',
-//                                itemURI: this.itemUri
-//                            },
                             {
                                 xtype: 'document_sources',
                                 editMode: true,
-                                itemId: 'itemSources',
+                                itemId: 'itemSourcesEdit',
                                 header:{
                                     ui:'light-blue'
-                                },
-                                itemURI: this.itemUri
+                                }
                             }
                         ]
                     }

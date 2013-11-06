@@ -274,7 +274,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
     updateViewWithStoreData: function (record) {
         var me = this;
-            this.storeHelper.init(this.store);
+        this.storeHelper.init(this.store);
 
         /*
          Header View
@@ -369,7 +369,8 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         */
         var itemSourceComponent = me.getView().queryById('itemSources');
         itemSourceComponent.storeHelper = this.storeHelper;
-        itemSourceComponent.store = record.propertyGroupsStore.getById('Sources').valuesStore.getById('Source Document').valuesStore;
+        itemSourceComponent.store = record.propertyGroupsStore.getById('Sources').valuesStore;
+        Ext.bind(itemSourceComponent.addSourcesGrid(record.propertyGroupsStore.getById('Sources').valuesStore.getById('Source Document').valuesStore), itemSourceComponent);
 
         /*
          are we creating a new item?

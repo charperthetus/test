@@ -19,6 +19,10 @@ Ext.define('Savanna.itemView.store.ItemViewStoreHelper', {
         return this.store.getAt(0).data.uri;
     },
 
+    fetchMainStore: function() {
+        return this.store;
+    },
+
     updateMainStore: function(store, componentName) {
         for (var i = 0; i < this.mainStore.length; i++) {
             if (this.mainStore[i].label === componentName) {
@@ -67,6 +71,7 @@ Ext.define('Savanna.itemView.store.ItemViewStoreHelper', {
         var tagModel = this.createNewBottomLevelModelInstance(tagName, tagUri);
         store.data.values.push(tagModel.data);
         store.valuesStore.add(tagModel);
+        console.log(this.store)
     },
 
     removeBotLevItemInStore: function(tagName, store) {
