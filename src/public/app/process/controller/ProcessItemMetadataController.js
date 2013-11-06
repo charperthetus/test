@@ -34,7 +34,7 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
     },
 
     onOpenBtnClick: function() {
-        console.log('open item');
+        //console.log('open item');
         EventHub.fireEvent('open', {uri: this.store.getAt(0).data.uri, type: 'Item', label: this.store.getAt(0).data.label});
     },
 
@@ -51,12 +51,11 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
 
     buildItemDataFetchUrl: function (uri) {
         //return SavannaConfig.itemViewUrl + encodeURI(uri);
-        return SavannaConfig.mockItemViewUrl + encodeURI(uri);
+        return SavannaConfig.mockItemViewUrl + encodeURI(uri); // mock data
     },
 
     handleRecordDataRequestSuccess: function(record, operation, success) {
         if(success) {
-            //console.log('Item wins too!', record.data);
             this.storeHelper.init(this.store);
             this.getItemTitle().setValue(this.store.getAt(0).data.label);
             this.getItemDescription().setValue(this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Description').valuesStore.getAt(0).data.value);

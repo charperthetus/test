@@ -42,12 +42,11 @@ Ext.define('Savanna.process.controller.ProcessStepMetadataController', {
 
     buildItemDataFetchUrl: function (uri) {
         //return SavannaConfig.itemViewUrl + encodeURI(uri);
-        return SavannaConfig.mockItemViewUrl + encodeURI(uri);
+        return SavannaConfig.mockItemViewUrl + encodeURI(uri); // mock data
     },
 
     handleRecordDataRequestSuccess: function(record, operation, success) {
         if(success) {
-            //console.log('Step wins too!', record.data);
             this.storeHelper.init(this.store);
             this.getStepTitle().setValue(this.store.getAt(0).data.label);
             this.getStepDescription().setValue(this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Description').valuesStore.getAt(0).data.value);

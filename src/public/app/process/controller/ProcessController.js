@@ -182,16 +182,19 @@ Ext.define('Savanna.process.controller.ProcessController', {
                 if(button == 'yes'){
                     //discard changes and close
                     me.confirmClosed = true;
+                    me.getView().down('#processSidepanel').fireEvent('processclose');
                     panel[panel.closeAction]();
                 } else if (button == 'no') {
                     //save and close
                     me.onSave();
+                    me.getView().down('#processSidepanel').fireEvent('processclose');
                     panel[panel.closeAction]();
                 } else {
                     //do nothing, leave the process open
                 }
             }
         });
+
         return false;
     },
 

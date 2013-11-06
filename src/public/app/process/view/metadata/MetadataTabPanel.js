@@ -23,14 +23,7 @@ Ext.define('Savanna.process.view.metadata.MetadataTabPanel', {
     controller: 'Savanna.process.controller.MetadataController',
 
     config: {
-//        itemUri: ''
     },
-
-//    updateItemUri: function(newUri, oldUri) {
-//        if(newUri !== oldUri) {
-//            this.fireEvent('uriChange', newUri);
-//        }
-//    },
 
     enableTabScroll: true,
     items: [

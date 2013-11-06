@@ -8,8 +8,8 @@ Ext.define('Savanna.process.controller.MetadataController', {
 
     control: {
         view: {
-            processUriChange: 'setUpProcessDetails'
-            //uriChange: 'onUriChange'
+            processUriChange: 'setUpProcessDetails',
+            processclose: 'onProcessClose'
         },
         hiddenTabPanel: {
             boxready: 'onBeforeHiddenPanelShow'
@@ -34,6 +34,10 @@ Ext.define('Savanna.process.controller.MetadataController', {
     },
 
     selectionChanged: function(e) {
+        // save the existing set of changes, if any
+        this.saveChanges();
+
+        // then load up the panel for the new selection
         if (1 === this.getDiagram().selection.count) {
             var itemUri = encodeURIComponent(this.getDiagram().selection.first().data.uri);
             var itemCategory = this.getDiagram().selection.first().data.category;
@@ -46,11 +50,10 @@ Ext.define('Savanna.process.controller.MetadataController', {
                     break;
                 case 'ProcessItem':
                     // this is an item
-                    //console.log('This is an item');
                     this.setUpItemDetails(itemUri);
                     break;
                 default:
-                    console.log("we don't know what this is yet", itemUri);
+                    //console.log("we don't know what this is yet", itemUri);
                     this.setUpProcessDetails(null);
                     break;
             }
@@ -102,5 +105,14 @@ Ext.define('Savanna.process.controller.MetadataController', {
 
     onBeforeHiddenPanelShow: function() {
         this.getHiddenTabPanel().getTabBar().setVisible(false);
+    },
+
+    saveChanges: function() {
+        // TODO: save the existing set of changes, if any
+        console.log('saveChanges');
+    },
+
+    onProcessClose: function() {
+
     }
 });
