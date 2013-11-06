@@ -886,13 +886,6 @@ Ext.define('Savanna.process.utils.Styler', {
          * @return JSON
          */
         var processModelShape = function () {
-            
-//            var txt = document.createElement("input");
-//            txt.setAttribute('type', 'text');
-//            txt.setAttribute('value', 'default');
-//            
-//            processModel["textblock"].textEditor = txt;
-            
             return processModel;
         };
         /* 

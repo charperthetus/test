@@ -47,86 +47,84 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
     },
 
     makeStepGadget: function () {
-        var gmake = go.GraphObject.make;
-        
+
         function makeStandardButton(s, c) {
-          var gmake = go.GraphObject.make;
-        
-          var button =
-            gmake(go.Panel, "Auto",
-             s.stepGadget(c).panel,
-                  { isActionable: true },  // handle mouse events without involving other tools
-              gmake(go.Shape,  // the border
-                { name: "ButtonBorder",
-                  figure: "Circle",
-                  fill: '#3d8060',
-                  stroke: null,
-                    desiredSize: new go.Size(13, 13),
-                }),
-                gmake(go.Shape, 'PlusLine', {
-                        desiredSize: new go.Size(7, 7),
-                        fill: 'white',
-                        stroke: 'white',
-                        strokeWidth: 2
-                    }   
-                )
-            );
-        
-          button.mouseEnter = function(e, obj, prev) {
-            var shape = obj.elt(0);
-                        shape.fill = '#7cc19d';
-                        shape.stroke = null;
-          };
-          button.mouseLeave = function(e, obj, next) {
-            var shape = obj.elt(0);
-                        shape.fill = '#3d8060';
-                        shape.stroke = null;
-          };
-          return button;
+            var gmake = go.GraphObject.make;
+
+            var button =
+                gmake(go.Panel, "Auto",
+                    s.stepGadget(c).panel,
+                    { isActionable: true },  // handle mouse events without involving other tools
+                    gmake(go.Shape,  // the border
+                        { name: "ButtonBorder",
+                            figure: "Circle",
+                            fill: '#3d8060',
+                            stroke: null,
+                            desiredSize: new go.Size(13, 13)
+                        }),
+                    gmake(go.Shape, 'PlusLine', {
+                            desiredSize: new go.Size(7, 7),
+                            fill: 'white',
+                            stroke: 'white',
+                            strokeWidth: 2
+                        }
+                    )
+                );
+
+            button.mouseEnter = function (e, obj) {
+                var shape = obj.elt(0);
+                shape.fill = '#7cc19d';
+                shape.stroke = null;
+            };
+            button.mouseLeave = function (e, obj) {
+                var shape = obj.elt(0);
+                shape.fill = '#3d8060';
+                shape.stroke = null;
+            };
+            return button;
         }
-        
+
         return makeStandardButton(this.styler(), {click: Ext.bind(this.utils().addStep, this.utils())});
     },
 
     makeDecisionGadget: function () {
-        var gmake = go.GraphObject.make;
-        
+
         function makeStandardButton(s, c) {
-          var gmake = go.GraphObject.make;
-        
-          var button =
-            gmake(go.Panel, "Auto",
-             s.decisionGadget(c).panel,
-                  { isActionable: true },  // handle mouse events without involving other tools
-              gmake(go.Shape,  // the border
-                { name: "ButtonBorder",
-                  figure: "Diamond",
-                  fill: '#f9aa41',
-                  stroke: null,
-                    desiredSize: new go.Size(13, 13),
-                }),
-                gmake(go.Shape, 'PlusLine', {
-                        desiredSize: new go.Size(7, 7),
-                        fill: 'white',
-                        stroke: 'white',
-                        strokeWidth: 2
-                    }  
-                )
-            );
-        
-          button.mouseEnter = function(e, obj, prev) {
-            var shape = obj.elt(0);
-                        shape.fill = '#f9ba6e';
-                        shape.stroke = null;
-          };
-          button.mouseLeave = function(e, obj, next) {
-            var shape = obj.elt(0);
-                        shape.fill = '#f9aa41';
-                        shape.stroke = null;
-          };
-          return button;
+            var gmake = go.GraphObject.make;
+
+            var button =
+                gmake(go.Panel, "Auto",
+                    s.decisionGadget(c).panel,
+                    { isActionable: true },  // handle mouse events without involving other tools
+                    gmake(go.Shape,  // the border
+                        { name: "ButtonBorder",
+                            figure: "Diamond",
+                            fill: '#f9aa41',
+                            stroke: null,
+                            desiredSize: new go.Size(13, 13)
+                        }),
+                    gmake(go.Shape, 'PlusLine', {
+                            desiredSize: new go.Size(7, 7),
+                            fill: 'white',
+                            stroke: 'white',
+                            strokeWidth: 2
+                        }
+                    )
+                );
+
+            button.mouseEnter = function (e, obj) {
+                var shape = obj.elt(0);
+                shape.fill = '#f9ba6e';
+                shape.stroke = null;
+            };
+            button.mouseLeave = function (e, obj) {
+                var shape = obj.elt(0);
+                shape.fill = '#f9aa41';
+                shape.stroke = null;
+            };
+            return button;
         }
-        
+
         return makeStandardButton(this.styler(), {click: Ext.bind(this.utils().addDecision, this.utils())});
     },
 
@@ -235,18 +233,15 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                             background: 'transparent'
                         },
                         gmake(go.Shape, 'Circle', this.styler().start().outline,{
-                                
-                                mouseEnter: function (e, obj) {
-                                    obj.fill = '#aee2c7';
-                                },
-                                mouseLeave: function (e, obj) {
-
-                                    
-                                    if (obj.fill !== '#4a966e'){
-                                        obj.fill = '#7cc19d';
-                                    }
+                            mouseEnter: function (e, obj) {
+                                obj.fill = '#aee2c7';
+                            },
+                            mouseLeave: function (e, obj) {
+                                if (obj.fill !== '#4a966e') {
+                                    obj.fill = '#7cc19d';
                                 }
-                            },new go.Binding('fill', 'isSelected', function (sel) {
+                            }
+                        },new go.Binding('fill', 'isSelected', function (sel) {
                                 if (sel) return '#4a966e';
                                 else return '#7cc19d';
                             }).ofObject('')),
@@ -309,18 +304,15 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
 
                                gmake(go.Shape, 'Diamond',
                             this.styler().diamond().outline, {
-                                
-                                mouseEnter: function (e, obj) {
-                                    obj.fill = '#f9ba6e';
-                                },
-                                mouseLeave: function (e, obj) {
-
-                                    
-                                    if (obj.fill !== '#fc9909'){
-                                        obj.fill = '#f9aa41';
-                                    }
-                                }
-                            },new go.Binding('fill', 'isSelected', function (sel) {
+                                       mouseEnter: function (e, obj) {
+                                           obj.fill = '#f9ba6e';
+                                       },
+                                       mouseLeave: function (e, obj) {
+                                           if (obj.fill !== '#fc9909') {
+                                               obj.fill = '#f9aa41';
+                                           }
+                                       }
+                                   },new go.Binding('fill', 'isSelected', function (sel) {
                                 if (sel) return '#fc9909';
                                 else return '#f9aa41';
                             }).ofObject('')),
@@ -611,7 +603,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                   figure: "Border",
                   fill: '#454545',
                   stroke: null,
-                    desiredSize: new go.Size(13, 13),
+                    desiredSize: new go.Size(13, 13)
                 }),
                 gmake(go.Shape, 'PlusLine', {
                         desiredSize: new go.Size(7, 7),
@@ -629,36 +621,36 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                     })
                 )
             );
-        
-          // There's no GraphObject inside the button shape --
-          // it must be added as part of the button definition.
-          // This way the button object could be a TextBlock or a Shape or a Picture or whatever.
-        
+
+            // There's no GraphObject inside the button shape --
+            // it must be added as part of the button definition.
+            // This way the button object could be a TextBlock or a Shape or a Picture or whatever.
+
             button.click = function (e, obj) {
-                        var group = obj.part; // OBJ is this button
-                        if (!(group instanceof go.Group)) return;
-                        var diagram = group.diagram;
-                        if (diagram === null) return;
-                        e.handled = true;
-                        if (group.isSubGraphExpanded) {
-                            diagram.commandHandler.collapseSubGraph(group);
-                        } else {
-                            diagram.commandHandler.expandSubGraph(group);
-                        }
-                        group.isSelected = true;
-                    };
-          // mouse-over behavior
-          button.mouseEnter = function(e, obj, prev) {
-            var shape = obj.elt(0);
-                        shape.fill = '#666666';
-                        shape.stroke = null;
-          };
-          button.mouseLeave = function(e, obj, next) {
-            var shape = obj.elt(0);
-                        shape.fill = '#454545';
-                        shape.stroke = null;
-          };
-          return button;
+                var group = obj.part; // OBJ is this button
+                if (!(group instanceof go.Group)) return;
+                var diagram = group.diagram;
+                if (diagram === null) return;
+                e.handled = true;
+                if (group.isSubGraphExpanded) {
+                    diagram.commandHandler.collapseSubGraph(group);
+                } else {
+                    diagram.commandHandler.expandSubGraph(group);
+                }
+                group.isSelected = true;
+            };
+            // mouse-over behavior
+            button.mouseEnter = function (e, obj) {
+                var shape = obj.elt(0);
+                shape.fill = '#666666';
+                shape.stroke = null;
+            };
+            button.mouseLeave = function (e, obj) {
+                var shape = obj.elt(0);
+                shape.fill = '#454545';
+                shape.stroke = null;
+            };
+            return button;
         }
 
         go.GraphObject.Builders.add('PanelExpanderButton', function () {
