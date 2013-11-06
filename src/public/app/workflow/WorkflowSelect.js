@@ -6,12 +6,16 @@
  * To change this template use File | Settings | File Templates.
  */
 
-Ext.define('Savanna.itemView.view.workflow.WorkflowSelect', {
+Ext.define('Savanna.workflow.WorkflowSelect', {
     extend: 'Ext.window.Window',
 
     alias: 'widget.itemview_workflow_select',
 
     title: 'Workflow',
+    width: 500,
+    height: 425,
+
+    uri: null,
 
     autoShow: true,
 
@@ -31,6 +35,10 @@ Ext.define('Savanna.itemView.view.workflow.WorkflowSelect', {
                 title: 'Available Workflow Options',
                 itemId: 'workflowSelect',
                 items: [
+                    {
+                        xtype: 'label',
+                        text: this.uri
+                    },
                     {
                         xtype: 'radiogroup',
                         itemId: 'workflowRadiogroup',

@@ -19,7 +19,6 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
         'Savanna.itemView.view.imageBrowser.ImagesGridEdit',
         'Savanna.components.autoComplete.AutoComplete',
         'Savanna.itemView.view.imageBrowser.ImageThumbnail',
-        'Savanna.itemView.view.workflow.WorkflowSelect',
         'Savanna.itemView.view.annotationProperties.AnnotationProperties',
         'Savanna.component.ClassificationPanel',
         'Savanna.itemView.store.AutoCompleteStore',
@@ -77,7 +76,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                                 },
 
                                 {
-                                    text: 'Workflow',
+                                    text: 'Workflow...',
                                     itemId:'workflowButton'
                                 },
 
@@ -258,7 +257,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                                 },
 
                                 {
-                                    text: 'Workflow',
+                                    text: 'Workflow...',
                                     itemId:'workflowButton'
                                 },
 
