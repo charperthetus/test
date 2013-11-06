@@ -15,7 +15,7 @@ Ext.define('Savanna.process.view.ProcessEditorComponent', {
         'Savanna.process.view.part.PaletteWindow',
         'Savanna.process.view.part.Toolbar',
         'Savanna.process.view.part.Canvas',
-        'Savanna.process.view.part.MetadataTabPanel',
+        'Savanna.process.view.metadata.MetadataTabPanel',
         'Savanna.process.controller.ProcessController'
     ],
 
@@ -70,14 +70,16 @@ Ext.define('Savanna.process.view.ProcessEditorComponent', {
             },
             {
                 xtype: 'process_metadata',
-                itemId: 'metadata',
+                itemId: 'processSidepanel',
                 region: 'east',
-                layout: 'fit',
-                width: '30%', //todo: DI should apply the appropriate styling for the sidebar
                 collapsible: true,
                 headerPosition: 'left',
                 collapseMode: 'header',
-                split: true
+                overflowY: 'auto',
+                autoScroll: true,
+                split: true,
+                height:'100%',
+                width: '30%'
             }
         ];
     }
