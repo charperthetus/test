@@ -15,7 +15,7 @@ Ext.define('Savanna.Config', {
         sc.itemLockUrl = rUrl + 'rest/lock/';
         sc.itemViewPerspective = rUrl + 'rest/perspective/';
         sc.itemCreateUrl = rUrl + 'rest/model/item/create/';
-        sc.itemDeleteUrl = rUrl + 'rest/model/';
+        sc.itemDeleteUrl = rUrl + 'rest/model/item/';
         sc.modelSearchUrl = rUrl + 'rest/model/search/keyword/item';
         sc.dalSourcesUrl = rUrl + 'rest/search/sources'; // local dev version: 'resources/data/testSearchDalsWithFormData.json',
         sc.locationSearch = rUrl + '/rest/map/search';   // local dev version: 'resources/data/testSearchLocationSearch.json',
