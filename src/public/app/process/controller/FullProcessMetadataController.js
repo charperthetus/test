@@ -26,9 +26,7 @@ Ext.define('Savanna.process.controller.FullProcessMetadataController', {
         imageBrowser: true,
         detailsPanel: true,
         itemSources: true
-
     },
-
 
     onUriChanged: function(processUri) {
         this.store = Ext.create('Savanna.itemView.store.MainItemStore');
@@ -54,6 +52,9 @@ Ext.define('Savanna.process.controller.FullProcessMetadataController', {
             this.getImageBrowser().storeHelper = this.storeHelper;
             this.getImageBrowser().store = record[0].propertyGroupsStore.getById('Images').valuesStore;
             this.getImageBrowser().fireEvent('EditImagesGrid:Setup', record[0].propertyGroupsStore.getById('Images').valuesStore.getById('Images').valuesStore.data.items);
+            this.getItemSources().storeHelper = this.storeHelper;
+            this.getItemSources().store = record[0].propertyGroupsStore.getById('Sources').valuesStore;
+            Ext.bind(this.getItemSources().addSourcesGrid(record[0].propertyGroupsStore.getById('Sources').valuesStore.getById('Source Document').valuesStore), this.getItemSources());
         }
     }
 });
