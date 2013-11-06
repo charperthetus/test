@@ -71,13 +71,9 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
         );
     },
 
-    generateNodeTemplateMap: function () {
+    generateItemNodeTemplate: function(itemTextEditor) {
         var gmake = go.GraphObject.make;
-        var nodeTemplateMap = new go.Map();
-
-        // define the Node templates for regular nodes
-        nodeTemplateMap.add('ProcessItem',
-            gmake(go.Node, 'Vertical', {
+        return gmake(go.Node, 'Vertical', {
                     // handle mouse enter/leave events to show/hide the gadgets
                     mouseEnter: Ext.bind(this.onMouseEnter, this),
                     mouseLeave: Ext.bind(this.onMouseLeave, this),
@@ -106,7 +102,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                                 fill: 'white'
                             })
                         ),
-                        gmake(go.TextBlock, this.styler().rectangle().textblock,
+                        gmake(go.TextBlock, this.styler().rectangle().textblock, {textEditor: itemTextEditor},
                             new go.Binding('text', 'label').makeTwoWay())
                     ),
                     gmake(go.Panel, go.Panel.Spot, {
@@ -125,8 +121,44 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                             this.styler().processModel().selectionAdornment),
                         gmake(go.Placeholder))
                 }
-            )
-        );
+            );
+    },
+
+    generateActionNodeTemplate: function(actionTextEditor) {
+        var gmake = go.GraphObject.make;
+        return  gmake(go.Node, go.Panel.Auto,
+                    gmake(go.Shape, 'Rectangle', {
+                        stroke: null,
+                        fill: null,
+                        strokeWidth: 1
+                    }, new go.Binding('strokeDashArray', 'isOptional', function(isOptional) {
+                        return isOptional? [8,8] : [];
+                    }), new go.Binding('stroke', 'isOptional', function(isOptional) {
+                        return isOptional? 'black' : null;
+                    })),
+                    gmake(go.TextBlock, this.styler().circle().textblock, {textEditor: actionTextEditor},
+                        new go.Binding('text', 'label').makeTwoWay(), {
+                        mouseEnter: function (e, obj) {
+                            obj.isUnderline = true;
+                        },
+                        mouseLeave: function (e, obj) {
+                            obj.isUnderline = false;
+                        }
+                    }),
+                    {
+                        selectionAdornmentTemplate: gmake(go.Adornment, 'Auto',
+                            gmake(go.Shape, 'RoundedRectangle',
+                                this.styler().start().selectionAdornment),
+                            gmake(go.Placeholder))
+                    }
+                );
+    },
+
+    generateNodeTemplateMap: function () {
+        var gmake = go.GraphObject.make;
+        var nodeTemplateMap = new go.Map();
+
+        // define the Node templates for regular nodes
 
         nodeTemplateMap.add('Start',
             gmake(go.Node, 'Vertical', {
@@ -159,34 +191,6 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                         this.makeDecisionGadget()
                     )
                 ), {
-                    selectionAdornmentTemplate: gmake(go.Adornment, 'Auto',
-                        gmake(go.Shape, 'RoundedRectangle',
-                            this.styler().start().selectionAdornment),
-                        gmake(go.Placeholder))
-                }
-            )
-        );
-
-        nodeTemplateMap.add('ProcessAction',
-            gmake(go.Node, go.Panel.Auto,
-                gmake(go.Shape, 'Rectangle', {
-                    stroke: null,
-                    fill: null,
-                    strokeWidth: 1
-                }, new go.Binding('strokeDashArray', 'isOptional', function(isOptional) {
-                    return isOptional? [8,8] : [];
-                }), new go.Binding('stroke', 'isOptional', function(isOptional) {
-                    return isOptional? 'black' : null;
-                })),
-                gmake(go.TextBlock, this.styler().circle().textblock, new go.Binding('text', 'label').makeTwoWay(), {
-                    mouseEnter: function (e, obj) {
-                        obj.isUnderline = true;
-                    },
-                    mouseLeave: function (e, obj) {
-                        obj.isUnderline = false;
-                    }
-                }),
-                {
                     selectionAdornmentTemplate: gmake(go.Adornment, 'Auto',
                         gmake(go.Shape, 'RoundedRectangle',
                             this.styler().start().selectionAdornment),
