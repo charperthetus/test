@@ -99,17 +99,13 @@ Ext.define('Savanna.components.autoComplete.AutoComplete', {
     },
 
     addTag: function (tag) {
-        var newTag = Ext.create('Savanna.components.tags.Tag', {
-            itemId: 'tag_' + tag.replace(/[\s'"]/g, "_")
-        });
-
+        var newTag = Ext.create('Savanna.components.tags.Tag');
         newTag.setTerm(tag);
         this.queryById('tagsList').add(newTag);
     },
 
     removeTag: function (view) {
-        var myTag = view.itemId;
-        this.queryById('tagsList').remove(myTag);
+        view.destroy();
     },
 
     clearTags: function () {

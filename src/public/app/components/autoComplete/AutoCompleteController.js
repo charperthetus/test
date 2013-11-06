@@ -32,25 +32,29 @@ Ext.define('Savanna.components.autoComplete.AutoCompleteController', {
         }
     },
 
+    filterSpecialCharacters: function(value) {
+        return value.replace(/[^a-z0-9\s]/gi, '_');
+    },
+
     handleRemoveTagClick: function (value, view) {
         this.getView().removeTag(view);
         this.getView().fireEvent('AutoComplete:TagRemoved', value, this.getView());
     },
 
     handleAutoCompleteTextKeyUp: function (field, evt) {
-        if (evt.keyCode === Ext.EventObject.ENTER) {
-            if (field.getValue().trim().length) {
-                if (this.getView().hasNoStore) {
-                    if (this.getView().queryById('tag_' + field.getValue().replace(/[\s'"]/g, "_")) === null) {
-                        field.findParentByType('auto_complete').addTag(field.getValue());
-                        this.getView().fireEvent('AutoComplete:ItemSelected', field.getValue(), null, this.getView());
-                    }
-
-                    field.reset();
-                }
-            }
+        // Check enter key and field value
+        if ( evt.keyCode !== Ext.EventObject.ENTER || !field.getValue().trim().length || this.getView().hasNoStore ) {
+            return false;
         }
+        console.log(this.getView().queryById('tagslist').items);
+        field.reset();
     },
+
+    setupNewTag: function (field) {
+        field.findParentByType('auto_complete').addTag(field.getValue());
+        this.getView().fireEvent('AutoComplete:ItemSelected', field.getValue(), null, this.getView());        
+    },
+
     handleAutoCompleteSelect: function (combo, records, eOpts) {
         if (this.getView().queryById('tag_' + records[0].data.label.replace(/[\s'"]/g, "_")) === null) {
             if (this.getView().showTags) {
