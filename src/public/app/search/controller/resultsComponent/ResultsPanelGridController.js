@@ -12,33 +12,27 @@ Ext.define('Savanna.search.controller.resultsComponent.ResultsPanelGridControlle
             itemmouseleave: 'onMouseLeave'
         }
     },
-
-
     onItemDoubleClick: function (view, rec, node, index, e) {
-        this.getView().fireEvent("search:grid:itemdblclick", view, rec, node, index, e);
-
+        this.fireOpen(rec.data.uri, rec.data.contentType, rec.data.title);
     },
-
-    onItemClick: function (view, rec, node, index, e) {
-        this.getView().fireEvent("search:grid:itemclick", view, rec, node, index, e);
-
+    onMouseEnter: function (view, rec, node) {    // other parameters: , index, e, options
+        if (node) {
+            node.querySelector('#hoverDiv').style.visibility = 'visible';
+        }
     },
-
-    onMouseEnter: function (view, rec, node, index, e) {
-        this.getView().fireEvent("search:grid:itemmouseenter", view, rec, node, index, e);
-
+    onItemClick: function (view, rec, node, index, e) {  //other parameter options
+        //TODO - the way of getting this button is wrong, refactor
+        if (e && e.target && e.target.className.indexOf('openButtonClass') != -1) {
+            this.fireOpen(rec.data.uri, rec.data.contentType, rec.data.title);
+        }
     },
-
-    onMouseLeave: function (view, rec, node, index, e) {
-        this.getView().fireEvent("search:grid:itemmouseleave", view, rec, node, index, e);
-
+    onMouseLeave: function (view, rec, node) {  // other parameters: , index, e, options
+        if (node) {
+            node.querySelector('#hoverDiv').style.visibility = 'hidden';
+        }
     },
-
-
-
-
-    init: function () {
-        return this.callParent(arguments);
+    fireOpen: function(uri, type, label){
+        EventHub.fireEvent('open', {uri: uri, type: type, label: label});
     }
 
 });
