@@ -53,7 +53,6 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
 
             // Generate the assertions (tags in this case) for the predicate
             Ext.each(item.data.values, function(value) {
-                console.log(value);
                 newProp.addTag(value.label, value.editable);
             });
             me.getView().add(newProp);

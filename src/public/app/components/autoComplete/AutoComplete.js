@@ -38,7 +38,6 @@ Ext.define('Savanna.components.autoComplete.AutoComplete', {
 
     listeners: {
         afterrender: function() {
-            console.log(this.getTagValues());
             if (this.getTagValues()) {
                 for (var i = 0; i < this.getTagValues().length; i++) {
                     this.addTag(this.getTagValues()[i]);
