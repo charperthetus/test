@@ -56,7 +56,7 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
 
     handleRecordDataRequestSuccess: function(record, operation, success) {
         if(success) {
-            console.log('Item wins too!', record.data);
+            //console.log('Item wins too!', record.data);
             this.storeHelper.init(this.store);
             this.getItemTitle().setValue(this.store.getAt(0).data.label);
             this.getItemDescription().setValue(this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Description').valuesStore.getAt(0).data.value);

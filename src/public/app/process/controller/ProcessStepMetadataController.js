@@ -47,7 +47,7 @@ Ext.define('Savanna.process.controller.ProcessStepMetadataController', {
 
     handleRecordDataRequestSuccess: function(record, operation, success) {
         if(success) {
-            console.log('Step wins too!', record.data);
+            //console.log('Step wins too!', record.data);
             this.storeHelper.init(this.store);
             this.getStepTitle().setValue(this.store.getAt(0).data.label);
             this.getStepDescription().setValue(this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Description').valuesStore.getAt(0).data.value);
