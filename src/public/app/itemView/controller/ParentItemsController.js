@@ -10,9 +10,6 @@ Ext.define('Savanna.itemView.controller.ParentItemsController', {
         filterParentItemsField: {
             keydown: 'filterKeydown'
         },
-        searchParentItemsBtn: {
-            click: 'filterQualities'
-        },
         clearParentItemsBtn:    {
             click: 'closeTypeAhead'
         },
@@ -26,12 +23,19 @@ Ext.define('Savanna.itemView.controller.ParentItemsController', {
 
     ],
 
-    filterKeydown: function(field, e, eOpts) {
-        if (e.keyCode === Ext.EventObject.ENTER) {
+    filterKeydown: function (field, e, eOpts) {
+        this.getView().filtering = true;
+        var me = this;
+        if (me.getView().taInt) {
+            clearTimeout(me.getView().taInt);
+        }
+        me.getView().taInt = setTimeout(me.resetFiltering, this.getView().typeaheadDelay, me);
+    },
 
-            if (field.getValue().trim().length) {
-                this.filterQualities();
-            }
+    resetFiltering: function (me) {
+        if (me.getView().filtering) {
+            me.getView().filtering = false;
+            me.filterQualities();
         }
     },
 
