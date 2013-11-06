@@ -10,10 +10,13 @@ Ext.define('Savanna.process.view.metadata.FullProcessMetadata', {
     extend: 'Ext.form.Panel',
     alias: 'widget.full_process_metadata',
 
+    //layout: 'fit',  // need a layout for the details panel to show, but fit isn't it.
+
     requires: [
         'Savanna.process.controller.FullProcessMetadataController',
         'Savanna.itemView.view.imageBrowser.ImagesGridEdit',
-        'Savanna.sources.view.Sources'
+        'Savanna.sources.view.Sources',
+        'Savanna.metadata.view.Details'
     ],
 
     controller: 'Savanna.process.controller.FullProcessMetadataController',
@@ -42,9 +45,12 @@ Ext.define('Savanna.process.view.metadata.FullProcessMetadata', {
         },
         {
             xtype: 'metadata_details',
-            collapsible: true,
+            itemId: 'detailsPanel',
             title: 'Metadata',
-            itemId: 'detailsPanel'
+            collapsible: true,
+            region: 'east',
+            split: true,
+            width: '30%'
         },
         {
             xtype: 'document_sources',

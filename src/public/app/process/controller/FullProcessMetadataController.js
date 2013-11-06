@@ -22,8 +22,12 @@ Ext.define('Savanna.process.controller.FullProcessMetadataController', {
             processUriChanged: 'onUriChanged',
             savechanges: 'onSaveChanges'
         },
-        processTitle: true,
-        processDescription: true,
+        processTitle: {
+            blur: 'processTitleBlur'
+        },
+        processDescription: {
+            blur: 'processDescriptionBlur'
+        },
         imageBrowser: true,
         detailsPanel: true,
         itemSources: true
@@ -40,6 +44,7 @@ Ext.define('Savanna.process.controller.FullProcessMetadataController', {
             scope: this,
             callback: this.handleRecordDataRequestResponse
         });
+        this.getDetailsPanel().setItemURI(encodeURI(processUri));
     },
 
     buildItemDataFetchUrl: function (uri) {
@@ -59,8 +64,23 @@ Ext.define('Savanna.process.controller.FullProcessMetadataController', {
     },
 
     onSaveChanges: function() {
-        // TODO: save the existing set of changes, if any
         console.log('FullProcessMetadataController saveChanges');
+        this.store.getAt(0).setDirty();
+        this.store.sync();
+    },
+
+    processTitleBlur: function(e) {
+        if(this.store.getAt(0).data.label !== e.getValue()) {
+            this.store.getAt(0).data.label = e.getValue();
+            this.store.getAt(0).setDirty();
+        }
+    },
+
+    processDescriptionBlur: function(e) {
+        if( this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Description').valuesStore.getAt(0).data.value !== e.getValue() ) {
+            this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Description').valuesStore.getAt(0).data.value = e.getValue();
+            this.store.getAt(0).setDirty();
+        }
     }
 
 });

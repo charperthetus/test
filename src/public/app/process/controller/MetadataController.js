@@ -40,6 +40,7 @@ Ext.define('Savanna.process.controller.MetadataController', {
         // then load up the panel for the new selection
         if (1 === this.getDiagram().selection.count) {
             var itemUri = encodeURIComponent(this.getDiagram().selection.first().data.uri);
+            var itemName = this.getDiagram().selection.first().data.label;
             var itemCategory = this.getDiagram().selection.first().data.category;
 
             switch(itemCategory) {
@@ -50,7 +51,7 @@ Ext.define('Savanna.process.controller.MetadataController', {
                     break;
                 case 'ProcessItem':
                     // this is an item
-                    this.setUpItemDetails(itemUri);
+                    this.setUpItemDetails(itemUri,itemName);
                     break;
                 default:
                     //console.log("we don't know what this is yet", itemUri);
@@ -82,10 +83,10 @@ Ext.define('Savanna.process.controller.MetadataController', {
         this.getHiddenPanel().getLayout().setActiveItem(this.getStepMetadata());
     },
 
-    setUpItemDetails: function(itemUri) {
+    setUpItemDetails: function(itemUri,itemName) {
         this.getItemMetadata().show();
 
-        this.getItemMetadata().fireEvent('processUriChanged', itemUri);
+        this.getItemMetadata().fireEvent('processItemUriChanged', itemUri,itemName);
         this.getHiddenPanel().getLayout().setActiveItem(this.getItemMetadata());
     },
 
