@@ -31,30 +31,30 @@ SavannaConfig = {
      MapQuest XYZ Tile Layer (Tiles arranged in a standard XYZ grid)
      **/
 
-//    mapDefaultBaseLayer: {
-//    url:  [
-//        "http://oatile1.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.jpg",
-//        "http://oatile2.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.jpg",
-//        "http://oatile3.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.jpg",
-//        "http://oatile4.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.jpg"
-//    ],
-//    projection: 'EPSG:900913',
-//    type: 'XYZ',
-//    layerName: 'MapQuest Imagery',
-//    center: '0,0',
-//    zoom: 2
-//    }
-
     mapDefaultBaseLayer: {
-        url: 'http://geocache.grayhive.org/tms/',
-        projection: 'EPSG:4326',
-        maxResolution: 0.703125,
-        type: 'TMS2',
-        imgType: 'png',
-        layerName: 'vmap',
-        center: '0,0',
-        zoom: 1
+    url:  [
+        "http://oatile1.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.jpg",
+        "http://oatile2.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.jpg",
+        "http://oatile3.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.jpg",
+        "http://oatile4.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.jpg"
+    ],
+    projection: 'EPSG:900913',
+    type: 'XYZ',
+    layerName: 'MapQuest Imagery',
+    center: '0,0',
+    zoom: 2
     }
+
+//    mapDefaultBaseLayer: {
+//        url: 'http://geocache.grayhive.org/tms/',
+//        projection: 'EPSG:4326',
+//        type: 'TMS2',
+//        maxResolution: 0.703125,
+//        imgType: 'png',
+//        layerName: 'vmap',
+//        center: '0,0',
+//        zoom: 1
+//    }
 
 
 //    mapDefaultBaseLayer: {

@@ -245,9 +245,11 @@ Ext.define('Savanna.process.controller.ProcessController', {
         }
     },
 
-    textEdited: function() {
-        // reset our textarea selection so that we do not have anything selected yet
-        this.getCanvas().diagram.toolManager.textEditingTool.currentTextEditor.setSelectionRange(0,0);
+    textEdited: function(e) {
+        var curTextEdit = e.diagram.toolManager.textEditingTool.currentTextEditor;
+        if (curTextEdit.hasOwnProperty('onCommit')) {
+            curTextEdit['onCommit'](e.subject);
+        }
     },
 
     partResized: function(diagramEvent) {

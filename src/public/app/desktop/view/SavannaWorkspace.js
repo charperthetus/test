@@ -70,7 +70,10 @@ Ext.define('Savanna.desktop.view.SavannaWorkspace', {
                 {
                     xtype: 'desktop_startpage',
                     title: 'Start',
-                    closable: true
+                    closable: true,
+                    tabConfig: {
+                        ui: 'dark'
+                    }
                 }
             ]
         }
