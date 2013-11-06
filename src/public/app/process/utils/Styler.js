@@ -1134,7 +1134,7 @@ Ext.define('Savanna.process.utils.Styler', {
                 strokeWidth: 1
             },
             "linkpathInput": {
-                stroke: palette.red,
+                stroke: palette.gray,
                 strokeWidth: 1
             },
             "textblockByProduct": {

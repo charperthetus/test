@@ -31,11 +31,12 @@ Ext.define('Savanna.process.view.part.Overview', {
             this.overview = new go.Overview(domElem);
             this.overview.observed = this.diagram;
             
+            //TODO Not Working, caused the overview magenta to disappear but nothing is in its place.
             var pt = new go.Part();
             var ad = new go.Adornment();
-            ad.adornedObject = new go.Shape({ strokeWidth: 4, stroke: "red" });
+            ad.adornedObject = new go.Shape('rectangle', { strokeWidth: 4, stroke: "red" });
             pt.addAdornment('ov', ad);
             this.overview.box = pt;
         }
     }
-});
+}); 

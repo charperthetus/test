@@ -14,7 +14,7 @@ Ext.define('Savanna.process.view.part.MetadataTabPanel', {
         'Savanna.metadata.view.Details'
     ],
     header: {
-        ui: 'dark'
+        ui: 'light'
     },
     enableTabScroll: true,
     items: [
