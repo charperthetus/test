@@ -72,8 +72,6 @@ Ext.define('Savanna.itemView.controller.QualitiesPickerController', {
             var store = this.getView().queryById('selectedQualitiesGroup').store;
             store.remove(store.getById(record.data.label));
         }
-
-        this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
     },
 
     qualityRemoved: function (grid, record, item, index, e, eOpts) {
@@ -92,8 +90,6 @@ Ext.define('Savanna.itemView.controller.QualitiesPickerController', {
 
             this.getView().queryById('availableQualitiesGroup').reconfigure(this.getView().store);
             grid.store.remove(grid.store.getById(record.data.label));
-
-            this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
         }
     },
 
@@ -102,7 +98,6 @@ Ext.define('Savanna.itemView.controller.QualitiesPickerController', {
         this.getView().getSelectionStore().add(this.getView().queryById('selectedQualitiesGroup').store.getRange());
         this.getView().updatedStore = true;
         this.getView().close();
-        this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
     },
 
     cancelQualitySelections: function () {

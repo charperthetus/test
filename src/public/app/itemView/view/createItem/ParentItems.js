@@ -32,6 +32,12 @@ Ext.define('Savanna.itemView.view.createItem.ParentItems', {
 
     autoScroll: true,
 
+    typeaheadDelay: 300,
+
+    filtering: false,
+
+    taInt: null,
+
     header: {
         xtype: 'header',
         cls: 'item-header-font',
@@ -89,11 +95,6 @@ Ext.define('Savanna.itemView.view.createItem.ParentItems', {
                     flex: 1,
                     emptyText: 'Find a Parent Item',
                     enableKeyEvents: true
-                },
-                {
-                    xtype: 'button',
-                    text: 'Search',
-                    itemId: 'searchParentItemsBtn'
                 },
                 {
                     xtype: 'button',
