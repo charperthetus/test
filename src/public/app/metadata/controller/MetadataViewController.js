@@ -75,7 +75,7 @@ Ext.define('Savanna.metadata.controller.MetadataViewController', {
                         // classification must be handled separately
                         // the sync request will fail if the classification metadata is changed
                         if(key === 'classification') {
-                            me.saveClassification();
+                            me.saveClassification(metadata.value);
                         } else {
                             storeData.set('value', metadata.value);
                             stuffChanged = true;
@@ -237,7 +237,7 @@ Ext.define('Savanna.metadata.controller.MetadataViewController', {
     loadStore: function() {
         this.store.load({
             scope: this,
-            callback: function(records, operation, success) {
+            callback: function() {
                 this.createMetadataFields();
             }
         });
