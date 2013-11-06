@@ -19,16 +19,7 @@ Ext.define("Savanna.document.view.DocumentToolbar", {
                 pack: 'start'
             },
             items: [
-                {
-                    xtype: 'button',
-                    width:25,
-                    height:25,
-                    cls: 'toolbarButtonFramework',
-                    ui: 'icon-dark',
-                    glyph: 'hand',
-                    itemId: "handTool",
-                    tooltip: 'Hand'
-                },{
+               {
                     xtype: 'button',
                     width:25,
                     height:25,
@@ -81,12 +72,7 @@ Ext.define("Savanna.document.view.DocumentToolbar", {
                             itemId: "singlePageView",
                             tooltip: "Single Page"
                         },
-                        {
-                            text: "Two Page",
-                            itemId: "twoPageView",
-                            tooltip: "Two Page"
-
-                        },
+                       
                         {
                             text: "Thumbnails",
                             itemId: "thumbView",
@@ -106,6 +92,31 @@ Ext.define("Savanna.document.view.DocumentToolbar", {
                     itemId: "previousPage",
                     tooltip: 'Previous'
                 },
+				 {
+                        xtype : "textfield",
+                        itemId : "currentPage",
+                        width : 35,
+                        name : "curentPage",
+                        ui : 'flat-toolbar-button',
+                        tooltip : 'Current Page of the document',
+                        size : 8
+				},
+				{
+					xtype: 'label',
+					text: '/',
+					size : 3,
+					style: {
+						'margin': '5px'
+					}
+				},
+				{
+					xtype: 'label',
+					itemId: 'totalPages',
+					size : 4,
+		    		ui: 'flat-toolbar-button',
+					tooltip:'Number of pages in the document'
+				},
+
                 {
                     xtype: 'button',
                     width:25,
