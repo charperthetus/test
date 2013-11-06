@@ -398,7 +398,7 @@ Ext.define('Savanna.process.utils.Styler', {
                 fill: null,
                 stroke: null,
                 angle: null, //gooAngle,
-                width: 36,
+                width: 40,
                 height: 72,
                 position: null, //gooPoint,
                 isActionable: true,

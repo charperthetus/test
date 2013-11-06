@@ -233,7 +233,22 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                             name: 'BODY',
                             background: 'white'
                         },
-                        gmake(go.Shape, 'Circle', this.styler().start().outline),
+                        gmake(go.Shape, 'Circle', this.styler().start().outline,{
+                                
+                                mouseEnter: function (e, obj) {
+                                    obj.fill = '#aee2c7';
+                                },
+                                mouseLeave: function (e, obj) {
+
+                                    
+                                    if (obj.fill !== '#4a966e'){
+                                        obj.fill = '#7cc19d';
+                                    }
+                                }
+                            },new go.Binding('fill', 'isSelected', function (sel) {
+                                if (sel) return '#4a966e';
+                                else return '#7cc19d';
+                            }).ofObject('')),
                         gmake(go.TextBlock, 'Start', this.styler().start().textblock)
                     ),
                     gmake(go.Panel, go.Panel.Spot, {
@@ -730,6 +745,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                     // the group begins expanded
                     isSubGraphExpanded: true,
                     wasSubGraphExpanded: true,
+                    movable: false,
                     click: function (e, obj) {
                          console.log(obj);
                         obj.containingGroup.isSelected = true;
@@ -778,7 +794,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                         position: new go.Point(10, 8),
                         stroke: null
                     } , 'Inputs', new go.Point(27, 12)),
-                this.makeAdornment(go.Spot.Right, new go.Point(36, 0), 0,
+                this.makeAdornment(go.Spot.Right, new go.Point(40, 0), 0,
                     Ext.bind(this.onByproductMouseDrop, this), Ext.bind(this.utils().addByproduct, this.utils()), {
                         geometryString: 'F M16.072,13.243 11.828,8.998 16.071,4.756 13.241,1.929 9,6.171 4.758,1.929 1.928,4.756 6.172,9 1.928,13.243 4.758,16.071 9,11.829 13.242,16.071z',
                         minSize: new go.Size(15, 15),
@@ -787,7 +803,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                         position: new go.Point(9, 9),
                         stroke: null
                     }, 'Byproducts', new go.Point(17, 58)),
-                this.makeAdornment(go.Spot.Bottom, new go.Point(0, 36), 90,
+                this.makeAdornment(go.Spot.Bottom, new go.Point(0, 40), 90,
                     Ext.bind(this.onResultMouseDrop, this), Ext.bind(this.utils().addResult, this.utils()), {
                         geometryString: 'F M7,5V3h4v2H7z M11,9V6H7v3H11z M13,9H5l4,6L13,9z',
                         maxSize: new go.Size(13, 17),
