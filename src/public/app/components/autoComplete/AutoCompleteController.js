@@ -33,7 +33,6 @@ Ext.define('Savanna.components.autoComplete.AutoCompleteController', {
     },
 
     handleRemoveTagClick: function (value, view) {
-        console.debug(arguments);
         this.getView().removeTag(view);
         this.getView().fireEvent('AutoComplete:TagRemoved', value, this.getView());
     },
