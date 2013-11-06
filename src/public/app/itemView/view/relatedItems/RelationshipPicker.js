@@ -47,6 +47,7 @@ Ext.define('Savanna.itemView.view.relatedItems.RelationshipPicker', {
             title: 'Available Relationships',
             padding: '0 0 15 0',
             itemId: 'availableRelationshipGroup',
+            cls:'value-picker-row',
             width: '100%',
             hideHeaders: true,
             store: this.store,
@@ -71,7 +72,8 @@ Ext.define('Savanna.itemView.view.relatedItems.RelationshipPicker', {
         {
             text: 'OK',
             itemId: 'okBtn',
-            ui:'commit'
+            ui:'commit',
+            margin:'0 0 10 0'
         },
         {
             text: 'cancel',

@@ -13,6 +13,8 @@ Ext.define('Savanna.itemView.view.relatedItems.ViewRelatedItems', {
 
     requires: ['Savanna.itemView.controller.ViewRelatedItemsController'],
 
-    controller: 'Savanna.itemView.controller.ViewRelatedItemsController'
+    controller: 'Savanna.itemView.controller.ViewRelatedItemsController',
+
+    storeHelper: null
 
 });
