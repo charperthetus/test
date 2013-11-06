@@ -369,14 +369,6 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
             me.getView().getLayout().setActiveItem(1);
             me.lockItem(record.data.uri, true);
         }
-        else {
-            /*
-             Server down..?
-             */
-            Ext.Error.raise({
-                msg: 'No record return for item URI.'
-            })
-        }
     },
 
     onNewItemClick: function (btn) {
