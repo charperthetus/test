@@ -27,18 +27,27 @@ Ext.define('Savanna.itemView.controller.ParentItemsController', {
     ],
 
     filterKeydown: function(field, e, eOpts) {
-        if (e.keyCode === Ext.EventObject.ENTER) {
+        if(!this.getView().filtering)   {
+            this.getView().filtering = true;
+            var me = this;
+            me.getView().taInt = setInterval(me.checkFiltering, 200);
+            Ext.defer(function(){this.getView().filtering = false;}, this.getView().typeaheadDelay);
+        }
+    },
 
-            if (field.getValue().trim().length) {
-                this.filterQualities();
-            }
+    checkFiltering:function()   {
+        if(!this.getView().filtering)   {
+            clearInterval(me.getView().taInt);
+            this.filterQualities();
         }
     },
 
     filterQualities: function () {
-        this.getView().getLayout().setActiveItem(1);
-        this.getView().queryById('parentitems_results').store.getProxy().extraParams.q = this.getView().queryById('filterParentItemsField').getValue();
-        this.getView().queryById('parentitems_results').store.reload();
+        if(!this.getView().filtering)   {
+            this.getView().getLayout().setActiveItem(1);
+            this.getView().queryById('parentitems_results').store.getProxy().extraParams.q = this.getView().queryById('filterParentItemsField').getValue();
+            this.getView().queryById('parentitems_results').store.reload();
+        }
     },
 
     closeTypeAhead: function()  {
