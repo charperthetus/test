@@ -85,18 +85,15 @@ Ext.ClassManager.addNameAlternateMappings({
   "Savanna.process.view.part.ItemList": [],
   "Ext.ux.ajax.Simlet": [],
   "Ext.ux.SlidingPager": [],
-  "Savanna.search.controller.resultsComponent.ResultsPreviewContentController": [],
   "Ext.ux.TabReorderer": [],
   "Deft.mixin.Controllable": [],
   "Ext.ux.grid.filter.NumericFilter": [],
   "Savanna.itemView.controller.ViewRelatedItemsController": [],
-  "Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsPreviewContent": [],
   "Savanna.itemView.util.ItemViewFactory": [],
   "Savanna.process.store.Processes": [],
   "Ext.ux.event.Recorder": [],
   "Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsDals": [],
   "Savanna.process.controller.ProcessController": [],
-  "Savanna.search.controller.resultsComponent.ResultsPreviewWindowController": [],
   "Savanna.search.view.searchComponent.searchBody.SearchDals": [],
   "Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent.ResultsPanelToolbar": [],
   "Savanna.crumbnet.view.part.PaletteMenu": [],
@@ -119,7 +116,6 @@ Ext.ClassManager.addNameAlternateMappings({
   "Savanna.crumbnet.view.part.Canvas": [],
   "Deft.ioc.DependencyProvider": [],
   "Ext.ux.form.SearchField": [],
-  "Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsPreviewWindow": [],
   "Ext.ux.dd.CellFieldDropZone": [],
   "Savanna.modelSearch.view.ModelSearchPagingToolbar": [],
   "Savanna.metadata.view.String": [],
@@ -210,14 +206,15 @@ Ext.ClassManager.addNameAlternateMappings({
   "Savanna.search.store.SearchLocation": [],
   "Savanna.search.view.searchComponent.searchBody.SearchMap": [],
   "Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsOptions": [],
+  "Savanna.process.view.part.TypeAhead": [],
   "ThetusUikit.toolbar.Separator": [],
   "Ext.ux.ToolbarDroppable": [],
   "Savanna.itemView.controller.EditRelatedItemsController": [],
   "Savanna.process.view.part.PaletteWindow": [],
   "Savanna.desktop.controller.DesktopController": [],
   "Ext.ux.DataView.Draggable": [],
-  "Savanna.itemView.store.ItemViewStoreHelper": [],
   "Ext.ux.TabCloseMenu": [],
+  "Savanna.itemView.store.ItemViewStoreHelper": [],
   "Savanna.itemView.controller.ImageBrowserController": [],
   "Savanna.search.controller.resultsComponent.resultsDals.ResultsRefineTermController": [],
   "Savanna.itemView.view.itemQualities.ViewItemQualities": [],
@@ -288,6 +285,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "Savanna.classification.controller.WindowController": [],
   "Ext.ux.event.RecorderManager": [],
   "Ext.ux.ProgressBarPager": [],
+  "Savanna.process.model.TypeAheadModel": [],
   "Savanna.metadata.view.Title": [],
   "Savanna.itemView.store.AutoCompleteStore": [],
   "Savanna.modelSearch.view.searchComponent.searchBody.ResultsComponent": [],
@@ -373,6 +371,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "Ext.ux.grid.filter.StringFilter": [],
   "Savanna.metadata.model.Metadata": [],
   "Savanna.itemView.view.createItem.TypeAheadResults": [],
+  "Savanna.process.store.TypeAheadStore": [],
   "Savanna.modelSearch.view.searchComponent.SearchBody": [],
   "Savanna.crumbnet.utils.ExtendedLink": [],
   "Savanna.components.autoComplete.AutoComplete": [],
@@ -534,16 +533,12 @@ Ext.ClassManager.addNameAliasMappings({
     "simlet.basic"
   ],
   "Ext.ux.SlidingPager": [],
-  "Savanna.search.controller.resultsComponent.ResultsPreviewContentController": [],
   "Ext.ux.TabReorderer": [],
   "Deft.mixin.Controllable": [],
   "Ext.ux.grid.filter.NumericFilter": [
     "gridfilter.numeric"
   ],
   "Savanna.itemView.controller.ViewRelatedItemsController": [],
-  "Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsPreviewContent": [
-    "widget.search_resultspreviewcontent"
-  ],
   "Savanna.itemView.util.ItemViewFactory": [],
   "Savanna.process.store.Processes": [],
   "Ext.ux.event.Recorder": [],
@@ -551,7 +546,6 @@ Ext.ClassManager.addNameAliasMappings({
     "widget.search_resultsdals"
   ],
   "Savanna.process.controller.ProcessController": [],
-  "Savanna.search.controller.resultsComponent.ResultsPreviewWindowController": [],
   "Savanna.search.view.searchComponent.searchBody.SearchDals": [
     "widget.search_searchdals"
   ],
@@ -597,9 +591,6 @@ Ext.ClassManager.addNameAliasMappings({
   "Deft.ioc.DependencyProvider": [],
   "Ext.ux.form.SearchField": [
     "widget.searchfield"
-  ],
-  "Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsPreviewWindow": [
-    "widget.search_resultspreviewwindow"
   ],
   "Ext.ux.dd.CellFieldDropZone": [],
   "Savanna.modelSearch.view.ModelSearchPagingToolbar": [
@@ -761,6 +752,7 @@ Ext.ClassManager.addNameAliasMappings({
   "Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsOptions": [
     "widget.search_resultsDals_resultsoptions"
   ],
+  "Savanna.process.view.part.TypeAhead": [],
   "ThetusUikit.toolbar.Separator": [],
   "Ext.ux.ToolbarDroppable": [],
   "Savanna.itemView.controller.EditRelatedItemsController": [],
@@ -769,10 +761,10 @@ Ext.ClassManager.addNameAliasMappings({
   ],
   "Savanna.desktop.controller.DesktopController": [],
   "Ext.ux.DataView.Draggable": [],
-  "Savanna.itemView.store.ItemViewStoreHelper": [],
   "Ext.ux.TabCloseMenu": [
     "plugin.tabclosemenu"
   ],
+  "Savanna.itemView.store.ItemViewStoreHelper": [],
   "Savanna.itemView.controller.ImageBrowserController": [],
   "Savanna.search.controller.resultsComponent.resultsDals.ResultsRefineTermController": [],
   "Savanna.itemView.view.itemQualities.ViewItemQualities": [
@@ -883,6 +875,7 @@ Ext.ClassManager.addNameAliasMappings({
     "widget.eventrecordermanager"
   ],
   "Ext.ux.ProgressBarPager": [],
+  "Savanna.process.model.TypeAheadModel": [],
   "Savanna.metadata.view.Title": [
     "widget.metadata_title"
   ],
@@ -1029,6 +1022,7 @@ Ext.ClassManager.addNameAliasMappings({
   "Savanna.itemView.view.createItem.TypeAheadResults": [
     "widget.itemview_typeahead_results"
   ],
+  "Savanna.process.store.TypeAheadStore": [],
   "Savanna.modelSearch.view.searchComponent.SearchBody": [
     "widget.model_searchbody"
   ],
