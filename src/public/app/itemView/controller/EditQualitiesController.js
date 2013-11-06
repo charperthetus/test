@@ -45,11 +45,12 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
 
     // This is for the main (static) auto-complete form.
     storeSet: function() {
-        var me = this;
+        var me = this,
+            newProp;
 
         // Generate a new form control for each predicate in the store
         Ext.each(me.getView().store.data.items, function(item) {
-            var newProp = me.createNewAutoComplete(item.data);
+            ¡newProp = me.createNewAutoComplete(item.data);
 
             // Generate the assertions (tags in this case) for the predicate
             Ext.each(item.data.values, function(value) {
