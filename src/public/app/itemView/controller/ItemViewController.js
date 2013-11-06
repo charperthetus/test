@@ -126,6 +126,9 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         if (!this.getView().getEditMode()) {
             this.getView().getLayout().setActiveItem(1);
             this.lockItem(this.store.getAt(0).data.uri);
+            var itemSourceComponentEdit = this.getView().queryById('itemSourcesEdit').queryById('listOfSources')
+            itemSourceComponentEdit.reconfigure(this.store.getAt(0).propertyGroupsStore.getById('Sources').valuesStore.getById('Source Document').valuesStore);
+
         } else {
             this.getView().getLayout().setActiveItem(0);
         }
@@ -203,6 +206,8 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         var qualitiesComponent = this.getView().queryById('itemViewPropertiesView');
         qualitiesComponent.reconfigure(this.store.getAt(0).propertyGroupsStore.getById('Properties').valuesStore);
 
+        var itemSourceComponent = this.getView().queryById('itemSources').queryById('listOfSources')
+            itemSourceComponent.reconfigure(this.store.getAt(0).propertyGroupsStore.getById('Sources').valuesStore.getById('Source Document').valuesStore);
 
         var imagesBrowserComponent = this.getView().queryById('itemViewImagesGrid'),
             imagesBrowserComponentEdit = this.getView().queryById('itemViewImagesEdit');
@@ -371,6 +376,11 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         itemSourceComponent.storeHelper = this.storeHelper;
         itemSourceComponent.store = record.propertyGroupsStore.getById('Sources').valuesStore;
         Ext.bind(itemSourceComponent.addSourcesGrid(record.propertyGroupsStore.getById('Sources').valuesStore.getById('Source Document').valuesStore), itemSourceComponent);
+
+        var itemSourceComponentEdit = me.getView().queryById('itemSourcesEdit');
+        itemSourceComponentEdit.storeHelper = this.storeHelper;
+        itemSourceComponentEdit.store = record.propertyGroupsStore.getById('Sources').valuesStore;
+        Ext.bind(itemSourceComponentEdit.addSourcesGrid(record.propertyGroupsStore.getById('Sources').valuesStore.getById('Source Document').valuesStore), itemSourceComponent);
 
         /*
          are we creating a new item?
