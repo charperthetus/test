@@ -12,7 +12,6 @@ Ext.define('Savanna.modelSearch.controller.SearchComponent', {
     requires: [
         'Savanna.modelSearch.model.SearchRequest',
         'Savanna.modelSearch.store.SearchResults',
-        'Savanna.modelSearch.view.searchComponent.searchBody.searchMap.SearchLocationComboBox',
         'Savanna.controller.Factory',
         'Savanna.metadata.store.Metadata',
         'Savanna.modelSearch.model.ResultMetadata',
@@ -54,29 +53,6 @@ Ext.define('Savanna.modelSearch.controller.SearchComponent', {
             },
             'model_search_searchcomponent #resultsbutton': {
                 click: this.onBodyToolbarClick
-            },
-            'model_search_searchcomponent #searchMapCanvas': {
-                beforerender: this.loadDefaultLayer,
-                afterrender: this.loadVectorLayer,
-                resize: this.onMapCanvasResize
-            },
-            'model_search_searchcomponent #drawLocationSearch': {
-                click: this.activateDrawFeature
-            },
-            'model_search_searchcomponent #clearLocationSearch': {
-                click: this.clearDrawFeature
-            },
-            'model_search_searchcomponent #mapZoomToMenu': {
-                click: this.enableZoomMenu
-            },
-            'model_search_searchcomponent #mapZoomToMenu menu': {
-                click: this.zoomToSearchExtent
-            },
-            'model_search_searchmap': {
-                resize: this.onSearchMapResize
-            },
-            'model_search_searchmap model_search_searchlocationcombobox': {
-                zoomButtonClick: this.zoomToLocation
             }
         });
 
@@ -344,8 +320,6 @@ Ext.define('Savanna.modelSearch.controller.SearchComponent', {
         var searchString = component.queryById('searchbar').buildSearchString(),
             resultsComponent = component.queryById('searchresults');
 
-        var mapView = component.down('#searchMapCanvas');
-
         /*
          this is an array of objects - they store the dal id and the store instance for that dal's results.
          For each selected DAL, a new store is generated and this array is used to keep track
@@ -373,8 +347,10 @@ Ext.define('Savanna.modelSearch.controller.SearchComponent', {
                 checked = dals.queryById(dalId).query('checkbox')[0].getValue();    // has this checkbox been selected in search options?
 
             if (checked) {  // checked, or always search the default dal
+
                 source.data.facetFilterCriteria = [];
-                searchObj = this.buildSearchObject(searchString, source, currentDalPanel, mapView);
+                searchObj = this.buildSearchObject(searchString, source, currentDalPanel);
+
                 this.resultsStore.currentPage = 1;
                 this.buildAndLoadResultsStore(source, component, searchObj, 'search');
             }
@@ -476,106 +452,5 @@ Ext.define('Savanna.modelSearch.controller.SearchComponent', {
 
         var resultsBtn = component.down('#resultsbutton');
         resultsBtn.fireEvent('click', resultsBtn);
-    },
-
-    loadDefaultLayer: function (canvas) {
-        canvas.map.addLayer(new OpenLayers.Layer.WMS(SavannaConfig.mapBaseLayerLabel,
-            SavannaConfig.mapBaseLayerUrl, {layers: SavannaConfig.mapBaseLayerName}));
-    },
-
-    loadVectorLayer: function (canvas) {
-        // Add a feature layer to the map.
-        var searchLayer = new OpenLayers.Layer.Vector('searchLayer');
-        searchLayer.events.register('featureadded', canvas, this.onFeatureAdded);
-        searchLayer.events.register('featureremoved', canvas, this.onFeatureRemoved);
-        canvas.searchLayer = searchLayer;
-        canvas.map.addLayer(searchLayer);
-
-        // Add the draw feature control to the map.
-        var drawFeature = new OpenLayers.Control.DrawFeature(searchLayer, OpenLayers.Handler.Polygon, {
-            id: 'PolygonDrawTool'
-        });
-
-        drawFeature.handler.callbacks.point = this.pointCallback;
-        canvas.map.addControl(drawFeature);
-        canvas.drawFeature = drawFeature;
-    },
-
-    onFeatureAdded: function () {
-        // Scope: drawFeature
-        this.drawFeature.deactivate();
-        this.fireEvent('searchPolygonAdded', this);
-    },
-
-    onFeatureRemoved: function () {
-        this.fireEvent('searchPolygonRemoved', this);
-    },
-
-    onMapCanvasResize: function (canvas) {
-        canvas.map.updateSize();
-    },
-
-    pointCallback: function () {
-        // Scope: drawFeature
-        // Called each time a point is added to the feature.
-        if (this.layer.features.length > 0) {
-            this.layer.removeAllFeatures();
-        }
-    },
-
-    activateDrawFeature: function (button) {
-        var canvas = button.up('model_search_searchmap').down('model_search_map_canvas');
-        canvas.drawFeature.activate();
-    },
-
-    clearDrawFeature: function (button) {
-        var canvas = button.up('model_search_searchmap').down('model_search_map_canvas');
-        canvas.searchLayer.removeAllFeatures();
-        canvas.drawFeature.deactivate();
-    },
-    zoomToLocation: function (comboBoxButton) {
-        var viewBox = comboBoxButton.viewBox;
-        var mapCanvas = comboBoxButton.parentComboBox.up('model_search_searchmap').down('model_search_map_canvas');
-        var extent = new OpenLayers.Bounds(viewBox.west, viewBox.south, viewBox.east, viewBox.north);
-        mapCanvas.map.zoomToExtent(extent, true);
-        console.log(mapCanvas.map.maxExtent);
-    },
-
-    enableZoomMenu: function (button) {
-        var mapCanvas = button.up('model_search_searchmap').down('model_search_map_canvas');
-        var menuButton = button.up('model_search_searchmap').down('#zoomToSelectedArea');
-        //check if search layer is populated
-        //if search layer has a feature enable zoom to selected area
-        if (mapCanvas.searchLayer.features.length > 0) {
-            menuButton.setDisabled(false);
-        }
-        else {
-            menuButton.setDisabled(true);
-        }
-    },
-
-    zoomToSearchExtent: function (menu) {
-        var mapCanvas = menu.up('model_search_searchmap').down('model_search_map_canvas');
-        if (menu.activeItem) {
-            switch (menu.activeItem.itemId) {
-                case 'zoomToWholeWorld':
-                    mapCanvas.map.zoomToMaxExtent();
-                    break;
-                case 'zoomToSelectedArea':
-                    mapCanvas.map.zoomToExtent(mapCanvas.searchLayer.getDataExtent());
-                    break;
-            }
-        }
-    },
-
-    onSearchMapResize: function (searchMap) {
-        //position the draw select area button
-        var canvasSize = searchMap.body.getSize();
-        var polyButton = searchMap.down('#drawLocationSearch');
-        polyButton.setPosition(canvasSize.width - 50, 10);
-    },
-
-    mapGetSearchResults: function (results, resultsDal) {
-        resultsDal.fireEvent('mapNewSearchResults', results, resultsDal);
     }
 });

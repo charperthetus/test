@@ -13,7 +13,6 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
         'Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent.ResultsPanelToolbar',
         'Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent.ResultsPanelGrid',
         'Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent.ResultsPanelGridMultiColumn',
-        'Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent.ResultsMap',
         'Savanna.controller.Factory'
     ],
 
@@ -47,11 +46,6 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
                         displayInfo: true
                     }
                 ]
-            },
-            {
-                xtype: 'model_search_resultsmap',
-                itemId: 'resultsmap',
-                hidden: true
             },
             {
                 hidden: true,

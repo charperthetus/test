@@ -88,7 +88,12 @@ Ext.define('Savanna.process.view.part.Toolbar', {
                 tooltip: 'Add alternates group',
                 itemId: 'alts'
             },
-            '->', 
+            {
+                text: 'Toggle Optional',
+                tooltip: 'Place holder text',
+                itemId: 'optional'
+            },
+            '->',
             {
                 cls: 'toolbarButtonFramework',
                 glyph: 'zoomIn',

@@ -13,7 +13,8 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
         'Savanna.desktop.view.SearchWindow',
         'Savanna.desktop.view.UploadWindow',
         'Savanna.desktop.view.ModelSearchWindow',
-        'Savanna.itemView.view.ItemViewer'
+        'Savanna.itemView.view.ItemViewer',
+        'Savanna.classification.view.ClassificationWindow'
     ],
     statics: {
         aboutwindow: null,
@@ -32,6 +33,7 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
         uploadbutton: {
             click: 'displayUploadDialog'
         },
+
         //TODO - commented until we have a real help page to link to
 //        helpbutton: {
 //            click: 'launchHelp'
@@ -59,7 +61,8 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
             }
         });
 
-        Savanna.app.on('initModelSearch', this.displayModelSearch);
+        EventHub.on('openModelSearch', this.displayModelSearch);
+        EventHub.on('openSearch', this.displaySearch);
 
         return this.callParent(arguments);
     },

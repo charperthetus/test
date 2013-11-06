@@ -453,6 +453,7 @@
     line-height:78px;
   }
 }
+
 #removeSelectedValue, #removeSelectedQuality{
   @include thetus-icons;
  &:before{
@@ -462,5 +463,12 @@
     &:before{
       content:'closeRollover';
     }
+  }
+}
+
+.edit-qualities-button{
+  .#{$prefix}btn-glyph{
+    line-height:43px;
+    height:43px;
   }
 }
