@@ -237,6 +237,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
                 msg: 'Updating record failed.'
             })
         }
+
     },
 
     getItemViewData: function () {
