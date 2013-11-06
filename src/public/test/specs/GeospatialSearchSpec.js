@@ -165,11 +165,9 @@ describe('Search Map Component', function () {
             var extent = null;
 
             beforeEach(function () {
-                searchController.loadDefaultLayer(mapCanvas);
                 searchController.loadVectorLayer(mapCanvas);
                 extent = new OpenLayers.Bounds(2.0017225, 48.485857, 2.7048475, 49.188982);
                 store = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.SearchLocation');
-
             });
 
             it('should have an base layer loaded', function () {

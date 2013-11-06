@@ -27,11 +27,14 @@ Ext.define('Savanna.process.view.part.ActionList', {
     title: 'Actions',
     titleAlign: 'left',
     emptyText: 'Drop actions here for use in process steps or search the model to find new actions',
+    style: {
+        backgroundColor: '#F2F2F2'
+    },
     hideHeaders: true,
     columns: [
         {
             dataIndex: 'label',
-            width: '100%'
+            width: 178
         }
     ],
 

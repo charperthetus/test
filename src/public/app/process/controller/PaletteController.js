@@ -116,8 +116,8 @@ Ext.define('Savanna.process.controller.PaletteController', {
     },
 
     onItemSearchClick: function() {
-        //have the app fire the event so it can be caught by the controller that handles showing the model search dialog
-        Savanna.app.fireEvent('initModelSearch');
+        //have the eventhub fire the event so it can be caught by the controller that handles showing the model search dialog
+        EventHub.fireEvent('openModelSearch');
     },
 
     //create and add a new Action to the palette

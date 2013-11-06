@@ -40,6 +40,7 @@ Ext.define('Savanna.itemView.view.createItem.ParentDetails', {
 
         this.callParent(arguments);
 
+        //TODO - this needs to be done a different way, can't listen on app (or eventhub)
         Savanna.app.on('itemview:treepanel:itemclick', this.onTreeItemClick, this);
     },
 

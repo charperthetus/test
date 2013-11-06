@@ -219,6 +219,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
                 relatedItemView.fireEvent('ViewRelatedItems:AddRelationshipGrid', group);
             }
         }, this);
+        relatedItemView.fireEvent('ViewRelatedItems:SetupData', this.store.getAt(0).propertyGroupsStore.getById('Related Items').valuesStore.data.items);
 
 
         this.store.getAt(0).setDirty();
@@ -236,6 +237,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
                 msg: 'Updating record failed.'
             })
         }
+
     },
 
     getItemViewData: function () {
@@ -250,7 +252,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
     handleRecordDelete: function (responseObj) {
 
-        Savanna.app.fireEvent('itemview:itemDeleted', this.getView());
+        EventHub.fireEvent('close', this.getView());
 
         if (!responseObj.operations[0].success) {
             Ext.Error.raise({
@@ -274,7 +276,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
     updateViewWithStoreData: function (record) {
         var me = this;
-            this.storeHelper.init(this.store);
+        this.storeHelper.init(this.store);
 
         /*
          Header View
@@ -310,6 +312,8 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
          Related Items View
          */
         var relatedItemView = me.getView().queryById('relatedItemsView');
+        relatedItemView.storeHelper = this.storeHelper;
+        relatedItemView.store = record.propertyGroupsStore.getById('Related Items').valuesStore;
         relatedItemView.fireEvent('ViewRelatedItems:SetupData', record.propertyGroupsStore.getById('Related Items').valuesStore.data.items);
 
         /*
@@ -363,6 +367,15 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         imagesBrowserComponent.fireEvent('ViewImagesGrid:Setup', record.propertyGroupsStore.getById('Images').valuesStore.getById('Images').valuesStore.data.items);
         imagesBrowserComponentEdit.fireEvent('EditImagesGrid:Setup', record.propertyGroupsStore.getById('Images').valuesStore.getById('Images').valuesStore.data.items);
 
+
+        /*
+        sources
+        */
+        var itemSourceComponent = me.getView().queryById('itemSources');
+        itemSourceComponent.storeHelper = this.storeHelper;
+        itemSourceComponent.store = record.propertyGroupsStore.getById('Sources').valuesStore;
+        Ext.bind(itemSourceComponent.addSourcesGrid(record.propertyGroupsStore.getById('Sources').valuesStore.getById('Source Document').valuesStore), itemSourceComponent);
+
         /*
          are we creating a new item?
          */
@@ -381,7 +394,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     },
 
     onNewItemClick: function (btn) {
-        Savanna.app.fireEvent('itemview:createitem', btn);
+        EventHub.fireEvent('createitem');
     },
 
     /* commented out for demo
@@ -403,17 +416,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     },
 
     openItem: function (itemName, itemUri) {
-        var itemView = Ext.create('Savanna.itemView.view.ItemViewer', {
-            title: itemName,
-            itemUri: encodeURI(itemUri),
-            closable: true,
-            autoScroll: true,
-            tabConfig: {
-                ui: 'dark'
-            }
-        });
-
-        Savanna.app.fireEvent('search:itemSelected', itemView);
+        EventHub.fireEvent('open', {uri:itemUri, label: itemName, type:'item'});
     },
     deleteRelatedItem: function (itemName, itemUri) {
 

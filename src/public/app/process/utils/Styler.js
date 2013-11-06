@@ -110,9 +110,10 @@ Ext.define('Savanna.process.utils.Styler', {
          */
         function jsonDriller(p, a) {
             //Use dot notation to parse a passed in JSON lookup
+            var key;
             a = a.split(".");
-            for (var i in a) {
-                var key = a[i];
+            for (var i = 0; i< a.length; i++) {
+                key = a[i];
                 //Check for null or undefined on key lookup and return empty string.
                 if ((p[key] === null) || (p[key] === undefined))
                     return '';

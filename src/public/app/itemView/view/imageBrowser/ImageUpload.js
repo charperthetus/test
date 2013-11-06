@@ -29,7 +29,7 @@ Ext.define('Savanna.itemView.view.imageBrowser.ImageUpload', {
     bodyCls: 'inner-edit-zone',
     items: [{
         xtype: 'label',
-        text: 'Drop Images Here',
+        text: 'Drop images here',
         cls:'drag-and-drop'
     }, {
         xtype: 'label',

@@ -7,14 +7,18 @@
  */
 /* global Ext: false, go: false, Savanna: false */
 Ext.define('Savanna.process.view.part.Canvas', {
-    extend: 'Ext.Component',
+    extend: 'Ext.container.Container',
     alias: 'widget.process_canvas',
 
     requires: [
-        'Savanna.process.utils.ViewTemplates'
+        'Savanna.process.store.TypeAheadStore',
+        'Savanna.process.utils.ViewTemplates',
+        'Savanna.process.view.part.TypeAhead'
     ],
 
     diagram: null,
+    itemTextEditor: null,
+    actionTextEditor: null,
 
     onRender: function() {
         var domElem;
@@ -22,11 +26,38 @@ Ext.define('Savanna.process.view.part.Canvas', {
         this.callParent(arguments);
 
         domElem = Ext.DomHelper.insertHtml('afterBegin', this.getEl().dom, '<div class="go-graph" style="width: 100%; height: 100%; position: absolute;"></div>');
-
         this.diagram = new go.Diagram(domElem);
+
         this.diagram.nodeTemplateMap = Savanna.process.utils.ViewTemplates.generateNodeTemplateMap();
         this.diagram.linkTemplateMap = Savanna.process.utils.ViewTemplates.generateLinkTemplateMap();
         this.diagram.groupTemplateMap = Savanna.process.utils.ViewTemplates.generateGroupTemplateMap();
+
+        var diagram = this.diagram;
+        this.itemTextEditor = Ext.create('Savanna.process.view.part.TypeAhead', {
+                itemId: 'itemTextEditor',
+                diagram: this.diagram,
+                store: Ext.create('Savanna.process.store.TypeAheadStore', {
+                    paramsObj: { pageStart: 0, pageSize: 20, alphabetical: true, type: "Item" }
+                })
+            }
+        );
+        this.itemTextEditor.addListener('boxready', function (c) {
+                diagram.nodeTemplateMap.add('ProcessItem', Savanna.process.utils.ViewTemplates.generateItemNodeTemplate(c.getEl().dom));
+            });
+        this.add(this.itemTextEditor);
+
+        this.actionTextEditor  = Ext.create('Savanna.process.view.part.TypeAhead', {
+                itemId: 'actionTextEditor',
+                diagram: this.diagram,
+                store: Ext.create('Savanna.process.store.TypeAheadStore', {
+                    paramsObj: { pageStart: 0, pageSize: 20, alphabetical: true, type: "Action" }
+                })
+            }
+        );
+        this.actionTextEditor.addListener('boxready', function (c) {
+                diagram.nodeTemplateMap.add('ProcessAction', Savanna.process.utils.ViewTemplates.generateActionNodeTemplate(c.getEl().dom));
+            });
+        this.add(this.actionTextEditor);
 
         // have mouse wheel events zoom in and out instead of scroll up and down
    //     this.diagram.toolManager.mouseWheelBehavior = go.ToolManager.WheelZoom;

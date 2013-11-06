@@ -11,56 +11,71 @@ Ext.define('Savanna.desktop.view.SavannaWorkspace', {
     requires: [
         'Savanna.desktop.controller.WorkspaceController',
         'Savanna.desktop.view.SavannaTabPanel',
-        'Savanna.image.view.ImageComponent'
-
+        'Savanna.image.view.ImageComponent',
+        'Savanna.desktop.view.StartPage'
     ],
 
     controller: "Savanna.desktop.controller.WorkspaceController",
     layout: 'hbox',
     currentView: 'single',
     tbar: {
-        ui:'workspace-header',
+        ui: 'workspace-header',
         height: 32,
-        items: [{
-            xtype: 'label',
-            text: 'Workspace',
-            pack: 'start'
+        items: [
+            {
+                xtype: 'label',
+                text: 'Workspace',
+                pack: 'start'
             },
             '->',
-            {   
-            xtype: 'toolbar',
-            ui: 'workspace-header',
-            layout: {
-                defaultMargins: '0 5 0 5'
-            },
-            items: [{
-                xtype: 'button',
-                ui:'workspace-header',
-                itemId: 'singleviewbutton',
-                cls:'singleViewButtonFramework',
-                glyph:'singleView',
-                enableToggle: true,
-                allowDepress: false,
-                pressed: true,
-                toggleGroup: 'tabviewgroup'
-            },
             {
-                xtype: 'button',
-                ui:'workspace-header',
-                itemId: 'splitviewbutton',
-                cls:'splitViewButtonFramework',
-                glyph:'splitView',
-                enableToggle: true,
-                allowDepress: false,
-                toggleGroup: 'tabviewgroup'
-            }]
-        }]
+                xtype: 'toolbar',
+                ui: 'workspace-header',
+                layout: {
+                    defaultMargins: '0 5 0 5'
+                },
+                items: [
+                    {
+                        xtype: 'button',
+                        ui: 'workspace-header',
+                        itemId: 'singleviewbutton',
+                        cls: 'singleViewButtonFramework',
+                        glyph: 'singleView',
+                        enableToggle: true,
+                        allowDepress: false,
+                        pressed: true,
+                        toggleGroup: 'tabviewgroup'
+                    },
+                    {
+                        xtype: 'button',
+                        ui: 'workspace-header',
+                        itemId: 'splitviewbutton',
+                        cls: 'splitViewButtonFramework',
+                        glyph: 'splitView',
+                        enableToggle: true,
+                        allowDepress: false,
+                        toggleGroup: 'tabviewgroup'
+                    }
+                ]
+            }
+        ]
     },
-    items: [{
-        xtype: 'desktop_tabpanel',
-        itemId: 'maintabpanel',
-        flex: 2,
-        height: '100%',
-        items: []
-    }]
+    items: [
+        {
+            xtype: 'desktop_tabpanel',
+            itemId: 'maintabpanel',
+            flex: 2,
+            height: '100%',
+            items: [
+                {
+                    xtype: 'desktop_startpage',
+                    title: 'Start',
+                    closable: true,
+                    tabConfig: {
+                        ui: 'dark'
+                    }
+                }
+            ]
+        }
+    ]
 });
