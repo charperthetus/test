@@ -122,7 +122,11 @@ Ext.define('Savanna.modelSearch.controller.ResultsComponent', {
     },
 
     getCurrentDalId: function () {
-        return this.getResultsComponent().currentResultSet.id;
+        var resultSet = this.getResultsComponent().currentResultSet;
+        if(resultSet){
+            return resultSet.id;
+        }
+        return 'SolrJdbc';
     },
 
     getIsWaitingForPreviewResults: function () {

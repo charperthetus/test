@@ -283,17 +283,13 @@ Ext.define('Savanna.modelSearch.controller.SearchComponent', {
         return searchObj;
     },
 
-    buildAndLoadResultsStore:function(dal, component, searchObj, action) {  //pageSize is a final parameter
-
-        this.resultsStore.storeId =  'searchResults_' + dal.get('id');
+    buildAndLoadResultsStore:function(dal, component, searchObj, action, pageSize) {
+        if( typeof pageSize != 'undefined'){
+            this.resultsStore.pageSize = pageSize;
+        }
+        //this.resultsStore.storeId =  'searchResults_' + dal.get('id');
         this.resultsStore.searchParamVO =  searchObj;
 
-/*        var resultsStore = Ext.create('Savanna.modelSearch.store.SearchResults', {
-            storeId: 'searchResults_' + dal.get('id'),
-            pageSize: pageSize,
-            //We put the search object on the store, so it can be changed to reflect the current page and page size known best by the store.
-            searchParamVO: searchObj
-        });*/
 
         var resultsDal = component.down('#resultsdals'),
             resultsPanel = component.down('#resultspanel');
