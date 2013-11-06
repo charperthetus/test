@@ -32,6 +32,12 @@ Ext.define('Savanna.itemView.view.createItem.ParentItems', {
 
     autoScroll: true,
 
+    typeaheadDelay: 300,
+
+    filtering: false,
+
+    taInt: null,
+
     header: {
         xtype: 'header',
         cls: 'item-header-font',
