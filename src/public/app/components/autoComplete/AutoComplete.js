@@ -105,6 +105,9 @@ Ext.define('Savanna.components.autoComplete.AutoComplete', {
     },
 
     removeTag: function (view) {
+        if(view.disabled) {
+            return false; // Disabled 
+        }
         view.destroy();
     },
 
