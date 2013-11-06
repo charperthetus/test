@@ -8,19 +8,14 @@
 Ext.define('Savanna.sources.controller.Sources', {
     extend: 'Deft.mvc.ViewController',
 
-    views: [
-        'Savanna.sources.view.Sources'
-    ],
-
     control: {
-        supportingResourcesDrop: {
-            boxready: 'onDropItemReady'
-        }
+//        supportingResourcesDrop: {
+//            boxready: 'onDropItemReady'
+//        }
     },
 
-
     init: function() {
-        this.callParent(arguments);
+        this.onDropItemReady(this.getView().queryById('supportingResourcesDrop'));
     },
 
     onDropItemReady: function(container){
