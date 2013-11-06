@@ -18,6 +18,8 @@ Ext.define('Savanna.components.tags.TagsController',{
         this.getView().fireEvent('Tag:TagClicked', this.getView().text, this.getView());
     },
     onCloseButton: function (closeButton) {
-        this.getView().fireEvent('Tag:RemoveSearchTerm', this.getView().text, this.getView());
+        if (!this.getView().disabled) {
+            this.getView().fireEvent('Tag:RemoveSearchTerm', this.getView().text, this.getView());            
+        }
     }
 });
