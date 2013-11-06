@@ -16,7 +16,8 @@ Ext.define('Savanna.desktop.view.StartPageItem', {
         return [
             {
                 xtype: 'image',
-                src: this.image
+                src: this.image,
+                width: 25 //This needed to be set explicitly otherwise on the first draw it doesn't show
             },
             {
                 xtype: 'container',

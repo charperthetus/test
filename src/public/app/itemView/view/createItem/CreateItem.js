@@ -27,21 +27,21 @@ Ext.define('Savanna.itemView.view.createItem.CreateItem', {
 
     selectedParentUri: null,
 
-    items:[],
+    items: [],
 
-    setupItems:function()  {
+    setupItems: function () {
         var content = [
             {
                 xtype: 'itemview_parenttree',
-                itemId:'parentItemsTreePanel',
-                cls:'create-item-coloumn',
-                flex:1
+                itemId: 'parentItemsTreePanel',
+                cls: 'create-item-coloumn',
+                flex: 1
             },
             {
                 xtype: 'itemview_parentdetails',
-                itemId:'parentItemsDetailsPanel',
-                cls:'create-item-coloumn',
-                flex:2
+                itemId: 'parentItemsDetailsPanel',
+                cls: 'create-item-coloumn',
+                flex: 2
             }
         ];
 
@@ -57,17 +57,17 @@ Ext.define('Savanna.itemView.view.createItem.CreateItem', {
         this.callParent(arguments);
     },
 
-    setupButtons:function() {
+    setupButtons: function () {
         var btns = [
             {
                 text: 'OK',
                 itemId: 'commitBtn',
-                ui:'commit',
-                margin:'0 0 10 0'
+                ui: 'commit',
+                margin: '0 0 10 0'
             },
             {
                 text: 'CANCEL',
-                itemId:'cancelBtn'
+                itemId: 'cancelBtn'
             }
         ];
         return btns;

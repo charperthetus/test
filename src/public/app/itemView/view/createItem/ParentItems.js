@@ -11,19 +11,26 @@ Ext.define('Savanna.itemView.view.createItem.ParentItems', {
 
     alias: 'widget.itemview_parenttree',
 
+    controller: 'Savanna.itemView.controller.ParentItemsController',
+
     requires: [
         'Ext.data.*',
         'Ext.tree.*',
         'Ext.grid.*',
-        'Savanna.itemView.view.createItem.ParentItemsAutoComplete',
-        'Savanna.itemView.view.createItem.ParentItemsTreePanel'
+        'Savanna.itemView.controller.ParentItemsController',
+        'Savanna.itemView.view.createItem.ParentItemsTreePanel',
+        'Savanna.itemView.view.createItem.TypeAheadResults'
     ],
 
     title: 'Item Types',
 
     items: [],
 
-    bodyPadding:8,
+    bodyPadding: 8,
+
+    height: '100%',
+
+    autoScroll: true,
 
     header: {
         xtype: 'header',
@@ -33,37 +40,67 @@ Ext.define('Savanna.itemView.view.createItem.ParentItems', {
         }
     },
 
-    layout: 'fit',
+    layout: {
+        type: 'card',
+        align:'stretch'
+    },
+
+    configs: {
+        typeaheadStore: null
+    },
+
+    constructor: function (configs) {
+        this.callParent(arguments);
+        this.initConfig(configs);
+    },
 
     initComponent: function () {
-        this.items = this.setupItems();
+        this.items = this.setupItems(this.typeaheadStore);
         this.callParent(arguments);
     },
 
-    setupItems: function () {
+    setupItems: function (typeaheadStore) {
 
         var content = [
             {
-                xtype:'itemview_treepanel',
-                itemId:'parentitems_treepanel'
+                xtype: 'itemview_treepanel',
+                itemId: 'parentitems_treepanel'
+            },
+            {
+                xtype: 'itemview_typeahead_results',
+                itemId: 'parentitems_results',
+                store: Ext.create('Savanna.itemView.store.AutoCompleteStore', {
+                    urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/model/search/typeahead/',
+                    paramsObj: { pageStart: 0, pageSize: 20, alphabetical: true, type: 'Item' }
+                })
             }
         ];
         return content;
     },
     tbar: [
         {
-            xtype: 'parentitems_auto_complete',
-            itemId: 'parentItemAutoChooser',
+            xtype: 'container',
+            layout: 'hbox',
             width: '100%',
-            margin: 10,
-            store: Ext.create('Savanna.itemView.store.AutoCompleteStore', {
-                urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/mockModelSearch/keyword/item',
-                paramsObj: {
-                    excludeUri:'asdf',
-                    pageStart:0,
-                    pageSize:500
+            items: [
+                {
+                    xtype: 'textfield',
+                    itemId: 'filterParentItemsField',
+                    flex: 1,
+                    emptyText: 'Find a Parent Item',
+                    enableKeyEvents: true
+                },
+                {
+                    xtype: 'button',
+                    text: 'Search',
+                    itemId: 'searchParentItemsBtn'
+                },
+                {
+                    xtype: 'button',
+                    text: 'X',
+                    itemId: 'clearParentItemsBtn'
                 }
-            })
+            ]
         }
     ]
 });

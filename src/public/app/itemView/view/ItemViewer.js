@@ -95,6 +95,9 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                     {
                         xtype:'panel',
                         flex:1,
+                        bodyStyle:{
+                            backgroundColor:"#f2f2f2"
+                        },
                         layout:{
                             type: 'hbox',
                             pack: 'center',
@@ -105,6 +108,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                                 xtype:'panel',
                                 flex:1,
                                 maxWidth:1024,
+                                minWidth:640,
                                 cls: 'itemview',
                                 layout:{
                                     type: 'hbox',
@@ -156,6 +160,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                                     {
                                         xtype: 'panel',
                                         cls: 'item-view-column',
+                                        margin:'1 0 0 0',
                                         flex:1,
                                         layout:'anchor',
                                         autoScroll: true,
@@ -203,29 +208,22 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                         cls:['white-grid-view-panel-edit', 'item-view-column'],
                         autoScroll: true,
                         width: '30%',
-                        minWidth:256,
+                        minWidth:345,
                         maxWidth:412,
                         layout: 'vbox',
                         collapsible: true,
-                        collapseDirection: 'left',
+                        animCollapse:false,
                         collapseMode:'header',
                         resizable:true,
                         headerPosition:'left',
                         items: [
-//                            {
-//                                xtype: 'metadata_details',
-//                                itemId: 'itemDetails',
-//                                itemURI: this.itemUri
-//                            },
                             {
                                 xtype: 'document_sources',
                                 editMode: false,
                                 itemId: 'itemSources',
                                 header:{
                                     ui:'light-blue'
-                                },
-
-                                itemURI: this.itemUri
+                                }
                             }
                         ]
                     }
@@ -285,6 +283,9 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                     {
                         xtype:'panel',
                         flex:1,
+                        bodyStyle:{
+                            backgroundColor:"#f2f2f2"
+                        },
                         layout:{
                             type: 'hbox',
                             pack: 'center',
@@ -295,6 +296,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                                 xtype:'panel',
                                 flex:1,
                                 maxWidth:1024,
+                                minWidth:640,
                                 cls: 'itemview',
                                 layout:{
                                     type: 'hbox',
@@ -383,30 +385,24 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                         itemId: 'itemInfoPanel',
                         title: 'Details',
                         width: '30%',
-                        minWidth:256,
+                        minWidth:345,
                         maxWidth:412,
                         cls:['white-grid-view-panel-edit', 'item-view-column'],
                         autoScroll: true,
                         layout: 'vbox',
                         collapsible: true,
-                        collapseDirection: 'left',
+                        animCollapse:false,
                         collapseMode:'header',
                         resizable:true,
                         headerPosition:'left',
                         items: [
-//                            {
-//                                xtype: 'metadata_details',
-//                                itemId: 'itemDetails',
-//                                itemURI: this.itemUri
-//                            },
                             {
                                 xtype: 'document_sources',
                                 editMode: true,
-                                itemId: 'itemSources',
+                                itemId: 'itemSourcesEdit',
                                 header:{
                                     ui:'light-blue'
-                                },
-                                itemURI: this.itemUri
+                                }
                             }
                         ]
                     }

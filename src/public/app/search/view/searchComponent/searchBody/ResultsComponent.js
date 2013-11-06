@@ -12,14 +12,11 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.ResultsComponent', {
     requires: [
         'Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsDals',
         'Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsPanel',
-        'Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsPreviewContent',
-        'Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsPreviewWindow',
         'Savanna.controller.Factory',
         'Savanna.search.store.DalSources'
     ],
     layout: 'border',
     defaults: {
-        // is collapsible good?  seemed handy.
         titleCollapse: true,
         collapsible: true,
         split: true
@@ -41,10 +38,6 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.ResultsComponent', {
         {
             xtype: 'search_resultspanel',
             itemId: 'resultspanel'
-        },
-        {
-            xtype: 'search_resultspreviewwindow',
-            itemId: 'resultspreviewwindow'
         }
     ]
 });
