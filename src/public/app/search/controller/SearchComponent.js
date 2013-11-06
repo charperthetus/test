@@ -43,7 +43,6 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                 click: this.showHideMenu
             },
             'search_searchcomponent #search_terms': {
-                keyup: this.handleSearchTermKeyUp,
                 'onsearchclick': this.handleSearchSubmit,
                 'onclearclick' : this.clearSearch
             },
@@ -201,7 +200,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
          clear the grid - it's misleading in error states to see results in the grid, even though
          the search request has failed for one reason or another
          */
-        component.down('#resultspanel').updateGridStore({store: Ext.create('Savanna.search.store.SearchResults')});
+        component.down('#resultspanel').clearGridStore();
 
         /*
          hide Start New Search button
@@ -470,7 +469,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
          clear the grid - it's misleading in error states to see results in the grid, even though
          the search request has failed for one reason or another
          */
-        component.down('#resultspanel').updateGridStore({store: Ext.create('Savanna.search.store.SearchResults')});
+        component.down('#resultspanel').clearGridStore();
 
         /*
          show Start New Search button

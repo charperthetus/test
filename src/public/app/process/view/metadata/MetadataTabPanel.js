@@ -18,7 +18,7 @@ Ext.define('Savanna.process.view.metadata.MetadataTabPanel', {
         'Savanna.process.view.metadata.ProcessItemMetadata'
     ],
     header: {
-        ui: 'dark'
+        ui: 'light'
     },
     controller: 'Savanna.process.controller.MetadataController',
 
