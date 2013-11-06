@@ -17,6 +17,8 @@ Ext.define('Savanna.itemView.view.itemQualities.ViewItemQualities', {
 
     hideHeaders: true,
 
+    autoHeight: true,
+
     columns: [
         {
             xtype: 'templatecolumn',

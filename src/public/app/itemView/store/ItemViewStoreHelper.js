@@ -71,7 +71,6 @@ Ext.define('Savanna.itemView.store.ItemViewStoreHelper', {
         var tagModel = this.createNewBottomLevelModelInstance(tagName, tagUri);
         store.data.values.push(tagModel.data);
         store.valuesStore.add(tagModel);
-        console.log(this.store)
     },
 
     removeBotLevItemInStore: function(tagName, store) {
@@ -83,6 +82,22 @@ Ext.define('Savanna.itemView.store.ItemViewStoreHelper', {
         }
 
         store.valuesStore.remove(store.valuesStore.getById(tagName));
+    },
+
+    removeBotLevItemInStoreByUri: function(uri, store) {
+        for (var i = 0; i < store.data.values.length; i++) {
+            if (store.data.values[i].value === uri) {
+                Ext.Array.remove(store.data.values, store.data.values[i]);
+                break;
+            }
+        }
+
+        for (var i = 0; i < store.valuesStore.count(); i++) {
+            if (store.valuesStore.getAt(i).data.value === uri) {
+                store.valuesStore.remove(store.valuesStore.getAt(i));
+                break;
+            }
+        }
     },
 
     createNewModelInstance: function(label, uri) {
