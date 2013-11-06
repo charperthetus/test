@@ -12,27 +12,28 @@ Ext.define('Savanna.sources.controller.Sources', {
         'Savanna.sources.view.Sources'
     ],
 
-    init: function() {
-        this.callParent(arguments);
-    },
-
     control: {
         listOfSources: {
             live: true,
             listeners: {
                 itemclick: 'openSourceDocument'
             }
-        },
-        supportingResourcesDrop: {
-              boxready: 'onDropItemReady'
+//        },
+//        supportingResourcesDrop: {
+//              boxready: 'onDropItemReady'
         }
     },
 
-    openSourceDocument: function( grid, record, item, index, e, eOpts) {
-        if (e.target.id === "openResourceDoc") {
-            EventHub.fireEvent('open', {uri: e.target.name, type: 'Rich', label: e.target.label});
-        }
+    init: function() {
+        this.onDropItemReady(this.getView().queryById('supportingResourcesDrop'));
+        this.callParent(arguments);
     },
+    
+    openSourceDocument: function( grid, record, item, index, e, eOpts) {
+            if (e.target.id === "openResourceDoc") {
+                EventHub.fireEvent('open', {uri: e.target.name, type: 'Rich', label: e.target.label});
+            }
+        },
 
     onDropItemReady: function(container){
         var myDropBox = container.getEl();
@@ -55,7 +56,6 @@ Ext.define('Savanna.sources.controller.Sources', {
     },
 
     notifyItemDropTarget: function(ddSource, e, data, container) {
-
         data.records.forEach(function(rec) {
             this.getView().storeHelper.addBotLevItemInStore(rec.data.title, rec.data, this.getView().store.getById('Source Document'));
             this.getView().storeHelper.fetchMainStore().getAt(0).setDirty();
@@ -87,5 +87,4 @@ Ext.define('Savanna.sources.controller.Sources', {
         });
         return returnVal;
     }
-
 });
