@@ -50,6 +50,11 @@ Ext.define('Savanna.desktop.view.SavannaTabPanel', {
                         text: 'Process',
                         handler: this.processHandler,
                         scope: this
+                    },
+                    {
+                        text: 'Map',
+                        handler: this.mapHandler,
+                        scope: this
                     }
                 ]
             }
@@ -91,6 +96,10 @@ Ext.define('Savanna.desktop.view.SavannaTabPanel', {
 
     processHandler: function() {
         this.fireEvent('createprocess', this);
+    },
+
+    mapHandler: function() {
+        this.fireEvent('createmap', this);
     },
 
     splitViewHandler: function() {

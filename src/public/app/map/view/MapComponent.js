@@ -1,42 +1,18 @@
 Ext.define('Savanna.map.view.MapComponent', {
     extend: 'Ext.panel.Panel',
-    alias: 'widget.map_component',
+    alias: 'widget.mapcomponent',
 
     requires: [
-        'Ext.layout.container.Absolute',
-        'Ext.layout.container.Border',
-        'Savanna.map.view.part.Canvas'
+        'Savanna.map.controller.MapController',
+        'Savanna.map.view.part.OL3MapComponent'
     ],
 
-    layout: {
-        type: 'border'
-    },
+    controller: 'Savanna.map.controller.MapController',
 
+    layout: 'border',
 
-    initComponent: function() {
-        this.items = this.setupItems();
-
-        this.callParent(arguments);
-    },
-
-    setupItems: function() {
-        return [
-            {
-                xtype: 'panel',
-                flex: 10,
-                region: 'center',
-                height: '100%',
-                layout: {
-                    type: 'absolute'
-                },
-                items: [
-                    {
-                        xtype: 'map_canvas',
-                        height: '100%',
-                        width: '100%'
-                    }
-                ]
-            }
-        ]
-    }
+    items: [{
+        xtype: 'ol3mapcomponent',
+        itemId: 'ol3Map'
+    }]
 });

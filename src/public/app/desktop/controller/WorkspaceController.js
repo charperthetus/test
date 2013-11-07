@@ -3,6 +3,7 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
 
     requires: [
         'Savanna.desktop.view.SavannaTabPanel',
+        'Savanna.map.view.MapComponent',
         'Savanna.process.view.ProcessEditorComponent',
         'Savanna.metadata.view.Details',
         'Savanna.itemView.view.createItem.CreateItem'
@@ -19,6 +20,7 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
             beforetabclosemenu: 'onBeforeTabCloseMenu',
             createprocess: 'createProcess',
             createitem: 'createItem',
+            createmap: 'createMap',
             singleview: 'onSingleView',
             splitview: 'onSplitView',
             tabchange: 'onTabChange'
@@ -32,6 +34,7 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
                 beforetabclosemenu: 'onBeforeTabCloseMenu',
                 createprocess: 'createProcess',
                 createitem: 'createItem',
+                createmap: 'createMap',
                 singleview: 'onSingleView',
                 splitview: 'onSplitView',
                 remove: 'onRemove'
@@ -138,6 +141,20 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
         }else{
             //TODO - What should I do here?
         }
+    },
+
+    createMap: function(tabpanel) {
+        var map = Ext.create('Savanna.map.view.MapComponent', {
+            title: 'Untitled Map',
+            closable: true,
+            tabConfig: {
+                ui: 'dark'
+            }
+        });
+
+        var tab = tabpanel.add(map);
+        tabpanel.doLayout();
+        tabpanel.setActiveTab(tab);
     },
 
     createItem: function() {
