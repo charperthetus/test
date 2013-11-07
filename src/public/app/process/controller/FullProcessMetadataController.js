@@ -19,10 +19,15 @@ Ext.define('Savanna.process.controller.FullProcessMetadataController', {
 
     control: {
         view: {
-            processUriChanged: 'onUriChanged'
+            processUriChanged: 'onUriChanged',
+            savechanges: 'onSaveChanges'
         },
-        processTitle: true,
-        processDescription: true,
+        processTitle: {
+            blur: 'processTitleBlur'
+        },
+        processDescription: {
+            blur: 'processDescriptionBlur'
+        },
         imageBrowser: true,
         detailsPanel: true,
         itemSources: true
@@ -37,6 +42,7 @@ Ext.define('Savanna.process.controller.FullProcessMetadataController', {
             scope: this,
             callback: this.handleRecordDataRequestResponse
         });
+        this.getDetailsPanel().setItemURI(encodeURI(processUri));
     },
 
     buildItemDataFetchUrl: function (uri) {
@@ -56,5 +62,26 @@ Ext.define('Savanna.process.controller.FullProcessMetadataController', {
             this.getItemSources().store = record[0].propertyGroupsStore.getById('Sources').valuesStore;
             Ext.bind(this.getItemSources().addSourcesGrid(record[0].propertyGroupsStore.getById('Sources').valuesStore.getById('Source Document').valuesStore), this.getItemSources());
         }
+    },
+
+    onSaveChanges: function() {
+        console.log('FullProcessMetadataController saveChanges');
+        this.store.getAt(0).setDirty();
+        this.store.sync();
+    },
+
+    processTitleBlur: function(e) {
+        if(this.store.getAt(0).data.label !== e.getValue()) {
+            this.store.getAt(0).data.label = e.getValue();
+            this.store.getAt(0).setDirty();
+        }
+    },
+
+    processDescriptionBlur: function(e) {
+        if( this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Description').valuesStore.getAt(0).data.value !== e.getValue() ) {
+            this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Description').valuesStore.getAt(0).data.value = e.getValue();
+            this.store.getAt(0).setDirty();
+        }
     }
+
 });

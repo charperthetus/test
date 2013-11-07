@@ -11,7 +11,7 @@ Ext.define('Savanna.process.controller.MetadataController', {
             processUriChange: 'setUpProcessDetails',
             processclose: 'onProcessClose'
         },
-        hiddenTabPanel: {
+        hiddenPanel: {
             boxready: 'onBeforeHiddenPanelShow'
         },
         fullProcessMetadata:  {
@@ -41,6 +41,7 @@ Ext.define('Savanna.process.controller.MetadataController', {
         // then load up the panel for the new selection
         if (1 === this.getDiagram().selection.count) {
             var itemUri;
+            var itemName = this.getDiagram().selection.first().data.label;
             var itemCategory = this.getDiagram().selection.first().data.category;
 
             switch(itemCategory) {
@@ -54,7 +55,7 @@ Ext.define('Savanna.process.controller.MetadataController', {
                     if (this.getDiagram().selection.first().data.representsItemUri) {
                         itemUri = encodeURIComponent(this.getDiagram().selection.first().data.representsItemUri);
                         // this is an item
-                        this.setUpItemDetails(itemUri);
+                        this.setUpItemDetails(itemUri, itemName);
                     }
                     else {
                         //show loading screen
@@ -81,14 +82,13 @@ Ext.define('Savanna.process.controller.MetadataController', {
 
     setUpProcessDetails: function(itemUri) {
         // get proper info from service for item configs
-        console.log('MetadataController setUpProcessDetails', itemUri);
         if( null !== itemUri ) {
             this.setProcessUri( itemUri );
-            this.getHiddenTabPanel().setActiveTab(this.getFullProcessMetadata());
+            this.getHiddenPanel().getLayout().setActiveItem(this.getFullProcessMetadata());
             this.getFullProcessMetadata().fireEvent('processUriChanged', itemUri);
         } else {
             // show the process details panel
-            this.getHiddenTabPanel().setActiveTab(this.getFullProcessMetadata());
+            this.getHiddenPanel().getLayout().setActiveItem(this.getFullProcessMetadata());
         }
     },
 
@@ -96,14 +96,14 @@ Ext.define('Savanna.process.controller.MetadataController', {
         this.getStepMetadata().show();
 
         this.getStepMetadata().fireEvent('stepUriChanged', itemUri);
-        this.getHiddenTabPanel().setActiveTab(this.getStepMetadata());
+        this.getHiddenPanel().getLayout().setActiveItem(this.getStepMetadata());
     },
 
-    setUpItemDetails: function(itemUri) {
+    setUpItemDetails: function(itemUri,itemName) {
         this.getItemMetadata().show();
 
-        this.getItemMetadata().fireEvent('processUriChanged', itemUri);
-        this.getHiddenTabPanel().setActiveTab(this.getItemMetadata());
+        this.getItemMetadata().fireEvent('processItemUriChanged', itemUri,itemName);
+        this.getHiddenPanel().getLayout().setActiveItem(this.getItemMetadata());
     },
 
     addFullProcessMetadataListeners: function(process_details) {
@@ -120,15 +120,15 @@ Ext.define('Savanna.process.controller.MetadataController', {
     },
 
     onBeforeHiddenPanelShow: function() {
-        this.getHiddenTabPanel().getTabBar().setVisible(false);
+        //this.getHiddenPanel().getTabBar().setVisible(false);
     },
 
     saveChanges: function() {
         // TODO: save the existing set of changes, if any
-        console.log('saveChanges');
+        this.getHiddenPanel().getLayout().getActiveItem().fireEvent('savechanges');
     },
 
     onProcessClose: function() {
-
+        this.saveChanges();
     }
 });

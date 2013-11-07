@@ -185,10 +185,7 @@ Ext.define('Savanna.process.utils.Styler', {
                 strokeWidth: 1,
                 stroke: 'black',
                 width: 32,
-                height: 32,
-                portId: "", // now the Shape is the port, not the whole Node
-                fromSpot: go.Spot.Right,
-                toSpot: go.Spot.Left
+                height: 32
             },
             "textblock": {
                 font: properties.fontWeight + properties.fontSize + properties.font,
@@ -402,7 +399,7 @@ Ext.define('Savanna.process.utils.Styler', {
                 fill: null,
                 stroke: null,
                 angle: null, //gooAngle,
-                width: 36,
+                width: 40,
                 height: 72,
                 position: null, //gooPoint,
                 isActionable: true,
@@ -678,8 +675,7 @@ Ext.define('Savanna.process.utils.Styler', {
                 stroke: null,
                 width: 42,
                 height: 42,
-                row: 0,
-                column: 1,
+            
                 margin: 0,
                 portId: "", // now the Shape is the port, not the whole Node
                 fromSpot: go.Spot.Right,
@@ -690,8 +686,7 @@ Ext.define('Savanna.process.utils.Styler', {
                 stroke: palette.black,
                 width: 10,
                 height: 10,
-                row: 0,
-                column: 1,
+           
                 margin: 0
             },
             "textblock": {
@@ -701,9 +696,8 @@ Ext.define('Savanna.process.utils.Styler', {
                 maxSize: new go.Size(150, NaN),
                 wrap: go.TextBlock.WrapFit,
                 editable: true,
-                name: "TEXT",
-                row: 0,
-                column: 2
+                name: "TEXT"
+               
             }
         };
 
@@ -854,6 +848,7 @@ Ext.define('Savanna.process.utils.Styler', {
                 margin: new go.Margin(0, 0, 0, 4),
                 maxSize: new go.Size(200, NaN),
                 wrap: go.TextBlock.WrapFit,
+                isMultiline : false,
                 textAlign: "center",
                 editable: true,
                 font: properties.fontWeight + properties.fontSize + properties.font,
@@ -1122,10 +1117,10 @@ Ext.define('Savanna.process.utils.Styler', {
                 editable: true
             },
             "arrowheadInput": {
-                toArrow: 'none',
-                fromArrow: 'backward',
-                stroke: null,
-                fill: null
+                toArrow: "circle",
+                stroke: palette.gray,
+                strokeWidth: 1,
+                fill: palette.white
             },
             "shapeInput": {
                 fill: palette.gray,

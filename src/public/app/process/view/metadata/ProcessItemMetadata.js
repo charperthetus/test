@@ -7,7 +7,7 @@
  */
 
 Ext.define('Savanna.process.view.metadata.ProcessItemMetadata', {
-    extend: 'Ext.panel.Panel',
+    extend: 'Ext.form.Panel',
     alias: 'widget.process_item_metadata',
 
     requires: [
@@ -46,9 +46,9 @@ Ext.define('Savanna.process.view.metadata.ProcessItemMetadata', {
                     itemId: 'itemDescription'
                 },
                 {
-                    xtype: 'label',
-                    text: 'Image',
-                    itemId: 'itemPrimeImage'
+                    xtype: 'image',
+                    itemId: 'itemPrimeImage',
+                    alt: 'No Primary Image'
                 }
             ]
         },
@@ -58,7 +58,7 @@ Ext.define('Savanna.process.view.metadata.ProcessItemMetadata', {
             border: 3,
             items: [
                 {
-                    xtype: 'textfield',
+                    xtype: 'label',
                     value: 'Individual Title',
                     itemId: 'itemInstanceTitle'
                 },
@@ -82,14 +82,14 @@ Ext.define('Savanna.process.view.metadata.ProcessItemMetadata', {
                             xtype: 'combo'
                         }
                     ]
-                },
+                }/*,
                 {
                     xtype: 'textarea',
                     fieldLabel: 'Description',
                     labelAlign: 'top',
                     text: 'Far far away, behind the word mountains',
                     itemId: 'itemInstanceDescription'
-                }
+                }*/
             ]
         },
         {

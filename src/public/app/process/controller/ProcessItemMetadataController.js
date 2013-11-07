@@ -10,6 +10,7 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
 
     store: null,
     storeHelper: null,
+    itemName: null,
 
     requires: [
         'Savanna.itemView.store.MainItemStore',
@@ -18,17 +19,22 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
 
     control: {
         view: {
-            processUriChanged: 'onUriChanged'
+            processItemUriChanged: 'onUriChanged',
+            savechanges: 'onSaveChanges'
         },
         openBtn: {
             click: 'onOpenBtnClick'
         },
 
-        itemTitle: true,
-        itemDescription: true,
+        itemTitle: {
+            blur: 'itemTitleBlur'
+        },
+        itemDescription: {
+            blur: 'itemDescriptionBlur'
+        },
         itemPrimeImage: true,
         itemInstanceTitle: true,
-        itemInstanceDescription: true,
+//        itemInstanceDescription: true,
         itemQualities: true
 
     },
@@ -38,7 +44,8 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
         EventHub.fireEvent('open', {uri: this.store.getAt(0).data.uri, type: 'Item', label: this.store.getAt(0).data.label});
     },
 
-    onUriChanged: function(processUri) {
+    onUriChanged: function(processUri, itemName) {
+        this.itemName = itemName;
         this.store = Ext.create('Savanna.itemView.store.MainItemStore');
         this.storeHelper = Ext.create('Savanna.itemView.store.ItemViewStoreHelper');
         this.store.getProxy().url = this.buildItemDataFetchUrl(processUri);
@@ -50,8 +57,8 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
     },
 
     buildItemDataFetchUrl: function (uri) {
-        //return SavannaConfig.itemViewUrl + encodeURI(uri);
-        return SavannaConfig.mockItemViewUrl + encodeURI(uri); // mock data
+        return SavannaConfig.itemViewUrl + encodeURI(uri);
+        //return SavannaConfig.mockItemViewUrl + encodeURI(uri); // mock data
     },
 
     handleRecordDataRequestSuccess: function(record, operation, success) {
@@ -62,6 +69,36 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
             this.getItemQualities().storeHelper = this.storeHelper;
             this.getItemQualities().store = record[0].propertyGroupsStore.getById('Properties').valuesStore;
             this.getItemQualities().fireEvent('EditQualities:StoreSet');
+
+
+            var imageURI = record[0].propertyGroupsStore.getById('Images').valuesStore.getById('Images').valuesStore.getAt(0).data.uri;
+            this.getItemPrimeImage().setSrc( SavannaConfig.savannaUrlRoot + 'rest/document/' + encodeURI(imageURI) + '/original/');
+
+            this.getItemInstanceTitle().setText(this.itemName);
+
+        }
+    },
+
+    onSaveChanges: function() {
+        // TODO: save the existing set of changes, if any
+        console.log('ProcessItemMetadataController saveChanges');
+        this.store.getAt(0).setDirty();
+        this.store.sync();
+    },
+
+    itemTitleBlur: function(e) {
+        if(this.store.getAt(0).data.label !== e.getValue()) {
+            this.store.getAt(0).data.label = e.getValue();
+            this.store.getAt(0).setDirty();
+        }
+    },
+
+    itemDescriptionBlur: function(e) {
+        if(this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Description').valuesStore.getAt(0).data.value !== e.getValue()) {
+            this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Description').valuesStore.getAt(0).data.value = e.getValue();
+            this.store.getAt(0).setDirty();
         }
     }
+
+
 });

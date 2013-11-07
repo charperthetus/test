@@ -26,6 +26,10 @@ Ext.define('Savanna.itemView.store.MainItemStore', {
         this.setProxy({
             type: 'savanna-cors',
             url: SavannaConfig.itemViewUrl,
+            noCache: false,
+            startParam: undefined,
+            limitParam: undefined,
+            pageParam: undefined,
             reader: {
                 type: 'json'
             },
@@ -37,7 +41,6 @@ Ext.define('Savanna.itemView.store.MainItemStore', {
                     request.method = 'PUT';
                 }
                 if('destroy' == request.action) {
-                    request.url = request.url.replace((request.url.substr(request.url.indexOf(';jsessionid='))), '');
                     request.method = 'DELETE';
                 }
                 return request;

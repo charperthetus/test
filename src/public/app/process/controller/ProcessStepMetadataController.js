@@ -18,11 +18,16 @@ Ext.define('Savanna.process.controller.ProcessStepMetadataController', {
 
     control: {
         view: {
-            stepUriChanged: 'onUriChanged'
+            stepUriChanged: 'onUriChanged',
+            savechanges: 'onSaveChanges'
         },
-        stepTitle: true,
+        stepTitle: {
+            blur: 'stepTitleBlur'
+        },
         durationLabel: true,
-        stepDescription: true,
+        stepDescription: {
+            blur: 'stepDescriptionBlur'
+        },
         stepImageBrowser: true,
         stepActions: true
 
@@ -41,8 +46,8 @@ Ext.define('Savanna.process.controller.ProcessStepMetadataController', {
     },
 
     buildItemDataFetchUrl: function (uri) {
-        //return SavannaConfig.itemViewUrl + encodeURI(uri);
-        return SavannaConfig.mockItemViewUrl + encodeURI(uri); // mock data
+        return SavannaConfig.itemViewUrl + encodeURI(uri);
+        //return SavannaConfig.mockItemViewUrl + encodeURI(uri); // mock data
     },
 
     handleRecordDataRequestSuccess: function(record, operation, success) {
@@ -53,6 +58,27 @@ Ext.define('Savanna.process.controller.ProcessStepMetadataController', {
             this.getStepImageBrowser().storeHelper = this.storeHelper;
             this.getStepImageBrowser().store = record[0].propertyGroupsStore.getById('Images').valuesStore;
             this.getStepImageBrowser().fireEvent('EditImagesGrid:Setup', record[0].propertyGroupsStore.getById('Images').valuesStore.getById('Images').valuesStore.data.items);
+        }
+    },
+
+    onSaveChanges: function() {
+        // TODO: save the existing set of changes, if any
+        console.log('ProcessStepMetadataController saveChanges');
+        this.store.getAt(0).setDirty();
+        this.store.sync();
+    },
+
+    stepTitleBlur: function(e) {
+        if(this.store.getAt(0).data.label !== e.getValue()) {
+            this.store.getAt(0).data.label = e.getValue();
+            this.store.getAt(0).setDirty();
+        }
+    },
+
+    stepDescriptionBlur: function(e) {
+        if(this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Description').valuesStore.getAt(0).data.value !== e.getValue()) {
+            this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Description').valuesStore.getAt(0).data.value = e.getValue();
+            this.store.getAt(0).setDirty();
         }
     }
 

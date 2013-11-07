@@ -1,4 +1,3 @@
-
 Ext.define('Savanna.itemView.controller.ParentItemsController', {
     extend: 'Deft.mvc.ViewController',
 
@@ -10,28 +9,28 @@ Ext.define('Savanna.itemView.controller.ParentItemsController', {
         filterParentItemsField: {
             keydown: 'filterKeydown'
         },
-        searchParentItemsBtn: {
-            click: 'filterQualities'
-        },
         clearParentItemsBtn:    {
             click: 'closeTypeAhead'
         },
-        parentitems_results:    {
+        parentitems_results: {
             itemclick: 'selectParentItemUri',
             itemdblclick: 'getParentItemResult'
         }
     },
 
-    requires: [
+    filterKeydown: function (field, e, eOpts) {
+        this.getView().filtering = true;
+        var me = this;
+        if (me.getView().taInt) {
+            clearTimeout(me.getView().taInt);
+        }
+        me.getView().taInt = setTimeout(me.resetFiltering, this.getView().typeaheadDelay, me);
+    },
 
-    ],
-
-    filterKeydown: function(field, e, eOpts) {
-        if (e.keyCode === Ext.EventObject.ENTER) {
-
-            if (field.getValue().trim().length) {
-                this.filterQualities();
-            }
+    resetFiltering: function (me) {
+        if (me.getView().filtering) {
+            me.getView().filtering = false;
+            me.filterQualities();
         }
     },
 
@@ -41,17 +40,16 @@ Ext.define('Savanna.itemView.controller.ParentItemsController', {
         this.getView().queryById('parentitems_results').store.reload();
     },
 
-    closeTypeAhead: function()  {
+    closeTypeAhead: function () {
         this.getView().queryById('filterParentItemsField').setValue('');
         this.getView().getLayout().setActiveItem(0);
     },
 
-    selectParentItemUri:function(grid, record, item, index, e, eOpts)  {
+    selectParentItemUri: function (grid, record, item, index, e, eOpts) {
         this.getView().up('itemview_create_item').selectedParentUri = record.get('uri');
     },
 
     getParentItemResult: function (grid, record, item, index, e, eOpts) {
-
 
 
         var itemStore = Ext.create('Savanna.itemView.store.MainItemStore');
@@ -68,7 +66,7 @@ Ext.define('Savanna.itemView.controller.ParentItemsController', {
     },
 
     handleCreateSuccess: function (records, operation, success) {
-        EventHub.fireEvent('open', {uri: records[0].data.uri, label: records[0].data.label, type: 'item'}, {editMode:true});
+        EventHub.fireEvent('open', {uri: records[0].data.uri, label: records[0].data.label, type: 'item'}, {editMode: true});
     }
 });
 
