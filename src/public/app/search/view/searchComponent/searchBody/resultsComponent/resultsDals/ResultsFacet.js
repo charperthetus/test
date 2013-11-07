@@ -184,7 +184,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
             sinceTheBeginningOfTime = new Date('1/1/1971');
 
         switch (period) {
-            case 'any'  :
+            case 'all'  :
                 dateObject.startDate = Ext.Date.format(sinceTheBeginningOfTime, this.dateFormat);
                 break;
 
