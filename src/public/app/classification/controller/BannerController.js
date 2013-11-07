@@ -46,7 +46,7 @@ Ext.define('Savanna.classification.controller.BannerController', {
 
             var background, color;
             if(title.indexOf('TOP SECRET') >= 0) {
-                background = "#FFFA53"
+                background = "#FFFA53";
                 color = "#000000";
             } else if(title.indexOf('SECRET') >= 0) {
                 background = "#ED1C24";
