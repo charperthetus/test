@@ -25,7 +25,6 @@ Ext.define('Savanna.process.view.ProcessEditorComponent', {
         type: 'border'
     },
 
-    tbar: [],
     items: [],
 
     overview: null,
@@ -46,12 +45,14 @@ Ext.define('Savanna.process.view.ProcessEditorComponent', {
                 layout: {
                     type: 'absolute'
                 },
-                tbar: [
+                tbar: {
+                    ui: 'thetus-toolbar',
+                    items: [
                     {
                         xtype: 'process_toolbar',
                         height: 33
                     }
-                ],
+                ]},
                 items:[
                     {
                         xtype: 'process_canvas',
@@ -63,7 +64,7 @@ Ext.define('Savanna.process.view.ProcessEditorComponent', {
                         xtype: 'process_palettewindow',
                         itemId: 'palette',
                         autoShow: true,
-                        x: 15, //DI needs to position this window correctly
+                        x: 15,
                         y: 15
                     }
                 ]
