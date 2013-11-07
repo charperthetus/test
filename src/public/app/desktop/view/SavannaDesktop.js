@@ -22,10 +22,11 @@ Ext.define('Savanna.desktop.view.SavannaDesktop', {
             scale: 'large',
             xtype: 'button',
             height: 44,
-            ui: 'brand-header'
+            ui: 'brand-header',
+            flex: 1,
         }, {
             xtype: 'toolbar',
-            flex: 1,
+            flex: 3,
             ui:'brand-header',
             layout: {
                 pack: 'center',
@@ -63,6 +64,7 @@ Ext.define('Savanna.desktop.view.SavannaDesktop', {
                 xtype: 'toolbar',
                 scale: 'medium',
                 ui:'brand-header',
+                flex: 1,
                 layout: {
                     defaultMargins:'5'
                 },
