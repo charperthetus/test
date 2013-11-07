@@ -128,6 +128,44 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
         return makeStandardButton(this.styler(), {click: Ext.bind(this.utils().addDecision, this.utils())});
     },
 
+    // To simplify this code we define a function for creating a context menu button
+    makeContextMenuItem: function (text, action, visiblePredicate) {
+        var gmake = go.GraphObject.make;
+        if (visiblePredicate === undefined) visiblePredicate = function () {
+            return true;
+        };
+        return gmake("ContextMenuButton",
+            gmake(go.TextBlock, text),
+            { click: action },
+            new go.Binding("visible", "", visiblePredicate).ofObject());
+    },
+
+    // a context menu is an Adornment with a bunch of buttons in them
+    makeContextMenu: function () {
+        var gmake = go.GraphObject.make;
+        return gmake(go.Adornment, "Vertical",
+            this.makeContextMenuItem("Toggle Optional",
+                function (e, obj) {  // the OBJ is this Button
+                    var contextmenu = obj.part;  // the Button is in the context menu Adornment
+                    var part = contextmenu.adornedPart;  // the adornedPart is the Part that the context menu adorns
+                    // now can do something with PART, or with its data, or with the Adornment (the context menu)
+                    Savanna.process.utils.ProcessUtils.toggleOptional(part.diagram);
+                },
+                function(contextmenu) {
+                    var obj = contextmenu.adornedPart;
+                    return (Savanna.process.utils.ProcessUtils.optionalCategories.indexOf(obj.category) >= 0);
+                }),
+            this.makeContextMenuItem("Add Alternates",
+                function (e, obj) {
+                    Savanna.process.utils.ProcessUtils.addAlts(obj.diagram);
+                },
+                function (contextmenu) {
+                    var obj = contextmenu.adornedPart;
+                    return (obj.category === 'ProcessItem');
+                })
+        );
+    },
+
     generateItemNodeTemplate: function(itemTextEditor) {
         var gmake = go.GraphObject.make;
         return gmake(go.Node, 'Auto', {
@@ -144,7 +182,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                             background: 'transparent'
                         },
                         gmake(go.Panel, go.Panel.Auto, {portId: "", fromSpot: go.Spot.Right, toSpot: go.Spot.Left},
-                            gmake(go.Shape, 'Rectangle', {
+                            gmake(go.Shape, 'Border', {
                                 stroke: 'black',
                                 strokeWidth: 1,
                                 fill: 'transparent',
@@ -176,7 +214,8 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                     selectionAdornmentTemplate: gmake(go.Adornment, 'Auto',
                         gmake(go.Shape, 'RoundedRectangle',
                             this.styler().processModel().selectionAdornment),
-                        gmake(go.Placeholder))
+                        gmake(go.Placeholder)),
+                    contextMenu: this.makeContextMenu()
                 }
             );
     },
@@ -184,7 +223,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
     generateActionNodeTemplate: function(actionTextEditor) {
         var gmake = go.GraphObject.make;
         return  gmake(go.Node, go.Panel.Auto,
-                    gmake(go.Shape, 'Rectangle', {
+                    gmake(go.Shape, 'Border', {
                         stroke: null,
                         fill: null,
                         strokeWidth: 1
@@ -206,7 +245,8 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                         selectionAdornmentTemplate: gmake(go.Adornment, 'Auto',
                             gmake(go.Shape, 'RoundedRectangle',
                                 this.styler().start().selectionAdornment),
-                            gmake(go.Placeholder))
+                            gmake(go.Placeholder)),
+                        contextMenu: this.makeContextMenu()
                     }
                 );
     },
@@ -718,7 +758,8 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                     selectionAdornmentTemplate: gmake(go.Adornment, 'Auto',
                         gmake(go.Shape, 'RoundedRectangle',
                             this.styler().processModel().selectionAdornment),
-                        gmake(go.Placeholder))
+                        gmake(go.Placeholder)),
+                    contextMenu: this.makeContextMenu()
                 }
             )
         );

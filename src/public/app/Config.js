@@ -34,6 +34,6 @@ Ext.define('Savanna.Config', {
         sc.mockItemViewUrl = rUrl + 'rest/model/mock/item/';
 
         //Version number of the build - This is replaced in the build process
-        sc.version = '${version}';
+        sc.version = '0.1-SNAPSHOT_dev';
     }
 });

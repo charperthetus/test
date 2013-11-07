@@ -19,7 +19,7 @@ Ext.define('Savanna.process.controller.ProcessController', {
 
     control: {
         newProcess: {
-            click: 'clearJSONClick'
+            click: 'newProcessClick'
         },
         expandSteps: {
             click: 'expandStepsClick'
@@ -41,12 +41,6 @@ Ext.define('Savanna.process.controller.ProcessController', {
         },
         merge: {
             click: 'handleMerge'
-        },
-        alts: {
-            click: 'handleAlts'
-        },
-        optional: {
-            click: 'toggleOptional'
         },
         zoomIn: {
             click: 'zoomIn'
@@ -109,9 +103,15 @@ Ext.define('Savanna.process.controller.ProcessController', {
         }
         diagram.commitTransaction('toggleExpanded');
     },
+
+    newProcessClick: function() {
+        EventHub.fireEvent('createprocess');
+    },
+
     expandStepsClick: function() {
         this.toggleExpanded(true);
     },
+
     collapseStepsClick: function() {
         this.toggleExpanded(false);
     },
