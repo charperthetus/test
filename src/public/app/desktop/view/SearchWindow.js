@@ -19,7 +19,7 @@ Ext.define('Savanna.desktop.view.SearchWindow', {
     minWidth: 200,
     minHeight: 100,
     ghost: false,
-
+    constrainHeader: true,
     header: {
         title: 'Search'
     },
