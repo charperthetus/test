@@ -21,11 +21,15 @@ Ext.define('Savanna.process.store.TypeAheadStore', {
         paramsObj: {}
     },
 
+    autoSync: false,
+
     model: 'Savanna.process.model.TypeAheadModel',
 
     constructor: function (configs) {
         this.callParent(arguments);
         this.initConfig(configs);
+
+        var me = this;
 
         this.setProxy({
             type: 'savanna-cors',
@@ -38,6 +42,12 @@ Ext.define('Savanna.process.store.TypeAheadStore', {
             },
             writer: {
                 type: 'json'
+            },
+            afterRequest: function (request, success) {
+                if (!success) {
+                    //clear out the store on a failed request
+                    loadData([],false);
+                }
             }
         });
     }

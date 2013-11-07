@@ -11,6 +11,7 @@ Ext.define('Savanna.process.store.Processes', {
     storeId: 'processStore',
 
     requires: [
+        'Ext.String',
         'Savanna.process.model.Process',
         'Savanna.proxy.Cors'
     ],
@@ -46,9 +47,29 @@ Ext.define('Savanna.process.store.Processes', {
             afterRequest: function (request, success) {
                 if (success && request.method === 'PUT') {
                     var uri = request.proxy.reader.jsonData;
+                    var prefix = 'tcontent:';
+                    if (Ext.String.startsWith(uri, prefix)) {
+                        uri = uri.slice(prefix.length);
+                    }
                     me.getAt(0).data.uri = uri;
                     me.setItemUri(encodeURIComponent(uri));
+                    me.reindexProcess();
                 }
+            }
+        });
+    },
+
+    reindexProcess: function() {
+        // request indexing of the process
+        Ext.Ajax.request({
+            url: SavannaConfig.modelProcessIndexer + encodeURI(this.getItemUri()) + '/instance;jsessionid=' + Savanna.jsessionid,
+            method: 'GET',
+            success: function(response){
+                var message = Ext.decode(response.responseText);
+                // ? what to do here
+            },
+            failure: function(response){
+                console.log('reindexProcess: Server Side Failure: ' + response.status);
             }
         });
     },
