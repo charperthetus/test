@@ -23,7 +23,7 @@ Ext.define('Savanna.itemView.view.header.EditHeader', {
 
     layout: 'vbox',
 
-    header:false,
+    header: false,
 
     margin: 10,
 
@@ -37,7 +37,8 @@ Ext.define('Savanna.itemView.view.header.EditHeader', {
         {
             xtype: 'textfield',
             itemId: 'itemNameField',
-            width:'100%'
+            enableKeyEvents: true,
+            width: '100%'
         },
         {
             xtype: 'label',
@@ -68,7 +69,7 @@ Ext.define('Savanna.itemView.view.header.EditHeader', {
                     itemId: 'addIntendedUseBox',
                     store: Ext.create('Savanna.itemView.store.AutoCompleteStore', {
                         urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/model/search/keyword/property/',
-                        paramsObj: { pageStart:0, pageSize:20, alphabetical: true }
+                        paramsObj: { pageStart: 0, pageSize: 20, alphabetical: true }
                     }),
                     flex: 1
 
@@ -76,7 +77,7 @@ Ext.define('Savanna.itemView.view.header.EditHeader', {
                 {
                     xtype: 'button',
                     itemId: 'intendedUseChooserBtn',
-                    glyph:'searchBinoculars'
+                    glyph: 'searchBinoculars'
                 }
             ]
         },
@@ -98,7 +99,7 @@ Ext.define('Savanna.itemView.view.header.EditHeader', {
                 {
                     xtype: 'button',
                     itemId: 'parentChooser',
-                    glyph:'searchBinoculars'
+                    glyph: 'searchBinoculars'
                 }
             ]
         },
