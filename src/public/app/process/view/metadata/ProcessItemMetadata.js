@@ -58,7 +58,7 @@ Ext.define('Savanna.process.view.metadata.ProcessItemMetadata', {
             border: 3,
             items: [
                 {
-                    xtype: 'label',
+                    xtype: 'textfield',
                     value: 'Individual Title',
                     itemId: 'itemInstanceTitle'
                 },
