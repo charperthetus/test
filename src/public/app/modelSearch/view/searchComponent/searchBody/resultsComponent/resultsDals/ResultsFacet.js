@@ -76,21 +76,22 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
                                 hideCollapseTool: true,
                                 header: false,
                                 width: '100%',
+                                cls: 'customDatePanel',
                                 items: [
                                     {
-                                        xtype: 'model_search_resultsDals_resultsdatefield',
+                                        xtype: 'search_resultsDals_resultsdatefield',
                                         fieldLabel: 'From',
-                                        labelWidth: 50,
-                                        width: 185,
+                                        labelWidth: 35,
+                                        width: 155,
                                         name: 'from_date',
                                         itemId: 'fromDate',
                                         value: new Date('1/1/1971')
                                     },
                                     {
-                                        xtype: 'model_search_resultsDals_resultsdatefield',
+                                        xtype: 'search_resultsDals_resultsdatefield',
                                         fieldLabel: 'To',
-                                        labelWidth: 50,
-                                        width: 185,
+                                        labelWidth: 35,
+                                        width: 155,
                                         name: 'to_date',
                                         itemId: 'toDate',
                                         value: new Date()
