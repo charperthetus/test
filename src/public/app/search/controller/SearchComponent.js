@@ -206,6 +206,18 @@ Ext.define('Savanna.search.controller.SearchComponent', {
          hide Start New Search button
          */
         component.down('#search_reset_button').setVisible(false);
+
+        // Clear Map: Search Results and  location search polygon
+        //search options > location is in a tab so check if it exists
+        if (component.down('#searchMapCanvas').searchLayer){
+            component.down('#searchMapCanvas').searchLayer.removeAllFeatures();
+        }
+
+        //clear result layer
+        if (component.down('#resultMapCanvas').resultsLayer){
+            component.down('#resultMapCanvas').resultsLayer.removeAllFeatures();
+            component.fireEvent('clearPopUpOnNewSearch', event, component.down('search_resultscomponent'));
+        }
     },
 
     clearSearch: function (elem) {
@@ -220,19 +232,6 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                 field.setValue('');
             }
         });
-
-        // Clear Map: Search Results and  location search polygon
-        //search options > location is in a tab so check if it exists
-        if (component.down('#searchMapCanvas').searchLayer){
-            component.down('#searchMapCanvas').searchLayer.removeAllFeatures();
-        }
-
-        //clear result layer
-        if (component.down('#resultMapCanvas').resultsLayer){
-            component.down('#resultMapCanvas').resultsLayer.removeAllFeatures();
-            component.fireEvent('clearPopUpOnNewSearch', event, component.down('search_resultscomponent'));
-        }
-
     },
 
     resetCustomSearchOptions:function(component) {
