@@ -15,13 +15,17 @@ Ext.define('Savanna.components.tags.Tag', {
     margin:'1',
     
     style:{
-        position:'relative'
+        position:'relative',
+        maxWidth: '100%'
     },
+
+    // Allow events to bubble up to other controllers
     bubbleEvents: [
         'Tag:RemoveSearchTerm',
         'Tag:TagClicked'
     ],
     
+    // Method to set tag text
     setTerm: function(term)  {
         this.setText(term);
     }
