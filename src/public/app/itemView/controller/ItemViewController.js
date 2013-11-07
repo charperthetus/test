@@ -178,17 +178,22 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     },
 
     onEditDone: function () {
-        //gotta update the Item Name here since we can't access inside the edit header component.  Also have to update the tab text
-        this.store.getAt(0).data.label = this.getView().queryById('itemViewHeaderEdit').queryById('itemNameField').value;
-        this.getView().setTitle(this.store.getAt(0).data.label);
 
+        /*
+         Header Edit Done
+         */
         var headerComponent = this.getView().queryById('itemViewHeaderView');
-        headerComponent.setTitle(this.store.getAt(0).data.label);
+        
+        // Apparently (according to nkedev) some items don't have a header label, and the "top-level" label is their URI, so we check for that here.
+        var headerText = (this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Label').valuesStore.getAt(0).data) ? 
+                        this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Label').valuesStore.getAt(0).data.label :
+                        this.store.getAt(0).data.label;
+        
+        headerComponent.setTitle(headerText);
         headerComponent.reconfigure(this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore);
 
         var qualitiesComponent = this.getView().queryById('itemViewPropertiesView');
         qualitiesComponent.reconfigure(this.store.getAt(0).propertyGroupsStore.getById('Properties').valuesStore);
-
 
         var imagesBrowserComponent = this.getView().queryById('itemViewImagesGrid'),
             imagesBrowserComponentEdit = this.getView().queryById('itemViewImagesEdit');
@@ -268,14 +273,19 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
          Header View
          */
         var headerComponent = me.getView().queryById('itemViewHeaderView');
-        headerComponent.setTitle(record.data.label);
+        
+        // Apparently (according to nkedev) some items don't have a header label, and the "top-level" label is their URI, so we check for that here.
+        var headerText = (record.propertyGroupsStore.getById('Header').valuesStore.getById('Label').valuesStore.getAt(0).data) ? 
+                        record.propertyGroupsStore.getById('Header').valuesStore.getById('Label').valuesStore.getAt(0).data.label :
+                        record.data.label;
+        
+        headerComponent.setTitle(headerText);
         headerComponent.reconfigure(record.propertyGroupsStore.getById('Header').valuesStore);
 
         /*
          Header Edit
          */
         var headerEditComponent = me.getView().queryById('itemViewHeaderEdit');
-        headerEditComponent.queryById('itemNameField').setValue(record.data.label);
         headerEditComponent.storeHelper = this.storeHelper;
         headerEditComponent.store = record.propertyGroupsStore.getById('Header').valuesStore;
         headerEditComponent.fireEvent('EditHeader:StoreSet');
