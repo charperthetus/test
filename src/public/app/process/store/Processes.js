@@ -35,41 +35,15 @@ Ext.define('Savanna.process.store.Processes', {
             modifyRequest: function(request) {
                 if('update' === request.action || 'create' === request.action) {
                     // Must put, not push.  So sayeth endpoint.
+                    var uri = me.getAt(0).data.uri;
+                    me.setItemUri(encodeURIComponent(uri));
                     request.method = 'PUT';
-                    //request.params = {id: encodeURIComponent(me.getAt(0).data.identifier)};
-                    request.params = {id: me.getAt(0).data.identifier};
+                    request.params = {id: encodeURI(uri)};
                     request.url = SavannaConfig.modelProcessSaveUrl + ';jsessionid=' + Savanna.jsessionid;
                 } else if ('read' === request.action) {
                     request.url = SavannaConfig.modelProcessLoadUrl + encodeURI(this.getItemUri());
                 }
                 return request;
-            },
-            afterRequest: function (request, success) {
-                if (success && request.method === 'PUT') {
-                    var uri = request.proxy.reader.jsonData;
-                    var prefix = 'tcontent:';
-                    if (Ext.String.startsWith(uri, prefix)) {
-                        uri = uri.slice(prefix.length);
-                    }
-                    me.getAt(0).data.uri = uri;
-                    me.setItemUri(encodeURIComponent(uri));
-                    me.reindexProcess();
-                }
-            }
-        });
-    },
-
-    reindexProcess: function() {
-        // request indexing of the process
-        Ext.Ajax.request({
-            url: SavannaConfig.modelProcessIndexer + encodeURI(this.getItemUri()) + '/instance;jsessionid=' + Savanna.jsessionid,
-            method: 'GET',
-            success: function(response){
-                var message = Ext.decode(response.responseText);
-                // ? what to do here
-            },
-            failure: function(response){
-                console.log('reindexProcess: Server Side Failure: ' + response.status);
             }
         });
     },
