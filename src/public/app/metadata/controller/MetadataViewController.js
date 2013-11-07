@@ -220,7 +220,7 @@ Ext.define('Savanna.metadata.controller.MetadataViewController', {
 
     saveClassification: function(portionMarking) {
         Ext.Ajax.request({
-            url: SavannaConfig.capcoUrl + this.getView().getItemURI() + ';jsessionid=' + Savanna.jsessionid,
+            url: SavannaConfig.capcoUrl + this.getView().itemURI + ';jsessionid=' + Savanna.jsessionid,
             method: 'POST',
             jsonData: Ext.JSON.encode(portionMarking),
             callback: this.onClassificationSaved,
@@ -230,7 +230,7 @@ Ext.define('Savanna.metadata.controller.MetadataViewController', {
 
     onClassificationSaved: function() {
         // the classification banner controller is listening for this event to be fired
-        EventHub.fireEvent('classificationchanged', this.getView().getItemURI());
+        EventHub.fireEvent('classificationchanged', this.getView().itemURI);
         this.loadStore();
     },
 
