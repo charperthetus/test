@@ -13,8 +13,12 @@ Ext.define('Savanna.itemView.controller.ParentItemsController', {
             click: 'closeTypeAhead'
         },
         parentitems_results: {
-            itemclick: 'selectParentItemUri',
-            itemdblclick: 'getParentItemResult'
+            live: true,
+            listeners:  {
+                itemclick: 'selectParentItemUri',
+                itemdblclick: 'getParentItemResult'
+            }
+
         }
     },
 
