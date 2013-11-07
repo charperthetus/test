@@ -242,9 +242,9 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
                 strokeWidth: 12,
                 pointRadius: 10,
                 label: '${count}',
-                labelOutlineWidth: 1,
+                labelOutlineWidth: 0,
                 fontColor: '#ffffff',
-                fontOpacity: 0.8,
+                fontOpacity: 1,
                 fontSize: '12px'
             }
         });
@@ -263,9 +263,9 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
                 strokeWidth: 12,
                 pointRadius: 15,
                 label: '${count}',
-                labelOutlineWidth: 1,
+                labelOutlineWidth: 0,
                 fontColor: '#ffffff',
-                fontOpacity: 0.8,
+                fontOpacity: 1,
                 fontSize: '12px'
             }
         });
@@ -283,9 +283,9 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
                 strokeWidth: 12,
                 pointRadius: 20,
                 label: '${count}',
-                labelOutlineWidth: 1,
+                labelOutlineWidth: 0,
                 fontColor: '#ffffff',
-                fontOpacity: 0.8,
+                fontOpacity: 1,
                 fontSize: '12px'
             }
         });

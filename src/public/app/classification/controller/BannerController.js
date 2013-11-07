@@ -23,15 +23,20 @@ Ext.define('Savanna.classification.controller.BannerController', {
             });
         }
         else if(!systemHigh){
-            Ext.Ajax.request({
-                url: SavannaConfig.capcoUrl + 'string/default' + ';jsessionid=' + Savanna.jsessionid,
-                success: this.onSuccess,
-                scope: this
-            });
+            this.setUnspecifiedClassification();
         }
         EventHub.on('classificationchanged', this.onClassificationChanged, this);
         this.callParent(arguments);
     },
+
+    destroy: function() {
+        // remove listener from event hub
+        EventHub.un('classificationchanged', this.onClassificationChanged, this);
+
+        // allow destruction
+        return this.callParent(arguments);
+    },
+
 
     onSuccess: function(response) {
         var responseData = Ext.JSON.decode(response.responseText);
@@ -61,6 +66,14 @@ Ext.define('Savanna.classification.controller.BannerController', {
             this.getView().setBodyStyle('textAlign:center');
             this.getView().setBodyStyle('color:' + color);
         }
+    },
+
+    setUnspecifiedClassification: function() {
+        this.getLabel().setText('UNSPECIFIED');
+
+        this.getView().setBodyStyle('background:#878787');
+        this.getView().setBodyStyle('textAlign:center');
+        this.getView().setBodyStyle('color:#FFFFFF');
     },
 
     onClassificationChanged: function(itemUri) {
