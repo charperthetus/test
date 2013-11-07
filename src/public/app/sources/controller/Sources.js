@@ -35,7 +35,7 @@ Ext.define('Savanna.sources.controller.Sources', {
         } else if (e.target.id === "delResourceDoc") {
             this.getView().storeHelper.removeBotLevItemInStoreByUri(e.target.name, this.getView().store.getById('Source Document'));
             this.updateStore();
-            this.getView().queryById('listOfSources').reconfigure(this.getView().store);
+            this.getView().queryById('listOfSources').reconfigure(this.getView().store.getById('Source Document').valuesStore);
         }
     },
     
