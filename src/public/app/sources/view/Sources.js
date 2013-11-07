@@ -14,30 +14,23 @@ Ext.define('Savanna.sources.view.Sources', {
     controller: 'Savanna.sources.controller.Sources',
 
     title: 'Sources',
+
     layout: 'vbox',
+
     width: "100%",
+
     border: false,
+
     itemId: '',
+
     collapsible: true,
 
-    config: {
-        editMode: false,
-        itemUri: null,
-        // metadata values
-        key: '',
-        value: null,
-        displayLabel: '',
-        visible: true,
-        editable: true,
-        type: ''
-    },
+    storeHelper: null,
+
+    store: null,
+
     items: [
         {
-            xtype: 'label',
-            text: 'Supporting Resources (#)',
-            cls:'h2',
-            padding:'0 10 0 10'
-        },{
             xtype: 'panel',
             itemId: 'supportingResourcesDrop',
             cls:'supporting-resources-drop-zone',
@@ -60,5 +53,40 @@ Ext.define('Savanna.sources.view.Sources', {
                 }
             ]
         }
-    ]
+
+
+    ],
+
+    addSourcesGrid: function(store){
+        if (this.queryById('listOfSources') === null ){
+            this.add({
+                xtype: 'grid',
+                itemId: 'listOfSources',
+                width: '100%',
+                height: 285,
+                renderTo: Ext.getBody(),
+                store: store,
+
+                title: 'Supporting Resources (' + store.count() + ')',
+
+                hideHeaders: true,
+
+                columns: [
+                    {
+                        xtype: 'templatecolumn',
+                        dataIndex: 'values',
+                        flex: 1,
+                        sortable: false,
+                        tpl: Ext.create('Ext.XTemplate',
+                            '<tpl for="values">',
+                            '<input type="button" name="{uri}" value="{label}" id="openResourceDoc" />',
+                            '</tpl>'
+                        )
+                    }
+                ]
+            })
+        } else {
+            this.queryById('listOfSources').reconfigure(store);
+        }
+    }
 });

@@ -78,6 +78,7 @@ Ext.define('Savanna.metadata.view.Details', {
 
     updateItemURI: function(newItemURI, oldItemURI) {
         this.fireEvent('update_Uri', newItemURI);
+        this.callParent(arguments);
     },
 
     updateEditMode: function(newEditMode, oldEditMode) {

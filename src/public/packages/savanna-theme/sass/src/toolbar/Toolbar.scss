@@ -7,9 +7,14 @@
 */
 
 /*
+ *  CLASSES IMPORT
+*/
+@import 'cls/Toolbar-Cls';
+
+/*
 * Runtime
 */
-  
+
 @include extjs-toolbar-ui(
     $ui: 'brand-header-toolbar-small',
 

@@ -45,11 +45,11 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
         var me = this;
 
         Ext.each(me.getView().store.getById('Aliases').data.values, function(value) {
-            me.getView().queryById('addAliasBox').addTag(value.label);
+            me.getView().queryById('addAliasBox').addTag(value.label, value.editable);
         });
 
         Ext.each(me.getView().store.getById('Intended Use').data.values, function(value) {
-            me.getView().queryById('addIntendedUseBox').addTag(value.label);
+            me.getView().queryById('addIntendedUseBox').addTag(value.label, value.editable);
             me.valNameArray.push(value.label);
         });
 
@@ -61,7 +61,13 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
         }
 
         if(me.getView().store.getById('Description').data.values.length)  {
-            me.getView().queryById('itemDescription').setValue(me.getView().store.getById('Description').data.values[0].value);
+            var description = me.getView().queryById('itemDescription');
+
+            if (!me.getView().store.getById('Description').data.values[0].editable) {
+                description.disable();
+            }            
+
+            description.setValue(me.getView().store.getById('Description').data.values[0].value);
         }
     },
 
@@ -132,6 +138,6 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
     updateDescription: function(comp, e, eOpts) {
         var myStore = this.getView().store;
         myStore.getById('Description').data.values[0].value = comp.value;
-        this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
+        this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');  
     }
 });
