@@ -125,8 +125,8 @@ Ext.ClassManager.addNameAlternateMappings({
     "DalCustomSearchGroup"
   ],
   "Savanna.itemView.view.itemQualities.ValuesPicker": [],
-  "Savanna.itemView.controller.ViewHeaderController": [],
   "Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineTerms": [],
+  "Savanna.itemView.controller.ViewHeaderController": [],
   "ThemeDemoApp.picker.Month": [],
   "Deft.promise.Deferred": [
     "Deft.Deferred"
@@ -308,8 +308,8 @@ Ext.ClassManager.addNameAlternateMappings({
   "Ext.ux.ajax.SimManager": [],
   "ThetusUikit.panel.Panel": [],
   "Savanna.metadata.view.DateList": [],
-  "Ext.ux.TabScrollerMenu": [],
   "Savanna.modelSearch.controller.resultsComponent.ResultsPreviewContentController": [],
+  "Ext.ux.TabScrollerMenu": [],
   "Savanna.modelSearch.view.searchComponent.SearchToolbar": [],
   "Savanna.process.controller.ProcessItemMetadataController": [],
   "Savanna.search.model.SearchResult": [],
@@ -611,10 +611,10 @@ Ext.ClassManager.addNameAliasMappings({
   "Savanna.itemView.view.itemQualities.ValuesPicker": [
     "widget.itemview_values_picker"
   ],
-  "Savanna.itemView.controller.ViewHeaderController": [],
   "Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineTerms": [
     "widget.model_search_resultsDals_resultsterms"
   ],
+  "Savanna.itemView.controller.ViewHeaderController": [],
   "ThemeDemoApp.picker.Month": [],
   "Deft.promise.Deferred": [],
   "Savanna.image.view.part.ImageViewer": [
@@ -916,10 +916,10 @@ Ext.ClassManager.addNameAliasMappings({
   "Savanna.metadata.view.DateList": [
     "widget.metadata_datelist"
   ],
+  "Savanna.modelSearch.controller.resultsComponent.ResultsPreviewContentController": [],
   "Ext.ux.TabScrollerMenu": [
     "plugin.tabscrollermenu"
   ],
-  "Savanna.modelSearch.controller.resultsComponent.ResultsPreviewContentController": [],
   "Savanna.modelSearch.view.searchComponent.SearchToolbar": [
     "widget.model_search_searchtoolbar"
   ],
