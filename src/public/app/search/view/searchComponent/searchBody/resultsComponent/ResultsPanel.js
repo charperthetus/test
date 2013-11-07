@@ -47,10 +47,22 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
      */
     updateGridStore: function (obj) {
         var grid = this.queryById('resultspanelgrid');
-        grid.reconfigure(obj.store);
-        this.queryById('gridtoolbar').bindStore(obj.store);
+        //only do the rebinding if the store actually changed
+        if (!grid.store.valid || (obj.store.storeId !== grid.store.storeId)) {
+            grid.reconfigure(obj.store);
+            this.queryById('gridtoolbar').bindStore(obj.store);
 
-        obj.store.loadPage(obj.store.currentPage);
+            obj.store.loadPage(obj.store.currentPage);
+        }
+    },
+
+    clearGridStore: function() {
+        var grid = this.queryById('resultspanelgrid');
+        //I tried using gridtoolbar.bindStore() to unbind the current store and reset the paging toolbar, but didn't work
+        grid.store.removeAll();
+        grid.store.totalCount = 0;
+        this.queryById('gridtoolbar').onLoad();
+        grid.store.valid = false;
     },
 
     dockedItems: [

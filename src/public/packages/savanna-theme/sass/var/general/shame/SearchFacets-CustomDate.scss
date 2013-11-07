@@ -1,0 +1,11 @@
+.customDatePanel{
+	margin-left: 5px;
+	
+	.x-anchor-form-item:nth-child(n+2){
+		margin-top: -15px;
+	}
+	
+	.x-form-trigger-wrap {
+		width: 115px !important;
+	}
+}

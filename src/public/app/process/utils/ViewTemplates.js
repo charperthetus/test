@@ -24,6 +24,14 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
     onMouseLeave: function(e, obj) {
         this.utils().toggleGadgets(obj, false);
     },
+    
+    onMouseEnterCG: function(e, obj) {
+        this.utils().toggleGadgets(obj.containingGroup, true);
+    },
+
+    onMouseLeaveCG: function(e, obj) {
+        this.utils().toggleGadgets(obj.containingGroup, false);
+    },
 
     onNodeMouseDrop: function(e, obj, data) {
         this.utils().onNodeMouseDrop(obj, data, 'ProcessLink');
@@ -39,41 +47,128 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
     },
 
     makeStepGadget: function () {
-        var gmake = go.GraphObject.make;
-        return gmake(go.Panel, go.Panel.Auto,
-            this.styler().stepGadget({click: Ext.bind(this.utils().addStep, this.utils())}).panel,
-            gmake(go.Shape, this.styler().stepGadget().circle, {
-                    mouseEnter: function (e, obj) {
-                        obj.fill = '#7cc19d';
-                    },
-                    mouseLeave: function (e, obj) {
-                        obj.fill = '#3d8060';
-                    }
-                }
-            ),
-            gmake(go.Shape, this.styler().stepGadget().plusLine)
-        );
+
+        function makeStandardButton(s, c) {
+            var gmake = go.GraphObject.make;
+
+            var button =
+                gmake(go.Panel, "Auto",
+                    s.stepGadget(c).panel,
+                    { isActionable: true },  // handle mouse events without involving other tools
+                    gmake(go.Shape,  // the border
+                        { name: "ButtonBorder",
+                            figure: "Circle",
+                            fill: '#3d8060',
+                            stroke: null,
+                            desiredSize: new go.Size(13, 13)
+                        }),
+                    gmake(go.Shape, 'PlusLine', {
+                            desiredSize: new go.Size(7, 7),
+                            fill: 'white',
+                            stroke: 'white',
+                            strokeWidth: 2
+                        }
+                    )
+                );
+
+            button.mouseEnter = function (e, obj) {
+                var shape = obj.elt(0);
+                shape.fill = '#7cc19d';
+                shape.stroke = null;
+            };
+            button.mouseLeave = function (e, obj) {
+                var shape = obj.elt(0);
+                shape.fill = '#3d8060';
+                shape.stroke = null;
+            };
+            return button;
+        }
+
+        return makeStandardButton(this.styler(), {click: Ext.bind(this.utils().addStep, this.utils())});
     },
 
     makeDecisionGadget: function () {
+
+        function makeStandardButton(s, c) {
+            var gmake = go.GraphObject.make;
+
+            var button =
+                gmake(go.Panel, "Auto",
+                    s.decisionGadget(c).panel,
+                    { isActionable: true },  // handle mouse events without involving other tools
+                    gmake(go.Shape,  // the border
+                        { name: "ButtonBorder",
+                            figure: "Diamond",
+                            fill: '#f9aa41',
+                            stroke: null,
+                            desiredSize: new go.Size(13, 13)
+                        }),
+                    gmake(go.Shape, 'PlusLine', {
+                            desiredSize: new go.Size(7, 7),
+                            fill: 'white',
+                            stroke: 'white',
+                            strokeWidth: 2
+                        }
+                    )
+                );
+
+            button.mouseEnter = function (e, obj) {
+                var shape = obj.elt(0);
+                shape.fill = '#f9ba6e';
+                shape.stroke = null;
+            };
+            button.mouseLeave = function (e, obj) {
+                var shape = obj.elt(0);
+                shape.fill = '#f9aa41';
+                shape.stroke = null;
+            };
+            return button;
+        }
+
+        return makeStandardButton(this.styler(), {click: Ext.bind(this.utils().addDecision, this.utils())});
+    },
+
+    // To simplify this code we define a function for creating a context menu button
+    makeContextMenuItem: function (text, action, visiblePredicate) {
         var gmake = go.GraphObject.make;
-        return gmake(go.Panel, go.Panel.Auto,
-            this.styler().decisionGadget({click: Ext.bind(this.utils().addDecision, this.utils())}).panel,
-            gmake(go.Shape, this.styler().decisionGadget().diamond, {
-                mouseEnter: function (e, obj) {
-                    obj.fill = '#f9ba6e';
+        if (visiblePredicate === undefined) visiblePredicate = function () {
+            return true;
+        };
+        return gmake("ContextMenuButton",
+            gmake(go.TextBlock, text),
+            { click: action },
+            new go.Binding("visible", "", visiblePredicate).ofObject());
+    },
+
+    // a context menu is an Adornment with a bunch of buttons in them
+    makeContextMenu: function () {
+        var gmake = go.GraphObject.make;
+        return gmake(go.Adornment, "Vertical",
+            this.makeContextMenuItem("Toggle Optional",
+                function (e, obj) {  // the OBJ is this Button
+                    var contextmenu = obj.part;  // the Button is in the context menu Adornment
+                    var part = contextmenu.adornedPart;  // the adornedPart is the Part that the context menu adorns
+                    // now can do something with PART, or with its data, or with the Adornment (the context menu)
+                    Savanna.process.utils.ProcessUtils.toggleOptional(part.diagram);
                 },
-                mouseLeave: function (e, obj) {
-                    obj.fill = '#f9aa41';
-                }
-            }),
-            gmake(go.Shape, this.styler().decisionGadget().plusLine)
+                function(contextmenu) {
+                    var obj = contextmenu.adornedPart;
+                    return (Savanna.process.utils.ProcessUtils.optionalCategories.indexOf(obj.category) >= 0);
+                }),
+            this.makeContextMenuItem("Add Alternates",
+                function (e, obj) {
+                    Savanna.process.utils.ProcessUtils.addAlts(obj.diagram);
+                },
+                function (contextmenu) {
+                    var obj = contextmenu.adornedPart;
+                    return (obj.category === 'ProcessItem');
+                })
         );
     },
 
     generateItemNodeTemplate: function(itemTextEditor) {
         var gmake = go.GraphObject.make;
-        return gmake(go.Node, 'Vertical', {
+        return gmake(go.Node, 'Auto', {
                     // handle mouse enter/leave events to show/hide the gadgets
                     mouseEnter: Ext.bind(this.onMouseEnter, this),
                     mouseLeave: Ext.bind(this.onMouseLeave, this),
@@ -84,13 +179,13 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                 gmake(go.Panel, go.Panel.Vertical,
                     gmake(go.Panel, go.Panel.Horizontal, {
                             name: 'BODY',
-                            background: 'white'
+                            background: 'transparent'
                         },
-                        gmake(go.Panel, go.Panel.Auto,
-                            gmake(go.Shape, 'Rectangle', {
+                        gmake(go.Panel, go.Panel.Auto, {portId: "", fromSpot: go.Spot.Right, toSpot: go.Spot.Left},
+                            gmake(go.Shape, 'Border', {
                                 stroke: 'black',
                                 strokeWidth: 1,
-                                fill: 'white',
+                                fill: 'transparent',
                                 height: 32,
                                 width: 32
                             }, new go.Binding('strokeDashArray', 'isOptional', function(isOptional) {
@@ -119,7 +214,8 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                     selectionAdornmentTemplate: gmake(go.Adornment, 'Auto',
                         gmake(go.Shape, 'RoundedRectangle',
                             this.styler().processModel().selectionAdornment),
-                        gmake(go.Placeholder))
+                        gmake(go.Placeholder)),
+                    contextMenu: this.makeContextMenu()
                 }
             );
     },
@@ -127,7 +223,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
     generateActionNodeTemplate: function(actionTextEditor) {
         var gmake = go.GraphObject.make;
         return  gmake(go.Node, go.Panel.Auto,
-                    gmake(go.Shape, 'Rectangle', {
+                    gmake(go.Shape, 'Border', {
                         stroke: null,
                         fill: null,
                         strokeWidth: 1
@@ -149,7 +245,8 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                         selectionAdornmentTemplate: gmake(go.Adornment, 'Auto',
                             gmake(go.Shape, 'RoundedRectangle',
                                 this.styler().start().selectionAdornment),
-                            gmake(go.Placeholder))
+                            gmake(go.Placeholder)),
+                        contextMenu: this.makeContextMenu()
                     }
                 );
     },
@@ -173,13 +270,25 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                 gmake(go.Panel, go.Panel.Vertical,
                     gmake(go.Panel, go.Panel.Auto, {
                             name: 'BODY',
-                            background: 'white'
+                            background: 'transparent'
                         },
-                        gmake(go.Shape, 'Circle', this.styler().start().outline),
+                        gmake(go.Shape, 'Circle', this.styler().start().outline,{
+                            mouseEnter: function (e, obj) {
+                                obj.fill = '#aee2c7';
+                            },
+                            mouseLeave: function (e, obj) {
+                                if (obj.fill !== '#4a966e') {
+                                    obj.fill = '#7cc19d';
+                                }
+                            }
+                        },new go.Binding('fill', 'isSelected', function (sel) {
+                                if (sel) return '#4a966e';
+                                else return '#7cc19d';
+                            }).ofObject('')),
                         gmake(go.TextBlock, 'Start', this.styler().start().textblock)
                     ),
                     gmake(go.Panel, go.Panel.Spot, {
-                            background: 'white',
+                            background: 'transparent',
                             padding: 2,
                             stretch: go.GraphObject.Fill
                         },
@@ -199,76 +308,76 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
             )
         );
 
+        nodeTemplateMap.add('ProcessAction',
+            gmake(go.Node, go.Panel.Spot,
+                gmake(go.TextBlock, this.styler().circle().textblock, new go.Binding('text', 'label').makeTwoWay(), {
+                    mouseEnter: function (e, obj) {
+                        obj.isUnderline = true;
+                    },
+                    mouseLeave: function (e, obj) {
+                        obj.isUnderline = false;
+                    }
+                }), {
+                    selectionAdornmentTemplate: gmake(go.Adornment, 'Auto',
+                        gmake(go.Shape, 'RoundedRectangle',
+                            this.styler().start().selectionAdornment),
+                        gmake(go.Placeholder))
+                }
+            )
+        );
+
         nodeTemplateMap.add('DecisionPoint',
-            gmake(go.Node, 'Vertical', {
+                                gmake(go.Node, 'Vertical', {
                     // handle mouse enter/leave events to show/hide the gadgets
                     mouseEnter: Ext.bind(this.onMouseEnter, this),
                     mouseLeave: Ext.bind(this.onMouseLeave, this),
-                    mouseDrop: Ext.bind(this.onNodeMouseDrop, this),
                     selectionChanged: Ext.bind(this.onNodeSelectionChange, this),
                     defaultStretch: go.GraphObject.Horizontal,
                     selectionObjectName: 'BODY'
                 },
                 gmake(go.Panel, go.Panel.Vertical,
-                    gmake(go.Panel, go.Panel.Table, {
+                    gmake(go.Panel, go.Panel.Horizontal, {
                             name: 'BODY',
                             background: 'transparent'
                         },
-                        gmake(go.RowColumnDefinition, {
-                            column: 0,
-                            width: 150,
-                            minimum: 150,
-                            maximum: 150
-                        }),
-                        gmake(go.RowColumnDefinition, {
-                            column: 1,
-                            width: 42,
-                            minimum: 42,
-                            maximum: 42
-                        }),
-                        gmake(go.RowColumnDefinition, {
-                            column: 2,
-                            minimum: 0,
-                            maximum: 150
-                        }),
-                        gmake(go.TextBlock, '', {
-                            row: 0,
-                            column: 0,
-                            margin: 0
-                        }),
-                        gmake(go.Shape, 'Diamond',
+                        gmake(go.Panel, go.Panel.Auto,
+
+                               gmake(go.Shape, 'Diamond',
                             this.styler().diamond().outline, {
-                                mouseEnter: function (e, obj) {
-                                    obj.fill = '#f9ba6e';
-                                },
-                                mouseLeave: function (e, obj) {
-                                    obj.fill = '#f9aa41';
-                                },
-                                click: function (e, obj) {
-                                    obj.fill = '#fc9909';
-                                }
-                            }),
+                                       mouseEnter: function (e, obj) {
+                                           obj.fill = '#f9ba6e';
+                                       },
+                                       mouseLeave: function (e, obj) {
+                                           if (obj.fill !== '#fc9909') {
+                                               obj.fill = '#f9aa41';
+                                           }
+                                       }
+                                   },new go.Binding('fill', 'isSelected', function (sel) {
+                                if (sel) return '#fc9909';
+                                else return '#f9aa41';
+                            }).ofObject('')),
                         gmake(go.Shape, {
                             geometryString: 'F M21.782,242.258l0.19,0.19c1.384,1.379,3.814,1.251,7.422,0.854c3.619-0.401,62.49-3.916,68.005-4.607 c5.744-0.718,11.091-7.675-5.71-17.329c-4.577-2.63-9.153-5.132-13.454-7.411c19.256-16.701,47.641-46.353,66.482-88.362 c18.845,42.009,47.229,71.661,66.486,88.362c-4.301,2.279-8.878,4.781-13.457,7.411c-16.801,9.654-11.451,16.611-5.708,17.329 c5.512,0.691,64.386,4.206,68.003,4.607c3.61,0.398,6.038,0.525,7.421-0.854l0.19-0.19c1.384-1.38,1.263-3.805,0.875-7.419 c-0.384-3.615-3.681-62.506-4.351-68.021c-0.697-5.745-7.633-11.124-17.35,5.647c-2.734,4.722-5.335,9.444-7.695,13.864 c-25.556-21.474-74.621-72.985-74.831-151.737c0-0.168,0.01-0.333,0.01-0.503h-39.185c0,0.17,0.009,0.335,0.009,0.503 c-0.209,78.752-49.274,130.263-74.83,151.737c-2.359-4.42-4.964-9.143-7.695-13.864c-9.717-16.771-16.652-11.392-17.35-5.647 c-0.67,5.515-3.967,64.406-4.351,68.021C20.521,238.452,20.401,240.878,21.782,242.258z',
                             maxSize: new go.Size(16, 13),
                             minSize: new go.Size(16, 13),
                             fill: '#885613',
-                            position: new go.Point(0, 0),
+                            position: new go.Point(0, 0, -0, 0),
                             stroke: null,
-                            row: 0,
-                            column: 1,
+                    
                             margin: 0
-                        }),
-                        gmake(go.TextBlock, this.styler().diamond().textblock, new go.Binding('text', 'label').makeTwoWay())
+                        })
+                              
+                        ),
+                        gmake(go.TextBlock, this.styler().rectangle().textblock,
+                            new go.Binding('text', 'label').makeTwoWay())
                     ),
                     gmake(go.Panel, go.Panel.Spot, {
                             background: 'transparent',
                             padding: 2,
                             stretch: go.GraphObject.Fill
                         },
-                        gmake(go.TextBlock, '', {
-                            alignment: new go.Spot(0, 0)
-                        }),
+                        gmake(go.TextBlock, '', {alignment: new go.Spot(0, 0)}),
+                        this.makeTopPort(),
                         this.makeStepGadget(),
                         this.makeDecisionGadget()
                     )
@@ -278,7 +387,6 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                             this.styler().start().selectionAdornment),
                         gmake(go.Placeholder))
                 }
-
             )
         );
 
@@ -295,12 +403,12 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                 gmake(go.Panel, go.Panel.Vertical,
                     gmake(go.Panel, go.Panel.Auto, {
                             name: 'BODY',
-                            background: 'white'
+                            background: 'transparent'
                         },
                         gmake(go.Shape, 'Diamond', this.styler().merge().outline)
                     ),
                     gmake(go.Panel, go.Panel.Spot, {
-                            background: 'white',
+                            background: 'transparent',
                             padding: 2,
                             stretch: go.GraphObject.Fill
                         },
@@ -417,7 +525,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                 },
                 gmake(go.Shape, // the link path shape
                     this.styler().addTo('linker', 'linkpathInput', 'isPanelMain', true).linker().linkpathInput),
-                gmake(go.Shape, 'Circle', // the arrowhead
+                gmake(go.Shape, // the arrowhead
                     this.styler().linker().arrowheadInput),
                 {
                     selectionAdornmentTemplate: gmake(go.Adornment,
@@ -523,35 +631,20 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
     generateGroupTemplateMap: function () {
         var gmake = go.GraphObject.make;
         var groupTemplateMap = new go.Map();
-
-        go.GraphObject.Builders.add('PanelExpanderButton', function () {
-            return gmake('Button', {
-                    'ButtonBorder.stroke': null,
-                    'ButtonBorder.fill': '#454545',
-                    click: function (e, obj) {
-                        var group = obj.part; // OBJ is this button
-                        if (!(group instanceof go.Group)) return;
-                        var diagram = group.diagram;
-                        if (diagram === null) return;
-                        e.handled = true;
-                        if (group.isSubGraphExpanded) {
-                            diagram.commandHandler.collapseSubGraph(group);
-                        } else {
-                            diagram.commandHandler.expandSubGraph(group);
-                        }
-                        group.isSelected = true;
-                    },
-                    mouseEnter: function (e, obj) {
-                        var shape = obj.elt(0);
-                        shape.fill = '#666666';
-                        shape.stroke = null;
-                    },
-                    mouseLeave: function (e, obj) {
-                        var shape = obj.elt(0);
-                        shape.fill = '#454545';
-                        shape.stroke = null;
-                    }
-                },
+        
+        function makeStandardButton() {
+          var gmake = go.GraphObject.make;
+        
+          var button =
+            gmake(go.Panel, "Auto",
+              { isActionable: true },  // handle mouse events without involving other tools
+              gmake(go.Shape,  // the border
+                { name: "ButtonBorder",
+                  figure: "Border",
+                  fill: '#454545',
+                  stroke: null,
+                    desiredSize: new go.Size(13, 13)
+                }),
                 gmake(go.Shape, 'PlusLine', {
                         desiredSize: new go.Size(7, 7),
                         fill: 'white',
@@ -567,14 +660,48 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                         return fig;
                     })
                 )
-            )
+            );
+
+            // There's no GraphObject inside the button shape --
+            // it must be added as part of the button definition.
+            // This way the button object could be a TextBlock or a Shape or a Picture or whatever.
+
+            button.click = function (e, obj) {
+                var group = obj.part; // OBJ is this button
+                if (!(group instanceof go.Group)) return;
+                var diagram = group.diagram;
+                if (diagram === null) return;
+                e.handled = true;
+                if (group.isSubGraphExpanded) {
+                    diagram.commandHandler.collapseSubGraph(group);
+                } else {
+                    diagram.commandHandler.expandSubGraph(group);
+                }
+                group.isSelected = true;
+            };
+            // mouse-over behavior
+            button.mouseEnter = function (e, obj) {
+                var shape = obj.elt(0);
+                shape.fill = '#666666';
+                shape.stroke = null;
+            };
+            button.mouseLeave = function (e, obj) {
+                var shape = obj.elt(0);
+                shape.fill = '#454545';
+                shape.stroke = null;
+            };
+            return button;
+        }
+
+        go.GraphObject.Builders.add('PanelExpanderButton', function () {
+            return makeStandardButton()
         });
 
         groupTemplateMap.add('ProcessModel',
             gmake(go.Group, go.Panel.Auto, {
                     defaultStretch: go.GraphObject.Horizontal,
                     selectionObjectName: 'BODY',
-                    background: 'white',
+                    background: 'transparent',
                     mouseEnter: Ext.bind(this.onMouseEnter, this),
                     mouseLeave: Ext.bind(this.onMouseLeave, this),
                     selectionChanged: Ext.bind(this.onGroupSelectionChange, this),
@@ -588,7 +715,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                 gmake(go.Panel, go.Panel.Vertical,
                     gmake(go.Panel, go.Panel.Auto, {
                             name: 'BODY',
-                            background: 'white'
+                            background: 'transparent'
                         },
                         gmake(go.Shape, 'RoundedRectangle', this.styler().processModel().roundedRectangle,
                             new go.Binding('strokeDashArray', 'isOptional', function(isOptional) {
@@ -616,7 +743,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                         )
                     ),
                     gmake(go.Panel, go.Panel.Spot, {
-                            background: 'white',
+                            background: 'transparent',
                             padding: 2,
                             stretch: go.GraphObject.Fill
                         },
@@ -631,7 +758,8 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                     selectionAdornmentTemplate: gmake(go.Adornment, 'Auto',
                         gmake(go.Shape, 'RoundedRectangle',
                             this.styler().processModel().selectionAdornment),
-                        gmake(go.Placeholder))
+                        gmake(go.Placeholder)),
+                    contextMenu: this.makeContextMenu()
                 }
             )
         );
@@ -647,9 +775,14 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                     // the group begins expanded
                     isSubGraphExpanded: true,
                     wasSubGraphExpanded: true,
+                    movable: false,
                     click: function (e, obj) {
+                         console.log(obj);
                         obj.containingGroup.isSelected = true;
                     },
+                 mouseEnter: Ext.bind(this.onMouseEnterCG, this),
+                    mouseLeave: Ext.bind(this.onMouseLeaveCG, this),
+
                     selectionAdornmentTemplate: gmake(go.Adornment, 'Auto',
                         gmake(go.Shape, 'RoundedRectangle',
                             this.styler().start().selectionAdornment),
@@ -686,7 +819,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                         position: new go.Point(10, 8),
                         stroke: null
                     } , 'Inputs', new go.Point(27, 12)),
-                this.makeAdornment(go.Spot.Right, new go.Point(36, 0), 0,
+                this.makeAdornment(go.Spot.Right, new go.Point(40, 0), 0,
                     Ext.bind(this.onByproductMouseDrop, this), Ext.bind(this.utils().addByproduct, this.utils()), {
                         geometryString: 'F M16.072,13.243 11.828,8.998 16.071,4.756 13.241,1.929 9,6.171 4.758,1.929 1.928,4.756 6.172,9 1.928,13.243 4.758,16.071 9,11.829 13.242,16.071z',
                         minSize: new go.Size(15, 15),
@@ -695,7 +828,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                         position: new go.Point(9, 9),
                         stroke: null
                     }, 'Byproducts', new go.Point(17, 58)),
-                this.makeAdornment(go.Spot.Bottom, new go.Point(0, 36), 90,
+                this.makeAdornment(go.Spot.Bottom, new go.Point(0, 40), 90,
                     Ext.bind(this.onResultMouseDrop, this), Ext.bind(this.utils().addResult, this.utils()), {
                         geometryString: 'F M7,5V3h4v2H7z M11,9V6H7v3H11z M13,9H5l4,6L13,9z',
                         maxSize: new go.Size(13, 17),
@@ -720,26 +853,34 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                     layout: gmake(go.GridLayout, this.styler().altsGroup().gridLayout),
                     // the group begins expanded
                     isSubGraphExpanded: true,
-                    wasSubGraphExpanded: true
-                },
+                    wasSubGraphExpanded: true,
+                    selectionObjectName: 'BODY'
+                }, new go.Binding('isSubGraphExpanded', 'isSubGraphExpanded').makeTwoWay(),
                 gmake(go.Panel, go.Panel.Vertical,
                     gmake(go.Panel, go.Panel.Auto, {
                             name: 'BODY',
-                            background: 'white'
+                            background: 'transparent'
                         },
-                        gmake(go.Shape, 'RoundedRectangle', this.styler().altsGroup().roundedRectangle),
+                        gmake(go.Shape, 'RoundedRectangle', this.styler().altsGroup().roundedRectangle,
+                            new go.Binding('stroke', 'isSelected', function (sel) {
+                                if (sel) return 'transparent';
+                                else return '#999999';
+                            }).ofObject('')),
                         gmake(go.Panel, go.Panel.Vertical,
                             gmake(go.Panel, go.Panel.Horizontal,
                                 this.styler().processModel().panelHorizontal,
                                 // the SubGraphExpanderButton is a panel that functions as a button to expand or collapse the subGraph
                                 gmake('PanelExpanderButton'),
-                                gmake(go.TextBlock, this.styler().altsGroup().textblock, new go.Binding('text', 'label').makeTwoWay())),
-                            gmake(go.Placeholder, this.styler().altsGroup({
-                            }).placeholder)
-                        )
+                                gmake(go.TextBlock, this.styler().altsGroup().textblock, new go.Binding('text', 'label').makeTwoWay())
+                                 ),
+                            gmake(go.Placeholder, this.styler().altsGroup().placeholder
+                        ), new go.Binding('padding', 'isSubGraphExpanded', function (sel) {
+                                    if (sel) return new go.Margin(5, 5, 5, 5);
+                                    else return new go.Margin(5, 5, 5, 5);
+                                }).ofObject(''))
                     ),
                     gmake(go.Panel, go.Panel.Spot, {
-                            background: 'white',
+                            background: 'transparent',
                             padding: 2,
                             stretch: go.GraphObject.Fill
                         },
