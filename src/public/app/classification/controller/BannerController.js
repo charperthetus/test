@@ -66,6 +66,9 @@ Ext.define('Savanna.classification.controller.BannerController', {
             this.getView().setBodyStyle('textAlign:center');
             this.getView().setBodyStyle('color:' + color);
         }
+        else {
+            this.setUnspecifiedClassification();
+        }
     },
 
     setUnspecifiedClassification: function() {
