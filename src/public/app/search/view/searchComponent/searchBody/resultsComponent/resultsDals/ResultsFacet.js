@@ -382,7 +382,8 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
             component = searchController.getSearchComponent(btn),
             currentDalPanel = component.down('#searchdals').queryById(this.dal.get('id')),
             searchString = component.queryById('searchbar').buildSearchString(),
-            searchObj = searchController.buildSearchObject(searchString, this.dal, currentDalPanel);
+            mapView = component.down('search_map_canvas'),
+            searchObj = searchController.buildSearchObject(searchString, this.dal, currentDalPanel, mapView);
 
         searchController.buildAndLoadResultsStore(this.dal, component, searchObj, 'filter');
     }
