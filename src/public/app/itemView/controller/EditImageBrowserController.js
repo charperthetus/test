@@ -139,9 +139,18 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
 
         // Sets up the File System Drop (for file upload)
         if (typeof window.FileReader !== 'undefined') {
+
+            // Feedback when dragging files over
             dropTargetDom.ondragover = function () {
+                dropArea.classList.add('dropzone_color');
                 return false;
             };
+
+            // Removing the feedback when drag leaves
+            dropArea.ondragleave = function () {
+                dropArea.classList.remove('dropzone_color');
+            };
+
             dropTargetDom.ondrop = Ext.bind(this.fileDropHandler, this, [dropTarget], true);
         }
     },
@@ -413,6 +422,7 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
         // Persist to the store and add the thumbnail to the slideshow
         this.addImageToBrowser(thumbnail);
         this.showSlideshowImages();
+        this.onChangeImage(thumbnail);
         this.getView().storeHelper.addBotLevItemInStore(imageTitle, imageModel, this.getView().store.getById('Images'));
     }
 });
