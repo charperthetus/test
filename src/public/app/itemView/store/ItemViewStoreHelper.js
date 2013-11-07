@@ -96,7 +96,6 @@ Ext.define('Savanna.itemView.store.ItemViewStoreHelper', {
         var tagModel = this.createNewBottomLevelModelInstance(tagName, tagUri);
         store.data.values.push(tagModel.data);
         store.valuesStore.add(tagModel);
-        console.log(this.store)
     },
 
     removeBotLevItemInStore: function(tagName, store) {

@@ -64,11 +64,15 @@ Ext.define("Savanna.document.view.DocumentComponent", {
             width: '30%'
         }
     ],
-    tbar: [
-        {
-            xtype: "document_toolbar",
-            itemId: "docToolbar",
-            width: '100%'
-        }
-    ]
+    tbar: {
+        ui: 'thetus-toolbar',
+        width: '100%',
+        items:
+            [{
+                xtype: "document_toolbar",
+                itemId: "docToolbar",
+                width: '100%',
+                height: 33
+            }
+        ]}
 });
