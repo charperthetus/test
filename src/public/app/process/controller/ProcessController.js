@@ -128,7 +128,7 @@ Ext.define('Savanna.process.controller.ProcessController', {
     clear: function(diagram) {
         var newProcess = {'class': 'go.GraphLinksModel', 'nodeKeyProperty': 'uri', 'nodeDataArray': [{'category':'Start'}], 'linkDataArray': []};
         newProcess.nodeDataArray[0].uri = this.utils().getURI('Start');
-        newProcess.uri = this.utils().getURI('ProcessModel');
+        newProcess.identifier = this.utils().getUUID();
         this.store.add(newProcess);
         this.load(diagram, this.store.first());
 

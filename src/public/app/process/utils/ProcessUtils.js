@@ -8,13 +8,18 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
 
     knownUriTypes: ['Start', 'DecisionPoint', 'ProcessModel', 'ProcessAction', 'ProcessItem', 'InternalGroup', 'MergePoint', 'ProcessLink', 'AltsGroup'],
 
+    getUUID: function() {
+        var uuid = Ext.data.IdGenerator.get('uuid').generate();
+        return 'x' + uuid;
+    },
+
     getURI: function(category) {
         // by convention, category names are the same as the URI type
         if (this.knownUriTypes.indexOf(category) < 0) {
             console.log('Unknown uriType in getURI: ', category);
         }
-        var uuid = Ext.data.IdGenerator.get('uuid').generate();
-        return 'x' + uuid  + '/' + category;
+        var uuid = this.getUUID();
+        return uuid + '/' + category;
      },
 
     setRepresentsUri: function(data, classUri) {
