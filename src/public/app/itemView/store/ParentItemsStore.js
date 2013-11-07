@@ -21,6 +21,8 @@ Ext.define('Savanna.itemView.store.ParentItemsStore', {
 
     autoLoad: false,
 
+    rootId: null,
+
     constructor: function () {
 
         this.callParent(arguments);
@@ -37,11 +39,12 @@ Ext.define('Savanna.itemView.store.ParentItemsStore', {
                 return this.callParent([data]);
             }
 
-        });
+        }),
+            me = this;
 
         this.setProxy({
             type: 'savanna-cors',
-            url: SavannaConfig.itemViewPerspective + '/183710',
+            url: SavannaConfig.itemViewPerspective + me.rootId,
             noCache: false,
             startParam: undefined,
             limitParam: undefined,
