@@ -17,7 +17,8 @@ Ext.define('Savanna.components.tags.Tag', {
     border:0,
     
     style:{
-        position:'relative'
+        position:'relative',
+        maxWidth: '100%'
     },
 
     // Allow events to bubble up to other controllers

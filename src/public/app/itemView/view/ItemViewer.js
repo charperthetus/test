@@ -1,11 +1,12 @@
 Ext.define('Savanna.itemView.view.ItemViewer', {
-    extend: 'Ext.panel.Panel',
+    extend: 'Savanna.component.ClassificationPanel',
 
     alias: 'widget.itemview_itemviewer',
 
     cls: 'itemview',
 
     requires: [
+        'Savanna.component.ClassificationPanel',
         'Ext.grid.Panel',
         'Savanna.itemView.controller.ItemViewController',
         'Savanna.itemView.view.header.ViewHeader',
@@ -23,7 +24,6 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
         'Savanna.itemView.view.annotationProperties.AnnotationProperties',
         'Savanna.component.ClassificationPanel',
         'Savanna.itemView.store.AutoCompleteStore',
-        'Savanna.itemView.store.ItemLockStore',
         'Savanna.itemView.store.ItemViewStoreHelper',
         'Savanna.metadata.view.Details',
         'Savanna.sources.view.Sources'
@@ -38,7 +38,6 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
         itemUri: null,
         editMode:false,
         itemStore:null,
-        lockStore:null,
         selectedParentUri: null
     },
 
@@ -49,7 +48,6 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
 
     initComponent: function() {
         this.items = this.buildItems();
-        this.lockStore = Ext.create('Savanna.itemView.store.ItemLockStore');
         this.callParent(arguments);
     },
 
@@ -74,13 +72,22 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                                 {
                                     text: 'New Item...',
                                     itemId:'newItemButton'
-                                }
-                                /* commented out for demo
+                                },
+                                {
+                                    xtype: 'menuseparator'
+                                },
+
                                 {
                                     text: 'Workflow',
                                     itemId:'workflowButton'
                                 },
-                                */
+
+                                {
+                                    xtype: 'menuseparator'
+                                },
+                                {
+                                    xtype: 'menuseparator'
+                                }
                             ]
                         },
                         '->',
@@ -251,6 +258,12 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                                     text: 'New Item...',
                                     itemId:'newItemButton'
                                 },
+
+                                {
+                                    text: 'Workflow',
+                                    itemId:'workflowButton'
+                                },
+
                                 {
                                     text: 'Delete',
                                     itemId:'deleteItemButton'

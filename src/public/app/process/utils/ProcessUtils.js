@@ -6,7 +6,7 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         'Ext.data.UuidGenerator'
     ],
 
-    knownUriTypes: ['Start', 'DecisionPoint', 'ProcessModel', 'ProcessAction', 'ProcessItem', 'InternalGroup', 'MergePoint', 'ProcessLink'],
+    knownUriTypes: ['Start', 'DecisionPoint', 'ProcessModel', 'ProcessAction', 'ProcessItem', 'InternalGroup', 'MergePoint', 'ProcessLink', 'AltsGroup'],
 
     getURI: function(category) {
         // by convention, category names are the same as the URI type
@@ -27,6 +27,8 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
                     classUri = 'lib%2Esnap%3AObject%2FModelItemXML';
                 }
             }
+
+            data.representsClassUri = classUri;
 
             // make a real instance
             Ext.Ajax.request({
@@ -387,32 +389,38 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
 
     onNodeMouseDrop: function(obj, data, linkType) {
         var me = this;
-        data.records.forEach(function(rec) {
-            var dropObj = rec.data;
-            if (dropObj.type === 'Item') {
-                me.addNode(obj, 'ProcessItem', dropObj.label, dropObj.uri, linkType);
-            }
-        });
+        if (data) {
+            data.records.forEach(function(rec) {
+                var dropObj = rec.data;
+                if (dropObj.type === 'Item') {
+                    me.addNode(obj, 'ProcessItem', dropObj.label, dropObj.uri, linkType);
+                }
+            });
+        }
     },
 
     onActionMouseDrop: function (obj, data) {
         var me = this;
-        data.records.forEach(function(rec) {
-            var dropObj = rec.data;
-            if (dropObj.type === 'Action') {
-                me.addAction(obj, dropObj.label, dropObj.uri);
-            }
-        });
+        if (data) {
+            data.records.forEach(function(rec) {
+                var dropObj = rec.data;
+                if (dropObj.type === 'Action') {
+                    me.addAction(obj, dropObj.label, dropObj.uri);
+                }
+            });
+        }
     },
 
     onAltsMouseDrop: function(obj, data) {
         var me = this;
-        data.records.forEach(function(rec) {
-            var dropObj = rec.data;
-            if (dropObj.type === 'Item') {
-                me.addAlternate(obj, dropObj.label, dropObj.uri);
-            }
-        });
+        if (data) {
+            data.records.forEach(function(rec) {
+                var dropObj = rec.data;
+                if (dropObj.type === 'Item') {
+                    me.addAlternate(obj, dropObj.label, dropObj.uri);
+                }
+            });
+        }
 
     },
 

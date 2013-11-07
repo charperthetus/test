@@ -30,7 +30,7 @@ Ext.define('Savanna.classification.controller.WindowController', {
 
     init: function() {
         // lock the fields while data is loading
-        this.lockFields();
+        this.hideFields();
 
         // verify whether classification options have already been loaded
         var options = Ext.getStore('classificationOptions');
@@ -308,30 +308,32 @@ Ext.define('Savanna.classification.controller.WindowController', {
 
         var sciField = this.getSciField();
         if(sciField.getStore().getCount()) {
-            sciField.setDisabled(false);
+            sciField.show();
         } else {
-            sciField.setDisabled(true);
+            sciField.hide();
         }
 
         var fgiField = this.getFgiField();
+        // disable the fgi field if not allowed markings include FGI_FGI
         if(fgiField.getStore().getCount() && notAllowedMarkings.indexOf('FGI_FGI') < 0) {
-            fgiField.setDisabled(false);
+            fgiField.show();
         } else {
-            fgiField.setDisabled(true);
+            fgiField.hide();
         }
 
         var disField = this.getDisField();
         if(disField.getStore().getCount()) {
-            disField.setDisabled(false);
+            disField.show();
         } else {
-            disField.setDisabled(true);
+            disField.hide();
         }
 
         var relField = this.getRelField();
+        // disable the rel field if not allowed markings include DISSEM_REL_TO
         if(relField.getStore().getCount() && notAllowedMarkings.indexOf('DISSEM_REL_TO') < 0) {
-            relField.setDisabled(false);
+            relField.show();
         } else {
-            relField.setDisabled(true);
+            relField.hide();
         }
     },
 
@@ -357,12 +359,11 @@ Ext.define('Savanna.classification.controller.WindowController', {
         this.getView().destroy();
     },
 
-    lockFields: function() {
-        this.getClassificationField().setDisabled(true);
-        this.getSciField().setDisabled(true);
-        this.getFgiField().setDisabled(true);
-        this.getDisField().setDisabled(true);
-        this.getRelField().setDisabled(true);
+    hideFields: function() {
+        this.getSciField().hide();
+        this.getFgiField().hide();
+        this.getDisField().hide();
+        this.getRelField().hide();
     }
 
 });
