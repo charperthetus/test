@@ -1,11 +1,12 @@
 Ext.define('Savanna.itemView.view.ItemViewer', {
-    extend: 'Ext.panel.Panel',
+    extend: 'Savanna.component.ClassificationPanel',
 
     alias: 'widget.itemview_itemviewer',
 
     cls: 'itemview',
 
     requires: [
+        'Savanna.component.ClassificationPanel',
         'Ext.grid.Panel',
         'Savanna.itemView.controller.ItemViewController',
         'Savanna.itemView.view.header.ViewHeader',
