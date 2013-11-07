@@ -3,7 +3,7 @@ Ext.define("Savanna.document.view.DocumentBody", {
     alias:"widget.document_body",
     layout: "fit",
     autoScroll: false,
-    requires:[],
+    requires:['Savanna.document.controller.DocumentBodyController'],
     docViewId: null,	
     itemUri: null,	
     border:false,
@@ -14,6 +14,34 @@ Ext.define("Savanna.document.view.DocumentBody", {
         this.callParent();
     },
 	
+		
+
+    listeners: {
+              resize: {
+                  fn: function(el) {
+                       //Flexpaper found
+                        if($('#'+this.docViewId).parent().hasClass('flexpaper_viewer_container'))
+                        {     
+                                  
+                              //to flexpaper viewer container
+                              $('#'+this.docViewId).width(this.getWidth());
+                              $('#'+this.docViewId).height(this.getHeight());
+                             
+							  //to flexpaper main container
+                              $('#'+this.docViewId).parent().width(this.getWidth());
+                              $('#'+this.docViewId).parent().height(this.getHeight());
+                              
+							  //apply to inner container
+                              $('#pagesContainer_'+this.docViewId).width(this.getWidth());
+                              $('#pagesContainer_'+this.docViewId).height(this.getHeight());
+							  $FlexPaper(this.docViewId).fitHeight(); 
+                              $FlexPaper(this.docViewId).fitWidth(); 
+                              
+
+                        }
+                 }
+              }
+          },
     afterRender: function() {
 		this.callParent(arguments);
 

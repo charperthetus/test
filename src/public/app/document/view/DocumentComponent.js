@@ -20,7 +20,8 @@ Ext.define("Savanna.document.view.DocumentComponent", {
         {
             xtype: "document_body",
             itemId: "docBody",
-            width: '100%',
+            width: '70%',
+			height: '100%',
             flex: 1
         },
         {
@@ -29,7 +30,8 @@ Ext.define("Savanna.document.view.DocumentComponent", {
             collapsible: true,
             region: 'east',
             split: true,
-            width: '30%'
+            width: '30%',
+			height: '100%'
         }
     ],
     tbar: [

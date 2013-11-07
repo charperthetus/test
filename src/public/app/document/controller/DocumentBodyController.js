@@ -22,7 +22,7 @@ Ext.define("Savanna.document.controller.DocumentBodyController", {
 					.query('desktop_savannaworkspace #maintabpanel')[0]
 					.getActiveTab().down('#totalPages').setText(totalPages);
 		});
-	},
+	}
 	
 	 
 });
