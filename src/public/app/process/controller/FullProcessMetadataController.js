@@ -11,6 +11,7 @@ Ext.define('Savanna.process.controller.FullProcessMetadataController', {
 
     store: null,
     storeHelper: null,
+    mainProcessUri: null,
 
     requires: [
         'Savanna.itemView.store.MainItemStore',
@@ -37,12 +38,12 @@ Ext.define('Savanna.process.controller.FullProcessMetadataController', {
         this.store = Ext.create('Savanna.itemView.store.MainItemStore');
         this.storeHelper = Ext.create('Savanna.itemView.store.ItemViewStoreHelper');
         this.store.getProxy().url = this.buildItemDataFetchUrl(processUri);
-
+        this.mainProcessUri = processUri;
+//
         this.store.load({
             scope: this,
             callback: this.handleRecordDataRequestResponse
         });
-        this.getDetailsPanel().setItemURI(encodeURI(processUri));
     },
 
     buildItemDataFetchUrl: function (uri) {
@@ -61,6 +62,7 @@ Ext.define('Savanna.process.controller.FullProcessMetadataController', {
             this.getItemSources().storeHelper = this.storeHelper;
             this.getItemSources().store = record[0].propertyGroupsStore.getById('Sources').valuesStore;
             Ext.bind(this.getItemSources().addSourcesGrid(record[0].propertyGroupsStore.getById('Sources').valuesStore.getById('Source Document').valuesStore), this.getItemSources());
+            this.getDetailsPanel().setItemURI(encodeURI(this.mainProcessUri));
         }
     },
 

@@ -57,7 +57,7 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
     },
 
     buildItemDataFetchUrl: function (uri) {
-        return SavannaConfig.itemViewUrl + encodeURI(uri);
+        return SavannaConfig.itemViewUrl + uri;
         //return SavannaConfig.mockItemViewUrl + encodeURI(uri); // mock data
     },
 
@@ -65,14 +65,14 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
         if(success) {
             this.storeHelper.init(this.store);
             this.getItemTitle().setValue(this.store.getAt(0).data.label);
-            this.getItemDescription().setValue(this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Description').valuesStore.getAt(0).data.value);
+//            this.getItemDescription().setValue(this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Description').valuesStore.getAt(0).data.value);
             this.getItemQualities().storeHelper = this.storeHelper;
             this.getItemQualities().store = record[0].propertyGroupsStore.getById('Properties').valuesStore;
             this.getItemQualities().fireEvent('EditQualities:StoreSet');
 
 
-            var imageURI = record[0].propertyGroupsStore.getById('Images').valuesStore.getById('Images').valuesStore.getAt(0).data.uri;
-            this.getItemPrimeImage().setSrc( SavannaConfig.savannaUrlRoot + 'rest/document/' + encodeURI(imageURI) + '/original/');
+//            var imageURI = record[0].propertyGroupsStore.getById('Images').valuesStore.getById('Images').valuesStore.getAt(0).data.uri;
+//            this.getItemPrimeImage().setSrc( SavannaConfig.savannaUrlRoot + 'rest/document/' + encodeURI(imageURI) + '/original/');
 
             this.getItemInstanceTitle().setText(this.itemName);
 

@@ -3,7 +3,8 @@ Ext.define('Savanna.process.controller.MetadataController', {
 
     config: {
         diagram: null,
-        processUri: null
+        processUri: null,
+        canvas: null
     },
 
     control: {
@@ -30,12 +31,12 @@ Ext.define('Savanna.process.controller.MetadataController', {
     init: function() {
         this.callParent(arguments);
         this.setDiagram(this.getView().up('process_component').down('#canvas').diagram);
-
+        this.setCanvas(this.getView().up('process_component').down('#canvas'));
         this.getDiagram().addDiagramListener('ChangedSelection', Ext.bind(this.selectionChanged, this));
     },
 
     selectionChanged: function(e) {
-        this.getDiagram().un('itemInstanceCreated', this.instanceLoaded, this);
+//        this.getDiagram().un('itemInstanceCreated', this.instanceLoaded, this);
         // save the existing set of changes, if any
         this.saveChanges();
 
@@ -60,8 +61,8 @@ Ext.define('Savanna.process.controller.MetadataController', {
                     }
                     else {
                         //show loading screen
-                        this.getNothingHereLabel().getLayout().setActiveItem(this.getFullProcessMetadata());
-                        this.getDiagram().on('itemInstanceCreated', this.instanceLoaded, this);
+                        this.getHiddenPanel().getLayout().setActiveItem(this.getNothingHereLabel());
+                        this.getCanvas().on('itemInstanceCreated', this.instanceLoaded, this);
                     }
 
                     break;

@@ -8,6 +8,12 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
 
     knownUriTypes: ['Start', 'DecisionPoint', 'ProcessModel', 'ProcessAction', 'ProcessItem', 'InternalGroup', 'MergePoint', 'ProcessLink', 'AltsGroup'],
 
+    getCanvas:function(diagram) {
+        var div = diagram.div;
+        var parent = div.parentNode;
+        return Ext.getCmp(parent.id);
+    },
+
     getURI: function(category) {
         // by convention, category names are the same as the URI type
         if (this.knownUriTypes.indexOf(category) < 0) {
@@ -30,6 +36,8 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
 
             data.representsClassUri = classUri;
 
+            var me = this;
+
             // make a real instance
             Ext.Ajax.request({
                 url: SavannaConfig.itemViewUrl + encodeURI(classUri) + '/instance;jsessionid=' + Savanna.jsessionid,
@@ -37,7 +45,7 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
                 success: function(response){
                     var message = Ext.decode(response.responseText);
                     data.representsItemUri = message.uri;
-                    diagram.fireEvent('itemInstanceCreated');
+                    me.getCanvas(diagram).fireEvent('itemInstanceCreated');
                 },
                 failure: function(response){
                     console.log('Server Side Failure: ' + response.status);
