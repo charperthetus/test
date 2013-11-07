@@ -328,7 +328,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                 var polyVo = {};
                 var polyRings = [];
                 var baseLayer = SavannaConfig.mapDefaultBaseLayer;
-                var searchLayerPolygon = mapView.searchLayer.features[0].geometry;
+                var searchLayerPolygon = mapView.searchLayer.features[0].geometry.clone();
                 if (baseLayer.projection != 'EPSG:4326'){
                     var currentProjection = new OpenLayers.Projection(baseLayer.projection);
                     var resultsProjection = new OpenLayers.Projection("EPSG:4326");

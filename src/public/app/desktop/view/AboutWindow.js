@@ -14,6 +14,7 @@ Ext.define('Savanna.desktop.view.AboutWindow', {
     width: 400,
     ghost: false,
     resizable: false,
+    restrictHeader: true,
     layout: 'vbox',
     items: [{
         //todo: determine where the about dialog detailed information will originate from. different per impl?
