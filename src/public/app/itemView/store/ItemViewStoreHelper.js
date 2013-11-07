@@ -128,7 +128,7 @@ Ext.define('Savanna.itemView.store.ItemViewStoreHelper', {
         mod.data.id = label;
         mod.data.label = label;
         mod.data.uri = this.getUUID();
-        mod.data.value = uri;
+        mod.data.value = uri ? uri : label;
         mod.data.editable = true;
         mod.data.version = 0;
         mod.data.inheritedFrom = null;

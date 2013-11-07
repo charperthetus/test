@@ -52,7 +52,7 @@ Ext.define('Savanna.process.view.part.TypeAhead', {
             if (selItem.data.label === c.getValue()) {
                 var node = textBlock.part;
                 //todo: change this to call changeRepresentsUri when the new endpoint for that is finished
-                Savanna.process.utils.ProcessUtils.setRepresentsUri(node.data, selItem.data.uri);
+                Savanna.process.utils.ProcessUtils.setRepresentsUri(node.data, selItem.data.uri, diagram);
             }
         };
         domEl.value = function() {

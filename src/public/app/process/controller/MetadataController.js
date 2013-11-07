@@ -34,23 +34,33 @@ Ext.define('Savanna.process.controller.MetadataController', {
     },
 
     selectionChanged: function(e) {
+        this.getDiagram().un('itemInstanceCreated', this.instanceLoaded, this);
         // save the existing set of changes, if any
         this.saveChanges();
 
         // then load up the panel for the new selection
         if (1 === this.getDiagram().selection.count) {
-            var itemUri = encodeURIComponent(this.getDiagram().selection.first().data.uri);
+            var itemUri;
             var itemCategory = this.getDiagram().selection.first().data.category;
 
             switch(itemCategory) {
                 case 'ProcessModel':
                 case 'InternalGroup':
+                    itemUri = encodeURIComponent(this.getDiagram().selection.first().data.uri);
                     // this is a step
                     this.setUpStepDetails(itemUri);
                     break;
                 case 'ProcessItem':
-                    // this is an item
-                    this.setUpItemDetails(itemUri);
+                    if (this.getDiagram().selection.first().data.representsItemUri) {
+                        itemUri = encodeURIComponent(this.getDiagram().selection.first().data.representsItemUri);
+                        // this is an item
+                        this.setUpItemDetails(itemUri);
+                    }
+                    else {
+                        //show loading screen
+                        this.getDiagram().on('itemInstanceCreated', this.instanceLoaded, this);
+                    }
+
                     break;
                 default:
                     //console.log("we don't know what this is yet", itemUri);
@@ -61,6 +71,12 @@ Ext.define('Savanna.process.controller.MetadataController', {
             // if nothing is selected, we'll use the whole process
             this.setUpProcessDetails(null);
         }
+    },
+
+    instanceLoaded: function() {
+        var itemUri = encodeURIComponent(this.getDiagram().selection.first().data.representsItemUri);
+        // this is an item
+        this.setUpItemDetails(itemUri);
     },
 
     setUpProcessDetails: function(itemUri) {
