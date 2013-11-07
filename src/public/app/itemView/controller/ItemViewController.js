@@ -147,8 +147,12 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
     onEditSave: function (btn) {
         btn.disable();
+
+        this.store.getAt(0).data.label = this.getView().queryById('itemViewHeaderEdit').queryById('itemNameField').value;
+
         var headerComponent = this.getView().queryById('itemViewHeaderView');
         headerComponent.reconfigure(this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore);
+
 
         var qualitiesComponent = this.getView().queryById('itemViewPropertiesView');
         qualitiesComponent.reconfigure(this.store.getAt(0).propertyGroupsStore.getById('Properties').valuesStore);
@@ -169,11 +173,15 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         });
     },
 
-    onEditSaveCallback: function (records, operation, success) {
-        if (!success) {
+    onEditSaveCallback: function (responseObj) {
+
+        if (!responseObj.operations[0].success) {
+            /*
+             server down..?
+             */
             Ext.Error.raise({
-                msg: 'Saving record failed.'
-            });
+                msg: 'Updating record failed.'
+            })
         }
     },
 
@@ -214,16 +222,19 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         });
     },
 
-    onEditDoneCallback: function (records, operation, success) {
-        this.getView().getLayout().setActiveItem(0);
-        this.getView().setEditMode(!this.getView().getEditMode());
+    onEditDoneCallback: function (responseObj) {
 
-        if (!success) {
+        if (responseObj.operations[0].success) {
+            this.getView().getLayout().setActiveItem(0);
+            this.getView().setEditMode(!this.getView().getEditMode());
+        }   else    {
+            /*
+            server down..?
+             */
             Ext.Error.raise({
                 msg: 'Updating record failed.'
             })
         }
-
     },
 
     getItemViewData: function () {
