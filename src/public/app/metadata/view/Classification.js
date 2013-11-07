@@ -28,6 +28,8 @@ Ext.define('Savanna.metadata.view.Classification', {
 
     makeItems: function () {
         this.removeAll();
+        // classification is not configured to be editable through metadata
+        // ignore its editable property
         if(this.getEditMode()) {
             this.makeEditViewItems();
         } else {
@@ -41,7 +43,9 @@ Ext.define('Savanna.metadata.view.Classification', {
         var classificationEditBtn = Ext.create('Ext.button.Button', {
             text: 'Edit',
             listeners: {
+                // todo: this view should be using a controller for event handling
                 click: function () {
+                    // create and show a new classification window
                     var classificationWindow = Ext.create('Savanna.classification.view.ClassificationWindow', {
                         portionMarking: this.getValue(),
                         modal: true
@@ -49,6 +53,7 @@ Ext.define('Savanna.metadata.view.Classification', {
                     classificationWindow.show();
                     classificationWindow.center();
 
+                    // wait for classification editing to complete
                     EventHub.on('classificationedited', this.onClassificationChanged, this);
                 },
                 scope: this
@@ -70,9 +75,12 @@ Ext.define('Savanna.metadata.view.Classification', {
 
     onClassificationChanged: function(event) {
         EventHub.un('classificationedited', this.onClassificationChanged);
+        // an event object is returned if the classification was edited in the panel
         if(event) {
+            // update the view's value
             this.setValue(event.portionMarking);
 
+            // update the view's label text
             if(this.down('#displayValue')) {
                 this.down('#displayValue').setValue(this.getValue() ? this.getValue() : '&nbsp;');
             }

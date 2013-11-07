@@ -35,6 +35,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
 
             },
             {
+                hidden:true,
                 xtype: 'model_search_resultspanelgrid_multi_column',
                 itemId: 'resultspanelgrid_multi_column',
                 dockedItems:[
@@ -45,24 +46,74 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
                         displayInfo: true
                     }
                 ]
+            },
+            {
+                hidden: true,
+                itemId: 'model_search_error_message',
+                xtype: "panel",
+                width: '100%',
+                height: '100%',
+                layout : {
+                    type  : 'hbox',
+                    pack  : 'center',
+                    align : 'middle'
+                },
+                defaults: {margin: 4},
+                items: [
+                    {
+                        xtype: 'box',
+                        itemId: 'statusIcon',
+                        width: 15,
+                        height: 15
+                    },
+
+                    {
+                        //help!  word wrapping of some kind needed
+                        xtype:'text',
+                        itemId: 'errorLabel',
+                        text: ''
+                    }
+
+                ]
             }
         ];
     },
+
     /*
-     tried to give this a more intuitive name - it swaps the store assigned to our grid
-     based on whichever DAL the user selects from the left-hand panel, pages to the current
-     page, and re-binds the paging toolbar.
+     swaps the store assigned to our grids
+     based on whichever DAL the user selects from the left-hand panel, , and re-binds the paging toolbar.
      */
-    updateGridStore: function (obj) {
+    updateGridStore: function (store) {
+
+        var pagingToolbar = this.queryById('gridtoolbar');
+        pagingToolbar.bindStore(store);
+
         var grid = this.queryById('resultspanelgrid');
-        grid.reconfigure(obj.store);
-        this.queryById('gridtoolbar').bindStore(obj.store);
+        grid.reconfigure(store);
+        this.queryById('gridtoolbar').bindStore(store);
 
         var gridMulti = this.queryById('resultspanelgrid_multi_column');
-        gridMulti.reconfigure(obj.store);
-        gridMulti.queryById('gridtoolbar').bindStore(obj.store);
+        gridMulti.reconfigure(store);
+        gridMulti.queryById('gridtoolbar').bindStore(store);
+    },
 
-        obj.store.loadPage(obj.store.currentPage);
+    setErrorText: function (text) {
+        var grid = this.queryById('resultspanelgrid');
+        var messageArea = this.queryById('model_search_error_message');
+        var label = this.queryById('errorLabel');
+        if(text && text.length > 0){
+            messageArea.show();
+            grid.hide();
+            label.setText(text);
+
+            var    loadingEl = messageArea.down('#statusIcon');
+            loadingEl.removeCls('icon-success icon-alert icon-pending loadNone');
+            loadingEl.addCls('icon-alert');
+        } else {
+            messageArea.hide();
+            grid.show();
+            label.text = "";
+        }
     },
 
     dockedItems: [

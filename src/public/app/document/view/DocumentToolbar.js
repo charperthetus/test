@@ -13,14 +13,14 @@ Ext.define("Savanna.document.view.DocumentToolbar", {
             xtype: "toolbar",
             itemId: "tools",
             height: 33,
+            width:'100%',
             ui: 'thetus-toolbar',
             hideMode: "display",
-            layout:{
-                pack: 'start'
-            },
             items: [
+                { xtype: 'tbspacer', width: 5 },
                 {
                     xtype: 'button',
+                    paddingLeft: 5,
                     width:25,
                     height:25,
                     cls: 'toolbarButtonFramework',
@@ -37,6 +37,13 @@ Ext.define("Savanna.document.view.DocumentToolbar", {
                     glyph: 'cursor',
                     itemId: "selectTool",
                     tooltip: 'Select'
+                },
+                //divider
+                {
+                    xtype: 'container',
+                    cls: 'toolbarDividerFramework',
+                    width:1,
+                    height:20
                 },{
                     xtype: 'button',
                     width:25,
@@ -47,13 +54,6 @@ Ext.define("Savanna.document.view.DocumentToolbar", {
                     itemId: "zoomIn",
                     tooltip: "Zoom In"
 
-                },
-                //divider
-                {
-                    xtype: 'container',
-                    cls: 'toolbarDividerFramework',
-                    width:1,
-                    height:20
                 },{
                     xtype: 'button',
                     width:25,
@@ -105,6 +105,10 @@ Ext.define("Savanna.document.view.DocumentToolbar", {
                     glyph: 'arrowNavLeft',
                     itemId: "previousPage",
                     tooltip: 'Previous'
+                },
+                {
+                    xtype: 'label',
+                    text: 'Previous Page / Next Page'
                 },
                 {
                     xtype: 'button',
