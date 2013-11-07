@@ -14,14 +14,16 @@ Ext.define('Savanna.itemView.view.createItem.ParentItemsTreePanel', {
     titleCollapse: true,
     rootVisible: false,
     width: '100%',
-    height: 400,
+    height: '100%',
     style: "line-height: 21;",
     forceFit: true,
     displayField: 'label',
-    rootId: '183710',
+    config: {
+        rootId: null
+    },
 
     listeners: {
-        beforeitemclick: function(view, record, item, index, e, eOpts)    {
+        beforeitemclick: function (view, record, item, index, e, eOpts) {
             this.store.getProxy().url = SavannaConfig.itemViewPerspective + record.data.id;
 
             this.up('itemview_create_item').selectedParentUri = record.get('uri');
@@ -31,8 +33,12 @@ Ext.define('Savanna.itemView.view.createItem.ParentItemsTreePanel', {
     },
 
     initComponent: function () {
+        var me = this;
+
         Ext.apply(this, {
-            store: new Savanna.itemView.store.ParentItemsStore({})
+            store: new Savanna.itemView.store.ParentItemsStore({
+                rootId: me.rootId
+            })
         });
         this.callParent();
     }
