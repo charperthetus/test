@@ -18,7 +18,8 @@ Ext.define('Savanna.process.controller.MetadataController', {
             boxready: 'addFullProcessMetadataListeners'
         },
         stepMetadata: true,
-        itemMetadata: true
+        itemMetadata: true,
+        nothingHereLabel: true
      },
 
     constructor: function (options) {
@@ -59,6 +60,7 @@ Ext.define('Savanna.process.controller.MetadataController', {
                     }
                     else {
                         //show loading screen
+                        this.getNothingHereLabel().getLayout().setActiveItem(this.getFullProcessMetadata());
                         this.getDiagram().on('itemInstanceCreated', this.instanceLoaded, this);
                     }
 
