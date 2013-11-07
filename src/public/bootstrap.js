@@ -125,8 +125,8 @@ Ext.ClassManager.addNameAlternateMappings({
     "DalCustomSearchGroup"
   ],
   "Savanna.itemView.view.itemQualities.ValuesPicker": [],
-  "Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineTerms": [],
   "Savanna.itemView.controller.ViewHeaderController": [],
+  "Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineTerms": [],
   "ThemeDemoApp.picker.Month": [],
   "Deft.promise.Deferred": [
     "Deft.Deferred"
@@ -213,8 +213,8 @@ Ext.ClassManager.addNameAlternateMappings({
   "Savanna.process.view.part.PaletteWindow": [],
   "Savanna.desktop.controller.DesktopController": [],
   "Ext.ux.DataView.Draggable": [],
-  "Ext.ux.TabCloseMenu": [],
   "Savanna.itemView.store.ItemViewStoreHelper": [],
+  "Ext.ux.TabCloseMenu": [],
   "Savanna.itemView.controller.ImageBrowserController": [],
   "Savanna.search.controller.resultsComponent.resultsDals.ResultsRefineTermController": [],
   "Savanna.itemView.view.itemQualities.ViewItemQualities": [],
@@ -256,9 +256,9 @@ Ext.ClassManager.addNameAlternateMappings({
   "Ext.ux.event.Driver": [],
   "Ext.ux.ajax.XmlSimlet": [],
   "Savanna.desktop.view.SearchWindow": [],
-  "Savanna.classification.controller.BannerController": [],
   "Savanna.controller.Factory": [],
   "Savanna.upload.view.part.NewUploadView": [],
+  "Savanna.classification.controller.BannerController": [],
   "Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsOptions": [],
   "Savanna.itemView.view.createItem.CreateItem": [],
   "Deft.mvc.Observer": [],
@@ -611,10 +611,10 @@ Ext.ClassManager.addNameAliasMappings({
   "Savanna.itemView.view.itemQualities.ValuesPicker": [
     "widget.itemview_values_picker"
   ],
+  "Savanna.itemView.controller.ViewHeaderController": [],
   "Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineTerms": [
     "widget.model_search_resultsDals_resultsterms"
   ],
-  "Savanna.itemView.controller.ViewHeaderController": [],
   "ThemeDemoApp.picker.Month": [],
   "Deft.promise.Deferred": [],
   "Savanna.image.view.part.ImageViewer": [
@@ -765,10 +765,10 @@ Ext.ClassManager.addNameAliasMappings({
   ],
   "Savanna.desktop.controller.DesktopController": [],
   "Ext.ux.DataView.Draggable": [],
+  "Savanna.itemView.store.ItemViewStoreHelper": [],
   "Ext.ux.TabCloseMenu": [
     "plugin.tabclosemenu"
   ],
-  "Savanna.itemView.store.ItemViewStoreHelper": [],
   "Savanna.itemView.controller.ImageBrowserController": [],
   "Savanna.search.controller.resultsComponent.resultsDals.ResultsRefineTermController": [],
   "Savanna.itemView.view.itemQualities.ViewItemQualities": [
@@ -835,11 +835,11 @@ Ext.ClassManager.addNameAliasMappings({
   "Savanna.desktop.view.SearchWindow": [
     "widget.desktop_searchwindow"
   ],
-  "Savanna.classification.controller.BannerController": [],
   "Savanna.controller.Factory": [],
   "Savanna.upload.view.part.NewUploadView": [
     "widget.upload_part_newupload"
   ],
+  "Savanna.classification.controller.BannerController": [],
   "Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsOptions": [
     "widget.model_search_resultsDals_resultsoptions"
   ],
