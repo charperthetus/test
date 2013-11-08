@@ -13,7 +13,7 @@ Ext.define('Savanna.process.controller.ProcessController', {
         'Savanna.process.utils.ViewTemplates',
         'Savanna.process.store.Processes',
         'Savanna.process.view.part.Overview', //added dynamically later
-        'Savanna.workflow.WorkflowSelect'
+        'Savanna.workflow.view.WorkflowSelect'
     ],
     store: null,
 
@@ -148,7 +148,7 @@ Ext.define('Savanna.process.controller.ProcessController', {
     },
 
     onWorkflowSelect: function () {
-        Ext.create('Savanna.workflow.WorkflowSelect', {
+        Ext.create('Savanna.workflow.view.WorkflowSelect', {
             uri: this.store.getAt(0).data.uri
         });
     },

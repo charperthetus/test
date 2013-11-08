@@ -1,4 +1,4 @@
-Ext.define('Savanna.workflow.model.WorkflowStateModel', {
+Ext.define('Savanna.workflow.model.WorkflowEventModel', {
     extend: 'Ext.data.Model',
 
     fields: [
