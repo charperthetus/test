@@ -14,13 +14,18 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         return Ext.getCmp(parent.id);
     },
 
+    getUUID: function() {
+        var uuid = Ext.data.IdGenerator.get('uuid').generate();
+        return 'x' + uuid;
+    },
+
     getURI: function(category) {
         // by convention, category names are the same as the URI type
         if (this.knownUriTypes.indexOf(category) < 0) {
             console.log('Unknown uriType in getURI: ', category);
         }
-        var uuid = Ext.data.IdGenerator.get('uuid').generate();
-        return 'x' + uuid  + '/' + category;
+        var uuid = this.getUUID();
+        return uuid + '/' + category;
      },
 
     setRepresentsUri: function(data, classUri, diagram) {
@@ -53,6 +58,27 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
             });
         }
 
+    },
+
+    changeRepresentsUri: function(data, classUri, diagram) {
+        if (data && classUri && (data.category === 'ProcessAction' || data.category === 'ProcessItem')) {
+            data.representsClassUri = classUri;
+
+            var me = this;
+            // make a real instance
+            Ext.Ajax.request({
+                url: SavannaConfig.itemViewUrl + encodeURI(classUri) + '/instance/type;jsessionid=' + Savanna.jsessionid,
+                jsonData: classUri,
+                method: 'POST',
+                success: function(response){
+                    // nothing to do
+                    me.getCanvas(diagram).fireEvent('itemInstanceCreated');
+                },
+                failure: function(response){
+                    console.log('changeRepresentsUri: Server Side Failure: ' + response.status);
+                }
+            });
+        }
     },
 
     startTextEdit: function(diagram, nodeData) {

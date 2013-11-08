@@ -87,8 +87,7 @@ Ext.define('Savanna.itemView.controller.ImageBrowserController', {
          * 2 - Call addImageToBrowser after creation.
          * 3 - If it's the primary image, fire off onChangeImage to load it into the jumbo
          */
-        var count = 0;
-        Ext.Array.each(images, function(image) {
+        Ext.Array.each(images, function(image, index) {
             var imageMeta = (image.raw) ? image.raw : image.data;
             var thumbnail = Ext.create('Savanna.itemView.view.imageBrowser.ImageThumbnail', {
                 src: this.buildImageUrl(imageMeta.value),
@@ -96,10 +95,9 @@ Ext.define('Savanna.itemView.controller.ImageBrowserController', {
                 title: imageMeta.label
             });
             this.addImageToBrowser(thumbnail);
-            if (count === 0) {
+            if (index === 0) {
                 this.onChangeImage(null, thumbnail);
             }
-            count++;
         }, this);
 
         // Once images are loaded, show the images
