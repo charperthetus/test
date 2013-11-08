@@ -38,7 +38,7 @@ Ext.define('Savanna.process.store.Processes', {
                     var uri = me.getAt(0).data.uri;
                     me.setItemUri(encodeURIComponent(uri));
                     request.method = 'PUT';
-                    request.params = {id: encodeURI(uri)};
+                    request.params = {id: encodeURI(encodeURIComponent(uri))};
                     request.url = SavannaConfig.modelProcessSaveUrl + ';jsessionid=' + Savanna.jsessionid;
                 } else if ('read' === request.action) {
                     request.url = SavannaConfig.modelProcessLoadUrl + encodeURI(this.getItemUri());
