@@ -126,7 +126,8 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
         var searchComponent = this.getResultsComponent().findParentByType('search_searchcomponent');
         var currentDalPanel = searchComponent.down('#searchdals').queryById(id);
         var searchString = searchComponent.queryById('searchbar').buildSearchString();
-        var searchObj = searchController.buildSearchObject(searchString, dalRecord, currentDalPanel);
+        var mapView = searchComponent.down('search_map_canvas');
+        var searchObj = searchController.buildSearchObject(searchString, dalRecord, currentDalPanel, mapView);
 
         dalRecord.set('resultsPerPage', newSize);
 

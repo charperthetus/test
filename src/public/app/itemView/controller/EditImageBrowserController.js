@@ -122,7 +122,7 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
      *  Setup File Drop
      *
      *  Setups up both the File System drop (new images), and the drag and drop
-     *  form search. 
+     *  form search. Also responsible for styling the dropzone area.
      */
     setupFileDrop: function() {
         var dropTarget = this.getView().queryById('itemViewUploadImages').getEl(),
@@ -139,10 +139,19 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
 
         // Sets up the File System Drop (for file upload)
         if (typeof window.FileReader !== 'undefined') {
+
+            // Feedback when dragging files over
             dropTargetDom.ondragover = function () {
+                dropTargetDom.classList.add('dropzone_color');
                 return false;
             };
-            dropTargetDom.ondrop = Ext.bind(this.fileDropHandler, this, [dropTarget], true);
+
+            // Removing the feedback when drag leaves
+            dropTargetDom.ondragleave = function () {
+                dropTargetDom.classList.remove('dropzone_color');
+            };
+
+            dropTargetDom.ondrop = Ext.bind(this.fileDropHandler, this, [dropTargetDom], true);
         }
     },
 
@@ -193,10 +202,12 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
      *  uploadFiles with the event data.
      *
      *  @param {e} Browser event, passed automatically by the drag action.
+     *  @param {panel} The DOM element representing the dropzone.
      */
-    fileDropHandler: function(e) {
+    fileDropHandler: function(e, panel) {
         e.preventDefault();
         this.uploadFiles(e.dataTransfer.files);
+        panel.classList.remove('dropzone_color');
     },
 
     ////////////////////////
@@ -406,13 +417,14 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
         // Create the view for the image thumbnail
         var thumbnail = Ext.create('Savanna.itemView.view.imageBrowser.ImageThumbnail', {
             src: this.buildImageUrl(imageURI),
-            alt: (image.previewString) ? image.previewString : 'Insert a description',
+            alt: (image.previewString) ? image.previewString : '',
             title: (image.title) ? image.title : 'Add a Title'
         });
 
         // Persist to the store and add the thumbnail to the slideshow
         this.addImageToBrowser(thumbnail);
         this.showSlideshowImages();
+        this.onChangeImage(null, thumbnail);
         this.getView().storeHelper.addBotLevItemInStore(imageTitle, imageModel, this.getView().store.getById('Images'));
     }
 });
