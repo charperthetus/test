@@ -21,7 +21,7 @@ Ext.define('Savanna.desktop.view.SearchWindow', {
     ghost: false,
     resizeHandles: 'nw ne sw se s',
 
-    constrainHeader: true,
+    constrain: true,
     header: {
         title: 'Search'
     },

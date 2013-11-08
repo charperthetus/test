@@ -65,7 +65,8 @@ Ext.define('Savanna.process.view.ProcessEditorComponent', {
                         itemId: 'palette',
                         autoShow: true,
                         x: 15,
-                        y: 15
+                        y: 15,
+                        maxHeight: 500
                     }
                 ]
             },
