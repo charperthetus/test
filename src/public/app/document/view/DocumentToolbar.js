@@ -98,6 +98,7 @@ Ext.define("Savanna.document.view.DocumentToolbar", {
                         width : 35,
                         name : "curentPage",
                         ui : 'flat-toolbar-button',
+                        enableKeyEvents: true,
                         tooltip : 'Current Page of the document',
                         size : 8
 				},
@@ -131,6 +132,7 @@ Ext.define("Savanna.document.view.DocumentToolbar", {
                 {
                     xtype: "textfield",
                     itemId: "searchText",
+                    enableKeyEvents: true,
                     tooltip: 'Search'
                 },
                 {

@@ -40,11 +40,11 @@ Ext.define("Savanna.document.controller.DocumentController", {
             click: 'onPrintDoc'
         },
         searchText:{//search textbox enter event
-                specialkey:'handleSearchTextKeyUp'
+                keyup:'handleSearchTextKeyUp'
         },
-		currentPage: {
-			specialkey: 'handlePageTextKeyUp'
-		}		
+	currentPage: {
+		keyup: 'handlePageTextKeyUp'
+	}		
 		
     },
     init: function () {
