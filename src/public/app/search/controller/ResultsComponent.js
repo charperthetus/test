@@ -243,7 +243,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
                 pointRadius: 10,
                 label: '${count}',
                 labelOutlineWidth: 0,
-                fontColor: '#ffffff',
+                fontColor: '#333',
                 fontOpacity: 1,
                 fontSize: '12px'
             }
@@ -264,7 +264,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
                 pointRadius: 15,
                 label: '${count}',
                 labelOutlineWidth: 0,
-                fontColor: '#ffffff',
+                fontColor: '#333',
                 fontOpacity: 1,
                 fontSize: '12px'
             }
@@ -284,7 +284,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
                 pointRadius: 20,
                 label: '${count}',
                 labelOutlineWidth: 0,
-                fontColor: '#ffffff',
+                fontColor: '#333',
                 fontOpacity: 1,
                 fontSize: '12px'
             }
