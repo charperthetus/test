@@ -41,7 +41,7 @@ Ext.define('Savanna.process.store.Processes', {
                     request.params = {id: encodeURI(encodeURIComponent(uri))};
                     request.url = SavannaConfig.modelProcessSaveUrl + ';jsessionid=' + Savanna.jsessionid;
                 } else if ('read' === request.action) {
-                    request.url = SavannaConfig.modelProcessLoadUrl + encodeURI(this.getItemUri());
+                    request.url = SavannaConfig.modelProcessLoadUrl + encodeURI(encodeURIComponent(me.getItemUri())) + ';jsessionid=' + Savanna.jsessionid;
                 }
                 return request;
             }
