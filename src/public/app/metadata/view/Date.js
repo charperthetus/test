@@ -47,7 +47,7 @@ Ext.define('Savanna.metadata.view.Date', {
 
         this.add(Ext.create('Savanna.component.DatePicker', {
             itemId: 'displayValueEdit',
-            jsDate: new Date(me.getValue()),
+            jsDate: (null !== me.getValue()) ? new Date(me.getValue()) : null,
             renderTo: Ext.getBody(),
             listeners: {
                 focusLost: function(picker) {
