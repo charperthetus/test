@@ -88,7 +88,6 @@ Ext.define('Savanna.itemView.view.header.EditHeader', {
         {
             xtype: 'container',
             layout: 'hbox',
-            margin: "0 0 0 -11",
             items: [
                 {
                     xtype: 'button',
