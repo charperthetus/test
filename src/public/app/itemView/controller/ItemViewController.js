@@ -293,9 +293,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         var headerComponent = me.getView().queryById('itemViewHeaderView');
         
         // Apparently (according to nkedev) some items don't have a header label, and the "top-level" label is their URI, so we check for that here.
-        var headerText = (record.propertyGroupsStore.getById('Header').valuesStore.getById('Label').valuesStore.getAt(0).data) ? 
-                        record.propertyGroupsStore.getById('Header').valuesStore.getById('Label').valuesStore.getAt(0).data.label :
-                        record.data.label;
+        var headerText = record.propertyGroupsStore.getById('Header').valuesStore.getById('Label').valuesStore.getAt(0).data.label;
         
         headerComponent.setTitle(headerText);
         headerComponent.reconfigure(record.propertyGroupsStore.getById('Header').valuesStore);
