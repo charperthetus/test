@@ -154,6 +154,11 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
     },
 
     launchPredicatesChooser: function() {
+        var me = this;
+        this.propNameArray = [];
+        Ext.each(this.getView().store.data.items, function(record)  {
+            me.propNameArray.push(record.data.label)
+        });
         var qChooser = Ext.create('Savanna.itemView.view.itemQualities.QualitiesPicker', {
             width: 500,
             height: 600,
