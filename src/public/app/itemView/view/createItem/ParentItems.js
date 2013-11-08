@@ -119,17 +119,14 @@ Ext.define('Savanna.itemView.view.createItem.ParentItems', {
             layout: 'hbox',
             width: '100%',
             items: [
+                {   xtype: 'tbspacer', width: 10 },
                 {
-                    xtype: 'textfield',
+                    xtype: 'thetus-searchfield',
                     itemId: 'filterParentItemsField',
                     flex: 1,
+                    margin: 2,
                     emptyText: 'Find a Parent Item',
                     enableKeyEvents: true
-                },
-                {
-                    xtype: 'button',
-                    text: 'X',
-                    itemId: 'clearParentItemsBtn'
                 }
             ]
         }

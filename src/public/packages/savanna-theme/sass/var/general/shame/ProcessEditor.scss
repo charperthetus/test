@@ -16,3 +16,14 @@
     top: -100px !important;
     width: 90% !important;
 }
+
+
+.draggable-hover-select .x-grid-row-focused .x-grid-td
+{
+    border-radius: 10px !important;
+}
+
+.draggable-hover-select .x-grid-row-selected .x-grid-td
+{
+    border-radius: 10px !important;
+}
