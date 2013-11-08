@@ -9,7 +9,6 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
         'Ext.data.Store',
         'Savanna.search.controller.resultsComponent.ResultsPanelToolbarController'
     ],
-//    ui:'thetus-toolbar',
     height: 33,
     initComponent: function () {
         Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
