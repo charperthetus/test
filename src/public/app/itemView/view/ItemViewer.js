@@ -64,7 +64,9 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                 overflowY: 'auto',
                 tbar:{
                     ui:'thetus-toolbar',
+                    height: 33,
                     items:[
+                        { xtype: 'tbspacer', width: 5 },
                         {
                             xtype: 'button',
                             text: 'Options',
@@ -87,8 +89,14 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                         {
                             xtype: 'button',
                             itemId: 'editModeButton',
-                            text: 'Edit'
-                        }
+                            width:25,
+                            height:25,
+                            cls: 'toolbarButtonFramework',
+                            ui:'icon-dark',
+                            glyph: 'edit',
+                            tooltip: "Edit"
+                        },
+                        { xtype: 'tbspacer', width: 5 }
                     ]
                 },
                 items:  [
@@ -241,7 +249,9 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                 autoScroll: true,
                 tbar:{
                     ui:'thetus-toolbar',
+                    height: 33,
                     items:[
+                        { xtype: 'tbspacer', width: 5 },
                         {
                             xtype: 'button',
                             text: 'Options',
@@ -266,23 +276,44 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                         {
                             xtype: 'button',
                             itemId: 'editCancelButton',
-                            text: 'Discard Changes'
+                            width:25,
+                            height:25,
+                            cls: 'toolbarButtonFramework',
+                            ui:'icon-dark',
+                            glyph: 'closeRollover',
+                            tooltip: "Cancel Changes"
                         },
                         {
                             xtype: 'button',
                             itemId: 'editDeleteButton',
-                            text: 'Delete'
+                            width:25,
+                            height:25,
+                            cls: 'toolbarButtonFramework',
+                            ui:'icon-dark',
+                            glyph: 'trash',
+                            tooltip: "Delete"
                         },
                         {
                             xtype: 'button',
                             itemId: 'editSaveButton',
-                            text: 'Save'
+                            width:25,
+                            height:25,
+                            cls: 'toolbarButtonFramework',
+                            ui:'icon-dark',
+                            glyph: 'save',
+                            tooltip: "Save"
                         },
                         {
                             xtype: 'button',
                             itemId: 'editDoneButton',
-                            text: 'Done'
-                        }
+                            width:25,
+                            height:25,
+                            cls: 'toolbarButtonFramework',
+                            ui:'icon-dark',
+                            glyph: 'done',
+                            tooltip: "Done"
+                        },
+                        { xtype: 'tbspacer', width: 5 }
                     ]
                 },
                 items:  [
