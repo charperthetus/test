@@ -51,6 +51,25 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
 
     },
 
+    changeRepresentsUri: function(data, classUri) {
+        if (data && classUri && (data.category === 'ProcessAction' || data.category === 'ProcessItem')) {
+            data.representsClassUri = classUri;
+
+            // make a real instance
+            Ext.Ajax.request({
+                url: SavannaConfig.itemViewUrl + encodeURI(classUri) + '/instance/type;jsessionid=' + Savanna.jsessionid,
+                jsonData: classUri,
+                method: 'POST',
+                success: function(response){
+                    // nothing to do
+                },
+                failure: function(response){
+                    console.log('changeRepresentsUri: Server Side Failure: ' + response.status);
+                }
+            });
+        }
+    },
+
     startTextEdit: function(diagram, nodeData) {
 // Turn off auto starting text edit for now,
 // since it occasionally leads to whole diagram lock ups.
