@@ -30,7 +30,6 @@ Ext.define('Savanna.workflow.controller.WorkflowController', {
     },
 
     onWorkflowStatesLoaded: function(records) {
-        var me = this;
         var radioGroup = this.getWorkflowRadioGroup();
 
         //add radio buttons based on values from server
@@ -83,10 +82,10 @@ Ext.define('Savanna.workflow.controller.WorkflowController', {
             url: SavannaConfig.workflowEvents + encodeURI(encodeURIComponent(this.getView().getUri())) + ';jsessionid=' + Savanna.jsessionid,
             method: 'POST',
             jsonData: jsonObj,
-            success: function(response){
+            success: function(){
                 me.getView().close();
             },
-            failure: function(response){
+            failure: function(){
                 me.getView().close();
             }
         });

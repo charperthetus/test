@@ -9,7 +9,7 @@
 Ext.define('Savanna.workflow.view.WorkflowSelect', {
     extend: 'Ext.window.Window',
 
-    alias: 'widget.itemview_workflow_select',
+    alias: 'widget.workflow_select',
 
     requires: [
         'Savanna.workflow.controller.WorkflowController'
