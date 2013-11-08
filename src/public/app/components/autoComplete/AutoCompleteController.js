@@ -64,7 +64,7 @@ Ext.define('Savanna.components.autoComplete.AutoCompleteController', {
                     this.setupNewTag(field);                    
                 }
             }
-            field.reset();
+            field.setValue('');
         }
     },
 
