@@ -66,7 +66,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
                 height:25,
                 cls: 'toolbarButtonFramework',
                 ui:'icon-dark'
-            },
+            }
         ]
     }
 
