@@ -184,7 +184,7 @@ Ext.define('Savanna.itemView.controller.ImageBrowserController', {
 
         // Setup and sanitation
         var selectedImage = image.src,
-            description = (image.alt) ? image.alt : 'No description',
+            description = (image.alt) ? image.alt : '',
             jumboTron = this.getView().queryById('imagePrimary'),
             jumboDescription = this.getView().queryById('imageText'),
             imageWidth = image.naturalWidth,
