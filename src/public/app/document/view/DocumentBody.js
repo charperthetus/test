@@ -53,7 +53,7 @@ Ext.define("Savanna.document.view.DocumentBody", {
 		this.domElement = Ext.DomHelper.insertHtml("afterBegin", 
 			  this.getEl().dom, 
 			  "<div id='" + this.docViewId
-			  + "' class='flexpaper_viewer' style='width: 100%; height: 100%;'></div>");
+			  + "' class='flexpaper_viewer' style='width: 100%; height: "+this.findParentByType('tabpanel').getHeight()+"px;'></div>");
 
         jQuery(this.domElement).FlexPaperViewer(
             {
