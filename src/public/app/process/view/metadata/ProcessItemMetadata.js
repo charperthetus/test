@@ -206,9 +206,6 @@ Ext.define('Savanna.process.view.metadata.ProcessItemMetadata', {
                                 focus: function() {
                                     //It must reset everytime on focus in order to know it was just entered into and then on the keyup event it will not call findInStore when focused into with the tab key.
                                     this.keyCount = 0;
-                                },
-                                blur: function() {
-
                                 }
 
                             }

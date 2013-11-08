@@ -113,11 +113,11 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
     },
 
     quantityValueBlur: function(e) {
-        console.log('quantityValueBlur', e);
+        //console.log('quantityValueBlur', e);
     },
 
     quantityUnitBlur: function(e) {
-        console.log('quantityUnitBlur', e);
+        //console.log('quantityUnitBlur', e);
     }
 
 
