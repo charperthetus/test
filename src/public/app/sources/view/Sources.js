@@ -88,9 +88,9 @@ Ext.define('Savanna.sources.view.Sources', {
                         sortable: false,
                         tpl: Ext.create('Ext.XTemplate',
                             '<tpl if="editable">',
-                                '<input type="button" name="{uri}" data-editable="{editable}" value="X" id="delResourceDoc" />',
+                                '<input type="button" name="{value}" data-editable="{editable}" value="X" id="delResourceDoc" />',
                             '<tpl else>',
-                                '<input type="button" name="{uri}" data-editable="{editable}" disabled="disabled" value="X" id="delResourceDoc" />',
+                                '<input type="button" name="{value}" data-editable="{editable}" disabled="disabled" value="X" id="delResourceDoc" />',
                             '</tpl>'
                         )
                     }

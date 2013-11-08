@@ -194,7 +194,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         qualitiesComponent.reconfigure(this.store.getAt(0).propertyGroupsStore.getById('Properties').valuesStore);
 
         var itemSourceComponent = this.getView().queryById('itemSources').queryById('listOfSources')
-            itemSourceComponent.reconfigure(this.store.getAt(0).propertyGroupsStore.getById('Sources').valuesStore.getById('Source Document').valuesStore);
+            itemSourceComponent.reconfigureGrid(); //(this.store.getAt(0).propertyGroupsStore.getById('Sources').valuesStore.getById('Source Document').valuesStore);
 
         var imagesBrowserComponent = this.getView().queryById('itemViewImagesGrid'),
             imagesBrowserComponentEdit = this.getView().queryById('itemViewImagesEdit');

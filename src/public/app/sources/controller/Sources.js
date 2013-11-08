@@ -18,9 +18,6 @@ Ext.define('Savanna.sources.controller.Sources', {
             listeners: {
                 itemclick: 'openSourceDocument'
             }
-//        },
-//        supportingResourcesDrop: {
-//              boxready: 'onDropItemReady'
         }
     },
 
@@ -36,6 +33,7 @@ Ext.define('Savanna.sources.controller.Sources', {
             this.getView().storeHelper.removeBotLevItemInStoreByUri(e.target.name, this.getView().store.getById('Source Document'));
             this.updateStore();
             this.getView().queryById('listOfSources').reconfigure(this.getView().store.getById('Source Document').valuesStore);
+            this.getView().queryById('listOfSources').setTitle('Supporting Resources (' + this.getView().store.getById('Source Document').valuesStore.count() + ')');
         }
     },
     

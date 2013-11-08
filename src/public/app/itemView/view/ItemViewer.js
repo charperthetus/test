@@ -224,6 +224,16 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                         headerPosition:'left',
                         items: [
                             {
+                                xtype: 'metadata_details',
+                                itemId: 'itemDetails',
+                                itemURI: this.itemUri,
+                                headerPosition: 'top',
+                                collapsible: false,
+                                region: 'center',
+                                split: true,
+                                width: '100%'
+                            },
+                            {
                                 xtype: 'document_sources',
                                 editMode: false,
                                 itemId: 'itemSources',
@@ -408,6 +418,16 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                         resizable:true,
                         headerPosition:'left',
                         items: [
+                            {
+                                xtype: 'metadata_details',
+                                itemId: 'itemDetails',
+                                itemURI: this.itemUri,
+                                headerPosition: 'top',
+                                collapsible: false,
+                                region: 'center',
+                                split: true,
+                                width: '100%'
+                            },
                             {
                                 xtype: 'document_sources',
                                 editMode: true,

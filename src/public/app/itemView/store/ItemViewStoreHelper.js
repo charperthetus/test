@@ -110,20 +110,10 @@ Ext.define('Savanna.itemView.store.ItemViewStoreHelper', {
     },
 
     removeBotLevItemInStoreByUri: function(uri, store) {
-        console.log('starting remove')
-        console.log('store',store)
         for (var i = 0; i < store.data.values.length; i++) {
             if (store.data.values[i].value === uri) {
                 Ext.Array.remove(store.data.values, store.data.values[i]);
-                console.log('remove item at level 1')
-                break;
-            }
-        }
-
-        for (var i = 0; i < store.valuesStore.count(); i++) {
-            if (store.valuesStore.getAt(i).data.value === uri) {
                 store.valuesStore.remove(store.valuesStore.getAt(i));
-                console.log('removing item at level 2')
                 break;
             }
         }
