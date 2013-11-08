@@ -63,7 +63,7 @@ Ext.define('Savanna.sources.view.Sources', {
                 xtype: 'grid',
                 itemId: 'listOfSources',
                 width: '100%',
-                height: 285,
+                autoHeight: true,
                 renderTo: Ext.getBody(),
                 store: store,
 
@@ -75,11 +75,22 @@ Ext.define('Savanna.sources.view.Sources', {
                     {
                         xtype: 'templatecolumn',
                         dataIndex: 'values',
+                        flex: 10,
+                        sortable: false,
+                        tpl: Ext.create('Ext.XTemplate',
+                            '<input type="button" name="{uri}" value="{label}" id="openResourceDoc" />'
+                        )
+                    },
+                    {
+                        xtype: 'templatecolumn',
+                        dataIndex: 'values',
                         flex: 1,
                         sortable: false,
                         tpl: Ext.create('Ext.XTemplate',
-                            '<tpl for="values">',
-                            '<input type="button" name="{uri}" value="{label}" id="openResourceDoc" />',
+                            '<tpl if="editable">',
+                                '<input type="button" name="{value}" data-editable="{editable}" value="X" id="delResourceDoc" />',
+                            '<tpl else>',
+                                '<input type="button" name="{value}" data-editable="{editable}" disabled="disabled" value="X" id="delResourceDoc" />',
                             '</tpl>'
                         )
                     }
@@ -88,5 +99,6 @@ Ext.define('Savanna.sources.view.Sources', {
         } else {
             this.queryById('listOfSources').reconfigure(store);
         }
+        this.queryById('listOfSources').setTitle('Supporting Resources (' + store.count() + ')');
     }
 });
