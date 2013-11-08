@@ -9,7 +9,8 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
         'Ext.data.Store',
         'Savanna.modelSearch.controller.resultsComponent.ResultsPanelToolbarController'
     ],
-
+//    ui:'thetus-toolbar',
+    height: 35,
     initComponent: function () {
         Savanna.controller.Factory.getController('Savanna.modelSearch.controller.SearchComponent');
         this.items = this.setupItems();
@@ -28,9 +29,6 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
         });
 
         return [
-
-
-
             {
                 xtype: 'combobox',
                 itemId: 'resultsPageSizeCombobox',
@@ -38,22 +36,22 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
                 editable: false,
                 displayField: 'name',
                 valueField: 'count',
-                value: '20',
-                ui: 'combo-button'
-
-            },
-            {
+                value: '20'
+            },'->',{
                 xtype: 'pagingtoolbar',
                 itemId: 'gridtoolbar',
+                cls: 'paging-toolbar-bg',
                 dock: 'top',
                 displayInfo: true
-            }, '->',
-            {
+            },'->', {
                 hidden: true,
                 xtype: 'button',    //thumb
                 enableToggle: true,
                 pressed: true,
-                ui: 'basic',
+                width:25,
+                height:25,
+                cls: 'toolbarButtonFramework',
+                ui:'icon-dark',
                 glyph: 'singleView',
                 itemId: 'singleColumnGridView'
             },
@@ -61,12 +59,13 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
                 hidden: true,
                 xtype: 'button',    //grid
                 enableToggle: true,
-                ui: 'basic',
+                width:25,
+                height:25,
+                cls: 'toolbarButtonFramework',
+                ui:'icon-dark',
                 glyph: 'multiColumn',
                 itemId: 'multiColumnGridView'
             }
-
-
         ]
     }
 
