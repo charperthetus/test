@@ -32,7 +32,7 @@ Ext.define('Savanna.desktop.view.StartPage', {
                     height: 109,
                     itemId: 'openSearch',
                     text: 'Search for Content',
-                    subtext: 'Discover content...??',
+                    subtext: 'Search for content inside Savanna or in external data sources.',
                     glyph: 'search'
                 },
                 {
@@ -41,7 +41,7 @@ Ext.define('Savanna.desktop.view.StartPage', {
                     width: 270,
                     height: 109,
                     itemId: 'openModelSearch',
-                    subtext: 'Discover items and processes in your knowledge reference model',
+                    subtext: 'Discover items and processes in the knowledge reference model.',
                     glyph: 'searchBinoculars'
                 }
             ]
@@ -65,7 +65,7 @@ Ext.define('Savanna.desktop.view.StartPage', {
                     height: 109,
                     text: 'Create an Item',
                     itemId: 'createitem',
-                    subtext: 'Create new reference items to extend your knowledge reference model',
+                    subtext: 'Extend the knowledge reference model by creating new reference items.',
                     glyph: 'rnmItem'
                 },
                 {
@@ -74,7 +74,7 @@ Ext.define('Savanna.desktop.view.StartPage', {
                     width: 270,
                     height: 109,
                     itemId: 'createprocess',
-                    subtext: 'Create processes using items',
+                    subtext: 'Create processes using items in the knowledge reference model.',
                     glyph: 'topDown'
                 }
             ]
