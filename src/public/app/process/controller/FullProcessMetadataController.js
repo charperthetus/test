@@ -47,8 +47,8 @@ Ext.define('Savanna.process.controller.FullProcessMetadataController', {
     },
 
     buildItemDataFetchUrl: function (uri) {
-        //return SavannaConfig.itemViewUrl + encodeURI(uri);
-        return SavannaConfig.mockItemViewUrl + encodeURI(uri); // mock data
+        return SavannaConfig.itemViewUrl + encodeURI(uri);
+        //return SavannaConfig.mockItemViewUrl + encodeURI(uri); // mock data
     },
 
     handleRecordDataRequestResponse: function(record, operation, success) {

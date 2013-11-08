@@ -33,6 +33,12 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
             blur: 'itemDescriptionBlur'
         },
         itemPrimeImage: true,
+        quantityValue:  {
+            blur: 'quantityValueBlur'
+        },
+        quantityUnit: {
+            blur: 'quantityUnitBlur'
+        },
         itemInstanceTitle: true,
 //        itemInstanceDescription: true,
         itemQualities: true
@@ -101,6 +107,14 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
             this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Description').valuesStore.getAt(0).data.value = e.getValue();
             this.store.getAt(0).setDirty();
         }
+    },
+
+    quantityValueBlur: function(e) {
+        //console.log('quantityValueBlur', e);
+    },
+
+    quantityUnitBlur: function(e) {
+        //console.log('quantityUnitBlur', e);
     }
 
 
