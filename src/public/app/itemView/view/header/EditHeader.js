@@ -89,11 +89,13 @@ Ext.define('Savanna.itemView.view.header.EditHeader', {
             xtype: 'container',
             layout: 'hbox',
             items: [
+
                 {
                     xtype: 'button',
                     itemId: 'parentBtn',
                     text: 'Parent Class'
                 },
+
                 {
                     xtype: 'button',
                     itemId: 'parentChooser',

@@ -48,7 +48,7 @@ Ext.define('Savanna.itemView.controller.CreateItemController', {
     },
 
     handleCreateSuccess: function (records, operation, success) {
-         EventHub.fireEvent('open', {uri: records[0].data.uri, label: records[0].data.label, type: 'item'}, {editMode:true});
+         EventHub.fireEvent('open', {uri: records[0].data.uri, label: records[0].data.label, type: 'item'}, {editMode:true, doCreate:this.getView().doCreate});
          this.getView().close();
     }
 });

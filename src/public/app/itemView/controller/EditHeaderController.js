@@ -79,12 +79,12 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
     },
 
     openParentChooser: function() {
-        //ToDo: build and connect the chooser
-        console.log('open a chooser for a parent here');
-//        Ext.create('Savanna.itemView.view.createItem.CreateItem', {
-//            width: 850,
-//            height: 500
-//        });
+
+        Ext.create('Savanna.itemView.view.createItem.CreateItem', {
+            width: 850,
+            height: 500,
+            doCreate:false
+        });
     },
 
     onItemNameKeyup:function()  {

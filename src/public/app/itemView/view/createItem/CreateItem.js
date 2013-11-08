@@ -29,6 +29,8 @@ Ext.define('Savanna.itemView.view.createItem.CreateItem', {
 
     items: [],
 
+    doCreate: true,
+
     setupItems: function () {
         var content = [
             {
