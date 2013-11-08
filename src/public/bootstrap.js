@@ -12,6 +12,7 @@ Ext.Loader.addClassPathMappings({
   "Ext.rtl.EventObjectImpl": "ext/src/rtl/EventObject.js",
   "ThetusUikit.layout": "packages/thetus-uikit/overrides/layout",
   "Savanna.metadata.view.String": "app/metadata/view/string.js",
+  "ThetusUikit.LoadMask": "packages/thetus-uikit/overrides/LoadMask.js",
   "Savanna-Theme": "packages/savanna-theme/overrides",
   "ThetusUikit.toolbar": "packages/thetus-uikit/overrides/toolbar",
   "ThetusUikit.tip": "packages/thetus-uikit/overrides/tip",
@@ -66,6 +67,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "Savanna.component.ClassificationPanel": [],
   "Savanna.itemView.model.ParentItemsTreeModel": [],
   "Savanna.itemView.model.IntendedUses": [],
+  "ThetusUikit.LoadMask": [],
   "Deft.promise.Chain": [
     "Deft.Chain"
   ],
@@ -184,8 +186,8 @@ Ext.ClassManager.addNameAlternateMappings({
   "Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent.ResultsPanelGridMultiColumn": [],
   "Savanna.itemView.view.header.EditHeader": [],
   "Savanna.metadata.view.Boolean": [],
-  "Deft.Component": [],
   "ThetusUikit.layout.component.Dock": [],
+  "Deft.Component": [],
   "Ext.ux.statusbar.StatusBar": [
     "Ext.ux.StatusBar"
   ],
@@ -502,6 +504,7 @@ Ext.ClassManager.addNameAliasMappings({
   "Savanna.component.ClassificationPanel": [],
   "Savanna.itemView.model.ParentItemsTreeModel": [],
   "Savanna.itemView.model.IntendedUses": [],
+  "ThetusUikit.LoadMask": [],
   "Deft.promise.Chain": [],
   "Savanna.itemView.view.createItem.ParentItemsTreePanel": [
     "widget.itemview_treepanel"
@@ -708,8 +711,8 @@ Ext.ClassManager.addNameAliasMappings({
   "Savanna.metadata.view.Boolean": [
     "widget.metadata_boolean"
   ],
-  "Deft.Component": [],
   "ThetusUikit.layout.component.Dock": [],
+  "Deft.Component": [],
   "Ext.ux.statusbar.StatusBar": [
     "widget.statusbar"
   ],
@@ -1151,6 +1154,7 @@ Ext.ClassManager.addNameAliasMappings({
     "widget.search_searchDals_custom-search-group-form"
   ]
 });
+Ext.Loader.loadScript("packages/thetus-uikit/overrides/LoadMask.js");
 Ext.Loader.loadScript("packages/thetus-uikit/overrides/tip/QuickTip.js");
 Ext.Loader.loadScript("packages/savanna-theme/overrides/panel/Panel.js");
 Ext.Loader.loadScript("packages/thetus-uikit/overrides/panel/Panel.js");

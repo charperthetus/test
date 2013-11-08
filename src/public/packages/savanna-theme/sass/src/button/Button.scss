@@ -228,14 +228,18 @@
         $uikit-text-decoration: $button-basic-text-decoration
     );
     
+    /* Should probably be in UIKit */
     @include uikit-button(
         $uikit-ui: 'toggle-toolbar-small',
         $uikit-padding: $button-toggle-padding,
         $uikit-text-padding: $button-toggle-text-padding,
-        $uikit-color: $button-toggle-color-pressed,
-        $uikit-color-pressed: $button-toggle-color-pressed,
-        $uikit-color-over: $button-toggle-color-pressed,
-        $uikit-color-focus: $button-toggle-color-pressed
+        $uikit-color: $theme_font,
+        $uikit-color-pressed: $dark_font,
+        $uikit-color-over: $dark_font,
+        $uikit-color-focus: $dark_font,
+        $uikit-font-weight-pressed: bold,
+        $uikit-text-decoration: none
+        
     );
 }
 

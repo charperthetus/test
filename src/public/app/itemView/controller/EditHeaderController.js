@@ -38,6 +38,9 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
         },
         itemDescription: {
             blur: 'updateDescription'
+        },
+        itemNameField:  {
+            keyup:  'onItemNameKeyup'
         }
     },
 
@@ -53,7 +56,7 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
             me.valNameArray.push(value.label);
         });
 
-        me.getView().queryById('addIntendedUseBox').store.getProxy().url += encodeURI(me.getView().store.getById('Intended Use').data.predicateUri);
+        me.getView().queryById('addIntendedUseBox').store.getProxy().url = SavannaConfig.savannaUrlRoot + 'rest/model/search/keyword/property/' + encodeURI(me.getView().store.getById('Intended Use').data.predicateUri);
 
 
         if(me.getView().store.getById('Type').data.values.length)  {
@@ -82,6 +85,12 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
 //            width: 850,
 //            height: 500
 //        });
+    },
+
+    onItemNameKeyup:function()  {
+        if (this.getView().up('itemview_itemviewer').queryById('editSaveButton').disabled) {
+            this.getView().up('itemview_itemviewer').queryById('editSaveButton').enable();
+        }
     },
 
     onIntendedUsesSelect:function() {

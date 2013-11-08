@@ -9,12 +9,13 @@ Ext.define('Savanna.itemView.controller.ParentItemsController', {
         filterParentItemsField: {
             keydown: 'filterKeydown'
         },
-        clearParentItemsBtn:    {
-            click: 'closeTypeAhead'
-        },
         parentitems_results: {
-            itemclick: 'selectParentItemUri',
-            itemdblclick: 'getParentItemResult'
+            live: true,
+            listeners:  {
+                itemclick: 'selectParentItemUri',
+                itemdblclick: 'getParentItemResult'
+            }
+
         }
     },
 
