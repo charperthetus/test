@@ -107,7 +107,8 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
     // When a new tag is added on a child auto-complete
     // add the tag to the store
     addTag: function(tagName, tagData, aView) {
-        this.getView().storeHelper.addBotLevItemInStore(tagName, tagData, this.getView().store.getById(aView.preLabel))
+        this.getView().storeHelper.addBotLevItemInStore(tagName, tagData, this.getView().store.getById(aView.preLabel));
+        this.updateTitle();
 //        this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
     },
 
@@ -115,6 +116,7 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
     // remove the tag from the store
     removeTag: function(tagName, aView) {
         this.getView().storeHelper.removeBotLevItemInStore(tagName, this.getView().store.getById(aView.preLabel));
+        this.updateTitle();
 //        this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
     },
 
@@ -178,8 +180,20 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
         this.updateTitle();
     },
 
+    /*
+     *  Update Title
+     *
+     *  Iterates over all the quality values and updates the Qualities header with the count
+     *  of asserted values.
+     *
+     *  @param none {none}
+     *  @return none {none}
+     */
     updateTitle: function() {
-        this.getView().setTitle('Qualities (' + this.getView().store.data.items.length + ')');
-//        this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
+        var titlePre = 'Qualities (',
+            values = this.getView().storeHelper.getBotLevItemInStore(this.getView().store).length,
+            titlePost = ')';
+
+        this.getView().setTitle(titlePre + values + titlePost);
     }
 });
