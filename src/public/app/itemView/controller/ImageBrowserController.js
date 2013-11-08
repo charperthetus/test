@@ -71,7 +71,8 @@ Ext.define('Savanna.itemView.controller.ImageBrowserController', {
      * @param none
      */
     buildImageGallery: function() {
-        var images = this.getView().store.getById('Images').valuesStore.data.items;
+        var images = this.getView().store.getById('Images').valuesStore.data.items,
+            count = 0;
 
         // Discontinue building if there are no images, and hide the slideshow area
         if(images.length === 0) { 
@@ -90,14 +91,15 @@ Ext.define('Savanna.itemView.controller.ImageBrowserController', {
         Ext.Array.each(images, function(image) {
             var imageMeta = (image.raw) ? image.raw : image.data;
             var thumbnail = Ext.create('Savanna.itemView.view.imageBrowser.ImageThumbnail', {
-                src: this.buildImageUrl(imageMeta.uri),
+                src: this.buildImageUrl(imageMeta.value),
                 alt: imageMeta.description,
                 title: imageMeta.label
             });
             this.addImageToBrowser(thumbnail);
-            if (imageMeta.primaryImage) {
-                this.onChangeImage(null, image);
+            if (count === 0) {
+                this.onChangeImage(null, thumbnail);
             }
+            count ++;
         }, this);
 
         // Once images are loaded, show the images
