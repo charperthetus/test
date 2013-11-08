@@ -13,6 +13,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.searchMap.SearchLocat
     queryParam: 'q',
     matchFieldWidth: false,
     shrinkWrap: 3,
+    cls: 'SearchLocationComboBox',
 
     requires: [
         'Ext.XTemplate',
@@ -26,6 +27,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.searchMap.SearchLocat
     emptyText: 'Find Location',
 
     listConfig: {
+        cls: 'SearchLocationComboBox',
         width: 350,
         getInnerTpl: function() {
             return '<table class="searchMapLocationResults">' +
@@ -48,9 +50,9 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.searchMap.SearchLocat
             }
             ,
             'beforerender': function(c) {
-                c.pagingToolbar = Ext.create(Ext.toolbar.Toolbar, {border: 3, style: {
-                    borderColor: 'black'
-                }});
+                c.pagingToolbar = Ext.create(Ext.toolbar.Toolbar, {
+                    cls: 'searchLocation-results'
+                });
             },
             'beforerefresh': function(c, eOpts){
                 c.pagingToolbar.removeAll();

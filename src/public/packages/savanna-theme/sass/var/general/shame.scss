@@ -15,6 +15,7 @@
 @import 'shame/MetaData';
 @import 'shame/SearchFacets-CustomDate.scss';
 @import 'shame/SearchLocationComboBox';
+@import 'shame/SearchLocationDrawPolygon';
 
 // This is needed until we get an actual divider in center of the app
 .secondPanel {
@@ -24,3 +25,7 @@
 .uploadGridRow td {
   height: 50px;
 }
+
+// SHIM SHIM SHIM, needs to be fixed!
+$theme_font: #333 !default;
+$dark_font: $theme_font !default;
