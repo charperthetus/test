@@ -1,13 +1,14 @@
 Ext.define('Savanna.desktop.view.StartPageItem', {
     extend: 'Ext.container.Container',
     alias: 'widget.startpageitem',
+    cls:'startpageitem',
     text: '',
     subtext: '',
-    image: '',
-    style: {backgroundColor:'#AAAAAA'},
+    glyph: '',
     layout: {
         type: 'hbox'
     },
+    padding:15,
     initComponent: function () {
         this.items = this.setupItems();
         this.callParent(arguments);
@@ -15,9 +16,11 @@ Ext.define('Savanna.desktop.view.StartPageItem', {
     setupItems: function () {
         return [
             {
-                xtype: 'image',
-                src: this.image,
-                width: 25 //This needed to be set explicitly otherwise on the first draw it doesn't show
+                xtype:'container',
+                html:'<i class="glyph">' +  this.glyph + '</i>',
+                width: 64,         //This needed to be set explicitly otherwise on the first draw it doesn't show
+                height:64,
+                margin:"5 10 5 5"
             },
             {
                 xtype: 'container',
@@ -25,16 +28,20 @@ Ext.define('Savanna.desktop.view.StartPageItem', {
                 layout: {
                     type: 'vbox'
                 },
+
                 items:[
                     {
                         xtype: 'button',
                         itemId: 'openButton',
-                        text: this.text
+                        text: this.text,
+                        ui: 'white',
+                        cls:'openButton'
                     },
                     {
-                        width: '90%',
+                        width: 160,
                         xtype: 'label',
-                        text: this.subtext
+                        flex:1,
+                        text: this.subtext,
                     }
                 ]
             }
