@@ -42,7 +42,6 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
                         return Ext.Date.format(new Date(v), 'F d, Y');
                     },
                     getImgDiv: function(record){
-//                        console.log(record)
                         if (record.contentType === 'Image'){
                             return '<div class="sourceDiv" ><img src="' + record.documentSource + '"/></div>';
                         }
