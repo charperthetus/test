@@ -64,8 +64,10 @@ Ext.define('Savanna.process.controller.ProcessStepMetadataController', {
     onSaveChanges: function() {
         // TODO: save the existing set of changes, if any
         console.log('ProcessStepMetadataController saveChanges');
-        this.store.getAt(0).setDirty();
-        this.store.sync();
+        if(this.store && this.store.getAt(0)) {
+            this.store.getAt(0).setDirty();
+            this.store.sync();
+        }
     },
 
     stepTitleBlur: function(e) {

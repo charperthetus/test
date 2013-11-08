@@ -39,7 +39,9 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
         quantityUnit: {
             blur: 'quantityUnitBlur'
         },
-        itemInstanceTitle: true,
+        itemInstanceTitle: {
+            blur: 'instanceTitleBlur'
+        },
 //        itemInstanceDescription: true,
         itemQualities: true
 
@@ -91,8 +93,11 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
     onSaveChanges: function() {
         // TODO: save the existing set of changes, if any
         console.log('ProcessItemMetadataController saveChanges');
-        this.store.getAt(0).setDirty();
-        this.store.sync();
+        if(this.store && this.store.getAt(0)) {
+            this.store.getAt(0).setDirty();
+            this.store.sync();
+        }
+        this.clearValues();
     },
 
     itemTitleBlur: function(e) {
@@ -103,10 +108,57 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
     },
 
     itemDescriptionBlur: function(e) {
-        if(this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Description').valuesStore.getAt(0).data.value !== e.getValue()) {
-            this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Description').valuesStore.getAt(0).data.value = e.getValue();
+        if( this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Description').valuesStore.getAt(0)) {
+            if(this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Description').valuesStore.getAt(0).data.value !== e.getValue()) {
+                this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Description').valuesStore.getAt(0).data.value = e.getValue();
+
+                for (var i = 0; i < this.store.getAt(0).data.propertyGroups.length; i++) {
+                    if (this.store.getAt(0).data.propertyGroups[i].label === 'Header') {
+                        for (var j = 0; j < this.store.getAt(0).data.propertyGroups[i].values.length; j++) {
+                            if (this.store.getAt(0).data.propertyGroups[i].values[j].label === 'Description') {
+                                this.store.getAt(0).data.propertyGroups[i].values[j].values[0].value = e.getValue();
+                                break;
+                            }
+                        }
+
+                        break;
+                    }
+                }
+                this.store.getAt(0).setDirty();
+            }
+        } else {
+
+            this.storeHelper.addBotLevItemInStore("Description", {uri: e.getValue()}, this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Description'));
             this.store.getAt(0).setDirty();
         }
+    },
+
+    instanceTitleBlur: function(e) {
+        if( this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Label').valuesStore.getAt(0)) {
+            if(this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Label').valuesStore.getAt(0).data.value !== e.getValue()) {
+                this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Label').valuesStore.getAt(0).data.value = e.getValue();
+
+                for (var i = 0; i < this.store.getAt(0).data.propertyGroups.length; i++) {
+                    if (this.store.getAt(0).data.propertyGroups[i].label === 'Header') {
+                        for (var j = 0; j < this.store.getAt(0).data.propertyGroups[i].values.length; j++) {
+                            if (this.store.getAt(0).data.propertyGroups[i].values[j].label === 'Label') {
+                                this.store.getAt(0).data.propertyGroups[i].values[j].values[0].value = e.getValue();
+                                this.store.getAt(0).data.propertyGroups[i].values[j].values[0].label = e.getValue();
+                                break;
+                            }
+                        }
+
+                        break;
+                    }
+                }
+                this.store.getAt(0).setDirty();
+            }
+        } else {
+            this.storeHelper.addBotLevItemInStore(e.getValue(), null, this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Label'));
+            this.store.getAt(0).setDirty();
+        }
+
+        this.store.getAt(0).data.label = e.getValue();
     },
 
     quantityValueBlur: function(e) {
@@ -115,6 +167,16 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
 
     quantityUnitBlur: function(e) {
         //console.log('quantityUnitBlur', e);
+    },
+
+    clearValues: function() {
+        this.getItemTitle().setValue('');
+        this.getItemDescription().setValue('');
+        //this.getItemPrimeImage().setValue('');
+        this.getQuantityValue().setValue('');
+        this.getQuantityUnit().setValue('');
+        this.getItemInstanceTitle().setValue('');
+        this.getItemQualities().removeAll();
     }
 
 
