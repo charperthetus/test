@@ -79,9 +79,6 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
                 var imageURI = record[0].propertyGroupsStore.getById('Images').valuesStore.getById('Images').valuesStore.getAt(0).data.uri;
                 this.getItemPrimeImage().setSrc( SavannaConfig.savannaUrlRoot + 'rest/document/' + encodeURI(imageURI) + '/original/');
             }
-
-            this.getItemInstanceTitle().setText(this.itemName);
-
         }
     },
 
