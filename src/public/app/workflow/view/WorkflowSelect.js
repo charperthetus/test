@@ -34,7 +34,7 @@ Ext.define('Savanna.workflow.view.WorkflowSelect', {
         {
             xtype: 'form',
             padding: 30,
-            title: 'Available Workflow Options',
+            title: 'Workflow States',
             itemId: 'workflowSelect',
             items: [
                 {
@@ -44,15 +44,14 @@ Ext.define('Savanna.workflow.view.WorkflowSelect', {
                     // Arrange radio buttons, distributed vertically
                     columns: 1,
                     vertical: true,
-                    items: [
-                    ]
+                    items: []
                 },
                 {
                     html: '<b>Add a Note</b>'
                 },
                 {
                     xtype: 'textarea',
-                    itemId: 'workflow_notes',
+                    itemId: 'workflowNotes',
                     width: '100%',
                     height: 110
                 }

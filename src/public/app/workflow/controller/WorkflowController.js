@@ -10,6 +10,7 @@ Ext.define('Savanna.workflow.controller.WorkflowController', {
         workflowRadioGroup: {
             change: 'onWorkflowChange'
         },
+        workflowNotes: true,
         workflowOK: {
             click: 'onWorkflowCommit'
         },
@@ -22,14 +23,9 @@ Ext.define('Savanna.workflow.controller.WorkflowController', {
         this.callParent(arguments);
 
         this.stateStore = Ext.create('Savanna.workflow.store.WorkflowStateStore');
-        this.eventStore = Ext.create('Savanna.workflow.store.WorkflowEventStore', {uri: this.getView().getUri()});
         this.stateStore.load({
             scope: this,
             callback: this.onWorkflowStatesLoaded
-        });
-        this.eventStore.load({
-            scope: this,
-            callback: this.onWorkflowEventsLoaded
         });
     },
 
@@ -50,35 +46,53 @@ Ext.define('Savanna.workflow.controller.WorkflowController', {
             radioGroup.add(radioButton);
         });
 
-        Ext.Ajax.request({
-            url: SavannaConfig.itemViewUrl + encodeURI(classUri) + '/instance;jsessionid=' + Savanna.jsessionid,
-            method: 'GET',
-            success: function(response){
-                var message = Ext.decode(response.responseText);
-                data.representsItemUri = message.uri;
-            },
-            failure: function(response){
-                console.log('Server Side Failure: ' + response.status);
-            }
+        this.eventStore = Ext.create('Savanna.workflow.store.WorkflowEventStore', {uri: this.getView().getUri()});
+        this.eventStore.load({
+            scope: this,
+            callback: this.onWorkflowEventsLoaded
         });
+
 
     },
 
-    onWorkflowEventsLoaded: function(records) {
-        var first = records.first();
-        var last = records.last();
+    onWorkflowEventsLoaded: function(records, operation, success) {
+        if (records && success) {
+            var workflowEvent = records.first();
+            var workflowStateUri = workflowEvent.workflowState.uri;
+            var valueObj = {'workflowRadioGroup': workflowStateUri};
+            this.getWorkflowRadioGroup().setValue(valueObj);
+        } else {
+            this.getWorkflowRadioGroup().items.items[0].setValue(true);
+        }
     },
 
     onWorkflowChange: function () {
-        console.log('workflow change event');
         this.getView().changeValue = this.getWorkflowRadioGroup().lastValue.workflowRadioGroup;
     },
+
     onWorkflowCommit: function () {
-        console.log('workflow commit event, action is: ' + this.getView().changeValue);
-        this.getView().close();
+        var me = this;
+        var jsonObj = {
+            workflowComment: this.getWorkflowNotes().getValue(),
+            uri: this.getView().getUri(),
+            workflowState: {
+                uri: this.getView().changeValue
+            }
+        };
+        Ext.Ajax.request({
+            url: SavannaConfig.workflowEvents + encodeURI(encodeURIComponent(this.getView().getUri())) + ';jsessionid=' + Savanna.jsessionid,
+            method: 'POST',
+            jsonData: jsonObj,
+            success: function(response){
+                me.getView().close();
+            },
+            failure: function(response){
+                me.getView().close();
+            }
+        });
     },
+
     onWorkflowCancel: function () {
-        console.log('workflow cancel event');
         this.getView().close();
     }
 });
