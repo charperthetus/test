@@ -115,11 +115,11 @@ Ext.define('Savanna.process.controller.MetadataController', {
     },
 
     processLabelChangeHandler: function(text, newValue, oldValue, eOpts) {
-        console.log('processLabelChangeHandler', arguments);
+        //console.log('processLabelChangeHandler', arguments);
     },
 
     processSelectionChanged: function(e) {
-        console.log('processSelectionChanged selection size', this.getDiagram().selection.count);
+        //console.log('processSelectionChanged selection size', this.getDiagram().selection.count);
     },
 
     onBeforeHiddenPanelShow: function() {
