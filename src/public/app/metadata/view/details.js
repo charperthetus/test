@@ -73,12 +73,13 @@ Ext.define('Savanna.metadata.view.Details', {
 
     config: {
         editMode: false,
-        itemURI: ''
+        itemURI: null
     },
 
     updateItemURI: function(newItemURI, oldItemURI) {
-        this.fireEvent('update_Uri', newItemURI);
-        this.callParent(arguments);
+        if(newItemURI !== oldItemURI) {
+            this.fireEvent('update_Uri', newItemURI);
+        }
     },
 
     updateEditMode: function(newEditMode, oldEditMode) {
@@ -87,12 +88,5 @@ Ext.define('Savanna.metadata.view.Details', {
             me.down('#wrapperPanel').removeAll();
             this.fireEvent('create_metadata_fields', this);
         }
-    },
-
-    initComponent: function () {
-        this.callParent(arguments);
-
-        var config = this.initialConfig || {};
     }
-
 });

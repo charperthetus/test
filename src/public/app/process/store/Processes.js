@@ -32,31 +32,22 @@ Ext.define('Savanna.process.store.Processes', {
             type: 'savanna-cors',
             url: SavannaConfig.processUrl,
             modifyRequest: function(request) {
-                if('update' == request.action) {
+                if('update' === request.action || 'create' === request.action) {
                     // Must put, not push.  So sayeth endpoint.
+                    var uri = me.getAt(0).data.uri;
+                    me.setItemUri(encodeURIComponent(uri));
                     request.method = 'PUT';
+                    request.params = {id: encodeURI(encodeURIComponent(uri))};
+                    request.url = SavannaConfig.modelProcessSaveUrl + ';jsessionid=' + Savanna.jsessionid;
+                } else if ('read' === request.action) {
+                    request.url = SavannaConfig.modelProcessLoadUrl + encodeURI(encodeURIComponent(me.getItemUri())) + ';jsessionid=' + Savanna.jsessionid;
                 }
                 return request;
-            },
-            afterRequest: function (request, success) {
-                if (success && request.method === 'POST') {
-                    var records = request.records;
-                    var rec = records[0];
-                    var uri = rec.get('uri');
-                    me.setItemUri(encodeURIComponent(uri));
-                    me.setupUrl();
-                }
             }
         });
     },
 
-    setupUrl: function() {
-        this.getProxy().url = SavannaConfig.processUrl + '/' + encodeURI(this.getItemUri());
-    },
-
     load: function() {
-        this.setupUrl();
-
         this.callParent(arguments);
     }
 });

@@ -122,17 +122,12 @@ Ext.define("Savanna.document.view.DocumentToolbar", {
                 },
                 '->',
                 {
-                    xtype: "textfield",
+                    xtype: "thetus-searchfield",
                     itemId: "searchText",
+                    enableKeyEvents: true,
                     tooltip: 'Search'
                 },
-                {
-                    text: "Search",
-                    itemId: "searchDoc",
-                    width: 45,
-                    ui: 'flat-toolbar-button',
-                    tooltip: 'Search'
-                },
+                { xtype: 'tbspacer', width: 3 },
                 {
                     xtype: 'button',
                     width:25,

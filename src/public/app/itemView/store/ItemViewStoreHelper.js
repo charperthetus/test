@@ -109,6 +109,16 @@ Ext.define('Savanna.itemView.store.ItemViewStoreHelper', {
         store.valuesStore.remove(store.valuesStore.getById(tagName));
     },
 
+    removeBotLevItemInStoreByUri: function(uri, store) {
+        for (var i = 0; i < store.data.values.length; i++) {
+            if (store.data.values[i].value === uri) {
+                Ext.Array.remove(store.data.values, store.data.values[i]);
+                store.valuesStore.remove(store.valuesStore.getAt(i));
+                break;
+            }
+        }
+    },
+
     createNewModelInstance: function(label, uri) {
         var mod = Ext.create('Savanna.itemView.model.PropertyGroupValueModel');
         mod.data.id = label;
@@ -127,7 +137,7 @@ Ext.define('Savanna.itemView.store.ItemViewStoreHelper', {
         mod.data.id = label;
         mod.data.label = label;
         mod.data.uri = this.getUUID();
-        mod.data.value = uri;
+        mod.data.value = uri ? uri : label;
         mod.data.editable = true;
         mod.data.version = 0;
         mod.data.inheritedFrom = null;

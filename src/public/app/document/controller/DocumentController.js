@@ -35,8 +35,8 @@ Ext.define("Savanna.document.controller.DocumentController", {
         twoPageView: {
             click: 'onTwoPageView'
         },
-        searchDoc: {
-            click: 'onSearchDoc'
+        searchText: {
+            keyup: 'onSearchDoc'
         },
         exportDoc: {
             click: 'onExportDoc'
@@ -88,10 +88,12 @@ Ext.define("Savanna.document.controller.DocumentController", {
         $FlexPaper(this.dvId).switchMode("TwoPage");
         this.currentView ='TwoPage';
     },
-    onSearchDoc : function() {
-        var searchText = this.getSearchText().getValue();
-        if (searchText != "") {
-            $FlexPaper(this.dvId).searchText(searchText);
+    onSearchDoc : function(searchField, e) {
+        if(e.getKey() === e.ENTER) {
+            var searchText = searchField.getValue();
+            if (searchText != "") {
+                $FlexPaper(this.dvId).searchText(searchText);
+            }
         }
     },
     onPrintDoc : function() {
