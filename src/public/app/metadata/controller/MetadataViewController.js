@@ -102,14 +102,6 @@ Ext.define('Savanna.metadata.controller.MetadataViewController', {
             this.getMetadata_cancel_button().hide();
             this.getMetadata_edit_button().show();
         }
-
-        var itemUri = this.getView().itemURI;
-        if(itemUri) {
-            this.store = Ext.create('Savanna.metadata.store.Metadata', {
-                itemURI: itemUri
-            });
-            this.loadStore();
-        }
         return this.callParent(arguments);
     },
 
@@ -220,7 +212,7 @@ Ext.define('Savanna.metadata.controller.MetadataViewController', {
 
     saveClassification: function(portionMarking) {
         Ext.Ajax.request({
-            url: SavannaConfig.capcoUrl + this.getView().itemURI + ';jsessionid=' + Savanna.jsessionid,
+            url: SavannaConfig.capcoUrl + this.getView().getItemURI() + ';jsessionid=' + Savanna.jsessionid,
             method: 'POST',
             jsonData: Ext.JSON.encode(portionMarking),
             callback: this.onClassificationSaved,
@@ -230,7 +222,7 @@ Ext.define('Savanna.metadata.controller.MetadataViewController', {
 
     onClassificationSaved: function() {
         // the classification banner controller is listening for this event to be fired
-        EventHub.fireEvent('classificationchanged', this.getView().itemURI);
+        EventHub.fireEvent('classificationchanged', this.getView().getItemURI());
         this.loadStore();
     },
 

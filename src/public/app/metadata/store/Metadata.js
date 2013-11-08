@@ -19,7 +19,7 @@ Ext.define('Savanna.metadata.store.Metadata', {
 
     autoLoad: false,
 
-    itemURI: '',
+    itemURI: null,
 
     constructor: function() {
         this.callParent(arguments);

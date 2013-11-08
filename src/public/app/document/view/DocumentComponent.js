@@ -1,9 +1,8 @@
 Ext.define("Savanna.document.view.DocumentComponent", {
     extend: "Savanna.component.ClassificationPanel",
     alias: "widget.documentcomponent",
-    layout: "hbox",
+    layout: "border",
     border: false,
-    itemUri: null,
     docViewId: null,
     requires: [
         "Savanna.document.view.DocumentToolbar",
@@ -59,6 +58,7 @@ Ext.define("Savanna.document.view.DocumentComponent", {
             xtype: 'metadata_details',
             itemId: 'imageDetails',
             collapsible: true,
+            collapsed: true,
             region: 'east',
             split: true,
             width: '30%'
