@@ -11,7 +11,6 @@ Ext.define('Savanna.process.store.Processes', {
     storeId: 'processStore',
 
     requires: [
-        'Ext.String',
         'Savanna.process.model.Process',
         'Savanna.proxy.Cors'
     ],

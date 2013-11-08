@@ -46,7 +46,7 @@ Ext.define('Savanna.process.store.TypeAheadStore', {
             afterRequest: function (request, success) {
                 if (!success) {
                     //clear out the store on a failed request
-                    loadData([],false);
+                    me.loadData([],false);
                 }
             }
         });

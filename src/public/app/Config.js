@@ -18,7 +18,6 @@ Ext.define('Savanna.Config', {
         sc.itemDeleteUrl = rUrl + 'rest/model/item/';
         sc.modelProcessLoadUrl = rUrl + 'rest/model/process/';
         sc.modelProcessSaveUrl = rUrl + 'rest/model/process/save';
-        sc.modelProcessIndexer = rUrl + 'rest/modelProcess/index/';
         sc.modelSearchUrl = rUrl + 'rest/model/search/keyword/item';
         sc.dalSourcesUrl = rUrl + 'rest/search/sources'; // local dev version: 'resources/data/testSearchDalsWithFormData.json',
         sc.locationSearch = rUrl + '/rest/map/search';   // local dev version: 'resources/data/testSearchLocationSearch.json',
