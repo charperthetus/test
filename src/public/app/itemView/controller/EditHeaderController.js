@@ -38,6 +38,9 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
         },
         itemDescription: {
             blur: 'updateDescription'
+        },
+        itemNameField:  {
+            keyup:  'onItemNameKeyup'
         }
     },
 
@@ -82,6 +85,12 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
 //            width: 850,
 //            height: 500
 //        });
+    },
+
+    onItemNameKeyup:function()  {
+        if (this.getView().up('itemview_itemviewer').queryById('editSaveButton').disabled) {
+            this.getView().up('itemview_itemviewer').queryById('editSaveButton').enable();
+        }
     },
 
     onIntendedUsesSelect:function() {
