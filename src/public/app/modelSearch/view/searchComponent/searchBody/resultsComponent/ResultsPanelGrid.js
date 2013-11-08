@@ -38,7 +38,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
             tpl: new Ext.XTemplate(
                 '<div style="position: relative" >',
                 '<div class="resultDiv">',
-                '<div class="sourceDiv">{[this.conditionallyRenderImage(values.primaryImageUrl)]}</div>',
+                '{[this.conditionallyRenderImage(values.primaryImageUrl)]}',
                 '<div class="grid-cell-title"><strong>{label}</strong></div>',
                 '<div class="contentDiv">',
                 'Modified: {[this.formatDate(values.modifiedDate)]}<br>{preview}',
@@ -57,9 +57,9 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
 
                     conditionallyRenderImage: function (url) {
                         if (url && url.length > 0) {
-                            return '<div style="background-image: url(\'' + url + '\');" ></div>';
+                            return '<div class="sourceDiv"><div style="background-image: url(\'' + url + '\');" ></div></div>';
                         }
-                        return '<div class="no-image">No Image</div>';
+                        return '<div class="no-image"></div>';
                     },
 
                     conditionallyRenderOpenButton: function (type) {
