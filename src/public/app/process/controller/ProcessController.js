@@ -212,7 +212,7 @@ Ext.define('Savanna.process.controller.ProcessController', {
         var me = this;
         Ext.Msg.confirm(
             'Cancel Changes',
-            'Your changes will be lost if you don't save them. Are you sure you want to cancel your changes?',//todo: get final wording for dialog
+            "Your changes will be lost if you don't save them. Are you sure you want to cancel your changes?",//todo: get final wording for dialog
             function(btn) {
                if (btn == 'yes') {
                    me.cancelProcess();
