@@ -416,6 +416,11 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         resultsDal.updateDalStatus(dal.get('id'), 'pending');   // begin in a pending state
     },
 
+    getSearchTerms: function(elem) {
+        var component = this.getSearchComponent(elem);
+        return component.down('#search_terms');
+    },
+
     doSearch: function (elem) {
 
         var component = this.getSearchComponent(elem),
@@ -425,6 +430,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
         var searchString = component.queryById('searchbar').buildSearchString(),
             resultsComponent = component.queryById('searchresults');
+        this.getSearchTerms(elem).setValue(searchString); //shows the search string with the advanced terms
 
         var mapView = component.down('#searchMapCanvas');
 
