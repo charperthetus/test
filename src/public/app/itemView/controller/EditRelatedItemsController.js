@@ -102,9 +102,16 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
     },
 
     addRelationshipType: function() {
+
+        // Reset the relationship name array as it's persisting (possibly a singleton?) between items
+        this.relationshipNameArray = [];
+        Ext.each(this.getView().store.data.items, function(model) {
+            this.relationshipNameArray.push(model.data.label);
+        }, this);
+
         var addNewRelationship = Ext.create('Savanna.itemView.view.relatedItems.RelationshipPicker', {
             width: 500,
-            height: 600,
+            height: 300,
             selectionStore: this.getView().store,
             relationshipNameArray: this.relationshipNameArray,
             storeHelper: this.getView().storeHelper

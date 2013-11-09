@@ -7,7 +7,8 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
     requires: [
         'Savanna.itemView.store.MainItemStore',
-        'Savanna.itemView.store.ItemViewStoreHelper'
+        'Savanna.itemView.store.ItemViewStoreHelper',
+        'Savanna.workflow.view.WorkflowSelect'
     ],
 
     store: null,
@@ -114,11 +115,18 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         if (!this.getView().getEditMode()) {
             this.getView().getLayout().setActiveItem(1);
             this.lockItem(this.store.getAt(0).data.uri, true);
+            this.lockItem(this.store.getAt(0).data.uri);
+            var itemSourceComponentEdit = this.getView().queryById('itemSourcesEdit').queryById('listOfSources')
+            itemSourceComponentEdit.reconfigure(this.store.getAt(0).propertyGroupsStore.getById('Sources').valuesStore.getById('Source Document').valuesStore);
+
         } else {
             this.getView().getLayout().setActiveItem(0);
         }
 
         this.getView().setEditMode(!this.getView().getEditMode());
+
+        // Focus on the Title field automatically
+        this.getView().queryById('itemNameField').focus();
     },
 
     onEditCancel: function () {
@@ -147,8 +155,12 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
     onEditSave: function (btn) {
         btn.disable();
+
+        this.store.getAt(0).data.label = this.getView().queryById('itemViewHeaderEdit').queryById('itemNameField').value;
+
         var headerComponent = this.getView().queryById('itemViewHeaderView');
         headerComponent.reconfigure(this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore);
+
 
         var qualitiesComponent = this.getView().queryById('itemViewPropertiesView');
         qualitiesComponent.reconfigure(this.store.getAt(0).propertyGroupsStore.getById('Properties').valuesStore);
@@ -169,10 +181,14 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         });
     },
 
-    onEditSaveCallback: function (records, operation, success) {
-        if (!success) {
+    onEditSaveCallback: function (responseObj) {
+
+        if (!responseObj.operations[0].success) {
+            /*
+             server down..?
+             */
             Ext.Error.raise({
-                msg: 'Saving record failed.'
+                msg: 'Updating record failed.'
             });
         }
     },
@@ -189,6 +205,8 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         var qualitiesComponent = this.getView().queryById('itemViewPropertiesView');
         qualitiesComponent.reconfigure(this.store.getAt(0).propertyGroupsStore.getById('Properties').valuesStore);
 
+        var itemSourceComponent = this.getView().queryById('itemSources').queryById('listOfSources');
+            itemSourceComponent.reconfigure(this.store.getAt(0).propertyGroupsStore.getById('Sources').valuesStore.getById('Source Document').valuesStore);
 
         var imagesBrowserComponent = this.getView().queryById('itemViewImagesGrid'),
             imagesBrowserComponentEdit = this.getView().queryById('itemViewImagesEdit');
@@ -214,16 +232,19 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         });
     },
 
-    onEditDoneCallback: function (records, operation, success) {
-        this.getView().getLayout().setActiveItem(0);
-        this.getView().setEditMode(!this.getView().getEditMode());
+    onEditDoneCallback: function (responseObj) {
 
-        if (!success) {
+        if (responseObj.operations[0].success) {
+            this.getView().getLayout().setActiveItem(0);
+            this.getView().setEditMode(!this.getView().getEditMode());
+        }   else    {
+            /*
+            server down..?
+             */
             Ext.Error.raise({
                 msg: 'Updating record failed.'
             })
         }
-
     },
 
     getItemViewData: function () {
@@ -314,14 +335,13 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
          Qualities View
          */
         var qualitiesComponent = me.getView().queryById('itemViewPropertiesView');
-        qualitiesComponent.setTitle('Qualities (' + record.propertyGroupsStore.getById('Properties').valuesStore.data.length + ')');
+        qualitiesComponent.setTitle(this.updateQualitiesHeader(record.propertyGroupsStore.getById('Properties').valuesStore));
         qualitiesComponent.reconfigure(record.propertyGroupsStore.getById('Properties').valuesStore);
 
         /*
          Qualities Edit
          */
         var qualitiesEditComponent = me.getView().queryById('itemViewPropertiesEdit');
-        qualitiesEditComponent.setTitle('Qualities (' + record.propertyGroupsStore.getById('Properties').valuesStore.data.length + ')');
         qualitiesEditComponent.storeHelper = this.storeHelper;
         qualitiesEditComponent.store = record.propertyGroupsStore.getById('Properties').valuesStore;
         qualitiesEditComponent.fireEvent('EditQualities:StoreSet');
@@ -362,6 +382,11 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         itemSourceComponent.store = record.propertyGroupsStore.getById('Sources').valuesStore;
         Ext.bind(itemSourceComponent.addSourcesGrid(record.propertyGroupsStore.getById('Sources').valuesStore.getById('Source Document').valuesStore), itemSourceComponent);
 
+        var itemSourceComponentEdit = me.getView().queryById('itemSourcesEdit');
+        itemSourceComponentEdit.storeHelper = this.storeHelper;
+        itemSourceComponentEdit.store = record.propertyGroupsStore.getById('Sources').valuesStore;
+        Ext.bind(itemSourceComponentEdit.addSourcesGrid(record.propertyGroupsStore.getById('Sources').valuesStore.getById('Source Document').valuesStore), itemSourceComponent);
+
         /*
          are we creating a new item?
          */
@@ -377,12 +402,18 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
 
     onWorkflowSelect: function () {
-        Ext.create('Savanna.itemView.view.workflow.WorkflowSelect', {
-            width: 500,
-            height: 425
+        Ext.create('Savanna.workflow.view.WorkflowSelect', {
+            uri: this.store.getAt(0).data.uri
         });
     },
 
+    updateQualitiesHeader: function(store) {
+        var titlePre = 'Qualities (',
+            values = this.storeHelper.getBotLevItemInStore(store).length,
+            titlePost = ')';
+        
+        return titlePre + values + titlePost;
+    },
 
     onSearchSelect: function () {
         //console.log('search selected');

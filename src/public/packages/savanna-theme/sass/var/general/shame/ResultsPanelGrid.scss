@@ -17,11 +17,14 @@
 }
  .resultDiv {
  	position: relative;
- 	max-height: 113px;
+ 	max-height: 85px;
  	width: 100%;
  	overflow: hidden;
- 	text-overflow: ellipsis;
  	
+ 	.elipsis:after{
+ 		content: ' ...';
+ 	}
+
  	.sourceDiv {
  		float: left;
  		position: relative;
@@ -31,7 +34,7 @@
  		height: 75px;
  		overflow: hidden;
  		border: 1px solid #999;
- 		margin: 0 5px 0 0;
+ 		margin: 0 10px 0 0;
  		text-align: center;
  		
  		div {
@@ -43,11 +46,16 @@
  		}
 
  		.no-image{
- 			background-color: #eee;
+ 			display: none;
  		}
 
  	}
 	
+	.contentDiv{
+		max-height: 50px;
+		overflow: hidden;
+	}
+
 	.grid-cell-title {
 		margin: 0 0 5px 0;
 		

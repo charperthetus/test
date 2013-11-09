@@ -1,4 +1,3 @@
-
 /*
  * author: jlashley
  * date: Oct. 22 2013
@@ -136,7 +135,7 @@ Ext.define('Savanna.component.DatePicker', {
 
     //Defaults to fit the wireframes shown. This applies padding to all the content in the panel of the date picker.
     defaults: {
-        allowBlank: false, //Requires you to enter something, else invalid
+        allowBlank: true, //Requires you to enter something, else invalid
         maxLength: 2, //Sets the max characters you can type in the box
         enforceMaxLength: true, //This forces the max length rule in all cases
         columnWidth: 0.20,
@@ -303,7 +302,7 @@ Ext.define('Savanna.component.DatePicker', {
         itemId: 'DatePicker-Year',
         maxLength: 4,
         maskRe: /[0-9.]/,
-        listners: {
+        listeners: {
             blur: function() {
                 this.up().fireEvent('focusLost', this.up());
             }

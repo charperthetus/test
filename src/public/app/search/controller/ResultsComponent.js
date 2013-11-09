@@ -126,7 +126,8 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
         var searchComponent = this.getResultsComponent().findParentByType('search_searchcomponent');
         var currentDalPanel = searchComponent.down('#searchdals').queryById(id);
         var searchString = searchComponent.queryById('searchbar').buildSearchString();
-        var searchObj = searchController.buildSearchObject(searchString, dalRecord, currentDalPanel);
+        var mapView = searchComponent.down('search_map_canvas');
+        var searchObj = searchController.buildSearchObject(searchString, dalRecord, currentDalPanel, mapView);
 
         dalRecord.set('resultsPerPage', newSize);
 
@@ -243,7 +244,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
                 pointRadius: 10,
                 label: '${count}',
                 labelOutlineWidth: 0,
-                fontColor: '#ffffff',
+                fontColor: '#333',
                 fontOpacity: 1,
                 fontSize: '12px'
             }
@@ -264,7 +265,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
                 pointRadius: 15,
                 label: '${count}',
                 labelOutlineWidth: 0,
-                fontColor: '#ffffff',
+                fontColor: '#333',
                 fontOpacity: 1,
                 fontSize: '12px'
             }
@@ -284,7 +285,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
                 pointRadius: 20,
                 label: '${count}',
                 labelOutlineWidth: 0,
-                fontColor: '#ffffff',
+                fontColor: '#333',
                 fontOpacity: 1,
                 fontSize: '12px'
             }
@@ -536,7 +537,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
         featurePopUp.down('#popup-index-count').setText('Result ' + (featurePopUp.currentIndex + 1) + ' of ' + featurePopUp.store.length);
         featurePopUp.down('#popup-title').setText(this.parseTitle(data.title));
         featurePopUp.down('#popup-location-text').setText('Location: ' + data.name);
-        featurePopUp.down('#popup-preview-text').setText(data.composite + ' - ' + this.parseDate(new Date(data.publishedDate)) + ' - ' + data.fileType + ' - ' + data.previewString);
+        featurePopUp.down('#popup-preview-text').setText(data.composite + ' - ' + this.parseDate(new Date(data.publishedDate)) + ' - ' + data.fileType + ' - ' + data.previewString + '...');
         featurePopUp.update(featurePopUp.store[featurePopUp.currentIndex]);
         featurePopUp.down('#mapResultPrev').setDisabled((featurePopUp.currentIndex > 0)? false:true);
         featurePopUp.down('#mapResultNext').setDisabled((featurePopUp.currentIndex < featurePopUp.store.length -1)? false:true);

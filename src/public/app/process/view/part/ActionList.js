@@ -31,6 +31,7 @@ Ext.define('Savanna.process.view.part.ActionList', {
         backgroundColor: '#F2F2F2'
     },
     hideHeaders: true,
+    cls: 'draggable-hover-select',
     columns: [
         {
             dataIndex: 'label',
@@ -41,8 +42,8 @@ Ext.define('Savanna.process.view.part.ActionList', {
     tbar:
     {
         itemId: 'actionTools',
-        height: 37,
-        border: 2,
+        height: 47,
+        border: 1,
         padding: 10,
         margin: 10,
         backgroundColor: '#F2F2F2',
@@ -53,7 +54,7 @@ Ext.define('Savanna.process.view.part.ActionList', {
             backgroundColor: '#F2F2F2'
         },
         items: [
-            '->',
+            {   xtype: 'tbspacer', width: 15 },
             {
                 xtype: 'label',
                 text: 'Actions',
@@ -69,13 +70,11 @@ Ext.define('Savanna.process.view.part.ActionList', {
             {
                 xtype: 'button',
                 itemId: 'searchItems',
-                glyph: 'modelSearch',
-                ui: 'dark-icon',
-                tooltip: 'Click to search the model.',
-                height: 16,
-                width: 16
+                text: 'Search',
+                ui: 'commit',
+                tooltip: 'Click to search the model.'
             },
-            '->'
+            {   xtype: 'tbspacer', width: 15 }
         ]},
 
     initComponent: function() {

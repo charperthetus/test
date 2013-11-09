@@ -8,16 +8,27 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
 
     knownUriTypes: ['Start', 'DecisionPoint', 'ProcessModel', 'ProcessAction', 'ProcessItem', 'InternalGroup', 'MergePoint', 'ProcessLink', 'AltsGroup'],
 
+    getCanvas:function(diagram) {
+        var div = diagram.div;
+        var parent = div.parentNode;
+        return Ext.getCmp(parent.id);
+    },
+
+    getUUID: function() {
+        var uuid = Ext.data.IdGenerator.get('uuid').generate();
+        return 'x' + uuid;
+    },
+
     getURI: function(category) {
         // by convention, category names are the same as the URI type
         if (this.knownUriTypes.indexOf(category) < 0) {
             console.log('Unknown uriType in getURI: ', category);
         }
-        var uuid = Ext.data.IdGenerator.get('uuid').generate();
-        return 'x' + uuid  + '/' + category;
+        var uuid = this.getUUID();
+        return uuid + '/' + category;
      },
 
-    setRepresentsUri: function(data, classUri) {
+    setRepresentsUri: function(data, classUri, diagram) {
         if (data && (data.category === 'ProcessAction' || data.category === 'ProcessItem'))
         {
             if (!classUri) {
@@ -30,6 +41,8 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
 
             data.representsClassUri = classUri;
 
+            var me = this;
+
             // make a real instance
             Ext.Ajax.request({
                 url: SavannaConfig.itemViewUrl + encodeURI(classUri) + '/instance;jsessionid=' + Savanna.jsessionid,
@@ -37,6 +50,7 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
                 success: function(response){
                     var message = Ext.decode(response.responseText);
                     data.representsItemUri = message.uri;
+                    me.getCanvas(diagram).fireEvent('itemInstanceCreated');
                 },
                 failure: function(response){
                     console.log('Server Side Failure: ' + response.status);
@@ -44,6 +58,27 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
             });
         }
 
+    },
+
+    changeRepresentsUri: function(data, classUri, diagram) {
+        if (data && classUri && (data.category === 'ProcessAction' || data.category === 'ProcessItem')) {
+            data.representsClassUri = classUri;
+
+            var me = this;
+            // make a real instance
+            Ext.Ajax.request({
+                url: SavannaConfig.itemViewUrl + encodeURI(classUri) + '/instance/type;jsessionid=' + Savanna.jsessionid,
+                jsonData: classUri,
+                method: 'POST',
+                success: function(response){
+                    // nothing to do
+                    me.getCanvas(diagram).fireEvent('itemInstanceCreated');
+                },
+                failure: function(response){
+                    console.log('changeRepresentsUri: Server Side Failure: ' + response.status);
+                }
+            });
+        }
     },
 
     startTextEdit: function(diagram, nodeData) {
@@ -90,7 +125,7 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         var clickedNode = obj.part;
         var nodeData = {'category': category, 'label': description};
         nodeData.uri = this.getURI(category);
-        this.setRepresentsUri(nodeData, classUri);
+        this.setRepresentsUri(nodeData, classUri, diagram);
 
         if (clickedNode.data.group) {
             nodeData.group = clickedNode.data.group;
@@ -115,7 +150,7 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         var altsGroup = obj.part;
         var nodeData = {category: 'ProcessItem', label: label, group: altsGroup.data.uri };
         nodeData.uri = this.getURI(nodeData.category);
-        this.setRepresentsUri(nodeData, classUri);
+        this.setRepresentsUri(nodeData, classUri, diagram);
         diagram.model.addNodeData(nodeData);
         diagram.commitTransaction('addAlternate');
         this.startTextEdit(diagram, nodeData);
@@ -132,7 +167,7 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         var stepGroup = actionGroup.containingGroup;
         var nodeData = {category: category, label: label, group: stepGroup.data.uri, isOptional: false};
         nodeData.uri = this.getURI(nodeData.category);
-        this.setRepresentsUri(nodeData, null);
+        this.setRepresentsUri(nodeData, null, diagram);
 
         diagram.model.addNodeData(nodeData);
 
@@ -165,7 +200,7 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         var stepGroup = actionGroup.containingGroup;
         var nodeData = {'category': category, 'label': label};
         nodeData.uri = this.getURI(nodeData.category);
-        this.setRepresentsUri(nodeData, null);
+        this.setRepresentsUri(nodeData, null, diagram);
 
         diagram.model.addNodeData(nodeData);
 
@@ -183,7 +218,7 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         var actionsGroup = obj.part;
         var nodeData = {'category': 'ProcessAction', 'label': label, 'group':actionsGroup.data.uri};
         nodeData.uri = this.getURI(nodeData.category);
-        this.setRepresentsUri(nodeData, classUri);
+        this.setRepresentsUri(nodeData, classUri, diagram);
         diagram.model.addNodeData(nodeData);
 
         diagram.commitTransaction('addAction');
@@ -205,7 +240,7 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
 
         var action = {'category': 'ProcessAction', 'label': 'Action', 'group': actionsGroup.uri};
         action.uri = this.getURI(action.category);
-        this.setRepresentsUri(action, null);
+        this.setRepresentsUri(action, null, diagram);
         diagram.model.addNodeData(action);
 
         var clickedNode = obj.part;

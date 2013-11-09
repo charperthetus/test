@@ -1,9 +1,8 @@
 Ext.define("Savanna.document.view.DocumentComponent", {
     extend: "Savanna.component.ClassificationPanel",
     alias: "widget.documentcomponent",
-    layout: "hbox",
+    layout: "border",
     border: false,
-    itemUri: null,
     docViewId: null,
     requires: [
         "Savanna.document.view.DocumentToolbar",
@@ -59,16 +58,21 @@ Ext.define("Savanna.document.view.DocumentComponent", {
             xtype: 'metadata_details',
             itemId: 'imageDetails',
             collapsible: true,
+            collapsed: true,
             region: 'east',
             split: true,
             width: '30%'
         }
     ],
-    tbar: [
-        {
-            xtype: "document_toolbar",
-            itemId: "docToolbar",
-            width: '100%'
-        }
-    ]
+    tbar: {
+        ui: 'thetus-toolbar',
+        width: '100%',
+        items:
+            [{
+                xtype: "document_toolbar",
+                itemId: "docToolbar",
+                width: '100%',
+                height: 33
+            }
+        ]}
 });
