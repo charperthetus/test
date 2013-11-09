@@ -751,19 +751,6 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                                 portId: "demo",
                                 mouseOver: function(e, obj, n){
 
-                                    console.log('2 ' + obj.panel);
-                                    console.log('2 ' + obj.panel.part);
-                                    console.log('1 '+obj);
-                                    console.log('10 '+obj.panel.findObject("BODY"));
-                                    console.log('3 ' + obj.panel.containingGroup);
-                                    console.log('4 '+obj.containingGroup);
-                                    console.log('5 '+n);
-                                    console.log('9 '+obj.panel.elt(0));
-                                    console.log('6 '+e.targetObject);
-                                    console.log('6 '+e.targetObject.panel);
-                                    console.log('7 '+ e.targetObject.containingGroup);
-
-
                                     if ( obj.panel.part.isSelected !== true ){
                                         obj.stroke = "#63d9f5";
                                         obj.strokeWidth = 2;
