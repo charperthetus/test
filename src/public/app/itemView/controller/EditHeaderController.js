@@ -116,6 +116,12 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
     },
 
     onIntendedUsesSelect:function() {
+        this.valNameArray = [];
+
+        Ext.each(this.getView().store.data.items, function (record) {
+            this.valNameArray.push(record.data.label);
+        }, this);
+
         var vChooser = Ext.create('Savanna.itemView.view.itemQualities.ValuesPicker', {
             width: 500,
             height: 600,
