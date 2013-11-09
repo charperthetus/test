@@ -41,7 +41,7 @@ Ext.define('Savanna.desktop.view.StartPageItem', {
                         width: 160,
                         xtype: 'label',
                         flex:1,
-                        text: this.subtext,
+                        text: this.subtext
                     }
                 ]
             }
