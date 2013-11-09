@@ -41,13 +41,13 @@ Ext.define('Savanna.itemView.view.createItem.CreateItem', {
                 xtype: 'itemview_parenttree',
                 itemId: 'parentItemsTreePanel',
                 cls: 'create-item-coloumn',
-                flex: 1
+                flex: 2
             },
             {
                 xtype: 'itemview_parentdetails',
                 itemId: 'parentItemsDetailsPanel',
                 cls: 'create-item-coloumn',
-                flex: 2
+                flex: 3
             }
         ];
 
@@ -66,13 +66,13 @@ Ext.define('Savanna.itemView.view.createItem.CreateItem', {
     setupButtons: function () {
         var btns = [
             {
-                text: 'OK',
+                text: 'Create',
                 itemId: 'commitBtn',
                 ui: 'commit',
                 margin: '0 0 10 0'
             },
             {
-                text: 'CANCEL',
+                text: 'Cancel',
                 itemId: 'cancelBtn'
             }
         ];

@@ -7,7 +7,8 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
     requires: [
         'Savanna.itemView.store.MainItemStore',
-        'Savanna.itemView.store.ItemViewStoreHelper'
+        'Savanna.itemView.store.ItemViewStoreHelper',
+        'Savanna.workflow.view.WorkflowSelect'
     ],
 
     store: null,
@@ -126,6 +127,9 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         }
 
         this.getView().setEditMode(!this.getView().getEditMode());
+
+        // Focus on the Title field automatically
+        this.getView().queryById('itemNameField').focus();
     },
 
     onEditCancel: function () {
@@ -160,7 +164,6 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         var headerComponent = this.getView().queryById('itemViewHeaderView');
         headerComponent.reconfigure(this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore);
 
-
         var qualitiesComponent = this.getView().queryById('itemViewPropertiesView');
         qualitiesComponent.reconfigure(this.store.getAt(0).propertyGroupsStore.getById('Properties').valuesStore);
 
@@ -193,38 +196,6 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     },
 
     onEditDone: function () {
-        //gotta update the Item Name here since we can't access inside the edit header component.  Also have to update the tab text
-        this.store.getAt(0).data.label = this.getView().queryById('itemViewHeaderEdit').queryById('itemNameField').value;
-        this.getView().setTitle(this.store.getAt(0).data.label);
-
-        var headerComponent = this.getView().queryById('itemViewHeaderView');
-        headerComponent.setTitle(this.store.getAt(0).data.label);
-        headerComponent.reconfigure(this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore);
-
-        var qualitiesComponent = this.getView().queryById('itemViewPropertiesView');
-        qualitiesComponent.reconfigure(this.store.getAt(0).propertyGroupsStore.getById('Properties').valuesStore);
-
-        var itemSourceComponent = this.getView().queryById('itemSources').queryById('listOfSources');
-        itemSourceComponent.reconfigure(this.store.getAt(0).propertyGroupsStore.getById('Sources').valuesStore.getById('Source Document').valuesStore);
-
-        var imagesBrowserComponent = this.getView().queryById('itemViewImagesGrid'),
-            imagesBrowserComponentEdit = this.getView().queryById('itemViewImagesEdit');
-
-        imagesBrowserComponent.fireEvent('ViewImagesGrid:Setup');
-        imagesBrowserComponentEdit.fireEvent('EditImagesGrid:Setup');
-
-        var relatedItemView = this.getView().queryById('relatedItemsView');
-        Ext.each(this.store.getAt(0).propertyGroupsStore.getById('Related Items').valuesStore.data.items, function (group) {
-            if (relatedItemView.queryById('relatedItemGrid_' + group.get('label').replace(/\s/g, ''))) {
-                relatedItemView.queryById('relatedItemGrid_' + group.get('label').replace(/\s/g, '')).reconfigure(group.valuesStore);
-            }
-            else {
-                relatedItemView.fireEvent('ViewRelatedItems:AddRelationshipGrid', group);
-            }
-        }, this);
-        relatedItemView.fireEvent('ViewRelatedItems:SetupData', this.store.getAt(0).propertyGroupsStore.getById('Related Items').valuesStore.data.items);
-
-
         this.store.getAt(0).setDirty();
         this.store.sync({
             callback: Ext.bind(this.onEditDoneCallback, this, [], true)
@@ -236,7 +207,39 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         if (responseObj.operations[0].success) {
             this.getView().getLayout().setActiveItem(0);
             this.getView().setEditMode(!this.getView().getEditMode());
-        } else {
+            
+            // Have to wait to redraw the screen after we've switched views due to a framwork bug where height isn't being properly set
+            //  And we set it manually.
+            this.store.getAt(0).data.label = this.getView().queryById('itemViewHeaderEdit').queryById('itemNameField').value;
+            this.getView().setTitle(this.store.getAt(0).data.label);
+
+            var headerComponent = this.getView().queryById('itemViewHeaderView');
+            headerComponent.setTitle(this.store.getAt(0).data.label);
+            headerComponent.reconfigure(this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore);
+
+            var qualitiesComponent = this.getView().queryById('itemViewPropertiesView');
+            qualitiesComponent.reconfigure(this.store.getAt(0).propertyGroupsStore.getById('Properties').valuesStore);
+
+            var itemSourceComponent = this.getView().queryById('itemSources').queryById('listOfSources');
+                itemSourceComponent.reconfigure(this.store.getAt(0).propertyGroupsStore.getById('Sources').valuesStore.getById('Source Document').valuesStore);
+
+            var imagesBrowserComponent = this.getView().queryById('itemViewImagesGrid'),
+                imagesBrowserComponentEdit = this.getView().queryById('itemViewImagesEdit');
+
+            imagesBrowserComponent.fireEvent('ViewImagesGrid:Setup');
+            imagesBrowserComponentEdit.fireEvent('EditImagesGrid:Setup');
+
+            var relatedItemView = this.getView().queryById('relatedItemsView');
+            Ext.each(this.store.getAt(0).propertyGroupsStore.getById('Related Items').valuesStore.data.items, function (group) {
+                if (relatedItemView.queryById('relatedItemGrid_' + group.get('label').replace(/\s/g, ''))) {
+                    relatedItemView.queryById('relatedItemGrid_' + group.get('label').replace(/\s/g, '')).reconfigure(group.valuesStore);
+                }
+                else {
+                    relatedItemView.fireEvent('ViewRelatedItems:AddRelationshipGrid', group);
+                }
+            }, this);
+            relatedItemView.fireEvent('ViewRelatedItems:SetupData', this.store.getAt(0).propertyGroupsStore.getById('Related Items').valuesStore.data.items);
+        }   else    {
             /*
              server down..?
              */
@@ -403,9 +406,8 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
 
     onWorkflowSelect: function () {
-        Ext.create('Savanna.itemView.view.workflow.WorkflowSelect', {
-            width: 500,
-            height: 425
+        Ext.create('Savanna.workflow.view.WorkflowSelect', {
+            uri: this.store.getAt(0).data.uri
         });
     },
 

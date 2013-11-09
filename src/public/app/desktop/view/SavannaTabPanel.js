@@ -59,25 +59,7 @@ Ext.define('Savanna.desktop.view.SavannaTabPanel', {
     setupPlugins: function() {
         return [
             Ext.create('Ext.ux.TabReorderer'),
-            Ext.create('Ext.ux.TabCloseMenu', {
-                extraItemsHead: [
-                    {
-                        text: 'split view',
-                        handler: this.splitViewHandler,
-                        scope: this
-                    },
-                    {
-                        text: 'single view',
-                        handler: this.singleViewHandler,
-                        scope: this
-                    },
-                    '-'
-                ],
-                listeners: {
-                    beforemenu: this.onBeforeMenu,
-                    scope: this
-                }
-            })
+            Ext.create('Ext.ux.TabCloseMenu')
         ]
     },
 
@@ -101,7 +83,11 @@ Ext.define('Savanna.desktop.view.SavannaTabPanel', {
         this.fireEvent('singleview');
     },
 
-    onBeforeMenu: function(menu) {
-        this.fireEvent('beforetabclosemenu', this, menu);
+    moveTabHandler: function() {
+        this.fireEvent('movetab');
+    },
+
+    onBeforeMenu: function(menu, tab) {
+        this.fireEvent('beforetabclosemenu', this, menu, tab);
     }
 });

@@ -26,37 +26,6 @@ Ext.define('Savanna.desktop.view.SavannaWorkspace', {
                 xtype: 'label',
                 text: 'Workspace',
                 pack: 'start'
-            },
-            '->',
-            {
-                xtype: 'toolbar',
-                ui: 'workspace-header',
-                layout: {
-                    defaultMargins: '0 5 0 5'
-                },
-                items: [
-                    {
-                        xtype: 'button',
-                        ui: 'workspace-header',
-                        itemId: 'singleviewbutton',
-                        cls: 'singleViewButtonFramework',
-                        glyph: 'singleView',
-                        enableToggle: true,
-                        allowDepress: false,
-                        pressed: true,
-                        toggleGroup: 'tabviewgroup'
-                    },
-                    {
-                        xtype: 'button',
-                        ui: 'workspace-header',
-                        itemId: 'splitviewbutton',
-                        cls: 'splitViewButtonFramework',
-                        glyph: 'splitView',
-                        enableToggle: true,
-                        allowDepress: false,
-                        toggleGroup: 'tabviewgroup'
-                    }
-                ]
             }
         ]
     },

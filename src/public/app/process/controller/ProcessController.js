@@ -12,7 +12,8 @@ Ext.define('Savanna.process.controller.ProcessController', {
         'Savanna.process.utils.ProcessUtils',
         'Savanna.process.utils.ViewTemplates',
         'Savanna.process.store.Processes',
-        'Savanna.process.view.part.Overview' //added dynamically later
+        'Savanna.process.view.part.Overview', //added dynamically later
+        'Savanna.workflow.view.WorkflowSelect'
     ],
     store: null,
 
@@ -34,6 +35,9 @@ Ext.define('Savanna.process.controller.ProcessController', {
         },
         redo: {
             click: 'handleRedo'
+        },
+        workflow: {
+            click: 'onWorkflowSelect'
         },
         merge: {
             click: 'handleMerge'
@@ -143,6 +147,12 @@ Ext.define('Savanna.process.controller.ProcessController', {
         this.getCanvas().diagram.undoManager.redo();
     },
 
+    onWorkflowSelect: function () {
+        Ext.create('Savanna.workflow.view.WorkflowSelect', {
+            uri: this.store.getAt(0).data.uri
+        });
+    },
+
     handleMerge: function() {
         this.utils().addMerge(this.getCanvas().diagram);
     },
@@ -175,9 +185,9 @@ Ext.define('Savanna.process.controller.ProcessController', {
         var me = this;
         Ext.Msg.show({
             title: 'Close Process',
-            msg: 'Are you sure you want to close? Any unsaved changes will be lost.', //todo: get final wording for dialog
+            msg: "Your changes will be lost if you don't save them. Are you sure you want to close this process?", //todo: Updated by Larry but still need final wording for dialog
             buttons: Ext.Msg.YESNOCANCEL,
-            buttonText: {yes: 'Close and Disard Changes', no: 'Save Changes and Close', cancel: 'Cancel'},//Ext.Msg.YESNOCANCEL,
+            buttonText: {yes: 'Close and Discard Changes', no: 'Save Changes and Close', cancel: 'Cancel'},//Ext.Msg.YESNOCANCEL,
             fn: function(button) {
                 if(button == 'yes'){
                     //discard changes and close
@@ -201,8 +211,8 @@ Ext.define('Savanna.process.controller.ProcessController', {
     onCancel: function() {
         var me = this;
         Ext.Msg.confirm(
-            'Cancel Changes?',
-            'This will abort any changes you have made. Are you sure you want to cancel your changes?',//todo: get final wording for dialog
+            'Cancel Changes',
+            "Your changes will be lost if you don't save them. Are you sure you want to cancel your changes?",//todo: get final wording for dialog
             function(btn) {
                if (btn == 'yes') {
                    me.cancelProcess();

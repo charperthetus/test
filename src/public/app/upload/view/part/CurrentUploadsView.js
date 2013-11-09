@@ -50,7 +50,7 @@ Ext.define('Savanna.upload.view.part.CurrentUploadsView', {
                     xtype: 'button',
                     itemId: 'clearFinishedButton',
                     width: 100,
-                    text:'Clear Finished',
+                    text:'Clear Completed',
                     height: 40,
                     margin:'0 0 0 0'
                 }]
