@@ -55,6 +55,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.SearchDals', {
                 width: '100%',
                 dock: 'top',
                 itemId: 'searchDalDockedItems',
+                margin: '-3 0 5 0',
                 items: [
                     {
                         xtype: 'label',

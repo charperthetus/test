@@ -38,22 +38,16 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
             tpl: new Ext.XTemplate(
                 '<div style="position: relative" >',
                 '<div class="resultDiv">',
-                '<div class="sourceDiv">{[this.conditionallyRenderImage(values.primaryImageUrl)]}</div>',
+                '{[this.conditionallyRenderImage(values.primaryImageUrl)]}',
                 '<div class="grid-cell-title"><strong>{label}</strong></div>',
                 '<div class="contentDiv">',
-                //Sean just added modified date in.
-                'Modified: {[this.formatDate(values.modifiedDate)]}<br>',
+                'Modified: {[this.formatDate(values.modifiedDate)]}<br>{preview}',
 
-                //,&nbsp;&nbsp;{modifiedBy}<br>'
+                // ,&nbsp;&nbsp;{modifiedBy}<br>'
                 //      'Workflow state: {workflowState}&nbsp;&nbsp;Classification: {classification}',
 
-
-                '<div style="width: 100%;height: 70px;white-space: normal;line-break: normal" >{preview}</div>',
                 '</div>',
-                '</div>',
-
-                '<div id="hoverDiv" style="visibility: hidden; right: 0;  top: 5px; position: absolute;" ><button id="openButton" class="openButtonClass">Open</button></div>',
-                '</div>',
+                '</div>{[this.conditionallyRenderOpenButton(values.type)]}',
 
                 {
                     formatDate: function (dateTime) {
@@ -63,9 +57,16 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
 
                     conditionallyRenderImage: function (url) {
                         if (url && url.length > 0) {
-                            return '<div style="background-image: url(\'' + url + '\');" ></div>';
+                            return '<div class="sourceDiv"><div style="background-image: url(\'' + url + '\');" ></div></div>';
                         }
-                        return '<div class="no-image">No Image</div>';
+                        return '<div class="no-image"></div>';
+                    },
+
+                    conditionallyRenderOpenButton: function (type) {
+                        if (type === "Process" || type === "Item") {
+                            return '<div id="hoverDiv" class="x-btn-basic-small openButtonClass" style="visibility: hidden; right: 0;  top: 5px; position: absolute;" >Open</div>';
+                        }
+                        return '';
                     }
 
                 }

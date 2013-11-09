@@ -21,20 +21,10 @@ Ext.define('Savanna.process.view.metadata.ProcessItemMetadata', {
 
     items: [
         {
-            xtype: 'container',
-            layout: 'hbox',
-            items: [
-                {
-                    xtype: 'textfield',
-                    value: 'RNRM Item Name',
-                    itemId: 'itemTitle'
-                },
-                {
-                    xtype: 'button',
-                    text: 'Open',
-                    itemId: 'openBtn'
-                }
-            ]
+            xtype: 'textfield',
+            value: 'RNRM Item Name',
+            itemId: 'itemTitle',
+            width: '100%'
         },
         {
             xtype: 'container',
@@ -63,9 +53,27 @@ Ext.define('Savanna.process.view.metadata.ProcessItemMetadata', {
                     itemId: 'itemInstanceTitle'
                 },
                 {
-                    xtype: 'combo',
-                    fieldLabel: 'Role',
-                    labelAlign: 'top'
+                    xtype: 'container',
+                    layout: 'hbox',
+                    width: '90%',
+                    items: [
+                        {
+                            xtype: 'auto_complete',
+                            labelType: 'Click to add a Role',
+                            showTags: true,
+                            itemId: 'roleAutoCompleteBox',
+                            store: Ext.create('Savanna.itemView.store.AutoCompleteStore', {
+                                urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/model/search/keyword/property/' + 'lib%252EExtendedRelationOntology%253Ahas_role%252FModelPredicate',
+                                paramsObj: { pageStart:0, pageSize:20, alphabetical: true }
+                            }),
+                            flex: 1
+                        },
+                        {
+                            xtype: 'button',
+                            itemId: 'roleChooserButton',
+                            glyph: 'searchBinoculars'
+                        }
+                    ]
                 },
                 {
                     xtype: 'label',

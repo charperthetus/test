@@ -44,7 +44,7 @@ Ext.define('Savanna.search.view.searchComponent.SearchBar', {
                     xtype: 'button',
                     itemId:'search_reset_button',
                     ui: 'white',
-                    text: 'Start New Search'
+                    text: 'Start new search'
                 }
             ]
         }

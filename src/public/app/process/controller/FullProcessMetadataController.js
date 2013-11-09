@@ -20,8 +20,8 @@ Ext.define('Savanna.process.controller.FullProcessMetadataController', {
 
     control: {
         view: {
-            processUriChanged: 'onUriChanged',
-            savechanges: 'onSaveChanges'
+            savechanges: 'onSaveChanges',
+            processUriChanged: 'onUriChanged'
         },
         processTitle: {
             blur: 'processTitleBlur'
@@ -68,8 +68,10 @@ Ext.define('Savanna.process.controller.FullProcessMetadataController', {
 
     onSaveChanges: function() {
         console.log('FullProcessMetadataController saveChanges');
-        this.store.getAt(0).setDirty();
-        this.store.sync();
+        if(this.store && this.store.getAt(0)) {
+            this.store.getAt(0).setDirty();
+            this.store.sync();
+        }
     },
 
     processTitleBlur: function(e) {

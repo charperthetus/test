@@ -20,7 +20,6 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
         'Savanna.itemView.view.imageBrowser.ImagesGridEdit',
         'Savanna.components.autoComplete.AutoComplete',
         'Savanna.itemView.view.imageBrowser.ImageThumbnail',
-        'Savanna.itemView.view.workflow.WorkflowSelect',
         'Savanna.itemView.view.annotationProperties.AnnotationProperties',
         'Savanna.component.ClassificationPanel',
         'Savanna.itemView.store.AutoCompleteStore',
@@ -80,7 +79,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                                 },
 
                                 {
-                                    text: 'Workflow',
+                                    text: 'Workflow...',
                                     itemId:'workflowButton'
                                 }
                             ]
@@ -104,7 +103,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                         xtype:'panel',
                         flex:1,
                         bodyStyle:{
-                            backgroundColor:"#f2f2f2"
+                            backgroundColor:"#999999"
                         },
                         layout:{
                             type: 'hbox',
@@ -129,6 +128,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                                         cls: 'item-view-column',
                                         flex:1,
                                         layout:'anchor',
+                                        margin:'1 0 0 0',
                                         autoScroll: true,
                                         items: [
                                             {
@@ -220,6 +220,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                         maxWidth:412,
                         layout: 'vbox',
                         collapsible: true,
+                        collapseDirection:'right',
                         animCollapse:false,
                         collapseMode:'header',
                         resizable:true,
@@ -262,7 +263,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                                 },
 
                                 {
-                                    text: 'Workflow',
+                                    text: 'Workflow...',
                                     itemId:'workflowButton'
                                 },
 
@@ -321,7 +322,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                         xtype:'panel',
                         flex:1,
                         bodyStyle:{
-                            backgroundColor:"#f2f2f2"
+                            backgroundColor:"#999999"
                         },
                         layout:{
                             type: 'hbox',
@@ -379,6 +380,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                                         xtype: 'panel',
                                         cls: 'item-view-column',
                                         flex:1,
+                                        margin:'1 0 0 0',
                                         layout:'anchor',
                                         autoScroll: true,
                                         items: [
@@ -428,6 +430,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                         autoScroll: true,
                         layout: 'vbox',
                         collapsible: true,
+                        collapseDirection:'right',
                         animCollapse:false,
                         collapseMode:'header',
                         resizable:true,

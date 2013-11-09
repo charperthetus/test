@@ -7,7 +7,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.SearchBar', {
         'Ext.layout.container.HBox',
         'Ext.form.field.Text',
         'Savanna.controller.Factory',
-        'Savanna.modelSearch.view.searchComponent.searchBar.SearchForm'
+        'Savanna.search.view.searchComponent.searchBar.SearchForm'  //We are now using a shared component
     ],
 
     border: false,
@@ -35,16 +35,17 @@ Ext.define('Savanna.modelSearch.view.searchComponent.SearchBar', {
             },
             items: [
                 {
-                    xtype: 'searchbar_form',
+                    xtype: 'searchbar_form',  //Used the shared one in the Search folder
                     itemId: 'search_form',
                     width: '100%',
+                    hideAdvancedLink: true,
                     height: 28
                 },
                 {
                     xtype: 'button',
                     itemId:'search_reset_button',
                     ui: 'white',
-                    text: 'Start New Search'
+                    text: 'Start new search'
                 }
             ]
         }

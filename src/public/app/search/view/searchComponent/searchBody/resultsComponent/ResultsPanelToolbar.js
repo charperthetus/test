@@ -57,7 +57,8 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
                 width:25,
                 height:25,
                 cls: 'toolbarButtonFramework',
-                ui:'icon-dark'
+                ui:'icon-dark',
+                tooltip:'View search results as a list'
             }, {
                 xtype: 'button',
                 glyph: 'earth',
@@ -65,7 +66,8 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
                 width:25,
                 height:25,
                 cls: 'toolbarButtonFramework',
-                ui:'icon-dark'
+                ui:'icon-dark',
+                tooltip:'View search results on a map'
             }
         ]
     }
