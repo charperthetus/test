@@ -9,33 +9,10 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
     ],
 
     control: {
-        singleviewbutton: {
-            toggle: 'onSingleViewToggle'
-        },
-        splitviewbutton: {
-            toggle: 'onSplitViewToggle'
-        },
         maintabpanel: {
-            beforetabclosemenu: 'onBeforeTabCloseMenu',
             createprocess: 'createProcess',
             createitem: 'createItem',
-            singleview: 'onSingleView',
-            splitview: 'onSplitView',
             tabchange: 'onTabChange'
-        },
-        secondarytabpanel: {
-            // The secondary tab panel is dynamically added and removed from the view.
-            // Setting the live property to true allows deft to add and remove listeners from this object
-            // when it is added or removed from the view.
-            live: true,
-            listeners: {
-                beforetabclosemenu: 'onBeforeTabCloseMenu',
-                createprocess: 'createProcess',
-                createitem: 'createItem',
-                singleview: 'onSingleView',
-                splitview: 'onSplitView',
-                remove: 'onRemove'
-            }
         }
     },
 
@@ -50,78 +27,8 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
         return this.callParent(arguments);
     },
 
-    setupSecondaryTabPanel: function() {
-        return Ext.create('Savanna.desktop.view.SavannaTabPanel', {
-            cls:'secondPanel',
-            itemId: 'secondarytabpanel',
-            config: {
-                view: 'split'
-            },
-            height: '100%',
-            flex: 2
-        });
-    },
-
-    setSingleViewMode: function() {
-        this.getMaintabpanel().config.view = 'single';
-
-        var items = this.getSecondarytabpanel().items;
-        while(items.length) {
-            this.getMaintabpanel().add(items.getAt(0));
-        }
-        this.getView().remove(this.getSecondarytabpanel(), true);
-        this.getMaintabpanel().doLayout();
-    },
-
-    setSplitViewMode: function() {
-        var maintabpanel = this.getMaintabpanel();
-        maintabpanel.config.view = 'split';
-
-        var secondaryTabPanel = this.setupSecondaryTabPanel();
-        this.getView().add(secondaryTabPanel);
-
-        var items = maintabpanel.items;
-        var idx = items.indexOf(maintabpanel.getActiveTab()) + 1;
-
-        while(items.getAt(idx)) {
-            secondaryTabPanel.add(items.getAt(idx));
-        }
-
-        if(secondaryTabPanel.items.getCount() > 0) {
-            var activeTab = secondaryTabPanel.setActiveTab(0);
-            activeTab.getEl().show();
-            activeTab.doLayout();
-        }
-    },
-
-    onSingleViewToggle: function(button) {
-        if(button.pressed) {
-            this.setSingleViewMode();
-        }
-    },
-
-    onSplitViewToggle: function(button) {
-        if(button.pressed) {
-            this.setSplitViewMode();
-        }
-    },
-
-    onSingleView: function() {
-        this.getSingleviewbutton().toggle();
-    },
-
-    onSplitView: function() {
-        this.getSplitviewbutton().toggle();
-    },
-
     onTabChange: function(tabpanel, newcard) {
         newcard.doLayout();
-    },
-
-    onRemove: function(tabpanel, component) {
-        if(tabpanel.items.getCount() < 1) {
-            this.getSingleviewbutton().toggle();
-        }
     },
 
     onOpen: function(event, otherParams){
@@ -158,12 +65,7 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
     },
 
     onClose: function(tab) {
-        var mtp = this.getMaintabpanel();
-        if (tab.isDescendantOf(mtp)){
-            mtp.remove(tab);
-        }else{
-            this.getSecondarytabpanel().remove(tab);
-        }
+        this.getMaintabpanel().remove(tab);
     },
 
     onCreateProcess: function(){
@@ -182,17 +84,6 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
         var tab = tabpanel.add(process);
         tabpanel.doLayout();
         tabpanel.setActiveTab(tab);
-    },
-    onBeforeTabCloseMenu: function(tabpanel, menu) {
-        var view = tabpanel.config.view;
-        if(view == 'single') {
-            menu.child('*[text="single view"]').hide();
-            menu.child('*[text="split view"]').show();
-        }
-        else {
-            menu.child('*[text="single view"]').show();
-            menu.child('*[text="split view"]').hide();
-        }
     },
     destroy: function() {
         EventHub.un('open', this.onOpen, this);
