@@ -21,6 +21,19 @@ Ext.define('Savanna.itemView.view.header.ViewHeader', {
 
     hideHeaders: true,
 
+    /*
+     *  Addresses an issue in the ExtJS framework where height
+     *  isn't being properly set.
+     */
+    listeners: {
+        reconfigure: function() {
+            console.log('runing');
+            if( this.getEl().dom.lastChild.lastChild.clientHeight !== 0) {
+                this.setHeight(this.getEl().dom.lastChild.lastChild.clientHeight + 50);                
+            }
+        }
+    },
+
     columns: [
         {
             xtype: 'templatecolumn',
