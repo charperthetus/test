@@ -51,8 +51,8 @@ Ext.define('Savanna.process.controller.ProcessController', {
         zoomToFit: {
             click: 'zoomToFit'
         },
-        cancelProcess: {
-            click: 'onCancel'
+        deleteProcess: {
+            click: 'onDelete'
         },
         saveProcess: {
             click: 'onSave'
@@ -127,19 +127,21 @@ Ext.define('Savanna.process.controller.ProcessController', {
     createNewProcess: function(diagram) {
         var me = this;
 
+        var newProcess = {'class': 'go.GraphLinksModel', 'nodeKeyProperty': 'uri', 'nodeDataArray': [{'category':'Start'}], 'linkDataArray': []};
+        newProcess.uri = this.utils().getURI('ProcessModel');  //todo: remove this code once the instance creation starts working
+        newProcess.nodeDataArray[0].uri = this.utils().getURI('Start');
+        this.store.add(newProcess);
+        this.load(diagram, this.store.first());
+
         // make a process instance
         Ext.Ajax.request({
             url: SavannaConfig.itemViewUrl + encodeURI('lib%2Espan%3AProcess%2FModelItemXML') + '/instance;jsessionid=' + Savanna.jsessionid,
             method: 'GET',
             success: function(response){
                 if (response.responseText.charAt(0) === '{') {
-                    //looks like good json
+                    //looks like it might really be json
                     var message = Ext.decode(response.responseText);
-                    var newProcess = {'class': 'go.GraphLinksModel', 'nodeKeyProperty': 'uri', 'nodeDataArray': [{'category':'Start'}], 'linkDataArray': []};
-                    newProcess.uri = message.uri;
-                    newProcess.nodeDataArray[0].uri = me.utils().getURI('Start');
-                    me.store.add(newProcess);
-                    me.load(diagram, this.store.first());
+                    me.store.getAt(0).set('uri', message.uri);
                     me.getView().down('#processSidepanel').fireEvent('processUriChange', encodeURIComponent(message.uri));
                 } else {
                     // probably an error page even though we got a 200
@@ -241,64 +243,84 @@ Ext.define('Savanna.process.controller.ProcessController', {
 
     confirmClosed: false,
 
-    onProcessClose: function(panel) {
-        var me = this;
-        Ext.Msg.show({
-            title: 'Close Process',
-            msg: 'Are you sure you want to close? Any unsaved changes will be lost.', //todo: get final wording for dialog
-            buttons: Ext.Msg.YESNOCANCEL,
-            buttonText: {yes: 'Close and Disard Changes', no: 'Save Changes and Close', cancel: 'Cancel'},//Ext.Msg.YESNOCANCEL,
-            fn: function(button) {
-                if(button == 'yes'){
-                    //discard changes and close
-                    me.confirmClosed = true;
-                    me.getView().down('#processSidepanel').fireEvent('processclose');
-                    panel[panel.closeAction]();
-                } else if (button == 'no') {
-                    //save and close
-                    me.onSave();
-                    me.getView().down('#processSidepanel').fireEvent('processclose');
-                    panel[panel.closeAction]();
-                } else {
-                    //do nothing, leave the process open
-                }
-            }
-        });
-
-        return false;
+    isStoreDirty: function(store){
+        return true;  //hack for now
+        //todo - figure out how to get the store to correctly manage dirtyness
+//        var isDirty = false;
+//
+//        store.each(function(record){
+//            if(record.dirty === true){
+//                isDirty = true;
+//            }
+//        });
+//        if (!isDirty) {
+//            isDirty = (store.removed.length > 0);
+//        }
+//        return isDirty;
     },
 
-    onCancel: function() {
+    onProcessClose: function(panel) {
+        var me = this;
+        if (this.isStoreDirty(this.store)) {
+            Ext.Msg.show({
+                title: 'Close Process',
+                msg: 'Save before closing?',
+                buttons: Ext.Msg.YESNOCANCEL,
+                buttonText: {yes: 'Save', no: 'Discard', cancel: 'Cancel'},
+                fn: function(button) {
+                    if(button == 'yes'){
+                        //save and close
+                        me.onSave();
+                        me.getView().down('#processSidepanel').fireEvent('processclose');
+                        panel[panel.closeAction]();
+                    } else if (button == 'no') {
+                        //discard changes and close
+                        me.confirmClosed = true;
+                        me.getView().down('#processSidepanel').fireEvent('processclose');
+                        panel[panel.closeAction]();
+                    } else {
+                        //do nothing, leave the process open
+                    }
+                }
+            });
+
+            return false;
+        }
+
+        return true;
+    },
+
+    onDelete: function() {
         var me = this;
         Ext.Msg.confirm(
-            'Cancel Changes?',
-            'This will abort any changes you have made. Are you sure you want to cancel your changes?',//todo: get final wording for dialog
+            'Delete Process',
+            'Permanently delete this process? Cannot be undone.',
             function(btn) {
                if (btn == 'yes') {
-                   me.cancelProcess();
+                   me.deleteProcess();
                }
             }
         );
     },
 
-    cancelProcess: function() {
-        //todo: options:
-        // - rollback to initial transaction (if possible in GoJS)...i don't think this is possible
-        // - make a service call to get/load json for the uri - which should just be store.load()
-        // For now just reload the initial JSON
-        var diagram = this.getCanvas().diagram;
-        if (diagram.isInTransaction) {
-            diagram.rollbackTransaction();
-        }
-        this.createNewProcess(this.getCanvas().diagram);
+    deleteProcess: function() {
+        var me = this;
+        var uri = this.store.getAt(0).data.uri;
+        var view = this.getView();
+        Ext.Ajax.request({
+            url: SavannaConfig.modelProcessLoadUrl + encodeURI(encodeURIComponent(uri)) + ';jsessionid=' + Savanna.jsessionid,
+            method: 'DELETE',
+            success: function(response) {
+                me.confirmClosed = true;
+                view[view.closeAction]();
+            },
+            failure: function(response) {
+                console.log('deleteProcess: Server Side Failure: ' + response.status);
+            }
+        });
     },
 
     onSave: function() {
-        //todo: options:
-        // - commit the initial transaction (if possible in GoJS)...i don't think this is possible
-        // - Call service to save json data - this should just be store.sync()
-        // - Start a new main transaction...again, probably not possible
-        this.store.first().setDirty();
         this.store.sync();
     },
 
