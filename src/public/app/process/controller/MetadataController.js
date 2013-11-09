@@ -18,7 +18,6 @@ Ext.define('Savanna.process.controller.MetadataController', {
         fullProcessMetadata:  {
             boxready: 'addFullProcessMetadataListeners'
         },
-        stepMetadata: true,
         itemMetadata: true,
         nothingHereLabel: true
      },
@@ -47,12 +46,6 @@ Ext.define('Savanna.process.controller.MetadataController', {
             var itemCategory = this.getDiagram().selection.first().data.category;
 
             switch(itemCategory) {
-                case 'ProcessModel':
-                case 'InternalGroup':
-                    itemUri = encodeURIComponent(this.getDiagram().selection.first().data.uri);
-                    // this is a step
-                    this.setUpStepDetails(itemUri);
-                    break;
                 case 'ProcessItem':
                     if (this.getDiagram().selection.first().data.representsItemUri) {
                         itemUri = encodeURIComponent(this.getDiagram().selection.first().data.representsItemUri);
@@ -67,7 +60,6 @@ Ext.define('Savanna.process.controller.MetadataController', {
 
                     break;
                 default:
-                    //console.log("we don't know what this is yet", itemUri);
                     this.setUpProcessDetails(null);
                     break;
             }
@@ -93,13 +85,6 @@ Ext.define('Savanna.process.controller.MetadataController', {
             // show the process details panel
             this.getHiddenPanel().getLayout().setActiveItem(this.getFullProcessMetadata());
         }
-    },
-
-    setUpStepDetails: function(itemUri) {
-        this.getStepMetadata().show();
-
-        this.getStepMetadata().fireEvent('stepUriChanged', itemUri);
-        this.getHiddenPanel().getLayout().setActiveItem(this.getStepMetadata());
     },
 
     setUpItemDetails: function(itemUri,itemName) {
