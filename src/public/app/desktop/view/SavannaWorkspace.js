@@ -32,7 +32,7 @@ Ext.define('Savanna.desktop.view.SavannaWorkspace', {
     items: [
         {
             xtype: 'desktop_tabpanel',
-            itemId: 'maintabpanel',
+            itemId: 'desktopTabPanel',
             flex: 2,
             height: '100%',
             items: [
