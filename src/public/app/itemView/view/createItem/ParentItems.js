@@ -97,7 +97,7 @@ Ext.define('Savanna.itemView.view.createItem.ParentItems', {
                     itemId: 'parentitems_results',
                     store: Ext.create('Savanna.itemView.store.AutoCompleteStore', {
                         urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/model/search/typeahead/',
-                        paramsObj: { pageStart: 0, pageSize: 20, alphabetical: true, type: 'Item' }
+                        paramsObj: { pageStart: 0, pageSize: 20, alphabetical: false, type: 'Item' }
                     })
                 }));
 
