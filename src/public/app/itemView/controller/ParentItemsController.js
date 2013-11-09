@@ -48,6 +48,7 @@ Ext.define('Savanna.itemView.controller.ParentItemsController', {
 
     selectParentItemUri: function (grid, record, item, index, e, eOpts) {
         this.getView().up('itemview_create_item').selectedParentUri = record.get('uri');
+        this.getView().up('itemview_create_item').selectedParentLabel = record.get('label');
     },
 
     getParentItemResult: function (grid, record, item, index, e, eOpts) {

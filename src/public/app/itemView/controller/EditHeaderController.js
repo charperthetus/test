@@ -19,9 +19,11 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
         view: {
             'EditHeader:StoreSet': 'storeSet'
         },
+        /*
         parentBtn: {
             click: 'openParentItem'
         },
+        */
         parentChooser: {
             click: 'openParentChooser'
         },
@@ -60,7 +62,13 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
 
 
         if(me.getView().store.getById('Type').data.values.length)  {
-            me.getView().queryById('parentBtn').setText(me.getView().store.getById('Type').data.values[0].label);
+            //me.getView().queryById('parentBtn').setText(me.getView().store.getById('Type').data.values[0].label);
+            var parents = '';
+            Ext.each(me.getView().store.getById('Type').data.values, function(type)    {
+                parents = parents + '<input type="button" name="' + type.value + '" value="' + type.label + '" id="openParentItem" />';
+            });
+            me.getView().queryById('parentsList').update(parents);
+
         }
 
         if(me.getView().store.getById('Description').data.values.length)  {
@@ -83,7 +91,8 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
         Ext.create('Savanna.itemView.view.createItem.CreateItem', {
             width: 850,
             height: 500,
-            doCreate:false
+            creating:false,
+            viewer: this.getView().up('itemview_itemviewer')
         });
     },
 
@@ -120,6 +129,21 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
 
             this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
         }
+    },
+
+    onParentSelect:function(uri, label) {
+        console.log(label);
+        Ext.each(this.getView().store.getById('Type').valuesStore.data.items, function(item)    {
+            if(!item.get('inheritedFrom'))    {
+                item.set('value', uri);
+                item.set('label', label);
+            }
+        });
+        this.getView().up('itemview_itemviewer').fireEvent('ItemView:ParentSelected');
+    },
+
+    onParentSelectCallback:function()   {
+        console.log(arguments);
     },
 
     addingAlias: function(tagName, tagData, aView) {

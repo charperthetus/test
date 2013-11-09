@@ -27,9 +27,13 @@ Ext.define('Savanna.itemView.view.createItem.CreateItem', {
 
     selectedParentUri: null,
 
+    selectedParentLabel: null,
+
     items: [],
 
-    doCreate: true,
+    creating: true,
+
+    viewer: null,
 
     setupItems: function () {
         var content = [

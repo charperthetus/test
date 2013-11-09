@@ -55,6 +55,9 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         },
         view: {
             'ItemView:SaveEnable': 'onSaveEnable'
+        },
+        view: {
+            'ItemView:ParentSelected': 'onParentSelected'
         }
     },
 
@@ -86,11 +89,11 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     lockItem: function (uri, lock) {
 
         var act = 'DELETE';
-        if(lock)    {
+        if (lock) {
             act = 'GET';
         }
         Ext.Ajax.request({
-            url: SavannaConfig.itemLockUrl + encodeURI(uri) +';jsessionid=' + Savanna.jsessionid,
+            url: SavannaConfig.itemLockUrl + encodeURI(uri) + ';jsessionid=' + Savanna.jsessionid,
             method: act,
             cors: true,
             headers: {
@@ -202,7 +205,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         qualitiesComponent.reconfigure(this.store.getAt(0).propertyGroupsStore.getById('Properties').valuesStore);
 
         var itemSourceComponent = this.getView().queryById('itemSources').queryById('listOfSources');
-            itemSourceComponent.reconfigure(this.store.getAt(0).propertyGroupsStore.getById('Sources').valuesStore.getById('Source Document').valuesStore);
+        itemSourceComponent.reconfigure(this.store.getAt(0).propertyGroupsStore.getById('Sources').valuesStore.getById('Source Document').valuesStore);
 
         var imagesBrowserComponent = this.getView().queryById('itemViewImagesGrid'),
             imagesBrowserComponentEdit = this.getView().queryById('itemViewImagesEdit');
@@ -233,9 +236,9 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         if (responseObj.operations[0].success) {
             this.getView().getLayout().setActiveItem(0);
             this.getView().setEditMode(!this.getView().getEditMode());
-        }   else    {
+        } else {
             /*
-            server down..?
+             server down..?
              */
             Ext.Error.raise({
                 msg: 'Updating record failed.'
@@ -371,8 +374,8 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
 
         /*
-        sources
-        */
+         sources
+         */
         var itemSourceComponent = me.getView().queryById('itemSources');
         itemSourceComponent.storeHelper = this.storeHelper;
         itemSourceComponent.store = record.propertyGroupsStore.getById('Sources').valuesStore;
@@ -404,11 +407,22 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         });
     },
 
-    updateQualitiesHeader: function(store) {
+    onParentSelected: function () {
+        this.store.getAt(0).setDirty();
+        this.store.sync({
+            callback: this.onParentSelectedCallback
+        });
+    },
+
+    onParentSelectedCallback: function () {
+        console.log(arguments);
+    },
+
+    updateQualitiesHeader: function (store) {
         var titlePre = 'Qualities (',
             values = this.storeHelper.getBotLevItemInStore(store).length,
             titlePost = ')';
-        
+
         return titlePre + values + titlePost;
     },
 
@@ -427,3 +441,5 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
     }
 });
+
+

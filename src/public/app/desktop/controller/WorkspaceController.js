@@ -144,7 +144,8 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
         Ext.create('Savanna.itemView.view.createItem.CreateItem', {
             width: 850,
             height: 500,
-            doCreate: true
+            creating: true,
+            viewer: null
         });
     },
 

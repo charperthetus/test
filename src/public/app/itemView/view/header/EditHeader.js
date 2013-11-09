@@ -91,9 +91,9 @@ Ext.define('Savanna.itemView.view.header.EditHeader', {
             items: [
 
                 {
-                    xtype: 'button',
-                    itemId: 'parentBtn',
-                    text: 'Parent Class'
+                    xtype: 'panel',
+                    itemId: 'parentsList',
+                    html:''
                 },
 
                 {
