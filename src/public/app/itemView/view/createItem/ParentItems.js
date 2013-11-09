@@ -125,7 +125,7 @@ Ext.define('Savanna.itemView.view.createItem.ParentItems', {
                     itemId: 'filterParentItemsField',
                     flex: 1,
                     margin: 2,
-                    emptyText: 'Find a Parent Item',
+                    emptyText: 'Find a parent item',
                     enableKeyEvents: true
                 }
             ]

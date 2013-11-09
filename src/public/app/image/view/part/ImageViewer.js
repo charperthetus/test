@@ -26,9 +26,9 @@ Ext.define('Savanna.image.view.part.ImageViewer', {
         me.tooltips = me.tooltips || {};
 
         me.tooltips = Ext.applyIf(me.tooltips, {
-            stretchHorizontally: 'Stretch horizontally',
-            stretchVertically: 'Stretch vertically',
-            stretchOptimally: 'Stretch optimally',
+            stretchHorizontally: 'Fit width' ,
+            stretchVertically: 'Fit height',
+            stretchOptimally: 'Fit to screen',
             zoomIn: 'Zoom in',
             zoomOut: 'Zoom out',
             rotateClockwise: 'Rotate clockwise',

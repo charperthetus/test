@@ -16,53 +16,58 @@ Ext.define('Savanna.desktop.view.SavannaDesktop', {
 
     tbar: {
         ui:'brand-header',
-        items: [{
-            itemId: 'logobutton',
-            cls:'logoButtonFramework',
-            scale: 'large',
-            xtype: 'button',
-            height: 44,
-            ui: 'brand-header'
-        }, {
-            xtype: 'toolbar',
-            flex: 1,
-            ui:'brand-header',
-            layout: {
-                pack: 'center',
-                ui: 'brand-header',
-                defaultMargins:'5'
-            },
             items: [{
-                itemId: 'searchbutton',
-                cls:'searchButtonFramework',
+                itemId: 'logobutton',
+                cls:'logoButtonFramework',
+                scale: 'large',
+                xtype: 'button',
+                height: 44,
+                ui: 'brand-header',
+                flex: 1
+            }, {
+                xtype: 'toolbar',
                 ui:'brand-header',
-                width: 29,
-                height:29,
-                margin:'3 0 0 0',
-                glyph:'search'
-            },{
-                itemId: 'modelsearchbutton',
-                cls:'modelSearchButtonFramework',
-                ui:'brand-header',
-                width: 29,
-                height:29,
-                margin:'3 0 0 0',
-                glyph:'modelSearch'
-            },{
-                itemId: 'uploadbutton',
-                cls:'uploadButtonFramework',
-                ui:'brand-header',
-                width: 29,
-                height:29,
-                margin:'3 0 0 0',
-                glyph:'upload'
-            }
-            ]
-        },
+                flex: 2,
+                layout: {
+                    pack: 'center',
+                    ui: 'brand-header',
+                    defaultMargins:'5'
+                },
+                items: [{
+                    itemId: 'searchbutton',
+                    cls:'searchButtonFramework',
+                    ui:'brand-header',
+                    width: 29,
+                    height:29,
+                    margin:'3 0 0 0',
+                    glyph:'search',
+                    tooltip: 'Click to search internal and external data sources.'
+                },{
+                    itemId: 'modelsearchbutton',
+                    cls:'modelSearchButtonFramework',
+                    ui:'brand-header',
+                    width: 29,
+                    height:29,
+                    margin:'3 0 0 0',
+                    glyph:'modelSearch',
+                    tooltip: 'Click to search the model.'
+                },{
+                    itemId: 'uploadbutton',
+                    cls:'uploadButtonFramework',
+                    ui:'brand-header',
+                    width: 29,
+                    height:29,
+                    margin:'3 0 0 0',
+                    glyph:'upload',
+                    tooltip: 'Click to upload files.'
+                }
+                ]
+            },
             {
                 xtype: 'toolbar',
                 scale: 'medium',
                 ui:'brand-header',
+                flex: 1,
                 layout: {
                     defaultMargins:'5'
                 },
@@ -83,10 +88,12 @@ Ext.define('Savanna.desktop.view.SavannaDesktop', {
                      margin:'3 0 0 0',
                      glyph:'help'
                      },*/
+                     '->',
                     {
                         itemId: 'userbutton',
                         cls:'userButtonFramework',
                         ui:'brand-header',
+                        rtl: true,
                         width: 36,
                         height: 29,
                         margin:'3 0 0 0',
@@ -99,8 +106,10 @@ Ext.define('Savanna.desktop.view.SavannaDesktop', {
                                 itemId: 'savannalogout'
                             }]
                         }
-                    }]
-            }]
+                    }
+                ]
+            }
+        ]
     },
     items: [
         {
