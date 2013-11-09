@@ -60,7 +60,7 @@ Ext.define('Savanna.search.view.searchComponent.SearchBody', {
                 }, { 
                     xtype: 'tbseparator' 
                 }, {
-                    text: 'Location',
+                    text: 'Location Search',
                     itemId: 'searchMapButton'
                 }]},
             bbar: {

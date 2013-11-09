@@ -211,8 +211,8 @@ Ext.define('Savanna.process.controller.ProcessController', {
     onCancel: function() {
         var me = this;
         Ext.Msg.confirm(
-            'Cancel Changes?',
-            'This will abort any changes you have made. Are you sure you want to cancel your changes?',//todo: get final wording for dialog
+            "Cancel Changes",
+            "Your changes will be lost if you don't save them. Are you sure you want to cancel your changes?",
             function(btn) {
                if (btn == 'yes') {
                    me.cancelProcess();

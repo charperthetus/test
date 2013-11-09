@@ -33,7 +33,8 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.SearchMap', {
             itemId: 'drawLocationSearch',
             glyph: 'polygonTop',
             ui: 'basic',
-            cls: 'locationSearch-drawPolygon'
+            cls: 'locationSearch-drawPolygon',
+            tooltip:'Click to outline search area'
         }
     ],
     tbar: {
@@ -58,7 +59,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.SearchMap', {
                     text: 'Zoom To',
                     menu: [
                         {
-                            itemId: 'zoomToWholeWorld',
+                            itemId: ' ',
                             text: 'Whole World',
                             disabled: false
                         },
