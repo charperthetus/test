@@ -114,3 +114,13 @@
   border: 1px solid #999;
 }
 
+// This is to override the flex paper css file in savanna-4/src/public/resources-dev/flexpaper/css/flexpaper.css
+
+.flexpaper_viewer{
+    background-image:none;
+    background-color: #999999;
+  }
+
+.flexpaper_pages{
+  border:none;
+}
