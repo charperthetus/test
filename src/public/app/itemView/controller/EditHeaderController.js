@@ -72,6 +72,9 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
 
             description.setValue(me.getView().store.getById('Description').data.values[0].value);
         }
+
+        // Focus on the Title field automatically
+        this.getView().queryById('itemNameField').focus(false, 200);
     },
 
     openParentItem: function() {
