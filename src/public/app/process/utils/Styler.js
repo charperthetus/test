@@ -391,8 +391,8 @@ Ext.define('Savanna.process.utils.Styler', {
             "panel": {
                 alignment: null, //alignmentSpot,
                 alignmentFocus: go.Spot.Center,
-                width: 72,
-                height: 72
+                width: 80,
+                height: 80
             },
             "HalfEllipse": {
                 background: 'transparent',
@@ -675,9 +675,9 @@ Ext.define('Savanna.process.utils.Styler', {
                 stroke: null,
                 width: 42,
                 height: 42,
-            
+
                 margin: 0,
-                portId: "", // now the Shape is the port, not the whole Node
+                portId: "diamondShape", // now the Shape is the port, not the whole Node
                 fromSpot: go.Spot.Right,
                 toSpot: go.Spot.Left
             },
@@ -686,7 +686,7 @@ Ext.define('Savanna.process.utils.Styler', {
                 stroke: palette.black,
                 width: 10,
                 height: 10,
-           
+
                 margin: 0
             },
             "textblock": {
@@ -697,7 +697,7 @@ Ext.define('Savanna.process.utils.Styler', {
                 wrap: go.TextBlock.WrapFit,
                 editable: true,
                 name: "TEXT"
-               
+
             }
         };
 
@@ -897,7 +897,8 @@ Ext.define('Savanna.process.utils.Styler', {
             "roundedRectangle": {
                 fill: '#dbf7fe',
                 stroke: null,
-                minSize: new go.Size(110, 90)
+                minSize: new go.Size(110, 90),
+
             },
             "textblockTools": {
                 angle: 270,
@@ -927,13 +928,15 @@ Ext.define('Savanna.process.utils.Styler', {
                 cellSize: new go.Size(1, 1)
             },
             "placeholder": {
-                padding: new go.Margin(16, 16),
+                padding: new go.Margin(29, 27, 29, 27),
                 background: 'transparent',
                 mouseDragEnter: function (e, obj) {
-                    obj.background = 'orange';
+                    console.log(obj);
+                    obj.background = '#99e7fa';
                 },
                 mouseDragLeave: function (e, obj) {
-                    obj.background = 'transparent';
+
+                    obj.background = '#dbf7fe';
                 },
                 mouseDrop: null
             }
@@ -946,7 +949,7 @@ Ext.define('Savanna.process.utils.Styler', {
          */
         var altsGroup = {
             "roundedRectangle": {
-                fill: palette.white,
+                fill: 'none',
                 stroke: palette.black
             },
             "textblock": {
@@ -969,7 +972,7 @@ Ext.define('Savanna.process.utils.Styler', {
                 padding: new go.Margin(16, 16),
                 background: 'transparent',
                 mouseDragEnter: function (e, obj) {
-                    obj.background = 'orange';
+                    obj.background = '#99e7fa';
                 },
                 mouseDragLeave: function (e, obj) {
                     obj.background = 'transparent';
@@ -1168,10 +1171,10 @@ Ext.define('Savanna.process.utils.Styler', {
 
                 //jsonDriller looks into the JSON to find the key you are passing.  If the key was in the passed JSON then it will override the JSON with your parameter.
                 /* Overridding font-size example
-                if ( jsonDriller(json, "font") !== '' ){
-                    linker["textblock"].font = properties.fontWeight + json["font"] + properties.font;
-                }
-                */
+                 if ( jsonDriller(json, "font") !== '' ){
+                 linker["textblock"].font = properties.fontWeight + json["font"] + properties.font;
+                 }
+                 */
 
                 if (jsonDriller(json, "click") !== '') {
                     //This will be adding the click handler to the JSON

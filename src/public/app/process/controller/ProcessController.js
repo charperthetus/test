@@ -237,6 +237,17 @@ Ext.define('Savanna.process.controller.ProcessController', {
         diagram.addDiagramListener('PartResized', Ext.bind(this.partResized, this));
         diagram.addDiagramListener('TextEdited', Ext.bind(this.textEdited, this));
 
+
+        var gmake = go.GraphObject.make;
+        diagram.toolManager.dragSelectingTool.box =
+            gmake(go.Part,
+                { layerName: "Tool" },
+                gmake(go.Shape,
+                    { name: "SHAPE", fill: null, stroke: "#3ca8c8", strokeWidth: 2 }));
+
+
+
+
         var uri = this.getView().getItemUri();
         if (uri) {
             this.store.load({callback: this.onStoreLoaded, scope: this});
