@@ -3,7 +3,8 @@ Ext.define('Savanna.process.controller.MetadataController', {
 
     config: {
         diagram: null,
-        processUri: null
+        processUri: null,
+        canvas: null
     },
 
     control: {
@@ -17,8 +18,8 @@ Ext.define('Savanna.process.controller.MetadataController', {
         fullProcessMetadata:  {
             boxready: 'addFullProcessMetadataListeners'
         },
-        stepMetadata: true,
-        itemMetadata: true
+        itemMetadata: true,
+        nothingHereLabel: true
      },
 
     constructor: function (options) {
@@ -29,31 +30,36 @@ Ext.define('Savanna.process.controller.MetadataController', {
     init: function() {
         this.callParent(arguments);
         this.setDiagram(this.getView().up('process_component').down('#canvas').diagram);
-
+        this.setCanvas(this.getView().up('process_component').down('#canvas'));
         this.getDiagram().addDiagramListener('ChangedSelection', Ext.bind(this.selectionChanged, this));
     },
 
     selectionChanged: function(e) {
+//        this.getDiagram().un('itemInstanceCreated', this.instanceLoaded, this);
         // save the existing set of changes, if any
         this.saveChanges();
 
         // then load up the panel for the new selection
         if (1 === this.getDiagram().selection.count) {
-            var itemUri = encodeURIComponent(this.getDiagram().selection.first().data.uri);
+            var itemUri;
+            var itemName = this.getDiagram().selection.first().data.label;
             var itemCategory = this.getDiagram().selection.first().data.category;
 
             switch(itemCategory) {
-                case 'ProcessModel':
-                case 'InternalGroup':
-                    // this is a step
-                    this.setUpStepDetails(itemUri);
-                    break;
                 case 'ProcessItem':
-                    // this is an item
-                    this.setUpItemDetails(itemUri);
+                    if (this.getDiagram().selection.first().data.representsItemUri) {
+                        itemUri = encodeURIComponent(this.getDiagram().selection.first().data.representsItemUri);
+                        // this is an item
+                        this.setUpItemDetails(itemUri, itemName);
+                    }
+                    else {
+                        //show loading screen
+                        this.getHiddenPanel().getLayout().setActiveItem(this.getNothingHereLabel());
+                        this.getCanvas().on('itemInstanceCreated', this.instanceLoaded, this);
+                    }
+
                     break;
                 default:
-                    //console.log("we don't know what this is yet", itemUri);
                     this.setUpProcessDetails(null);
                     break;
             }
@@ -61,6 +67,12 @@ Ext.define('Savanna.process.controller.MetadataController', {
             // if nothing is selected, we'll use the whole process
             this.setUpProcessDetails(null);
         }
+    },
+
+    instanceLoaded: function() {
+        var itemUri = encodeURIComponent(this.getDiagram().selection.first().data.representsItemUri);
+        // this is an item
+        this.setUpItemDetails(itemUri);
     },
 
     setUpProcessDetails: function(itemUri) {
@@ -75,17 +87,10 @@ Ext.define('Savanna.process.controller.MetadataController', {
         }
     },
 
-    setUpStepDetails: function(itemUri) {
-        this.getStepMetadata().show();
-
-        this.getStepMetadata().fireEvent('stepUriChanged', itemUri);
-        this.getHiddenPanel().getLayout().setActiveItem(this.getStepMetadata());
-    },
-
-    setUpItemDetails: function(itemUri) {
+    setUpItemDetails: function(itemUri,itemName) {
         this.getItemMetadata().show();
 
-        this.getItemMetadata().fireEvent('processUriChanged', itemUri);
+        this.getItemMetadata().fireEvent('processItemUriChanged', itemUri,itemName);
         this.getHiddenPanel().getLayout().setActiveItem(this.getItemMetadata());
     },
 
@@ -95,11 +100,11 @@ Ext.define('Savanna.process.controller.MetadataController', {
     },
 
     processLabelChangeHandler: function(text, newValue, oldValue, eOpts) {
-        console.log('processLabelChangeHandler', arguments);
+        //console.log('processLabelChangeHandler', arguments);
     },
 
     processSelectionChanged: function(e) {
-        console.log('processSelectionChanged selection size', this.getDiagram().selection.count);
+        //console.log('processSelectionChanged selection size', this.getDiagram().selection.count);
     },
 
     onBeforeHiddenPanelShow: function() {
@@ -108,7 +113,7 @@ Ext.define('Savanna.process.controller.MetadataController', {
 
     saveChanges: function() {
         // TODO: save the existing set of changes, if any
-        console.log('saveChanges');
+        this.getHiddenPanel().getLayout().getActiveItem().fireEvent('savechanges');
     },
 
     onProcessClose: function() {

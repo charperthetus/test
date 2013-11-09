@@ -19,9 +19,11 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
         view: {
             'EditHeader:StoreSet': 'storeSet'
         },
+        /*
         parentBtn: {
             click: 'openParentItem'
         },
+        */
         parentChooser: {
             click: 'openParentChooser'
         },
@@ -72,7 +74,13 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
 
 
         if(me.getView().store.getById('Type').data.values.length)  {
-            me.getView().queryById('parentBtn').setText(me.getView().store.getById('Type').data.values[0].label);
+            //me.getView().queryById('parentBtn').setText(me.getView().store.getById('Type').data.values[0].label);
+            var parents = '';
+            Ext.each(me.getView().store.getById('Type').data.values, function(type)    {
+                parents = parents + '<input type="button" name="' + type.value + '" value="' + type.label + '" id="openParentItem" />';
+            });
+            me.getView().queryById('parentsList').update(parents);
+
         }
 
         if(me.getView().store.getById('Description').data.values.length)  {
@@ -84,6 +92,19 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
 
             description.setValue(me.getView().store.getById('Description').data.values[0].value);
         }
+
+        /*
+        set the parent chooser to enabled or disabled
+         */
+        Ext.each(me.getView().store.getById('Type').data.values, function(type)    {
+            if(!type.inheritedFrom) {
+                /*
+                this should be the top level parent
+                 */
+                me.getView().down('#parentChooser').setDisabled(!type.editable);
+            }
+        });
+
     },
 
     openParentItem: function() {
@@ -91,12 +112,13 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
     },
 
     openParentChooser: function() {
-        //ToDo: build and connect the chooser
-        console.log('open a chooser for a parent here');
-//        Ext.create('Savanna.itemView.view.createItem.CreateItem', {
-//            width: 850,
-//            height: 500
-//        });
+
+        Ext.create('Savanna.itemView.view.createItem.CreateItem', {
+            width: 750,
+            height: 500,
+            creating:false,
+            viewer: this.getView().up('itemview_itemviewer')
+        });
     },
 
     onItemNameKeyup:function()  {

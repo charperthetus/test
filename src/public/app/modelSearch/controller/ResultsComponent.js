@@ -300,8 +300,8 @@ Ext.define('Savanna.modelSearch.controller.ResultsComponent', {
     },
 
     onItemClick: function (view, rec, node, index, e) {  //other parameter options
-        if (e && e.target && e.target.id) {
-            if (e.target.id === 'openButton') {
+        if (e && e.target && e.target.className) {
+            if (e.target.className.indexOf('openButtonClass') != -1) {
                 this.openUri(rec);
             }
         }

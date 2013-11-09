@@ -14,14 +14,14 @@ Ext.define('Savanna.desktop.view.SearchWindow', {
     ],
 
     layout: 'fit',
-    height: 750,
-    width: 680,
+    height: 700,
+    width: 720,
     minWidth: 380,
     minHeight: 270,
     ghost: false,
     resizeHandles: 'nw ne sw se s',
 
-    constrainHeader: true,
+    constrain: true,
     header: {
         title: 'Search'
     },

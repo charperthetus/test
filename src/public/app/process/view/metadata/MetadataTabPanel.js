@@ -45,10 +45,6 @@ Ext.define('Savanna.process.view.metadata.MetadataTabPanel', {
                     itemId: 'fullProcessMetadata'
                 },
                 {
-                    xtype: 'process_step_metadata',
-                    itemId: 'stepMetadata'
-                },
-                {
                     xtype: 'process_item_metadata',
                     itemId: 'itemMetadata'
                 }

@@ -14,18 +14,18 @@ Ext.define('Savanna.desktop.view.ModelSearchWindow', {
     ],
 
     header: {
-        title: 'Model Search'
+        title: 'Red Nodal Model Search'
     },
 
     layout: 'fit',
-    height: 750,
-    width: 680,
+    height: 700,
+    width: 720,
     minWidth: 380,
     minHeight: 270,
     ghost: false,
     resizeHandles: 'nw ne sw se s',
 
-    constrainHeader: true,
+    constrain: true,
     items: [{
         xtype: 'model_search_searchcomponent',
         itemId: 'searchcomponent'
