@@ -40,6 +40,7 @@ Ext.define('Savanna.process.view.part.PaletteWindow', {
     width: 200,
     ghost: false,
     items: [],
+    autoScroll: true,
 
     initComponent: function() {
         this.items = this.setupItems();
