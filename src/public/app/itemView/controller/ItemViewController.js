@@ -281,6 +281,8 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     },
 
     updateViewWithStoreData: function (record) {
+
+        console.log(record);
         var me = this;
         this.storeHelper.init(this.store);
 
@@ -407,15 +409,29 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         });
     },
 
-    onParentSelected: function () {
+    onParentSelected: function (uri, label) {
+
+        Ext.each(this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Type').valuesStore.data.items, function(item)    {
+            if(!item.get('inheritedFrom'))    {
+                item.set('value', uri);
+                item.set('label', label);
+            }
+        });
         this.store.getAt(0).setDirty();
         this.store.sync({
-            callback: this.onParentSelectedCallback
+            callback: Ext.bind(this.onParentSyncCallback, this, [], true)
         });
     },
 
-    onParentSelectedCallback: function () {
-        console.log(arguments);
+    onParentSyncCallback: function () {
+        this.store.load({
+            scope: this,
+            callback: Ext.bind(this.onItemReload, this, [], true)
+        })
+    },
+
+    onItemReload:function(records, operation, success)  {
+        this.updateViewWithStoreData(records[0]);
     },
 
     updateQualitiesHeader: function (store) {

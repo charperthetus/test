@@ -80,6 +80,19 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
 
             description.setValue(me.getView().store.getById('Description').data.values[0].value);
         }
+
+        /*
+        set the parent chooser to enabled or disabled
+         */
+        Ext.each(me.getView().store.getById('Type').data.values, function(type)    {
+            if(!type.inheritedFrom) {
+                /*
+                this should be the top level parent
+                 */
+                me.getView().down('#parentChooser').setDisabled(!type.editable);
+            }
+        });
+
     },
 
     openParentItem: function() {
@@ -129,21 +142,6 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
 
             this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
         }
-    },
-
-    onParentSelect:function(uri, label) {
-        console.log(label);
-        Ext.each(this.getView().store.getById('Type').valuesStore.data.items, function(item)    {
-            if(!item.get('inheritedFrom'))    {
-                item.set('value', uri);
-                item.set('label', label);
-            }
-        });
-        this.getView().up('itemview_itemviewer').fireEvent('ItemView:ParentSelected');
-    },
-
-    onParentSelectCallback:function()   {
-        console.log(arguments);
     },
 
     addingAlias: function(tagName, tagData, aView) {

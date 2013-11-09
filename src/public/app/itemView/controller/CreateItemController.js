@@ -47,8 +47,8 @@ Ext.define('Savanna.itemView.controller.CreateItemController', {
             /*
              reparenting
               */
-            var header = this.getView().viewer.queryById('itemViewHeaderEdit');
-            header.getController().onParentSelect(this.getView().selectedParentUri, this.getView().selectedParentLabel);
+
+            this.getView().viewer.getController().onParentSelected(this.getView().selectedParentUri, this.getView().selectedParentLabel);
         }
 
 
