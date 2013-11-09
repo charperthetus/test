@@ -94,23 +94,24 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
             if(!this.store.getAt(0).propertyGroupsStore.getById('Annotations').valuesStore.getById('Quantity')) {
                 this.storeHelper.addGroupItemInStore('Annotations'
                     , 'Quantity'
-                    , 'TBD'
+                    , 'thetus%2EInformationEntityOntology%3Aquantitative_property_measurement%2FModelProperty'
                     , this.store.getAt(0).propertyGroupsStore.getById('Annotations').valuesStore);
             } else {
                 var qunit = this.store.getAt(0).propertyGroupsStore.getById('Annotations').valuesStore.getById('Quantity').valuesStore.getAt(0).data.value.split('_');
                 var quantity = qunit[0];
-                var unit = qunit[1];
-
+                var unit = null;
+                if(2 === qunit.length) {
+                    unit = qunit[1];
+                }
                 this.getQuantityValue().setValue(quantity);
                 this.getQuantityUnit().setValue(unit);
             }
 
-
+            this.getView().up('process_metadata').fireEvent('itemReadyForDisplay');
         }
     },
 
     onSaveChanges: function() {
-        // TODO: save the existing set of changes, if any
         console.log('ProcessItemMetadataController saveChanges');
         if(this.store && this.store.getAt(0)) {
             this.store.getAt(0).setDirty();
@@ -132,9 +133,9 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
                 this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Description').valuesStore.getAt(0).data.value = e.getValue();
 
                 for (var i = 0; i < this.store.getAt(0).data.propertyGroups.length; i++) {
-                    if (this.store.getAt(0).data.propertyGroups[i].label === 'Header') {
+                    if ('Header' === this.store.getAt(0).data.propertyGroups[i].label) {
                         for (var j = 0; j < this.store.getAt(0).data.propertyGroups[i].values.length; j++) {
-                            if (this.store.getAt(0).data.propertyGroups[i].values[j].label === 'Description') {
+                            if ('Description' === this.store.getAt(0).data.propertyGroups[i].values[j].label) {
                                 this.store.getAt(0).data.propertyGroups[i].values[j].values[0].value = e.getValue();
                                 break;
                             }
@@ -158,9 +159,9 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
                 this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Label').valuesStore.getAt(0).data.value = e.getValue();
 
                 for (var i = 0; i < this.store.getAt(0).data.propertyGroups.length; i++) {
-                    if (this.store.getAt(0).data.propertyGroups[i].label === 'Header') {
+                    if ('Header' === this.store.getAt(0).data.propertyGroups[i].label) {
                         for (var j = 0; j < this.store.getAt(0).data.propertyGroups[i].values.length; j++) {
-                            if (this.store.getAt(0).data.propertyGroups[i].values[j].label === 'Label') {
+                            if ('Label' === this.store.getAt(0).data.propertyGroups[i].values[j].label) {
                                 this.store.getAt(0).data.propertyGroups[i].values[j].values[0].value = e.getValue();
                                 this.store.getAt(0).data.propertyGroups[i].values[j].values[0].label = e.getValue();
                                 break;
@@ -192,9 +193,9 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
                 this.store.getAt(0).propertyGroupsStore.getById('Annotations').valuesStore.getById('Quantity').valuesStore.getAt(0).data.value = value;
 
                 for (var i = 0; i < this.store.getAt(0).data.propertyGroups.length; i++) {
-                    if (this.store.getAt(0).data.propertyGroups[i].label === 'Annotations') {
+                    if ('Annotations' === this.store.getAt(0).data.propertyGroups[i].label) {
                         for (var j = 0; j < this.store.getAt(0).data.propertyGroups[i].values.length; j++) {
-                            if (this.store.getAt(0).data.propertyGroups[i].values[j].label === 'Quantity') {
+                            if ( 'Quantity' === this.store.getAt(0).data.propertyGroups[i].values[j].label) {
                                 this.store.getAt(0).data.propertyGroups[i].values[j].values[0].value = value;
                                 break;
                             }
