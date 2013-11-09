@@ -80,7 +80,6 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
 
             description.setValue(me.getView().store.getById('Description').data.values[0].value);
         }
-
         /*
         set the parent chooser to enabled or disabled
          */
@@ -92,7 +91,8 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
                 me.getView().down('#parentChooser').setDisabled(!type.editable);
             }
         });
-
+        // Focus on the Title field automatically
+        this.getView().queryById('itemNameField').focus(false, 200);
     },
 
     openParentItem: function() {

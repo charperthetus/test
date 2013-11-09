@@ -127,9 +127,6 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         }
 
         this.getView().setEditMode(!this.getView().getEditMode());
-
-        // Focus on the Title field automatically
-        this.getView().queryById('itemNameField').focus();
     },
 
     onEditCancel: function () {
