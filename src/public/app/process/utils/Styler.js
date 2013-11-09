@@ -181,7 +181,7 @@ Ext.define('Savanna.process.utils.Styler', {
          */
         var rectangle = {
             "outline": {
-                fill: 'white',
+                fill: 'transparent',
                 strokeWidth: 1,
                 stroke: 'black',
                 width: 32,
@@ -677,7 +677,7 @@ Ext.define('Savanna.process.utils.Styler', {
                 height: 42,
 
                 margin: 0,
-                portId: "diamondShape", // now the Shape is the port, not the whole Node
+                portId: "", // now the Shape is the port, not the whole Node
                 fromSpot: go.Spot.Right,
                 toSpot: go.Spot.Left
             },
@@ -897,7 +897,7 @@ Ext.define('Savanna.process.utils.Styler', {
             "roundedRectangle": {
                 fill: '#dbf7fe',
                 stroke: null,
-                minSize: new go.Size(110, 90),
+                minSize: new go.Size(110, 90)
 
             },
             "textblockTools": {
@@ -951,12 +951,14 @@ Ext.define('Savanna.process.utils.Styler', {
             "roundedRectangle": {
                 fill: 'none',
                 stroke: palette.black
+                
             },
             "textblock": {
                 margin: new go.Margin(0, 0, 0, 4),
                 maxSize: new go.Size(200, NaN),
                 wrap: go.TextBlock.WrapFit,
                 textAlign: "center",
+                isMultiline : false,
                 editable: true,
                 font: properties.fontWeight + properties.fontSize + properties.font,
                 stroke: palette.black,
