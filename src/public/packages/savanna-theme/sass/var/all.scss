@@ -2,6 +2,7 @@
  *	Responsible for importing non-extjs stylesheets
  *
  *	@author jgriffith
+ *  @edited lsanz - added .glyph style so we can use a class of glyph to use our glyphs
  */
 
 /*
@@ -12,8 +13,32 @@
 @import 'general/Colors';
 @import 'general/Icons';
 
-//Framework level vars
+//Framework
 @import 'framework/Framework';
+@import 'framework/StartPage';
 
 // SHAME!
 @import 'general/shame';
+
+
+// Generic .glyph style so we can use glyphs everywhere
+// need to move this to uikit used for the startpage so far..
+.glyph {
+  font-family: 'thetus-icons';
+  speak: none;
+  /* Enable Ligatures */
+  -webkit-font-feature-settings: "liga","dlig";
+  -moz-font-feature-settings: "liga=1, dlig=1";
+  -moz-font-feature-settings: "liga","dlig";
+  -ms-font-feature-settings: "liga","dlig";
+  -o-font-feature-settings: "liga","dlig";
+  font-feature-settings: "liga","dlig";
+  text-rendering: optimizeLegibility;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  text-decoration: none;
+}
