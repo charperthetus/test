@@ -287,7 +287,6 @@ Ext.define('Savanna.modelSearch.controller.SearchComponent', {
         if( typeof pageSize != 'undefined'){
             this.resultsStore.pageSize = pageSize;
         }
-        //this.resultsStore.storeId =  'searchResults_' + dal.get('id');
         this.resultsStore.searchParamVO =  searchObj;
 
 
@@ -314,7 +313,11 @@ Ext.define('Savanna.modelSearch.controller.SearchComponent', {
         this.hideMenu(component);
 
         var searchString = component.queryById('searchbar').buildSearchString(),
-            resultsComponent = component.queryById('searchresults');
+            resultsComponent = component.queryById('searchresults'),
+            resultsPanel =  component.down('#resultspanel');
+
+        //Clear message so it does not show while the search is happening
+        resultsPanel.setErrorText("", false);
 
         /*
          this is an array of objects - they store the dal id and the store instance for that dal's results.
@@ -401,11 +404,17 @@ Ext.define('Savanna.modelSearch.controller.SearchComponent', {
 
             var message = 'Search failed. Details: ' + errorString + " " + requestStatus;
             console.log( message );
-            resultsPanel.setErrorText(message);
+            //This is what we want to show to the user.  (We are aware it is a good deal less precise/accurate then the result above).
+            resultsPanel.setErrorText("Invalid search term(s)", true);
 
         } else {
 
-            resultsPanel.setErrorText('');
+            if(records && records.length){
+                resultsPanel.setErrorText('', false);
+            } else {
+                resultsPanel.setErrorText('No search results', false);
+            }
+
 
             var resultsObj = {id: dalId, store: store, metadata: []};
 
@@ -445,8 +454,8 @@ Ext.define('Savanna.modelSearch.controller.SearchComponent', {
     },
 
     showResultsPage: function (component) {
-
         var resultsBtn = component.down('#resultsbutton');
         resultsBtn.fireEvent('click', resultsBtn);
     }
+
 });

@@ -28,7 +28,7 @@ Ext.define('Savanna.itemView.view.itemQualities.QualitiesPicker', {
 
     updatedStore: false,
 
-    store: 'Savanna.itemView.store.AutoCompleteStore',
+    store: null,
 
     autoShow: true,
 
@@ -38,13 +38,13 @@ Ext.define('Savanna.itemView.view.itemQualities.QualitiesPicker', {
 
     layout: 'vbox',
 
-    cls:'value-picker-window',
+    cls: 'value-picker-window',
 
     items: [
         {
             xtype: 'label',
             text: 'AVAILABLE QUALITY',
-            cls:'h3'
+            cls: 'h3'
         },
         {
             xtype: 'container',
@@ -75,7 +75,7 @@ Ext.define('Savanna.itemView.view.itemQualities.QualitiesPicker', {
             title: '',
             padding: '0 0 15 0',
             itemId: 'availableQualitiesGroup',
-            cls:'value-picker-row',
+            cls: 'value-picker-row',
             height: 285,
             width: '100%',
             hideHeaders: true,
@@ -89,12 +89,12 @@ Ext.define('Savanna.itemView.view.itemQualities.QualitiesPicker', {
                     tpl: Ext.create('Ext.XTemplate',
                         '<tpl if="selected">',
 //                            '<tpl if="editable">',
-                                '<input type="checkbox" id="qualityCheck" checked/>&nbsp;&nbsp;&nbsp;&nbsp;{label}',
+                        '<input type="checkbox" id="qualityCheck" checked/>&nbsp;&nbsp;&nbsp;&nbsp;{label}',
 //                            '<tpl else>',
 //                                '<input type="checkbox" id="qualityCheck" checked disabled/>&nbsp;&nbsp;&nbsp;&nbsp;{label}',
 //                            '</tpl>',
                         '<tpl else>',
-                            '<input type="checkbox" id="qualityCheck"/>&nbsp;&nbsp;&nbsp;&nbsp;{label}',
+                        '<input type="checkbox" id="qualityCheck"/>&nbsp;&nbsp;&nbsp;&nbsp;{label}',
                         '</tpl>')
                 }
             ]
@@ -103,7 +103,7 @@ Ext.define('Savanna.itemView.view.itemQualities.QualitiesPicker', {
             xtype: 'grid',
             title: 'Selected Quality',
             itemId: 'selectedQualitiesGroup',
-            cls:'value-picker-row-hover',
+            cls: 'value-picker-row-hover',
             height: 150,
             width: '100%',
             hideHeaders: true,
@@ -120,7 +120,7 @@ Ext.define('Savanna.itemView.view.itemQualities.QualitiesPicker', {
                     flex: 1,
                     tpl: Ext.create('Ext.XTemplate',
                         '<tpl for="values" between=", ">',
-                            '{label}',
+                        '{label}',
                         '</tpl>')
                 },
                 {
@@ -136,8 +136,8 @@ Ext.define('Savanna.itemView.view.itemQualities.QualitiesPicker', {
         {
             text: 'OK',
             itemId: 'okBtn',
-            ui:'commit',
-            margin:'0 0 10 0'
+            ui: 'commit',
+            margin: '0 0 10 0'
         },
         {
             text: 'cancel',
@@ -145,17 +145,21 @@ Ext.define('Savanna.itemView.view.itemQualities.QualitiesPicker', {
         }
     ],
 
-    constructor: function(configs) {
+    constructor: function (configs) {
+
         this.callParent(arguments);
         this.initConfig(configs);
     },
 
     afterRender: function () {
+
         this.callParent(arguments);
-        this.store = Ext.create(this.store, {
+
+        this.store = Ext.create('Savanna.itemView.store.AutoCompleteStore', {
             urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/model/' + encodeURI(this.getStoreHelper().itemUri()) + '/qualities',
-            paramsObj: {pageStart:0, pageSize: 100, alphabetical: true}
+            paramsObj: {pageStart: 0, pageSize: 100, alphabetical: true}
         });
+
 
         this.store.load({
             scope: this,
@@ -164,6 +168,7 @@ Ext.define('Savanna.itemView.view.itemQualities.QualitiesPicker', {
     },
 
     handleRecordDataRequestSuccess: function (record, operation, success) {
+
         if (success) {
             var me = this;
             var qualitiesSelectStore = Ext.create('Ext.data.JsonStore', {
@@ -171,8 +176,9 @@ Ext.define('Savanna.itemView.view.itemQualities.QualitiesPicker', {
                 model: this.getSelectionStore().model
             });
 
-            Ext.each(this.store.data.items, function(value) {
+            Ext.each(this.store.data.items, function (value) {
                 if (Ext.Array.contains(me.getPropNameArray(), value.data.label)) {
+
                     value.data.selected = true;
                 }
             });

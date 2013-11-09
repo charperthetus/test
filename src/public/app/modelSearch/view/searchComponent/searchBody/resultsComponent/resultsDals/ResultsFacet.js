@@ -79,7 +79,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
                                 cls: 'customDatePanel',
                                 items: [
                                     {
-                                        xtype: 'search_resultsDals_resultsdatefield',
+                                        xtype: 'model_search_resultsDals_resultsdatefield',  //Sharing the search field didn't work out.
                                         fieldLabel: 'From',
                                         labelWidth: 35,
                                         width: 155,
@@ -88,7 +88,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
                                         value: new Date('1/1/1971')
                                     },
                                     {
-                                        xtype: 'search_resultsDals_resultsdatefield',
+                                        xtype: 'model_search_resultsDals_resultsdatefield',  //Sharing the search field didn't work out.
                                         fieldLabel: 'To',
                                         labelWidth: 35,
                                         width: 155,

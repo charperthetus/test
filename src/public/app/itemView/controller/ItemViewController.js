@@ -7,7 +7,8 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
     requires: [
         'Savanna.itemView.store.MainItemStore',
-        'Savanna.itemView.store.ItemViewStoreHelper'
+        'Savanna.itemView.store.ItemViewStoreHelper',
+        'Savanna.workflow.view.WorkflowSelect'
     ],
 
     store: null,
@@ -123,6 +124,9 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         }
 
         this.getView().setEditMode(!this.getView().getEditMode());
+
+        // Focus on the Title field automatically
+        this.getView().queryById('itemNameField').focus();
     },
 
     onEditCancel: function () {
@@ -185,7 +189,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
              */
             Ext.Error.raise({
                 msg: 'Updating record failed.'
-            })
+            });
         }
     },
 
@@ -201,8 +205,8 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         var qualitiesComponent = this.getView().queryById('itemViewPropertiesView');
         qualitiesComponent.reconfigure(this.store.getAt(0).propertyGroupsStore.getById('Properties').valuesStore);
 
-        var itemSourceComponent = this.getView().queryById('itemSources').queryById('listOfSources')
-            itemSourceComponent.reconfigureGrid(); //(this.store.getAt(0).propertyGroupsStore.getById('Sources').valuesStore.getById('Source Document').valuesStore);
+        var itemSourceComponent = this.getView().queryById('itemSources').queryById('listOfSources');
+            itemSourceComponent.reconfigure(this.store.getAt(0).propertyGroupsStore.getById('Sources').valuesStore.getById('Source Document').valuesStore);
 
         var imagesBrowserComponent = this.getView().queryById('itemViewImagesGrid'),
             imagesBrowserComponentEdit = this.getView().queryById('itemViewImagesEdit');
@@ -331,14 +335,13 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
          Qualities View
          */
         var qualitiesComponent = me.getView().queryById('itemViewPropertiesView');
-        qualitiesComponent.setTitle('Qualities (' + record.propertyGroupsStore.getById('Properties').valuesStore.data.length + ')');
+        qualitiesComponent.setTitle(this.updateQualitiesHeader(record.propertyGroupsStore.getById('Properties').valuesStore));
         qualitiesComponent.reconfigure(record.propertyGroupsStore.getById('Properties').valuesStore);
 
         /*
          Qualities Edit
          */
         var qualitiesEditComponent = me.getView().queryById('itemViewPropertiesEdit');
-        qualitiesEditComponent.setTitle('Qualities (' + record.propertyGroupsStore.getById('Properties').valuesStore.data.length + ')');
         qualitiesEditComponent.storeHelper = this.storeHelper;
         qualitiesEditComponent.store = record.propertyGroupsStore.getById('Properties').valuesStore;
         qualitiesEditComponent.fireEvent('EditQualities:StoreSet');
@@ -399,12 +402,18 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
 
     onWorkflowSelect: function () {
-        Ext.create('Savanna.itemView.view.workflow.WorkflowSelect', {
-            width: 500,
-            height: 425
+        Ext.create('Savanna.workflow.view.WorkflowSelect', {
+            uri: this.store.getAt(0).data.uri
         });
     },
 
+    updateQualitiesHeader: function(store) {
+        var titlePre = 'Qualities (',
+            values = this.storeHelper.getBotLevItemInStore(store).length,
+            titlePost = ')';
+        
+        return titlePre + values + titlePost;
+    },
 
     onSearchSelect: function () {
         //console.log('search selected');
