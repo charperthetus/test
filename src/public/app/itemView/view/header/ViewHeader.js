@@ -26,12 +26,7 @@ Ext.define('Savanna.itemView.view.header.ViewHeader', {
      *  isn't being properly set.
      */
     listeners: {
-        reconfigure: function() {
-            console.log('runing');
-            if( this.getEl().dom.lastChild.lastChild.clientHeight !== 0) {
-                this.setHeight(this.getEl().dom.lastChild.lastChild.clientHeight + 50);                
-            }
-        }
+        reconfigure: 'recalculateHeight'
     },
 
     columns: [
@@ -59,5 +54,14 @@ Ext.define('Savanna.itemView.view.header.ViewHeader', {
             rowLines: false,
             sortable: false
         }
-    ]
+    ],
+
+    recalculateHeight: function() {
+        if( this.getEl().dom.lastChild.lastChild.firstChild.clientHeight !== 0) {
+            var headerHeight = this.getEl().dom.firstChild.clientHeight,
+                tableHeight = this.getEl().dom.lastChild.lastChild.firstChild.clientHeight;
+
+            this.setHeight(headerHeight + tableHeight);                
+        }
+    }
 });

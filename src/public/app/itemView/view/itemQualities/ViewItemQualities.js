@@ -26,11 +26,7 @@ Ext.define('Savanna.itemView.view.itemQualities.ViewItemQualities', {
      *  isn't being properly set.
      */
     listeners: {
-        reconfigure: function() {
-            if( this.getEl().dom.lastChild.lastChild.clientHeight !== 0) {
-                this.setHeight(this.getEl().dom.lastChild.lastChild.clientHeight + 30);                
-            }
-        }
+        reconfigure: 'recalculateHeight'
     },
 
     columns: [
@@ -51,5 +47,11 @@ Ext.define('Savanna.itemView.view.itemQualities.ViewItemQualities', {
                     '{label}',
                 '</tpl>')
         }
-    ]
+    ],
+
+    recalculateHeight: function() {
+        if( this.getEl().dom.lastChild.lastChild.clientHeight !== 0) {
+            this.setHeight(this.getEl().dom.lastChild.lastChild.clientHeight + 30);                
+        }
+    }
 });
