@@ -341,7 +341,6 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
      */
     onBatchPollingRequestLoad: function(response){
         var responseObject = Ext.decode(response.responseText);
-        console.log(responseObject);
         for(var i = this.currentPollingIds.length - 1 ; i >= 0 ; i--){
             var pollingId = this.currentPollingIds[i];
             var documentStatus = responseObject[pollingId];
