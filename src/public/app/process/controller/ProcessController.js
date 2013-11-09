@@ -185,9 +185,9 @@ Ext.define('Savanna.process.controller.ProcessController', {
         var me = this;
         Ext.Msg.show({
             title: 'Close Process',
-            msg: 'Are you sure you want to close? Any unsaved changes will be lost.', //todo: get final wording for dialog
+            msg: "Your changes will be lost if you don't save them. Are you sure you want to close this process?", //todo: Updated by Larry but still need final wording for dialog
             buttons: Ext.Msg.YESNOCANCEL,
-            buttonText: {yes: 'Close and Disard Changes', no: 'Save Changes and Close', cancel: 'Cancel'},//Ext.Msg.YESNOCANCEL,
+            buttonText: {yes: 'Close and Discard Changes', no: 'Save Changes and Close', cancel: 'Cancel'},//Ext.Msg.YESNOCANCEL,
             fn: function(button) {
                 if(button == 'yes'){
                     //discard changes and close
@@ -211,8 +211,8 @@ Ext.define('Savanna.process.controller.ProcessController', {
     onCancel: function() {
         var me = this;
         Ext.Msg.confirm(
-            "Cancel Changes",
-            "Your changes will be lost if you don't save them. Are you sure you want to cancel your changes?",
+            'Cancel Changes',
+            "Your changes will be lost if you don't save them. Are you sure you want to cancel your changes?",//todo: get final wording for dialog
             function(btn) {
                if (btn == 'yes') {
                    me.cancelProcess();
