@@ -111,7 +111,7 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
 
         var addNewRelationship = Ext.create('Savanna.itemView.view.relatedItems.RelationshipPicker', {
             width: 500,
-            height: 600,
+            height: 300,
             selectionStore: this.getView().store,
             relationshipNameArray: this.relationshipNameArray,
             storeHelper: this.getView().storeHelper
