@@ -48,7 +48,6 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
                 ]
             },
             {
-                hidden: true,
                 itemId: 'model_search_error_message',
                 xtype: "panel",
                 width: '100%',
@@ -61,15 +60,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
                 defaults: {margin: 4},
                 items: [
                     {
-                        xtype: 'box',
-                        itemId: 'statusIcon',
-                        width: 15,
-                        height: 15
-                    },
-
-                    {
-                        //help!  word wrapping of some kind needed
-                        xtype:'text',
+                        xtype:'displayfield',
                         itemId: 'errorLabel',
                         text: ''
                     }
@@ -97,22 +88,26 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
         gridMulti.queryById('gridtoolbar').bindStore(store);
     },
 
-    setErrorText: function (text) {
+    //When we set the error text we hide the grid(s) and show an error message.
+    //When we clear the text, we show the grid(s) and not the error message.
+    //  In the "alert" style we show an icon.
+    //  When not using the "alert" style, we hide the icon.
+    setErrorText: function (text, useAlertStyleForTextAndIcon) {
         var grid = this.queryById('resultspanelgrid');
-        var messageArea = this.queryById('model_search_error_message');
         var label = this.queryById('errorLabel');
-        if(text && text.length > 0){
-            messageArea.show();
-            grid.hide();
-            label.setText(text);
 
-            var    loadingEl = messageArea.down('#statusIcon');
-            loadingEl.removeCls('icon-success icon-alert icon-pending loadNone');
-            loadingEl.addCls('icon-alert');
+        if(text && text.length > 0){
+            grid.hide();
+            label.show();
+            label.setValue(text);   //xtype was changed for styling, setText is no longer available
+            label.removeCls('icon-alert');
+            if(useAlertStyleForTextAndIcon){
+                label.addCls("icon-alert");
+            }
+
         } else {
-            messageArea.hide();
+            label.hide();
             grid.show();
-            label.text = "";
         }
     },
 
