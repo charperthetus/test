@@ -102,7 +102,7 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
     openParentChooser: function() {
 
         Ext.create('Savanna.itemView.view.createItem.CreateItem', {
-            width: 850,
+            width: 750,
             height: 500,
             creating:false,
             viewer: this.getView().up('itemview_itemviewer')
