@@ -23,7 +23,7 @@ Ext.define('Savanna.desktop.view.SavannaDesktop', {
                 xtype: 'button',
                 height: 44,
                 ui: 'brand-header',
-                flex: 1,
+                flex: 1
             }, {
                 xtype: 'toolbar',
                 ui:'brand-header',
