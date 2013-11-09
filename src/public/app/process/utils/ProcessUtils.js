@@ -474,6 +474,19 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
             }
         }
         diagram.commitTransaction('toggleOptional');
+    },
+
+    toggleExpanded: function(diagram, expand) {
+        diagram.startTransaction('toggleExpanded');
+        var iterator = diagram.nodes;
+        while ( iterator.next() ){
+            var node = iterator.value;
+            if (node instanceof go.Group) {
+                node.isSubGraphExpanded = expand;
+            }
+        }
+        diagram.commitTransaction('toggleExpanded');
     }
+
 
 });

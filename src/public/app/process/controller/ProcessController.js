@@ -71,6 +71,11 @@ Ext.define('Savanna.process.controller.ProcessController', {
         }
     },
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //
+    // construct and init code
+    //
+
     constructor: function (options) {
         this.opts = options || {};
         this.callParent(arguments);
@@ -87,37 +92,26 @@ Ext.define('Savanna.process.controller.ProcessController', {
         return Savanna.process.utils.ProcessUtils;
     },
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //
+    // loading and initialization code
+    //
+
+    initCanvas: function() {
+        var diagram = this.getCanvas().diagram;
+        diagram.addDiagramListener('PartResized', Ext.bind(this.partResized, this));
+        diagram.addDiagramListener('TextEdited', Ext.bind(this.textEdited, this));
+
+        var uri = this.getView().getItemUri();
+        if (uri) {
+            this.store.load({callback: this.onStoreLoaded, scope: this});
+        } else {
+            this.createNewProcess(diagram);
+        }
+    },
+
     onStoreLoaded: function (records) {
         this.load(this.getCanvas().diagram, records[0]);
-    },
-
-    toggleExpanded: function(expand) {
-        var diagram = this.getCanvas().diagram;
-        diagram.startTransaction('toggleExpanded');
-        var iterator = diagram.nodes;
-        while ( iterator.next() ){
-            var node = iterator.value;
-            if (node instanceof go.Group) {
-                node.isSubGraphExpanded = expand;
-            }
-        }
-        diagram.commitTransaction('toggleExpanded');
-    },
-
-    newProcessClick: function() {
-        EventHub.fireEvent('createprocess');
-    },
-
-    expandStepsClick: function() {
-        this.toggleExpanded(true);
-    },
-
-    collapseStepsClick: function() {
-        this.toggleExpanded(false);
-    },
-
-    clearJSONClick: function() {
-        this.clear(this.getCanvas().diagram);
     },
 
     load: function(diagram, rec) {
@@ -127,9 +121,10 @@ Ext.define('Savanna.process.controller.ProcessController', {
             linkDataArray: rec.get('linkDataArray')
         });
         diagram.undoManager.isEnabled = true;
+        this.setupCanvasDrop();
     },
 
-    clear: function(diagram) {
+    createNewProcess: function(diagram) {
         var newProcess = {'class': 'go.GraphLinksModel', 'nodeKeyProperty': 'uri', 'nodeDataArray': [{'category':'Start'}], 'linkDataArray': []};
         newProcess.nodeDataArray[0].uri = this.utils().getURI('Start');
         this.store.add(newProcess);
@@ -154,8 +149,24 @@ Ext.define('Savanna.process.controller.ProcessController', {
                 console.log('Server Side Failure: ' + response.status);
             }
         });
+    },
 
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //
+    // simple event handlers
+    //
+
+    newProcessClick: function() {
+        EventHub.fireEvent('createprocess');
+    },
+
+    expandStepsClick: function() {
+        this.utils().toggleExpanded(this.getCanvas().diagram, true);
+    },
+
+    collapseStepsClick: function() {
+        this.utils().toggleExpanded(this.getCanvas().diagram, false);
     },
 
     handleUndo: function() {
@@ -197,6 +208,35 @@ Ext.define('Savanna.process.controller.ProcessController', {
     zoomToFit: function() {
         this.getCanvas().diagram.zoomToFit();
     },
+
+    togglePalette: function() {
+        var palette = this.getPalette();
+        if (palette.hidden) {
+            palette.show();
+        } else {
+            palette.hide();
+        }
+    },
+
+    toggleOverview: function() {
+        var processViewport = this.getView();
+        var overview = processViewport.overview;
+
+        if (overview) {
+            processViewport.overview = null;
+            processViewport.remove(overview);
+        } else {
+            overview = Ext.create('Savanna.process.view.part.Overview', {});
+            overview.setDiagram(this.getCanvas().diagram);
+            processViewport.overview = overview;
+            processViewport.add(overview);
+        }
+    },
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //
+    // save, close, delete alerts
+    //
 
     confirmClosed: false,
 
@@ -249,7 +289,7 @@ Ext.define('Savanna.process.controller.ProcessController', {
         if (diagram.isInTransaction) {
             diagram.rollbackTransaction();
         }
-        this.loadInitialJSON();
+        this.createNewProcess(this.getCanvas().diagram);
     },
 
     onSave: function() {
@@ -261,18 +301,10 @@ Ext.define('Savanna.process.controller.ProcessController', {
         this.store.sync();
     },
 
-    initCanvas: function() {
-        var diagram = this.getCanvas().diagram;
-        diagram.addDiagramListener('PartResized', Ext.bind(this.partResized, this));
-        diagram.addDiagramListener('TextEdited', Ext.bind(this.textEdited, this));
-
-        var uri = this.getView().getItemUri();
-        if (uri) {
-            this.store.load({callback: this.onStoreLoaded, scope: this});
-        } else {
-            this.loadInitialJSON();
-        }
-    },
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //
+    // text editing and type ahead support
+    //
 
     textEdited: function(e) {
         var curTextEdit = e.diagram.toolManager.textEditingTool.currentTextEditor;
@@ -288,24 +320,14 @@ Ext.define('Savanna.process.controller.ProcessController', {
         }
     },
 
-    loadInitialJSON: function () {
-        this.clearJSONClick();
-        this.setupCanvasDrop(this.getCanvas());
-    },
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //
+    // drag and drop
+    //
 
-    loadJSON: function (callbackFunc) {
-        var processStore = Ext.data.StoreManager.lookup(this.store);
-        processStore.load({
-            callback: function() {
-                if (callbackFunc) {
-                    callbackFunc(processStore.first());
-                }
-            }
-        });
-    },
-
-    setupCanvasDrop: function(canvasView) {
+    setupCanvasDrop: function() {
         var me = this;
+        var canvasView = this.getCanvas();
         var canvasElement = canvasView.getEl();
         if (canvasElement) {
             canvasView.dropTarget = Ext.create('Ext.dd.DropTarget', canvasElement.dom, {
@@ -366,30 +388,6 @@ Ext.define('Savanna.process.controller.ProcessController', {
             object = object.panel;
         }
         return object; //may be null
-    },
-
-    togglePalette: function() {
-        var palette = this.getPalette();
-        if (palette.hidden) {
-            palette.show();
-        } else {
-            palette.hide();
-        }
-    },
-
-    toggleOverview: function() {
-        var processViewport = this.getView();
-        var overview = processViewport.overview;
-
-        if (overview) {
-            processViewport.overview = null;
-            processViewport.remove(overview);
-        } else {
-            overview = Ext.create('Savanna.process.view.part.Overview', {});
-            overview.setDiagram(this.getCanvas().diagram);
-            processViewport.overview = overview;
-            processViewport.add(overview);
-        }
     }
 
 });
