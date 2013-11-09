@@ -50,6 +50,7 @@ Ext.define('Savanna.process.controller.MetadataController', {
                     if (this.getDiagram().selection.first().data.representsItemUri) {
                         itemUri = encodeURIComponent(this.getDiagram().selection.first().data.representsItemUri);
                         // this is an item
+                        this.getHiddenPanel().getLayout().setActiveItem(this.getNothingHereLabel());
                         this.setUpItemDetails(itemUri, itemName);
                     }
                     else {
