@@ -17,10 +17,6 @@ Ext.define('Savanna.itemView.view.itemQualities.ViewItemQualities', {
 
     hideHeaders: true,
 
-    style: {
-        'overflowY' : 'hidden !important'
-    },
-
     /*
      *  Addresses an issue in the ExtJS framework where height
      *  isn't being properly set.
