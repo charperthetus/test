@@ -94,18 +94,18 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
             if(!this.store.getAt(0).propertyGroupsStore.getById('Annotations').valuesStore.getById('Quantity')) {
                 this.storeHelper.addGroupItemInStore('Annotations'
                     , 'Quantity'
-                    , 'TBD'
+                    , 'thetus%2EInformationEntityOntology%3Aquantitative_property_measurement%2FModelProperty'
                     , this.store.getAt(0).propertyGroupsStore.getById('Annotations').valuesStore);
             } else {
                 var qunit = this.store.getAt(0).propertyGroupsStore.getById('Annotations').valuesStore.getById('Quantity').valuesStore.getAt(0).data.value.split('_');
                 var quantity = qunit[0];
-                var unit = qunit[1];
-
+                var unit = null;
+                if(2 === qunit.length) {
+                    unit = qunit[1];
+                }
                 this.getQuantityValue().setValue(quantity);
                 this.getQuantityUnit().setValue(unit);
             }
-
-
         }
     },
 
