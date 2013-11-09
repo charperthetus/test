@@ -44,7 +44,7 @@ Ext.define('Savanna-Theme.toolbar.Paging', {
      * The quicktip text displayed for the first page button.
      * **Note**: quick tips must be initialized for the quicktip to show.
      */
-    firstText : 'First Page',
+    firstText : 'First page',
     //</locale>
 
     //<locale>
@@ -53,7 +53,7 @@ Ext.define('Savanna-Theme.toolbar.Paging', {
      * The quicktip text displayed for the previous page button.
      * **Note**: quick tips must be initialized for the quicktip to show.
      */
-    prevText : 'Previous Page',
+    prevText : 'Previous page',
     //</locale>
 
     //<locale>
@@ -62,7 +62,7 @@ Ext.define('Savanna-Theme.toolbar.Paging', {
      * The quicktip text displayed for the next page button.
      * **Note**: quick tips must be initialized for the quicktip to show.
      */
-    nextText : 'Next Page',
+    nextText : 'Next page',
     //</locale>
 
     //<locale>
@@ -71,7 +71,7 @@ Ext.define('Savanna-Theme.toolbar.Paging', {
      * The quicktip text displayed for the last page button.
      * **Note**: quick tips must be initialized for the quicktip to show.
      */
-    lastText : 'Last Page',
+    lastText : 'Last page',
     //</locale>
 
     //<locale>

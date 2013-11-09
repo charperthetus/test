@@ -47,7 +47,7 @@ Ext.define('Savanna.itemView.view.header.EditHeader', {
         },
         {
             xtype: 'auto_complete',
-            labelType: 'Click to add an Alias',
+            labelType: 'Click to add an alias',
             itemId: 'addAliasBox',
             showTags: true,
             hasNoStore: true
@@ -64,7 +64,7 @@ Ext.define('Savanna.itemView.view.header.EditHeader', {
             items: [
                 {
                     xtype: 'auto_complete',
-                    labelType: 'Click to add an Intended Use',
+                    labelType: 'Click to add an intended use',
                     showTags: true,
                     itemId: 'addIntendedUseBox',
                     store: Ext.create('Savanna.itemView.store.AutoCompleteStore', {
@@ -76,7 +76,8 @@ Ext.define('Savanna.itemView.view.header.EditHeader', {
                 {
                     xtype: 'button',
                     itemId: 'intendedUseChooserBtn',
-                    glyph: 'searchBinoculars'
+                    glyph: 'searchBinoculars',
+                    tooltip: "Click to browse intended uses"
                 }
             ]
         },
@@ -97,7 +98,8 @@ Ext.define('Savanna.itemView.view.header.EditHeader', {
                 {
                     xtype: 'button',
                     itemId: 'parentChooser',
-                    glyph: 'searchBinoculars'
+                    glyph: 'searchBinoculars',
+                    tooltip: "Click to browse types"
                 }
             ]
         },
@@ -107,6 +109,7 @@ Ext.define('Savanna.itemView.view.header.EditHeader', {
             itemId: 'itemDescription',
             name: 'description',
             width: '100%',
+            emptyText: 'Click to add a description',
             value: '',
             grow: true
         }
