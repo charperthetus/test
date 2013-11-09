@@ -70,7 +70,7 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
                 url: SavannaConfig.itemViewUrl + encodeURI(classUri) + '/instance/type;jsessionid=' + Savanna.jsessionid,
                 jsonData: classUri,
                 method: 'POST',
-                success: function(response){
+                success: function(){
                     // nothing to do
                     me.getCanvas(diagram).fireEvent('itemInstanceCreated');
                 },

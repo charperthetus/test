@@ -243,7 +243,7 @@ Ext.define('Savanna.process.controller.ProcessController', {
 
     confirmClosed: false,
 
-    isStoreDirty: function(store){
+    isStoreDirty: function(){
         return true;  //hack for now
         //todo - figure out how to get the store to correctly manage dirtyness
 //        var isDirty = false;
