@@ -39,22 +39,12 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
             component.tabConfig = {
                 ui: 'dark'
             }
-            // Our secondarytabpanel does not allow tabs to close so we need to explicitly close them for now.
-            // If the view doesn't already handle the close we will here.
-            if (!component.hasListener('beforeclose')){
-                component.on('beforeclose',this.onBeforeClose);
-            }
             var tab = tabPanel.add(component);
             tabPanel.doLayout();
             tabPanel.setActiveTab(tab);
         }else{
             //TODO - What should I do here?
         }
-    },
-
-    onBeforeClose: function(panel) {
-        panel[panel.closeAction]();
-        return false;
     },
 
     createItem: function() {
