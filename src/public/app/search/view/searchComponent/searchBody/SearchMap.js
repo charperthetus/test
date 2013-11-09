@@ -59,7 +59,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.SearchMap', {
                     text: 'Zoom To',
                     menu: [
                         {
-                            itemId: ' ',
+                            itemId: 'zoomToWholeWorld',
                             text: 'Whole World',
                             disabled: false
                         },
