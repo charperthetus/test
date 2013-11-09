@@ -285,8 +285,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     },
 
     updateViewWithStoreData: function (record) {
-
-        console.log(record);
+        
         var me = this;
         this.storeHelper.init(this.store);
 
