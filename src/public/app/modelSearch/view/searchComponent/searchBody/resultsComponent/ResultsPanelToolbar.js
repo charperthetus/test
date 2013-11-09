@@ -35,7 +35,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
                 editable: false,
                 displayField: 'name',
                 valueField: 'count',
-                value: '20'
+                value: '20 results per page'
             },'->',{
                 xtype: 'pagingtoolbar',
                 itemId: 'gridtoolbar',

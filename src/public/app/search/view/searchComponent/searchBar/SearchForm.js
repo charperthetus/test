@@ -9,9 +9,13 @@ Ext.define('Savanna.search.view.searchComponent.searchBar.SearchForm', {
         ],
 
         border: false,
+        hideAdvancedLink: false,
 
         initComponent:function()    {
             this.callParent(arguments);
+            if(this.hideAdvancedLink){
+               this.down('#searchadvanced_btn').destroy();
+            }
         },
 
         items:  [
