@@ -7,7 +7,8 @@ Ext.define('Savanna.itemView.controller.ParentItemsController', {
 
     control: {
         filterParentItemsField: {
-            keydown: 'filterKeydown'
+            keydown: 'filterKeydown',
+            'onclearclick': 'closeTypeAhead'
         },
         parentitems_results: {
             live: true,
@@ -31,7 +32,13 @@ Ext.define('Savanna.itemView.controller.ParentItemsController', {
     resetFiltering: function (me) {
         if (me.getView().filtering) {
             me.getView().filtering = false;
-            me.filterQualities();
+            if(me.getView().queryById('filterParentItemsField').getValue() == '') {
+                me.closeTypeAhead();
+            }   else    {
+                me.getView().getLayout().setActiveItem(0);
+                me.filterQualities();
+            }
+
         }
     },
 
@@ -48,6 +55,7 @@ Ext.define('Savanna.itemView.controller.ParentItemsController', {
 
     selectParentItemUri: function (grid, record, item, index, e, eOpts) {
         this.getView().up('itemview_create_item').selectedParentUri = record.get('uri');
+        this.getView().up('itemview_create_item').selectedParentLabel = record.get('label');
     },
 
     getParentItemResult: function (grid, record, item, index, e, eOpts) {
