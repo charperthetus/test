@@ -10,11 +10,10 @@ Ext.define('Savanna.process.controller.MetadataController', {
     control: {
         view: {
             processUriChange: 'setUpProcessDetails',
-            processclose: 'onProcessClose'
+            processclose: 'onProcessClose',
+            itemReadyForDisplay: 'showTheItemViewAlready'
         },
-        hiddenPanel: {
-            boxready: 'onBeforeHiddenPanelShow'
-        },
+        hiddenPanel: true,
         fullProcessMetadata:  {
             boxready: 'addFullProcessMetadataListeners'
         },
@@ -74,6 +73,7 @@ Ext.define('Savanna.process.controller.MetadataController', {
         var itemUri = encodeURIComponent(this.getDiagram().selection.first().data.representsItemUri);
         // this is an item
         this.setUpItemDetails(itemUri);
+
     },
 
     setUpProcessDetails: function(itemUri) {
@@ -89,10 +89,7 @@ Ext.define('Savanna.process.controller.MetadataController', {
     },
 
     setUpItemDetails: function(itemUri,itemName) {
-        this.getItemMetadata().show();
-
         this.getItemMetadata().fireEvent('processItemUriChanged', itemUri,itemName);
-        this.getHiddenPanel().getLayout().setActiveItem(this.getItemMetadata());
     },
 
     addFullProcessMetadataListeners: function(process_details) {
@@ -108,10 +105,6 @@ Ext.define('Savanna.process.controller.MetadataController', {
         //console.log('processSelectionChanged selection size', this.getDiagram().selection.count);
     },
 
-    onBeforeHiddenPanelShow: function() {
-        //this.getHiddenPanel().getTabBar().setVisible(false);
-    },
-
     saveChanges: function() {
         // TODO: save the existing set of changes, if any
         this.getHiddenPanel().getLayout().getActiveItem().fireEvent('savechanges');
@@ -119,5 +112,9 @@ Ext.define('Savanna.process.controller.MetadataController', {
 
     onProcessClose: function() {
         this.saveChanges();
+    },
+
+    showTheItemViewAlready: function() {
+        this.getHiddenPanel().getLayout().setActiveItem(this.getItemMetadata());
     }
 });
