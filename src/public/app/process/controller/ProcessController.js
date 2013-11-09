@@ -12,7 +12,8 @@ Ext.define('Savanna.process.controller.ProcessController', {
         'Savanna.process.utils.ProcessUtils',
         'Savanna.process.utils.ViewTemplates',
         'Savanna.process.store.Processes',
-        'Savanna.process.view.part.Overview' //added dynamically later
+        'Savanna.process.view.part.Overview', //added dynamically later
+        'Savanna.workflow.view.WorkflowSelect'
     ],
     store: null,
 
@@ -34,6 +35,9 @@ Ext.define('Savanna.process.controller.ProcessController', {
         },
         redo: {
             click: 'handleRedo'
+        },
+        workflow: {
+            click: 'onWorkflowSelect'
         },
         merge: {
             click: 'handleMerge'
@@ -141,6 +145,12 @@ Ext.define('Savanna.process.controller.ProcessController', {
 
     handleRedo: function() {
         this.getCanvas().diagram.undoManager.redo();
+    },
+
+    onWorkflowSelect: function () {
+        Ext.create('Savanna.workflow.view.WorkflowSelect', {
+            uri: this.store.getAt(0).data.uri
+        });
     },
 
     handleMerge: function() {

@@ -7,7 +7,8 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
     requires: [
         'Savanna.itemView.store.MainItemStore',
-        'Savanna.itemView.store.ItemViewStoreHelper'
+        'Savanna.itemView.store.ItemViewStoreHelper',
+        'Savanna.workflow.view.WorkflowSelect'
     ],
 
     store: null,
@@ -401,9 +402,8 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
 
     onWorkflowSelect: function () {
-        Ext.create('Savanna.itemView.view.workflow.WorkflowSelect', {
-            width: 500,
-            height: 425
+        Ext.create('Savanna.workflow.view.WorkflowSelect', {
+            uri: this.store.getAt(0).data.uri
         });
     },
 
