@@ -126,10 +126,6 @@ Ext.define('Savanna.process.controller.ProcessController', {
 
     createNewProcess: function(diagram) {
         var me = this;
-        var newProcess = {'class': 'go.GraphLinksModel', 'nodeKeyProperty': 'uri', 'nodeDataArray': [{'category':'Start'}], 'linkDataArray': []};
-        newProcess.nodeDataArray[0].uri = this.utils().getURI('Start');
-        this.store.add(newProcess);
-        this.load(diagram, this.store.first());
 
         // make a process instance
         Ext.Ajax.request({
@@ -139,7 +135,11 @@ Ext.define('Savanna.process.controller.ProcessController', {
                 if (response.responseText.charAt(0) === '{') {
                     //looks like good json
                     var message = Ext.decode(response.responseText);
+                    var newProcess = {'class': 'go.GraphLinksModel', 'nodeKeyProperty': 'uri', 'nodeDataArray': [{'category':'Start'}], 'linkDataArray': []};
                     newProcess.uri = message.uri;
+                    newProcess.nodeDataArray[0].uri = me.utils().getURI('Start');
+                    me.store.add(newProcess);
+                    me.load(diagram, this.store.first());
                     me.getView().down('#processSidepanel').fireEvent('processUriChange', encodeURIComponent(message.uri));
                 } else {
                     // probably an error page even though we got a 200
