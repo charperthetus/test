@@ -206,9 +206,8 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
             this.getView().getLayout().setActiveItem(0);
             this.getView().setEditMode(!this.getView().getEditMode());
             
-            // Have to wait to redraw the screen after we've switched views due to a framwork bug where height isn't being properly set
+            // Have to wait to redraw the screen after we've switched views due to a framework bug where height isn't being properly set
             //  And we set it manually.
-            this.store.getAt(0).data.label = this.getView().queryById('itemViewHeaderEdit').queryById('itemNameField').value;
             this.getView().setTitle(this.store.getAt(0).data.label);
 
             var headerComponent = this.getView().queryById('itemViewHeaderView');

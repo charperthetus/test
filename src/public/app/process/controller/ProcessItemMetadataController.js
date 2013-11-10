@@ -78,7 +78,7 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
     handleRecordDataRequestSuccess: function(record, operation, success) {
         if(success) {
             this.storeHelper.init(this.store);
-            this.getItemTitle().setValue(this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Type').data.values[this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Type').data.values.length - 1].label);
+            this.getItemTitle().setValue(this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Type').data.values[0].label);
 
             if (this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Description').valuesStore.getAt(0)) {
                 this.getItemDescription().setValue(this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Description').valuesStore.getAt(0).data.value);

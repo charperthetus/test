@@ -34,8 +34,8 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
         itemDescription: {
             blur: 'updateDescription'
         },
-        itemNameField:  {
-            keyup:  'onItemNameKeyup'
+        itemNameField: {
+            blur: 'updateHeader'
         }
     },
 
@@ -112,12 +112,6 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
         });
     },
 
-    onItemNameKeyup:function()  {
-        if (this.getView().up('itemview_itemviewer').queryById('editSaveButton').disabled) {
-            this.getView().up('itemview_itemviewer').queryById('editSaveButton').enable();
-        }
-    },
-
     onIntendedUsesSelect:function() {
         var valNameArray = [];
 
@@ -173,13 +167,14 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
 
     updateDescription: function(comp, e, eOpts) {
         var value = {label: "Description", comment: null, value: comp.value};
-        this.storeHelper.updateBotLevItemInStore("Description", value, this.getView().store.getById('Description'));
+        this.getView().storeHelper.updateBotLevItemInStore("Description", value, this.getView().store.getById('Description'));
         this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
     },
 
     updateHeader: function(comp) {
-        var myStore = this.getView().store;
-        myStore.getById('Label').data.values[0].value = comp.value;
+        var value = {label: comp.value, comment: null, value: comp.value};
+        this.getView().storeHelper.updateBotLevItemInStore(null, value, this.getView().store.getById('Label'));
+        this.getView().storeHelper.fetchMainStore().getAt(0).data.label = comp.value;
         this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
     }
 });
