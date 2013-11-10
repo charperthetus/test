@@ -37,7 +37,8 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
         itemUri: null,
         editMode:false,
         itemStore:null,
-        selectedParentUri: null
+        selectedParentUri: null,
+        selectedParentLabel: null
     },
 
     constructor: function(configs) {
