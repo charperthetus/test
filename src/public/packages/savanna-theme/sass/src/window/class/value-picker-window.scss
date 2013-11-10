@@ -7,7 +7,7 @@
   }
   .#{$prefix}panel-header-body{
     .#{$prefix}header-text{
-      color: $dark_font;
+      color: $dark-color;
     }
   }
   .#{$prefix}panel-body{
@@ -36,10 +36,22 @@
     background-color: $white-grid-row-cell-focus-background-color;
   }
 
+
+
+  #valueCheck, #relationshipCheck, #qualityCheck{
+    margin-top: 0;
+  }
+}
+.value-picker-row{
   .#{$prefix}grid-row-over .#{$prefix}grid-td {
     border-color: $white-grid-row-cell-over-border-color;
     background-color: $white-grid-row-cell-over-background-color;
   }
-
-
+}
+.value-picker-row-hover{
+  .#{$prefix}grid-row-over .#{$prefix}grid-td {
+    #removeSelectedValue, #removeSelectedQuality{
+      display:inline;
+    }
+  }
 }

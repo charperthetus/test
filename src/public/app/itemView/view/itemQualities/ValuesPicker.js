@@ -47,6 +47,7 @@ Ext.define('Savanna.itemView.view.itemQualities.ValuesPicker', {
             title: 'Available Values',
             padding: '0 0 15 0',
             itemId: 'availableValuesGroup',
+            cls:'value-picker-row',
             height: 285,
             width: '100%',
             hideHeaders: true,
@@ -70,6 +71,7 @@ Ext.define('Savanna.itemView.view.itemQualities.ValuesPicker', {
             xtype: 'grid',
             title: 'Selected Values',
             itemId: 'selectedValuesGroup',
+            cls:'value-picker-row-hover',
             height: 150,
             width: '100%',
             hideHeaders: true,
@@ -91,13 +93,13 @@ Ext.define('Savanna.itemView.view.itemQualities.ValuesPicker', {
 
     buttons: [
         {
-            text: 'OK',
+            text: 'Add',
             itemId: 'okBtn',
             ui:'commit',
             margin:'0 0 10 0'
         },
         {
-            text: 'cancel',
+            text: 'Cancel',
             itemId: 'cancelBtn'
         }
     ],

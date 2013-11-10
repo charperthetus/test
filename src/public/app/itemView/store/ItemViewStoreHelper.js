@@ -10,6 +10,11 @@ Ext.define('Savanna.itemView.store.ItemViewStoreHelper', {
     store: null,
     mainStore: null,
 
+    requires: [
+        'Ext.data.IdGenerator',
+        'Ext.data.UuidGenerator'
+    ],
+
     init: function(store) {
         this.store = store;
         this.mainStore = store.getAt(0).data.propertyGroups;
@@ -17,6 +22,10 @@ Ext.define('Savanna.itemView.store.ItemViewStoreHelper', {
 
     itemUri: function() {
         return this.store.getAt(0).data.uri;
+    },
+
+    fetchMainStore: function() {
+        return this.store;
     },
 
     updateMainStore: function(store, componentName) {
@@ -62,6 +71,26 @@ Ext.define('Savanna.itemView.store.ItemViewStoreHelper', {
         }
     },
 
+    /*
+     *  Get Bottom Leaf Store
+     *
+     *  Returns a collection of "leafs" from a store. This iterates three levels
+     *  deep and returns an Array of values.
+     *
+     *  @param {store} The store object to iterate over
+     */
+    getBotLevItemInStore: function(store) {
+        var results = [];
+        Ext.Array.each(store, function(model) {
+            Ext.Array.each(model.data.items, function(values) {
+                Ext.Array.each(values.data.values, function(leaf) {
+                    results.push(leaf);
+                });
+            });
+        });
+        return results;
+    },
+
     addBotLevItemInStore: function(tagName, tagData, store) {
         var tagUri = tagData ? tagData.uri : null;
         var tagModel = this.createNewBottomLevelModelInstance(tagName, tagUri);
@@ -78,6 +107,16 @@ Ext.define('Savanna.itemView.store.ItemViewStoreHelper', {
         }
 
         store.valuesStore.remove(store.valuesStore.getById(tagName));
+    },
+
+    removeBotLevItemInStoreByUri: function(uri, store) {
+        for (var i = 0; i < store.data.values.length; i++) {
+            if (store.data.values[i].value === uri) {
+                Ext.Array.remove(store.data.values, store.data.values[i]);
+                store.valuesStore.remove(store.valuesStore.getAt(i));
+                break;
+            }
+        }
     },
 
     createNewModelInstance: function(label, uri) {
@@ -97,11 +136,16 @@ Ext.define('Savanna.itemView.store.ItemViewStoreHelper', {
         var mod = Ext.create('Savanna.itemView.model.PropertyGroupValueValueModel');
         mod.data.id = label;
         mod.data.label = label;
-        mod.data.uri = uri;
-//        mod.data.value = label;
+        mod.data.uri = this.getUUID();
+        mod.data.value = uri ? uri : label;
         mod.data.editable = true;
-//        mod.data.version = 0;
-//        mod.data.inheritedFrom = null;
+        mod.data.version = 0;
+        mod.data.inheritedFrom = null;
         return mod;
+    },
+
+    getUUID: function() {
+        var uuid = Ext.data.IdGenerator.get('uuid').generate();
+        return 'x' + uuid  + '/' + "ModelProperty";
     }
 });

@@ -76,6 +76,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.searchDals.CustomGrou
                 config.store = dalFilterStore;
                 config.value = dalFilterStore.first().get('value');
                 config.valueField = 'value';
+                config.pickerOffset = [0,-8];
                 config.displayField = 'value';
                 config.forceSelection = true;
                 config.queryMode = 'local';

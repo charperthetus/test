@@ -25,19 +25,17 @@ Ext.define('Savanna.metadata.view.Date', {
             var myDate = null;
             if(null !== me.value) {
                 myDate = new Date(me.getValue());
-                displayValue = Ext.Date.format(myDate,'Y-m-d\\TH:i:s.m\\Z')
+                displayValue = Ext.Date.format(myDate,'Y-m-d\\TH:i:s.m\\Z');
             }
 
             if(me.getEditable() && me.getEditMode()) {
-                if(me.down('#editLabelItem')) {
-                    me.down('#editLabelItem').html = me.getDisplayLabel() + ':&nbsp;&nbsp;';
-                }
+                me.setTitle(me.getDisplayLabel() + ':&nbsp;&nbsp;');
+                
             } else {
-                if(me.down('#displayLabelItem')) {
-                    me.down('#displayLabelItem').html = me.getDisplayLabel() + ':&nbsp;&nbsp;';
-                }
+                me.setTitle(me.getDisplayLabel() + ':&nbsp;&nbsp;');
+            
                 if(me.down('#displayValue')) {
-                    me.down('#displayValue').html = displayValue;
+                    me.down('#displayValue').setValue(displayValue);
                 }
             }
 
@@ -46,17 +44,10 @@ Ext.define('Savanna.metadata.view.Date', {
 
     makeEditViewItems: function() {
         var me = this;
-        this.layout = 'vbox';
-        this.add(Ext.create('Ext.form.Label', {
-            itemId: 'editLabelItem',
-            width: 180,
-            minWidth: 180,
-            height: 25
-        }));
 
         this.add(Ext.create('Savanna.component.DatePicker', {
             itemId: 'displayValueEdit',
-            jsDate: new Date(me.getValue()),
+            jsDate: (null !== me.getValue()) ? new Date(me.getValue()) : null,
             renderTo: Ext.getBody(),
             listeners: {
                 focusLost: function(picker) {
@@ -65,12 +56,10 @@ Ext.define('Savanna.metadata.view.Date', {
                     }
                 }
             }
-
          }));
     },
 
     makeViewViewItems: function() {
-        this.layout = 'hbox';
         this.callParent(arguments);
     }
 

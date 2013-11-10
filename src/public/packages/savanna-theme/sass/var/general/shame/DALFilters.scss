@@ -1,69 +1,45 @@
-// Since some UI is set to full width and others are not, we have to 
-// explicitly set padding on elements that need it, so siblings can be
-// 100% width.
+// // Since some UI is set to full width and others are not, we have to 
+// // explicitly set padding on elements that need it, so siblings can be
+// // 100% width.
 
-/*
- *	@private variables
- */ 
-$prefix: 'x-';
-$dal-panel-padding: 20px;
-$dal-hover-background-color: #ebf1f4;
-$dal-panel-spacing: 10px;
-$dal-panel-padding-text: $dal-panel-padding + 90px;
+// /*
+//  *	@private variables
+//  */ 
 
-
-/*
- *	@runtime CSS
- */	
-.search-dal {
-	.search-sources-toolbar {
-		margin-bottom: 15px;
-		padding: 0 $dal-panel-padding 0;
+.search-dal.x-panel-default{
+	border-bottom: 1px solid #ccc;
+	padding: 10px 10px 4px 10px;
+	
+	&:first-child{
+		border-top: 1px solid #ccc;
 	}
 
-	// Ext JS uses this element to calculate the filter bar's height
-	// To that end, margin acts almost as a height "buffer"
-	// Act accordingly!
-	.dal-checkbox {
-		margin: $dal-panel-spacing 0 $dal-panel-spacing+5;
-		position: relative;
-		left: $dal-panel-padding;
-		font-weight: bold;
+	.x-btn-default-small .x-btn-inner{
+		padding: 0;
 	}
-	.dal-label {
-		color: $dark-gray;
-		position: absolute;
-		white-space: nowrap;
-		text-overflow: ellipsis;
-		left: 210px;
-		top: $dal-panel-spacing + 1;
-	}
-	.dal-toggle {
-		position: absolute;
-		right: $dal-panel-padding;
-		top: $dal-panel-spacing - 1;
-		min-width: 127px;
-
-	}
-	.dal-text {
-		position: absolute;
-		right: $dal-panel-padding-text;
-		top: $dal-panel-spacing + 25px;
-		background-color: transparent;
-		border: none;
-		background: transparent;
-
-		.#{$prefix}btn-inner{
-			color: $thetus-blue;
+	.dal-checkbox{
+		float: left;
+		margin-top: -4px;
+		margin-right: 10px;
+		
+		label {
+			font-weight: bold;
 		}
 	}
-}
-.#{$prefix}box-item.search-dal {
- 	padding: 0;
- 	border-top: 1px solid #ededed;
-	
-	.#{$prefix}form-cb-label-after{
-		margin-right: 15px;
+	.dal-toggle{
+		float: right;
 	}
- 	
+	.dal-text{
+		clear: both;
+		float: right;
+		margin-right: 83px;
+		margin-top: -5px;
+	}
+	.search-dal-group{
+		margin-left: -5px;
+		margin-bottom: 10px;
+	}
+	.x-panel-body-search-dal-group-closable {
+		margin-bottom: -10px;
+	}
 }

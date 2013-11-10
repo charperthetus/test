@@ -13,7 +13,8 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
         'Savanna.desktop.view.SearchWindow',
         'Savanna.desktop.view.UploadWindow',
         'Savanna.desktop.view.ModelSearchWindow',
-        'Savanna.itemView.view.ItemViewer'
+        'Savanna.itemView.view.ItemViewer',
+        'Savanna.classification.view.ClassificationWindow'
     ],
     statics: {
         aboutwindow: null,
@@ -32,6 +33,7 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
         uploadbutton: {
             click: 'displayUploadDialog'
         },
+
         //TODO - commented until we have a real help page to link to
 //        helpbutton: {
 //            click: 'launchHelp'
@@ -59,7 +61,8 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
             }
         });
 
-        Savanna.app.on('initModelSearch', this.displayModelSearch);
+        EventHub.on('openModelSearch', this.displayModelSearch);
+        EventHub.on('openSearch', this.displaySearch);
 
         return this.callParent(arguments);
     },
@@ -84,6 +87,7 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
     displaySearch: function() {
         if (!this.statics().searchwindow) {
             this.statics().searchwindow = Ext.create('Savanna.desktop.view.SearchWindow', {closeAction: 'hide'});
+            this.statics().searchwindow.on('show',this.onSearchWindowsShow);
         }
         var searchWindow = this.statics().searchwindow;
         searchWindow.show();
@@ -106,6 +110,11 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
         }
         uploadWindow.show();
         uploadWindow.center();
+    },
+
+    onSearchWindowsShow:function(window){
+        var searchbar = window.down('#search_terms');
+        searchbar.focus(false, 100);
     },
 
     launchHelp: function() {
@@ -133,6 +142,7 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
     displayModelSearch: function() {
         if (!this.statics().modelSearchWindow) {
             this.statics().modelSearchWindow = Ext.create('Savanna.desktop.view.ModelSearchWindow', {closeAction: 'hide'});
+            this.statics().modelSearchWindow.on('show',this.onSearchWindowsShow);
         }
         var searchWindow = this.statics().modelSearchWindow;
         searchWindow.show();

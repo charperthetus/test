@@ -81,7 +81,7 @@
 
   .supporting-resources-drop-zone{
     .inner-edit-zone{
-      border:2px dashed #959595;
+      border:1px dashed #959595;
       padding:0px 10px 0;
       margin:0 auto !important;
     }
@@ -94,6 +94,10 @@
       text-align: center;
       position: static;
     }
+  }
+
+  .#{$prefix}btn-glyph{
+    color:$dark-color;
   }
 }
 .white-grid-view-panel-edit{
@@ -111,20 +115,20 @@
     padding:0 10px;
   }
   .related-item-drop-zone{
-    border:2px dashed #959595;
+    border:1px dashed #959595;
     padding:0px 10px 0;
   }
 
   .image-browser-drop-zone{
     .inner-edit-zone{
-      border:2px dashed #959595;
+      border:1px dashed #959595;
       padding:0px 10px 0;
       margin:0 auto !important;
     }
   }
 
   .#{$prefix}btn-glyph{
-    color:$dark_font;
+    color:$dark-color;
   }
 
 

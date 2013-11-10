@@ -58,7 +58,8 @@ Ext.define('Savanna.components.autoComplete.AutoComplete', {
 
     buildItems: function() {
         // If autocomplete has additional controls, generate a space to insert them.
-        var closeButton = (this.getIsClosable()) ? Ext.create('Ext.button.Button', { glyph: 'closeRollover', itemId: 'closeautocomplete' }) : {};
+        var closeButton = (this.getIsClosable()) ? Ext.create('Ext.button.Button', { glyph: 'closeRollover', itemId: 'closeautocomplete', height:43,
+            cls:'edit-qualities-button' }) : {};
 
         return [
             {
@@ -92,25 +93,49 @@ Ext.define('Savanna.components.autoComplete.AutoComplete', {
                 itemId: 'tagsList',
                 width: '100%',
                 items: [],
-                margin:'2 0 0 0'
+                margin:'1 0 0 0'
             }
         ];
     },
 
-    addTag: function (tag) {
+    /*
+     *  Add Tag
+     *
+     *  Method that inserts the tag into the view, accepts the tag text and the
+     *  editable state.
+     *
+     *  @param tag {string} The text to be inserted into the tag
+     *  @param editable {boolean} If the tag can be edited
+     */
+    addTag: function (tag, editable) {
         var newTag = Ext.create('Savanna.components.tags.Tag', {
-            itemId: 'tag_' + tag.replace(/[\s'"]/g, "_")
+            disabled: ( editable !== undefined ) ? !editable : false
         });
 
         newTag.setTerm(tag);
         this.queryById('tagsList').add(newTag);
     },
 
+    /*
+     *  Remove Tag
+     *
+     *  Method that destorys the tag, checking if it's disabled first.
+     *
+     *  @param view {object} The ExtJS View Object
+     */
     removeTag: function (view) {
-        var myTag = view.itemId;
-        this.queryById('tagsList').remove(myTag);
+        if(!view.disabled) {
+            view.destroy();
+        }
     },
 
+    /*
+     *  Clear Tags
+     *
+     *  Method that removes all tags inside the component.
+     *
+     *  @param {none}
+     */
     clearTags: function () {
         this.queryById('tagsList').removeAll();
     }

@@ -37,10 +37,9 @@ Ext.define('Savanna.metadata.controller.MetadataViewController', {
             click: 'handleCancel'
         },
         view: {
-            create_metadata_fields: 'createMetadataFields'
+            create_metadata_fields: 'createMetadataFields',
+            update_Uri: 'updateUri'
         }
-
-
     },
 
     store: null,
@@ -73,8 +72,10 @@ Ext.define('Savanna.metadata.controller.MetadataViewController', {
             Ext.Array.each(theStore.data.items, function(storeData) {
                 if(storeData.get('key') == key) {
                     if(storeData.get('value') !== metadata.value || ( Ext.isArray(metadata.value) && !Ext.Array.equals(metadata.value, storeData.get('value'))  )) {
+                        // classification must be handled separately
+                        // the sync request will fail if the classification metadata is changed
                         if(key === 'classification') {
-                            me.saveClassification(metadata.getValue());
+                            me.saveClassification(metadata.value);
                         } else {
                             storeData.set('value', metadata.value);
                             stuffChanged = true;
@@ -100,14 +101,6 @@ Ext.define('Savanna.metadata.controller.MetadataViewController', {
             this.getMetadata_save_button().hide();
             this.getMetadata_cancel_button().hide();
             this.getMetadata_edit_button().show();
-        }
-
-        var itemUri = this.getView().getItemURI();
-        if(itemUri) {
-            this.store = Ext.create('Savanna.metadata.store.Metadata', {
-                itemURI: itemUri
-            });
-            this.loadStore();
         }
         return this.callParent(arguments);
     },
@@ -228,6 +221,7 @@ Ext.define('Savanna.metadata.controller.MetadataViewController', {
     },
 
     onClassificationSaved: function() {
+        // the classification banner controller is listening for this event to be fired
         EventHub.fireEvent('classificationchanged', this.getView().getItemURI());
         this.loadStore();
     },
@@ -235,11 +229,21 @@ Ext.define('Savanna.metadata.controller.MetadataViewController', {
     loadStore: function() {
         this.store.load({
             scope: this,
-            callback: function(records, operation, success) {
+            callback: function() {
                 this.createMetadataFields();
             }
         });
+    },
+
+    updateUri: function(itemUri) {
+        if(this.store) {
+            this.store.itemURI = itemUri;
+            this.loadStore();
+        } else {
+            this.store = Ext.create('Savanna.metadata.store.Metadata', {
+                itemURI: itemUri
+            });
+            this.loadStore();
+        }
     }
-
-
 });

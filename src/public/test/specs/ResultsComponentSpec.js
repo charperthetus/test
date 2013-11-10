@@ -614,7 +614,6 @@ describe('Search Results', function () {
                 var searchStore;
 
                 beforeEach(function () {
-                    console.log(searchComponent);
                     searchStore = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.SearchResults', { autoLoad: false });
 
                     // now set up server to get store data
@@ -988,11 +987,10 @@ describe('Search Results', function () {
             });
 
             it('should populate the map with search results', function () {
-                var scope = searchComponent.down('#resultsdals');
+                var resultDal = searchComponent.down('#resultsdals');
                 var resultsMap = searchComponent.down('#resultMapCanvas');
-                var results = {};
-                results.store = searchStore;
-                resultsController.loadPointsFromStore(results, scope);
+                resultDal.store = searchStore;
+                resultsController.loadPointsFromStore(resultDal);
                 expect(resultsMap.resultsLayer.features.length > 0).toBeTruthy();
             });
         });
@@ -1008,41 +1006,6 @@ describe('Search Results', function () {
 
         });
 
-        it('should retreive document metadata via getDocumentMetadata', function () {
-
-            var metadataArray = [];
-
-            Ext.each(resultsComponent.currentResultSet.store.data.items, function (record) {
-                metadataArray.push(record.get('uri'));
-            });
-
-            resultsController.getDocumentMetadata(resultsComponent.currentResultSet, metadataArray);
-
-            expect(Ext.data.StoreManager.lookup('searchMetadata_' + resultsComponent.currentResultSet.id)).toBeTruthy();
-
-        });
-
-        it('should set metadata for the current result set via metadataCallback', function()    {
-
-            resultsController.metadataCallback(metadataFixtures.resultsMetadataResponse, 'read', true, resultsComponent.currentResultSet);
-
-            expect(resultsComponent.currentResultSet.metadata).toBeTruthy();
-        });
-
-        it('should update preview window content with metadata html', function()    {
-            var contentView = Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.ResultsPreviewContent');
-            spyOn(contentView.queryById('previewcontent'), 'update');
-
-            var metadataStore = Ext.create('Savanna.search.store.ResultsMetadata');
-
-            metadataStore.data  = metadataFixtures.resultsMetadataResponse['SolrJdbc%2FText%2Fb963c8e9-a45e-4fd3-b4b7-5c3cf099195e'];
-
-            contentView.populate(searchStore.getAt(0), metadataStore, 0, 848);
-
-            expect(contentView.queryById('previewcontent').update).toHaveBeenCalled();
-
-        });
-
         describe('Controller Helper Functions', function () {
 
             it('should have a working getGrid helper function', function () {
@@ -1052,138 +1015,7 @@ describe('Search Results', function () {
             it('should have a working getGridStore helper function', function () {
                 expect(resultsController.getGridStore()).not.toBe(null);
             });
-
-            it('should be able to return the previewWindow', function () {
-                expect(resultsController.previewWindow()).not.toBe(null);
-            });
-
-            it('should be able to return the previous button on the preview Window', function () {
-                expect(resultsController.previewPrevButton()).not.toBe(null);
-            });
-
-            it('should be able to return the next button on the preview Window', function () {
-                expect(resultsController.previewPrevButton()).not.toBe(null);
-            });
         });
-
-        describe('Preview functions + controller', function () {
-            beforeEach(function () {
-
-                origErrorHandler = Ext.Error.handle;
-
-                Ext.Error.handle = function () {
-                    errorRaised = true;
-
-                    return true;
-                };
-
-                fixtures = Ext.clone(ThetusTestHelpers.Fixtures.SearchResults);
-
-                searchStore = ThetusTestHelpers.ExtHelpers.setupNoCacheNoPagingStore('Savanna.search.store.SearchResults', { autoLoad: false });
-
-                // now set up server to get store data
-                server = new ThetusTestHelpers.FakeServer(sinon);
-
-                var readMethod = 'POST',
-                    testUrl = ThetusTestHelpers.ExtHelpers.buildTestProxyUrl(searchStore.getProxy(), 'read', readMethod);
-
-                server.respondWith(readMethod, testUrl, fixtures.searchResults);
-
-
-                searchStore.load();
-
-                server.respond({
-                    errorOnInvalidRequest: true
-                });
-
-                //grid.store = searchStore;
-
-                resultsController.getGrid().store = store;
-
-                searchStore.load();
-
-                server.respond({
-                    errorOnInvalidRequest: true
-                });
-            });
-
-
-
-            describe('Test Record Zero', function () {
-
-                beforeEach(function () {
-                    var metadataArray = [];
-
-                    resultsController.getResultsComponent().currentResultSet = {id: 'mockDAL', store: searchStore, metadata:Ext.create('Savanna.search.store.ResultsMetadata', {
-                        storeId: 'searchMetadata_' + 'mockDAL',
-                        pageSize: 20
-                    })};
-
-                    Ext.each(resultsController.getResultsComponent().currentResultSet.store.data.items, function (record) {
-                        metadataArray.push(record.get('uri'));
-                    });
-
-                    resultsController.getDocumentMetadata(resultsController.getResultsComponent().currentResultSet, metadataArray);
-
-                    resultsController.previewIndex = 0;
-
-                    resultsController.setIsWaitingForDocumentMetadata ( false );
-                    resultsController.getIsWaitingForPreviewResults ( false );
-
-                    resultsController.getGrid().store = searchStore;
-
-                    resultsController.getResultsComponent().currentResultSet.metadata.add({id: 'SolrJdbc', datastore:{}});
-                    resultsController.getResultsComponent().currentResultSet.metadata.add({id: 'SolrJdbc%2FText%2F8eb9f8a1-3aca-4574-8217-8200f0627f90', datastore:{}});
-
-                    resultsController.getGridStore().getAt(0).set('uri', 'SolrJdbc');
-                    resultsController.getGridStore().getAt(1).set('uri', 'SolrJdbc%2FText%2F8eb9f8a1-3aca-4574-8217-8200f0627f90');
-
-
-                    resultsController.updatePreview();
-                });
-
-                it('should update the preview label for the first record', function () {
-                    var total = resultsController.getGridStore().totalCount;
-                    expect(resultsController.previewWindow().title).toBe('Preview Result 1 of ' + total);
-
-
-                });
-
-                it('should prev button disabled for first record', function () {
-                    expect(resultsController.previewPrevButton().disabled).toBeTruthy();
-                });
-
-                it('should next button enabled for first record', function () {
-                    expect(resultsController.previewNextButton().disabled).not.toBeTruthy();
-                });
-
-
-
-                it('should update the preview label for the second record', function () {
-
-                    var total = resultsController.getGridStore().totalCount;
-                    resultsController.onNextItemPreview();
-                    expect(resultsController.previewWindow().title).toBe('Preview Result 2 of ' + total);
-
-
-                });
-
-                it('should prev button disabled for second record', function () {
-                    resultsController.onNextItemPreview();
-                    expect(resultsController.previewPrevButton().disabled).not.toBeTruthy();
-                });
-
-                it('should next button enabled for second record', function () {
-                    resultsController.onNextItemPreview();
-                    expect(resultsController.previewNextButton().disabled).not.toBeTruthy();
-                });
-
-
-            });
-
-
-        });
-
 
         describe('onDalRender', function () {
 

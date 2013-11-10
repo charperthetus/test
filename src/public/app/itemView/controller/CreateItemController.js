@@ -28,17 +28,31 @@ Ext.define('Savanna.itemView.controller.CreateItemController', {
         'Savanna.itemView.store.MainItemStore'
     ],
 
+    config: {
+        creating: true
+    },
+
     onParentItemCommit: function () {
+        if(this.getView().creating)   {
+            this.itemStore = Ext.create('Savanna.itemView.store.MainItemStore');
 
-        this.itemStore = Ext.create('Savanna.itemView.store.MainItemStore');
+            this.itemStore.getProxy().url = SavannaConfig.itemCreateUrl;
+            this.itemStore.getProxy().setExtraParam("parentUri", this.getView().selectedParentUri);
 
-        this.itemStore.getProxy().url = SavannaConfig.itemCreateUrl;
-        this.itemStore.getProxy().setExtraParam("parentUri", this.getView().selectedParentUri);
+            this.itemStore.load({
+                scope: this,
+                callback: this.handleCreateSuccess
+            });
+        } else  {
+            /*
+             reparenting
+              */
 
-        this.itemStore.load({
-            scope: this,
-            callback: this.handleCreateSuccess
-        });
+            this.getView().viewer.getController().onParentSelected(this.getView().selectedParentUri, this.getView().selectedParentLabel);
+        }
+
+
+        this.getView().close();
     },
 
     onParentItemCancel: function () {
@@ -46,20 +60,7 @@ Ext.define('Savanna.itemView.controller.CreateItemController', {
     },
 
     handleCreateSuccess: function (records, operation, success) {
-        var itemView = Ext.create('Savanna.itemView.view.ItemViewer', {
-            title: records[0].data.label,
-            itemUri: records[0].data.uri,
-            itemStore: this.itemStore,
-            editMode: true,
-            closable: true,
-            autoScroll: true,
-            tabConfig: {
-                ui: 'dark'
-            }
-        });
-        Savanna.app.fireEvent('search:itemSelected', itemView);
-
-        this.getView().close();
-
+         EventHub.fireEvent('open', {uri: records[0].data.uri, label: records[0].data.label, type: 'item'}, {editMode:true});
+         this.getView().close();
     }
 });

@@ -42,33 +42,12 @@ Ext.define('Savanna.modelSearch.controller.ResultsComponent', {
                     me.component.on('search:grid:itemmouseenter', this.onItemMouseEnter, this);
                     me.component.on('search:grid:itemmouseleave', this.onItemMouseLeave, this);
 
-
-                    //The exception is for popups....
-                    //We can listen for events fired in  a popup this way (just like we did in Flex).
-                    var dispatcher = this.previewWindow();
-                    dispatcher.on('search:previewNextButton', this.onNextItemPreview, this);
-                    dispatcher.on('search:previewPrevButton', this.onPrevItemPreview, this);
                 }
             },
 
 
             'model_search_resultscomponent #resultsFacetsReset': {
                 'click': this.onDalReset
-            },
-            'model_search_searchcomponent #resultMapCanvas': {
-                beforerender: this.loadDefaultLayer,
-                afterrender: this.loadVectorLayer,
-                resize: this.onMapCanvasResize
-            },
-            'model_search_searchcomponent #resultspanel button': {
-                click: this.changeResultView
-            },
-            'model_search_searchcomponent #searchMapCanvas': {
-                searchPolygonAdded: this.addSearchPolygon,
-                searchPolygonRemoved: this.removeSearchPolygon
-            },
-            'model_search_searchcomponent model_search_resultsdals': {
-                mapNewSearchResults: this.loadPointsFromStore
             }
         });
 
@@ -143,7 +122,11 @@ Ext.define('Savanna.modelSearch.controller.ResultsComponent', {
     },
 
     getCurrentDalId: function () {
-        return this.getResultsComponent().currentResultSet.id;
+        var resultSet = this.getResultsComponent().currentResultSet;
+        if(resultSet){
+            return resultSet.id;
+        }
+        return 'SolrJdbc';
     },
 
     getIsWaitingForPreviewResults: function () {
@@ -302,7 +285,7 @@ Ext.define('Savanna.modelSearch.controller.ResultsComponent', {
     },
 
     //double click handler
-    onItemDoubleClick: function (grid, record, node, index) {
+    onItemDoubleClick: function (grid, record) {
         this.openUri(record);
     },
 
@@ -317,8 +300,8 @@ Ext.define('Savanna.modelSearch.controller.ResultsComponent', {
     },
 
     onItemClick: function (view, rec, node, index, e) {  //other parameter options
-        if (e && e.target && e.target.id) {
-            if (e.target.id === 'openButton') {
+        if (e && e.target && e.target.className) {
+            if (e.target.className.indexOf('openButtonClass') != -1) {
                 this.openUri(rec);
             }
         }
@@ -392,6 +375,12 @@ Ext.define('Savanna.modelSearch.controller.ResultsComponent', {
         var searchComponent = this.getResultsComponent().findParentByType('model_search_searchcomponent');
         var currentDalPanel = searchComponent.down('#searchdals').queryById(id);
         var searchString = searchComponent.queryById('searchbar').buildSearchString();
+
+        //When we get a new size, we start again at page 1--like google.
+        if(searchController.resultsStore.pageSize != newSize) {
+            searchController.resultsStore.currentPage = 1;
+        }
+
         var searchObj = searchController.buildSearchObject(searchString, dalRecord, currentDalPanel);
 
         dalRecord.set('resultsPerPage', newSize);
@@ -400,14 +389,14 @@ Ext.define('Savanna.modelSearch.controller.ResultsComponent', {
 
     },
 
-    onSingleColumnGridView: function (button) {
+    onSingleColumnGridView: function () {
         var grid = this.getGrid();
         var multiGrid = this.getMultiGrid();
         grid.show();
         multiGrid.hide();
     },
 
-    onMultiColumnGridView: function (button) {
+    onMultiColumnGridView: function () {
         var grid = this.getGrid();
         var multiGrid = this.getMultiGrid();
         grid.hide();
@@ -426,7 +415,7 @@ Ext.define('Savanna.modelSearch.controller.ResultsComponent', {
         Ext.each(component.allResultSets, function (resultSet) {
             if (resultSet.id === dal.itemId) {
 
-                component.queryById('resultspanel').updateGridStore(resultSet);
+                component.queryById('resultspanel').updateGridStore(resultSet.store);
 
                 component.currentResultSet = resultSet;
 
@@ -458,6 +447,7 @@ Ext.define('Savanna.modelSearch.controller.ResultsComponent', {
                 return false;
             }
         }
+        return false;
     },
 
     handleSearchSubmit: function (btn) {
@@ -477,178 +467,5 @@ Ext.define('Savanna.modelSearch.controller.ResultsComponent', {
 
             return false;
         }
-    },
-
-    loadDefaultLayer: function (canvas) {
-        canvas.map.addLayer(new OpenLayers.Layer.WMS(SavannaConfig.mapBaseLayerLabel,
-            SavannaConfig.mapBaseLayerUrl, {layers: SavannaConfig.mapBaseLayerName}));
-    },
-
-    onMapCanvasResize: function (canvas) {
-        canvas.map.updateSize();
-    },
-
-    loadVectorLayer: function (canvas) {
-        ////////////////////////////////////////
-        //Begin setting up style for result layer
-        var colors = {
-            low: 'rgb(181, 226, 140)',
-            middle: 'rgb(241, 211, 87)',
-            high: 'rgb(253, 156, 115)'
-        };
-
-        var singleRule =  new OpenLayers.Rule({
-            filter: new OpenLayers.Filter.Comparison({
-                type: OpenLayers.Filter.Comparison.EQUAL_TO,
-                property: 'count',
-                value: 1
-            }),
-            symbolizer: {
-                externalGraphic: './resources/images/mapMarker.png',
-                graphicWidth: 32,
-                graphicHeight: 32,
-                fillOpacity: 1
-            }
-        });
-
-
-        var lowRule = new OpenLayers.Rule({
-            filter: new OpenLayers.Filter.Comparison({
-                type: OpenLayers.Filter.Comparison.BETWEEN,
-                property: 'count',
-                lowerBoundary: 2,
-                upperBoundary: 15
-            }),
-            symbolizer: {
-                fillColor: colors.low,
-                fillOpacity: 0.9,
-                strokeColor: colors.low,
-                strokeOpacity: 0.5,
-                strokeWidth: 12,
-                pointRadius: 10,
-                label: '${count}',
-                labelOutlineWidth: 1,
-                fontColor: '#ffffff',
-                fontOpacity: 0.8,
-                fontSize: '12px'
-            }
-        });
-        var middleRule = new OpenLayers.Rule({
-            filter: new OpenLayers.Filter.Comparison({
-                type: OpenLayers.Filter.Comparison.BETWEEN,
-                property: 'count',
-                lowerBoundary: 15,
-                upperBoundary: 50
-            }),
-            symbolizer: {
-                fillColor: colors.middle,
-                fillOpacity: 0.9,
-                strokeColor: colors.middle,
-                strokeOpacity: 0.5,
-                strokeWidth: 12,
-                pointRadius: 15,
-                label: '${count}',
-                labelOutlineWidth: 1,
-                fontColor: '#ffffff',
-                fontOpacity: 0.8,
-                fontSize: '12px'
-            }
-        });
-        var highRule = new OpenLayers.Rule({
-            filter: new OpenLayers.Filter.Comparison({
-                type: OpenLayers.Filter.Comparison.GREATER_THAN,
-                property: 'count',
-                value: 50
-            }),
-            symbolizer: {
-                fillColor: colors.high,
-                fillOpacity: 0.9,
-                strokeColor: colors.high,
-                strokeOpacity: 0.5,
-                strokeWidth: 12,
-                pointRadius: 20,
-                label: '${count}',
-                labelOutlineWidth: 1,
-                fontColor: '#ffffff',
-                fontOpacity: 0.8,
-                fontSize: '12px'
-            }
-        });
-
-        // Create a Style that uses the three previous rules
-        var style = new OpenLayers.Style(null, {
-            rules: [singleRule, lowRule, middleRule, highRule]
-        });
-        //End setting up style for result layer
-        ///////////////////////////////////////
-
-        var searchLayer = new OpenLayers.Layer.Vector('searchLayer');
-        var strategy = new OpenLayers.Strategy.Cluster({distance: 50, threshold: null});
-        canvas.resultsLayer = new OpenLayers.Layer.Vector('resultsLayer', {
-            strategies: [strategy],
-            styleMap: new OpenLayers.StyleMap(style)
-        });
-        canvas.searchLayer = searchLayer;
-        canvas.map.addLayers([searchLayer, canvas.resultsLayer]);
-    },
-
-    changeResultView: function (button) {
-        var mapPanel = button.up('model_search_resultscomponent').down('#resultsmap');
-        var resultsGridPanel = button.up('model_search_resultscomponent').down('#resultspanelgrid');
-        switch (button.text){
-            case 'Map':
-                resultsGridPanel.hide();
-                mapPanel.show();
-                break;
-            case 'List':
-                mapPanel.hide();
-                resultsGridPanel.show();
-                break;
-        }
-
-    },
-    addSearchPolygon: function (canvas) {
-        var searchLayer = canvas.searchLayer;
-        //modify resultmap searchLayer to match searchmap searchLayer
-        if(searchLayer.features.length > 0){
-            var resultMap = canvas.up('model_search_searchcomponent').down('#resultMapCanvas');
-            var layerFeatureArray = searchLayer.features;
-            resultMap.searchLayer.removeAllFeatures();
-            var cloneFeature = layerFeatureArray[0].clone();
-            resultMap.searchLayer.addFeatures(cloneFeature);
-        }
-    },
-
-    removeSearchPolygon: function (canvas) {
-        var resultMap = canvas.up('model_search_searchcomponent').down('#resultMapCanvas');
-        //clear all features
-        if (resultMap.searchLayer.features.length > 0){
-            resultMap.searchLayer.removeAllFeatures();
-        }
-    },
-
-    loadPointsFromStore: function (results, scope) {
-        var searchResults = results.store.data.items;
-        var searchResultList = [];
-        for (var i = 0; i < searchResults.length; i++) {
-            var attributes = {};
-            attributes.title = searchResults[i].data.title;
-            attributes.previewString = searchResults[i].data.previewString;
-            attributes.contentDocUri = searchResults[i].data.contentDocUri;
-            var resultPoints = searchResults[i].data.latLonPairs;
-            if (resultPoints !== null) {
-                for (var j = 0; j < resultPoints.length; j++) {
-                    attributes.name = resultPoints[j].name;
-                    searchResultList.push(new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(resultPoints[j].longitude, resultPoints[j].latitude), attributes));
-                }
-            }
-        }
-        var mapCanvas = scope.up('model_search_searchcomponent').down('#resultMapCanvas');
-        if (mapCanvas.resultsLayer.features.length > 0) {
-            mapCanvas.resultsLayer.removeAllFeatures();
-        }
-        mapCanvas.resultsLayer.addFeatures(searchResultList);
-
     }
-
 });

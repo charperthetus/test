@@ -83,19 +83,14 @@ Ext.define('Savanna.process.view.part.Toolbar', {
                 tooltip: 'Join selected items together',
                 itemId: 'merge'
             },
-            {
-                text: 'Add Alternates',
-                tooltip: 'Add alternates group',
-                itemId: 'alts'
-            },
-            '->', 
+            '->',
             {
                 cls: 'toolbarButtonFramework',
                 glyph: 'zoomIn',
                 width:25,
                 height:25,
                 ui: 'icon-dark',
-                tooltip: 'Zoom In',
+                tooltip: 'Zoom in',
                 itemId: 'zoomIn'
             },
             {
@@ -104,7 +99,7 @@ Ext.define('Savanna.process.view.part.Toolbar', {
                 width:25,
                 height:25,
                 ui: 'icon-dark',
-                tooltip: 'Zoom Out',
+                tooltip: 'Zoom out',
                 itemId: 'zoomOut'
             },
             {
@@ -151,7 +146,7 @@ Ext.define('Savanna.process.view.part.Toolbar', {
                 width:25,
                 height:25,
                 ui: 'icon-dark',
-                tooltip: 'Save process',
+                tooltip: 'Save',
                 itemId: 'saveProcess'
             }
         ];

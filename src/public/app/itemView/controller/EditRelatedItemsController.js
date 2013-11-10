@@ -45,7 +45,6 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
                     },
                     height:79,
                     width: '100%',
-                    margin:'0 10 10 10',
                     cls:'related-item-drop-zone',
                     layout: {
                         type: 'hbox',
@@ -99,12 +98,20 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
                 myPanel.add(this.buildAddItem(item, relatedItemsGroup.get('label')));
             }, this);
         }, this);
+        this.updateHeader();
     },
 
-    addRelationshipType: function(btn) {
+    addRelationshipType: function() {
+
+        // Reset the relationship name array as it's persisting (possibly a singleton?) between items
+        this.relationshipNameArray = [];
+        Ext.each(this.getView().store.data.items, function(model) {
+            this.relationshipNameArray.push(model.data.label);
+        }, this);
+
         var addNewRelationship = Ext.create('Savanna.itemView.view.relatedItems.RelationshipPicker', {
             width: 500,
-            height: 600,
+            height: 300,
             selectionStore: this.getView().store,
             relationshipNameArray: this.relationshipNameArray,
             storeHelper: this.getView().storeHelper
@@ -117,9 +124,8 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
         if (view.updatedStore) {
             this.getView().removeAll();
             this.relationshipNameArray = [];
-            this.getView().storeHelper.updateMainStore(this.getView().store.data.items, "Related Items");
+            this.getView().storeHelper.updateMainStore(this.getView().store.data.items, 'Related Items');
             this.setupData(this.getView().store.data.items);
-//            this.updateTitle();
             this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
         }
     },
@@ -148,7 +154,7 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
                     value: item.label
                 }
             ]
-        }
+        };
     },
     onDropItemReady: function(container){
         var myDropBox = container.getEl();
@@ -179,7 +185,7 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
         data.records.forEach(function(rec) {
             var obj = rec.data;
             // TODO check to make sure item doesn't already exist
-            this.addRelatedItem(obj.label, obj, container.down('#addRelatedItem'))
+            this.addRelatedItem(obj.label, obj, container.down('#addRelatedItem'));
         }, this);
     },
     dragDataIsItem: function(data) {
@@ -187,7 +193,7 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
         data.records.forEach(function(rec) {
             var obj = rec.data;
             if (obj.type !== 'Item') {
-                returnVal = false
+                returnVal = false;
             }
         });
         return returnVal;
@@ -215,12 +221,24 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
         myPanel.add(this.buildAddItem(item, relatedItemGroupName));
         this.getView().storeHelper.addBotLevItemInStore(itemLabel, itemRecord, this.getView().store.getById(relatedItemGroupName));
         this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
+        this.updateHeader();
     },
 
     // Removing the tag from the store on a child auto-complete
     removeItem: function(itemName, groupName) {
         this.getView().storeHelper.removeBotLevItemInStore(itemName, this.getView().store.getById(groupName));
         this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
-    }
+    },
 
+    // Iterates over the bottom-level leafs in the store and adds the number to the header.
+    updateHeader: function () {
+        var number = (this.getView().storeHelper.getBotLevItemInStore(this.getView().store).length || 0),
+            titlePre = 'Related Items (',
+            titlePost = ')',
+            title = this.getView();
+
+        if (title) {
+            title.setTitle(titlePre + number + titlePost);
+        }
+    }
 });

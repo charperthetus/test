@@ -32,58 +32,51 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.SearchMap', {
             xtype: 'button',
             itemId: 'drawLocationSearch',
             glyph: 'polygonTop',
-            ui: 'basic'
+            ui: 'basic',
+            cls: 'locationSearch-drawPolygon',
+            tooltip:'Click to outline search area'
         }
     ],
-    dockedItems: [
-        {
+    tbar: {
+        itemId: 'searchLocationDockedItems',
+        layout: 'vbox',
+        items: [{
+            xtype: 'box',
+            cls: 'toolbar-paddingSmall',
+            html: 'Mark an area of interest. <em>Note: Not all search sources support location filtering.</em>'
+        }, {
             xtype: 'toolbar',
-            itemId: 'searchLocationDockedItems',
-            border: false,
             width: '100%',
-            dock: 'top',
-            layout: 'vbox',
+            cls: 'toolbar-paddingSmall',
             items: [
                 {
-                    xtype: 'label',
-                    html: 'Mark an area of interest. <i>Note: Not all search sources support location filtering.</i>'
+                    xtype: 'search_searchlocationcombobox',
+                    itemId: 'searchcombobox'
                 },
                 {
-                    xtype: 'toolbar',
-                    width: '100%',
-                    border: false,
-                    layout: 'hbox',
-                    items: [
+                    xtype: 'button',
+                    itemId: 'mapZoomToMenu',
+                    text: 'Zoom To',
+                    menu: [
                         {
-                            xtype: 'search_searchlocationcombobox',
-                            itemId: 'searchcombobox'
+                            itemId: 'zoomToWholeWorld',
+                            text: 'Whole World',
+                            disabled: false
                         },
                         {
-                            xtype: 'button',
-                            itemId: 'mapZoomToMenu',
-                            text: 'Zoom To',
-                            menu: [
-                                {
-                                    itemId: 'zoomToWholeWorld',
-                                    text: 'Whole World',
-                                    disabled: false
-                                },
-                                {
-                                    itemId: 'zoomToSelectedArea',
-                                    text: 'Selected Area',
-                                    disabled: true
-                                }
-                            ]
-                        },
-                        '->',
-                        {
-                            xtype: 'button',
-                            itemId: 'clearLocationSearch',
-                            text: 'Clear Location Search'
+                            itemId: 'zoomToSelectedArea',
+                            text: 'Selected Area',
+                            disabled: true
                         }
                     ]
+                },
+                '->',
+                {
+                    xtype: 'button',
+                    itemId: 'clearLocationSearch',
+                    text: 'Clear Location Search'
                 }
             ]
-        }
-     ]
+        }]
+    }
 });

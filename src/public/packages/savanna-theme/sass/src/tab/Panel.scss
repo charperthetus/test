@@ -6,11 +6,42 @@
 	$uikit-tab-border-active: 1px solid transparent,
 	$uikit-tab-border-active-noborder: 1px solid transparent
 );
+
+
+// Need to eventually move this UI and the variables set into UIKIT
+
+@include uikit-tab(
+$uikit-ui :"autocomplete-tag",
+
+$uikit-tab-background-color: #E4E4E4,
+$uikit-tab-background-color-over: lighten(#cccccc, 5),
+$uikit-tab-background-color-active: #E4E4E4,
+
+
+$uikit-tab-border-color: #E4E4E4,
+
+$uikit-tab-border-color-active: #E4E4E4,
+
+
+$uikit-tab-color: #333333,
+$uikit-tab-color-disabled:#A8A8A8,
+
+
+$uikit-strip-border-color: #E4E4E4,
+$uikit-strip-background-color: #E4E4E4,
+
+$uikit-bar-background-gradient: #E4E4E4,
+
+$uikit-tab-border: none,
+
+$uikit-tab-text-opacity-disabled:1,
+$uikit-tab-icon-opacity-disabled:1
+);
  
 .#{$prefix}tab-search-prime-tabs-active {
 	border-top: 1px solid #fff;
 }
  
 .#{$prefix}tab-search-prime-top{
-   border-top: 1px solid #ccc
+   border-top: 1px solid #ccc;
 }

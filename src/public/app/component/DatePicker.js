@@ -1,4 +1,3 @@
-
 /*
  * author: jlashley
  * date: Oct. 22 2013
@@ -54,17 +53,17 @@
  */
 
 Ext.define('Savanna.component.DatePicker', {
-    extend: 'Ext.panel.Panel',
+    extend: 'Ext.form.FieldContainer',
 
-    //Default Dimensions
-    width: 400,
-    height: 70,
-
-
+    // Defualt Configs
+    layout: 'hbox',
+    width: '100%',
+    minwidth: 315,
 
     //Configs for passing
     unixDate: null,
     jsDate: null,
+    border: false,
 
 
     /*
@@ -84,11 +83,11 @@ Ext.define('Savanna.component.DatePicker', {
          */
         var buildDefaultDate = function(m, d) {
             //This will lookup the input object and provide them with values.
-            m.items.items[5].setValue(d.getDate());
-            m.items.items[6].setValue(d.getHours());
-            m.items.items[7].setValue(d.getMinutes());
-            m.items.items[8].setValue(d.getMonth());
-            m.items.items[9].setValue(d.getFullYear());
+            m.down('#DatePicker-Day').setValue(d.getDate());
+            m.down('#DatePicker-Hour').setValue(d.getHours());
+            m.down('#DatePicker-Min').setValue(d.getMinutes());
+            m.down('#DatePicker-Month').setValue(d.getMonth());
+            m.down('#DatePicker-Year').setValue(d.getFullYear());
         };
 
         //This checks val for a function called getMonth, if this is true then a JavaScript Date is valid
@@ -134,41 +133,31 @@ Ext.define('Savanna.component.DatePicker', {
         }
     },
 
-    //Layout to fit the wireframes shown. This lays out how the label and inputs are shown.
-    layout: {
-        type: 'table',
-        columns: 5,
-        border: false,
-        tdAttrs: {
-            align: 'center',
-            border: false
-        }
-    },
-
     //Defaults to fit the wireframes shown. This applies padding to all the content in the panel of the date picker.
     defaults: {
-        bodyStyle: 'padding:10px 25px 10px 25px',
-        border: false
+        allowBlank: true, //Requires you to enter something, else invalid
+        maxLength: 2, //Sets the max characters you can type in the box
+        enforceMaxLength: true, //This forces the max length rule in all cases
+        columnWidth: 0.20,
+        layout: 'vbox',
+        flex: 1,
+        padding: '0 3px'
+    },
+
+
+
+    defaultType: 'textfield',
+
+    fieldDefaults: {
+        labelAlign: 'top'
     },
 
     //Items array which are the labels and the inputs.
     items: [{
-        html: 'Day'
-    }, {
-        html: 'Hour'
-    }, {
-        html: 'Min.'
-    }, {
-        html: 'Month'
-    }, {
-        html: 'Year'
-    }, {
         //Day Input Field
-        xtype: 'textfield',
-        width: 35,
-        allowBlank: false, //Requires you to enter something, else invalid
-        maxLength: 2, //Sets the max characters you can type in the box
-        enforceMaxLength: true, //This forces the max length rule in all cases
+        fieldLabel: 'Day',
+        itemId: 'DatePicker-Day',
+        maxWidth: 32,
         maskRe: /[0-9.]/, //This only allows you to input numbers
         listeners: {
             //Listner for when the object loses focus
@@ -183,11 +172,9 @@ Ext.define('Savanna.component.DatePicker', {
         }
     }, {
         //Hour Input Field
-        xtype: 'textfield',
-        width: 35,
-        allowBlank: false,
-        maxLength: 2,
-        enforceMaxLength: true,
+        fieldLabel: 'Hour',
+        itemId: 'DatePicker-Hour',
+        maxWidth: 32,
         maskRe: /[0-9.]/,
         listeners: {
             blur: function(){
@@ -200,11 +187,9 @@ Ext.define('Savanna.component.DatePicker', {
         }
     }, {
         //Minute Input Field
-        xtype: 'textfield',
-        width: 35,
-        allowBlank: false,
-        maxLength: 2,
-        enforceMaxLength: true,
+        fieldLabel: 'Min',
+        itemId: 'DatePicker-Min',
+        maxWidth: 32,
         maskRe: /[0-9.]/,
         listeners: {
             blur: function(){
@@ -218,7 +203,8 @@ Ext.define('Savanna.component.DatePicker', {
     }, {
         //Month ComboBox
         xtype: 'combobox',
-        width: 65,
+        fieldLabel: 'Month',
+        itemId: 'DatePicker-Month',
         //This is the store that holds the JavaScript month value as val and the wireframe abbr. text.
         store: Ext.create('Ext.data.Store', {
             fields: ['abbr', 'val'],
@@ -266,10 +252,8 @@ Ext.define('Savanna.component.DatePicker', {
         displayField: 'abbr', //Sets the display field to use the abbr config from the store.
         valueField: 'val', //Sets the value field to use the val config from the store.
         scope: this,
-        allowBlank: false,
         minLength: 3,
         maxLength: 3,
-        enforceMaxLength: true,
         enableRegEx: true,
         enableKeyEvents: true,
         displayValue: null, //This is a custom config which sets the abbr that is currently selected.
@@ -314,12 +298,11 @@ Ext.define('Savanna.component.DatePicker', {
     }, {
         //Year Input Field
         xtype: 'numberfield', //Only allows numbers and gives you the stepper functionality
-        width: 65,
-        allowBlank: false,
+        fieldLabel: 'Year',
+        itemId: 'DatePicker-Year',
         maxLength: 4,
-        enforceMaxLength: true,
         maskRe: /[0-9.]/,
-        listners: {
+        listeners: {
             blur: function() {
                 this.up().fireEvent('focusLost', this.up());
             }
@@ -331,7 +314,7 @@ Ext.define('Savanna.component.DatePicker', {
      * @return - this returns the current day from the day input field
      */
     getDay: function() {
-        return this.items.items[5].value;
+        return this.down('#DatePicker-Day').getValue();
     },
 
     /*
@@ -339,7 +322,7 @@ Ext.define('Savanna.component.DatePicker', {
      * @return - this returns the current hour from the hour input field
      */
     getHour: function() {
-        return this.items.items[6].value;
+        return this.down('#DatePicker-Hour').getValue();
     },
 
     /*
@@ -347,7 +330,7 @@ Ext.define('Savanna.component.DatePicker', {
      * @return - this returns the current minute from the minute input field
      */
     getMinute: function() {
-        return this.items.items[7].value;
+        return this.down('#DatePicker-Min').getValue();
     },
 
     /*
@@ -355,7 +338,7 @@ Ext.define('Savanna.component.DatePicker', {
      * @return - this returns the current month from the month input field
      */
     getMonth: function() {
-        return this.items.items[8].value;
+        return this.down('#DatePicker-Month').getValue();
     },
 
     /*
@@ -363,7 +346,7 @@ Ext.define('Savanna.component.DatePicker', {
      * @return - this returns the abbr value/ html text shown from the month input field
      */
     getMonthAbbr: function() {
-        return this.items.items[8].displayValue;
+        return this.down('#DatePicker-Month').displayValue;
     },
 
     /*
@@ -371,7 +354,7 @@ Ext.define('Savanna.component.DatePicker', {
      * @return - this returns the current year from the year input field
      */
     getYear: function() {
-        return this.items.items[9].value;
+        return this.down('#DatePicker-Year').getValue();
     },
 
     /*
@@ -444,7 +427,7 @@ Ext.define('Savanna.component.DatePicker', {
              */
             var checkHour = function(t){
                 if ( t > 24 ){
-                    me.items.items[6].markInvalid('Hour is Invalid!');
+                    me.down('#DatePicker-Hour').markInvalid('Hour is Invalid!');
                     return 1;
                 } else {
                     return 0;
@@ -460,7 +443,7 @@ Ext.define('Savanna.component.DatePicker', {
              */
             var checkMinute = function(t){
                 if ( t > 60 ){
-                    me.items.items[7].markInvalid('Hour is Invalid!');
+                    me.down('#DatePicker-Min').markInvalid('Minute is Invalid!');
                     return 1;
                 } else {
                     return 0;
@@ -488,13 +471,13 @@ Ext.define('Savanna.component.DatePicker', {
                 // make sure we did not have any illegal, month or day values that the date constructor, coerced into valid values.
                 if (date.getMonth() != month || date.getFullYear() != year || date.getDate() != day) {
                     if ( date.getDate() != day ){
-                        me.items.items[5].markInvalid('Day is Invalid!');
+                        me.down('#DatePicker-Day').markInvalid('Day is Invalid!');
                     }
                     else if ( date.getMonth() != month ){
-                        me.items.items[8].markInvalid('Month is Invalid!');
+                        me.down('#DatePicker-Month').markInvalid('Month is Invalid!');
                     }
                     else if ( date.getFullYear() != year ){
-                        me.items.items[9].markInvalid('Year is Invalid!');
+                        me.down('#DatePicker-Year').markInvalid('Year is Invalid!');
                     }
 
 
@@ -532,13 +515,9 @@ Ext.define('Savanna.component.DatePicker', {
         //Run the validtion checker passing in all the inputs.
         e = validateMe(d, h, m, n, y);
 
-        me.items.items[8].findInStore();
+        me.down('#DatePicker-Month').findInStore();
 
         //Checks the error count and if 0 errors then return true that the date is valid.
-        if (e > 0) {
-            return false;
-        } else {
-            return true;
-        }
+        return e <= 0;
     }
 });

@@ -19,7 +19,7 @@ Ext.define('Savanna.process.view.part.PaletteWindow', {
 
     controller: 'Savanna.process.controller.PaletteController',
     resizeHandles :'n s e w nw se sw',
-    resizable: true,
+    resizable: false,
     layout: {
         type: 'vboxSlide',
         titleCollapse: false
@@ -40,6 +40,7 @@ Ext.define('Savanna.process.view.part.PaletteWindow', {
     width: 200,
     ghost: false,
     items: [],
+    autoScroll: true,
 
     initComponent: function() {
         this.items = this.setupItems();

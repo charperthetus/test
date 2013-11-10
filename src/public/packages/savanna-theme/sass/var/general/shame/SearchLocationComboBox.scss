@@ -1,0 +1,41 @@
+/*
+ *	@author astump
+ *	@date 11/07/2013
+ *	@descriptiong This is a homeless bit of code. This sets the proper styling for the Zoom to Location Combobox
+ */
+.searchLocation-results.x-toolbar-default{
+	background-color: #666;
+	border: 1px solid #333;
+	.x-toolbar-text-default{
+		padding: 3px;
+		color: #fff;
+	}
+}
+
+.searchMapLocationResults{
+	border-bottom: 1px solid #ccc;
+	width: 100%;
+}
+
+.locationButtonI {
+	@include thetus-icons;
+	width: 100%;
+	height: 100%;
+	align: top;
+	float: left;
+	position: relative;
+	display: block;
+	font-size: 24px;
+	color: #666;
+	padding-top: 10px;
+	
+	&:before{
+		content: 'search';
+		padding: 0px;
+		
+	}
+}
+
+// .locationContent{
+// 	float: left;
+// }

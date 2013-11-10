@@ -11,19 +11,32 @@ Ext.define('Savanna.itemView.view.createItem.ParentItems', {
 
     alias: 'widget.itemview_parenttree',
 
+    controller: 'Savanna.itemView.controller.ParentItemsController',
+
     requires: [
         'Ext.data.*',
         'Ext.tree.*',
         'Ext.grid.*',
-        'Savanna.itemView.view.createItem.ParentItemsAutoComplete',
-        'Savanna.itemView.view.createItem.ParentItemsTreePanel'
+        'Savanna.itemView.controller.ParentItemsController',
+        'Savanna.itemView.view.createItem.ParentItemsTreePanel',
+        'Savanna.itemView.view.createItem.TypeAheadResults'
     ],
 
     title: 'Item Types',
 
     items: [],
 
-    bodyPadding:8,
+    bodyPadding: 8,
+
+    height: '100%',
+
+    autoScroll: true,
+
+    typeaheadDelay: 300,
+
+    filtering: false,
+
+    taInt: null,
 
     header: {
         xtype: 'header',
@@ -33,37 +46,89 @@ Ext.define('Savanna.itemView.view.createItem.ParentItems', {
         }
     },
 
-    layout: 'fit',
+    layout: {
+        type: 'card',
+        align: 'stretch'
+    },
+
+    configs: {
+        typeaheadStore: null
+    },
+
+    constructor: function (configs) {
+        this.callParent(arguments);
+        this.initConfig(configs);
+    },
 
     initComponent: function () {
-        this.items = this.setupItems();
+
+        var me = this;
+
+        Ext.Ajax.request({
+            url: SavannaConfig.itemViewPerspective + ';jsessionid=' + Savanna.jsessionid,
+            method: 'GET',
+            cors: true,
+            headers: {
+                'Accept': 'application/json'
+            },
+            disableCaching: false,
+            proxy: {
+                reader: {
+                    type: 'json'
+                },
+                writer: {
+                    type: 'json'
+                }
+            },
+            success: function (response) {
+
+                /*
+                add the tree panel with the root id passed from the server
+                 */
+                me.add(Ext.create('Savanna.itemView.view.createItem.ParentItemsTreePanel', {
+                    itemId: 'parentitems_treepanel',
+                    rootId: Ext.JSON.decode(response.responseText).results[0].id
+                }));
+
+                /*
+                add the typeahead results panel
+                 */
+                me.add(Ext.create('Savanna.itemView.view.createItem.TypeAheadResults', {
+                    itemId: 'parentitems_results',
+                    store: Ext.create('Savanna.itemView.store.AutoCompleteStore', {
+                        urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/model/search/typeahead/',
+                        paramsObj: { pageStart: 0, pageSize: 20, alphabetical: false, type: 'Item' }
+                    })
+                }));
+
+            },
+
+            failure: function (response) {
+                Ext.Error.raise({
+                    msg: 'Error getting root perspective id.'
+                });
+            }
+        });
+
         this.callParent(arguments);
     },
 
-    setupItems: function () {
-
-        var content = [
-            {
-                xtype:'itemview_treepanel',
-                itemId:'parentitems_treepanel'
-            }
-        ];
-        return content;
-    },
     tbar: [
         {
-            xtype: 'parentitems_auto_complete',
-            itemId: 'parentItemAutoChooser',
+            xtype: 'container',
+            layout: 'hbox',
             width: '100%',
-            margin: 10,
-            store: Ext.create('Savanna.itemView.store.AutoCompleteStore', {
-                urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/mockModelSearch/keyword/item',
-                paramsObj: {
-                    excludeUri:'asdf',
-                    pageStart:0,
-                    pageSize:500
+            items: [
+                {   xtype: 'tbspacer', width: 10 },
+                {
+                    xtype: 'thetus-searchfield',
+                    itemId: 'filterParentItemsField',
+                    flex: 1,
+                    margin: 2,
+                    emptyText: 'Find a parent item',
+                    enableKeyEvents: true
                 }
-            })
+            ]
         }
     ]
 });

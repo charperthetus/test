@@ -33,10 +33,10 @@ Ext.define('Savanna.image.view.ImageComponent', {
                 itemId: 'imageDetails',
                 itemURI: imageUri,
                 collapsible: true,
+                collapseDirection:'right',
                 region: 'east',
                 split: true,
                 width: '30%'
-
             }
         ]
     }

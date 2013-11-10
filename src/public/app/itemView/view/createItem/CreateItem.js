@@ -27,21 +27,29 @@ Ext.define('Savanna.itemView.view.createItem.CreateItem', {
 
     selectedParentUri: null,
 
-    items:[],
+    selectedParentLabel: null,
 
-    setupItems:function()  {
+    ghost: false,
+
+    items: [],
+
+    creating: true,
+
+    viewer: null,
+
+    setupItems: function () {
         var content = [
             {
                 xtype: 'itemview_parenttree',
-                itemId:'parentItemsTreePanel',
-                cls:'create-item-coloumn',
-                flex:1
+                itemId: 'parentItemsTreePanel',
+                cls: 'create-item-coloumn',
+                flex: 2
             },
             {
                 xtype: 'itemview_parentdetails',
-                itemId:'parentItemsDetailsPanel',
-                cls:'create-item-coloumn',
-                flex:2
+                itemId: 'parentItemsDetailsPanel',
+                cls: 'create-item-coloumn',
+                flex: 3
             }
         ];
 
@@ -52,24 +60,42 @@ Ext.define('Savanna.itemView.view.createItem.CreateItem', {
 
         this.items = this.setupItems();
 
-        this.buttons = this.setupButtons();
+        this.dockedItems = this.setupDockedItems();
 
         this.callParent(arguments);
     },
 
-    setupButtons:function() {
-        var btns = [
+    setupDockedItems: function () {
+
+        return [
             {
-                text: 'OK',
-                itemId: 'commitBtn',
-                ui:'commit',
-                margin:'0 0 10 0'
-            },
-            {
-                text: 'CANCEL',
-                itemId:'cancelBtn'
+                xtype: 'toolbar',
+
+                dock: 'top',
+                itemId: 'createItemDockedItemsTop',
+                items: [
+                    {
+                        xtype: 'label',
+                        width: '100%',
+                        padding:10,
+                        html: 'Select a Type for the item which best represents the the kind of item you want to create. The item will inherit qualities and relationships for the type you select.'
+                    }
+                ]
             }
         ];
-        return btns;
-    }
+    },
+
+    buttons: [
+
+        {
+            text: 'Create',
+            itemId: 'commitBtn',
+            ui: 'commit',
+            margin: '0 0 10 0'
+        },
+        {
+            text: 'Cancel',
+            itemId: 'cancelBtn'
+        }
+    ]
 });

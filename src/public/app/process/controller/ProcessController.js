@@ -12,13 +12,14 @@ Ext.define('Savanna.process.controller.ProcessController', {
         'Savanna.process.utils.ProcessUtils',
         'Savanna.process.utils.ViewTemplates',
         'Savanna.process.store.Processes',
-        'Savanna.process.view.part.Overview' //added dynamically later
+        'Savanna.process.view.part.Overview', //added dynamically later
+        'Savanna.workflow.view.WorkflowSelect'
     ],
     store: null,
 
     control: {
         newProcess: {
-            click: 'clearJSONClick'
+            click: 'newProcessClick'
         },
         expandSteps: {
             click: 'expandStepsClick'
@@ -29,19 +30,17 @@ Ext.define('Savanna.process.controller.ProcessController', {
         canvas: {
             boxready: 'initCanvas'
         },
-        metadata: {
-        },
         undo: {
             click: 'handleUndo'
         },
         redo: {
             click: 'handleRedo'
         },
+        workflow: {
+            click: 'onWorkflowSelect'
+        },
         merge: {
             click: 'handleMerge'
-        },
-        alts: {
-            click: 'handleAlts'
         },
         zoomIn: {
             click: 'zoomIn'
@@ -84,6 +83,10 @@ Ext.define('Savanna.process.controller.ProcessController', {
         return this.callParent(arguments);
     },
 
+    utils: function() {
+        return Savanna.process.utils.ProcessUtils;
+    },
+
     onStoreLoaded: function (records) {
         this.load(this.getCanvas().diagram, records[0]);
     },
@@ -100,9 +103,15 @@ Ext.define('Savanna.process.controller.ProcessController', {
         }
         diagram.commitTransaction('toggleExpanded');
     },
+
+    newProcessClick: function() {
+        EventHub.fireEvent('createprocess');
+    },
+
     expandStepsClick: function() {
         this.toggleExpanded(true);
     },
+
     collapseStepsClick: function() {
         this.toggleExpanded(false);
     },
@@ -122,10 +131,12 @@ Ext.define('Savanna.process.controller.ProcessController', {
 
     clear: function(diagram) {
         var newProcess = {'class': 'go.GraphLinksModel', 'nodeKeyProperty': 'uri', 'nodeDataArray': [{'category':'Start'}], 'linkDataArray': []};
-        newProcess.nodeDataArray[0].uri = Savanna.process.utils.ProcessUtils.getURI('Start');
-        newProcess.uri = Savanna.process.utils.ProcessUtils.getURI('ProcessModel');
+        newProcess.nodeDataArray[0].uri = this.utils().getURI('Start');
+        newProcess.uri = this.utils().getURI('ProcessModel');
         this.store.add(newProcess);
         this.load(diagram, this.store.first());
+
+        this.getView().down('#processSidepanel').fireEvent('processUriChange', encodeURIComponent(Savanna.process.utils.ProcessUtils.getURI('ProcessModel')));
     },
 
     handleUndo: function() {
@@ -136,12 +147,22 @@ Ext.define('Savanna.process.controller.ProcessController', {
         this.getCanvas().diagram.undoManager.redo();
     },
 
+    onWorkflowSelect: function () {
+        Ext.create('Savanna.workflow.view.WorkflowSelect', {
+            uri: this.store.getAt(0).data.uri
+        });
+    },
+
     handleMerge: function() {
-        Savanna.process.utils.ProcessUtils.addMerge(this.getCanvas().diagram);
+        this.utils().addMerge(this.getCanvas().diagram);
     },
 
     handleAlts: function() {
-        Savanna.process.utils.ProcessUtils.addAlts(this.getCanvas().diagram);
+        this.utils().addAlts(this.getCanvas().diagram);
+    },
+
+    toggleOptional: function() {
+        this.utils().toggleOptional(this.getCanvas().diagram);
     },
 
     zoomIn: function() {
@@ -164,31 +185,34 @@ Ext.define('Savanna.process.controller.ProcessController', {
         var me = this;
         Ext.Msg.show({
             title: 'Close Process',
-            msg: 'Are you sure you want to close? Any unsaved changes will be lost.', //todo: get final wording for dialog
+            msg: "Your changes will be lost if you don't save them. Are you sure you want to close this process?", //todo: Updated by Larry but still need final wording for dialog
             buttons: Ext.Msg.YESNOCANCEL,
-            buttonText: {yes: 'Close and Disard Changes', no: 'Save Changes and Close', cancel: 'Cancel'},//Ext.Msg.YESNOCANCEL,
+            buttonText: {yes: 'Close and Discard Changes', no: 'Save Changes and Close', cancel: 'Cancel'},//Ext.Msg.YESNOCANCEL,
             fn: function(button) {
                 if(button == 'yes'){
                     //discard changes and close
                     me.confirmClosed = true;
+                    me.getView().down('#processSidepanel').fireEvent('processclose');
                     panel[panel.closeAction]();
                 } else if (button == 'no') {
                     //save and close
                     me.onSave();
+                    me.getView().down('#processSidepanel').fireEvent('processclose');
                     panel[panel.closeAction]();
                 } else {
                     //do nothing, leave the process open
                 }
             }
         });
+
         return false;
     },
 
     onCancel: function() {
         var me = this;
         Ext.Msg.confirm(
-            'Cancel Changes?',
-            'This will abort any changes you have made. Are you sure you want to cancel your changes?',//todo: get final wording for dialog
+            'Cancel Changes',
+            "Your changes will be lost if you don't save them. Are you sure you want to cancel your changes?",//todo: get final wording for dialog
             function(btn) {
                if (btn == 'yes') {
                    me.cancelProcess();
@@ -231,9 +255,11 @@ Ext.define('Savanna.process.controller.ProcessController', {
         }
     },
 
-    textEdited: function() {
-        // reset our textarea selection so that we do not have anything selected yet
-        this.getCanvas().diagram.toolManager.textEditingTool.currentTextEditor.setSelectionRange(0,0);
+    textEdited: function(e) {
+        var curTextEdit = e.diagram.toolManager.textEditingTool.currentTextEditor;
+        if (curTextEdit.hasOwnProperty('onCommit')) {
+            curTextEdit['onCommit'](e.subject);
+        }
     },
 
     partResized: function(diagramEvent) {

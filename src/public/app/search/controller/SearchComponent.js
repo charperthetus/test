@@ -43,7 +43,6 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                 click: this.showHideMenu
             },
             'search_searchcomponent #search_terms': {
-                keyup: this.handleSearchTermKeyUp,
                 'onsearchclick': this.handleSearchSubmit,
                 'onclearclick' : this.clearSearch
             },
@@ -72,7 +71,6 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                 click: this.onBodyToolbarClick
             },
             'search_searchcomponent #searchMapCanvas': {
-                beforerender: this.loadDefaultLayer,
                 afterrender: this.loadVectorLayer,
                 resize: this.onMapCanvasResize
             },
@@ -202,15 +200,29 @@ Ext.define('Savanna.search.controller.SearchComponent', {
          clear the grid - it's misleading in error states to see results in the grid, even though
          the search request has failed for one reason or another
          */
-        component.down('#resultspanel').updateGridStore({store: Ext.create('Savanna.search.store.SearchResults')});
+        component.down('#resultspanel').clearGridStore();
 
         /*
          hide Start New Search button
          */
         component.down('#search_reset_button').setVisible(false);
+
+        // Clear Map: Search Results and  location search polygon
+        //search options > location is in a tab so check if it exists
+        if (component.down('#searchMapCanvas').searchLayer){
+            component.down('#searchMapCanvas').searchLayer.removeAllFeatures();
+        }
+
+        //clear result layer
+        if (component.down('#resultMapCanvas').resultsLayer){
+            component.down('#resultMapCanvas').resultsLayer.removeAllFeatures();
+            component.fireEvent('clearPopUpOnNewSearch', event, component.down('search_resultscomponent'));
+        }
     },
 
     clearSearch: function (elem) {
+        var component = elem.up('search_searchcomponent');
+
         var form = elem.findParentByType('search_searchcomponent').down('#searchbar');
 
         var formField = form.queryById('searchadvanced_menu').queryById('form_container');
@@ -220,7 +232,6 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                 field.setValue('');
             }
         });
-
     },
 
     resetCustomSearchOptions:function(component) {
@@ -311,14 +322,29 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             'displayLabel': searchString
         });
 
-        if ((typeof mapView != 'undefined') && mapView &&  mapView.searchLayer) {
+        if ((typeof mapView != 'undefined') && mapView && mapView.searchLayer) {
             if (mapView.searchLayer.features.length > 0){
                 var polyVo = {};
                 var polyRings = [];
-                var vertices = mapView.searchLayer.features[0].geometry.getVertices();
-                for (var i = 0; i < vertices.length; i++) {
-                    var point = [vertices[i].x, vertices[i].y];
-                    polyRings.push(point);
+                var baseLayer = SavannaConfig.mapDefaultBaseLayer;
+                var searchLayerPolygon = mapView.searchLayer.features[0].geometry.clone();
+                if (baseLayer.projection != 'EPSG:4326'){
+                    var currentProjection = new OpenLayers.Projection(baseLayer.projection);
+                    var resultsProjection = new OpenLayers.Projection("EPSG:4326");
+                    searchLayerPolygon.transform(currentProjection, resultsProjection);
+                    var vertices = searchLayerPolygon.getVertices();
+                    for (var i = 0; i < vertices.length; i++) {
+                        //polygonVo for solr expects lat, long format
+                        var newPoint = [vertices[i].y, vertices[i].x];
+                        polyRings.push(newPoint);
+                    }
+                } else {
+                    var searchVertices = searchLayerPolygon.getVertices();
+                    for (var j = 0; j < searchVertices.length; j++) {
+                        //polygonVo for solr expects lat, long format
+                        var point = [searchVertices[j].y, searchVertices[j].x];
+                        polyRings.push(point);
+                    }
                 }
                 polyVo.coordinates = [polyRings];
                 polyVo.type = 'Polygon';
@@ -390,6 +416,11 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         resultsDal.updateDalStatus(dal.get('id'), 'pending');   // begin in a pending state
     },
 
+    getSearchTerms: function(elem) {
+        var component = this.getSearchComponent(elem);
+        return component.down('#search_terms');
+    },
+
     doSearch: function (elem) {
 
         var component = this.getSearchComponent(elem),
@@ -399,6 +430,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
         var searchString = component.queryById('searchbar').buildSearchString(),
             resultsComponent = component.queryById('searchresults');
+        this.getSearchTerms(elem).setValue(searchString); //shows the search string with the advanced terms
 
         var mapView = component.down('#searchMapCanvas');
 
@@ -442,7 +474,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
          clear the grid - it's misleading in error states to see results in the grid, even though
          the search request has failed for one reason or another
          */
-        component.down('#resultspanel').updateGridStore({store: Ext.create('Savanna.search.store.SearchResults')});
+        component.down('#resultspanel').clearGridStore();
 
         /*
          show Start New Search button
@@ -532,12 +564,6 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                    resultsPanel.up('#searchresults').allResultSets.push(resultsObj);
                }
 
-                /*
-                 When results are returned fire event:
-                 Event listened to on the ResultComponent controller to add points to result map
-                 */
-                resultsDal.fireEvent('mapNewSearchResults', resultsObj, resultsDal);
-
                 if (store.facetValueSummaries !== null) {
                     resultsDal.createDalFacets(dalId);
                 }
@@ -567,11 +593,6 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
     showResultsPage: function (component) {
         component.down('#searchbody').setActiveTab('searchresults');
-    },
-
-    loadDefaultLayer: function (canvas) {
-        canvas.map.addLayer(new OpenLayers.Layer.WMS(SavannaConfig.mapBaseLayerLabel,
-            SavannaConfig.mapBaseLayerUrl, {layers: SavannaConfig.mapBaseLayerName}));
     },
 
     loadVectorLayer: function (canvas) {
@@ -617,7 +638,10 @@ Ext.define('Savanna.search.controller.SearchComponent', {
     },
 
     onFeatureModified: function (event) {
-        this.fireEvent('searchPolygonAdded', this);
+        var resultMap = this.up('search_searchcomponent').down('#resultMapCanvas');
+        if (resultMap.searchLayer) {
+            this.fireEvent('searchPolygonAdded', this);
+        }
     },
 
     onMapCanvasResize: function (canvas) {
@@ -648,8 +672,13 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         var viewBox = comboBoxButton.viewBox;
         var mapCanvas = comboBoxButton.parentComboBox.up('search_searchmap').down('search_map_canvas');
         var extent = new OpenLayers.Bounds(viewBox.west, viewBox.south, viewBox.east, viewBox.north);
+        var baseLayer = SavannaConfig.mapDefaultBaseLayer;
+        if (baseLayer.projection != 'EPSG:4326'){
+            var currentProjection = new OpenLayers.Projection(baseLayer.projection);
+            var resultsProjection = new OpenLayers.Projection("EPSG:4326");
+            extent.transform(resultsProjection, currentProjection);
+        }
         mapCanvas.map.zoomToExtent(extent, true);
-        console.log(mapCanvas.map.maxExtent);
     },
 
     enableZoomMenu: function (button) {

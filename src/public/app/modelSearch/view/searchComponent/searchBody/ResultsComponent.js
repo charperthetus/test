@@ -12,8 +12,6 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.ResultsComponent
     requires: [
         'Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent.ResultsDals',
         'Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent.ResultsPanel',
-        'Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent.ResultsPreviewContent',
-        'Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent.ResultsPreviewWindow',
         'Savanna.controller.Factory',
         'Savanna.modelSearch.store.DalSources'
     ],
@@ -34,17 +32,14 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.ResultsComponent
     items: [
         {
             xtype: 'model_search_resultsdals',
-            split: false,
+            split: true,
             collapseMode: "header",
-            itemId: 'resultsdals'
+            itemId: 'resultsdals',
+            region: 'west'
         },
         {
             xtype: 'model_search_resultspanel',
             itemId: 'resultspanel'
-        },
-        {
-            xtype: 'model_search_resultspreviewwindow',
-            itemId: 'resultspreviewwindow'
         }
     ]
 });

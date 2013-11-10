@@ -61,6 +61,12 @@ Ext.define('Savanna.controller.Main', {
 
                 //Start KeepAlive
                 this.keepAlive();
+                //Prompt on leaving page
+                if (!SavannaConfig.hasOwnProperty('debug') || SavannaConfig.debug != true){
+                    window.onbeforeunload = function () {
+                        return "You may lose unsaved data.";
+                    }
+                }
             }
         }
         else {

@@ -23,7 +23,7 @@ Ext.define('Savanna.itemView.view.header.EditHeader', {
 
     layout: 'vbox',
 
-    header:false,
+    header: false,
 
     margin: 10,
 
@@ -36,7 +36,9 @@ Ext.define('Savanna.itemView.view.header.EditHeader', {
         },
         {
             xtype: 'textfield',
-            itemId: 'itemNameField'
+            itemId: 'itemNameField',
+            enableKeyEvents: true,
+            width: '100%'
         },
         {
             xtype: 'label',
@@ -45,7 +47,7 @@ Ext.define('Savanna.itemView.view.header.EditHeader', {
         },
         {
             xtype: 'auto_complete',
-            labelType: 'Click to add an Alias',
+            labelType: 'Click to add an alias',
             itemId: 'addAliasBox',
             showTags: true,
             hasNoStore: true
@@ -62,11 +64,10 @@ Ext.define('Savanna.itemView.view.header.EditHeader', {
             items: [
                 {
                     xtype: 'auto_complete',
-                    labelType: 'Click to add an Intended Use',
+                    labelType: 'Click to add an intended use',
                     showTags: true,
                     itemId: 'addIntendedUseBox',
                     store: Ext.create('Savanna.itemView.store.AutoCompleteStore', {
-                        urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/model/search/keyword/property/',
                         paramsObj: { pageStart:0, pageSize:20, alphabetical: true }
                     }),
                     flex: 1
@@ -75,7 +76,8 @@ Ext.define('Savanna.itemView.view.header.EditHeader', {
                 {
                     xtype: 'button',
                     itemId: 'intendedUseChooserBtn',
-                    glyph:'searchBinoculars'
+                    glyph: 'searchBinoculars',
+                    tooltip: "Click to browse intended uses"
                 }
             ]
         },
@@ -87,17 +89,22 @@ Ext.define('Savanna.itemView.view.header.EditHeader', {
         {
             xtype: 'container',
             layout: 'hbox',
-            margin: "0 0 0 -11",
+            width:'100%',
             items: [
+
                 {
-                    xtype: 'button',
-                    itemId: 'parentBtn',
-                    text: 'Parent Class'
+                    xtype: 'panel',
+                    itemId: 'parentsList',
+                    html:'',
+                    width:'96%'
                 },
+
                 {
                     xtype: 'button',
                     itemId: 'parentChooser',
-                    glyph:'searchBinoculars'
+                    glyph: 'searchBinoculars',
+                    tooltip: "Click to browse types",
+                    width:'4%'
                 }
             ]
         },
@@ -107,6 +114,7 @@ Ext.define('Savanna.itemView.view.header.EditHeader', {
             itemId: 'itemDescription',
             name: 'description',
             width: '100%',
+            emptyText: 'Click to add a description',
             value: '',
             grow: true
         }

@@ -1,11 +1,12 @@
 Ext.define('Savanna.itemView.view.ItemViewer', {
-    extend: 'Ext.panel.Panel',
+    extend: 'Savanna.component.ClassificationPanel',
 
     alias: 'widget.itemview_itemviewer',
 
     cls: 'itemview',
 
     requires: [
+        'Savanna.component.ClassificationPanel',
         'Ext.grid.Panel',
         'Savanna.itemView.controller.ItemViewController',
         'Savanna.itemView.view.header.ViewHeader',
@@ -19,18 +20,16 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
         'Savanna.itemView.view.imageBrowser.ImagesGridEdit',
         'Savanna.components.autoComplete.AutoComplete',
         'Savanna.itemView.view.imageBrowser.ImageThumbnail',
-        'Savanna.itemView.view.workflow.WorkflowSelect',
         'Savanna.itemView.view.annotationProperties.AnnotationProperties',
         'Savanna.component.ClassificationPanel',
         'Savanna.itemView.store.AutoCompleteStore',
-        'Savanna.itemView.store.ItemLockStore',
         'Savanna.itemView.store.ItemViewStoreHelper',
         'Savanna.metadata.view.Details',
         'Savanna.sources.view.Sources'
     ],
 
     layout: 'card',
-    maxWidth:1024,
+
 
     controller: 'Savanna.itemView.controller.ItemViewController',
 
@@ -38,8 +37,8 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
         itemUri: null,
         editMode:false,
         itemStore:null,
-        lockStore:null,
-        selectedParentUri: null
+        selectedParentUri: null,
+        selectedParentLabel: null
     },
 
     constructor: function(configs) {
@@ -49,7 +48,6 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
 
     initComponent: function() {
         this.items = this.buildItems();
-        this.lockStore = Ext.create('Savanna.itemView.store.ItemLockStore');
         this.callParent(arguments);
     },
 
@@ -60,13 +58,15 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                 itemId:'itemviewer_viewtab',
                 layout:{
                     type: 'hbox',
-                    pack: 'start',
+                    pack: 'end',
                     align : 'stretch'
                 },
                 overflowY: 'auto',
                 tbar:{
                     ui:'thetus-toolbar',
+                    height: 33,
                     items:[
+                        { xtype: 'tbspacer', width: 5 },
                         {
                             xtype: 'button',
                             text: 'Options',
@@ -78,17 +78,10 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                                 {
                                     xtype: 'menuseparator'
                                 },
-                                /* commented out for demo
+
                                 {
-                                    text: 'Workflow',
+                                    text: 'Workflow...',
                                     itemId:'workflowButton'
-                                },
-                                */
-                                {
-                                    xtype: 'menuseparator'
-                                },
-                                {
-                                    xtype: 'menuseparator'
                                 }
                             ]
                         },
@@ -96,86 +89,127 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                         {
                             xtype: 'button',
                             itemId: 'editModeButton',
-                            text: 'Edit'
-                        }
+                            width:25,
+                            height:25,
+                            cls: 'toolbarButtonFramework',
+                            ui:'icon-dark',
+                            glyph: 'edit',
+                            tooltip: "Edit"
+                        },
+                        { xtype: 'tbspacer', width: 5 }
                     ]
                 },
                 items:  [
                     {
-                        xtype: 'panel',
-                        cls: 'item-view-column',
-                        flex: 1,
-                        autoScroll: true,
-                        items: [
+                        xtype:'panel',
+                        flex:1,
+                        bodyStyle:{
+                            backgroundColor:"#999999"
+                        },
+                        layout:{
+                            type: 'hbox',
+                            pack: 'center',
+                            align : 'stretch'
+                        },
+                        items:[
                             {
-                                xtype: 'itemview_view_header',
-                                itemId: 'itemViewHeaderView',
-                                cls:'white-grid-view-panel',
+                                xtype:'panel',
+                                flex:1,
+                                maxWidth:1024,
+                                minWidth:640,
+                                cls: 'itemview',
+                                layout:{
+                                    type: 'hbox',
+                                    pack: 'center',
+                                    align : 'stretch'
+                                },
+                                items:[
+                                    {
+                                        xtype: 'panel',
+                                        cls: 'item-view-column',
+                                        flex:1,
+                                        layout:'anchor',
+                                        margin:'1 0 0 0',
+                                        autoScroll: true,
+                                        items: [
+                                            {
+                                                xtype: 'itemview_view_header',
+                                                itemId: 'itemViewHeaderView',
+                                                cls:'white-grid-view-panel',
 
-                                header:{
-                                    ui:'item-view',
-                                    height:48,
-                                    padding:'0 0 0 10',
-                                    cls:'item-view-header-header'
-                                }
-                            },
-                            {
-                                xtype: 'itemview_related_processes',
-                                itemId: 'relatedProcessesView',
-                                cls:'white-grid-view-panel',
-                                collapsible: true,
-                                header:{
-                                    ui:'light-blue'
-                                }
-                            },
-                            {
-                                //Todo: create related items component here
-                                xtype: 'itemview_view_related_items',
-                                itemId: 'relatedItemsView',
-                                cls:'white-grid-view-panel',
-                                collapsible: true,
-                                title: 'Related Items (#)',
-                                header:{
-                                    ui:'light-blue'
-                                }
+                                                header:{
+                                                    ui:'item-view',
+                                                    height:48,
+                                                    padding:'0 0 0 10',
+                                                    cls:'item-view-header-header'
+                                                }
+                                            },
+                                            {
+                                                xtype: 'itemview_related_processes',
+                                                itemId: 'relatedProcessesView',
+                                                cls:'white-grid-view-panel',
+                                                collapsible: true,
+                                                header:{
+                                                    ui:'light-blue'
+                                                }
+                                            },
+                                            {
+                                                //Todo: create related items component here
+                                                xtype: 'itemview_view_related_items',
+                                                itemId: 'relatedItemsView',
+                                                cls:'white-grid-view-panel',
+                                                collapsible: true,
+                                                title: 'Related Items (#)',
+                                                header:{
+                                                    ui:'light-blue'
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        xtype: 'panel',
+                                        cls: 'item-view-column',
+                                        margin:'1 0 0 0',
+                                        flex:1,
+                                        layout:'anchor',
+                                        autoScroll: true,
+                                        items: [
+                                            {
+                                                xtype: 'itemview_imagesgrid',
+                                                itemId: 'itemViewImagesGrid',
+                                                cls:'white-grid-view-panel',
+                                                collapsible: true,
+                                                header:{
+                                                    ui:'light-blue'
+                                                }
+                                            },
+                                            {
+                                                xtype: 'itemview_view_qualities',
+                                                itemId: 'itemViewPropertiesView',
+                                                cls:'white-grid-view-panel',
+                                                collapsible: true,
+                                                header:{
+                                                    ui:'light-blue'
+                                                }
+                                            },
+                                            {
+                                                xtype: 'itemview_annotation_properties',
+                                                itemId: 'annotationPropertiesView',
+                                                cls:'white-grid-view-panel-edit',
+                                                collapsible: true,
+                                                header: {
+                                                    ui:'light-blue'
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ]
+
                             }
+
                         ]
                     },
-                    {
-                        xtype: 'panel',
-                        cls: 'item-view-column',
-                        flex: 1,
-                        autoScroll: true,
-                        items: [                            
-                            {
-                                xtype: 'itemview_imagesgrid',
-                                itemId: 'itemViewImagesGrid',
-                                cls:'white-grid-view-panel',
-                                collapsible: true,
-                                header:{
-                                    ui:'light-blue'
-                                }
-                            },
-                            {
-                                xtype: 'itemview_view_qualities',
-                                itemId: 'itemViewPropertiesView',
-                                cls:'white-grid-view-panel',
-                                collapsible: true,
-                                header:{
-                                    ui:'light-blue'
-                                }
-                            },
-                            {
-                                xtype: 'itemview_annotation_properties',
-                                itemId: 'annotationPropertiesView',
-                                cls:'white-grid-view-panel-edit',
-                                collapsible: true,
-                                header: {
-                                    ui:'light-blue'
-                                }
-                            }
-                        ]
-                    },
+
                     {
                         xtype: 'panel',
                         itemId: 'itemInfoPanel',
@@ -183,24 +217,23 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                         cls:['white-grid-view-panel-edit', 'item-view-column'],
                         autoScroll: true,
                         width: '30%',
+                        minWidth:345,
+                        maxWidth:412,
                         layout: 'vbox',
                         collapsible: true,
-                        collapseDirection: 'left',
+                        collapseDirection:'right',
+                        animCollapse:false,
+                        collapseMode:'header',
+                        resizable:true,
+                        headerPosition:'left',
                         items: [
-//                            {
-//                                xtype: 'metadata_details',
-//                                itemId: 'itemDetails',
-//                                itemURI: this.itemUri
-//                            },
                             {
                                 xtype: 'document_sources',
                                 editMode: false,
                                 itemId: 'itemSources',
                                 header:{
                                     ui:'light-blue'
-                                },
-
-                                itemURI: this.itemUri
+                                }
                             }
                         ]
                     }
@@ -218,7 +251,9 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                 autoScroll: true,
                 tbar:{
                     ui:'thetus-toolbar',
+                    height: 33,
                     items:[
+                        { xtype: 'tbspacer', width: 5 },
                         {
                             xtype: 'button',
                             text: 'Options',
@@ -227,6 +262,12 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                                     text: 'New Item...',
                                     itemId:'newItemButton'
                                 },
+
+                                {
+                                    text: 'Workflow...',
+                                    itemId:'workflowButton'
+                                },
+
                                 {
                                     text: 'Delete',
                                     itemId:'deleteItemButton'
@@ -237,118 +278,172 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                         {
                             xtype: 'button',
                             itemId: 'editCancelButton',
-                            text: 'Discard Changes'
+                            width:25,
+                            height:25,
+                            cls: 'toolbarButtonFramework',
+                            ui:'icon-dark',
+                            glyph: 'closeRollover',
+                            tooltip: "Cancel Changes"
                         },
                         {
                             xtype: 'button',
                             itemId: 'editDeleteButton',
-                            text: 'Delete'
+                            width:25,
+                            height:25,
+                            cls: 'toolbarButtonFramework',
+                            ui:'icon-dark',
+                            glyph: 'trash',
+                            tooltip: "Delete"
                         },
                         {
                             xtype: 'button',
                             itemId: 'editSaveButton',
-                            text: 'Save'
+                            width:25,
+                            height:25,
+                            cls: 'toolbarButtonFramework',
+                            ui:'icon-dark',
+                            glyph: 'save',
+                            tooltip: "Save"
                         },
                         {
                             xtype: 'button',
                             itemId: 'editDoneButton',
-                            text: 'Done'
-                        }
+                            width:25,
+                            height:25,
+                            cls: 'toolbarButtonFramework',
+                            ui:'icon-dark',
+                            glyph: 'done',
+                            tooltip: "Done"
+                        },
+                        { xtype: 'tbspacer', width: 5 }
                     ]
                 },
                 items:  [
                     {
-                        xtype: 'panel',
-                        cls: 'item-view-column',
-                        flex: 1,
-                        autoScroll: true,
-                        items: [
+                        xtype:'panel',
+                        flex:1,
+                        bodyStyle:{
+                            backgroundColor:"#999999"
+                        },
+                        layout:{
+                            type: 'hbox',
+                            pack: 'center',
+                            align : 'stretch'
+                        },
+                        items:[
                             {
-                                xtype: 'itemview_edit_header',
-                                itemId: 'itemViewHeaderEdit',
-                                cls:'white-grid-view-panel-edit'
-                            },
-                            {
-                                xtype: 'itemview_related_processes',
-                                itemId: 'relatedProcessesViewEdit',
-                                cls:'white-grid-view-panel-edit',
-                                collapsible: true,
-                                header:{
-                                    ui:'light-blue'
-                                }
-                            },
-                            {
-                                xtype: 'itemview_edit_related_items',
-                                itemId: 'relatedItemsEdit',
-                                cls:'white-grid-view-panel-edit',
-                                collapsible: true,
-                                padding:'0 0 10 0',
-                                title: 'Related Items (#)',
-                                header:{
-                                    ui:'light-blue'
-                                }
+                                xtype:'panel',
+                                flex:1,
+                                maxWidth:1024,
+                                minWidth:640,
+                                cls: 'itemview',
+                                layout:{
+                                    type: 'hbox',
+                                    pack: 'center',
+                                    align : 'stretch'
+                                },
+                                items:[
+                                    {
+                                        xtype: 'panel',
+                                        cls: 'item-view-column',
+                                        flex:1,
+                                        layout:'anchor',
+                                        autoScroll: true,
+                                        items: [
+                                            {
+                                                xtype: 'itemview_edit_header',
+                                                itemId: 'itemViewHeaderEdit',
+                                                cls:'white-grid-view-panel-edit'
+                                            },
+                                            {
+                                                xtype: 'itemview_related_processes',
+                                                itemId: 'relatedProcessesViewEdit',
+                                                cls:'white-grid-view-panel-edit',
+                                                collapsible: true,
+                                                header:{
+                                                    ui:'light-blue'
+                                                }
+                                            },
+                                            {
+                                                xtype: 'itemview_edit_related_items',
+                                                itemId: 'relatedItemsEdit',
+                                                cls:'white-grid-view-panel-edit',
+                                                collapsible: true,
+                                                padding:'0 0 10 0',
+                                                title: 'Related Items (#)',
+                                                header:{
+                                                    ui:'light-blue'
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        xtype: 'panel',
+                                        cls: 'item-view-column',
+                                        flex:1,
+                                        margin:'1 0 0 0',
+                                        layout:'anchor',
+                                        autoScroll: true,
+                                        items: [
+                                            {
+                                                xtype: 'itemview_imagesgrid_edit',
+                                                itemId: 'itemViewImagesEdit',
+                                                cls:'white-grid-view-panel-edit',
+                                                collapsible: true,
+                                                header:{
+                                                    ui:'light-blue'
+                                                }
+                                            },
+                                            {
+                                                xtype: 'itemview_edit_qualities',
+                                                itemId: 'itemViewPropertiesEdit',
+                                                cls:['white-grid-view-panel-edit', 'edit-qualities'],
+                                                collapsible: true,
+                                                header:{
+                                                    ui:'light-blue'
+                                                }
+                                            },
+                                            {
+                                                xtype: 'itemview_annotation_properties',
+                                                itemId: 'annotationPropertiesEdit',
+                                                cls:'white-grid-view-panel-edit',
+                                                collapsible: true,
+                                                header: {
+                                                    ui:'light-blue'
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ]
                             }
+
                         ]
                     },
-                    {
-                        xtype: 'panel',
-                        cls: 'item-view-column',
-                        flex: 1,
-                        autoScroll: true,
-                        items: [
-                            {
-                                xtype: 'itemview_imagesgrid_edit',
-                                itemId: 'itemViewImagesEdit',
-                                cls:'white-grid-view-panel-edit',
-                                collapsible: true,
-                                header:{
-                                    ui:'light-blue'
-                                }
-                            },
-                            {
-                                xtype: 'itemview_edit_qualities',
-                                itemId: 'itemViewPropertiesEdit',
-                                cls:['white-grid-view-panel-edit', 'edit-qualities'],
-                                collapsible: true,
-                                header:{
-                                    ui:'light-blue'
-                                }
-                            },
-                            {
-                                xtype: 'itemview_annotation_properties',
-                                itemId: 'annotationPropertiesEdit',
-                                cls:'white-grid-view-panel-edit',
-                                collapsible: true,
-                                header: {
-                                    ui:'light-blue'
-                                }
-                            }
-                        ]
-                    },
+
                     {
                         xtype: 'panel',
                         itemId: 'itemInfoPanel',
                         title: 'Details',
                         width: '30%',
+                        minWidth:345,
+                        maxWidth:412,
                         cls:['white-grid-view-panel-edit', 'item-view-column'],
                         autoScroll: true,
                         layout: 'vbox',
                         collapsible: true,
-                        collapseDirection: 'left',
+                        collapseDirection:'right',
+                        animCollapse:false,
+                        collapseMode:'header',
+                        resizable:true,
+                        headerPosition:'left',
                         items: [
-//                            {
-//                                xtype: 'metadata_details',
-//                                itemId: 'itemDetails',
-//                                itemURI: this.itemUri
-//                            },
                             {
                                 xtype: 'document_sources',
                                 editMode: true,
-                                itemId: 'itemSources',
+                                itemId: 'itemSourcesEdit',
                                 header:{
                                     ui:'light-blue'
-                                },
-                                itemURI: this.itemUri
+                                }
                             }
                         ]
                     }

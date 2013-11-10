@@ -10,25 +10,20 @@ Ext.define('Savanna.metadata.view.Title', {
     extend: 'Savanna.metadata.view.MetadataItemView',
     alias: 'widget.metadata_title',
 
-    items: [
-    ],
-
     initComponent: function () {
         this.callParent(arguments);
         var me = this;
 
         me.on('beforerender', Ext.bind(function() {
             if(me.getEditable() && me.getEditMode()) {
-                if(me.down('#editLabelItem')) {
-                    me.down('#editLabelItem').html = me.getDisplayLabel() + ':';
-                }
+                me.setTitle(me.getDisplayLabel() + ':');
+                
                 if(me.down('#displayValueEdit')) {
                     me.down('#displayValueEdit').setValue(me.getValue());
-                    //me.down('#displayValueEdit').fieldLabel = me.getDisplayLabel();
                 }
             } else {
                 if(me.down('#displayValue')) {
-                    me.down('#displayValue').html = (null === me.getValue()) ? '&nbsp;' : me.getValue();
+                    me.down('#displayValue').setValue((null === me.getValue()) ? '&nbsp;' : me.getValue());
                 }
             }
 
@@ -39,13 +34,8 @@ Ext.define('Savanna.metadata.view.Title', {
         this.layout = 'hbox';
         this.pack = 'center';
         this.align = 'middle';
-        this.add(Ext.create('Ext.form.Label', {
+        this.add(Ext.create('Ext.form.field.Display', {
             itemId: 'displayValue'
-
         }));
     }
-
-
-
-
 });
