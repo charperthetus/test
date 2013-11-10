@@ -15,9 +15,7 @@ Ext.define('Savanna.process.controller.MetadataController', {
         hiddenPanel: {
             boxready: 'onBeforeHiddenPanelShow'
         },
-        fullProcessMetadata:  {
-            boxready: 'addFullProcessMetadataListeners'
-        },
+        fullProcessMetadata: true,
         itemMetadata: true,
         nothingHereLabel: true
      },
@@ -92,11 +90,6 @@ Ext.define('Savanna.process.controller.MetadataController', {
 
         this.getItemMetadata().fireEvent('processItemUriChanged', itemUri,itemName);
         this.getHiddenPanel().getLayout().setActiveItem(this.getItemMetadata());
-    },
-
-    addFullProcessMetadataListeners: function(process_details) {
-        process_details.down('#processTitle').addListener('change', this.processLabelChangeHandler);
-        process_details.down('#processDescription').addListener('change', this.processLabelChangeHandler);
     },
 
     processLabelChangeHandler: function(text, newValue, oldValue, eOpts) {

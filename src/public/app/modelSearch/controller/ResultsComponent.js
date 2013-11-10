@@ -250,7 +250,7 @@ Ext.define('Savanna.modelSearch.controller.ResultsComponent', {
                 for (var elem in obj.raw) {
                     if (obj.raw.hasOwnProperty(elem)) {
                         var elem_obj = obj.raw[elem];
-                        var metaPropertiesStore = Ext.create('Savanna.metadata.store.Metadata');
+                        var metaPropertiesStore = Ext.create('Savanna.metadata.store.InformationStore');
                         for (var prop in elem_obj) {
                             if (elem_obj.hasOwnProperty(prop)) {
                                 metaPropertiesStore.add(elem_obj[prop]);

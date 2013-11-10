@@ -7,10 +7,12 @@ Ext.define("Savanna.document.view.DocumentComponent", {
     requires: [
         "Savanna.document.view.DocumentToolbar",
         "Savanna.document.view.DocumentBody",
-        'Savanna.document.controller.DocumentController'
+        'Savanna.document.controller.DocumentController',
+        "Savanna.metadata.view.DetailsPanel"
     ],
 
     controller: 'Savanna.document.controller.DocumentController',
+
     afterRender: function () {
         this.callParent(arguments);
 
@@ -45,18 +47,19 @@ Ext.define("Savanna.document.view.DocumentComponent", {
             }
         );
 
-        this.down('#imageDetails').setItemURI(this.itemUri);
+        this.down('#detailsPanel').setItemUri(this.itemUri);
     },
     items: [
         {
             xtype: "document_body",
             itemId: "docBody",
             width: '100%',
+            region: 'center',
             flex: 1
         },
         {
-            xtype: 'metadata_details',
-            itemId: 'imageDetails',
+            xtype: 'detailspanel',
+            itemId: 'detailsPanel',
             collapsible: true,
             collapsed: true,
             region: 'east',

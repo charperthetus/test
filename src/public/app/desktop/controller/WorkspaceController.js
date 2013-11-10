@@ -4,7 +4,6 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
     requires: [
         'Savanna.desktop.view.SavannaTabPanel',
         'Savanna.process.view.ProcessEditorComponent',
-        'Savanna.metadata.view.Details',
         'Savanna.itemView.view.createItem.CreateItem'
     ],
 
