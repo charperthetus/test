@@ -34,8 +34,6 @@ Ext.define('Savanna.modelSearch.controller.resultsComponent.ResultsPanelGridCont
 
     },
 
-
-
     init: function () {
         return this.callParent(arguments);
     }
