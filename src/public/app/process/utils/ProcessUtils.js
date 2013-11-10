@@ -70,7 +70,7 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
                 url: SavannaConfig.itemViewUrl + encodeURI(classUri) + '/instance/type;jsessionid=' + Savanna.jsessionid,
                 jsonData: classUri,
                 method: 'POST',
-                success: function(response){
+                success: function(){
                     // nothing to do
                     me.getCanvas(diagram).fireEvent('itemInstanceCreated');
                 },
@@ -230,7 +230,7 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         var diagram = obj.diagram;
         diagram.startTransaction('addStep');
 
-        var step = {category: 'ProcessModel', label: 'Description', isGroup: true, isSubGraphExpanded: true, isOptional: false};
+        var step = {category: 'ProcessModel', label: 'Untitled Step', isGroup: true, isSubGraphExpanded: true, isOptional: false};
         step.uri = this.getURI(step.category);
         diagram.model.addNodeData(step);
 
@@ -474,6 +474,19 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
             }
         }
         diagram.commitTransaction('toggleOptional');
+    },
+
+    toggleExpanded: function(diagram, expand) {
+        diagram.startTransaction('toggleExpanded');
+        var iterator = diagram.nodes;
+        while ( iterator.next() ){
+            var node = iterator.value;
+            if (node instanceof go.Group) {
+                node.isSubGraphExpanded = expand;
+            }
+        }
+        diagram.commitTransaction('toggleExpanded');
     }
+
 
 });
