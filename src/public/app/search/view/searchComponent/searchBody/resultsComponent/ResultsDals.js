@@ -31,9 +31,8 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
      */
     width: 220,
     height:'100%',
-
+    
     layout: 'vbox',
-    border: false,
     autoScroll: true,
 
     mixins: {
@@ -41,6 +40,42 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
     },
 
     store: 'Savanna.search.store.DalSources',
+
+    defaults: {
+        padding: 10
+    },
+
+    items: [{
+        xtype: 'panel',
+        itemId: 'results-searchSources',
+        ui: 'simple',
+        title: 'search sources',
+        layout: 'vbox',
+        width: '100%',
+        align: 'left',
+        margin: '0 0 10 0'
+    },
+    {
+        xtype: 'panel',
+        width: '100%',
+        itemId: 'results-refineSearch',
+        bbar: {
+            padding: 0,
+            margin: 0,
+            items: ['->',{
+                text:'Keyword Reset',
+                itemId:'resultsFacetsReset',
+                padding: 0,
+                margin: 0
+            }]}
+    },
+    {
+        xtype: 'container',
+        width: '100%',
+        itemId: 'results-refineSearchFacets',
+        cls: 'refineSearchFacets',
+        padding: '0 10 10 10'
+    }],
 
     initComponent: function () {
         this.mixins.storeable.initStore.call(this);
@@ -56,18 +91,18 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
         var searchPanelDals = this.findParentByType('search_searchcomponent').down('#searchdals'); // the dal sources in search options
 
         if (!this.queryById('refinesearch')) {
-            this.add(this.createRefineSearchPanel());
+            this.down('#results-refineSearch').add(this.createRefineSearchPanel());
         }
 
         if (!this.queryById('refineterms')) {
-            this.add(this.createRefineTermsPanel());
+            this.down('#results-refineSearch').add(this.createRefineTermsPanel());
         }
 
         var facetTabs = this.createFacetsTabPanel();    // always do this...
 
         if (!this.queryById('resultsfacets')) {
 
-            this.add(facetTabs);    // ...but only add if doesn't exist
+            this.down('#results-refineSearchFacets').add(facetTabs);    // ...but only add if doesn't exist
         }
 
 /*      this just seems to be trying to delete strings I'm commenting it out in case it is needed.
@@ -93,9 +128,9 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
 
             if (!exists) {
                 myPanel = this.createDalPanel(record);
-                myPanel.down('#dalName').setText(record.get('displayName'));
+                myPanel.setText(record.get('displayName'));
 
-                this.insert(this.items.length - startingItemsLength, myPanel);
+                this.down('#results-searchSources').insert(this.items.length - startingItemsLength, myPanel);
             } else {
                 this.updateDalStatus(dalId);
             }
@@ -113,8 +148,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
 
     createRefineSearchPanel: function () {
         return Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineSearchbar', {
-            itemId: 'refinesearch',
-            ui: 'left-padding'
+            itemId: 'refinesearch'
         });
     },
 
@@ -234,8 +268,8 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
          set the status icon - pending, success or fail - as well as the text,
          which is the display name and number of results returned
          */
-        var myDal = this.queryById(dalId),
-            loadingEl = myDal.down('#dalStatusIcon');
+        var myDal = this.queryById(dalId);
+            // loadingEl = myDal.down('#dalStatusIcon');
 
         var styleStatus = {
             'success': 'icon-success',
@@ -243,8 +277,9 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
             'pending': 'icon-pending',
             'none': 'loadNone'
         };
-        loadingEl.removeCls('icon-success icon-alert icon-pending loadNone');
-        loadingEl.addCls(styleStatus[status]);
+        // loadingEl.removeCls('icon-success icon-alert icon-pending loadNone');
+        // loadingEl.addCls(styleStatus[status]);
+        myDal.setIconCls(styleStatus[status]);
 
         var me = this,
             count = 0;
@@ -256,7 +291,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
                     count = searchResult.store.totalCount;
                 }
 
-                myDal.down('#dalName').setText(me.store.getById(dalId).get('displayName') + ' ' + '(' + count + ')');
+                myDal.setText(me.store.getById(dalId).get('displayName') + ' ' + '(' + count + ')');
             }
         });
     }

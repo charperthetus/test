@@ -99,8 +99,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
 
     createRefineSearchPanel: function () {
         return Ext.create('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineSearchbar', {
-            itemId: 'refinesearch',
-            ui:'left-padding'
+            itemId: 'refinesearch'
         });
     },
 
