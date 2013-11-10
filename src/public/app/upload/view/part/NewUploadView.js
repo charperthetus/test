@@ -43,7 +43,7 @@ Ext.define('Savanna.upload.view.part.NewUploadView', {
                 },
                 items:[{
                     xtype: 'label',
-                    text: 'Drag & Drop Files Here',
+                    text: 'Drag and drop files here',
                     cls: ['sub_font', 'h1', 'bold', 'drag-and-drop', 'drag-and-drop-large', 'align_top']
                 },{
                     xtype: 'label',
