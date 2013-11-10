@@ -32,6 +32,7 @@ Ext.define('Savanna.image.view.ImageComponent', {
                 xtype: 'detailspanel',
                 itemUri: imageUri,
                 collapsible: true,
+                collapseDirection:'right',
                 region: 'east',
                 split: true,
                 width: '30%'

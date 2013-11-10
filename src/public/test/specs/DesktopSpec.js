@@ -165,10 +165,10 @@ describe('Savanna.desktop', function () {
             expect(controller.getSplitviewbutton()).not.toBeNull();
         });
         it('it should have a main tab panel', function() {
-            expect(controller.getMaintabpanel()).not.toBeNull();
+            expect(controller.getDesktopTabPanel()).not.toBeNull();
         });
         it('the main tab panel should be of the correct type', function() {
-            expect(controller.getMaintabpanel() instanceof Savanna.desktop.view.SavannaTabPanel).toBeTruthy();
+            expect(controller.getDesktopTabPanel() instanceof Savanna.desktop.view.SavannaTabPanel).toBeTruthy();
         });
         it('the secondary tab panel should be null', function() {
             expect(controller.getSecondarytabpanel()).toBeNull();
@@ -219,18 +219,18 @@ describe('Savanna.desktop', function () {
                 nAfter = 0;
 
             beforeEach(function() {
-                nBefore = controller.getMaintabpanel().items.getCount();
+                nBefore = controller.getDesktopTabPanel().items.getCount();
                 controller.setSplitViewMode();
             });
 
             it('the view config of the main tab panel should be set to split view mode', function() {
-                expect(controller.getMaintabpanel().config.view).toEqual('split');
+                expect(controller.getDesktopTabPanel().config.view).toEqual('split');
             });
             it('secondary tab panel should be created', function() {
                 expect(controller.getSecondarytabpanel()).not.toBeNull();
             });
             it('the number of components before and after the operation should be equal', function() {
-                nAfter = controller.getMaintabpanel().items.getCount()
+                nAfter = controller.getDesktopTabPanel().items.getCount()
                        + controller.getSecondarytabpanel().items.getCount();
                 expect(nBefore).toEqual(nAfter);
             });
@@ -243,7 +243,7 @@ describe('Savanna.desktop', function () {
 
             beforeEach(function() {
                controller.setSplitViewMode();
-               nBefore = controller.getMaintabpanel().items.getCount()
+               nBefore = controller.getDesktopTabPanel().items.getCount()
                        + controller.getSecondarytabpanel().items.getCount();
                controller.setSingleViewMode();
             });
@@ -252,10 +252,10 @@ describe('Savanna.desktop', function () {
                 expect(controller.getSecondarytabpanel()).toBeNull();
             });
             it('the view config of the main tab panel should be set to single', function() {
-                expect(controller.getMaintabpanel().config.view).toEqual('single');
+                expect(controller.getDesktopTabPanel().config.view).toEqual('single');
             });
             it('the number of components before and after the operation should be equal', function() {
-                nAfter = controller.getMaintabpanel().items.getCount();
+                nAfter = controller.getDesktopTabPanel().items.getCount();
                 expect(nBefore).toEqual(nAfter);
             });
         });
