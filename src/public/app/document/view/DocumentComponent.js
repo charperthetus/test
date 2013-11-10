@@ -15,7 +15,7 @@ Ext.define("Savanna.document.view.DocumentComponent", {
 
     afterRender: function () {
         this.callParent(arguments);
-        this.down('#detailsPanel').setItemURI(this.itemUri);
+        this.down('#detailsPanel').setItemUri(this.getItemUri());
     },
     items: [
         {
