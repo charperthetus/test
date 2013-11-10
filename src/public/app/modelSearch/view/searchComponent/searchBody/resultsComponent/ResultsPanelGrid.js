@@ -27,6 +27,8 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
         storeable: 'Savanna.mixin.Storeable'
     },
 
+    //Used to work around a Sencha bug
+    currentScrollTop: 0,
     sortableColumns: false,
 
     columns: [
@@ -91,6 +93,8 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
     },
 
     onStoreLoad: function () {
+
+        this.currentScrollTop = 0;
 
         var controller = Savanna.controller.Factory.getController('Savanna.modelSearch.controller.ResultsComponent'),
             component = this.findParentByType('model_search_resultscomponent'),
