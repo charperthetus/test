@@ -56,6 +56,9 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         },
         view: {
             'ItemView:SaveEnable': 'onSaveEnable'
+        },
+        view: {
+            'ItemView:ParentSelected': 'onParentSelected'
         }
     },
 
@@ -87,11 +90,11 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     lockItem: function (uri, lock) {
 
         var act = 'DELETE';
-        if(lock)    {
+        if (lock) {
             act = 'GET';
         }
         Ext.Ajax.request({
-            url: SavannaConfig.itemLockUrl + encodeURI(uri) +';jsessionid=' + Savanna.jsessionid,
+            url: SavannaConfig.itemLockUrl + encodeURI(uri) + ';jsessionid=' + Savanna.jsessionid,
             method: act,
             cors: true,
             headers: {
@@ -124,9 +127,6 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         }
 
         this.getView().setEditMode(!this.getView().getEditMode());
-
-        // Focus on the Title field automatically
-        this.getView().queryById('itemNameField').focus();
     },
 
     onEditCancel: function () {
@@ -193,6 +193,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     },
 
     onEditDone: function () {
+        
         this.store.getAt(0).setDirty();
         this.store.sync({
             callback: Ext.bind(this.onEditDoneCallback, this, [], true)
@@ -238,7 +239,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
             relatedItemView.fireEvent('ViewRelatedItems:SetupData', this.store.getAt(0).propertyGroupsStore.getById('Related Items').valuesStore.data.items);
         }   else    {
             /*
-            server down..?
+             server down..?
              */
             Ext.Error.raise({
                 msg: 'Updating record failed.'
@@ -281,6 +282,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     },
 
     updateViewWithStoreData: function (record) {
+        
         var me = this;
         this.storeHelper.init(this.store);
 
@@ -288,14 +290,17 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
          Header View
          */
         var headerComponent = me.getView().queryById('itemViewHeaderView');
-        headerComponent.setTitle(record.data.label);
+        
+        // Apparently (according to nkedev) some items don't have a header label, and the "top-level" label is their URI, so we check for that here.
+        var headerText = record.propertyGroupsStore.getById('Header').valuesStore.getById('Label').valuesStore.getAt(0).data.label;
+        
+        headerComponent.setTitle(headerText);
         headerComponent.reconfigure(record.propertyGroupsStore.getById('Header').valuesStore);
 
         /*
          Header Edit
          */
         var headerEditComponent = me.getView().queryById('itemViewHeaderEdit');
-        headerEditComponent.queryById('itemNameField').setValue(record.data.label);
         headerEditComponent.storeHelper = this.storeHelper;
         headerEditComponent.store = record.propertyGroupsStore.getById('Header').valuesStore;
         headerEditComponent.fireEvent('EditHeader:StoreSet');
@@ -374,8 +379,8 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
 
         /*
-        sources
-        */
+         sources
+         */
         var itemSourceComponent = me.getView().queryById('itemSources');
         itemSourceComponent.storeHelper = this.storeHelper;
         itemSourceComponent.store = record.propertyGroupsStore.getById('Sources').valuesStore;
@@ -406,11 +411,36 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         });
     },
 
-    updateQualitiesHeader: function(store) {
+    onParentSelected: function (uri, label) {
+
+        Ext.each(this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Type').valuesStore.data.items, function(item)    {
+            if(!item.get('inheritedFrom'))    {
+                item.set('value', uri);
+                item.set('label', label);
+            }
+        });
+        this.store.getAt(0).setDirty();
+        this.store.sync({
+            callback: Ext.bind(this.onParentSyncCallback, this, [], true)
+        });
+    },
+
+    onParentSyncCallback: function () {
+        this.store.load({
+            scope: this,
+            callback: Ext.bind(this.onItemReload, this, [], true)
+        })
+    },
+
+    onItemReload:function(records, operation, success)  {
+        this.updateViewWithStoreData(records[0]);
+    },
+
+    updateQualitiesHeader: function (store) {
         var titlePre = 'Qualities (',
             values = this.storeHelper.getBotLevItemInStore(store).length,
             titlePost = ')';
-        
+
         return titlePre + values + titlePost;
     },
 
@@ -429,3 +459,5 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
     }
 });
+
+
