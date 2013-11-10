@@ -101,7 +101,7 @@ Ext.define('Savanna.search.controller.ResultsComponent', {
         resultsDals.createFacetsTabPanel();
         btn.findParentByType('search_searchcomponent').refineSearchString = '';
 
-        resultsTerms.queryById('termValues').removeAll();
+        resultsTerms.removeAll();
 
         this.getApplication().fireEvent('results:dalreset', btn);
     },

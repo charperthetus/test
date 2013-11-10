@@ -61,7 +61,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
         itemId: 'results-refineSearch',
         bbar: {
             padding: 0,
-            margin: 0,
+            margin: '10 0 0 0',
             items: ['->',{
                 text:'Keyword Reset',
                 itemId:'resultsFacetsReset',

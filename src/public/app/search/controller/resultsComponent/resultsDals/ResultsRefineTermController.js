@@ -9,24 +9,25 @@ Ext.define('Savanna.search.controller.resultsComponent.resultsDals.ResultsRefine
     {
         extend: 'Deft.mvc.ViewController',
 
+        view: 'Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineTerm',
+
         control: {
-            //the close button
-            removeTerm: {
-                click: 'onCloseButton'
-            },
-
-            //The label component.  This is here to auto-generate the getter for the component.
-            termValue: {}
-        },
-
-
-        onCloseButton: function (closeButton) {
-            this.getView().fireEvent('Search:RemoveSearchTerm', this.getTermValue().text, this.getView());
+            view: {
+                click: {
+                    element: 'closeEl',
+                    fn: 'onCloseButton'
+                }
+            }
         },
 
         init: function () {
             return this.callParent(arguments);
-        }
+        },
 
+        onCloseButton: function () {
+            if (!this.getView().disabled) {
+                this.getView().fireEvent('Search:RemoveSearchTerm', this.getView().text, this.getView());
+            }
+        }
     }
 );
