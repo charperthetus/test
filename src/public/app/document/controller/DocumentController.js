@@ -8,7 +8,6 @@ Ext.define("Savanna.document.controller.DocumentController", {
         selectTool: {
             click: 'onSelectTool'
         },
-		
         zoomIn: {
             click: 'onZoomIn'
         },
@@ -29,9 +28,6 @@ Ext.define("Savanna.document.controller.DocumentController", {
         },
         thumbView: {
             click: 'onThumbView'
-        },
-        searchDoc: {
-            click: 'onSearchDoc'
         },
         exportDoc: {
             click: 'onExportDoc'
