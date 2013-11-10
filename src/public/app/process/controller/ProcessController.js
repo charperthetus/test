@@ -294,7 +294,7 @@ Ext.define('Savanna.process.controller.ProcessController', {
         var me = this;
         Ext.Msg.confirm(
             'Delete Process',
-            'Permanently delete this process? Cannot be undone.',
+            'Permanently delete this process?',
             function(btn) {
                if (btn == 'yes') {
                    me.deleteProcess();
