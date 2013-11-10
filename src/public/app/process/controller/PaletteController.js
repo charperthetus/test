@@ -159,6 +159,9 @@ Ext.define('Savanna.process.controller.PaletteController', {
     },
 
     beforeItemDrop: function(node, data) {
+
+        data.copy = true; //Insist on copy and not move operation.
+
         //check to see if the user is dragging an item in the same grid view (i.e. reordering rows).
         //if so, disallow it
         var itemList = this.getItemList(),
@@ -178,6 +181,9 @@ Ext.define('Savanna.process.controller.PaletteController', {
     },
 
     beforeActionDrop: function(node, data) {
+
+        data.copy = true; //Insist on copy and not move operation.
+
         //check to see if the user is dragging an action in the same grid view (i.e. reordering rows).
         //if so, disallow it
         var actionList = this.getActionList(),

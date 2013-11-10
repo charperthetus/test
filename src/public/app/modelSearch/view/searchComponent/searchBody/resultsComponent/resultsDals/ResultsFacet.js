@@ -148,7 +148,8 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
                      added to resolve defect SAV-5380.  Needs design to assign a class.
                      */
                     style: {
-                        'white-space': 'nowrap'
+                        'white-space': 'nowrap',
+                        'text-transform': 'capitalize'
                     },
                     listeners: {
                         'change': Ext.bind(me.onFacetFilterChange, me)

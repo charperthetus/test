@@ -9,7 +9,7 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
     ],
 
     control: {
-        maintabpanel: {
+        desktopTabPanel: {
             createprocess: 'createProcess',
             createitem: 'createItem',
             tabchange: 'onTabChange'
@@ -33,7 +33,13 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
 
     onOpen: function(event, otherParams){
         var component = ComponentManager.getComponentForType(event.type, event.uri, event.label, otherParams),
-            tabPanel = this.getMaintabpanel();
+        tabPanel = this.getDesktopTabPanel();
+        for (var i=0 ; i < tabPanel.items.getCount() ; i++  ){
+            var classPanel = tabPanel.items.get(i);
+            if (classPanel && classPanel.hasOwnProperty('itemUri') && (classPanel.getItemUri() === encodeURI(event.uri) || classPanel.getItemUri() === event.uri)){
+                return;
+            }
+        }
         if (component){
             component.closable = true;
             component.tabConfig = {
@@ -57,11 +63,11 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
     },
 
     onClose: function(tab) {
-        this.getMaintabpanel().remove(tab);
+        this.getDesktopTabPanel().remove(tab);
     },
 
     onCreateProcess: function(){
-        this.createProcess(this.getMaintabpanel());
+        this.createProcess(this.getDesktopTabPanel());
     },
 
     createProcess: function(tabpanel) {

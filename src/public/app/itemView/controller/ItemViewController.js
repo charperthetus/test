@@ -127,9 +127,6 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         }
 
         this.getView().setEditMode(!this.getView().getEditMode());
-
-        // Focus on the Title field automatically
-        this.getView().queryById('itemNameField').focus();
     },
 
     onEditCancel: function () {
@@ -196,6 +193,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     },
 
     onEditDone: function () {
+        
         this.store.getAt(0).setDirty();
         this.store.sync({
             callback: Ext.bind(this.onEditDoneCallback, this, [], true)
@@ -284,8 +282,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     },
 
     updateViewWithStoreData: function (record) {
-
-        console.log(record);
+        
         var me = this;
         this.storeHelper.init(this.store);
 
@@ -293,14 +290,17 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
          Header View
          */
         var headerComponent = me.getView().queryById('itemViewHeaderView');
-        headerComponent.setTitle(record.data.label);
+        
+        // Apparently (according to nkedev) some items don't have a header label, and the "top-level" label is their URI, so we check for that here.
+        var headerText = record.propertyGroupsStore.getById('Header').valuesStore.getById('Label').valuesStore.getAt(0).data.label;
+        
+        headerComponent.setTitle(headerText);
         headerComponent.reconfigure(record.propertyGroupsStore.getById('Header').valuesStore);
 
         /*
          Header Edit
          */
         var headerEditComponent = me.getView().queryById('itemViewHeaderEdit');
-        headerEditComponent.queryById('itemNameField').setValue(record.data.label);
         headerEditComponent.storeHelper = this.storeHelper;
         headerEditComponent.store = record.propertyGroupsStore.getById('Header').valuesStore;
         headerEditComponent.fireEvent('EditHeader:StoreSet');
