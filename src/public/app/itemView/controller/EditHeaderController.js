@@ -13,8 +13,6 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
         'Savanna.itemView.view.header.EditHeader'
     ],
 
-    valNameArray: [],
-
     control: {
         view: {
             'EditHeader:StoreSet': 'storeSet'
@@ -53,7 +51,6 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
 
         Ext.each(me.getView().store.getById('Intended Use').data.values, function(value) {
             me.getView().queryById('addIntendedUseBox').addTag(value.label, value.editable);
-            me.valNameArray.push(value.label);
         });
 
         me.getView().queryById('addIntendedUseBox').store.getProxy().url = SavannaConfig.savannaUrlRoot + 'rest/model/search/keyword/property/' + encodeURI(me.getView().store.getById('Intended Use').data.predicateUri);
@@ -94,11 +91,17 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
     },
 
     onIntendedUsesSelect:function() {
+        var valNameArray = [];
+
+        Ext.each(this.getView().store.getById('Intended Use').valuesStore.data.items, function(value) {
+            valNameArray.push(value.data.label);
+        });
+
         var vChooser = Ext.create('Savanna.itemView.view.itemQualities.ValuesPicker', {
             width: 500,
             height: 600,
             selectionStore: this.getView().store.getById("Intended Use").valuesStore,
-            valNameArray: this.valNameArray,
+            valNameArray: valNameArray,
             uri: encodeURI(this.getView().store.getById('Intended Use').data.predicateUri),
             storeHelper: this.getView().storeHelper
         });
@@ -108,13 +111,11 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
 
     closedVPicker: function(view) {
         if (view.updatedStore) {
-            this.valNameArray = [];
             Ext.Array.erase(this.getView().store.getById('Intended Use').data.values, 0, this.getView().store.getById('Intended Use').data.values.length);
             this.getView().queryById('addIntendedUseBox').clearTags();
 
             Ext.each(this.getView().store.getById('Intended Use').valuesStore.data.items, function(value) {
                 this.getView().store.getById('Intended Use').data.values.push(value.data);
-                this.valNameArray.push(value.data.label);
                 this.getView().queryById('addIntendedUseBox').addTag(value.data.label);
             }, this);
 
@@ -134,19 +135,17 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
 
     addingIntendedUse: function(tagName, tagData, aView) {
         this.getView().storeHelper.addBotLevItemInStore(tagName, tagData, this.getView().store.getById('Intended Use'));
-        this.valNameArray.push(tagName);
         this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
     },
 
     removingIntendedUse: function(tagName, aView) {
         this.getView().storeHelper.removeBotLevItemInStore(tagName, this.getView().store.getById('Intended Use'));
-        Ext.Array.remove(this.valNameArray, tagName);
         this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
     },
 
     updateDescription: function(comp, e, eOpts) {
-        var myStore = this.getView().store;
-        myStore.getById('Description').data.values[0].value = comp.value;
-        this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');  
+        var value = {label: "Description", comment: null, value: comp.value};
+        this.storeHelper.updateBotLevItemInStore("Description", value, this.getView().store.getById('Description'));
+        this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
     }
 });
