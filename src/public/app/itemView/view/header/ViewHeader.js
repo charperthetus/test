@@ -57,7 +57,7 @@ Ext.define('Savanna.itemView.view.header.ViewHeader', {
     ],
 
     recalculateHeight: function() {
-        if( this.getEl().dom.lastChild.lastChild.firstChild.clientHeight !== 0) {
+        if ( this.getEl().dom.lastChild.lastChild.firstChild && this.getEl().dom.lastChild.lastChild.firstChild.clientHeight !== 0) {
             var headerHeight = this.getEl().dom.firstChild.clientHeight,
                 tableHeight = this.getEl().dom.lastChild.lastChild.firstChild.clientHeight;
 

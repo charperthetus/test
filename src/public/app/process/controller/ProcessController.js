@@ -166,7 +166,7 @@ Ext.define('Savanna.process.controller.ProcessController', {
                     //looks like it might really be json
                     var message = Ext.decode(response.responseText);
                     me.store.getAt(0).set('uri', message.uri);
-                    me.getView().down('#processSidepanel').fireEvent('processUriChange', encodeURIComponent(message.uri));
+                    me.getView().down('#processSidepanel').fireEvent('processUriChange', message.uri);
                 } else {
                     // probably an error page even though we got a 200
                     // todo: we should have a standard mechanism of reporting errors. For now writing this to console matches how we handle other server errors  (500)

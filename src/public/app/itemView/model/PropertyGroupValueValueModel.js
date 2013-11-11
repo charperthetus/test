@@ -16,7 +16,8 @@ Ext.define('Savanna.itemView.model.PropertyGroupValueValueModel', {
         { name: 'value'},
         { name: 'version'},
         { name: 'editable'},
-        { name: 'inheritedFrom'}
+        { name: 'inheritedFrom'},
+        { name: 'comment'}
     ]
 });
 
