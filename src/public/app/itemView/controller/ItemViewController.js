@@ -156,7 +156,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     onEditSave: function (btn) {
 
         // Disable further edits
-        btn.disable();
+        btn.toggleSaving(false);
 
         this.store.getAt(0).data.label = this.getView().queryById('itemViewHeaderEdit').queryById('itemNameField').value;
 
@@ -185,7 +185,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     onEditSaveCallback: function (responseObj, evt, btn) {
 
         // Re-enable editing
-        this.enableSaving();
+        this.toggleSaving(true);
 
         if (!responseObj.operations[0].success) {
             /*
@@ -200,7 +200,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     onEditDone: function (btn) {
 
         // Disable editing
-        this.disableSaving();
+        this.toggleSaving(false);
         
         this.store.getAt(0).setDirty();
         this.store.sync({
@@ -211,7 +211,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     onEditDoneCallback: function (responseObj, evt, btn) {
 
         // Re-enable edit mode
-        this.enableSaving();
+        this.toggleSaving(true);
 
         if (responseObj.operations[0].success) {
             this.getView().getLayout().setActiveItem(0);
@@ -258,16 +258,21 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         }
     },
 
-    disableSaving: function() {
-        this.getView().queryById('editDeleteButton').disable();
-        this.getView().queryById('editSaveButton').disable();
-        this.getView().queryById('editDoneButton').disable();
-    },
+    /*
+     *  Toggle Saving
+     *
+     *  Abstraction for toggling the save/delete buttons on the toolber
+     *
+     *  @author <JLG>
+     *  @param state {boolean} if true this will enable the buttons, false disables
+     */
+    toggleSaving: function(state) {
+        var itemIds = 'editDeleteButton, editSaveButton, editDoneButton'.split(', '),
+            toggle = (state) ? 'enable' : 'disable';
 
-    enableSaving: function() {
-        this.getView().queryById('editDeleteButton').enable();
-        this.getView().queryById('editSaveButton').enable();
-        this.getView().queryById('editDoneButton').enable();
+        Ext.each(itemIds, function(btn) {
+            this.getView().queryById(btn)[toggle]();
+        }, this);
     },
 
     getItemViewData: function () {
