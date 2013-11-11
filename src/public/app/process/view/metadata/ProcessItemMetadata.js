@@ -25,9 +25,9 @@ Ext.define('Savanna.process.view.metadata.ProcessItemMetadata', {
             layout: 'hbox',
             items: [
                 {
-                    xtype: 'textfield',
-                    value: 'RNRM Item Name',
-                    itemId: 'itemTitle'
+                    xtype: 'label',
+                    itemId: 'itemTitle',
+                    width: '80%'
                 },
                 {
                     xtype: 'button',
@@ -42,7 +42,6 @@ Ext.define('Savanna.process.view.metadata.ProcessItemMetadata', {
             items: [
                 {
                     xtype: 'textarea',
-                    text: 'Body Paragraph Closed.  Content far far away.',
                     itemId: 'itemDescription'
                 },
                 {
@@ -59,7 +58,6 @@ Ext.define('Savanna.process.view.metadata.ProcessItemMetadata', {
             items: [
                 {
                     xtype: 'textfield',
-                    value: 'Individual Title',
                     itemId: 'itemInstanceTitle'
                 },
                 {
