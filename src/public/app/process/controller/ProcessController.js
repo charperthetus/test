@@ -98,13 +98,37 @@ Ext.define('Savanna.process.controller.ProcessController', {
     //
 
     initCanvas: function() {
+        var me = this;
+        var view = this.getView();
         var diagram = this.getCanvas().diagram;
         diagram.addDiagramListener('PartResized', Ext.bind(this.partResized, this));
         diagram.addDiagramListener('TextEdited', Ext.bind(this.textEdited, this));
 
         var uri = this.getView().getItemUri();
         if (uri) {
-            this.store.load({callback: this.onStoreLoaded, scope: this});
+            Ext.Ajax.request({
+                url: SavannaConfig.itemLockUrl + /*encodeURI*/(uri) + ';jsessionid=' + Savanna.jsessionid,
+                method: 'GET',
+                success: function(response){
+                    if (response.responseText) {
+                        me.store.load({callback: me.onStoreLoaded, scope: me});
+                    } else {
+                        Ext.MessageBox.alert(
+                            'Process Locked',
+                            'This Process is being edited by another user.',
+                            function() {
+                                me.confirmClosed = true;
+                                view[view.closeAction]();
+                            }
+                        );
+                    }
+                },
+                failure: function(response){
+                    console.log('initCanvas: Server Side Failure: ' + response.status);
+                    me.confirmClosed = true;
+                    view[view.closeAction]();
+                }
+            });
         } else {
             this.createNewProcess(diagram);
         }
@@ -260,6 +284,20 @@ Ext.define('Savanna.process.controller.ProcessController', {
 //        return isDirty;
     },
 
+    releaseLock: function() {
+        var uri = this.store.getAt(0).data.uri;
+        Ext.Ajax.request({
+            url: SavannaConfig.itemLockUrl + /*encodeURI*/(uri) + ';jsessionid=' + Savanna.jsessionid,
+            method: 'DELETE',
+            success: function(){
+                // nothing to do
+            },
+            failure: function(response){
+                console.log('releaseLock: Server Side Failure: ' + response.status);
+            }
+        });
+    },
+
     onProcessClose: function(panel) {
         var me = this;
         if (this.isStoreDirty(this.store)) {
@@ -271,11 +309,18 @@ Ext.define('Savanna.process.controller.ProcessController', {
                 fn: function(button) {
                     if(button == 'yes'){
                         //save and close
-                        me.onSave();
-                        me.getView().down('#processSidepanel').fireEvent('processclose');
-                        panel[panel.closeAction]();
+                        //force a dirty state so that sync will do something
+                        me.store.first().setDirty();
+                        me.store.sync({
+                            callback: function () {
+                                me.releaseLock();
+                                me.getView().down('#processSidepanel').fireEvent('processclose');
+                                panel[panel.closeAction]();
+                            }
+                        });
                     } else if (button == 'no') {
                         //discard changes and close
+                        me.releaseLock();
                         me.confirmClosed = true;
                         me.getView().down('#processSidepanel').fireEvent('processclose');
                         panel[panel.closeAction]();
@@ -312,6 +357,7 @@ Ext.define('Savanna.process.controller.ProcessController', {
             url: SavannaConfig.modelProcessLoadUrl + encodeURI(encodeURIComponent(uri)) + ';jsessionid=' + Savanna.jsessionid,
             method: 'DELETE',
             success: function(response) {
+                me.releaseLock();
                 me.confirmClosed = true;
                 view[view.closeAction]();
             },
