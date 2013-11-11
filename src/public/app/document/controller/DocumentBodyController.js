@@ -40,7 +40,7 @@ Ext.define("Savanna.document.controller.DocumentBodyController", {
         jQuery(domElement).bind('onDocumentLoaded', function (e, totalPages) {
 
             // setting the total page value in TotalPage Label field in active tab
-            activeToolBar.down('#totalPages').setText(totalPages);
+            activeToolBar.down('#totalPages').setText(totalPages + (totalPages > 1 ? ' pages' : ' page'));
         });
     }
 

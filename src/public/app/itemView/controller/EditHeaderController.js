@@ -144,7 +144,7 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
 
             Ext.each(this.getView().store.getById('Intended Use').valuesStore.data.items, function(value) {
                 this.getView().store.getById('Intended Use').data.values.push(value.data);
-                this.getView().queryById('addIntendedUseBox').addTag(value.data.label, value.data.editable);
+                this.getView().queryById('addIntendedUseBox').addTag(value.data.label);
             }, this);
 
             this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
