@@ -168,7 +168,7 @@ Ext.define('Savanna.itemView.store.ItemViewStoreHelper', {
         var mod = Ext.create('Savanna.itemView.model.PropertyGroupValueValueModel');
         mod.data.id = label;
         mod.data.label = label;
-        mod.data.uri = this.getUUID();
+        mod.data.uri = this.getUUID(uri);
         mod.data.value = uri ? uri : label;
         mod.data.editable = true;
         mod.data.version = 0;
@@ -176,8 +176,13 @@ Ext.define('Savanna.itemView.store.ItemViewStoreHelper', {
         return mod;
     },
 
-    getUUID: function() {
+    getUUID: function(uri) {
+        var endStr = "/ModelProperty";
         var uuid = Ext.data.IdGenerator.get('uuid').generate();
-        return 'x' + uuid  + '/' + "ModelProperty";
+
+        if (uri && uri.indexOf("%2FImage%2F") >= 0) {
+            endStr = "/ModelImageProperty";
+        }
+        return 'x' + uuid  + endStr;
     }
 });
