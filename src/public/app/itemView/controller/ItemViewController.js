@@ -154,7 +154,9 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     },
 
     onEditSave: function (btn) {
-        btn.disable();
+
+        // Disable further edits
+        btn.toggleSaving(false);
 
         this.store.getAt(0).data.label = this.getView().queryById('itemViewHeaderEdit').queryById('itemNameField').value;
 
@@ -180,7 +182,10 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         });
     },
 
-    onEditSaveCallback: function (responseObj) {
+    onEditSaveCallback: function (responseObj, evt, btn) {
+
+        // Re-enable editing
+        this.toggleSaving(true);
 
         if (!responseObj.operations[0].success) {
             /*
@@ -192,7 +197,10 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         }
     },
 
-    onEditDone: function () {
+    onEditDone: function (btn) {
+
+        // Disable editing
+        this.toggleSaving(false);
         
         this.store.getAt(0).setDirty();
         this.store.sync({
@@ -200,7 +208,10 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         });
     },
 
-    onEditDoneCallback: function (responseObj) {
+    onEditDoneCallback: function (responseObj, evt, btn) {
+
+        // Re-enable edit mode
+        this.toggleSaving(true);
 
         if (responseObj.operations[0].success) {
             this.getView().getLayout().setActiveItem(0);
@@ -245,6 +256,23 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
                 msg: 'Updating record failed.'
             })
         }
+    },
+
+    /*
+     *  Toggle Saving
+     *
+     *  Abstraction for toggling the save/delete buttons on the toolber
+     *
+     *  @author <JLG>
+     *  @param state {boolean} if true this will enable the buttons, false disables
+     */
+    toggleSaving: function(state) {
+        var itemIds = 'editDeleteButton, editSaveButton, editDoneButton, editCancelButton'.split(', '),
+            toggle = (state) ? 'enable' : 'disable';
+
+        Ext.each(itemIds, function(btn) {
+            this.getView().queryById(btn)[toggle]();
+        }, this);
     },
 
     getItemViewData: function () {
