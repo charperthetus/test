@@ -24,7 +24,8 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
         'Savanna.component.ClassificationPanel',
         'Savanna.itemView.store.AutoCompleteStore',
         'Savanna.itemView.store.ItemViewStoreHelper',
-        'Savanna.sources.view.Sources'
+        'Savanna.sources.view.Sources',
+        'Savanna.metadata.controller.InformationPanelController'
     ],
 
     layout: 'card',
@@ -51,6 +52,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
     },
 
     buildItems: function() {
+        console.log('this.getItemUri()',this.getItemUri())
         return [
             {
                 xtype:'panel',
@@ -228,12 +230,20 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                         headerPosition:'left',
                         items: [
                             {
+                                xtype: 'informationpanel',
+                                itemId: 'informationPanel',
+                                collapsible: true,
+                                itemUri: this.getItemUri() ,
+                                width: '100%'
+                            },
+                            {
                                 xtype: 'document_sources',
                                 editMode: false,
                                 itemId: 'itemSources',
                                 header:{
                                     ui:'light-blue'
-                                }
+                                },
+                                width: '100%'
                             }
                         ]
                     }
@@ -437,6 +447,13 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                         resizable:true,
                         headerPosition:'left',
                         items: [
+                            {
+                                xtype: 'informationpanel',
+                                itemId: 'informationPanel',
+                                collapsible: true,
+                                itemUri: this.getItemUri() ,
+                                width: '100%'
+                            },
                             {
                                 xtype: 'document_sources',
                                 editMode: true,
