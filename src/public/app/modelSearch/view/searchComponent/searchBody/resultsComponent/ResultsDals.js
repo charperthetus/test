@@ -33,7 +33,6 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
     height:'100%',
 
     layout: 'vbox',
-    border: false,
     autoScroll: true,
 
     mixins: {
@@ -41,6 +40,41 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
     },
 
     store: 'Savanna.modelSearch.store.DalSources',
+
+    defaults: {
+        padding: 10,
+        width: '100%'
+    },
+
+    items: [{
+        xtype: 'panel',
+        itemId: 'results-searchSources',
+        ui: 'simple',
+        title: 'search sources',
+        layout: 'vbox',
+        align: 'left',
+        margin: '0 0 10 0'
+    },
+    {
+        xtype: 'panel',
+        itemId: 'results-refineSearch',
+        hidden: true,
+        bbar: {
+            padding: 0,
+            margin: '10 0 0 0',
+            items: ['->',{
+                text:'Keyword Reset',
+                itemId:'resultsFacetsReset',
+                padding: 0,
+                margin: 0
+            }]}
+    },
+    {
+        xtype: 'container',
+        itemId: 'results-refineSearchFacets',
+        cls: 'refineSearchFacets',
+        padding: '0 10 10 10'
+    }],
 
     initComponent: function () {
         this.mixins.storeable.initStore.call(this);
@@ -54,18 +88,18 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
          */
 
         if (!this.queryById('refinesearch')) {
-            this.add(this.createRefineSearchPanel());
+            this.down('#results-refineSearch').add(this.createRefineSearchPanel());
         }
 
         if (!this.queryById('refineterms')) {
-            this.add(this.createRefineTermsPanel());
+            this.down('#results-refineSearch').add(this.createRefineTermsPanel());
         }
 
         var facetTabs = this.createFacetsTabPanel();    // always do this...
 
         if (!this.queryById('resultsfacets')) {
 
-            this.add(facetTabs);    // ...but only add if doesn't exist
+            this.down('#results-refineSearchFacets').add(facetTabs);    // ...but only add if doesn't exist
         }
 
 
@@ -78,9 +112,9 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
 
             if (!exists) {
                 myPanel = this.createDalPanel(record);
-                myPanel.down('#dalName').setText(record.get('displayName'));
+                myPanel.setText(record.get('displayName'));
 
-                this.insert(this.items.length - startingItemsLength, myPanel);
+                this.down('#results-searchSources').insert(this.items.length - startingItemsLength, myPanel);
             } else {
                 this.updateDalStatus(dalId);
             }
@@ -92,7 +126,6 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
     createDalPanel: function (myRecord) {
         return Ext.create('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsOptions', {
             itemId: myRecord.get('id'),
-            hidden: true,
             dalName: myRecord.get('displayName')
         });
     },
@@ -214,12 +247,14 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
         var myDal = this.queryById(dalId);
 
         var styleStatus = {
-            'success': myDal.dalLoadSuccess,
-            'fail': myDal.dalLoadFail,
-            'pending': myDal.dalLoadPending,
-            'none': myDal.dalLoadNone
+            'success': 'icon-success',
+            'fail': 'icon-alert',
+            'pending': 'icon-pending',
+            'none': 'loadNone'
         };
-        myDal.down('#dalStatusIcon').getEl().setStyle(styleStatus[status]);
+        // loadingEl.removeCls('icon-success icon-alert icon-pending loadNone');
+        // loadingEl.addCls(styleStatus[status]);
+        myDal.setIconCls(styleStatus[status]);
 
         var me = this,
             count = 0;
@@ -231,7 +266,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
                     count = searchResult.store.totalCount;
                 }
 
-                myDal.down('#dalName').setText(me.store.getById(dalId).get('displayName') + ' ' + '(' + count + ')');
+                myDal.setText(me.store.getById(dalId).get('displayName') + ' ' + '(' + count + ')');
             }
         });
     }
