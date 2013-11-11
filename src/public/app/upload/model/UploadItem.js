@@ -9,6 +9,6 @@
 Ext.define('Savanna.upload.model.UploadItem', {
 
     extend: 'Ext.data.Model',
-    fields: ['status','fileName','fileSize','progress','fileId','docUri']
+    fields: ['status','fileName','fileSize','progress','fileId','docUri', 'classification']
 
 });
