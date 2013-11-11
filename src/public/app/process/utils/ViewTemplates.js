@@ -183,6 +183,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
     generateItemNodeTemplate: function(itemTextEditor) {
         var gmake = go.GraphObject.make;
         var _this = this;
+       // var forelayer = new go.Layer({name:"ForegroundText"});
         return gmake(go.Node, 'Auto', {
                 // handle mouse enter/leave events to show/hide the gadgets
                 mouseEnter: Ext.bind(this.onMouseEnter, this),
@@ -223,7 +224,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                         gmake(go.Shape, 'Border', {
                             stroke: 'black',
                             strokeWidth: 1,
-                            fill: 'transparent',
+                            fill: 'white',
                             height: 32,
                             width: 32
                         }, new go.Binding('strokeDashArray', 'isOptional', function(isOptional) {
@@ -313,11 +314,14 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                         },
                         gmake(go.Shape, 'Circle', this.styler().start().outline,{
                             name:"startShape",
+                            
                             mouseEnter: function (e, obj) {
                                 obj.fill = '#aee2c7';
                             },
                             mouseLeave: function (e, obj) {
-                                if (obj.fill !== '#4a966e') {
+                                if (obj.panel.part.isSelected === true) {
+                                    obj.fill = '#4a966e';
+                                } else {
                                     obj.fill = '#7cc19d';
                                 }
                             }
@@ -330,8 +334,10 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                                 obj.panel.findObject('startShape').fill = '#aee2c7';
                             },
                             mouseLeave: function (e, obj) {
-                                if (obj.panel.findObject('startShape').fill !== '#4a966e') {
+                                if (obj.panel.part.isSelected === true) {
                                     obj.panel.findObject('startShape').fill = '#7cc19d';
+                                } else {
+                                    obj.panel.findObject('startShape').fill = '#4a966e';
                                 }
                             }
                         })
@@ -398,7 +404,9 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                                         obj.fill = '#f9ba6e';
                                     },
                                     mouseLeave: function (e, obj) {
-                                        if (obj.fill !== '#fc9909') {
+                                        if (obj.panel.part.isSelected === true) {
+                                            obj.fill = '#fc9909';
+                                        } else {
                                             obj.fill = '#f9aa41';
                                         }
                                     }
@@ -419,9 +427,11 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                                     obj.panel.findObject('diamondShape').fill = '#f9ba6e';
                                 },
                                 mouseLeave: function (e, obj) {
-                                    if (obj.panel.findObject('diamondShape').fill !== '#fc9909') {
-                                        obj.panel.findObject('diamondShape').fill = '#f9aa41';
-                                    }
+                                    if (obj.panel.part.isSelected === true) {
+                                            obj.panel.findObject('diamondShape').fill = '#fc9909';
+                                        } else {
+                                            obj.panel.findObject('diamondShape').fill = '#f9aa41';
+                                        }
                                 }
 
                             })
@@ -827,7 +837,25 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                                 if (sel) return 0;
                                 else return 1;
                             }).ofObject('')),
-                        gmake(go.Panel, go.Panel.Vertical,
+                        gmake(go.Panel, go.Panel.Vertical,{
+                      
+                                mouseOver: function(e, obj, n){
+
+                                    if ( obj.panel.part.isSelected !== true ){
+                                        obj.panel.findObject('processModelShape').stroke = "#63d9f5";
+                                        obj.panel.findObject('processModelShape').strokeWidth = 2;
+
+                                        var me = obj;
+
+                                        obj.mouseLeave = function(e, obj, n){
+                                            if ( me.panel.part.isSelected !== true ){
+                                                me.panel.findObject('processModelShape').stroke = "#999999";
+                                                me.panel.findObject('processModelShape').strokeWidth = 1;
+                                            }
+                                        }
+                                    }
+                                }
+                            },
                             this.styler().processModel().panelVertical,
                             gmake(go.Panel, go.Panel.Horizontal,
                                 this.styler().processModel().panelHorizontal,
