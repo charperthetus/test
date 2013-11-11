@@ -114,9 +114,9 @@ Ext.define('Savanna.upload.controller.UploadController', {
             file = files[i];
             var tempId = Ext.id();
             this.uploadFileViaXMLHttpRequest(this.buildUploadUrl() , file,  uploadGrid, tempId,
-                classificationButton.getText());
+                classificationButton.getPortionMarking());
             uploadGrid.store.add({ status:'pending', fileName: file.name , fileSize: file.size , progress:'Queued',
-                fileId: tempId, classification: classificationButton.getPortionMarking()});
+                fileId: tempId, classification: classificationButton.getText()});
         }
     },
 
