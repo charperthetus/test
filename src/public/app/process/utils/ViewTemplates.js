@@ -191,10 +191,10 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                 selectionChanged: Ext.bind(this.onNodeSelectionChange, this),
                 defaultStretch: go.GraphObject.Horizontal,
                 selectionObjectName: 'BODY',
-            click: function (e, obj) {
-                        obj.findObject("cubeNode").stroke = "transparent";
-                                obj.findObject("cubeNode").strokeWidth = 0;
-                    },
+                click: function (e, obj) {
+                    obj.findObject("cubeNode").stroke = "transparent";
+                    obj.findObject("cubeNode").strokeWidth = 0;
+                },
                 mouseOver: function(e, obj, n){
                   if ( obj.isSelected !== true ){
                             obj.findObject("cubeNode").stroke = "#63d9f5";
@@ -205,15 +205,15 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                             obj.mouseLeave = function(e, obj, n){
                                 _this.utils().toggleGadgets(obj, false);
                                 obj.findObject("cubeNode").stroke = "transparent";
-                                obj.findObject("cubeNode").strokeWidth = 0;
+                                obj.findObject("cubeNode").strokeWidth = 2;
                             }
                         }
                     }
             },
                      
-            gmake(go.Panel, go.Panel.Vertical,
+            gmake(go.Panel, go.Panel.Vertical, {name:"MAIN"},
                 gmake(go.Panel, go.Panel.Auto,
-                gmake(go.Shape, "RoundedRectangle", {name:"cubeNode", stroke:'transparent', strokeWidth: 0, fill: 'transparent' }),
+                gmake(go.Shape, "RoundedRectangle", {name:"cubeNode", stroke:'transparent', strokeWidth: 2, fill: 'transparent' }),
                 gmake(go.Panel, go.Panel.Horizontal, {
                         name: 'BODY',
                         background: 'transparent'
@@ -238,9 +238,10 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                     ),
                     gmake(go.TextBlock, this.styler().rectangle().textblock, {textEditor: itemTextEditor},
                         new go.Binding('text', 'label').makeTwoWay())
-                           )
+                    )
                 ),
                 gmake(go.Panel, go.Panel.Spot, {
+                        name: "gadgetsMenu",
                         background: 'transparent',
                         padding: 2,
                         stretch: go.GraphObject.Fill
@@ -253,7 +254,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
             ), {
                 selectionAdornmentTemplate: gmake(go.Adornment, 'Auto',
                     gmake(go.Shape, 'RoundedRectangle',
-                        this.styler().processModel().selectionAdornment),
+                        this.styler().rectangle().selectionAdornment),
                     gmake(go.Placeholder)),
                 contextMenu: this.makeContextMenu()
             }
@@ -1016,7 +1017,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                                 }
                         }  
                 }, new go.Binding('isSubGraphExpanded', 'isSubGraphExpanded').makeTwoWay(),
-                gmake(go.Panel, go.Panel.Vertical,
+                gmake(go.Panel, go.Panel.Vertical,{name:"MAIN"},
                     gmake(go.Panel, go.Panel.Auto, {
                             name: 'BODY',
                             background: 'transparent',
@@ -1047,6 +1048,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                             }).ofObject(''))
                     ),
                     gmake(go.Panel, go.Panel.Spot, {
+                        name: "gadgetsMenu",
                             background: 'transparent',
                             padding: 2,
                             stretch: go.GraphObject.Fill

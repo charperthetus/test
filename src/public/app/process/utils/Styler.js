@@ -197,7 +197,13 @@ Ext.define('Savanna.process.utils.Styler', {
                 name: "TEXT",
                 isMultiline: false
 
-            }
+            },
+            "selectionAdornment": {
+                fill: null,
+                stroke: '#63d9f5',
+                strokeWidth: 3,
+                isPanelMain: true
+            },
         };
 
         /* 

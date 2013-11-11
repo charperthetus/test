@@ -100,14 +100,20 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
 
         // never show for descendants of an Action Node
         var parent = obj.findTreeParentNode();
-        if (parent && parent.category == 'InternalGroup') {
+        if (parent && parent.category == 'InternalGroup') {  
             show = false;
+            if (obj.findObject('gadgetsMenu') !== null){
+                obj.findObject("MAIN").remove(obj.findObject('gadgetsMenu'));
+            }
         }
 
         //never show for nodes contained in an AltsGroup
         var group = obj.containingGroup;
         if (group && group.category == 'AltsGroup') {
             show = false;
+            if (obj.findObject('gadgetsMenu') !== null){
+                obj.findObject("MAIN").remove(obj.findObject('gadgetsMenu'));
+            }
         }
 
         var names = ['LinkGadget','StepGadget','DecisionGadget'];
