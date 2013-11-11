@@ -12,7 +12,6 @@ Ext.define('Savanna.process.view.metadata.MetadataTabPanel', {
     requires: [
         'Savanna.process.controller.MetadataController',
         'Savanna.process.view.metadata.FullProcessMetadata',
-        'Savanna.process.view.metadata.ProcessStepMetadata',
         'Savanna.process.view.metadata.ProcessItemMetadata'
     ],
 

@@ -78,7 +78,7 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
     handleRecordDataRequestSuccess: function(record, operation, success) {
         if(success) {
             this.storeHelper.init(this.store);
-            this.getItemTitle().setValue(this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Type').data.values[0].label);
+            this.getItemTitle().setText(this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Type').data.values[0].label);
 
             if (this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Description').valuesStore.getAt(0)) {
                 this.getItemDescription().setValue(this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Description').valuesStore.getAt(0).data.value);
@@ -200,7 +200,7 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
     },
 
     clearValues: function() {
-        this.getItemTitle().setValue('');
+        this.getItemTitle().setText('');
         this.getItemDescription().setValue('');
         //this.getItemPrimeImage().setValue('');
         this.getQuantityValue().setValue('');
