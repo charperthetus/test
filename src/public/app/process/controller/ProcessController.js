@@ -172,7 +172,7 @@ Ext.define('Savanna.process.controller.ProcessController', {
                         uri = uri.concat('ProcessModel');
                     }
                     me.store.getAt(0).set('uri', uri);
-                    me.getView().down('#processSidepanel').fireEvent('processUriChange', encodeURIComponent(uri));
+                    me.getView().down('#processSidepanel').fireEvent('processUriChange', uri);
                 } else {
                     // probably an error page even though we got a 200
                     // todo: we should have a standard mechanism of reporting errors. For now writing this to console matches how we handle other server errors  (500)
@@ -374,6 +374,7 @@ Ext.define('Savanna.process.controller.ProcessController', {
     },
 
     onSave: function() {
+        this.store.first().setDirty(); // force dirty for now
         this.store.sync();
     },
 
