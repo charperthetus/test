@@ -128,7 +128,7 @@ Ext.define('Savanna.classification.controller.WindowController', {
         else {
             this.getFinishButton().setDisabled(true);
             this.getClassificationField().setValue('UNSPECIFIED');
-            this.styeClassificationField();
+            this.styleClassificationField();
         }
     },
 
