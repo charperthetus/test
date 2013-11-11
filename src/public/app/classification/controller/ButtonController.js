@@ -43,7 +43,23 @@ Ext.define('Savanna.classification.controller.ButtonController', {
     },
 
     onClick: function() {
+        var classificationWindow = Ext.create('Savanna.classification.view.ClassificationWindow', {
+            portionMarking: this.getView().getPortionMarking()
+        });
+        classificationWindow.show();
+        classificationWindow.center();
 
+        EventHub.on('classificationedited', this.onClassificationEdited, this);
+    },
+
+    onClassificationEdited: function(event) {
+        EventHub.un('classificationedited', this.onClassificationEdited, this);
+
+        if(event) {
+            this.getView().setPortionMarking(event.portionMarking);
+            this.getView().setText(event.classificationTitle);
+            this.styleView();
+        }
     },
 
     styleView: function() {
