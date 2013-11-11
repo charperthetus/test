@@ -178,7 +178,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
         this.store.getAt(0).setDirty();
         this.store.sync({
-            callback: Ext.bind(this.onEditSaveCallback, this, [btn], true)
+            callback: Ext.bind(this.onEditSaveCallback, this, [], true)
         });
     },
 
