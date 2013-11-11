@@ -17,7 +17,6 @@ Ext.define('Savanna.search.controller.resultsComponent.resultsDals.ResultsRefine
                 newSearch = searchComponent.refineSearchString.replace(myValue, '');
 
             searchComponent.refineSearchString = newSearch;
-            console.log(searchComponent);
             termComponent.destroy();
 
             var searchController = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
