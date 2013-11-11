@@ -185,7 +185,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     onEditSaveCallback: function (responseObj, evt, btn) {
 
         // Re-enable editing
-        btn.enable();
+        this.enableSaving();
 
         if (!responseObj.operations[0].success) {
             /*
@@ -200,7 +200,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     onEditDone: function (btn) {
 
         // Disable editing
-        btn.disable();
+        this.disableSaving();
         
         this.store.getAt(0).setDirty();
         this.store.sync({
@@ -211,7 +211,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     onEditDoneCallback: function (responseObj, evt, btn) {
 
         // Re-enable edit mode
-        btn.enable();
+        this.enableSaving();
 
         if (responseObj.operations[0].success) {
             this.getView().getLayout().setActiveItem(0);
@@ -256,6 +256,18 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
                 msg: 'Updating record failed.'
             })
         }
+    },
+
+    disableSaving: function() {
+        this.getView().queryById('editDeleteButton').disable();
+        this.getView().queryById('editSaveButton').disable();
+        this.getView().queryById('editDoneButton').disable();
+    },
+
+    enableSaving: function() {
+        this.getView().queryById('editDeleteButton').enable();
+        this.getView().queryById('editSaveButton').enable();
+        this.getView().queryById('editDoneButton').enable();
     },
 
     getItemViewData: function () {
