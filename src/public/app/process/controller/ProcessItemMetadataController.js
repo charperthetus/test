@@ -71,7 +71,7 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
     },
 
     buildItemDataFetchUrl: function (uri) {
-        return SavannaConfig.itemViewUrl + uri;
+        return SavannaConfig.itemViewUrl + encodeURI(uri);
         //return SavannaConfig.mockItemViewUrl + encodeURI(uri); // mock data
     },
 
@@ -116,6 +116,8 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
                 this.getQuantityValue().setValue(quantity);
                 this.getQuantityUnit().setValue(unit);
             }
+
+            this.getView().fireEvent('itemReadyForDisplay');
         }
     },
 

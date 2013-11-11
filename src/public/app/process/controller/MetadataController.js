@@ -10,14 +10,15 @@ Ext.define('Savanna.process.controller.MetadataController', {
     control: {
         view: {
             processUriChange: 'setUpProcessDetails',
-            processclose: 'onProcessClose',
-            itemReadyForDisplay: 'showTheItemViewAlready'
+            processclose: 'onProcessClose'
         },
         hiddenPanel: true,
         fullProcessMetadata:  {
             boxready: 'addFullProcessMetadataListeners'
         },
-        itemMetadata: true,
+        itemMetadata: {
+            itemReadyForDisplay: 'showTheItemView'
+        },
         nothingHereLabel: true
      },
 
@@ -46,15 +47,15 @@ Ext.define('Savanna.process.controller.MetadataController', {
 
             switch(itemCategory) {
                 case 'ProcessItem':
+                    //show loading screen
+                    this.getHiddenPanel().getLayout().setActiveItem(this.getNothingHereLabel());
+
                     if (this.getDiagram().selection.first().data.representsItemUri) {
-                        itemUri = encodeURIComponent(this.getDiagram().selection.first().data.representsItemUri);
+                        itemUri = this.getDiagram().selection.first().data.representsItemUri;
                         // this is an item
-                        this.getHiddenPanel().getLayout().setActiveItem(this.getNothingHereLabel());
                         this.setUpItemDetails(itemUri, itemName);
                     }
                     else {
-                        //show loading screen
-                        this.getHiddenPanel().getLayout().setActiveItem(this.getNothingHereLabel());
                         this.getCanvas().on('itemInstanceCreated', this.instanceLoaded, this);
                     }
 
@@ -70,10 +71,9 @@ Ext.define('Savanna.process.controller.MetadataController', {
     },
 
     instanceLoaded: function() {
-        var itemUri = encodeURIComponent(this.getDiagram().selection.first().data.representsItemUri);
+        var itemUri = this.getDiagram().selection.first().data.representsItemUri;
         // this is an item
         this.setUpItemDetails(itemUri);
-
     },
 
     setUpProcessDetails: function(itemUri) {
@@ -90,6 +90,10 @@ Ext.define('Savanna.process.controller.MetadataController', {
 
     setUpItemDetails: function(itemUri,itemName) {
         this.getItemMetadata().fireEvent('processItemUriChanged', itemUri,itemName);
+    },
+
+    showTheItemView: function() {
+        this.getHiddenPanel().getLayout().setActiveItem(this.getItemMetadata());
     },
 
     addFullProcessMetadataListeners: function(process_details) {
@@ -112,9 +116,5 @@ Ext.define('Savanna.process.controller.MetadataController', {
 
     onProcessClose: function() {
         this.saveChanges();
-    },
-
-    showTheItemViewAlready: function() {
-        this.getHiddenPanel().getLayout().setActiveItem(this.getItemMetadata());
     }
 });
