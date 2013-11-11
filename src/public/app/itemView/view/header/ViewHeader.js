@@ -41,6 +41,7 @@ Ext.define('Savanna.itemView.view.header.ViewHeader', {
                         '<input type="button" name="{value}" value="{label}" id="openParentItem" />',
                     '</tpl>',
                 '<tpl elseif="label == \'Description\'">',
+                    '<b>{label}&nbsp;&nbsp</b>',
                     '<tpl for="values">',
                         '{value}',
                     '</tpl>',
