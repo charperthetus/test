@@ -5,8 +5,7 @@
  *
  */
 
-Ext.define('Savanna.search.controller.resultsComponent.resultsDals.ResultsRefineTermController',
-    {
+Ext.define('Savanna.search.controller.resultsComponent.resultsDals.ResultsRefineTermController', {
         extend: 'Deft.mvc.ViewController',
 
         view: 'Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineTerm',
@@ -26,7 +25,7 @@ Ext.define('Savanna.search.controller.resultsComponent.resultsDals.ResultsRefine
 
         onCloseButton: function () {
             if (!this.getView().disabled) {
-                this.getView().fireEvent('Tag:RemoveSearchTerm', this.getView().text, this.getView());
+                this.getView().fireEvent('Search:RemoveSearchTerm', this.getView().text, this.getView());
             }
         }
     }
