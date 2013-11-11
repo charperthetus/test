@@ -12,13 +12,12 @@ Ext.define('Savanna.search.controller.resultsComponent.resultsDals.ResultsRefine
         },
 
         onRemoveSearchTerm: function ( termString, termComponent ) {
-            var myValue = termString + ' AND ';
-            console.log(myValue);
+            var myValue = termString + ' AND ',
+                searchComponent = this.getView().findParentByType('search_searchcomponent'),
+                newSearch = searchComponent.refineSearchString.replace(myValue, '');
 
-            var searchComponent = this.getView().findParentByType('search_searchcomponent');
-            console.log('Before: ', searchComponent.refineSearchString);
-            searchComponent.refineSearchString = searchComponent.refineSearchString.replace(myValue, '');
-            console.log('After: ', searchComponent.refineSearchString);
+            searchComponent.refineSearchString = newSearch;
+            console.log(searchComponent);
             termComponent.destroy();
 
             var searchController = Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
