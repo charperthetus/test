@@ -27,7 +27,8 @@ Ext.define('Savanna.process.view.metadata.ProcessItemMetadata', {
                 {
                     xtype: 'textfield',
                     value: 'RNRM Item Name',
-                    itemId: 'itemTitle'
+                    itemId: 'itemTitle',
+                    width: '80%'
                 },
                 {
                     xtype: 'button',
