@@ -116,6 +116,8 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
                 this.getQuantityValue().setValue(quantity);
                 this.getQuantityUnit().setValue(unit);
             }
+
+            this.getView().up('process_metadata').fireEvent('itemReadyForDisplay');
         }
     },
 
