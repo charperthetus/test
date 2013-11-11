@@ -1,12 +1,3 @@
-/**
- * Created with IntelliJ IDEA.
- * User: mfawver
- * Date: 9/30/13
- * Time: 8:06 AM
- * To change this template use File | Settings | File Templates.
- */
-
-
 Ext.define('Savanna.metadata.view.MetadataItemView', {
     extend: 'Ext.form.FieldSet',
     
@@ -88,5 +79,14 @@ Ext.define('Savanna.metadata.view.MetadataItemView', {
         this.add(Ext.create('Ext.form.field.Display', {
             itemId: 'displayValue'
         }));
+    },
+
+    updateValue: function(newValue) {
+        if(this.getEditMode() && this.getEditable()) {
+            this.down('#displayValueEdit').setValue(newValue);
+        } else {
+            this.down('#displayValue').setValue(newValue);
+        }
     }
+
 });

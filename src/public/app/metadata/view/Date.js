@@ -1,11 +1,3 @@
-/**
- * Created with IntelliJ IDEA.
- * User: swatson
- * Date: 9/24/13
- * Time: 9:13 AM
- * To change this template use File | Settings | File Templates.
- */
-
 Ext.define('Savanna.metadata.view.Date', {
     extend: 'Savanna.metadata.view.MetadataItemView',
     alias: 'widget.metadata_date',
@@ -13,56 +5,39 @@ Ext.define('Savanna.metadata.view.Date', {
         'Savanna.component.DatePicker'
     ],
 
-    items: [
-    ],
-
-    initComponent: function () {
-        this.callParent(arguments);
-        var me = this;
-
-        this.on('beforerender', Ext.bind(function() {
-            var displayValue = '&nbsp;';
-            var myDate = null;
-            if(null !== me.value) {
-                myDate = new Date(me.getValue());
-                displayValue = Ext.Date.format(myDate,'Y-m-d\\TH:i:s.m\\Z');
-            }
-
-            if(me.getEditable() && me.getEditMode()) {
-                me.setTitle(me.getDisplayLabel() + ':&nbsp;&nbsp;');
-                
+    beforeRender: function() {
+        this.setTitle(this.getDisplayLabel() + ':&nbsp;&nbsp;');
+        if(this.getValue()) {
+            var date = new Date(this.getValue());
+            if(this.getEditable() && this.getEditMode()) {
+                this.down('#displayValueEdit').setDefaultDate(date);
             } else {
-                me.setTitle(me.getDisplayLabel() + ':&nbsp;&nbsp;');
-            
-                if(me.down('#displayValue')) {
-                    me.down('#displayValue').setValue(displayValue);
-                }
+                this.down('#displayValue').setValue(Ext.Date.format(date, 'Y-m-d\\TH:i:s.m\\Z'));
             }
-
-        }, this));
+        }
     },
 
     makeEditViewItems: function() {
-        var me = this;
-
-        this.add(Ext.create('Savanna.component.DatePicker', {
+        var datePicker = Ext.create('Savanna.component.DatePicker', {
             itemId: 'displayValueEdit',
-            jsDate: (null !== me.getValue()) ? new Date(me.getValue()) : null,
-            renderTo: Ext.getBody(),
-            listeners: {
-                focusLost: function(picker) {
-                    if(picker.isDateValid()) {
-                        me.setValue(picker.getJsDate().getTime());
-                    }
-                }
-            }
-         }));
+            jsDate: this.getValue() ? new Date(this.getValue()) : null
+        });
+        datePicker.on('focusLost', this.onFocusLost, this);
+        this.add(datePicker);
     },
 
-    makeViewViewItems: function() {
-        this.callParent(arguments);
+    onFocusLost: function(datePicker) {
+        if(datePicker.isDateValid()) {
+            this.setValue(datePicker.getJsDate().getTime());
+        }
+    },
+
+    updateValue: function(newValue) {
+        var newDate = new Date(newValue);
+        if(this.getEditMode() && this.getEditable()) {
+            this.down('#displayValueEdit').setDefaultDate(newDate);
+        } else {
+            this.down('#displayValue').setValue(Ext.Date.format(newDate, 'Y-m-d\\TH:i:s.m\\Z'));
+        }
     }
-
-
-
 });
