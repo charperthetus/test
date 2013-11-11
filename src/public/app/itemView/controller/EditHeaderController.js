@@ -133,11 +133,13 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
 
     closedVPicker: function(view) {
         if (view.updatedStore) {
+            this.valNameArray = [];
             Ext.Array.erase(this.getView().store.getById('Intended Use').data.values, 0, this.getView().store.getById('Intended Use').data.values.length);
             this.getView().queryById('addIntendedUseBox').clearTags();
 
             Ext.each(this.getView().store.getById('Intended Use').valuesStore.data.items, function(value) {
                 this.getView().store.getById('Intended Use').data.values.push(value.data);
+                this.valNameArray.push(value.data.label);
                 this.getView().queryById('addIntendedUseBox').addTag(value.data.label);
             }, this);
 
