@@ -368,6 +368,7 @@ Ext.define('Savanna.process.controller.ProcessController', {
     },
 
     onSave: function() {
+        this.store.first().setDirty(); // force dirty for now
         this.store.sync();
     },
 
