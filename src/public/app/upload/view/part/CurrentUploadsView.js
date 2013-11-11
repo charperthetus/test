@@ -126,18 +126,21 @@ Ext.define('Savanna.upload.view.part.CurrentUploadsView', {
                             case 'SECRET':
                                 background = "#ED1C24";
                                 color = "#FFFFFF";
+                                break;
                             case 'CONFIDENTIAL':
                                 background = "#235FAC";
                                 color = "#FFFFFF";
+                                break;
                             case 'UNCLASSIFIED':
                                 background = "#4CB748";
                                 color = "#FFFFFF";
+                                break;
                             default:
                                 background = "#878787";
                                 color = "#FFFFFF";
                                 break;
                         }
-                        metaData.style = 'background-color:' + background +
+                        metadata.style = 'background-color:' + background +
                                          ';color:' + color +
                                          ';text-align:center;';
                         return value;
