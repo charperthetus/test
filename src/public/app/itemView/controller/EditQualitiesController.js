@@ -68,7 +68,6 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
             this.getView().add(newProp);
             this.propNameArray.push(propName);
             this.getView().storeHelper.addGroupItemInStore("Properties", propName, propData.uri, this.getView().store);
-            this.updateTitle();
         }
     },
 
@@ -182,7 +181,6 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
     removePredicate: function(view) {
         this.getView().storeHelper.removeGroupItemInStore("Properties", view.preLabel, this.getView().store);
         Ext.Array.remove(this.propNameArray, view.preLabel);
-        this.updateTitle();
     },
 
     /*

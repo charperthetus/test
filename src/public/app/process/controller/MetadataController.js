@@ -14,9 +14,7 @@ Ext.define('Savanna.process.controller.MetadataController', {
             itemReadyForDisplay: 'showTheItemViewAlready'
         },
         hiddenPanel: true,
-        fullProcessMetadata:  {
-            boxready: 'addFullProcessMetadataListeners'
-        },
+        fullProcessMetadata: true,
         itemMetadata: true,
         nothingHereLabel: true
      },
@@ -73,7 +71,6 @@ Ext.define('Savanna.process.controller.MetadataController', {
         var itemUri = encodeURIComponent(this.getDiagram().selection.first().data.representsItemUri);
         // this is an item
         this.setUpItemDetails(itemUri);
-
     },
 
     setUpProcessDetails: function(itemUri) {
@@ -90,19 +87,6 @@ Ext.define('Savanna.process.controller.MetadataController', {
 
     setUpItemDetails: function(itemUri,itemName) {
         this.getItemMetadata().fireEvent('processItemUriChanged', itemUri,itemName);
-    },
-
-    addFullProcessMetadataListeners: function(process_details) {
-        process_details.down('#processTitle').addListener('change', this.processLabelChangeHandler);
-        process_details.down('#processDescription').addListener('change', this.processLabelChangeHandler);
-    },
-
-    processLabelChangeHandler: function(text, newValue, oldValue, eOpts) {
-        //console.log('processLabelChangeHandler', arguments);
-    },
-
-    processSelectionChanged: function(e) {
-        //console.log('processSelectionChanged selection size', this.getDiagram().selection.count);
     },
 
     saveChanges: function() {

@@ -23,14 +23,8 @@ Ext.define('Savanna.process.controller.FullProcessMetadataController', {
             savechanges: 'onSaveChanges',
             processUriChanged: 'onUriChanged'
         },
-        processTitle: {
-            blur: 'processTitleBlur'
-        },
-        processDescription: {
-            blur: 'processDescriptionBlur'
-        },
         imageBrowser: true,
-        detailsPanel: true,
+        informationPanel: true,
         itemSources: true
     },
 
