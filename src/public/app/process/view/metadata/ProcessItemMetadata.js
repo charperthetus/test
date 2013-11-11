@@ -74,7 +74,7 @@ Ext.define('Savanna.process.view.metadata.ProcessItemMetadata', {
                             itemId: 'roleAutoCompleteBox',
                             store: Ext.create('Savanna.itemView.store.AutoCompleteStore', {
                                 urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/model/search/keyword/property/' + 'lib%252EExtendedRelationOntology%253Ahas_role%252FModelPredicate',
-                                paramsObj: { pageStart:0, pageSize:20, alphabetical: true }
+                                paramsObj: { pageStart:0, pageSize:20, alphabetical: false }
                             }),
                             flex: 1
                         },

@@ -37,7 +37,7 @@ Ext.define('Savanna.process.view.part.Canvas', {
                 itemId: 'itemTextEditor',
                 diagram: this.diagram,
                 store: Ext.create('Savanna.process.store.TypeAheadStore', {
-                    paramsObj: { pageStart: 0, pageSize: 20, alphabetical: true, type: "Item" }
+                    paramsObj: { pageStart: 0, pageSize: 20, alphabetical: false, type: "Item" }
                 })
             }
         );
@@ -50,7 +50,7 @@ Ext.define('Savanna.process.view.part.Canvas', {
                 itemId: 'actionTextEditor',
                 diagram: this.diagram,
                 store: Ext.create('Savanna.process.store.TypeAheadStore', {
-                    paramsObj: { pageStart: 0, pageSize: 20, alphabetical: true, type: "Action" }
+                    paramsObj: { pageStart: 0, pageSize: 20, alphabetical: false, type: "Action" }
                 })
             }
         );

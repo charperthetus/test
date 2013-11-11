@@ -67,7 +67,7 @@ Ext.define('Savanna.itemView.view.header.EditHeader', {
                     showTags: true,
                     itemId: 'addIntendedUseBox',
                     store: Ext.create('Savanna.itemView.store.AutoCompleteStore', {
-                        paramsObj: { pageStart:0, pageSize:20, alphabetical: true }
+                        paramsObj: { pageStart:0, pageSize:20, alphabetical: false }
                     }),
                     flex: 1
 

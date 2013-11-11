@@ -157,7 +157,7 @@ Ext.define('Savanna.itemView.view.itemQualities.QualitiesPicker', {
 
         this.store = Ext.create('Savanna.itemView.store.AutoCompleteStore', {
             urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/model/' + encodeURI(this.getStoreHelper().itemUri()) + '/qualities',
-            paramsObj: {pageStart: 0, pageSize: 100, alphabetical: true}
+            paramsObj: {pageStart: 0, pageSize: 100, alphabetical: false}
         });
 
 
