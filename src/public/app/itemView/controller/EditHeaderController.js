@@ -46,13 +46,25 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
         }
     },
 
-    storeSet: function (itemName) {
+    storeSet: function () {
         var me = this;
 
+        // Set the header field
+        if (this.getView().store.getById('Label').data.values.length) {
+            var header = this.getView().queryById('itemNameField');
+
+            if (!this.getView().store.getById('Label').data.values[0].editable){
+                header.disable();
+            }
+            header.setValue(this.getView().store.getById('Label').data.values[0].value);
+        }
+
+        // Setup aliases
         Ext.each(me.getView().store.getById('Aliases').data.values, function(value) {
             me.getView().queryById('addAliasBox').addTag(value.label, value.editable);
         });
 
+        // Setup intended use
         Ext.each(me.getView().store.getById('Intended Use').data.values, function(value) {
             me.getView().queryById('addIntendedUseBox').addTag(value.label, value.editable);
             me.valNameArray.push(value.label);
@@ -175,6 +187,12 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
     updateDescription: function(comp, e, eOpts) {
         var myStore = this.getView().store;
         myStore.getById('Description').data.values[0].value = comp.value;
+        this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');  
+    },
+
+    updateHeader: function(comp) {
+        var myStore = this.getView().store;
+        myStore.getById('Label').data.values[0].value = comp.value;
         this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');  
     }
 });

@@ -89,5 +89,14 @@ Ext.define('Savanna.process.view.part.Canvas', {
         //mouseUpTools
         toolManager.contextMenuTool.enabled = false;
         toolManager.clickCreatingTool.enabled = false;
+        
+        
+        var gmake = go.GraphObject.make;
+        diagram.toolManager.dragSelectingTool.box =
+            gmake(go.Part,
+                { layerName: "Tool" },
+                gmake(go.Shape,
+                    { name: "SHAPE", fill: null, stroke: "#3ca8c8", strokeWidth: 2 }));
+
     }
 });

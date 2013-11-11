@@ -45,7 +45,6 @@ Ext.define('Savanna.metadata.view.Details', {
             height: '100%',
             width: '100%',
             layout: 'vbox',
-            collapsible: true,
             overflowY: 'auto',
             tbar: {
                 ui: 'off-white',
