@@ -42,7 +42,8 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
     store: 'Savanna.search.store.DalSources',
 
     defaults: {
-        padding: 10
+        padding: 10,
+        width: '100%'
     },
 
     items: [{
@@ -51,13 +52,11 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
         ui: 'simple',
         title: 'search sources',
         layout: 'vbox',
-        width: '100%',
         align: 'left',
         margin: '0 0 10 0'
     },
     {
         xtype: 'panel',
-        width: '100%',
         itemId: 'results-refineSearch',
         bbar: {
             padding: 0,
@@ -71,7 +70,6 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
     },
     {
         xtype: 'container',
-        width: '100%',
         itemId: 'results-refineSearchFacets',
         cls: 'refineSearchFacets',
         padding: '0 10 10 10'
