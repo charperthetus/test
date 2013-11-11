@@ -29,7 +29,7 @@ Ext.define('Savanna.itemView.view.itemQualities.EditItemQualities', {
         {
             xtype: 'auto_complete',
             itemId: 'addPropAutoChooser',
-            labelType: 'Click to Add a Property',
+            labelType: 'Click to add a quality',
             margin:'10 0 0 10',
             width: '66%',
             store: Ext.create('Savanna.itemView.store.AutoCompleteStore', {
@@ -40,7 +40,8 @@ Ext.define('Savanna.itemView.view.itemQualities.EditItemQualities', {
         {
             xtype: 'button',
             glyph: 'searchBinoculars',
-            itemId: 'qualitiesChooser'
+            itemId: 'qualitiesChooser',
+            tooltip: 'Click to browse qualities'
         },
         {
             xtype: 'tbfill'

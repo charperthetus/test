@@ -15,7 +15,7 @@ Ext.define('Savanna.itemView.view.createItem.ParentItemsTreePanel', {
     rootVisible: false,
     width: '100%',
     height: '100%',
-    margin: 10,
+    margin: 7,
     padding: 0,
     frame: true,
     cls: 'tree_wrap',
@@ -30,6 +30,7 @@ Ext.define('Savanna.itemView.view.createItem.ParentItemsTreePanel', {
             this.store.getProxy().url = SavannaConfig.itemViewPerspective + record.data.id;
 
             this.up('itemview_create_item').selectedParentUri = record.get('uri');
+            this.up('itemview_create_item').selectedParentLabel = record.get('label');
             //TODO - this needs to be done a different way, can't fire on app (or eventhub)
             Savanna.app.fireEvent('itemview:treepanel:itemclick', view, record, item, index, e, eOpts);
         }

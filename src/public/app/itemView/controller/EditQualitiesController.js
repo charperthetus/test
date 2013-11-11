@@ -68,7 +68,6 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
             this.getView().add(newProp);
             this.propNameArray.push(propName);
             this.getView().storeHelper.addGroupItemInStore("Properties", propName, propData.uri, this.getView().store);
-            this.updateTitle();
         }
     },
 
@@ -107,7 +106,8 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
     // When a new tag is added on a child auto-complete
     // add the tag to the store
     addTag: function(tagName, tagData, aView) {
-        this.getView().storeHelper.addBotLevItemInStore(tagName, tagData, this.getView().store.getById(aView.preLabel))
+        this.getView().storeHelper.addBotLevItemInStore(tagName, tagData, this.getView().store.getById(aView.preLabel));
+        this.updateTitle();
 //        this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
     },
 
@@ -115,6 +115,7 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
     // remove the tag from the store
     removeTag: function(tagName, aView) {
         this.getView().storeHelper.removeBotLevItemInStore(tagName, this.getView().store.getById(aView.preLabel));
+        this.updateTitle();
 //        this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
     },
 
@@ -152,6 +153,11 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
     },
 
     launchPredicatesChooser: function() {
+        var me = this;
+        this.propNameArray = [];
+        Ext.each(this.getView().store.data.items, function(record)  {
+            me.propNameArray.push(record.data.label)
+        });
         var qChooser = Ext.create('Savanna.itemView.view.itemQualities.QualitiesPicker', {
             width: 500,
             height: 600,
@@ -175,11 +181,22 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
     removePredicate: function(view) {
         this.getView().storeHelper.removeGroupItemInStore("Properties", view.preLabel, this.getView().store);
         Ext.Array.remove(this.propNameArray, view.preLabel);
-        this.updateTitle();
     },
 
+    /*
+     *  Update Title
+     *
+     *  Iterates over all the quality values and updates the Qualities header with the count
+     *  of asserted values.
+     *
+     *  @param none {none}
+     *  @return none {none}
+     */
     updateTitle: function() {
-        this.getView().setTitle('Qualities (' + this.getView().store.data.items.length + ')');
-//        this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
+        var titlePre = 'Qualities (',
+            values = this.getView().storeHelper.getBotLevItemInStore(this.getView().store).length,
+            titlePost = ')';
+
+        this.getView().setTitle(titlePre + values + titlePost);
     }
 });

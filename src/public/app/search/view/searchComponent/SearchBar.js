@@ -4,7 +4,7 @@ Ext.define('Savanna.search.view.searchComponent.SearchBar', {
     alias: 'widget.search_searchbar',
 
     requires: [
-        'Ext.ux.layout.Center',
+        'Ext.layout.container.HBox',
         'Ext.form.field.Text',
         'Savanna.controller.Factory',
         'Savanna.search.view.searchComponent.searchBar.SearchForm'
@@ -12,38 +12,39 @@ Ext.define('Savanna.search.view.searchComponent.SearchBar', {
 
     border: false,
     frame: false,
-    layout: 'ux.center',
+    layout: {
+        type: 'hbox',
+        align: 'bottom',
+        pack: 'center'
+    },
+    height: 60,
+    width: '100%',
     ui: 'search-prime',
 
     items: [
         {
-            xtype: 'panel',
+            xtype: 'container',
             border: false,
-            width: '30%',
+            width: '20%',
             minWidth: 520,
             itemId: 'main_panel',
-            ui: 'search-prime',
-
+            height: 50,
+            layout: {
+                type: 'vbox',
+                align: 'left'
+            },
             items: [
                 {
                     xtype: 'searchbar_form',
-                    itemId: 'search_form'
+                    itemId: 'search_form',
+                    width: '100%',
+                    height: 28
                 },
                 {
-                    xtype: 'panel',
-                    border: false,
-                    bodyPadding: 0,
-                    itemId:'search_reset',
-                    minHeight:25,
-                    ui: 'search-prime',
-                    items: [
-                        {
-                            xtype: 'button',
-                            itemId:'search_reset_button',
-                            ui: 'white',
-                            text: 'Start New Search'
-                        }
-                    ]
+                    xtype: 'button',
+                    itemId:'search_reset_button',
+                    ui: 'white',
+                    text: 'Start new search'
                 }
             ]
         }

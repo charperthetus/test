@@ -23,7 +23,7 @@ Ext.define('Savanna.desktop.view.SavannaDesktop', {
                 xtype: 'button',
                 height: 44,
                 ui: 'brand-header',
-                flex: 1,
+                flex: 1
             }, {
                 xtype: 'toolbar',
                 ui:'brand-header',
@@ -40,7 +40,8 @@ Ext.define('Savanna.desktop.view.SavannaDesktop', {
                     width: 29,
                     height:29,
                     margin:'3 0 0 0',
-                    glyph:'search'
+                    glyph:'search',
+                    tooltip: 'Click to search internal and external data sources.'
                 },{
                     itemId: 'modelsearchbutton',
                     cls:'modelSearchButtonFramework',
@@ -48,7 +49,8 @@ Ext.define('Savanna.desktop.view.SavannaDesktop', {
                     width: 29,
                     height:29,
                     margin:'3 0 0 0',
-                    glyph:'modelSearch'
+                    glyph:'modelSearch',
+                    tooltip: 'Click to search the model.'
                 },{
                     itemId: 'uploadbutton',
                     cls:'uploadButtonFramework',
@@ -56,7 +58,8 @@ Ext.define('Savanna.desktop.view.SavannaDesktop', {
                     width: 29,
                     height:29,
                     margin:'3 0 0 0',
-                    glyph:'upload'
+                    glyph:'upload',
+                    tooltip: 'Click to upload files.'
                 }
                 ]
             },

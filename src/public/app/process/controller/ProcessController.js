@@ -12,7 +12,8 @@ Ext.define('Savanna.process.controller.ProcessController', {
         'Savanna.process.utils.ProcessUtils',
         'Savanna.process.utils.ViewTemplates',
         'Savanna.process.store.Processes',
-        'Savanna.process.view.part.Overview' //added dynamically later
+        'Savanna.process.view.part.Overview', //added dynamically later
+        'Savanna.workflow.view.WorkflowSelect'
     ],
     store: null,
 
@@ -35,6 +36,9 @@ Ext.define('Savanna.process.controller.ProcessController', {
         redo: {
             click: 'handleRedo'
         },
+        workflow: {
+            click: 'onWorkflowSelect'
+        },
         merge: {
             click: 'handleMerge'
         },
@@ -47,8 +51,8 @@ Ext.define('Savanna.process.controller.ProcessController', {
         zoomToFit: {
             click: 'zoomToFit'
         },
-        cancelProcess: {
-            click: 'onCancel'
+        deleteProcess: {
+            click: 'onDelete'
         },
         saveProcess: {
             click: 'onSave'
@@ -67,6 +71,11 @@ Ext.define('Savanna.process.controller.ProcessController', {
         }
     },
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //
+    // construct and init code
+    //
+
     constructor: function (options) {
         this.opts = options || {};
         this.callParent(arguments);
@@ -83,37 +92,50 @@ Ext.define('Savanna.process.controller.ProcessController', {
         return Savanna.process.utils.ProcessUtils;
     },
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //
+    // loading and initialization code
+    //
+
+    initCanvas: function() {
+        var me = this;
+        var view = this.getView();
+        var diagram = this.getCanvas().diagram;
+        diagram.addDiagramListener('PartResized', Ext.bind(this.partResized, this));
+        diagram.addDiagramListener('TextEdited', Ext.bind(this.textEdited, this));
+
+        var uri = this.getView().getItemUri();
+        if (uri) {
+            Ext.Ajax.request({
+                url: SavannaConfig.itemLockUrl + /*encodeURI*/(uri) + ';jsessionid=' + Savanna.jsessionid,
+                method: 'GET',
+                success: function(response){
+                    if (response.responseText) {
+                        me.store.load({callback: me.onStoreLoaded, scope: me});
+                    } else {
+                        Ext.MessageBox.alert(
+                            'Process Locked',
+                            'This Process is being edited by another user.',
+                            function() {
+                                me.confirmClosed = true;
+                                view[view.closeAction]();
+                            }
+                        );
+                    }
+                },
+                failure: function(response){
+                    console.log('initCanvas: Server Side Failure: ' + response.status);
+                    me.confirmClosed = true;
+                    view[view.closeAction]();
+                }
+            });
+        } else {
+            this.createNewProcess(diagram);
+        }
+    },
+
     onStoreLoaded: function (records) {
         this.load(this.getCanvas().diagram, records[0]);
-    },
-
-    toggleExpanded: function(expand) {
-        var diagram = this.getCanvas().diagram;
-        diagram.startTransaction('toggleExpanded');
-        var iterator = diagram.nodes;
-        while ( iterator.next() ){
-            var node = iterator.value;
-            if (node instanceof go.Group) {
-                node.isSubGraphExpanded = expand;
-            }
-        }
-        diagram.commitTransaction('toggleExpanded');
-    },
-
-    newProcessClick: function() {
-        EventHub.fireEvent('createprocess');
-    },
-
-    expandStepsClick: function() {
-        this.toggleExpanded(true);
-    },
-
-    collapseStepsClick: function() {
-        this.toggleExpanded(false);
-    },
-
-    clearJSONClick: function() {
-        this.clear(this.getCanvas().diagram);
     },
 
     load: function(diagram, rec) {
@@ -123,16 +145,56 @@ Ext.define('Savanna.process.controller.ProcessController', {
             linkDataArray: rec.get('linkDataArray')
         });
         diagram.undoManager.isEnabled = true;
+        this.setupCanvasDrop();
     },
 
-    clear: function(diagram) {
+    createNewProcess: function(diagram) {
+        var me = this;
+
         var newProcess = {'class': 'go.GraphLinksModel', 'nodeKeyProperty': 'uri', 'nodeDataArray': [{'category':'Start'}], 'linkDataArray': []};
+        newProcess.uri = this.utils().getURI('ProcessModel');  //todo: remove this code once the instance creation starts working
         newProcess.nodeDataArray[0].uri = this.utils().getURI('Start');
-        newProcess.uri = this.utils().getURI('ProcessModel');
         this.store.add(newProcess);
         this.load(diagram, this.store.first());
 
-        this.getView().down('#processSidepanel').fireEvent('processUriChange', encodeURIComponent(Savanna.process.utils.ProcessUtils.getURI('ProcessModel')));
+        // make a process instance
+        Ext.Ajax.request({
+            url: SavannaConfig.itemViewUrl + encodeURI('lib%2Espan%3AProcess%2FModelItemXML') + '/instance;jsessionid=' + Savanna.jsessionid,
+            method: 'GET',
+            success: function(response){
+                if (response.responseText.charAt(0) === '{') {
+                    //looks like it might really be json
+                    var message = Ext.decode(response.responseText);
+                    me.store.getAt(0).set('uri', message.uri);
+                    me.getView().down('#processSidepanel').fireEvent('processUriChange', encodeURIComponent(message.uri));
+                } else {
+                    // probably an error page even though we got a 200
+                    // todo: we should have a standard mechanism of reporting errors. For now writing this to console matches how we handle other server errors  (500)
+                    console.log(response.responseText);
+                }
+            },
+            failure: function(response){
+                console.log('Server Side Failure: ' + response.status);
+            }
+        });
+    },
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //
+    // simple event handlers
+    //
+
+    newProcessClick: function() {
+        EventHub.fireEvent('createprocess');
+    },
+
+    expandStepsClick: function() {
+        this.utils().toggleExpanded(this.getCanvas().diagram, true);
+    },
+
+    collapseStepsClick: function() {
+        this.utils().toggleExpanded(this.getCanvas().diagram, false);
     },
 
     handleUndo: function() {
@@ -141,6 +203,12 @@ Ext.define('Savanna.process.controller.ProcessController', {
 
     handleRedo: function() {
         this.getCanvas().diagram.undoManager.redo();
+    },
+
+    onWorkflowSelect: function () {
+        Ext.create('Savanna.workflow.view.WorkflowSelect', {
+            uri: this.store.getAt(0).data.uri
+        });
     },
 
     handleMerge: function() {
@@ -169,81 +237,144 @@ Ext.define('Savanna.process.controller.ProcessController', {
         this.getCanvas().diagram.zoomToFit();
     },
 
+    togglePalette: function() {
+        var palette = this.getPalette();
+        if (palette.hidden) {
+            palette.show();
+        } else {
+            palette.hide();
+        }
+    },
+
+    toggleOverview: function() {
+        var processViewport = this.getView();
+        var overview = processViewport.overview;
+
+        if (overview) {
+            processViewport.overview = null;
+            processViewport.remove(overview);
+        } else {
+            overview = Ext.create('Savanna.process.view.part.Overview', {});
+            overview.setDiagram(this.getCanvas().diagram);
+            processViewport.overview = overview;
+            processViewport.add(overview);
+        }
+    },
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //
+    // save, close, delete alerts
+    //
+
     confirmClosed: false,
+
+    isStoreDirty: function(){
+        return true;  //hack for now
+        //todo - figure out how to get the store to correctly manage dirtyness
+//        var isDirty = false;
+//
+//        store.each(function(record){
+//            if(record.dirty === true){
+//                isDirty = true;
+//            }
+//        });
+//        if (!isDirty) {
+//            isDirty = (store.removed.length > 0);
+//        }
+//        return isDirty;
+    },
+
+    releaseLock: function() {
+        var uri = this.store.getAt(0).data.uri;
+        Ext.Ajax.request({
+            url: SavannaConfig.itemLockUrl + /*encodeURI*/(uri) + ';jsessionid=' + Savanna.jsessionid,
+            method: 'DELETE',
+            success: function(){
+                // nothing to do
+            },
+            failure: function(response){
+                console.log('releaseLock: Server Side Failure: ' + response.status);
+            }
+        });
+    },
 
     onProcessClose: function(panel) {
         var me = this;
-        Ext.Msg.show({
-            title: 'Close Process',
-            msg: 'Are you sure you want to close? Any unsaved changes will be lost.', //todo: get final wording for dialog
-            buttons: Ext.Msg.YESNOCANCEL,
-            buttonText: {yes: 'Close and Disard Changes', no: 'Save Changes and Close', cancel: 'Cancel'},//Ext.Msg.YESNOCANCEL,
-            fn: function(button) {
-                if(button == 'yes'){
-                    //discard changes and close
-                    me.confirmClosed = true;
-                    me.getView().down('#processSidepanel').fireEvent('processclose');
-                    panel[panel.closeAction]();
-                } else if (button == 'no') {
-                    //save and close
-                    me.onSave();
-                    me.getView().down('#processSidepanel').fireEvent('processclose');
-                    panel[panel.closeAction]();
-                } else {
-                    //do nothing, leave the process open
+        if (this.isStoreDirty(this.store)) {
+            Ext.Msg.show({
+                title: 'Close Process',
+                msg: 'Save before closing?',
+                buttons: Ext.Msg.YESNOCANCEL,
+                buttonText: {yes: 'Save', no: 'Discard', cancel: 'Cancel'},
+                fn: function(button) {
+                    if(button == 'yes'){
+                        //save and close
+                        //force a dirty state so that sync will do something
+                        me.store.first().setDirty();
+                        me.store.sync({
+                            callback: function () {
+                                me.releaseLock();
+                                me.getView().down('#processSidepanel').fireEvent('processclose');
+                                panel[panel.closeAction]();
+                            }
+                        });
+                    } else if (button == 'no') {
+                        //discard changes and close
+                        me.releaseLock();
+                        me.confirmClosed = true;
+                        me.getView().down('#processSidepanel').fireEvent('processclose');
+                        panel[panel.closeAction]();
+                    } else {
+                        //do nothing, leave the process open
+                    }
                 }
-            }
-        });
+            });
 
-        return false;
+            return false;
+        }
+
+        return true;
     },
 
-    onCancel: function() {
+    onDelete: function() {
         var me = this;
         Ext.Msg.confirm(
-            'Cancel Changes?',
-            'This will abort any changes you have made. Are you sure you want to cancel your changes?',//todo: get final wording for dialog
+            'Delete Process',
+            'Permanently delete this process?',
             function(btn) {
                if (btn == 'yes') {
-                   me.cancelProcess();
+                   me.deleteProcess();
                }
             }
         );
     },
 
-    cancelProcess: function() {
-        //todo: options:
-        // - rollback to initial transaction (if possible in GoJS)...i don't think this is possible
-        // - make a service call to get/load json for the uri - which should just be store.load()
-        // For now just reload the initial JSON
-        var diagram = this.getCanvas().diagram;
-        if (diagram.isInTransaction) {
-            diagram.rollbackTransaction();
-        }
-        this.loadInitialJSON();
+    deleteProcess: function() {
+        var me = this;
+        var uri = this.store.getAt(0).data.uri;
+        var view = this.getView();
+        Ext.Ajax.request({
+            url: SavannaConfig.modelProcessLoadUrl + encodeURI(encodeURIComponent(uri)) + ';jsessionid=' + Savanna.jsessionid,
+            method: 'DELETE',
+            success: function(response) {
+                me.releaseLock();
+                me.confirmClosed = true;
+                view[view.closeAction]();
+            },
+            failure: function(response) {
+                console.log('deleteProcess: Server Side Failure: ' + response.status);
+            }
+        });
     },
 
     onSave: function() {
-        //todo: options:
-        // - commit the initial transaction (if possible in GoJS)...i don't think this is possible
-        // - Call service to save json data - this should just be store.sync()
-        // - Start a new main transaction...again, probably not possible
-        this.store.first().setDirty();
         this.store.sync();
     },
 
-    initCanvas: function() {
-        var diagram = this.getCanvas().diagram;
-        diagram.addDiagramListener('PartResized', Ext.bind(this.partResized, this));
-        diagram.addDiagramListener('TextEdited', Ext.bind(this.textEdited, this));
-
-        var uri = this.getView().getItemUri();
-        if (uri) {
-            this.store.load({callback: this.onStoreLoaded, scope: this});
-        } else {
-            this.loadInitialJSON();
-        }
-    },
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //
+    // text editing and type ahead support
+    //
 
     textEdited: function(e) {
         var curTextEdit = e.diagram.toolManager.textEditingTool.currentTextEditor;
@@ -259,24 +390,14 @@ Ext.define('Savanna.process.controller.ProcessController', {
         }
     },
 
-    loadInitialJSON: function () {
-        this.clearJSONClick();
-        this.setupCanvasDrop(this.getCanvas());
-    },
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //
+    // drag and drop
+    //
 
-    loadJSON: function (callbackFunc) {
-        var processStore = Ext.data.StoreManager.lookup(this.store);
-        processStore.load({
-            callback: function() {
-                if (callbackFunc) {
-                    callbackFunc(processStore.first());
-                }
-            }
-        });
-    },
-
-    setupCanvasDrop: function(canvasView) {
+    setupCanvasDrop: function() {
         var me = this;
+        var canvasView = this.getCanvas();
         var canvasElement = canvasView.getEl();
         if (canvasElement) {
             canvasView.dropTarget = Ext.create('Ext.dd.DropTarget', canvasElement.dom, {
@@ -337,30 +458,6 @@ Ext.define('Savanna.process.controller.ProcessController', {
             object = object.panel;
         }
         return object; //may be null
-    },
-
-    togglePalette: function() {
-        var palette = this.getPalette();
-        if (palette.hidden) {
-            palette.show();
-        } else {
-            palette.hide();
-        }
-    },
-
-    toggleOverview: function() {
-        var processViewport = this.getView();
-        var overview = processViewport.overview;
-
-        if (overview) {
-            processViewport.overview = null;
-            processViewport.remove(overview);
-        } else {
-            overview = Ext.create('Savanna.process.view.part.Overview', {});
-            overview.setDiagram(this.getCanvas().diagram);
-            processViewport.overview = overview;
-            processViewport.add(overview);
-        }
     }
 
 });

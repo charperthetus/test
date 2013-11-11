@@ -48,7 +48,7 @@ Ext.define('Savanna.process.view.part.Toolbar', {
                     },
                     {
                          text: 'Delete',
-                         itemId: 'cancelProcess'
+                         itemId: 'deleteProcess'
                     },
                     '-',
                     {
@@ -90,7 +90,7 @@ Ext.define('Savanna.process.view.part.Toolbar', {
                 width:25,
                 height:25,
                 ui: 'icon-dark',
-                tooltip: 'Zoom In',
+                tooltip: 'Zoom in',
                 itemId: 'zoomIn'
             },
             {
@@ -99,7 +99,7 @@ Ext.define('Savanna.process.view.part.Toolbar', {
                 width:25,
                 height:25,
                 ui: 'icon-dark',
-                tooltip: 'Zoom Out',
+                tooltip: 'Zoom out',
                 itemId: 'zoomOut'
             },
             {
@@ -137,8 +137,8 @@ Ext.define('Savanna.process.view.part.Toolbar', {
                 width:25,
                 height:25,
                 ui: 'icon-dark',
-                tooltip: 'Delete draft',
-                itemId: 'cancelProcess'
+                tooltip: 'Delete Process',
+                itemId: 'deleteProcess'
             },
             {
                 cls: 'toolbarButtonFramework',
@@ -146,7 +146,7 @@ Ext.define('Savanna.process.view.part.Toolbar', {
                 width:25,
                 height:25,
                 ui: 'icon-dark',
-                tooltip: 'Save process',
+                tooltip: 'Save',
                 itemId: 'saveProcess'
             }
         ];

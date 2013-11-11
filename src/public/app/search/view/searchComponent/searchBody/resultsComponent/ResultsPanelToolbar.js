@@ -9,7 +9,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
         'Ext.data.Store',
         'Savanna.search.controller.resultsComponent.ResultsPanelToolbarController'
     ],
-    
+    height: 33,
     initComponent: function () {
         Savanna.controller.Factory.getController('Savanna.search.controller.SearchComponent');
         this.items = this.setupItems();
@@ -43,22 +43,31 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
                 valueField: 'count',
                 value: 'Results per page',
                 editable: false,
-                ui: 'combo-button',
                 width: 150
-
-            }, {
+            },'->',{
                 xtype: 'pagingtoolbar',
+                cls: 'paging-toolbar-bg',
                 itemId: 'gridtoolbar',
                 dock: 'top',
                 displayInfo: true
             },'->', {
+                xtype: 'button',
                 glyph: 'list',
                 itemId: 'results_listViewButton',
-                ui:"basic"
+                width:25,
+                height:25,
+                cls: 'toolbarButtonFramework',
+                ui:'icon-dark',
+                tooltip:'View search results as a list'
             }, {
+                xtype: 'button',
                 glyph: 'earth',
                 itemId: 'results_mapViewButton',
-                ui:'basic'
+                width:25,
+                height:25,
+                cls: 'toolbarButtonFramework',
+                ui:'icon-dark',
+                tooltip:'View search results on a map'
             }
         ]
     }
