@@ -27,17 +27,32 @@ Ext.define('Savanna.process.view.metadata.FullProcessMetadata', {
 
     items: [
         {
+            xtype: 'textfield',
+            itemId: 'processTitle',
+            enableKeyEvents: true
+        },
+        {
+            xtype: 'textarea',
+            fieldLabel: 'Process Description',
+            labelAlign: 'top',
+            itemId: 'processDescription',
+            width: '100%',
+            enableKeyEvents: true
+        },
+
+        {
+            xtype: 'itemview_imagesgrid_edit',
+            itemId: 'imageBrowser',
+            header: false
+        },
+        {
             xtype: 'informationpanel',
             itemId: 'informationPanel',
             collapsible: true,
             region: 'center',
             split: true
         },
-        {
-            xtype: 'itemview_imagesgrid_edit',
-            itemId: 'imageBrowser',
-            header: false
-        },
+
         {
             xtype: 'document_sources',
             editMode: true,
