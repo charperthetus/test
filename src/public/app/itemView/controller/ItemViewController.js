@@ -154,6 +154,8 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     },
 
     onEditSave: function (btn) {
+
+        // Disable further edits
         btn.disable();
 
         this.store.getAt(0).data.label = this.getView().queryById('itemViewHeaderEdit').queryById('itemNameField').value;
@@ -176,11 +178,14 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
         this.store.getAt(0).setDirty();
         this.store.sync({
-            callback: Ext.bind(this.onEditSaveCallback, this, [], true)
+            callback: Ext.bind(this.onEditSaveCallback, this, [btn], true)
         });
     },
 
-    onEditSaveCallback: function (responseObj) {
+    onEditSaveCallback: function (responseObj, evt, btn) {
+
+        // Re-enable editing
+        btn.enable();
 
         if (!responseObj.operations[0].success) {
             /*
@@ -192,15 +197,21 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         }
     },
 
-    onEditDone: function () {
+    onEditDone: function (btn) {
+
+        // Disable editing
+        btn.disable();
         
         this.store.getAt(0).setDirty();
         this.store.sync({
-            callback: Ext.bind(this.onEditDoneCallback, this, [], true)
+            callback: Ext.bind(this.onEditDoneCallback, this, [btn], true)
         });
     },
 
-    onEditDoneCallback: function (responseObj) {
+    onEditDoneCallback: function (responseObj, evt, btn) {
+
+        // Re-enable edit mode
+        btn.enable();
 
         if (responseObj.operations[0].success) {
             this.getView().getLayout().setActiveItem(0);
