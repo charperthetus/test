@@ -15,6 +15,8 @@ Ext.define('Savanna.sources.view.Sources', {
 
     title: 'Sources',
 
+    ui:'off-white',
+
     layout: 'vbox',
 
     width: "100%",
@@ -42,7 +44,7 @@ Ext.define('Savanna.sources.view.Sources', {
             },
             width:'100%',
             margin:'0 0 10 0',
-            padding:'0 10 0 10',
+            padding: 10,
             height:79,
             bodyCls: 'inner-edit-zone',
             items: [
@@ -68,6 +70,8 @@ Ext.define('Savanna.sources.view.Sources', {
                 store: store,
 
                 title: 'Supporting Resources (' + store.count() + ')',
+                ui:'off-white',
+                padding: 10,
 
                 hideHeaders: true,
 

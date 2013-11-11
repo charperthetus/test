@@ -17,6 +17,8 @@ Ext.define('Savanna.process.view.metadata.ProcessItemMetadata', {
 
     controller: 'Savanna.process.controller.ProcessItemMetadataController',
 
+    ui:'off-white',
+
     overflowY: 'auto',
 
     items: [
