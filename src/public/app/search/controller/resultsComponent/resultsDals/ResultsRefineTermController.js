@@ -26,7 +26,7 @@ Ext.define('Savanna.search.controller.resultsComponent.resultsDals.ResultsRefine
 
         onCloseButton: function () {
             if (!this.getView().disabled) {
-                this.getView().fireEvent('Search:RemoveSearchTerm', this.getView().text, this.getView());
+                this.getView().fireEvent('Tag:RemoveSearchTerm', this.getView().text, this.getView());
             }
         }
     }
