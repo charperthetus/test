@@ -267,7 +267,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
      *  @param state {boolean} if true this will enable the buttons, false disables
      */
     toggleSaving: function(state) {
-        var itemIds = 'editDeleteButton, editSaveButton, editDoneButton'.split(', '),
+        var itemIds = 'editDeleteButton, editSaveButton, editDoneButton, editCancelButton'.split(', '),
             toggle = (state) ? 'enable' : 'disable';
 
         Ext.each(itemIds, function(btn) {
