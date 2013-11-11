@@ -24,7 +24,6 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
         'Savanna.component.ClassificationPanel',
         'Savanna.itemView.store.AutoCompleteStore',
         'Savanna.itemView.store.ItemViewStoreHelper',
-        'Savanna.metadata.view.Details',
         'Savanna.sources.view.Sources'
     ],
 
