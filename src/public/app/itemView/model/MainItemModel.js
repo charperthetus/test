@@ -17,6 +17,8 @@ Ext.define('Savanna.itemView.model.MainItemModel', {
     fields: [
         { name: 'label'},
         { name: 'uri'},
+        { name: 'editable'},
+        { name: 'deletable'},
         { name: 'version'},
         { name: 'created'},
         { name: 'createdBy'},
