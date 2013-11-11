@@ -114,9 +114,14 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
 
     onIntendedUsesSelect:function() {
         var valNameArray = [];
+        var disabledNameArray = [];
 
         Ext.each(this.getView().store.getById('Intended Use').valuesStore.data.items, function(value) {
             valNameArray.push(value.data.label);
+
+            if (!value.data.editable) {
+                disabledNameArray.push(value.data.label);
+            }
         });
 
         var vChooser = Ext.create('Savanna.itemView.view.itemQualities.ValuesPicker', {
@@ -124,6 +129,7 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
             height: 600,
             selectionStore: this.getView().store.getById("Intended Use").valuesStore,
             valNameArray: valNameArray,
+            disabledItemsArray: disabledNameArray,
             uri: encodeURI(this.getView().store.getById('Intended Use').data.predicateUri),
             storeHelper: this.getView().storeHelper
         });
@@ -138,7 +144,7 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
 
             Ext.each(this.getView().store.getById('Intended Use').valuesStore.data.items, function(value) {
                 this.getView().store.getById('Intended Use').data.values.push(value.data);
-                this.getView().queryById('addIntendedUseBox').addTag(value.data.label);
+                this.getView().queryById('addIntendedUseBox').addTag(value.data.label, value.data.editable);
             }, this);
 
             this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');

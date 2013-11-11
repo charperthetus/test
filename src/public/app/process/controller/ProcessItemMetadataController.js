@@ -159,9 +159,14 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
 
     onRoleChooserButtonSelect:function() {
         var valNameArray = [];
+        var disabledNameArray = [];
 
         Ext.each(this.store.getAt(0).propertyGroupsStore.getById('Related Items').valuesStore.getById('has role').valuesStore.data.items, function(value) {
             valNameArray.push(value.data.label);
+
+            if (!value.data.editable) {
+                disabledNameArray.push(value.data.label);
+            }
         });
 
         var rChooser = Ext.create('Savanna.itemView.view.itemQualities.ValuesPicker', {
@@ -169,6 +174,7 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
             height: 600,
             selectionStore: this.store.getAt(0).propertyGroupsStore.getById('Related Items').valuesStore.getById('has role').valuesStore,
             valNameArray: valNameArray,
+            disabledItemsArray: disabledNameArray,
             uri: 'lib%252EExtendedRelationOntology%253Ahas_role%252FModelPredicate',
             storeHelper: this.storeHelper
         });
@@ -183,7 +189,7 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
 
             Ext.each(this.store.getAt(0).propertyGroupsStore.getById('Related Items').valuesStore.getById('has role').valuesStore.data.items, function(value) {
                 this.store.getAt(0).propertyGroupsStore.getById('Related Items').valuesStore.getById('has role').data.values.push(value.data);
-                this.getRoleAutoCompleteBox().addTag(value.data.label);
+                this.getRoleAutoCompleteBox().addTag(value.data.label, value.data.editable);
             }, this);
         }
     },
