@@ -206,7 +206,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
             this.getView().getLayout().setActiveItem(0);
             this.getView().setEditMode(!this.getView().getEditMode());
             
-            // Have to wait to redraw the screen after we've switched views due to a framwork bug where height isn't being properly set
+            // Have to wait to redraw the screen after we've switched views due to a framework bug where height isn't being properly set
             //  And we set it manually.
             this.store.getAt(0).data.label = this.getView().queryById('itemViewHeaderEdit').queryById('itemNameField').value;
             this.getView().setTitle(this.store.getAt(0).data.label);
@@ -219,7 +219,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
             qualitiesComponent.reconfigure(this.store.getAt(0).propertyGroupsStore.getById('Properties').valuesStore);
 
             var itemSourceComponent = this.getView().queryById('itemSources').queryById('listOfSources');
-                itemSourceComponent.reconfigure(this.store.getAt(0).propertyGroupsStore.getById('Sources').valuesStore.getById('Source Document').valuesStore);
+            itemSourceComponent.reconfigure(this.store.getAt(0).propertyGroupsStore.getById('Sources').valuesStore.getById('Source Document').valuesStore);
 
             var imagesBrowserComponent = this.getView().queryById('itemViewImagesGrid'),
                 imagesBrowserComponentEdit = this.getView().queryById('itemViewImagesEdit');
@@ -237,7 +237,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
                 }
             }, this);
             relatedItemView.fireEvent('ViewRelatedItems:SetupData', this.store.getAt(0).propertyGroupsStore.getById('Related Items').valuesStore.data.items);
-        }   else    {
+        } else {
             /*
              server down..?
              */
@@ -392,12 +392,27 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         Ext.bind(itemSourceComponentEdit.addSourcesGrid(record.propertyGroupsStore.getById('Sources').valuesStore.getById('Source Document').valuesStore), itemSourceComponent);
 
         /*
-         are we creating a new item?
+         are we creating a new item, or for other reasons starting in edit view?
          */
         if (me.getView().getEditMode()) {
-            me.getView().getLayout().setActiveItem(1);
-            me.lockItem(record.data.uri, true);
+            /*
+             is the record editable?  Assuming this should indicate if the record is locked,
+             but currently the model data always shows editable set to true.  I'm betting the
+             service needs to be modified to return false if the record is locked by another user.
+             */
+            if (record.data.editable) {
+                me.getView().getLayout().setActiveItem(1);
+                me.lockItem(record.data.uri, true);
+            }
         }
+        /*
+         set the edit button to be enabled only if the record is editable, and provide a
+         corresponding tooltip for the user.
+         */
+
+        var editBtn = this.getView().queryById('editModeButton');
+        editBtn.setDisabled(!record.data.editable);
+        editBtn.disabled ? editBtn.setTooltip('Item locked.') : editBtn.setTooltip('Edit');
     },
 
     onNewItemClick: function (btn) {
@@ -413,8 +428,8 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
     onParentSelected: function (uri, label) {
 
-        Ext.each(this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Type').valuesStore.data.items, function(item)    {
-            if(!item.get('inheritedFrom'))    {
+        Ext.each(this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Type').valuesStore.data.items, function (item) {
+            if (!item.get('inheritedFrom')) {
                 item.set('value', uri);
                 item.set('label', label);
             }
@@ -432,7 +447,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         })
     },
 
-    onItemReload:function(records, operation, success)  {
+    onItemReload: function (records, operation, success) {
         this.updateViewWithStoreData(records[0]);
     },
 

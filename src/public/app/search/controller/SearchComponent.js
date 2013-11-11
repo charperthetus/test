@@ -14,7 +14,6 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         'Savanna.search.store.SearchResults',
         'Savanna.search.view.searchComponent.searchBody.searchMap.SearchLocationComboBox',
         'Savanna.controller.Factory',
-        'Savanna.metadata.store.Metadata',
         'Savanna.search.model.ResultMetadata',
         'Savanna.search.store.ResultsMetadata'
     ],

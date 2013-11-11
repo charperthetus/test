@@ -24,7 +24,6 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
         'Savanna.component.ClassificationPanel',
         'Savanna.itemView.store.AutoCompleteStore',
         'Savanna.itemView.store.ItemViewStoreHelper',
-        'Savanna.metadata.view.Details',
         'Savanna.sources.view.Sources'
     ],
 
@@ -89,6 +88,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                         {
                             xtype: 'button',
                             itemId: 'editModeButton',
+                            disabled: true,
                             width:25,
                             height:25,
                             cls: 'toolbarButtonFramework',

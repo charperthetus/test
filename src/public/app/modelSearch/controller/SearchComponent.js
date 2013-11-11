@@ -13,7 +13,6 @@ Ext.define('Savanna.modelSearch.controller.SearchComponent', {
         'Savanna.modelSearch.model.SearchRequest',
         'Savanna.modelSearch.store.SearchResults',
         'Savanna.controller.Factory',
-        'Savanna.metadata.store.Metadata',
         'Savanna.modelSearch.model.ResultMetadata',
         'Savanna.modelSearch.store.ResultsMetadata'
     ],
