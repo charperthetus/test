@@ -185,8 +185,6 @@ Ext.define('Savanna.process.view.metadata.ProcessItemMetadata', {
                             displayField: 'abbr', //Sets the display field to use the abbr config from the store.
                             valueField: 'val', //Sets the value field to use the val config from the store.
                             scope: this,
-                            //minLength: 3,
-                            //maxLength: 3,
                             enableRegEx: true,
                             enableKeyEvents: true,
                             displayValue: null, //This is a custom config which sets the abbr that is currently selected.
@@ -223,19 +221,10 @@ Ext.define('Savanna.process.view.metadata.ProcessItemMetadata', {
                                     //It must reset everytime on focus in order to know it was just entered into and then on the keyup event it will not call findInStore when focused into with the tab key.
                                     this.keyCount = 0;
                                 }
-
                             }
-
                         }
                     ]
-                }/*,
-                {
-                    xtype: 'textarea',
-                    fieldLabel: 'Description',
-                    labelAlign: 'top',
-                    text: 'Far far away, behind the word mountains',
-                    itemId: 'itemInstanceDescription'
-                }*/
+                }
             ]
         },
         {

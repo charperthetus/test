@@ -54,7 +54,6 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
     },
 
     onOpenBtnClick: function() {
-        //console.log('open item');
         EventHub.fireEvent('open', {uri: this.store.getAt(0).data.uri, type: 'Item', label: this.store.getAt(0).data.label});
     },
 
@@ -122,8 +121,6 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
     },
 
     onSaveChanges: function() {
-        // TODO: save the existing set of changes, if any
-        console.log('ProcessItemMetadataController saveChanges');
         if(this.store && this.store.getAt(0)) {
             this.store.getAt(0).setDirty();
             this.store.sync();

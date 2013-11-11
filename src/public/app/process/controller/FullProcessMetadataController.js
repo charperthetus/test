@@ -71,7 +71,6 @@ Ext.define('Savanna.process.controller.FullProcessMetadataController', {
     },
 
     onSaveChanges: function() {
-        console.log('FullProcessMetadataController saveChanges');
         if(this.store && this.store.getAt(0)) {
             this.store.getAt(0).setDirty();
             this.store.sync();
