@@ -42,12 +42,12 @@ Ext.define('Savanna.desktop.view.SavannaTabPanel', {
                 plain: true,
                 items: [
                     {
-                        text: 'Item',
+                        text: 'Create an Item',
                         handler: this.itemHandler,
                         scope: this
                     },
                     {
-                        text: 'Process',
+                        text: 'Create a Process',
                         handler: this.processHandler,
                         scope: this
                     }
