@@ -86,53 +86,6 @@ Ext.define('Savanna.process.view.part.ActionList', {
                     property: 'label',
                     direction: 'ASC'
                 }
-            ],
-            data: [
-
-                {
-                    'uri': '',
-                    'label': 'Filter',
-                    'type': 'Action',
-                    'modifiedBy': '',
-                    'modifiedDate': '',
-                    'preview': '',
-                    'primaryImageUrl': '',
-                    'workflowState': '',
-                    'classification': ''
-                },
-                {
-                    'uri': '',
-                    'label': 'Dissolve',
-                    'type': 'Action',
-                    'modifiedBy': '',
-                    'modifiedDate': '',
-                    'preview': '',
-                    'primaryImageUrl': '',
-                    'workflowState': '',
-                    'classification': ''
-                },
-                {
-                    'uri': '',
-                    'label': 'Mix',
-                    'type': 'Action',
-                    'modifiedBy': '',
-                    'modifiedDate': '',
-                    'preview': '',
-                    'primaryImageUrl': '',
-                    'workflowState': '',
-                    'classification': ''
-                },
-                {
-                    'uri': '',
-                    'label': 'Dry',
-                    'type': 'Action',
-                    'modifiedBy': '',
-                    'modifiedDate': '',
-                    'preview': '',
-                    'primaryImageUrl': '',
-                    'workflowState': '',
-                    'classification': ''
-                }
             ]
         });
         this.callParent(arguments);

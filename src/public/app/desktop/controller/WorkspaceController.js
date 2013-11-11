@@ -63,11 +63,11 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
     },
 
     onClose: function(tab) {
-        this.getMaintabpanel().remove(tab);
+        this.getDesktopTabPanel().remove(tab);
     },
 
     onCreateProcess: function(){
-        this.createProcess(this.getMaintabpanel());
+        this.createProcess(this.getDesktopTabPanel());
     },
 
     createProcess: function(tabpanel) {

@@ -27,7 +27,6 @@ Ext.define('Savanna.itemView.view.header.EditHeader', {
 
     margin: 10,
 
-
     items: [
         {
             xtype: 'label',

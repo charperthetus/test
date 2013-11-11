@@ -109,6 +109,38 @@ Ext.define('Savanna.itemView.store.ItemViewStoreHelper', {
         store.valuesStore.remove(store.valuesStore.getById(tagName));
     },
 
+    updateBotLevItemInStore: function (tagName, data, store) {
+        if (store.valuesStore.getAt(0)) {
+            if (tagName) {
+                for (var i = 0; i < store.data.values.length; i++) {
+                    if (store.data.values[i].label === tagName) {
+                        this.updateData(data, store.data.values[i]);
+                        break;
+                    }
+                }
+
+                this.updateData(data, store.valuesStore.getById(tagName).data);
+            }
+            else {
+                this.updateData(data, store.data.values[0]);
+                this.updateData(data, store.valuesStore.data.items[0].data);
+            }
+        } else {
+            if (tagName) {
+                this.addBotLevItemInStore(tagName, {uri: data.value}, store);
+            }
+            else {
+                this.addBotLevItemInStore(data.value, null, store);
+            }
+        }
+    },
+
+    updateData: function (data, item) {
+        item.value = data.value;
+        item.label = data.label;
+        item.comment = data.comment;
+    },
+
     removeBotLevItemInStoreByUri: function(uri, store) {
         for (var i = 0; i < store.data.values.length; i++) {
             if (store.data.values[i].value === uri) {

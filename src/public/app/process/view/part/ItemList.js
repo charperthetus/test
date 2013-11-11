@@ -86,63 +86,6 @@ Ext.define('Savanna.process.view.part.ItemList', {
                     property: 'label',
                     direction: 'ASC'
                 }
-            ],
-            data: [
-                {
-                    'uri': '',
-                    'label': 'Urea Ammonium Nitrate',
-                    'type': 'Item',
-                    'modifiedBy': '',
-                    'modifiedDate': '',
-                    'preview': '',
-                    'primaryImageUrl': '',
-                    'workflowState': '',
-                    'classification': ''
-                },
-                {
-                    'uri': '',
-                    'label': 'Strong Acid',
-                    'type': 'Item',
-                    'modifiedBy': '',
-                    'modifiedDate': '',
-                    'preview': '',
-                    'primaryImageUrl': '',
-                    'workflowState': '',
-                    'classification': ''
-                },
-                {
-                    'uri': '',
-                    'label': 'Urea Nitrate Solution',
-                    'type': 'Item',
-                    'modifiedBy': '',
-                    'modifiedDate': '',
-                    'preview': '',
-                    'primaryImageUrl': '',
-                    'workflowState': '',
-                    'classification': ''
-                },
-                {
-                    'uri': '',
-                    'label': 'Heat Source',
-                    'type': 'Item',
-                    'modifiedBy': '',
-                    'modifiedDate': '',
-                    'preview': '',
-                    'primaryImageUrl': '',
-                    'workflowState': '',
-                    'classification': ''
-                },
-                {
-                    'uri': '',
-                    'label': 'Urea Solution',
-                    'type': 'Item',
-                    'modifiedBy': '',
-                    'modifiedDate': '',
-                    'preview': '',
-                    'primaryImageUrl': '',
-                    'workflowState': '',
-                    'classification': ''
-                }
             ]
         });
         this.callParent(arguments);

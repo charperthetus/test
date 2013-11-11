@@ -22,6 +22,10 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
             processItemUriChanged: 'onUriChanged',
             savechanges: 'onSaveChanges'
         },
+        openBtn: {
+            click: 'onOpenBtnClick'
+        },
+
         itemTitle: {
             blur: 'itemTitleBlur'
         },
@@ -38,14 +42,20 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
         itemInstanceTitle: {
             blur: 'instanceTitleBlur'
         },
-        roleAutoCompleteBox: true,
+        roleAutoCompleteBox: {
+            'AutoComplete:ItemSelected': 'addingRole',
+            'AutoComplete:TagRemoved': 'removingRole'
+        },
         roleChooserButton: {
             click: 'onRoleChooserButtonSelect'
         },
 
-//        itemInstanceDescription: true,
         itemQualities: true
+    },
 
+    onOpenBtnClick: function() {
+        //console.log('open item');
+        EventHub.fireEvent('open', {uri: this.store.getAt(0).data.uri, type: 'Item', label: this.store.getAt(0).data.label});
     },
 
     onUriChanged: function(processUri, itemName) {
@@ -68,7 +78,7 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
     handleRecordDataRequestSuccess: function(record, operation, success) {
         if(success) {
             this.storeHelper.init(this.store);
-            this.getItemTitle().setValue(this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Intended Use').valuesStore.getAt(0).data.inheritedFrom.label);
+            this.getItemTitle().setValue(this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Type').data.values[0].label);
 
             if (this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Description').valuesStore.getAt(0)) {
                 this.getItemDescription().setValue(this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Description').valuesStore.getAt(0).data.value);
@@ -106,12 +116,11 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
                 this.getQuantityValue().setValue(quantity);
                 this.getQuantityUnit().setValue(unit);
             }
-
-            this.getView().up('process_metadata').fireEvent('itemReadyForDisplay');
         }
     },
 
     onSaveChanges: function() {
+        // TODO: save the existing set of changes, if any
         console.log('ProcessItemMetadataController saveChanges');
         if(this.store && this.store.getAt(0)) {
             this.store.getAt(0).setDirty();
@@ -128,101 +137,22 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
     },
 
     itemDescriptionBlur: function(e) {
-        if( this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Description').valuesStore.getAt(0)) {
-            if(this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Description').valuesStore.getAt(0).data.value !== e.getValue()) {
-                this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Description').valuesStore.getAt(0).data.value = e.getValue();
-
-                for (var i = 0; i < this.store.getAt(0).data.propertyGroups.length; i++) {
-                    if ('Header' === this.store.getAt(0).data.propertyGroups[i].label) {
-                        for (var j = 0; j < this.store.getAt(0).data.propertyGroups[i].values.length; j++) {
-                            if ('Description' === this.store.getAt(0).data.propertyGroups[i].values[j].label) {
-                                this.store.getAt(0).data.propertyGroups[i].values[j].values[0].value = e.getValue();
-                                break;
-                            }
-                        }
-
-                        break;
-                    }
-                }
-                this.store.getAt(0).setDirty();
-            }
-        } else {
-
-            this.storeHelper.addBotLevItemInStore("Description", {uri: e.getValue()}, this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Description'));
-            this.store.getAt(0).setDirty();
-        }
+        var value = {label: "Description", comment: null, value: e.getValue()};
+        this.storeHelper.updateBotLevItemInStore("Description", value, this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Description'));
     },
 
     instanceTitleBlur: function(e) {
-        if( this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Label').valuesStore.getAt(0)) {
-            if(this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Label').valuesStore.getAt(0).data.value !== e.getValue()) {
-                this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Label').valuesStore.getAt(0).data.value = e.getValue();
-
-                for (var i = 0; i < this.store.getAt(0).data.propertyGroups.length; i++) {
-                    if ('Header' === this.store.getAt(0).data.propertyGroups[i].label) {
-                        for (var j = 0; j < this.store.getAt(0).data.propertyGroups[i].values.length; j++) {
-                            if ('Label' === this.store.getAt(0).data.propertyGroups[i].values[j].label) {
-                                this.store.getAt(0).data.propertyGroups[i].values[j].values[0].value = e.getValue();
-                                this.store.getAt(0).data.propertyGroups[i].values[j].values[0].label = e.getValue();
-                                break;
-                            }
-                        }
-
-                        break;
-                    }
-                }
-                this.store.getAt(0).setDirty();
-            }
-        } else {
-            this.storeHelper.addBotLevItemInStore(e.getValue(), null, this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Label'));
-            this.store.getAt(0).setDirty();
-        }
-
+        var value = {label: e.getValue(), comment: null, value: e.getValue()};
+        this.storeHelper.updateBotLevItemInStore(null, value, this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Label'));
         this.store.getAt(0).data.label = e.getValue();
     },
 
-    quantityValueChanger: function() {
-        var quantity = this.getQuantityValue().getValue().toString();
-        var unit = this.getQuantityUnit().getValue().toString();
-        this.setQuantityValue(quantity + '_' + unit );
+    addingRole: function(tagName, tagData, aView) {
+        this.storeHelper.addBotLevItemInStore(tagName, tagData, this.store.getAt(0).propertyGroupsStore.getById('Related Items').valuesStore.getById('has role'));
     },
 
-    setQuantityValue: function(value) {
-        if( this.store.getAt(0).propertyGroupsStore.getById('Annotations').valuesStore.getById('Quantity').valuesStore.getAt(0)) {
-            if(this.store.getAt(0).propertyGroupsStore.getById('Annotations').valuesStore.getById('Quantity').valuesStore.getAt(0).data.value !== value) {
-                this.store.getAt(0).propertyGroupsStore.getById('Annotations').valuesStore.getById('Quantity').valuesStore.getAt(0).data.value = value;
-
-                for (var i = 0; i < this.store.getAt(0).data.propertyGroups.length; i++) {
-                    if ('Annotations' === this.store.getAt(0).data.propertyGroups[i].label) {
-                        for (var j = 0; j < this.store.getAt(0).data.propertyGroups[i].values.length; j++) {
-                            if ( 'Quantity' === this.store.getAt(0).data.propertyGroups[i].values[j].label) {
-                                this.store.getAt(0).data.propertyGroups[i].values[j].values[0].value = value;
-                                break;
-                            }
-                        }
-
-                        break;
-                    }
-                }
-                this.store.getAt(0).setDirty();
-            }
-        } else {
-
-            this.storeHelper.addBotLevItemInStore("Quantity", {uri: value}, this.store.getAt(0).propertyGroupsStore.getById('Annotations').valuesStore.getById('Quantity'));
-            this.store.getAt(0).setDirty();
-        }
-
-    },
-
-
-    clearValues: function() {
-        this.getItemTitle().setValue('');
-        this.getItemDescription().setValue('');
-        //this.getItemPrimeImage().setValue('');
-        this.getQuantityValue().setValue('');
-        this.getQuantityUnit().setValue('');
-        this.getItemInstanceTitle().setValue('');
-        this.getItemQualities().removeAll();
+    removingRole: function(tagName, aView) {
+        this.storeHelper.removeBotLevItemInStore(tagName, this.store.getAt(0).propertyGroupsStore.getById('Related Items').valuesStore.getById('has role'));
     },
 
     onRoleChooserButtonSelect:function() {
@@ -232,7 +162,7 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
             valNameArray.push(value.data.label);
         });
 
-        var vChooser = Ext.create('Savanna.itemView.view.itemQualities.ValuesPicker', {
+        var rChooser = Ext.create('Savanna.itemView.view.itemQualities.ValuesPicker', {
             width: 500,
             height: 600,
             selectionStore: this.store.getAt(0).propertyGroupsStore.getById('Related Items').valuesStore.getById('has role').valuesStore,
@@ -241,10 +171,10 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
             storeHelper: this.storeHelper
         });
 
-        vChooser.on('close', this.closedVPicker, this);
+        rChooser.on('close', this.closedRPicker, this);
     },
 
-    closedVPicker: function(view) {
+    closedRPicker: function(view) {
         if (view.updatedStore) {
             Ext.Array.erase(this.store.getAt(0).propertyGroupsStore.getById('Related Items').valuesStore.getById('has role').data.values, 0, this.store.getAt(0).propertyGroupsStore.getById('Related Items').valuesStore.getById('has role').data.values.length);
             this.getRoleAutoCompleteBox().clearTags();
@@ -253,11 +183,28 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
                 this.store.getAt(0).propertyGroupsStore.getById('Related Items').valuesStore.getById('has role').data.values.push(value.data);
                 this.getRoleAutoCompleteBox().addTag(value.data.label);
             }, this);
-
         }
+    },
+
+    quantityValueChanger: function() {
+        var quantity = this.getQuantityValue().getValue();
+        var unit = this.getQuantityUnit().displayValue;
+        this.setQuantityValue(quantity + '_' + unit );
+    },
+
+    setQuantityValue: function(value) {
+        var data = {label: "Quantity", comment: null, value: value};
+        this.storeHelper.updateBotLevItemInStore("Quantity", data, this.store.getAt(0).propertyGroupsStore.getById('Annotations').valuesStore.getById('Quantity'));
+    },
+
+    clearValues: function() {
+        this.getItemTitle().setValue('');
+        this.getItemDescription().setValue('');
+        //this.getItemPrimeImage().setValue('');
+        this.getQuantityValue().setValue('');
+        this.getQuantityUnit().setValue('');
+        this.getItemInstanceTitle().setValue('');
+        this.getItemQualities().removeAll();
+        this.getRoleAutoCompleteBox().clearTags();
     }
-
-
-
-
 });
