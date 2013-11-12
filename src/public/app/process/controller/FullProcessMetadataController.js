@@ -15,13 +15,15 @@ Ext.define('Savanna.process.controller.FullProcessMetadataController', {
 
     requires: [
         'Savanna.itemView.store.MainItemStore',
-        'Savanna.itemView.store.ItemViewStoreHelper'
+        'Savanna.itemView.store.ItemViewStoreHelper',
+        'Savanna.process.view.metadata.ProcessCategoryWindow'
     ],
 
     control: {
         view: {
             savechanges: 'onSaveChanges',
-            processUriChanged: 'onUriChanged'
+            processUriChanged: 'onUriChanged',
+            processCategorySelected: 'onProcessCategorySelected'
         },
         processTitle: {
             blur: 'processTitleBlur'
@@ -95,6 +97,19 @@ Ext.define('Savanna.process.controller.FullProcessMetadataController', {
 
     onCategoryChooserButtonSelect: function(e) {
         console.log('onCategoryChooserButtonSelect');
+        var me = this;
+        Ext.create('Savanna.process.view.metadata.ProcessCategoryWindow', {
+            viewer: me.getView(),
+            width: 300,
+            height: 500
+        }, this);
+
+    },
+
+    onProcessCategorySelected: function(selection) {
+        console.log('onProcessCategorySelected', selection);
+
+        this.getCategoryValue().setText(selection.label);
     }
 
 });
