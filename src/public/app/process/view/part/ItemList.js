@@ -35,7 +35,7 @@ Ext.define('Savanna.process.view.part.ItemList', {
     columns: [
         {
             dataIndex: 'label',
-            width: 178
+            width: 180
         }
     ],
 
@@ -71,7 +71,7 @@ Ext.define('Savanna.process.view.part.ItemList', {
                 itemId: 'searchItems',
                 ui: 'commit',
                 text: 'Search',
-                tooltip: 'Click to search the model.'
+                tooltip: 'Click to search for Red Nodal Model Items.'
             },
             {   xtype: 'tbspacer', width: 15 }
         ]

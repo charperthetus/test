@@ -15,7 +15,8 @@ Ext.define('Savanna.itemView.view.itemQualities.QualitiesPicker', {
 
     requires: [
         'Savanna.itemView.store.AutoCompleteStore',
-        'Savanna.itemView.controller.QualitiesPickerController'
+        'Savanna.itemView.controller.QualitiesPickerController',
+        'ThetusUikit.ux.form.SearchField'
     ],
 
     controller: 'Savanna.itemView.controller.QualitiesPickerController',
@@ -54,21 +55,12 @@ Ext.define('Savanna.itemView.view.itemQualities.QualitiesPicker', {
             width: '100%',
             items: [
                 {
-                    xtype: 'textfield',
+                    xtype: 'thetus-searchfield',
                     itemId: 'filterQualitiesField',
                     flex: 1,
-                    emptyText: 'Find a Quality',
-                    enableKeyEvents: true
-                },
-                {
-                    xtype: 'button',
-                    text: 'Search',
-                    itemId: 'searchQualitiesBtn'
-                },
-                {
-                    xtype: 'button',
-                    text: 'Clear',
-                    itemId: 'clearQualitiesFilter'
+                    emptyText: 'Search',
+                    enableKeyEvents: true,
+                    margin: 2
                 }
             ]
         },
@@ -132,7 +124,7 @@ Ext.define('Savanna.itemView.view.itemQualities.QualitiesPicker', {
 
     buttons: [
         {
-            text: 'Add',
+            text: 'OK',
             itemId: 'okBtn',
             ui: 'commit',
             margin: '0 0 10 0'

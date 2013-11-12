@@ -90,7 +90,7 @@ Ext.define('Savanna.itemView.view.createItem.CreateItem', {
     buttons: [
 
         {
-            text: 'Create',
+            text: 'OK',
             itemId: 'commitBtn',
             ui: 'commit',
             margin: '0 0 10 0'

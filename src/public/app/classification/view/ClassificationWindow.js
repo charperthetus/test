@@ -11,7 +11,7 @@ Ext.define('Savanna.classification.view.ClassificationWindow', {
         portionMarking: null
     },
 
-    title: 'Update Classification',
+    title: 'Edit Classification',
     cls: "classification",
 
     layout: 'anchor',
@@ -26,7 +26,7 @@ Ext.define('Savanna.classification.view.ClassificationWindow', {
         {
             xtype: 'button',
             itemId: 'finishButton',
-            text: 'Update',
+            text: 'OK',
             ui: 'commit'
         },
         {

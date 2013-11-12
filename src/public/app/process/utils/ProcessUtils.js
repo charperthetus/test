@@ -260,8 +260,8 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
     addMerge: function(diagram) {
         if (diagram.selection.count < 2){
             Ext.Msg.show({
-                title: 'Join Error',
-                msg: 'You can only link items that have no children.',
+                title: 'Link Error',
+                msg: 'You can only link Items that have no children.',
                 buttons: Ext.Msg.OK
             });
             return;
@@ -280,8 +280,8 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
 
             if (node.data.category != category) {
                 Ext.Msg.show({
-                    title: 'Join Error',
-                    msg: 'You can only merge items of the same type.',
+                    title: 'Link Error',
+                    msg: 'You can only link Items of the same type.',
                     buttons: Ext.Msg.OK
                 });
                 return;
@@ -290,8 +290,8 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
 
             if (node.containingGroup) {
                 Ext.Msg.show({
-                    title: 'Join Error',
-                    msg: 'You can only merge items that are not inside a step.',
+                    title: 'Link Error',
+                    msg: 'You can only link Items that are not inside a step.',
                     buttons: Ext.Msg.OK
                 });
                 return;
@@ -299,8 +299,8 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
 
             if (node.data.category == 'ProcessItem' && node.findLinksOutOf().count > 0) {
                 Ext.Msg.show({
-                    title: 'Join Error',
-                    msg: 'You can only link items that have no children.',
+                    title: 'Link Error',
+                    msg: 'You can only link Items that have no children.',
                     buttons: Ext.Msg.OK
                 });
                 return;
@@ -365,7 +365,7 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         if (diagram.selection.count != 1){
             Ext.Msg.show({
                 title: 'Alternates Error',
-                msg: 'You can only add alternates to one item at a time.',
+                msg: 'You can only add alternates to one Item at a time.',
                 buttons: Ext.Msg.OK
             });
             return;
@@ -375,7 +375,7 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         if (selItem.category != 'ProcessItem') {
             Ext.Msg.show({
                 title: 'Alternates Error',
-                msg: 'You can only add alternates to a selected process.', //todo: Still get final wording for error, best guess by Larry 11/8
+                msg: 'You can only add alternates to a selected process.',
                 buttons: Ext.Msg.OK
             });
             return;
