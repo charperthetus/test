@@ -4,6 +4,9 @@ Ext.define('Savanna.classification.controller.WindowController', {
     requires: ['Savanna.classification.store.OptionsStore'],
 
     control: {
+        view: {
+            close: 'onClose'
+        },
         errorLabel: true,
         classificationField: {
             select: 'onClassificationSelect'
@@ -355,8 +358,11 @@ Ext.define('Savanna.classification.controller.WindowController', {
     },
 
     onCancelButtonClick: function(){
+        this.close();
+    },
+
+    onClose: function() {
         EventHub.fireEvent('classificationedited');
-        this.getView().destroy();
     },
 
     hideFields: function() {
