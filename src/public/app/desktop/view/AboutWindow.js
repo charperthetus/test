@@ -13,6 +13,8 @@ Ext.define('Savanna.desktop.view.AboutWindow', {
     height: 200,
     width: 400,
     ghost: false,
+    margin:15,
+    padding:10,
     resizable: false,
     constrain: true,
     layout: 'vbox',
