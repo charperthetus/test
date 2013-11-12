@@ -4,7 +4,7 @@ Ext.define('Savanna.upload.view.part.NewUploadView', {
     alias: 'widget.upload_part_newupload',
 
     requires: [
-        'Ext.layout.container.VBox',
+        'Savanna.classification.view.ClassificationButton',
         'Ext.form.field.FileButton',
         'Ext.form.field.File'
     ],
@@ -24,10 +24,33 @@ Ext.define('Savanna.upload.view.part.NewUploadView', {
     setupItems: function() {
         return [
             {
-                xtype: 'label',
-                text: 'Start New Upload',
-                cls: ['dark', 'h1', 'align_top', 'align_bottom'],
-                height: 35
+                xtype: 'container',
+                layout: {
+                    type: 'hbox',
+                    pack: 'center'
+                },
+                width: '100%',
+                items: [
+                    {
+                        xtype: 'label',
+                        text: 'Start New Upload',
+                        cls: ['dark', 'h1', 'align_top', 'align_bottom'],
+                        height: 35
+                    },
+                    {
+                        xtype: 'tbfill'
+                    },
+                    {
+                        xtype: 'label',
+                        text: 'Classification:',
+                        cls: ['dark', 'align_top', 'align_bottom'],
+                        margin: {top:0,left:0,right:5,bottom:0}
+                    },
+                    {
+                        xtype: 'classificationbutton',
+                        itemId: 'classificationButton'
+                    }
+                ]
             },
             {
                 xtype: 'panel',

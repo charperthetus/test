@@ -62,6 +62,7 @@ Ext.define('Savanna.metadata.controller.InformationPanelController', {
             var viewClass = this.getViewClass(data.type, data.key);
 
             if(viewClass) {
+
                 var param = {
                     key: data.key,
                     type: data.type,
@@ -70,6 +71,11 @@ Ext.define('Savanna.metadata.controller.InformationPanelController', {
                     visible: data.visible !== undefined ? data.visible : false,
                     editable: data.editable !== undefined ? data.editable : false
                 };
+
+                if(data.key === 'classification' && (!data.value || data.value === '__NONE__')) {
+                    param.value = 'UNSPECIFIED';
+                }
+
                 this.getViewCard().add(this.createField(viewClass, param, false));
                 this.getEditCard().add(this.createField(viewClass, param, true));
             }
@@ -170,16 +176,12 @@ Ext.define('Savanna.metadata.controller.InformationPanelController', {
     },
 
     discardChanges: function() {
+        var viewFields = this.getViewCard().items;
         var editFields = this.getEditCard().items;
         for(var i = 0; i < editFields.getCount(); i++) {
-            var field = editFields.getAt(i);
-            for(var j = 0; j < this.informationStore.getCount(); j++) {
-                var data = this.informationStore.getAt(j);
-                if(data.get('key') === field.key) {
-                    field.setValue(data.get('value'));
-                    break;
-                }
-            }
+            var viewField = viewFields.getAt(i);
+            var editField = editFields.getAt(i);
+            editField.setValue(viewField.getValue());
         }
         this.setViewCard();
     },
@@ -217,7 +219,7 @@ Ext.define('Savanna.metadata.controller.InformationPanelController', {
                 var data = this.informationStore.getAt(i);
                 if(data.get('key') === field.key) {
                     if(data.get('key') === 'classification') {
-                        this.saveClassification(field.value)
+                        this.saveClassification(field.value);
                     } else if(data.get('value') !== field.value
                         || (Ext.isArray(field.value) && !Ext.Array.equals(data.get('value'), field.value))) {
                         data.set('value', field.value);

@@ -64,7 +64,6 @@ Ext.define('Savanna.classification.view.ClassificationWindow', {
             displayField: 'displayLabel',
             valueField: 'id',
             allowBlank: false,
-            forceSelection: true,
             editable: false,
             anchor: '100%'
         },
