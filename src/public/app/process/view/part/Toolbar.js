@@ -79,8 +79,8 @@ Ext.define('Savanna.process.view.part.Toolbar', {
                 ]
             },
             {
-                text: 'Join',
-                tooltip: 'Join selected items together',
+                text: 'Link',
+                tooltip: 'Click to link selected Items',
                 itemId: 'merge'
             },
             '->',
@@ -137,7 +137,7 @@ Ext.define('Savanna.process.view.part.Toolbar', {
                 width:25,
                 height:25,
                 ui: 'icon-dark',
-                tooltip: 'Delete Process',
+                tooltip: 'Delete process',
                 itemId: 'deleteProcess'
             },
             {

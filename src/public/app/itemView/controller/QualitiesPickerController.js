@@ -27,13 +27,9 @@ Ext.define('Savanna.itemView.controller.QualitiesPickerController', {
             click: 'cancelQualitySelections'
         },
         filterQualitiesField: {
-            keydown: 'filterKeydown'
-        },
-        searchQualitiesBtn: {
-            click: 'filterQualities'
-        },
-        clearQualitiesFilter: {
-            click: 'clearFilter'
+            keydown: 'filterKeydown',
+            'onsearchclick' : 'filterQualities',
+            'onclearclick' : 'clearFilter'
         }
     },
 

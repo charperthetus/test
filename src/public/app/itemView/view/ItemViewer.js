@@ -279,7 +279,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                                 },
 
                                 {
-                                    text: 'Delete',
+                                    text: 'Delete Item',
                                     itemId:'deleteItemButton'
                                 }
                             ]
@@ -293,7 +293,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                             cls: 'toolbarButtonFramework',
                             ui:'icon-dark',
                             glyph: 'closeRollover',
-                            tooltip: "Cancel Changes"
+                            tooltip: "Cancel changes"
                         },
                         {
                             xtype: 'button',
@@ -303,7 +303,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                             cls: 'toolbarButtonFramework',
                             ui:'icon-dark',
                             glyph: 'trash',
-                            tooltip: "Delete"
+                            tooltip: "Delete Item"
                         },
                         {
                             xtype: 'button',

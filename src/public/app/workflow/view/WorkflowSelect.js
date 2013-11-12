@@ -16,7 +16,7 @@ Ext.define('Savanna.workflow.view.WorkflowSelect', {
     ],
 
     controller: 'Savanna.workflow.controller.WorkflowController',
-    title: 'Workflow',
+    title: 'Manage Workflow',
     width: 500,
     height: 425,
 
@@ -35,6 +35,7 @@ Ext.define('Savanna.workflow.view.WorkflowSelect', {
             xtype: 'form',
             padding: 30,
             title: 'Workflow States',
+            ui:'white',
             itemId: 'workflowSelect',
             items: [
                 {
@@ -62,10 +63,11 @@ Ext.define('Savanna.workflow.view.WorkflowSelect', {
     buttons: [
         {
             text: 'OK',
-            itemId: 'workflowOK'
+            itemId: 'workflowOK',
+            ui:'commit'
         },
         {
-            text: 'CANCEL',
+            text: 'Cancel',
             itemId: 'workflowCANCEL'
         }
     ]
