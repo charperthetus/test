@@ -3,7 +3,6 @@ Ext.define('Savanna.process.controller.MetadataController', {
 
     config: {
         diagram: null,
-        processUri: null,
         canvas: null
     },
 
@@ -13,9 +12,11 @@ Ext.define('Savanna.process.controller.MetadataController', {
             processclose: 'onProcessClose'
         },
         hiddenPanel: true,
-        fullProcessMetadata: true,
+        fullProcessMetadata: {
+            readyForDisplay: 'showProcessView'
+        },
         itemMetadata: {
-            itemReadyForDisplay: 'showTheItemView'
+            readyForDisplay: 'showItemView'
         },
         nothingHereLabel: true
      },
@@ -79,10 +80,8 @@ Ext.define('Savanna.process.controller.MetadataController', {
     },
 
     setUpProcessDetails: function(itemUri) {
-        // get proper info from service for item configs
+        // load the side panel initially or just show it
         if( null !== itemUri ) {
-            this.setProcessUri( itemUri );
-            this.getHiddenPanel().getLayout().setActiveItem(this.getFullProcessMetadata());
             this.getFullProcessMetadata().fireEvent('processUriChanged', itemUri);
         } else {
             // show the process details panel
@@ -94,8 +93,12 @@ Ext.define('Savanna.process.controller.MetadataController', {
         this.getItemMetadata().fireEvent('processItemUriChanged', store, index);
     },
 
-    showTheItemView: function() {
+    showItemView: function() {
         this.getHiddenPanel().getLayout().setActiveItem(this.getItemMetadata());
+    },
+
+    showProcessView: function() {
+        this.getHiddenPanel().getLayout().setActiveItem(this.getFullProcessMetadata());
     },
 
     saveChanges: function() {

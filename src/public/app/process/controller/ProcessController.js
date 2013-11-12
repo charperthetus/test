@@ -151,8 +151,10 @@ Ext.define('Savanna.process.controller.ProcessController', {
     createNewProcess: function(diagram) {
         var me = this;
 
-        var newProcess = {'class': 'go.GraphLinksModel', 'nodeKeyProperty': 'uri', 'nodeDataArray': [{'category':'Start'}], 'linkDataArray': []};
+        var newProcess = {'class': 'go.GraphLinksModel', 'nodeKeyProperty': 'uri', 'nodeDataArray': [], 'linkDataArray': []};
         //newProcess.uri = this.utils().getURI('ProcessModel');  //todo: remove this code once the instance creation starts working
+        newProcess.nodeDataArray[0] = this.utils().populateDefaultNodeJson();
+        newProcess.nodeDataArray[0].category = 'Start';
         newProcess.nodeDataArray[0].uri = this.utils().getURI('Start');
         this.store.loadRawData(newProcess);
         this.load(diagram, this.store.first());

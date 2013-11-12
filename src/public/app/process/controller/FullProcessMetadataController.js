@@ -34,12 +34,12 @@ Ext.define('Savanna.process.controller.FullProcessMetadataController', {
         itemSources: true
     },
 
-    onUriChanged: function(processUri) {
-        this.store = Ext.create('Savanna.itemView.store.MainItemStore');
+    onUriChanged: function(processUri, store) {
+        this.store = store;
         this.storeHelper = Ext.create('Savanna.itemView.store.ItemViewStoreHelper');
         this.store.getProxy().url = this.buildItemDataFetchUrl(processUri);
         this.mainProcessUri = processUri;
-//
+
         this.store.load({
             scope: this,
             callback: this.handleRecordDataRequestResponse
@@ -48,7 +48,6 @@ Ext.define('Savanna.process.controller.FullProcessMetadataController', {
 
     buildItemDataFetchUrl: function (uri) {
         return SavannaConfig.itemViewUrl + encodeURI(uri);
-        //return SavannaConfig.mockItemViewUrl + encodeURI(uri); // mock data
     },
 
     handleRecordDataRequestResponse: function(record, operation, success) {
@@ -67,6 +66,7 @@ Ext.define('Savanna.process.controller.FullProcessMetadataController', {
             this.getItemSources().store = record[0].propertyGroupsStore.getById('Sources').valuesStore;
             Ext.bind(this.getItemSources().addSourcesGrid(record[0].propertyGroupsStore.getById('Sources').valuesStore.getById('Source Document').valuesStore), this.getItemSources());
             this.getInformationPanel().setItemUri(encodeURI(this.mainProcessUri));
+            this.getView().fireEvent('readyForDisplay');
         }
     },
 

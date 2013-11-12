@@ -30,6 +30,10 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
         itemTitle: true,
         itemDescription: true,
         itemPrimeImage: true,
+        unlockBtn: {
+            click: 'onUnlockBtnClick'
+        },
+        instancePanel: true,
         itemInstanceTitle: {
             blur: 'instanceTitleBlur'
         },
@@ -54,6 +58,12 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
 
     onOpenBtnClick: function() {
         EventHub.fireEvent('open', {uri: this.store.getAt(this.index).data.classUri, type: 'Item', label: this.store.getAt(this.index).data.className});
+    },
+
+    onUnlockBtnClick: function() {
+        this.getUnlockBtn().setVisible(false);
+        this.getInstancePanel().setDisabled(false);
+        this.getItemQualities().setDisabled(false);
     },
 
     onUriChanged: function(store, index) {
@@ -112,7 +122,7 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
             this.getQuantityUnit().setValue(unit);
         }
 
-        this.getView().fireEvent('itemReadyForDisplay');
+        this.getView().fireEvent('readyForDisplay');
     },
 
     onSaveChanges: function() {

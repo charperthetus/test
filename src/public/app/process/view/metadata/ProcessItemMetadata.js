@@ -62,9 +62,17 @@ Ext.define('Savanna.process.view.metadata.ProcessItemMetadata', {
             ]
         },
         {
+            xtype: 'button',
+            text: 'Unlock',
+            itemId: 'unlockBtn',
+            visible: 'true'
+        },
+        {
             xtype: 'panel',
             layout: 'vbox',
             border: 3,
+            disabled: true,
+            itemId: 'instancePanel',
             items: [
                 {
                     xtype: 'textfield',
@@ -256,7 +264,8 @@ Ext.define('Savanna.process.view.metadata.ProcessItemMetadata', {
             xtype: 'itemview_edit_qualities',
             collapsible: true,
             title: 'Properties',
-            itemId: 'itemQualities'
+            itemId: 'itemQualities',
+            disabled: 'true'
         }
     ]
 });
