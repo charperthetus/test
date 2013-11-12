@@ -32,7 +32,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
                     name: 'refine_search_terms',
                     itemId: 'refine_search_terms',
                     enableKeyEvents: true,
-                    emptyText: 'Search'
+                    emptyText: 'Filter'
                 }
             ]
         }
@@ -47,6 +47,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
         },
         {
             text:'Reset',
+            tooltip:'Reset all search facets',
             itemId:'resultsFacetsReset'
         }
 

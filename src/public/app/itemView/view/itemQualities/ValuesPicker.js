@@ -23,6 +23,7 @@ Ext.define('Savanna.itemView.view.itemQualities.ValuesPicker', {
     config: {
         selectionStore: null,
         valNameArray: [],
+        disabledItemsArray: [],
         uri : "",
         storeHelper: null
     },
@@ -62,7 +63,11 @@ Ext.define('Savanna.itemView.view.itemQualities.ValuesPicker', {
                     flex: 1,
                     tpl: Ext.create('Ext.XTemplate',
                         '<tpl if="selected">',
-                            '<input type="checkbox" id="valueCheck" checked/>&nbsp;&nbsp;&nbsp;&nbsp;{label}',
+                            '<tpl if="disabled">',
+                                '<input type="checkbox" id="valueCheck" checked disabled/>&nbsp;&nbsp;&nbsp;&nbsp;{label}',
+                            '<tpl else>',
+                                '<input type="checkbox" id="valueCheck" checked/>&nbsp;&nbsp;&nbsp;&nbsp;{label}',
+                            '</tpl>',
                         '<tpl else>',
                             '<input type="checkbox" id="valueCheck"/>&nbsp;&nbsp;&nbsp;&nbsp;{label}',
                         '</tpl>')
@@ -87,7 +92,12 @@ Ext.define('Savanna.itemView.view.itemQualities.ValuesPicker', {
                 {
                     xtype: 'templatecolumn',
                     dataIndex: 'label',
-                    tpl: '<i type="button" value="x" id="removeSelectedValue"></i>'
+                    tpl: Ext.create('Ext.XTemplate',
+                        '<tpl if="editable">',
+                            '<button id="removeSelectedValue" class="close-Btn"></button>',
+                        '<tpl else>',
+                            '<button id="removeSelectedValue" class="close-Btn" disabled></button>',
+                        '</tpl>')
                 }
             ]
         }
@@ -115,7 +125,7 @@ Ext.define('Savanna.itemView.view.itemQualities.ValuesPicker', {
         this.callParent(arguments);
         this.store = Ext.create(this.store, {
             urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/model/search/keyword/property/' + this.uri,
-            paramsObj: {pageStart:0, pageSize:1000, alphabetical: true}
+            paramsObj: {pageStart:0, pageSize:1000, alphabetical: false}
         });
 
         this.store.load({
@@ -135,6 +145,10 @@ Ext.define('Savanna.itemView.view.itemQualities.ValuesPicker', {
             Ext.each(this.store.data.items, function(value) {
                 if (Ext.Array.contains(me.getValNameArray(), value.data.label)) {
                     value.data.selected = true;
+                }
+
+                if (Ext.Array.contains(me.getDisabledItemsArray(), value.data.label)) {
+                    value.data.disabled = true;
                 }
             });
 

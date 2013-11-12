@@ -80,7 +80,7 @@ Ext.define('Savanna.itemView.view.createItem.CreateItem', {
                         xtype: 'label',
                         width: '100%',
                         padding:10,
-                        html: 'Select a Type for the item which best represents the the kind of item you want to create. The item will inherit qualities and relationships for the type you select.'
+                        html: 'Select an Item type that best represents the kind of Item you want to create. The new Item will inherit the qualities and relationships of the selected type.'
                     }
                 ]
             }
