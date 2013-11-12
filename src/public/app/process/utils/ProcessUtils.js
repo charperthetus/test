@@ -48,7 +48,7 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
 
             data.representsClassUri = classUri;
 
-//            var me = this;
+            var me = this;
 //
 //            // make a real instance
 //            Ext.Ajax.request({
@@ -63,7 +63,21 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
 //                    console.log('Server Side Failure: ' + response.status);
 //                }
 //            });
-              this.getCanvas(diagram).fireEvent('itemInstanceCreated');
+
+            Ext.Ajax.request({
+                url: SavannaConfig.itemViewUrl + encodeURI(classUri) + ';jsessionid=' + Savanna.jsessionid,
+                method: 'GET',
+                success: function(response){
+                    var message = Ext.decode(response.responseText);
+                    data.className = message.propertyGroups[0].values[0].values[0].value;
+                    data.classDescription = message.propertyGroups[1].values[0].value;
+                    //data.classPrimaryImage = message.propertyGroups[2].values[0].values[0];
+                    me.getCanvas(diagram).fireEvent('itemInstanceCreated');
+                },
+                failure: function(response){
+                    console.log('Server Side Failure: ' + response.status);
+                }
+            });
         }
 
     },
