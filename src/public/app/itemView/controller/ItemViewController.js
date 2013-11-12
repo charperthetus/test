@@ -98,17 +98,21 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     },
 
     onLockSuccess: function (response, request) {
-        var lock = response.responseText;
-        if (lock === '' && request.method !== 'DELETE'){ // empty string means the user has the lock
-            console.log('lock/unlock successful');
-            this.getView().setEditMode(!this.getView().getEditMode()); // we got the lock, enter edit mode
-        }else{
-            lock = Ext.decode(response.responseText);
-            var message = 'This Item is being edited by ' + lock + '.\nItem will unlock when ' + lock + ' finishes edit.';
-            Ext.MessageBox.alert(
-                'Item Locked',
-                message
-            );
+        if (request.method !== 'DELETE'){
+            var lock = response.responseText;
+            if (lock === ''){ // empty string means the user has the lock
+                this.getView().getLayout().setActiveItem(1);
+                this.getView().setEditMode(!this.getView().getEditMode()); // we got the lock, enter edit mode
+                var itemSourceComponentEdit = this.getView().queryById('itemSourcesEdit').queryById('listOfSources');
+                itemSourceComponentEdit.reconfigure(this.store.getAt(0).propertyGroupsStore.getById('Sources').valuesStore.getById('Source Document').valuesStore);
+            }else{
+                lock = Ext.decode(response.responseText);
+                var message = 'This Item is being edited by another user: ' + lock;
+                Ext.MessageBox.alert(
+                    'Item Locked',
+                    message
+                );
+            }
         }
     },
 
@@ -120,17 +124,11 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
     toggleEditMode: function (btn) {
         if (!this.getView().getEditMode()) {
-            // If edit mode is false
-            // lock item
-            this.getView().getLayout().setActiveItem(1);
             this.lockItem(this.store.getAt(0).data.uri, true);
-            var itemSourceComponentEdit = this.getView().queryById('itemSourcesEdit').queryById('listOfSources');
-            itemSourceComponentEdit.reconfigure(this.store.getAt(0).propertyGroupsStore.getById('Sources').valuesStore.getById('Source Document').valuesStore);
-
         } else {
             this.getView().getLayout().setActiveItem(0);
-            this.lockItem(this.store.getAt(0).data.uri, false);
             this.getView().setEditMode(!this.getView().getEditMode());
+            this.lockItem(this.store.getAt(0).data.uri, false);
         }
     },
 
@@ -143,6 +141,9 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     },
 
     onEditDelete: function () {
+
+        this.lockItem(this.store.getAt(0).data.uri, false);
+
         this.store.getProxy().url = SavannaConfig.itemDeleteUrl + encodeURI(this.store.getAt(0).data.uri);
 
         if (this.store.getProxy().extraParams && this.store.getProxy().extraParams.parentUri !== null) {
@@ -264,7 +265,6 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
     handleRecordDelete: function (responseObj) {
 
-        this.lockItem(this.store.getAt(0).data.uri, false);
 
         EventHub.fireEvent('close', this.getView());
 
