@@ -19,6 +19,7 @@ Ext.define('Savanna.classification.view.ClassificationWindow', {
     height: 526,
     padding:15,
     ghost: false,
+    constrain: true,
 
     bbar: [
         '->',
