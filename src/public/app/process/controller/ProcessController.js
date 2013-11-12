@@ -111,14 +111,17 @@ Ext.define('Savanna.process.controller.ProcessController', {
                 method: 'GET',
                 success: function(response){
                     if (response.responseText !== '') {
-                        Ext.MessageBox.alert(
-                            'Process Locked',
-                            'This Process is being edited by another user: ' + Ext.decode(response.responseText),
-                            function() {
+                        Ext.MessageBox.alert({
+                            title : 'Process Locked',
+                            msg : 'This Process is being edited by another user: ' + Ext.decode(response.responseText),
+                            buttons: Ext.Msg.OK,
+                            fn: function() {
                                 me.confirmClosed = true;
                                 view[view.closeAction]();
-                            }
-                        );
+                            },
+                            scope : null,   //  We are setting a minWidth here because Firefox sizes the window
+                            minWidth: 350   //  too small and the message ends up wrapping out of view in the window.
+                        })
                     } else {
                         me.store.load({callback: me.onStoreLoaded, scope: me});
                     }
