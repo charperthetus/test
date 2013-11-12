@@ -203,7 +203,7 @@ Ext.define('Savanna.process.utils.Styler', {
                 stroke: '#63d9f5',
                 strokeWidth: 3,
                 isPanelMain: true
-            },
+            }
         };
 
         /* 

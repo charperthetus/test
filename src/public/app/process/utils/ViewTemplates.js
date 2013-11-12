@@ -161,6 +161,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
             this.makeContextMenuItem("Toggle Optional",
                 function (e, obj) {  // the OBJ is this Button
                     var contextmenu = obj.part;  // the Button is in the context menu Adornment
+                    
                     var part = contextmenu.adornedPart;  // the adornedPart is the Part that the context menu adorns
                     // now can do something with PART, or with its data, or with the Adornment (the context menu)
                     Savanna.process.utils.ProcessUtils.toggleOptional(part.diagram);
