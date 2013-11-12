@@ -30,6 +30,8 @@ Ext.define('Savanna.itemView.view.itemQualities.QualitiesPicker', {
 
     store: null,
 
+    constrain: true,
+
     autoShow: true,
 
     padding: '30 30 0 30',

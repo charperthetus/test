@@ -24,6 +24,8 @@ Ext.define('Savanna.workflow.view.WorkflowSelect', {
         uri: null
     },
 
+    constrain: true,
+
     autoShow: true,
 
     store: 'Savanna.workflow.store.WorkflowStateStore',

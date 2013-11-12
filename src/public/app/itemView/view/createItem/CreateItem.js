@@ -21,6 +21,8 @@ Ext.define('Savanna.itemView.view.createItem.CreateItem', {
 
     title: 'Create Item',
 
+    constrain: true,
+
     autoShow: true,
 
     layout: 'hbox',
