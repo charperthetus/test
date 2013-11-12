@@ -50,7 +50,6 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
                 width:25,
                 height:25,
                 cls: 'toolbarButtonFramework',
-                ui:'icon-dark',
                 glyph: 'singleView',
                 itemId: 'singleColumnGridView'
             },
@@ -61,7 +60,6 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
                 width:25,
                 height:25,
                 cls: 'toolbarButtonFramework',
-                ui:'icon-dark',
                 glyph: 'multiColumn',
                 itemId: 'multiColumnGridView'
             }

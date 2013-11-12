@@ -94,7 +94,6 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                             width:25,
                             height:25,
                             cls: 'toolbarButtonFramework',
-                            ui:'icon-dark',
                             glyph: 'edit',
                             tooltip: "Edit"
                         },
@@ -291,7 +290,6 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                             width:25,
                             height:25,
                             cls: 'toolbarButtonFramework',
-                            ui:'icon-dark',
                             glyph: 'closeRollover',
                             tooltip: "Cancel Changes"
                         },
@@ -301,7 +299,6 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                             width:25,
                             height:25,
                             cls: 'toolbarButtonFramework',
-                            ui:'icon-dark',
                             glyph: 'trash',
                             tooltip: "Delete"
                         },
@@ -311,7 +308,6 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                             width:25,
                             height:25,
                             cls: 'toolbarButtonFramework',
-                            ui:'icon-dark',
                             glyph: 'save',
                             tooltip: "Save"
                         },
@@ -321,7 +317,6 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                             width:25,
                             height:25,
                             cls: 'toolbarButtonFramework',
-                            ui:'icon-dark',
                             glyph: 'done',
                             tooltip: "Done"
                         },
