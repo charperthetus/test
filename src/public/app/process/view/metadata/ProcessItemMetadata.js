@@ -32,8 +32,7 @@ Ext.define('Savanna.process.view.metadata.ProcessItemMetadata', {
                     items: [
                         {
                             xtype: 'label',
-                            itemId: 'itemTitle',
-                            width: '80%'
+                            itemId: 'itemTitle'
                         },
                         {
                             xtype: 'button',
@@ -43,9 +42,22 @@ Ext.define('Savanna.process.view.metadata.ProcessItemMetadata', {
                     ]
                 },
                 {
-                    xtype: 'image',
-                    itemId: 'itemPrimeImage',
-                    alt: 'No Primary Image'
+                    xtype: 'container',
+                    layout: 'hbox',
+                    items: [
+                        {
+                            xtype: 'textarea',
+                            itemId: 'itemDescription',
+                            readOnly: true
+                        },
+                        {
+                            xtype: 'image',
+                            itemId: 'itemPrimeImage',
+                            alt: 'No Primary Image',
+                            width: 200,
+                            height: 100
+                        }
+                    ]
                 }
             ]
         },
@@ -55,23 +67,17 @@ Ext.define('Savanna.process.view.metadata.ProcessItemMetadata', {
             border: 3,
             items: [
                 {
-                    xtype: 'label',
-                    text: 'Title',
-                    width: '95%'
-                },
-                {
                     xtype: 'textfield',
                     itemId: 'itemInstanceTitle',
-                    width: '95%'
-                },
-                {
-                    xtype: 'label',
-                    text: 'Description',
+                    fieldLabel: 'Instance Title',
+                    labelAlign: 'top',
                     width: '95%'
                 },
                 {
                     xtype: 'textarea',
-                    itemId: 'itemDescription',
+                    itemId: 'itemInstanceDescription',
+                    fieldLabel: 'Description',
+                    labelAlign: 'top',
                     width: '95%'
                 },
                 {

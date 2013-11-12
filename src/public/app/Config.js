@@ -26,6 +26,7 @@ Ext.define('Savanna.Config', {
         sc.metadataUrl = rUrl + 'rest/metadata';
         sc.capcoUrl = rUrl + 'rest/capco/';
         sc.processUrl = rUrl + 'rest/modelProcess';
+        sc.processCategoryPerspective = rUrl + 'rest/perspective/process/';
         sc.workflowActions = rUrl + 'rest/workflow/actions';
         sc.workflowEvents = rUrl + 'rest/workflow/events/';
         sc.workflowRejectionReasons = rUrl + 'rest//workflow/rejectionReasons';

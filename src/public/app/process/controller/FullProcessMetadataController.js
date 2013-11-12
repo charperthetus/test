@@ -15,19 +15,25 @@ Ext.define('Savanna.process.controller.FullProcessMetadataController', {
 
     requires: [
         'Savanna.itemView.store.MainItemStore',
-        'Savanna.itemView.store.ItemViewStoreHelper'
+        'Savanna.itemView.store.ItemViewStoreHelper',
+        'Savanna.process.view.metadata.ProcessCategoryWindow'
     ],
 
     control: {
         view: {
             savechanges: 'onSaveChanges',
-            processUriChanged: 'onUriChanged'
+            processUriChanged: 'onUriChanged',
+            processCategorySelected: 'onProcessCategorySelected'
         },
         processTitle: {
             blur: 'processTitleBlur'
         },
         processDescription: {
             blur: 'processDescriptionBlur'
+        },
+        categoryValue: true,
+        categoryChooserButton: {
+            click: 'onCategoryChooserButtonSelect'
         },
         imageBrowser: true,
         informationPanel: true,
@@ -67,6 +73,10 @@ Ext.define('Savanna.process.controller.FullProcessMetadataController', {
             this.getItemSources().store = record[0].propertyGroupsStore.getById('Sources').valuesStore;
             Ext.bind(this.getItemSources().addSourcesGrid(record[0].propertyGroupsStore.getById('Sources').valuesStore.getById('Source Document').valuesStore), this.getItemSources());
             this.getInformationPanel().setItemUri(encodeURI(this.mainProcessUri));
+
+            if(this.store.getAt(0).data.categoryLabel && 0 < this.store.getAt(0).data.categoryLabel.length) {
+                this.getCategoryValue().setText(this.store.getAt(0).data.categoryLabel);
+            }
         }
     },
 
@@ -87,6 +97,23 @@ Ext.define('Savanna.process.controller.FullProcessMetadataController', {
     processDescriptionBlur: function(e) {
         var value = {label: "Description", comment: null, value: e.getValue()};
         this.storeHelper.updateBotLevItemInStore(null, value, this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Description'));
+    },
+
+    onCategoryChooserButtonSelect: function(e) {
+        var me = this;
+        Ext.create('Savanna.process.view.metadata.ProcessCategoryWindow', {
+            viewer: me.getView(),
+            width: 300,
+            height: 500
+        }, this);
+
+    },
+
+    onProcessCategorySelected: function(selection) {
+        this.getCategoryValue().setText(selection.label);
+
+        this.store.getAt(0).data.categoryLabel = selection.label;
+        this.store.getAt(0).data.categoryUri = selection.uri;
     }
 
 });
