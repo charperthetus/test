@@ -205,6 +205,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
             var qualitiesComponent = this.getView().queryById('itemViewPropertiesView');
             qualitiesComponent.reconfigure(this.store.getAt(0).propertyGroupsStore.getById('Properties').valuesStore);
+            qualitiesComponent.setTitle(this.updateQualitiesHeader(this.store.getAt(0).propertyGroupsStore.getById('Properties').valuesStore));
 
             var itemSourceComponent = this.getView().queryById('itemSources').queryById('listOfSources');
             itemSourceComponent.reconfigure(this.store.getAt(0).propertyGroupsStore.getById('Sources').valuesStore.getById('Source Document').valuesStore);
