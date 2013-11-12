@@ -26,19 +26,4 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
             emptyText: 'Search in results'
         }
     ]
-    // tbar:   [
-    //     {
-    //         xtype: 'tbtext',
-    //         text: 'Refine Search',
-    //         cls: 'bold'
-    //     },
-    //     {
-    //         xtype: 'tbfill'
-    //     },
-    //     {
-    //         text:'Reset',
-    //         itemId:'resultsFacetsReset'
-    //     }
-
-    // ]
 });

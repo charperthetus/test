@@ -252,8 +252,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
             'pending': 'icon-pending',
             'none': 'loadNone'
         };
-        // loadingEl.removeCls('icon-success icon-alert icon-pending loadNone');
-        // loadingEl.addCls(styleStatus[status]);
+        
         myDal.setIconCls(styleStatus[status]);
 
         var me = this,
