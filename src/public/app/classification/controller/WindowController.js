@@ -97,7 +97,7 @@ Ext.define('Savanna.classification.controller.WindowController', {
         var background, color;
         switch(classificationField.getValue()) {
             case "USCLASS_TS":
-                background = "#FFFA53"
+                background = "#FFFA53";
                 color = "#000000";
                 break;
             case "USCLASS_SECRET":
@@ -123,9 +123,16 @@ Ext.define('Savanna.classification.controller.WindowController', {
     },
 
     requestRestrictionsByPortionMarking: function() {
-        var portionMarking = '"' + this.getView().getPortionMarking() + '"';
-        this.makeRestrictionsAjaxRequest('restrictions/string', portionMarking,
-            this.onSuccessRestrictionsByPortionMarking);
+        var portionMarking = this.getView().getPortionMarking();
+        if(portionMarking && portionMarking !== 'UNSPECIFIED') {
+            this.makeRestrictionsAjaxRequest('restrictions/string', Ext.JSON.encode(portionMarking),
+                this.onSuccessRestrictionsByPortionMarking);
+        }
+        else {
+            this.getFinishButton().setDisabled(true);
+            this.getClassificationField().setValue('UNSPECIFIED');
+            this.styleClassificationField();
+        }
     },
 
     onSuccessRestrictionsByPortionMarking: function(response) {
@@ -351,8 +358,9 @@ Ext.define('Savanna.classification.controller.WindowController', {
         var portionMarking = responseObj.formattedString.formattedString;
 
         var event = {
+            classificationTitle: this.getClassificationField().getRawValue(),
             portionMarking: portionMarking
-        }
+        };
         EventHub.fireEvent('classificationedited', event);
         this.getView().destroy();
     },
