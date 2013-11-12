@@ -475,7 +475,35 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     },
     beforeClose: function () {
         if (this.getView().getEditMode()){
-            this.lockItem(this.store.getAt(0).data.uri, false);
+            var me = this;
+            Ext.Msg.show({
+                title: 'Close Item',
+                msg: "Do you want to save the changes you made in this item?\nYour changes will be lost if you don't save them.",
+                width: 375,
+                buttons: Ext.Msg.YESNOCANCEL,
+                buttonText: {yes: "Don't Save", no: 'Save', cancel: 'Cancel'},
+                fn: function(button) {
+                    if(button == 'yes'){
+                        //save and close
+                        //force a dirty state so that sync will do something
+                        me.store.first().setDirty();
+                        me.store.sync({
+                            callback: function () {
+                                me.releaseLock();
+                                me.getView().down('#processSidepanel').fireEvent('processclose');
+                                panel[panel.closeAction]();
+                            }
+                        });
+                    
+                    } else if (button == 'no') {
+                        me.lockItem(this.store.getAt(0).data.uri, false);
+                    
+                    } else {
+                        //do nothing, leave the process open
+                    }
+                }
+            });
+            return false;
         }
         return true;
     }
