@@ -9,7 +9,7 @@
 Ext.define('Savanna.itemView.controller.ImageBrowserController', {
     extend: 'Deft.mvc.ViewController',
 
-    view: 'Savanna.itemView.view.imageBrowser.ImagesGrid',
+    views: ['Savanna.itemView.view.imageBrowser.ImagesGrid'],
 
     control: {
         view: {
