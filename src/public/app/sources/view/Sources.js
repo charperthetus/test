@@ -6,7 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 Ext.define('Savanna.sources.view.Sources', {
-    extend: 'Ext.panel.Panel',
+    extend: 'Ext.container.Container',
     alias: 'widget.document_sources',
 
     requires: ['Savanna.sources.controller.Sources'],
