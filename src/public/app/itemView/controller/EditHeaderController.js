@@ -17,9 +17,6 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
         view: {
             'EditHeader:StoreSet': 'storeSet'
         },
-        parentChooser: {
-            click: 'openParentChooser'
-        },
         intendedUseChooserBtn: {
             click: 'onIntendedUsesSelect'
         },
@@ -84,32 +81,12 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
 
             description.setValue(me.getView().store.getById('Description').data.values[0].value);
         }
-        /*
-        set the parent chooser to enabled or disabled
-         */
-        Ext.each(me.getView().store.getById('Type').data.values, function(type)    {
-            if(!type.inheritedFrom) {
-                /*
-                this should be the top level parent
-                 */
-                me.getView().down('#parentChooser').setDisabled(!type.editable);
-            }
-        });
         // Focus on the Title field automatically
         this.getView().queryById('itemNameField').focus(false, 200);
     },
 
     openParentItem: function() {
         this.getView().fireEvent('ItemView:OpenItem', this.getView().store.getById('Type').data.values[0].label, this.getView().store.getById('Type').data.values[0].value);
-    },
-
-    openParentChooser: function() {
-        Ext.create('Savanna.itemView.view.createItem.CreateItem', {
-            width: 750,
-            height: 500,
-            creating:false,
-            viewer: this.getView().up('itemview_itemviewer')
-        });
     },
 
     onIntendedUsesSelect:function() {

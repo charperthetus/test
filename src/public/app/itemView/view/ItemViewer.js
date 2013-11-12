@@ -52,7 +52,6 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
     },
 
     buildItems: function() {
-        console.log('this.getItemUri()',this.getItemUri())
         return [
             {
                 xtype:'panel',
@@ -301,15 +300,6 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                             cls: 'toolbarButtonFramework',
                             glyph: 'trash',
                             tooltip: "Delete"
-                        },
-                        {
-                            xtype: 'button',
-                            itemId: 'editSaveButton',
-                            width:25,
-                            height:25,
-                            cls: 'toolbarButtonFramework',
-                            glyph: 'save',
-                            tooltip: "Save"
                         },
                         {
                             xtype: 'button',

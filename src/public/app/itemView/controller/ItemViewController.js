@@ -25,9 +25,6 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         editDeleteButton: {
             click: 'onEditDelete'
         },
-        editSaveButton: {
-            click: 'onEditSave'
-        },
         editDoneButton: {
             click: 'onEditDone'
         },
@@ -55,7 +52,6 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
             'ItemView:OpenItem': 'openItem'
         },
         view: {
-            'ItemView:SaveEnable': 'onSaveEnable',
             'ItemView:ParentSelected': 'onParentSelected',
             beforeclose: 'beforeClose'
         }
@@ -78,12 +74,6 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         }
 
         return this.callParent(arguments);
-    },
-
-    onSaveEnable: function () {
-        if (this.getView().queryById('editSaveButton').disabled) {
-            this.getView().queryById('editSaveButton').enable();
-        }
     },
 
     lockItem: function (uri, lock) {
@@ -166,36 +156,6 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
             scope: this,
             callback: Ext.bind(this.handleRecordDelete, this, [], true)
         });
-    },
-
-    onEditSave: function (btn) {
-
-        // Disable further edits
-        btn.toggleSaving(false);
-
-        this.store.getAt(0).data.label = this.getView().queryById('itemViewHeaderEdit').queryById('itemNameField').value;
-
-        var headerComponent = this.getView().queryById('itemViewHeaderView');
-        headerComponent.reconfigure(this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore);
-
-        var qualitiesComponent = this.getView().queryById('itemViewPropertiesView');
-        qualitiesComponent.reconfigure(this.store.getAt(0).propertyGroupsStore.getById('Properties').valuesStore);
-
-        var relatedItemView = this.getView().queryById('relatedItemsView');
-        Ext.each(this.store.getAt(0).propertyGroupsStore.getById('Related Items').valuesStore.data.items, function (group) {
-            if (relatedItemView.queryById('relatedItemGrid_' + group.get('label').replace(/\s/g, ''))) {
-                relatedItemView.queryById('relatedItemGrid_' + group.get('label').replace(/\s/g, '')).reconfigure(group.valuesStore);
-            }
-            else {
-                relatedItemView.fireEvent('ViewRelatedItems:AddRelationshipGrid', group);
-            }
-        }, this);
-
-        this.store.getAt(0).setDirty();
-        this.store.sync({
-            callback: Ext.bind(this.onEditSaveCallback, this, [], true)
-        });
-        this.lockItem(this.store.getAt(0).data.uri, false);
     },
 
     onEditSaveCallback: function (responseObj, evt, btn) {
@@ -284,7 +244,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
      *  @param state {boolean} if true this will enable the buttons, false disables
      */
     toggleSaving: function(state) {
-        var itemIds = 'editDeleteButton, editSaveButton, editDoneButton, editCancelButton'.split(', '),
+        var itemIds = 'editDeleteButton, editDoneButton, editCancelButton'.split(', '),
             toggle = (state) ? 'enable' : 'disable';
 
         Ext.each(itemIds, function(btn) {

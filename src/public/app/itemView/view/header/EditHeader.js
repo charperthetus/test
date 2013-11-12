@@ -96,14 +96,6 @@ Ext.define('Savanna.itemView.view.header.EditHeader', {
                     itemId: 'parentsList',
                     html:'',
                     width:'96%'
-                },
-
-                {
-                    xtype: 'button',
-                    itemId: 'parentChooser',
-                    glyph: 'searchBinoculars',
-                    tooltip: "Click to browse types",
-                    width:'4%'
                 }
             ]
         },
