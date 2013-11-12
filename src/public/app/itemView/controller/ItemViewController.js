@@ -75,12 +75,6 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         return this.callParent(arguments);
     },
 
-//    onSaveEnable: function () {
-//        if (this.getView().queryById('editSaveButton').disabled) {
-//            this.getView().queryById('editSaveButton').enable();
-//        }
-//    },
-
     lockItem: function (uri, lock) {
 
         var act = 'DELETE';
