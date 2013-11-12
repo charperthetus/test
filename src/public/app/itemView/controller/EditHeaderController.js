@@ -145,41 +145,33 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
                 this.getView().store.getById('Intended Use').data.values.push(value.data);
                 this.getView().queryById('addIntendedUseBox').addTag(value.data.label);
             }, this);
-
-            this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
         }
     },
 
     addingAlias: function(tagName, tagData, aView) {
         this.getView().storeHelper.addBotLevItemInStore(tagName, tagData, this.getView().store.getById('Aliases'));
-        this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
     },
 
     removingAlias: function(tagName, aView) {
         this.getView().storeHelper.removeBotLevItemInStore(tagName, this.getView().store.getById('Aliases'));
-        this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
     },
 
     addingIntendedUse: function(tagName, tagData, aView) {
         this.getView().storeHelper.addBotLevItemInStore(tagName, tagData, this.getView().store.getById('Intended Use'));
-        this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
     },
 
     removingIntendedUse: function(tagName, aView) {
         this.getView().storeHelper.removeBotLevItemInStore(tagName, this.getView().store.getById('Intended Use'));
-        this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
     },
 
     updateDescription: function(comp, e, eOpts) {
         var value = {label: "Description", comment: null, value: comp.value};
         this.getView().storeHelper.updateBotLevItemInStore(null, value, this.getView().store.getById('Description'));
-        this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
     },
 
     updateHeader: function(comp) {
         var value = {label: comp.value, comment: null, value: comp.value};
         this.getView().storeHelper.updateBotLevItemInStore(null, value, this.getView().store.getById('Label'));
         this.getView().storeHelper.fetchMainStore().getAt(0).data.label = comp.value;
-        this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
     }
 });

@@ -126,7 +126,6 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
             this.relationshipNameArray = [];
             this.getView().storeHelper.updateMainStore(this.getView().store.data.items, 'Related Items');
             this.setupData(this.getView().store.data.items);
-            this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
         }
     },
 
@@ -220,14 +219,12 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
         item.value = itemUri;
         myPanel.add(this.buildAddItem(item, relatedItemGroupName));
         this.getView().storeHelper.addBotLevItemInStore(itemLabel, itemRecord, this.getView().store.getById(relatedItemGroupName));
-        this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
         this.updateHeader();
     },
 
     // Removing the tag from the store on a child auto-complete
     removeItem: function(itemName, groupName) {
         this.getView().storeHelper.removeBotLevItemInStore(itemName, this.getView().store.getById(groupName));
-        this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
     },
 
     // Iterates over the bottom-level leafs in the store and adds the number to the header.

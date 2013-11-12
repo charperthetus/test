@@ -9,6 +9,7 @@
 
 @import 'class/white-grid-view';
 @import 'class/create-item-coloumn';
+@import 'class/errorLabel';
 
 .#{$prefix}grid-cell-inner {
 	/* These can be removed with new UIKit */
