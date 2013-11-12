@@ -366,7 +366,7 @@ Ext.define('Savanna.classification.controller.WindowController', {
     },
 
     onCancelButtonClick: function(){
-        this.close();
+        this.getView().close();
     },
 
     onClose: function() {
