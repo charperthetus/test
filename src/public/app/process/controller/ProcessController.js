@@ -113,7 +113,7 @@ Ext.define('Savanna.process.controller.ProcessController', {
                     if (response.responseText) {
                         Ext.MessageBox.alert(
                             'Process Locked',
-                            'This Process is being edited by another user: ' + response.responseText,
+                            'This process is locked for editing by another user. Please try again later.',
                             function() {
                                 me.confirmClosed = true;
                                 view[view.closeAction]();
@@ -152,9 +152,9 @@ Ext.define('Savanna.process.controller.ProcessController', {
         var me = this;
 
         var newProcess = {'class': 'go.GraphLinksModel', 'nodeKeyProperty': 'uri', 'nodeDataArray': [{'category':'Start'}], 'linkDataArray': []};
-        newProcess.uri = this.utils().getURI('ProcessModel');  //todo: remove this code once the instance creation starts working
+        //newProcess.uri = this.utils().getURI('ProcessModel');  //todo: remove this code once the instance creation starts working
         newProcess.nodeDataArray[0].uri = this.utils().getURI('Start');
-        this.store.add(newProcess);
+        this.store.loadRawData(newProcess);
         this.load(diagram, this.store.first());
 
         // make a process instance
@@ -309,9 +309,10 @@ Ext.define('Savanna.process.controller.ProcessController', {
         if (this.isStoreDirty(this.store)) {
             Ext.Msg.show({
                 title: 'Close Process',
-                msg: 'Save before closing?',
+                msg: "Do you want to save the changes you made in this process?\nYour changes will be lost if you don't save them.",
+                width: 375,
                 buttons: Ext.Msg.YESNOCANCEL,
-                buttonText: {yes: 'Save', no: 'Discard', cancel: 'Cancel'},
+                buttonText: {yes: "Don't Save", no: 'Save', cancel: 'Cancel'},
                 fn: function(button) {
                     if(button == 'yes'){
                         //save and close
@@ -345,11 +346,17 @@ Ext.define('Savanna.process.controller.ProcessController', {
     onDelete: function() {
         var me = this;
         Ext.Msg.confirm(
-            'Delete Process',
-            'Permanently delete this process?',
+            {
+                buttons:Ext.Msg.YESNO,
+                buttonText: {yes: 'OK', no: 'Cancel'},
+                title: 'Delete Process',
+                msg: 'Are you sure you want to permanently delete this process?'
+            },
             function(btn) {
                if (btn == 'yes') {
                    me.deleteProcess();
+               } else {
+                   //cancel
                }
             }
         );

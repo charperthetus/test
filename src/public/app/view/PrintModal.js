@@ -7,6 +7,7 @@ Ext.define('Savanna.view.PrintModal', {
     width: '90%',
     layout: 'fit',
     modal: true,
+    constrain: true,
 
     // NOTE: this is used in the stylesheet to control the printing display
     cls: 'print-modal',

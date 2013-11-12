@@ -35,7 +35,7 @@ Ext.define('Savanna.process.view.part.ActionList', {
     columns: [
         {
             dataIndex: 'label',
-            width: 178
+            width: 180
         }
     ],
 
@@ -72,7 +72,7 @@ Ext.define('Savanna.process.view.part.ActionList', {
                 itemId: 'searchItems',
                 text: 'Search',
                 ui: 'commit',
-                tooltip: 'Click to search the model.'
+                tooltip: 'Click to search for Red Nodal Model actions.'
             },
             {   xtype: 'tbspacer', width: 15 }
         ]},
