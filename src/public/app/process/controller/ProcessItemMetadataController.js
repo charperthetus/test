@@ -137,7 +137,7 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
 
     itemDescriptionBlur: function(e) {
         var value = {label: "Description", comment: null, value: e.getValue()};
-        this.storeHelper.updateBotLevItemInStore("Description", value, this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Description'));
+        this.storeHelper.updateBotLevItemInStore(null, value, this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Description'));
     },
 
     instanceTitleBlur: function(e) {

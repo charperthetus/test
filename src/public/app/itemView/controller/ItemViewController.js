@@ -186,6 +186,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
         // Re-enable editing
         this.toggleSaving(true);
+        this.getView().setTitle(this.store.getAt(0).data.label);
 
         if (!responseObj.operations[0].success) {
             /*
@@ -219,7 +220,6 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
             
             // Have to wait to redraw the screen after we've switched views due to a framework bug where height isn't being properly set
             //  And we set it manually.
-            this.store.getAt(0).data.label = this.getView().queryById('itemViewHeaderEdit').queryById('itemNameField').value;
             this.getView().setTitle(this.store.getAt(0).data.label);
 
             var headerComponent = this.getView().queryById('itemViewHeaderView');

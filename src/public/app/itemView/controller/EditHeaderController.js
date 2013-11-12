@@ -173,7 +173,7 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
 
     updateDescription: function(comp, e, eOpts) {
         var value = {label: "Description", comment: null, value: comp.value};
-        this.getView().storeHelper.updateBotLevItemInStore("Description", value, this.getView().store.getById('Description'));
+        this.getView().storeHelper.updateBotLevItemInStore(null, value, this.getView().store.getById('Description'));
         this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
     },
 

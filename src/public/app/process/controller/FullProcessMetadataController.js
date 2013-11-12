@@ -81,14 +81,12 @@ Ext.define('Savanna.process.controller.FullProcessMetadataController', {
         var value = {label: e.getValue(), comment: null, value: e.getValue()};
         this.storeHelper.updateBotLevItemInStore(null, value, this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Label'));
         this.store.getAt(0).data.label = e.getValue();
-
         this.getView().up('process_component').setTitle(this.store.getAt(0).data.label);
-
     },
 
     processDescriptionBlur: function(e) {
         var value = {label: "Description", comment: null, value: e.getValue()};
-        this.storeHelper.updateBotLevItemInStore("Description", value, this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Description'));
+        this.storeHelper.updateBotLevItemInStore(null, value, this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Description'));
     }
 
 });
