@@ -35,7 +35,8 @@ Ext.define('Savanna.metadata.view.Title', {
         this.pack = 'center';
         this.align = 'middle';
         this.add(Ext.create('Ext.form.field.Display', {
-            itemId: 'displayValue'
+            itemId: 'displayValue',
+            cls: 'heading2'
         }));
     }
 });

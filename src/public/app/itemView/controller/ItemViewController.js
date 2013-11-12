@@ -206,6 +206,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
             var qualitiesComponent = this.getView().queryById('itemViewPropertiesView');
             qualitiesComponent.reconfigure(this.store.getAt(0).propertyGroupsStore.getById('Properties').valuesStore);
+            qualitiesComponent.setTitle(this.updateQualitiesHeader(this.store.getAt(0).propertyGroupsStore.getById('Properties').valuesStore));
 
             var itemSourceComponent = this.getView().queryById('itemSources').queryById('listOfSources');
             itemSourceComponent.reconfigure(this.store.getAt(0).propertyGroupsStore.getById('Sources').valuesStore.getById('Source Document').valuesStore);
@@ -217,14 +218,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
             imagesBrowserComponentEdit.fireEvent('EditImagesGrid:Setup');
 
             var relatedItemView = this.getView().queryById('relatedItemsView');
-            Ext.each(this.store.getAt(0).propertyGroupsStore.getById('Related Items').valuesStore.data.items, function (group) {
-                if (relatedItemView.queryById('relatedItemGrid_' + group.get('label').replace(/\s/g, ''))) {
-                    relatedItemView.queryById('relatedItemGrid_' + group.get('label').replace(/\s/g, '')).reconfigure(group.valuesStore);
-                }
-                else {
-                    relatedItemView.fireEvent('ViewRelatedItems:AddRelationshipGrid', group);
-                }
-            }, this);
+            relatedItemView.removeAll();
             relatedItemView.fireEvent('ViewRelatedItems:SetupData', this.store.getAt(0).propertyGroupsStore.getById('Related Items').valuesStore.data.items);
         } else {
             /*

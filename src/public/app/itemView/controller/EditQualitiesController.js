@@ -69,6 +69,7 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
             this.propNameArray.push(propName);
             this.getView().storeHelper.addGroupItemInStore("Properties", propName, propData.uri, this.getView().store);
         }
+        this.updateTitle();
     },
 
     // Convenience handler to generate a new auto-complete
@@ -98,7 +99,7 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
             });
         this.propNameArray.push(data.label);
         newProp.child('container').insert(1, picker);
-//        this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
+        this.updateTitle();
 
         return newProp;
     },
@@ -108,7 +109,6 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
     addTag: function(tagName, tagData, aView) {
         this.getView().storeHelper.addBotLevItemInStore(tagName, tagData, this.getView().store.getById(aView.preLabel));
         this.updateTitle();
-//        this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
     },
 
     // When a tag is removed on a child auto-complete
@@ -116,7 +116,6 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
     removeTag: function(tagName, aView) {
         this.getView().storeHelper.removeBotLevItemInStore(tagName, this.getView().store.getById(aView.preLabel));
         this.updateTitle();
-//        this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
     },
 
     launchValuesChooser: function(storeName) {
@@ -153,9 +152,8 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
                 this.getView().store.getById(propName).data.values.push(value.data);
                 this.getView().queryById('prop_' + propName.replace(/[\s'"]/g, "_")).addTag(value.data.label, value.data.editable);
             }, this);
-
-//            this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
         }
+        this.updateTitle();
     },
 
     launchPredicatesChooser: function() {
@@ -187,6 +185,7 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
     removePredicate: function(view) {
         this.getView().storeHelper.removeGroupItemInStore("Properties", view.preLabel, this.getView().store);
         Ext.Array.remove(this.propNameArray, view.preLabel);
+        this.updateTitle();
     },
 
     /*

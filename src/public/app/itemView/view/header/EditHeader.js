@@ -100,8 +100,12 @@ Ext.define('Savanna.itemView.view.header.EditHeader', {
             ]
         },
         {
+            xtype: 'label',
+            margin: '20 0 0 0',
+            text: 'Description'
+        },
+        {
             xtype: 'textarea',
-            margin: "20 0 0 0",
             itemId: 'itemDescription',
             name: 'description',
             width: '100%',

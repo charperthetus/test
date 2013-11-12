@@ -11,7 +11,7 @@ Ext.define('Savanna.itemView.controller.EditImageBrowserController', {
     
     extend: 'Savanna.itemView.controller.ImageBrowserController',
 
-    view: 'Savanna.itemView.view.imageBrowser.ImagesGridEdit',
+    views: ['Savanna.itemView.view.imageBrowser.ImagesGridEdit'],
 
     control: {
         view: {

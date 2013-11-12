@@ -60,8 +60,9 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
                 defaults: {margin: 4},
                 items: [
                     {
-                        xtype:'displayfield',
+                        xtype:'label',
                         itemId: 'errorLabel',
+                        cls: 'search-error',
                         text: ''
                     }
 
@@ -99,7 +100,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
         if(text && text.length > 0){
             grid.hide();
             label.show();
-            label.setValue(text);   //xtype was changed for styling, setText is no longer available
+            label.setText(text);   //xtype was changed for styling, setText is no longer available
             label.removeCls('icon-alert');
             if(useAlertStyleForTextAndIcon){
                 label.addCls("icon-alert");
