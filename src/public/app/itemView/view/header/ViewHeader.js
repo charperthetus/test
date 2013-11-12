@@ -43,7 +43,11 @@ Ext.define('Savanna.itemView.view.header.ViewHeader', {
                 '<tpl elseif="label == \'Description\'">',
                     '<b>{label}&nbsp;&nbsp</b>',
                     '<tpl for="values">',
-                        '{value}',
+                        '<tpl if="!value">',
+                            'No Description Provided',
+                        '<tpl else>',
+                            '{value}',
+                        '</tpl>',
                     '</tpl>',
                 '<tpl elseif="label == \'Label\'">',
                     // Hidding Label property (SAV-6176)
