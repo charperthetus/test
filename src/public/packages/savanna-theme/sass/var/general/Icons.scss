@@ -15,6 +15,13 @@
     font-size: 16px;
 }
 
+/* This should be added to UIKIT */
+.search-error{
+    &:before{
+        @include thetus-icons;
+    }
+}
+
 .close-btn {
     @include thetus-icons;
     
