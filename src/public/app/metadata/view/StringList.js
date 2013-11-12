@@ -2,6 +2,13 @@ Ext.define('Savanna.metadata.view.StringList', {
     extend: 'Savanna.metadata.view.MetadataItemView',
     alias: 'widget.metadata_stringlist',
 
+    requires: [
+        'Ext.form.FieldContainer',
+        'Ext.layout.container.Form',
+        'Ext.form.field.Display',
+        'Ext.form.FieldSet'
+    ],
+
     beforeRender: function() {
         this.setTitle(this.getDisplayLabel() + ':');
     },

@@ -41,7 +41,7 @@ Ext.define('Savanna.desktop.view.SavannaDesktop', {
                     height:29,
                     margin:'3 0 0 0',
                     glyph:'search',
-                    tooltip: 'Click to search internal and external data sources.'
+                    tooltip: 'Search internal and external data sources.'
                 },{
                     itemId: 'modelsearchbutton',
                     cls:'modelSearchButtonFramework',
@@ -50,7 +50,7 @@ Ext.define('Savanna.desktop.view.SavannaDesktop', {
                     height:29,
                     margin:'3 0 0 0',
                     glyph:'modelSearch',
-                    tooltip: 'Click to search the Red Nodal Model.'
+                    tooltip: 'Search the Red Nodal Model.'
                 },{
                     itemId: 'uploadbutton',
                     cls:'uploadButtonFramework',
@@ -59,7 +59,7 @@ Ext.define('Savanna.desktop.view.SavannaDesktop', {
                     height:29,
                     margin:'3 0 0 0',
                     glyph:'upload',
-                    tooltip: 'Click to upload files.'
+                    tooltip: 'Upload files.'
                 }
                 ]
             },

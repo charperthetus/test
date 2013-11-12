@@ -151,18 +151,6 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
             show = true;
         }
 
-        // never show for descendants of an Action Node
-        var parent = obj.findTreeParentNode();
-        if (parent && parent.category == 'InternalGroup') {
-            show = false;
-        }
-
-        //never show for nodes contained in an AltsGroup
-        var group = obj.containingGroup;
-        if (group && group.category == 'AltsGroup') {
-            show = false;
-        }
-
         var names = ['LinkGadget','StepGadget','DecisionGadget'];
         for (var i = 0; i < names.length; i++) {
             var gadget = obj.findObject(names[i]);
@@ -241,6 +229,15 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         diagram.model.addLinkData(linkData);
         diagram.commitTransaction('addStepPart');
         this.startTextEdit(diagram, nodeData);
+        
+        var tmpObj = diagram.findNodeForData(nodeData);
+        // never show for descendants of an Action Node
+        var parent = tmpObj.findTreeParentNode();
+        if (parent && parent.category == 'InternalGroup') {  
+            if (tmpObj.findObject('gadgetsMenu') !== null){
+                tmpObj.findObject("MAIN").remove(tmpObj.findObject('gadgetsMenu'));
+            }
+        }
     },
 
     addInput: function(e, obj) {
@@ -252,7 +249,7 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
     },
 
     addByproduct: function(e, obj) {
-        this.addStepPart(obj, 'ProcessItem', 'Byproduct', 'ByproductLink');
+        this.addStepPart(obj, 'ProcessItem', 'By-product', 'ByproductLink');
     },
 
     addResult: function(e, obj) {
@@ -516,6 +513,14 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         diagram.commitTransaction('addAlts');
 
         this.startTextEdit(diagram, altsGroupData);
+        
+        var tmpObj = diagram.findNodeForData(altsGroupData);
+        //never show for nodes contained in an AltsGroup
+        if (tmpObj && tmpObj.category == 'AltsGroup') { 
+            if (tmpObj.findObject('gadgetsMenu') !== null){
+                tmpObj.findObject("MAIN").remove(tmpObj.findObject('gadgetsMenu'));
+            }
+        } 
     },
 
     onNodeMouseDrop: function(obj, data, linkType) {

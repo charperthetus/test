@@ -9,7 +9,7 @@ Ext.define('Savanna.metadata.view.part.InformationPanel', {
         itemUri: null
     },
 
-    title: 'Information',
+    title: 'Details',
 
     layout: 'card',
 
