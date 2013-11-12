@@ -233,7 +233,8 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     /*
      *  Toggle Saving
      *
-     *  Abstraction for toggling the save/delete buttons on the toolber
+     *  Abstraction setting the Save state flag in this controller. Also disables the edit buttons, and toggles
+     *  a saving class on the 'editDone' button (should have a busy spinner when saving).
      *
      *  @author <JLG>
      *  @param state {boolean} If true, item enters a saving state (and disabled toolbars), false removes this
