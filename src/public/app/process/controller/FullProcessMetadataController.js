@@ -73,6 +73,10 @@ Ext.define('Savanna.process.controller.FullProcessMetadataController', {
             this.getItemSources().store = record[0].propertyGroupsStore.getById('Sources').valuesStore;
             Ext.bind(this.getItemSources().addSourcesGrid(record[0].propertyGroupsStore.getById('Sources').valuesStore.getById('Source Document').valuesStore), this.getItemSources());
             this.getInformationPanel().setItemUri(encodeURI(this.mainProcessUri));
+
+            if(this.store.getAt(0).data.categoryLabel && 0 < this.store.getAt(0).data.categoryLabel.length) {
+                this.getCategoryValue().setText(this.store.getAt(0).data.categoryLabel);
+            }
         }
     },
 
@@ -96,7 +100,6 @@ Ext.define('Savanna.process.controller.FullProcessMetadataController', {
     },
 
     onCategoryChooserButtonSelect: function(e) {
-        console.log('onCategoryChooserButtonSelect');
         var me = this;
         Ext.create('Savanna.process.view.metadata.ProcessCategoryWindow', {
             viewer: me.getView(),
@@ -107,9 +110,10 @@ Ext.define('Savanna.process.controller.FullProcessMetadataController', {
     },
 
     onProcessCategorySelected: function(selection) {
-        console.log('onProcessCategorySelected', selection);
-
         this.getCategoryValue().setText(selection.label);
+
+        this.store.getAt(0).data.categoryLabel = selection.label;
+        this.store.getAt(0).data.categoryUri = selection.uri;
     }
 
 });
