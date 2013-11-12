@@ -52,7 +52,6 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
             'ItemView:OpenItem': 'openItem'
         },
         view: {
-            'ItemView:SaveEnable': 'onSaveEnable',
             'ItemView:ParentSelected': 'onParentSelected'
         }
     },
@@ -76,11 +75,11 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         return this.callParent(arguments);
     },
 
-    onSaveEnable: function () {
-        if (this.getView().queryById('editSaveButton').disabled) {
-            this.getView().queryById('editSaveButton').enable();
-        }
-    },
+//    onSaveEnable: function () {
+//        if (this.getView().queryById('editSaveButton').disabled) {
+//            this.getView().queryById('editSaveButton').enable();
+//        }
+//    },
 
     lockItem: function (uri, lock) {
 
@@ -262,7 +261,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
      *  @param state {boolean} if true this will enable the buttons, false disables
      */
     toggleSaving: function(state) {
-        var itemIds = 'editDeleteButton, editSaveButton, editDoneButton, editCancelButton'.split(', '),
+        var itemIds = 'editDeleteButton, editDoneButton, editCancelButton'.split(', '),
             toggle = (state) ? 'enable' : 'disable';
 
         Ext.each(itemIds, function(btn) {
