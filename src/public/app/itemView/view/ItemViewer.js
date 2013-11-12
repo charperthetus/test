@@ -213,7 +213,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                     {
                         xtype: 'panel',
                         itemId: 'itemInfoPanel',
-                        title: 'Details',
+                        title: '',
                         ui:'light-blue',
                         cls:['white-grid-view-panel-edit', 'item-view-column'],
                         autoScroll: true,
@@ -419,7 +419,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                     {
                         xtype: 'panel',
                         itemId: 'itemInfoPanel',
-                        title: 'Details',
+                        title: '',
                         ui:'light-blue',
                         width: '30%',
                         minWidth:345,
