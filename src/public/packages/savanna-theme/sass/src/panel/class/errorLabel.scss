@@ -1,0 +1,12 @@
+/* This should be added to UIKIT */
+.search-error{
+    font-family: $sans-serif;
+    min-width: 70px;
+    
+    &:before{
+        margin-top: -2px;
+        margin-right: 5px;
+        float: left;
+        margin-bottom: 50px;
+    }
+}
