@@ -73,6 +73,35 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
                     data.classUri = message.uri;
                     data.classDescription = message.propertyGroups[0].values[4].values[0].value;
                     data.classPrimaryImage = message.propertyGroups[1].values[0].values.length > 0 ? message.propertyGroups[1].values[0].values[0].value : null;
+
+                    var store = me.getStore(diagram);
+                    var len = store.data.length;
+
+                    for (var i= 0; i<len; i++) {
+                        var storeData = store.getAt(i);
+                        if (storeData.data.uri === data.uri) {
+                            storeData.data.className = data.className;
+                            storeData.data.classUri = data.classUri;
+                            storeData.data.classDescription = data.classDescription;
+                            storeData.data.classPrimaryImage = data.classPrimaryImage;
+
+                            if (message.propertyGroups[3].values) {
+                                storeData.propertyGroupsStore.getById('Properties').valuesStore.filterOnLoad = false;
+                                storeData.propertyGroupsStore.getById('Properties').valuesStore.loadRawData(message.propertyGroups[3].values);
+
+                                Ext.each(storeData.propertyGroupsStore.getById('Properties').valuesStore.data.items, function(prop) {
+                                    Ext.each(prop.data.values, function(val) {
+                                        val.editable = false;
+                                    });
+
+                                    storeData.propertyGroupsStore.getById('Properties').data.values.push(prop.data);
+                                });
+                            }
+
+                            break;
+                        }
+                    }
+
                     me.getCanvas(diagram).fireEvent('itemLoaded');
                 },
                 failure: function(response){
@@ -562,10 +591,6 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
                 {
                     label: 'Header',
                     values: [
-                        {
-                            label: 'Type',
-                            values: []
-                        },
                         {
                             label: 'Description',
                             values: []

@@ -116,20 +116,7 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
     },
 
     onSaveChanges: function() {
-        // TODO: save the existing set of changes, if any
-        console.log('ProcessItemMetadataController saveChanges');
-//        if(this.store && this.store.getAt(this.index)) {
-//            this.store.getAt(this.index).setDirty();
-//            this.store.sync();
-//        }
         this.clearValues();
-    },
-
-    itemTitleBlur: function(e) {
-        if(this.store.getAt(this.index).data.label !== e.getValue()) {
-            this.store.getAt(this.index).data.label = e.getValue();
-            this.store.getAt(this.index).setDirty();
-        }
     },
 
     itemDescriptionBlur: function(e) {
@@ -139,6 +126,10 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
 
     instanceTitleBlur: function(e) {
         this.store.getAt(this.index).data.label = e.getValue();
+        var diagram = this.getView().up('process_component').down('#canvas').diagram;
+        var nodeData = this.getView().up('process_component').getController().store.getAt(0).data.nodeDataArray[this.index]
+        nodeData.label = e.getValue();
+        diagram.findNodeForData(nodeData).updateTargetBindings('label');
     },
 
     addingRole: function(tagName, tagData, aView) {

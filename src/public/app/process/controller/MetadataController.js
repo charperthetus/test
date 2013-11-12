@@ -65,17 +65,12 @@ Ext.define('Savanna.process.controller.MetadataController', {
 
     itemLoaded: function() {
         this.getCanvas().un('itemLoaded', this.itemLoaded, this);
-        var nodeArray = this.getView().up('process_component').getController().store.getAt(0).data.nodeDataArray;
         var store = this.getView().up('process_component').getController().store.getAt(0).nodeDataArrayStore;
         var len = store.data.length;
 
         for (var i= 0; i<len; i++) {
             var storeData = store.getAt(i);
             if (storeData.data.uri === this.getDiagram().selection.first().data.uri) {
-                storeData.data.className = nodeArray[i].className;
-                storeData.data.classUri = nodeArray[i].classUri;
-                storeData.data.classDescription = nodeArray[i].classDescription;
-                storeData.data.classPrimaryImage = nodeArray[i].classPrimaryImage;
                 break;
             }
         }
