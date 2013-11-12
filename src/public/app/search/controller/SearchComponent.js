@@ -43,7 +43,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             },
             'search_searchcomponent #search_terms': {
                 'onsearchclick': this.handleSearchSubmit,
-                'onclearclick' : this.clearSearch
+                'onclearclick' : this.clearAdvancedSearch
             },
             'search_searchcomponent #searchadvanced_menu textfield': {
                 keyup: this.handleSearchTermKeyUp
@@ -52,15 +52,12 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                 click: this.handleSearchSubmit
             },
             'search_searchcomponent #search_clear': {
-                click: this.clearSearch
-            },
-            'search_searchcomponent #advancedsearch_submit': {
-                click: this.handleSearchSubmit
+                click: this.clearAdvancedSearch
             },
             'search_searchcomponent #searchadvanced_menu': {
                 render: function (menu) {
                     menu.queryById('close_panel').on('click', this.handleClose);
-                    menu.queryById('advancedsearch_submit').on('click', me.handleSearchSubmit, me);
+                    menu.queryById('advancedsearch_submit').on('click', me.handleAdvancedSearchSubmit, me);
                 }
             },
             'search_searchcomponent #searchDalsButton': {
@@ -219,7 +216,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         }
     },
 
-    clearSearch: function (elem) {
+    clearAdvancedSearch: function (elem) {
         var component = elem.up('search_searchcomponent');
 
         var form = elem.findParentByType('search_searchcomponent').down('#searchbar');
@@ -240,6 +237,11 @@ Ext.define('Savanna.search.controller.SearchComponent', {
     },
 
     handleSearchSubmit: function (btn) {
+        this.clearAdvancedSearch(btn);
+        this.doSearch(btn);
+    },
+
+    handleAdvancedSearchSubmit: function (btn) {
         this.doSearch(btn);
     },
 
