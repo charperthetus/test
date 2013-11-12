@@ -54,7 +54,7 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
     },
 
     onOpenBtnClick: function() {
-        EventHub.fireEvent('open', {uri: this.store.getAt(0).data.uri, type: 'Item', label: this.store.getAt(0).data.label});
+        EventHub.fireEvent('open', {uri: this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Type').data.values[0].value, type: 'Item', label: this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Type').data.values[0].label});
     },
 
     onUriChanged: function(processUri, itemName) {
