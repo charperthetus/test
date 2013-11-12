@@ -24,7 +24,7 @@ Ext.define('Savanna.process.view.metadata.FullProcessMetadata', {
     overflowY: 'auto',
 
     ui: 'off-white',
-
+    cls:['white-grid-view-panel-edit', 'item-view-column'],
     items: [
         {
             xtype: 'label',

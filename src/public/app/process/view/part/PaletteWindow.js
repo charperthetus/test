@@ -37,7 +37,7 @@ Ext.define('Savanna.process.view.part.PaletteWindow', {
     modal: false,
     closable: false,
     constrain: true, //limit this window to the parent container
-    width: 200,
+    width: 210,
     ghost: false,
     items: [],
     autoScroll: true,
