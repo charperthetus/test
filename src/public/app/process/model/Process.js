@@ -25,8 +25,7 @@ Ext.define('Savanna.process.model.Process', {
             type: 'hasMany',
             model: 'Savanna.itemView.model.MainItemModel',
             name: 'nodeDataArray',
-            associationKey:'nodeDataArray',
-            foreignKey: 'label'
+            associationKey:'nodeDataArray'
         }
     ]
 });

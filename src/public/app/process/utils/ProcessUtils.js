@@ -141,9 +141,10 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         }
 
         diagram.model.addNodeData(nodeData);
-        var modelInstance = Ext.create('Savanna.itemView.model.MainItemModel');
-        Ext.apply(modelInstance.data, nodeData);
-        this.getStore(diagram).loadRawData(modelInstance, true);
+//        var modelInstance = Ext.create('Savanna.itemView.model.MainItemModel');
+//        Ext.apply(modelInstance.data, nodeData);
+//        this.getStore(diagram).loadRawData(modelInstance, true);
+        this.getStore(diagram).loadRawData(nodeData, true);
 
         var linkData = { category: linkType, from: clickedNode.data.uri, to: nodeData.uri };
         if (clickedNode.category == 'DecisionPoint') {
