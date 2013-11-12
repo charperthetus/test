@@ -25,9 +25,6 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         editDeleteButton: {
             click: 'onEditDelete'
         },
-        editSaveButton: {
-            click: 'onEditSave'
-        },
         editDoneButton: {
             click: 'onEditDone'
         },
@@ -55,9 +52,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
             'ItemView:OpenItem': 'openItem'
         },
         view: {
-            'ItemView:SaveEnable': 'onSaveEnable'
-        },
-        view: {
+            'ItemView:SaveEnable': 'onSaveEnable',
             'ItemView:ParentSelected': 'onParentSelected'
         }
     },
@@ -119,7 +114,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
             this.getView().getLayout().setActiveItem(1);
             this.lockItem(this.store.getAt(0).data.uri, true);
             this.lockItem(this.store.getAt(0).data.uri);
-            var itemSourceComponentEdit = this.getView().queryById('itemSourcesEdit').queryById('listOfSources')
+            var itemSourceComponentEdit = this.getView().queryById('itemSourcesEdit').queryById('listOfSources');
             itemSourceComponentEdit.reconfigure(this.store.getAt(0).propertyGroupsStore.getById('Sources').valuesStore.getById('Source Document').valuesStore);
 
         } else {
@@ -153,34 +148,34 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         });
     },
 
-    onEditSave: function (btn) {
-
-        // Disable further edits
-        btn.toggleSaving(false);
-
-        this.store.getAt(0).data.label = this.getView().queryById('itemViewHeaderEdit').queryById('itemNameField').value;
-
-        var headerComponent = this.getView().queryById('itemViewHeaderView');
-        headerComponent.reconfigure(this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore);
-
-        var qualitiesComponent = this.getView().queryById('itemViewPropertiesView');
-        qualitiesComponent.reconfigure(this.store.getAt(0).propertyGroupsStore.getById('Properties').valuesStore);
-
-        var relatedItemView = this.getView().queryById('relatedItemsView');
-        Ext.each(this.store.getAt(0).propertyGroupsStore.getById('Related Items').valuesStore.data.items, function (group) {
-            if (relatedItemView.queryById('relatedItemGrid_' + group.get('label').replace(/\s/g, ''))) {
-                relatedItemView.queryById('relatedItemGrid_' + group.get('label').replace(/\s/g, '')).reconfigure(group.valuesStore);
-            }
-            else {
-                relatedItemView.fireEvent('ViewRelatedItems:AddRelationshipGrid', group);
-            }
-        }, this);
-
-        this.store.getAt(0).setDirty();
-        this.store.sync({
-            callback: Ext.bind(this.onEditSaveCallback, this, [], true)
-        });
-    },
+//    onEditSave: function (btn) {
+//
+//        // Disable further edits
+//        btn.toggleSaving(false);
+//
+//        this.store.getAt(0).data.label = this.getView().queryById('itemViewHeaderEdit').queryById('itemNameField').value;
+//
+//        var headerComponent = this.getView().queryById('itemViewHeaderView');
+//        headerComponent.reconfigure(this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore);
+//
+//        var qualitiesComponent = this.getView().queryById('itemViewPropertiesView');
+//        qualitiesComponent.reconfigure(this.store.getAt(0).propertyGroupsStore.getById('Properties').valuesStore);
+//
+//        var relatedItemView = this.getView().queryById('relatedItemsView');
+//        Ext.each(this.store.getAt(0).propertyGroupsStore.getById('Related Items').valuesStore.data.items, function (group) {
+//            if (relatedItemView.queryById('relatedItemGrid_' + group.get('label').replace(/\s/g, ''))) {
+//                relatedItemView.queryById('relatedItemGrid_' + group.get('label').replace(/\s/g, '')).reconfigure(group.valuesStore);
+//            }
+//            else {
+//                relatedItemView.fireEvent('ViewRelatedItems:AddRelationshipGrid', group);
+//            }
+//        }, this);
+//
+//        this.store.getAt(0).setDirty();
+//        this.store.sync({
+//            callback: Ext.bind(this.onEditSaveCallback, this, [], true)
+//        });
+//    },
 
     onEditSaveCallback: function (responseObj, evt, btn) {
 
