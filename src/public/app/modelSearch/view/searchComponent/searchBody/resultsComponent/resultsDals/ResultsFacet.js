@@ -19,11 +19,11 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
     width: '100%',
     border: false,
     cls: 'results-facet',
+    ui: 'results-facet',
     collapsible: true,
     collapsed: true,
     titleCollapse: true,
     dateFormat: 'Y-m-d\\TH:i:s.m\\Z',
-    ui: 'results-facet',
 
     initComponent: function () {
 
@@ -58,6 +58,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
                             {
                                 xtype: 'radiogroup',
                                 itemId: 'dateFacet',
+                                cls: 'small-spacing',
                                 // Arrange radio buttons, distributed vertically
                                 columns: 1,
                                 vertical: true,

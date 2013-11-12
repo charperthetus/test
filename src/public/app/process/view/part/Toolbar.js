@@ -89,7 +89,6 @@ Ext.define('Savanna.process.view.part.Toolbar', {
                 glyph: 'zoomIn',
                 width:25,
                 height:25,
-                ui: 'icon-dark',
                 tooltip: 'Zoom in',
                 itemId: 'zoomIn'
             },
@@ -98,7 +97,6 @@ Ext.define('Savanna.process.view.part.Toolbar', {
                 glyph: 'zoomOut',
                 width:25,
                 height:25,
-                ui: 'icon-dark',
                 tooltip: 'Zoom out',
                 itemId: 'zoomOut'
             },
@@ -107,7 +105,6 @@ Ext.define('Savanna.process.view.part.Toolbar', {
                 glyph: 'showAll',
                 width:25,
                 height:25,
-                ui: 'icon-dark',
                 tooltip: 'Fit to screen',
                 itemId: 'zoomToFit'
             },
@@ -117,7 +114,6 @@ Ext.define('Savanna.process.view.part.Toolbar', {
                 glyph: 'undo',
                 width:25,
                 height:25,
-                ui: 'icon-dark',
                 tooltip: 'Undo',
                 itemId: 'undo'
             },
@@ -126,7 +122,6 @@ Ext.define('Savanna.process.view.part.Toolbar', {
                 glyph: 'redo',
                 width:25,
                 height:25,
-                ui: 'icon-dark',
                 tooltip: 'Redo',
                 itemId: 'redo'
             },
@@ -136,7 +131,6 @@ Ext.define('Savanna.process.view.part.Toolbar', {
                 glyph: 'trash',
                 width:25,
                 height:25,
-                ui: 'icon-dark',
                 tooltip: 'Delete process',
                 itemId: 'deleteProcess'
             },
@@ -145,7 +139,6 @@ Ext.define('Savanna.process.view.part.Toolbar', {
                 glyph: 'save',
                 width:25,
                 height:25,
-                ui: 'icon-dark',
                 tooltip: 'Save',
                 itemId: 'saveProcess'
             }

@@ -13,7 +13,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
         'Savanna.search.controller.resultsComponent.resultsDals.ResultsFacetsController',
         'Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsFacet'
     ],
-    header: false,
+    // header: false,
     width: '100%',
 
 
@@ -22,18 +22,23 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resu
      here to get the panel to display for development.
      */
 
-    minHeight:200,
+    // minHeight:200,
 
     initComponent: function () {
         this.callParent(arguments);
     },
 
-    tbar: [
+    tbar: {
+        items: [{
+            xtype: 'tbtext',
+            text: 'FACETS',
+            cls: 'bold'
+        },
+        '->',
         {
-            xtype: 'button',
             text: 'Show All',
             itemId: 'showHideFacets',
             facetsExpanded:false
         }
-    ]
+    ]}
 });
