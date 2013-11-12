@@ -22,3 +22,17 @@
 		width: 115px !important;
 	}
 }
+
+.refine-term.x-tab-autocomplete-tag-top {
+  	float: left;
+  	background-color: #d6e8f2;
+  	padding: 3px 5px;
+  	margin: 5px 3px 0 0!important;
+  	
+  	.x-tab-inner{
+  		font-weight: normal;
+  	}
+  	.x-tab-close-btn:before{
+  		color: #75b3d3;
+  	}
+}
