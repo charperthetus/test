@@ -110,7 +110,7 @@ Ext.define('Savanna.process.controller.ProcessController', {
                 url: SavannaConfig.itemLockUrl + encodeURI(uri) + ';jsessionid=' + Savanna.jsessionid,
                 method: 'GET',
                 success: function(response){
-                    if (response.responseText) {
+                    if (response.responseText !== '') {
                         Ext.MessageBox.alert(
                             'Process Locked',
                             'This process is locked for editing by another user. Please try again later.',

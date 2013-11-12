@@ -122,7 +122,7 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
         window.open(SavannaConfig.helpUrl);
     },
 
-    handleLogout: function() {
+    logout: function() {
         //POST to the logout url, and refresh the page on a response to trigger the login page
         Ext.Ajax.request({
             url: SavannaConfig.logoutUrl + ';jsessionid=' + Savanna.jsessionid,
@@ -137,6 +137,14 @@ Ext.define('Savanna.desktop.controller.DesktopController', {
             }
         })
 
+    },
+
+    handleLogout: function() {
+        Ext.Ajax.request({
+            url: SavannaConfig.itemLockUrl + ';jsessionid=' + Savanna.jsessionid,
+            method: 'DELETE',
+            callback: this.logout
+        });
     },
 
     displayModelSearch: function() {
