@@ -217,14 +217,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
             imagesBrowserComponentEdit.fireEvent('EditImagesGrid:Setup');
 
             var relatedItemView = this.getView().queryById('relatedItemsView');
-            Ext.each(this.store.getAt(0).propertyGroupsStore.getById('Related Items').valuesStore.data.items, function (group) {
-                if (relatedItemView.queryById('relatedItemGrid_' + group.get('label').replace(/\s/g, ''))) {
-                    relatedItemView.queryById('relatedItemGrid_' + group.get('label').replace(/\s/g, '')).reconfigure(group.valuesStore);
-                }
-                else {
-                    relatedItemView.fireEvent('ViewRelatedItems:AddRelationshipGrid', group);
-                }
-            }, this);
+            relatedItemView.removeAll();
             relatedItemView.fireEvent('ViewRelatedItems:SetupData', this.store.getAt(0).propertyGroupsStore.getById('Related Items').valuesStore.data.items);
         } else {
             /*
