@@ -240,12 +240,16 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
      */
     toggleSaving: function(state) {
         var toolbarButtons = 'editDeleteButton, editDoneButton, editCancelButton'.split(', '),
-            toggle = (state) ? 'disable' : 'enable'; // disable buttons if saving is true
+            toggle = (state) ? 'disable' : 'enable', // disable buttons if saving is true
+            toggleSaveClass = (state) ? 'addCls' : 'removeCls';
 
         // Toggling all the toolbar buttons
         Ext.each(toolbarButtons, function(btn) {
             this.getView().queryById(btn)[toggle]();
         }, this);
+
+        // Add or remove the saving class on the edit done button
+        this.getView().queryById('editDoneButton')[toggleSaveClass]('saving');
 
         // Set the saving state
         this.saving = state;
