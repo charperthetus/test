@@ -37,7 +37,8 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
     },
 
     storeSet: function () {
-        var me = this;
+        var me = this,           
+            descriptionComponent = me.getView().queryById('itemDescription');
 
         // Set the header field
         if (this.getView().store.getById('Label').data.values.length) {
@@ -63,7 +64,6 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
 
 
         if(me.getView().store.getById('Type').data.values.length)  {
-            //me.getView().queryById('parentBtn').setText(me.getView().store.getById('Type').data.values[0].label);
             var parents = '';
             Ext.each(me.getView().store.getById('Type').data.values, function(type)    {
                 parents = parents + '<input type="button" name="' + type.value + '" value="' + type.label + '" id="openParentItem" />';
@@ -72,15 +72,37 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
 
         }
 
-        if(me.getView().store.getById('Description').data.values.length)  {
-            var description = me.getView().queryById('itemDescription');
+        /*
+         *  Description Setting
+         *
+         *  This will set the description fields text and toggle if it's disabled. It does so
+         *  by querying the store to see if there is already a value (and if so setting that), then
+         *  checking to see if it's user editable (and disabling based on that).
+         *
+         *  There is a case where there is no description AND the user CANNOT make one. As of now
+         *  if there is no description and the item is not deletable, then the user CANNOT make an assertion
+         *  on the description. An ugly assumption to be sure, but it's the only thing we can check for now.
+         */
+        if (me.getView().store.getById('Description').data.values.length)  {
 
+            // Checking if it's editable
             if (!me.getView().store.getById('Description').data.values[0].editable) {
-                description.disable();
+                descriptionComponent.disable();
             }            
 
-            description.setValue(me.getView().store.getById('Description').data.values[0].value);
+            // Setting the text into the textarea
+            descriptionComponent.setValue(me.getView().store.getById('Description').data.values[0].value);
+        
+        // If there is no description there is a chance it's a chebi/non-user editable:
+        } else {            
+
+            // This is the case where the item is not deletable and we're assuming that we cannot assert a description.
+            if (!this.getView().storeHelper.fetchMainStore().getAt(0).data.deletable) {
+                descriptionComponent.disable();
+                descriptionComponent.setValue('No Description Provided');
+            }
         }
+
         // Focus on the Title field automatically
         this.getView().queryById('itemNameField').focus(false, 200);
     },
@@ -123,41 +145,33 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
                 this.getView().store.getById('Intended Use').data.values.push(value.data);
                 this.getView().queryById('addIntendedUseBox').addTag(value.data.label);
             }, this);
-
-            this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
         }
     },
 
     addingAlias: function(tagName, tagData, aView) {
         this.getView().storeHelper.addBotLevItemInStore(tagName, tagData, this.getView().store.getById('Aliases'));
-        this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
     },
 
     removingAlias: function(tagName, aView) {
         this.getView().storeHelper.removeBotLevItemInStore(tagName, this.getView().store.getById('Aliases'));
-        this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
     },
 
     addingIntendedUse: function(tagName, tagData, aView) {
         this.getView().storeHelper.addBotLevItemInStore(tagName, tagData, this.getView().store.getById('Intended Use'));
-        this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
     },
 
     removingIntendedUse: function(tagName, aView) {
         this.getView().storeHelper.removeBotLevItemInStore(tagName, this.getView().store.getById('Intended Use'));
-        this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
     },
 
     updateDescription: function(comp, e, eOpts) {
         var value = {label: "Description", comment: null, value: comp.value};
         this.getView().storeHelper.updateBotLevItemInStore(null, value, this.getView().store.getById('Description'));
-        this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
     },
 
     updateHeader: function(comp) {
         var value = {label: comp.value, comment: null, value: comp.value};
         this.getView().storeHelper.updateBotLevItemInStore(null, value, this.getView().store.getById('Label'));
         this.getView().storeHelper.fetchMainStore().getAt(0).data.label = comp.value;
-        this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
     }
 });
