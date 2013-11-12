@@ -82,7 +82,7 @@ Ext.define('Savanna.process.controller.MetadataController', {
     setUpProcessDetails: function(itemUri) {
         // load the side panel initially or just show it
         if( null !== itemUri ) {
-            this.getFullProcessMetadata().fireEvent('processUriChanged', itemUri);
+            this.getFullProcessMetadata().fireEvent('processUriChanged', itemUri, this.getView().up('process_component').getController().store.getAt(0).nodeDataArrayStore);
         } else {
             // show the process details panel
             this.getHiddenPanel().getLayout().setActiveItem(this.getFullProcessMetadata());

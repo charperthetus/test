@@ -37,37 +37,26 @@ Ext.define('Savanna.process.controller.FullProcessMetadataController', {
     onUriChanged: function(processUri, store) {
         this.store = store;
         this.storeHelper = Ext.create('Savanna.itemView.store.ItemViewStoreHelper');
-        this.store.getProxy().url = this.buildItemDataFetchUrl(processUri);
         this.mainProcessUri = processUri;
-
-        this.store.load({
-            scope: this,
-            callback: this.handleRecordDataRequestResponse
-        });
+        this.handleData();
     },
 
-    buildItemDataFetchUrl: function (uri) {
-        return SavannaConfig.itemViewUrl + encodeURI(uri);
-    },
+    handleData: function() {
+        this.storeHelper.init(this.store);
+        this.getProcessTitle().setValue(this.store.getAt(0).data.label);
 
-    handleRecordDataRequestResponse: function(record, operation, success) {
-        if(success) {
-            this.storeHelper.init(this.store);
-            this.getProcessTitle().setValue(this.store.getAt(0).data.label);
-
-            if (this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Description').valuesStore.getAt(0)) {
-                this.getProcessDescription().setValue(this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Description').valuesStore.getAt(0).data.value);
-            }
-
-            this.getImageBrowser().storeHelper = this.storeHelper;
-            this.getImageBrowser().store = record[0].propertyGroupsStore.getById('Images').valuesStore;
-            this.getImageBrowser().fireEvent('EditImagesGrid:Setup', record[0].propertyGroupsStore.getById('Images').valuesStore.getById('Images').valuesStore.data.items);
-            this.getItemSources().storeHelper = this.storeHelper;
-            this.getItemSources().store = record[0].propertyGroupsStore.getById('Sources').valuesStore;
-            Ext.bind(this.getItemSources().addSourcesGrid(record[0].propertyGroupsStore.getById('Sources').valuesStore.getById('Source Document').valuesStore), this.getItemSources());
-            this.getInformationPanel().setItemUri(encodeURI(this.mainProcessUri));
-            this.getView().fireEvent('readyForDisplay');
+        if (this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Description').valuesStore.getAt(0)) {
+            this.getProcessDescription().setValue(this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Description').valuesStore.getAt(0).data.value);
         }
+
+        this.getImageBrowser().storeHelper = this.storeHelper;
+        this.getImageBrowser().store = record[0].propertyGroupsStore.getById('Images').valuesStore;
+        this.getImageBrowser().fireEvent('EditImagesGrid:Setup', record[0].propertyGroupsStore.getById('Images').valuesStore.getById('Images').valuesStore.data.items);
+        this.getItemSources().storeHelper = this.storeHelper;
+        this.getItemSources().store = record[0].propertyGroupsStore.getById('Sources').valuesStore;
+        Ext.bind(this.getItemSources().addSourcesGrid(record[0].propertyGroupsStore.getById('Sources').valuesStore.getById('Source Document').valuesStore), this.getItemSources());
+        this.getInformationPanel().setItemUri(encodeURI(this.mainProcessUri));
+        this.getView().fireEvent('readyForDisplay');
     },
 
     onSaveChanges: function() {
