@@ -68,7 +68,7 @@ Ext.define('Savanna.search.view.searchComponent.SearchBar', {
 
                 var joinString = field.configs.join;
 
-                if (advancedBooleanString === '') {
+                if (advancedBooleanString === '' || field.configs.booleanType === 'none') {
                     joinString = '';
                 }
 
@@ -77,9 +77,9 @@ Ext.define('Savanna.search.view.searchComponent.SearchBar', {
         });
 
         formQueryString = form.queryById('search_terms').getValue().trim();
-        advancedBooleanString = advancedBooleanString.replace(/\s+/g, ' ');
+        advancedBooleanString = advancedBooleanString.replace(/\s+/g, ' ').trim();
 
-        if (advancedBooleanString.trim() !== '') {
+        if (advancedBooleanString !== '') {
             return advancedBooleanString;
         } else {
             return '' + formQueryString;

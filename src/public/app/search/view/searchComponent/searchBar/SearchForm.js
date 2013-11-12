@@ -84,7 +84,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBar.SearchForm', {
                                 cls: ['align_top', 'align_bottom'],
                                 itemId: 'none_words',
                                 tabIndex: 4,
-                                configs:{ join: ' NOT ', booleanType: 'none' }
+                                configs:{ join: '', booleanType: 'none' } // join member is not used for this type
                             },
                             {
                                 xtype: 'panel',
