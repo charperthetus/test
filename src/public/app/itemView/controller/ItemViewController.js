@@ -106,8 +106,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
                 var itemSourceComponentEdit = this.getView().queryById('itemSourcesEdit').queryById('listOfSources');
                 itemSourceComponentEdit.reconfigure(this.store.getAt(0).propertyGroupsStore.getById('Sources').valuesStore.getById('Source Document').valuesStore);
             }else{
-                lock = Ext.decode(response.responseText);
-                var message = 'This Item is being edited by another user: ' + lock;
+                var message = 'This item is locked for editing by another user. Please try again later.';
                 Ext.MessageBox.alert(
                     'Item Locked',
                     message
