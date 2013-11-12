@@ -9,19 +9,22 @@
 Ext.define('Savanna.itemView.store.ItemViewStoreHelper', {
     store: null,
     mainStore: null,
+    index: 0,
 
     requires: [
         'Ext.data.IdGenerator',
         'Ext.data.UuidGenerator'
     ],
 
-    init: function(store) {
+    init: function(store, index) {
         this.store = store;
-        this.mainStore = store.getAt(0).data.propertyGroups;
+        this.index = index ? index : 0;
+        this.mainStore = store.getAt(this.index).data.propertyGroups;
+
     },
 
     itemUri: function() {
-        return this.store.getAt(0).data.uri;
+        return this.store.getAt(this.index).data.uri;
     },
 
     fetchMainStore: function() {

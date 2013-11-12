@@ -38,24 +38,19 @@ Ext.define('Savanna.process.controller.MetadataController', {
 
         // then load up the panel for the new selection
         if (1 === this.getDiagram().selection.count) {
-            var data = this.getDiagram().selection.first().data;
-            var itemCategory = data.category;
+            var itemCategory = this.getDiagram().selection.first().data.category;
 
             switch(itemCategory) {
                 case 'ProcessItem':
                     //show loading screen
                     this.getHiddenPanel().getLayout().setActiveItem(this.getNothingHereLabel());
 
-                    var store = this.getView().up('process_component').getController().store.getAt(0).nodeDataArrayStore;
-                    var len = store.data.length;
-                    for (var i= 0; i<len; i++) {
-                        var storeData = store.getAt(i);
-                        if (storeData.data.uri === data.uri) {
-                            break;
-                        }
+                    if (this.getDiagram().selection.first().data.className) {
+                        this.itemLoaded();
                     }
-                    // this is an item
-                    this.setUpItemDetails(store, i);
+                    else {
+                        this.getCanvas().on('itemLoaded', this.itemLoaded, this);
+                    }
 
                     break;
                 default:
@@ -66,6 +61,26 @@ Ext.define('Savanna.process.controller.MetadataController', {
             // if nothing is selected, we'll use the whole process
             this.setUpProcessDetails(null);
         }
+    },
+
+    itemLoaded: function() {
+        this.getCanvas().un('itemLoaded', this.itemLoaded, this);
+        var nodeArray = this.getView().up('process_component').getController().store.getAt(0).data.nodeDataArray;
+        var store = this.getView().up('process_component').getController().store.getAt(0).nodeDataArrayStore;
+        var len = store.data.length;
+
+        for (var i= 0; i<len; i++) {
+            var storeData = store.getAt(i);
+            if (storeData.data.uri === this.getDiagram().selection.first().data.uri) {
+                storeData.data.className = nodeArray[i].className;
+                storeData.data.classUri = nodeArray[i].classUri;
+                storeData.data.classDescription = nodeArray[i].classDescription;
+                storeData.data.classPrimaryImage = nodeArray[i].classPrimaryImage;
+                break;
+            }
+        }
+        // this is an item
+        this.setUpItemDetails(store, i);
     },
 
     setUpProcessDetails: function(itemUri) {

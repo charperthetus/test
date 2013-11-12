@@ -69,10 +69,11 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
                 method: 'GET',
                 success: function(response){
                     var message = Ext.decode(response.responseText);
-                    data.className = message.propertyGroups[0].values[0].values[0].value;
-                    data.classDescription = message.propertyGroups[1].values[0].value;
-                    //data.classPrimaryImage = message.propertyGroups[2].values[0].values[0];
-                    me.getCanvas(diagram).fireEvent('itemInstanceCreated');
+                    data.className = message.label;
+                    data.classUri = message.uri;
+                    data.classDescription = message.propertyGroups[0].values[4].values[0].value;
+                    data.classPrimaryImage = message.propertyGroups[1].values[0].values.length > 0 ? message.propertyGroups[1].values[0].values[0].value : null;
+                    me.getCanvas(diagram).fireEvent('itemLoaded');
                 },
                 failure: function(response){
                     console.log('Server Side Failure: ' + response.status);

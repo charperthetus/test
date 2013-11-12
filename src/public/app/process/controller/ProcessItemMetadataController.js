@@ -27,21 +27,14 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
             click: 'onOpenBtnClick'
         },
 
-        itemTitle: {
-            blur: 'itemTitleBlur'
-        },
-        itemDescription: {
-            blur: 'itemDescriptionBlur'
-        },
+        itemTitle: true,
+        itemDescription: true,
         itemPrimeImage: true,
-        quantityValue:  {
-            blur: 'quantityValueChanger'
-        },
-        quantityUnit: {
-            select: 'quantityValueChanger'
-        },
         itemInstanceTitle: {
             blur: 'instanceTitleBlur'
+        },
+        itemInstanceDescription: {
+            blur: 'itemDescriptionBlur'
         },
         roleAutoCompleteBox: {
             'AutoComplete:ItemSelected': 'addingRole',
@@ -50,43 +43,45 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
         roleChooserButton: {
             click: 'onRoleChooserButtonSelect'
         },
-
+        quantityValue:  {
+            blur: 'quantityValueChanger'
+        },
+        quantityUnit: {
+            select: 'quantityValueChanger'
+        },
         itemQualities: true
     },
 
     onOpenBtnClick: function() {
-        EventHub.fireEvent('open', {uri: this.store.getAt(this.index).propertyGroupsStore.getById('Header').valuesStore.getById('Type').data.values[0].value, type: 'Item', label: this.store.getAt(this.index).propertyGroupsStore.getById('Header').valuesStore.getById('Type').data.values[0].label});
+        EventHub.fireEvent('open', {uri: this.store.getAt(this.index).data.classUri, type: 'Item', label: this.store.getAt(this.index).data.className});
     },
 
     onUriChanged: function(store, index) {
         this.store = store;
         this.storeHelper = Ext.create('Savanna.itemView.store.ItemViewStoreHelper');
         this.index = index;
-        this.handleRecordDataRequestSuccess();
+        this.handleData();
     },
 
-    buildItemDataFetchUrl: function (uri) {
-        return SavannaConfig.itemViewUrl + encodeURI(uri);
-        //return SavannaConfig.mockItemViewUrl + encodeURI(uri); // mock data
-    },
+    handleData: function() {
+        this.storeHelper.init(this.store, this.index);
+        this.getItemTitle().setText(this.store.getAt(this.index).data.className);
+        this.getItemDescription().setValue(this.store.getAt(this.index).data.classDescription)
 
-    handleRecordDataRequestSuccess: function() {
-        this.storeHelper.init(this.store);
-        this.getItemTitle().setText(this.store.getAt(this.index).data.label);//this.store.getAt(this.index).propertyGroupsStore.getById('Header').valuesStore.getById('Type').data.values[0].label);
-
-        if (this.store.getAt(this.index).propertyGroupsStore.getById('Header').valuesStore.getById('Description').valuesStore.getAt(0)) {
-            this.getItemDescription().setValue(this.store.getAt(this.index).propertyGroupsStore.getById('Header').valuesStore.getById('Description').valuesStore.getAt(0).data.value);
+        if (this.store.getAt(this.index).data.classPrimaryImage) {
+            var imageURI = this.store.getAt(this.index).data.classPrimaryImage;
+            this.getItemPrimeImage().setSrc( SavannaConfig.savannaUrlRoot + 'rest/document/' + encodeURI(imageURI) + '/original/');
         }
 
-//        this.getItemInstanceTitle().setValue(this.store.getAt(this.index).data.label);
+        this.getItemInstanceTitle().setValue(this.store.getAt(this.index).data.label);
+
+        if (this.store.getAt(this.index).propertyGroupsStore.getById('Header').valuesStore.getById('Description').valuesStore.getAt(0)) {
+            this.getItemInstanceDescription().setValue(this.store.getAt(this.index).propertyGroupsStore.getById('Header').valuesStore.getById('Description').valuesStore.getAt(0).data.value);
+        }
+
         this.getItemQualities().storeHelper = this.storeHelper;
         this.getItemQualities().store = this.store.getAt(this.index).propertyGroupsStore.getById('Properties').valuesStore;
         this.getItemQualities().fireEvent('EditQualities:StoreSet');
-
-        if (this.store.getAt(this.index).propertyGroupsStore.getById('Images').valuesStore.getById('Images').valuesStore.getAt(0)) {
-            var imageURI = this.store.getAt(this.index).propertyGroupsStore.getById('Images').valuesStore.getById('Images').valuesStore.getAt(0).data.uri;
-            this.getItemPrimeImage().setSrc( SavannaConfig.savannaUrlRoot + 'rest/document/' + encodeURI(imageURI) + '/original/');
-        }
 
         if(!this.store.getAt(this.index).propertyGroupsStore.getById('Related Items').valuesStore.getById('has role')) {
             this.storeHelper.addGroupItemInStore('Related Items'
@@ -94,13 +89,19 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
                 , 'lib%2EExtendedRelationOntology%3Ahas_role%2FModelPredicate'
                 , this.store.getAt(this.index).propertyGroupsStore.getById('Related Items').valuesStore);
         }
+        else if (this.store.getAt(this.index).propertyGroupsStore.getById('Related Items').valuesStore.getById('has role').valuesStore.getAt(0)) {
+            Ext.each(this.store.getAt(this.index).propertyGroupsStore.getById('Related Items').valuesStore.getById('has role').data.values, function(value) {
+                this.getRoleAutoCompleteBox().addTag(value.label, value.editable);
+            }, this);
+        }
 
         if(!this.store.getAt(this.index).propertyGroupsStore.getById('Annotations').valuesStore.getById('Quantity')) {
             this.storeHelper.addGroupItemInStore('Annotations'
                 , 'Quantity'
                 , 'thetus%2EInformationEntityOntology%3Aquantitative_property_measurement%2FModelProperty'
                 , this.store.getAt(indexpropertyGroupsStore.getById('Annotations').valuesStore));
-        } else if (this.store.getAt(this.index).propertyGroupsStore.getById('Annotations').valuesStore.getById('Quantity').valuesStore.getAt(0)){
+        }
+        else if (this.store.getAt(this.index).propertyGroupsStore.getById('Annotations').valuesStore.getById('Quantity').valuesStore.getAt(0)){
             var qunit = this.store.getAt(this.index).propertyGroupsStore.getById('Annotations').valuesStore.getById('Quantity').valuesStore.getAt(0).data.value.split('_');
             var quantity = qunit[0];
             var unit = null;
@@ -137,8 +138,6 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
     },
 
     instanceTitleBlur: function(e) {
-        var value = {label: e.getValue(), comment: null, value: e.getValue()};
-        this.storeHelper.updateBotLevItemInStore(null, value, this.store.getAt(this.index).propertyGroupsStore.getById('Header').valuesStore.getById('Label'));
         this.store.getAt(this.index).data.label = e.getValue();
     },
 
@@ -201,10 +200,11 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
     clearValues: function() {
         this.getItemTitle().setText('');
         this.getItemDescription().setValue('');
-        //this.getItemPrimeImage().setValue('');
+        this.getItemInstanceTitle().setValue('');
+        this.getItemInstanceDescription().setValue('');
+        this.getItemPrimeImage().setSrc(null);
         this.getQuantityValue().setValue('');
         this.getQuantityUnit().setValue('');
-        this.getItemInstanceTitle().setValue('');
         this.getItemQualities().removeAll();
         this.getRoleAutoCompleteBox().clearTags();
     }
