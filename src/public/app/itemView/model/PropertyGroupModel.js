@@ -15,6 +15,7 @@ Ext.define('Savanna.itemView.model.PropertyGroupModel', {
 
     fields: [
         { name: 'id', mapping: 'label'},
+        { name: 'label'},
         { name: 'layoutType'},
         { name: 'values'}
     ],
