@@ -6,7 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 Ext.define('Savanna.sources.view.Sources', {
-    extend: 'Ext.panel.Panel',
+    extend: 'Ext.container.Container',
     alias: 'widget.document_sources',
 
     requires: ['Savanna.sources.controller.Sources'],
@@ -14,6 +14,8 @@ Ext.define('Savanna.sources.view.Sources', {
     controller: 'Savanna.sources.controller.Sources',
 
     title: 'Sources',
+
+    ui:'off-white',
 
     layout: 'vbox',
 
@@ -42,7 +44,7 @@ Ext.define('Savanna.sources.view.Sources', {
             },
             width:'100%',
             margin:'0 0 10 0',
-            padding:'0 10 0 10',
+            padding: 10,
             height:79,
             bodyCls: 'inner-edit-zone',
             items: [
@@ -68,6 +70,8 @@ Ext.define('Savanna.sources.view.Sources', {
                 store: store,
 
                 title: 'Supporting Resources (' + store.count() + ')',
+                ui:'off-white',
+                padding: 10,
 
                 hideHeaders: true,
 

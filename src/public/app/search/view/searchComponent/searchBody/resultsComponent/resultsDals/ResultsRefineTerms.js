@@ -7,55 +7,28 @@
  */
 /* global Ext: false */
 Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineTerms', {
-    extend: 'Ext.panel.Panel',
+    extend: 'Ext.container.Container',
     alias: 'widget.search_resultsDals_resultsterms',
     controller: 'Savanna.search.controller.resultsComponent.resultsDals.ResultsRefineTermsController',
     requires: [
         'Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineTerm',
-        'Savanna.search.controller.resultsComponent.resultsDals.ResultsRefineTermsController'
+        'Savanna.search.controller.resultsComponent.resultsDals.ResultsRefineTermsController',
+        'Savanna.components.tags.Tag'
     ],
 
-    minHeight: 5,
-    width: '100%',
-    border: false,
-
-    initComponent: function () {
-        this.items = this.setupItems();
-        this.callParent(arguments);
-
-    },
-
-    setupItems: function () {
-
-        return [
-            {
-                xtype: 'panel',
-                itemId: 'termValues',
-                items: [],
-                width: '100%',
-                minHeight: 5,
-                layout: 'auto',
-                border: false
-            }
-        ]
-    },
-
     addTerm: function (field) {
-
         if (this.queryById('term_' + field.getValue()) === null) {
-            var refineTerm = Ext.create('Savanna.search.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineTerm', {
+            var refineTerm = Ext.create('Savanna.components.tags.Tag', {
                 itemId: 'term_' + field.getValue(),
                 cls:'refine-term'
             });
+
             refineTerm.setTerm(field.getValue());
+            this.add(refineTerm);
 
-            this.queryById('termValues').add(refineTerm);
-
-            var termWidth = (refineTerm.queryById('termValue').getWidth() + refineTerm.queryById('removeTerm').getWidth() + 6);
+            var termWidth = (refineTerm.getWidth());
             refineTerm.setWidth(termWidth);
         }
         field.setValue('');
     }
-
-
 });

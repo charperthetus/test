@@ -17,23 +17,30 @@ Ext.define('Savanna.process.view.metadata.ProcessItemMetadata', {
 
     controller: 'Savanna.process.controller.ProcessItemMetadataController',
 
+    ui:'off-white',
+
     overflowY: 'auto',
 
     items: [
         {
-            xtype: 'textfield',
-            value: 'RNRM Item Name',
-            itemId: 'itemTitle',
-            width: '100%'
-        },
-        {
             xtype: 'container',
-            layout: 'hbox',
+            layout: 'vbox',
             items: [
                 {
-                    xtype: 'textarea',
-                    text: 'Body Paragraph Closed.  Content far far away.',
-                    itemId: 'itemDescription'
+                    xtype: 'container',
+                    layout: 'hbox',
+                    items: [
+                        {
+                            xtype: 'label',
+                            itemId: 'itemTitle',
+                            width: '80%'
+                        },
+                        {
+                            xtype: 'button',
+                            text: 'Open',
+                            itemId: 'openBtn'
+                        }
+                    ]
                 },
                 {
                     xtype: 'image',
@@ -48,9 +55,29 @@ Ext.define('Savanna.process.view.metadata.ProcessItemMetadata', {
             border: 3,
             items: [
                 {
+                    xtype: 'label',
+                    text: 'Title',
+                    width: '95%'
+                },
+                {
                     xtype: 'textfield',
-                    value: 'Individual Title',
-                    itemId: 'itemInstanceTitle'
+                    itemId: 'itemInstanceTitle',
+                    width: '95%'
+                },
+                {
+                    xtype: 'label',
+                    text: 'Description',
+                    width: '95%'
+                },
+                {
+                    xtype: 'textarea',
+                    itemId: 'itemDescription',
+                    width: '95%'
+                },
+                {
+                    xtype: 'label',
+                    text: 'Role',
+                    width: '95%'
                 },
                 {
                     xtype: 'container',
@@ -64,7 +91,7 @@ Ext.define('Savanna.process.view.metadata.ProcessItemMetadata', {
                             itemId: 'roleAutoCompleteBox',
                             store: Ext.create('Savanna.itemView.store.AutoCompleteStore', {
                                 urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/model/search/keyword/property/' + 'lib%252EExtendedRelationOntology%253Ahas_role%252FModelPredicate',
-                                paramsObj: { pageStart:0, pageSize:20, alphabetical: true }
+                                paramsObj: { pageStart:0, pageSize:20, alphabetical: false }
                             }),
                             flex: 1
                         },
@@ -177,8 +204,6 @@ Ext.define('Savanna.process.view.metadata.ProcessItemMetadata', {
                             displayField: 'abbr', //Sets the display field to use the abbr config from the store.
                             valueField: 'val', //Sets the value field to use the val config from the store.
                             scope: this,
-                            //minLength: 3,
-                            //maxLength: 3,
                             enableRegEx: true,
                             enableKeyEvents: true,
                             displayValue: null, //This is a custom config which sets the abbr that is currently selected.
@@ -215,19 +240,10 @@ Ext.define('Savanna.process.view.metadata.ProcessItemMetadata', {
                                     //It must reset everytime on focus in order to know it was just entered into and then on the keyup event it will not call findInStore when focused into with the tab key.
                                     this.keyCount = 0;
                                 }
-
                             }
-
                         }
                     ]
-                }/*,
-                {
-                    xtype: 'textarea',
-                    fieldLabel: 'Description',
-                    labelAlign: 'top',
-                    text: 'Far far away, behind the word mountains',
-                    itemId: 'itemInstanceDescription'
-                }*/
+                }
             ]
         },
         {

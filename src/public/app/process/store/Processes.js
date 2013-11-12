@@ -35,12 +35,12 @@ Ext.define('Savanna.process.store.Processes', {
                 if('update' === request.action || 'create' === request.action) {
                     // Must put, not push.  So sayeth endpoint.
                     var uri = me.getAt(0).data.uri;
-                    me.setItemUri(encodeURIComponent(uri));
+                    me.setItemUri(uri);
                     request.method = 'PUT';
-                    request.params = {id: encodeURI(encodeURIComponent(uri))};
+                    request.params = {id: uri};
                     request.url = SavannaConfig.modelProcessSaveUrl + ';jsessionid=' + Savanna.jsessionid;
                 } else if ('read' === request.action) {
-                    request.url = SavannaConfig.modelProcessLoadUrl + encodeURI(encodeURIComponent(me.getItemUri())) + ';jsessionid=' + Savanna.jsessionid;
+                    request.url = SavannaConfig.modelProcessLoadUrl + encodeURI(me.getItemUri()) + ';jsessionid=' + Savanna.jsessionid;
                 }
                 return request;
             }

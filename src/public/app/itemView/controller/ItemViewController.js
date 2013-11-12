@@ -25,9 +25,6 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         editDeleteButton: {
             click: 'onEditDelete'
         },
-        editSaveButton: {
-            click: 'onEditSave'
-        },
         editDoneButton: {
             click: 'onEditDone'
         },
@@ -55,10 +52,8 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
             'ItemView:OpenItem': 'openItem'
         },
         view: {
-            'ItemView:SaveEnable': 'onSaveEnable'
-        },
-        view: {
-            'ItemView:ParentSelected': 'onParentSelected'
+            'ItemView:ParentSelected': 'onParentSelected',
+            beforeclose: 'beforeClose'
         }
     },
 
@@ -81,12 +76,6 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         return this.callParent(arguments);
     },
 
-    onSaveEnable: function () {
-        if (this.getView().queryById('editSaveButton').disabled) {
-            this.getView().queryById('editSaveButton').enable();
-        }
-    },
-
     lockItem: function (uri, lock) {
 
         var act = 'DELETE';
@@ -102,31 +91,47 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
             },
             disableCaching: false,
 
-            success: function (response) {
-                //console.log('lock/unlock successful');
-            },
+            success: Ext.bind(this.onLockSuccess, this),
 
-            failure: function (response) {
-                Ext.Error.raise({
-                    msg: 'Error locking or unlocking file.'
-                });
-            }
+            failure: this.onLockFail
+        });
+    },
+
+    onLockSuccess: function (response, request) {
+        var lock = response.responseText;
+        if (lock === '' && request.method !== 'DELETE'){ // empty string means the user has the lock
+            console.log('lock/unlock successful');
+            this.getView().setEditMode(!this.getView().getEditMode()); // we got the lock, enter edit mode
+        }else{
+            lock = Ext.decode(response.responseText);
+            var message = 'This Item is being edited by ' + lock + '.\nItem will unlock when ' + lock + ' finishes edit.';
+            Ext.MessageBox.alert(
+                'Item Locked',
+                message
+            );
+        }
+    },
+
+    onLockFail: function () {
+        Ext.Error.raise({
+            msg: 'Error locking or unlocking file.'
         });
     },
 
     toggleEditMode: function (btn) {
         if (!this.getView().getEditMode()) {
+            // If edit mode is false
+            // lock item
             this.getView().getLayout().setActiveItem(1);
             this.lockItem(this.store.getAt(0).data.uri, true);
-            this.lockItem(this.store.getAt(0).data.uri);
-            var itemSourceComponentEdit = this.getView().queryById('itemSourcesEdit').queryById('listOfSources')
+            var itemSourceComponentEdit = this.getView().queryById('itemSourcesEdit').queryById('listOfSources');
             itemSourceComponentEdit.reconfigure(this.store.getAt(0).propertyGroupsStore.getById('Sources').valuesStore.getById('Source Document').valuesStore);
 
         } else {
             this.getView().getLayout().setActiveItem(0);
+            this.lockItem(this.store.getAt(0).data.uri, false);
+            this.getView().setEditMode(!this.getView().getEditMode());
         }
-
-        this.getView().setEditMode(!this.getView().getEditMode());
     },
 
     onEditCancel: function () {
@@ -153,34 +158,11 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         });
     },
 
-    onEditSave: function (btn) {
-        btn.disable();
+    onEditSaveCallback: function (responseObj, evt, btn) {
 
-        this.store.getAt(0).data.label = this.getView().queryById('itemViewHeaderEdit').queryById('itemNameField').value;
-
-        var headerComponent = this.getView().queryById('itemViewHeaderView');
-        headerComponent.reconfigure(this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore);
-
-        var qualitiesComponent = this.getView().queryById('itemViewPropertiesView');
-        qualitiesComponent.reconfigure(this.store.getAt(0).propertyGroupsStore.getById('Properties').valuesStore);
-
-        var relatedItemView = this.getView().queryById('relatedItemsView');
-        Ext.each(this.store.getAt(0).propertyGroupsStore.getById('Related Items').valuesStore.data.items, function (group) {
-            if (relatedItemView.queryById('relatedItemGrid_' + group.get('label').replace(/\s/g, ''))) {
-                relatedItemView.queryById('relatedItemGrid_' + group.get('label').replace(/\s/g, '')).reconfigure(group.valuesStore);
-            }
-            else {
-                relatedItemView.fireEvent('ViewRelatedItems:AddRelationshipGrid', group);
-            }
-        }, this);
-
-        this.store.getAt(0).setDirty();
-        this.store.sync({
-            callback: Ext.bind(this.onEditSaveCallback, this, [], true)
-        });
-    },
-
-    onEditSaveCallback: function (responseObj) {
+        // Re-enable editing
+        this.toggleSaving(true);
+        this.getView().setTitle(this.store.getAt(0).data.label);
 
         if (!responseObj.operations[0].success) {
             /*
@@ -192,23 +174,29 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         }
     },
 
-    onEditDone: function () {
+    onEditDone: function (btn) {
+
+        // Disable editing
+        this.toggleSaving(false);
         
         this.store.getAt(0).setDirty();
         this.store.sync({
             callback: Ext.bind(this.onEditDoneCallback, this, [], true)
         });
+        this.lockItem(this.store.getAt(0).data.uri, false);
     },
 
-    onEditDoneCallback: function (responseObj) {
+    onEditDoneCallback: function (responseObj, evt, btn) {
+
+        // Re-enable edit mode
+        this.toggleSaving(true);
 
         if (responseObj.operations[0].success) {
             this.getView().getLayout().setActiveItem(0);
             this.getView().setEditMode(!this.getView().getEditMode());
             
-            // Have to wait to redraw the screen after we've switched views due to a framwork bug where height isn't being properly set
+            // Have to wait to redraw the screen after we've switched views due to a framework bug where height isn't being properly set
             //  And we set it manually.
-            this.store.getAt(0).data.label = this.getView().queryById('itemViewHeaderEdit').queryById('itemNameField').value;
             this.getView().setTitle(this.store.getAt(0).data.label);
 
             var headerComponent = this.getView().queryById('itemViewHeaderView');
@@ -219,7 +207,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
             qualitiesComponent.reconfigure(this.store.getAt(0).propertyGroupsStore.getById('Properties').valuesStore);
 
             var itemSourceComponent = this.getView().queryById('itemSources').queryById('listOfSources');
-                itemSourceComponent.reconfigure(this.store.getAt(0).propertyGroupsStore.getById('Sources').valuesStore.getById('Source Document').valuesStore);
+            itemSourceComponent.reconfigure(this.store.getAt(0).propertyGroupsStore.getById('Sources').valuesStore.getById('Source Document').valuesStore);
 
             var imagesBrowserComponent = this.getView().queryById('itemViewImagesGrid'),
                 imagesBrowserComponentEdit = this.getView().queryById('itemViewImagesEdit');
@@ -237,7 +225,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
                 }
             }, this);
             relatedItemView.fireEvent('ViewRelatedItems:SetupData', this.store.getAt(0).propertyGroupsStore.getById('Related Items').valuesStore.data.items);
-        }   else    {
+        } else {
             /*
              server down..?
              */
@@ -245,6 +233,23 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
                 msg: 'Updating record failed.'
             })
         }
+    },
+
+    /*
+     *  Toggle Saving
+     *
+     *  Abstraction for toggling the save/delete buttons on the toolber
+     *
+     *  @author <JLG>
+     *  @param state {boolean} if true this will enable the buttons, false disables
+     */
+    toggleSaving: function(state) {
+        var itemIds = 'editDeleteButton, editDoneButton, editCancelButton'.split(', '),
+            toggle = (state) ? 'enable' : 'disable';
+
+        Ext.each(itemIds, function(btn) {
+            this.getView().queryById(btn)[toggle]();
+        }, this);
     },
 
     getItemViewData: function () {
@@ -258,6 +263,8 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     },
 
     handleRecordDelete: function (responseObj) {
+
+        this.lockItem(this.store.getAt(0).data.uri, false);
 
         EventHub.fireEvent('close', this.getView());
 
@@ -392,12 +399,27 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         Ext.bind(itemSourceComponentEdit.addSourcesGrid(record.propertyGroupsStore.getById('Sources').valuesStore.getById('Source Document').valuesStore), itemSourceComponent);
 
         /*
-         are we creating a new item?
+         are we creating a new item, or for other reasons starting in edit view?
          */
         if (me.getView().getEditMode()) {
-            me.getView().getLayout().setActiveItem(1);
-            me.lockItem(record.data.uri, true);
+            /*
+             is the record editable?  Assuming this should indicate if the record is locked,
+             but currently the model data always shows editable set to true.  I'm betting the
+             service needs to be modified to return false if the record is locked by another user.
+             */
+            if (record.data.editable) {
+                me.getView().getLayout().setActiveItem(1);
+                me.lockItem(record.data.uri, true);
+            }
         }
+        /*
+         set the edit button to be enabled only if the record is editable, and provide a
+         corresponding tooltip for the user.
+         */
+
+        var editBtn = this.getView().queryById('editModeButton');
+        editBtn.setDisabled(!record.data.editable);
+        editBtn.disabled ? editBtn.setTooltip('Item locked.') : editBtn.setTooltip('Edit');
     },
 
     onNewItemClick: function (btn) {
@@ -413,8 +435,8 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
     onParentSelected: function (uri, label) {
 
-        Ext.each(this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Type').valuesStore.data.items, function(item)    {
-            if(!item.get('inheritedFrom'))    {
+        Ext.each(this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Type').valuesStore.data.items, function (item) {
+            if (!item.get('inheritedFrom')) {
                 item.set('value', uri);
                 item.set('label', label);
             }
@@ -432,7 +454,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         })
     },
 
-    onItemReload:function(records, operation, success)  {
+    onItemReload: function (records, operation, success) {
         this.updateViewWithStoreData(records[0]);
     },
 
@@ -457,6 +479,12 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     },
     deleteRelatedItem: function (itemName, itemUri) {
 
+    },
+    beforeClose: function () {
+        if (this.getView().getEditMode()){
+            this.lockItem(this.store.getAt(0).data.uri, false);
+        }
+        return true;
     }
 });
 

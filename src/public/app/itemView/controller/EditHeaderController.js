@@ -13,19 +13,9 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
         'Savanna.itemView.view.header.EditHeader'
     ],
 
-    valNameArray: [],
-
     control: {
         view: {
             'EditHeader:StoreSet': 'storeSet'
-        },
-        /*
-        parentBtn: {
-            click: 'openParentItem'
-        },
-        */
-        parentChooser: {
-            click: 'openParentChooser'
         },
         intendedUseChooserBtn: {
             click: 'onIntendedUsesSelect'
@@ -41,8 +31,8 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
         itemDescription: {
             blur: 'updateDescription'
         },
-        itemNameField:  {
-            keyup:  'onItemNameKeyup'
+        itemNameField: {
+            blur: 'updateHeader'
         }
     },
 
@@ -67,7 +57,6 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
         // Setup intended use
         Ext.each(me.getView().store.getById('Intended Use').data.values, function(value) {
             me.getView().queryById('addIntendedUseBox').addTag(value.label, value.editable);
-            me.valNameArray.push(value.label);
         });
 
         me.getView().queryById('addIntendedUseBox').store.getProxy().url = SavannaConfig.savannaUrlRoot + 'rest/model/search/keyword/property/' + encodeURI(me.getView().store.getById('Intended Use').data.predicateUri);
@@ -92,17 +81,6 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
 
             description.setValue(me.getView().store.getById('Description').data.values[0].value);
         }
-        /*
-        set the parent chooser to enabled or disabled
-         */
-        Ext.each(me.getView().store.getById('Type').data.values, function(type)    {
-            if(!type.inheritedFrom) {
-                /*
-                this should be the top level parent
-                 */
-                me.getView().down('#parentChooser').setDisabled(!type.editable);
-            }
-        });
         // Focus on the Title field automatically
         this.getView().queryById('itemNameField').focus(false, 200);
     },
@@ -111,28 +89,24 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
         this.getView().fireEvent('ItemView:OpenItem', this.getView().store.getById('Type').data.values[0].label, this.getView().store.getById('Type').data.values[0].value);
     },
 
-    openParentChooser: function() {
-
-        Ext.create('Savanna.itemView.view.createItem.CreateItem', {
-            width: 750,
-            height: 500,
-            creating:false,
-            viewer: this.getView().up('itemview_itemviewer')
-        });
-    },
-
-    onItemNameKeyup:function()  {
-        if (this.getView().up('itemview_itemviewer').queryById('editSaveButton').disabled) {
-            this.getView().up('itemview_itemviewer').queryById('editSaveButton').enable();
-        }
-    },
-
     onIntendedUsesSelect:function() {
+        var valNameArray = [];
+        var disabledNameArray = [];
+
+        Ext.each(this.getView().store.getById('Intended Use').valuesStore.data.items, function(value) {
+            valNameArray.push(value.data.label);
+
+            if (!value.data.editable) {
+                disabledNameArray.push(value.data.label);
+            }
+        });
+
         var vChooser = Ext.create('Savanna.itemView.view.itemQualities.ValuesPicker', {
             width: 500,
             height: 600,
             selectionStore: this.getView().store.getById("Intended Use").valuesStore,
-            valNameArray: this.valNameArray,
+            valNameArray: valNameArray,
+            disabledItemsArray: disabledNameArray,
             uri: encodeURI(this.getView().store.getById('Intended Use').data.predicateUri),
             storeHelper: this.getView().storeHelper
         });
@@ -142,13 +116,11 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
 
     closedVPicker: function(view) {
         if (view.updatedStore) {
-            this.valNameArray = [];
             Ext.Array.erase(this.getView().store.getById('Intended Use').data.values, 0, this.getView().store.getById('Intended Use').data.values.length);
             this.getView().queryById('addIntendedUseBox').clearTags();
 
             Ext.each(this.getView().store.getById('Intended Use').valuesStore.data.items, function(value) {
                 this.getView().store.getById('Intended Use').data.values.push(value.data);
-                this.valNameArray.push(value.data.label);
                 this.getView().queryById('addIntendedUseBox').addTag(value.data.label);
             }, this);
 
@@ -168,25 +140,24 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
 
     addingIntendedUse: function(tagName, tagData, aView) {
         this.getView().storeHelper.addBotLevItemInStore(tagName, tagData, this.getView().store.getById('Intended Use'));
-        this.valNameArray.push(tagName);
         this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
     },
 
     removingIntendedUse: function(tagName, aView) {
         this.getView().storeHelper.removeBotLevItemInStore(tagName, this.getView().store.getById('Intended Use'));
-        Ext.Array.remove(this.valNameArray, tagName);
         this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
     },
 
     updateDescription: function(comp, e, eOpts) {
-        var myStore = this.getView().store;
-        myStore.getById('Description').data.values[0].value = comp.value;
-        this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');  
+        var value = {label: "Description", comment: null, value: comp.value};
+        this.getView().storeHelper.updateBotLevItemInStore(null, value, this.getView().store.getById('Description'));
+        this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
     },
 
     updateHeader: function(comp) {
-        var myStore = this.getView().store;
-        myStore.getById('Label').data.values[0].value = comp.value;
-        this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');  
+        var value = {label: comp.value, comment: null, value: comp.value};
+        this.getView().storeHelper.updateBotLevItemInStore(null, value, this.getView().store.getById('Label'));
+        this.getView().storeHelper.fetchMainStore().getAt(0).data.label = comp.value;
+        this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
     }
 });

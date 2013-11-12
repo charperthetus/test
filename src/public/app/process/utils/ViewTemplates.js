@@ -1021,7 +1021,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                 gmake(go.Panel, go.Panel.Vertical,{name:"MAIN"},
                     gmake(go.Panel, go.Panel.Auto, {
                             name: 'BODY',
-                            background: 'transparent',
+                            background: 'transparent'
                         
                         },
                         gmake(go.Shape, 'RoundedRectangle', this.styler().altsGroup().roundedRectangle,{

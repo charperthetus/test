@@ -16,47 +16,56 @@ Ext.define('Savanna.process.view.metadata.FullProcessMetadata', {
         'Savanna.process.controller.FullProcessMetadataController',
         'Savanna.itemView.view.imageBrowser.ImagesGridEdit',
         'Savanna.sources.view.Sources',
-        'Savanna.metadata.view.Details'
+        'Savanna.metadata.view.part.InformationPanel'
     ],
 
     controller: 'Savanna.process.controller.FullProcessMetadataController',
 
     overflowY: 'auto',
 
+    ui: 'off-white',
+    cls:['white-grid-view-panel-edit', 'item-view-column'],
     items: [
         {
+            xtype: 'label',
+            text: 'Title'
+        },
+        {
             xtype: 'textfield',
-            value: 'Process Title',
             itemId: 'processTitle',
             enableKeyEvents: true
         },
         {
             xtype: 'textarea',
-            fieldLabel: 'Process Description',
+            fieldLabel: 'Description',
             labelAlign: 'top',
             itemId: 'processDescription',
             width: '100%',
             enableKeyEvents: true
         },
+
         {
             xtype: 'itemview_imagesgrid_edit',
             itemId: 'imageBrowser',
             header: false
         },
         {
-            xtype: 'metadata_details',
-            itemId: 'detailsPanel',
-            collapseMode : 'header',
-            headerPosition: 'top',
-            collapsible: false,
+            xtype: 'informationpanel',
+            itemId: 'informationPanel',
+            collapsible: true,
             region: 'center',
             split: true
         },
+
         {
             xtype: 'document_sources',
             editMode: true,
             itemId: 'itemSources',
-            itemURI: 'xx%2FItem'
+            itemURI: 'xx%2FItem',
+            header: {
+                ui: 'off-white'
+            },
+            ui: 'off-white'
         }
     ]
 });
