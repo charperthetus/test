@@ -59,6 +59,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
     constructor: function (options) {
         this.opts = options || {};
+        this.saving = false;
         this.store = Ext.create('Savanna.itemView.store.MainItemStore');
         this.storeHelper = Ext.create('Savanna.itemView.store.ItemViewStoreHelper');
         this.callParent(arguments);
@@ -161,7 +162,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     onEditSaveCallback: function (responseObj, evt, btn) {
 
         // Re-enable editing
-        this.toggleSaving(true);
+        this.toggleSaving(false);
         this.getView().setTitle(this.store.getAt(0).data.label);
 
         if (!responseObj.operations[0].success) {
@@ -177,7 +178,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     onEditDone: function (btn) {
 
         // Disable editing
-        this.toggleSaving(false);
+        this.toggleSaving(true);
         
         this.store.getAt(0).setDirty();
         this.store.sync({
@@ -189,7 +190,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     onEditDoneCallback: function (responseObj, evt, btn) {
 
         // Re-enable edit mode
-        this.toggleSaving(true);
+        this.toggleSaving(false);
 
         if (responseObj.operations[0].success) {
             this.getView().getLayout().setActiveItem(0);
@@ -235,15 +236,20 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
      *  Abstraction for toggling the save/delete buttons on the toolber
      *
      *  @author <JLG>
-     *  @param state {boolean} if true this will enable the buttons, false disables
+     *  @param state {boolean} If true, item enters a saving state (and disabled toolbars), false removes this
      */
     toggleSaving: function(state) {
-        var itemIds = 'editDeleteButton, editDoneButton, editCancelButton'.split(', '),
-            toggle = (state) ? 'enable' : 'disable';
+        var toolbarButtons = 'editDeleteButton, editDoneButton, editCancelButton'.split(', '),
+            toggle = (state) ? 'disable' : 'enable'; // disable buttons if saving is true
 
-        Ext.each(itemIds, function(btn) {
+        // Toggling all the toolbar buttons
+        Ext.each(toolbarButtons, function(btn) {
             this.getView().queryById(btn)[toggle]();
         }, this);
+
+        // Set the saving state
+        this.saving = state;
+        console.log(this.saving);
     },
 
     getItemViewData: function () {
@@ -473,30 +479,34 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     deleteRelatedItem: function (itemName, itemUri) {
 
     },
-    beforeClose: function () {
+    beforeClose: function (panel) {
+
+        // Check if in edit mode (and prompt the user to save changes)
         if (this.getView().getEditMode()){
             var me = this;
             Ext.Msg.show({
                 title: 'Close Item',
-                msg: "Do you want to save the changes you made in this item?\nYour changes will be lost if you don't save them.",
+                msg: "Do you want to save the changes you made in this item? Your changes will be lost if you don't save them.",
                 width: 375,
                 buttons: Ext.Msg.YESNOCANCEL,
-                buttonText: {yes: "Don't Save", no: 'Save', cancel: 'Cancel'},
+                buttonText: { yes: 'Save', no: 'Don\'t save', cancel: 'Cancel' },
                 fn: function(button) {
+
+                    // If yes, force dirty/save/release lock/close panel
                     if(button == 'yes'){
-                        //save and close
-                        //force a dirty state so that sync will do something
-                        me.store.first().setDirty();
+                        me.store.getAt(0).setDirty();
+                        me.toggleSaving(true);
                         me.store.sync({
                             callback: function () {
-                                me.releaseLock();
-                                me.getView().down('#processSidepanel').fireEvent('processclose');
+                                me.lockItem(me.store.getAt(0).data.uri, false);
                                 panel[panel.closeAction]();
                             }
                         });
                     
+                    // Else if no, release lock and close
                     } else if (button == 'no') {
-                        me.lockItem(this.store.getAt(0).data.uri, false);
+                        me.lockItem(me.store.getAt(0).data.uri, false);
+                        panel[panel.closeAction]();
                     
                     } else {
                         //do nothing, leave the process open
@@ -504,9 +514,14 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
                 }
             });
             return false;
+
+        // Check if we're already saving to prevent closing
+        } else if ( this.saving ) {
+            return false;
+
+        // Else proceed
+        } else {
+            return true;            
         }
-        return true;
     }
 });
-
-
