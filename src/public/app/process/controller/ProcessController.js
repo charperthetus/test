@@ -309,9 +309,10 @@ Ext.define('Savanna.process.controller.ProcessController', {
         if (this.isStoreDirty(this.store)) {
             Ext.Msg.show({
                 title: 'Close Process',
-                msg: 'Save before closing?',
+                msg: "Do you want to save the changes you made in this process?\nYour changes will be lost if you don't save them.",
+                width: 375,
                 buttons: Ext.Msg.YESNOCANCEL,
-                buttonText: {yes: 'Save', no: 'Discard', cancel: 'Cancel'},
+                buttonText: {yes: "Don't Save", no: 'Save', cancel: 'Cancel'},
                 fn: function(button) {
                     if(button == 'yes'){
                         //save and close
@@ -345,11 +346,17 @@ Ext.define('Savanna.process.controller.ProcessController', {
     onDelete: function() {
         var me = this;
         Ext.Msg.confirm(
-            'Delete Process',
-            'Permanently delete this process?',
+            {
+                buttons:Ext.Msg.YESNO,
+                buttonText: {yes: 'OK', no: 'Cancel'},
+                title: 'Delete Process',
+                msg: 'Are you sure you want to permanently delete this process?'
+            },
             function(btn) {
                if (btn == 'yes') {
                    me.deleteProcess();
+               } else {
+                   //cancel
                }
             }
         );

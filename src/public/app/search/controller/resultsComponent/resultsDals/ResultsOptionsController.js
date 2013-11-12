@@ -11,7 +11,7 @@ Ext.define('Savanna.search.controller.resultsComponent.resultsDals.ResultsOption
         },
 
         init: function () {
-            this.getView().body.on('click', this.onClick, this);
+            this.getView().on('click', this.onClick, this);
         }
 
     }

@@ -1,0 +1,24 @@
+.refineSearchFacets{
+	border-top: 1px solid #ccc;
+	// margin-top: 10px;
+	
+	.x-toolbar-defualt, .x-toolbar {
+		margin: 0;
+		padding: 0;
+		.x-toolbar-text.bold{
+			font-weight: bold;
+		}
+	}
+}
+
+.customDatePanel{
+	margin-left: 5px;
+	
+	.x-anchor-form-item:nth-child(n+2){
+		margin-top: -15px;
+	}
+	
+	.x-form-trigger-wrap {
+		width: 115px !important;
+	}
+}
