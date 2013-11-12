@@ -512,6 +512,7 @@ Ext.define('Savanna.crumbnet.controller.CrumbnetController', {
             modal: true,
             width: 500,
             height: 100,
+            constrain: true,
             html: 'TODO: ' + msg
         }).show();
     },

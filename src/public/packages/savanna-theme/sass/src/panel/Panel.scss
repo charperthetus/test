@@ -50,6 +50,27 @@
 	  $uikit-header-border-style: $panel-header-border-style,
 	  $uikit-header-background-color: $item-view-panel-header-background-color
 	 );
+	 
+	@include uikit-panel(
+		$uikit-ui: 'simple',
+	    $uikit-header-color: #333,
+	    $uikit-header-background-color: #fff,
+	    $uikit-header-text-padding: 0,
+	    $uikit-header-padding: 0,
+	    $uikit-padding: 0,
+	    $uikit-body-padding: 0
+	);
+	
+	@include uikit-panel(
+		$uikit-ui: 'simple-grey',
+	    $uikit-header-color: #333,
+	    $uikit-header-background-color: #ebebeb,
+	    $uikit-header-text-padding: 0,
+	    $uikit-header-padding: 5px,
+	    $uikit-padding: 0,
+	    $uikit-body-background-color: #ebebeb,
+	    $uikit-body-padding: 0 5px 5px 5px
+	);
     
 	// /* 
 	//  * This is the solution for search option and result facets until these can be changed 
@@ -75,6 +96,7 @@
 	
 	@include uikit-panel(
 		$uikit-ui: 'results-facet',
+		$uikit-padding: $panel-resultfacet-padding,
 	    $uikit-header-color: $panel-resultfacet-header-color,
 	    $uikit-header-font-weight: $panel-resultfacet-header-font-weight,
 	    $uikit-header-line-height: $panel-resultfacet-header-line-height,
