@@ -93,7 +93,7 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
                 isClosable: true,
                 store: Ext.create('Savanna.itemView.store.AutoCompleteStore', {
                     urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/model/search/keyword/property/' + predicateUri,
-                    paramsObj: { pageStart:0, pageSize:20, alphabetical: true }
+                    paramsObj: { pageStart:0, pageSize:20, alphabetical: false }
                 })
             });
         this.propNameArray.push(data.label);

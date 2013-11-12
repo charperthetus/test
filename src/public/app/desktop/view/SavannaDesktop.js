@@ -50,7 +50,7 @@ Ext.define('Savanna.desktop.view.SavannaDesktop', {
                     height:29,
                     margin:'3 0 0 0',
                     glyph:'modelSearch',
-                    tooltip: 'Click to search the model.'
+                    tooltip: 'Click to search the Red Nodal Model.'
                 },{
                     itemId: 'uploadbutton',
                     cls:'uploadButtonFramework',

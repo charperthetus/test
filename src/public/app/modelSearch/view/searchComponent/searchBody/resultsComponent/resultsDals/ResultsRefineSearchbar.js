@@ -50,6 +50,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
         },
         {
             text:'Reset',
+            tooltip:'Reset all search facets',
             itemId:'resultsFacetsReset'
         }
 

@@ -52,7 +52,8 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
             'ItemView:OpenItem': 'openItem'
         },
         view: {
-            'ItemView:ParentSelected': 'onParentSelected'
+            'ItemView:ParentSelected': 'onParentSelected',
+            beforeclose: 'beforeClose'
         }
     },
 
@@ -90,31 +91,47 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
             },
             disableCaching: false,
 
-            success: function (response) {
-                //console.log('lock/unlock successful');
-            },
+            success: Ext.bind(this.onLockSuccess, this),
 
-            failure: function (response) {
-                Ext.Error.raise({
-                    msg: 'Error locking or unlocking file.'
-                });
-            }
+            failure: this.onLockFail
+        });
+    },
+
+    onLockSuccess: function (response, request) {
+        var lock = response.responseText;
+        if (lock === '' && request.method !== 'DELETE'){ // empty string means the user has the lock
+            console.log('lock/unlock successful');
+            this.getView().setEditMode(!this.getView().getEditMode()); // we got the lock, enter edit mode
+        }else{
+            lock = Ext.decode(response.responseText);
+            var message = 'This Item is being edited by ' + lock + '.\nItem will unlock when ' + lock + ' finishes edit.';
+            Ext.MessageBox.alert(
+                'Item Locked',
+                message
+            );
+        }
+    },
+
+    onLockFail: function () {
+        Ext.Error.raise({
+            msg: 'Error locking or unlocking file.'
         });
     },
 
     toggleEditMode: function (btn) {
         if (!this.getView().getEditMode()) {
+            // If edit mode is false
+            // lock item
             this.getView().getLayout().setActiveItem(1);
             this.lockItem(this.store.getAt(0).data.uri, true);
-            this.lockItem(this.store.getAt(0).data.uri);
             var itemSourceComponentEdit = this.getView().queryById('itemSourcesEdit').queryById('listOfSources');
             itemSourceComponentEdit.reconfigure(this.store.getAt(0).propertyGroupsStore.getById('Sources').valuesStore.getById('Source Document').valuesStore);
 
         } else {
             this.getView().getLayout().setActiveItem(0);
+            this.lockItem(this.store.getAt(0).data.uri, false);
+            this.getView().setEditMode(!this.getView().getEditMode());
         }
-
-        this.getView().setEditMode(!this.getView().getEditMode());
     },
 
     onEditCancel: function () {
@@ -165,6 +182,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
         this.store.sync({
             callback: Ext.bind(this.onEditDoneCallback, this, [], true)
         });
+        this.lockItem(this.store.getAt(0).data.uri, false);
     },
 
     onEditDoneCallback: function (responseObj, evt, btn) {
@@ -245,6 +263,8 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     },
 
     handleRecordDelete: function (responseObj) {
+
+        this.lockItem(this.store.getAt(0).data.uri, false);
 
         EventHub.fireEvent('close', this.getView());
 
@@ -459,6 +479,12 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     },
     deleteRelatedItem: function (itemName, itemUri) {
 
+    },
+    beforeClose: function () {
+        if (this.getView().getEditMode()){
+            this.lockItem(this.store.getAt(0).data.uri, false);
+        }
+        return true;
     }
 });
 
