@@ -91,9 +91,14 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
 
     onIntendedUsesSelect:function() {
         var valNameArray = [];
+        var disabledNameArray = [];
 
         Ext.each(this.getView().store.getById('Intended Use').valuesStore.data.items, function(value) {
             valNameArray.push(value.data.label);
+
+            if (!value.data.editable) {
+                disabledNameArray.push(value.data.label);
+            }
         });
 
         var vChooser = Ext.create('Savanna.itemView.view.itemQualities.ValuesPicker', {
@@ -101,6 +106,7 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
             height: 600,
             selectionStore: this.getView().store.getById("Intended Use").valuesStore,
             valNameArray: valNameArray,
+            disabledItemsArray: disabledNameArray,
             uri: encodeURI(this.getView().store.getById('Intended Use').data.predicateUri),
             storeHelper: this.getView().storeHelper
         });
@@ -110,13 +116,11 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
 
     closedVPicker: function(view) {
         if (view.updatedStore) {
-            this.valNameArray = [];
             Ext.Array.erase(this.getView().store.getById('Intended Use').data.values, 0, this.getView().store.getById('Intended Use').data.values.length);
             this.getView().queryById('addIntendedUseBox').clearTags();
 
             Ext.each(this.getView().store.getById('Intended Use').valuesStore.data.items, function(value) {
                 this.getView().store.getById('Intended Use').data.values.push(value.data);
-                this.valNameArray.push(value.data.label);
                 this.getView().queryById('addIntendedUseBox').addTag(value.data.label);
             }, this);
 
@@ -146,7 +150,7 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
 
     updateDescription: function(comp, e, eOpts) {
         var value = {label: "Description", comment: null, value: comp.value};
-        this.getView().storeHelper.updateBotLevItemInStore("Description", value, this.getView().store.getById('Description'));
+        this.getView().storeHelper.updateBotLevItemInStore(null, value, this.getView().store.getById('Description'));
         this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
     },
 

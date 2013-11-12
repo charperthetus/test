@@ -54,8 +54,7 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
     },
 
     onOpenBtnClick: function() {
-        //console.log('open item');
-        EventHub.fireEvent('open', {uri: this.store.getAt(0).data.uri, type: 'Item', label: this.store.getAt(0).data.label});
+        EventHub.fireEvent('open', {uri: this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Type').data.values[0].value, type: 'Item', label: this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Type').data.values[0].label});
     },
 
     onUriChanged: function(processUri, itemName) {
@@ -122,8 +121,6 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
     },
 
     onSaveChanges: function() {
-        // TODO: save the existing set of changes, if any
-        console.log('ProcessItemMetadataController saveChanges');
         if(this.store && this.store.getAt(0)) {
             this.store.getAt(0).setDirty();
             this.store.sync();
@@ -140,7 +137,7 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
 
     itemDescriptionBlur: function(e) {
         var value = {label: "Description", comment: null, value: e.getValue()};
-        this.storeHelper.updateBotLevItemInStore("Description", value, this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Description'));
+        this.storeHelper.updateBotLevItemInStore(null, value, this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Description'));
     },
 
     instanceTitleBlur: function(e) {
@@ -159,9 +156,14 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
 
     onRoleChooserButtonSelect:function() {
         var valNameArray = [];
+        var disabledNameArray = [];
 
         Ext.each(this.store.getAt(0).propertyGroupsStore.getById('Related Items').valuesStore.getById('has role').valuesStore.data.items, function(value) {
             valNameArray.push(value.data.label);
+
+            if (!value.data.editable) {
+                disabledNameArray.push(value.data.label);
+            }
         });
 
         var rChooser = Ext.create('Savanna.itemView.view.itemQualities.ValuesPicker', {
@@ -169,6 +171,7 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
             height: 600,
             selectionStore: this.store.getAt(0).propertyGroupsStore.getById('Related Items').valuesStore.getById('has role').valuesStore,
             valNameArray: valNameArray,
+            disabledItemsArray: disabledNameArray,
             uri: 'lib%252EExtendedRelationOntology%253Ahas_role%252FModelPredicate',
             storeHelper: this.storeHelper
         });
@@ -183,7 +186,7 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
 
             Ext.each(this.store.getAt(0).propertyGroupsStore.getById('Related Items').valuesStore.getById('has role').valuesStore.data.items, function(value) {
                 this.store.getAt(0).propertyGroupsStore.getById('Related Items').valuesStore.getById('has role').data.values.push(value.data);
-                this.getRoleAutoCompleteBox().addTag(value.data.label);
+                this.getRoleAutoCompleteBox().addTag(value.data.label, value.data.editable);
             }, this);
         }
     },

@@ -20,6 +20,7 @@ Ext.define('Savanna.itemView.model.AutoCompleteModel', {
         {name: "classification"},
         {name: "workflowState"},
         {name: "predicateRange"},
-        {name: "selected", type: 'bool'}
+        {name: "selected", type: 'bool'},
+        {name: "disabled", type: 'bool'}
     ]
 });
