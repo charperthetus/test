@@ -110,7 +110,6 @@ Ext.define("Savanna.document.view.DocumentToolbar", {
                     width: 25,
                     height: 25,
                     cls: 'toolbarButtonFramework',
-                    ui: 'icon-dark',
                     glyph: 'arrowNavRight',
                     itemId: "nextPage",
                     tooltip: 'Next page'

@@ -24,8 +24,12 @@ Ext.define('Savanna.process.view.metadata.FullProcessMetadata', {
     overflowY: 'auto',
 
     ui: 'off-white',
-
+    cls:['white-grid-view-panel-edit', 'item-view-column'],
     items: [
+        {
+            xtype: 'label',
+            text: 'Title'
+        },
         {
             xtype: 'textfield',
             itemId: 'processTitle',
@@ -33,7 +37,7 @@ Ext.define('Savanna.process.view.metadata.FullProcessMetadata', {
         },
         {
             xtype: 'textarea',
-            fieldLabel: 'Process Description',
+            fieldLabel: 'Description',
             labelAlign: 'top',
             itemId: 'processDescription',
             width: '100%',

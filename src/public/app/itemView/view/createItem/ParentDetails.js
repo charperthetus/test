@@ -23,7 +23,7 @@ Ext.define('Savanna.itemView.view.createItem.ParentDetails', {
         'Ext.Img'
     ],
 
-    title: 'Selection',
+    title: 'Item Description',
     header: {
         xtype: 'header',
         cls: 'item-header-font',

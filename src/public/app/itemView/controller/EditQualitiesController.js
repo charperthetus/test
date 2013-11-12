@@ -93,7 +93,7 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
                 isClosable: true,
                 store: Ext.create('Savanna.itemView.store.AutoCompleteStore', {
                     urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/model/search/keyword/property/' + predicateUri,
-                    paramsObj: { pageStart:0, pageSize:20, alphabetical: true }
+                    paramsObj: { pageStart:0, pageSize:20, alphabetical: false }
                 })
             });
         this.propNameArray.push(data.label);
@@ -121,9 +121,14 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
 
     launchValuesChooser: function(storeName) {
         var valNameArray = [];
+        var disabledNameArray = [];
 
         Ext.each(this.getView().store.getById(storeName).valuesStore.data.items, function(value) {
             valNameArray.push(value.data.label);
+
+            if (!value.data.editable) {
+                disabledNameArray.push(value.data.label);
+            }
         });
 
         var vChooser = Ext.create('Savanna.itemView.view.itemQualities.ValuesPicker', {
@@ -131,6 +136,7 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
             height: 600,
             selectionStore: this.getView().store.getById(storeName).valuesStore,
             valNameArray: valNameArray,
+            disabledItemsArray: disabledNameArray,
             uri: encodeURI(this.getView().store.getById(storeName).data.predicateUri),
             storeHelper: this.getView().storeHelper
         });
@@ -145,7 +151,7 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
 
             Ext.each(this.getView().store.getById(propName).valuesStore.data.items, function(value) {
                 this.getView().store.getById(propName).data.values.push(value.data);
-                this.getView().queryById('prop_' + propName.replace(/[\s'"]/g, "_")).addTag(value.data.label);
+                this.getView().queryById('prop_' + propName.replace(/[\s'"]/g, "_")).addTag(value.data.label, value.data.editable);
             }, this);
 
 //            this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');

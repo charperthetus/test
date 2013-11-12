@@ -14,3 +14,22 @@
     text-decoration: none;
     font-size: 16px;
 }
+
+.close-btn {
+    @include thetus-icons;
+    
+    &:before{
+        content: 'closeRollout';
+    }
+    &:hover:before{
+        content: 'closeRollover';
+    }
+
+    &[disabled], .disabled{
+        @include opacity(0.8);
+
+        &:hover:before{
+            content: 'closeRollout';
+        }
+    }
+}
