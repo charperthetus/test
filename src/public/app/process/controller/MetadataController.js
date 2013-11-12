@@ -38,8 +38,6 @@ Ext.define('Savanna.process.controller.MetadataController', {
 
         // then load up the panel for the new selection
         if (1 === this.getDiagram().selection.count) {
-            var itemUri;
-            var itemName = this.getDiagram().selection.first().data.label;
             var itemCategory = this.getDiagram().selection.first().data.category;
 
             switch(itemCategory) {
@@ -47,13 +45,11 @@ Ext.define('Savanna.process.controller.MetadataController', {
                     //show loading screen
                     this.getHiddenPanel().getLayout().setActiveItem(this.getNothingHereLabel());
 
-                    if (this.getDiagram().selection.first().data.representsItemUri) {
-                        itemUri = this.getDiagram().selection.first().data.representsItemUri;
-                        // this is an item
-                        this.setUpItemDetails(itemUri, itemName);
+                    if (this.getDiagram().selection.first().data.className) {
+                        this.itemLoaded();
                     }
                     else {
-                        this.getCanvas().on('itemInstanceCreated', this.instanceLoaded, this);
+                        this.getCanvas().on('itemLoaded', this.itemLoaded, this);
                     }
 
                     break;
@@ -67,10 +63,19 @@ Ext.define('Savanna.process.controller.MetadataController', {
         }
     },
 
-    instanceLoaded: function() {
-        var itemUri = this.getDiagram().selection.first().data.representsItemUri;
+    itemLoaded: function() {
+        this.getCanvas().un('itemLoaded', this.itemLoaded, this);
+        var store = this.getView().up('process_component').getController().store.getAt(0).nodeDataArrayStore;
+        var len = store.data.length;
+
+        for (var i= 0; i<len; i++) {
+            var storeData = store.getAt(i);
+            if (storeData.data.uri === this.getDiagram().selection.first().data.uri) {
+                break;
+            }
+        }
         // this is an item
-        this.setUpItemDetails(itemUri);
+        this.setUpItemDetails(store, i);
     },
 
     setUpProcessDetails: function(itemUri) {
@@ -85,8 +90,8 @@ Ext.define('Savanna.process.controller.MetadataController', {
         }
     },
 
-    setUpItemDetails: function(itemUri,itemName) {
-        this.getItemMetadata().fireEvent('processItemUriChanged', itemUri,itemName);
+    setUpItemDetails: function(store, index) {
+        this.getItemMetadata().fireEvent('processItemUriChanged', store, index);
     },
 
     showTheItemView: function() {

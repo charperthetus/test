@@ -944,7 +944,7 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                         fill: '#3ca8c8',
                         position: new go.Point(9, 9),
                         stroke: null
-                    }, 'Byproducts', new go.Point(13, 58)),
+                    }, 'By-products', new go.Point(13, 58)),
                 this.makeAdornment(go.Spot.Bottom, new go.Point(4, 39), 90,
                     Ext.bind(this.onResultMouseDrop, this), Ext.bind(this.utils().addResult, this.utils()), {
                         geometryString: 'F M7,5V3h4v2H7z M11,9V6H7v3H11z M13,9H5l4,6L13,9z',

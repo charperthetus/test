@@ -125,7 +125,7 @@ Ext.define('Savanna.itemView.view.itemQualities.ValuesPicker', {
         this.callParent(arguments);
         this.store = Ext.create(this.store, {
             urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/model/search/keyword/property/' + this.uri,
-            paramsObj: {pageStart:0, pageSize:1000, alphabetical: false}
+            paramsObj: {pageStart:0, pageSize:1000, alphabetical: true}
         });
 
         this.store.load({

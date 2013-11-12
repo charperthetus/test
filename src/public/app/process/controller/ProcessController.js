@@ -113,7 +113,7 @@ Ext.define('Savanna.process.controller.ProcessController', {
                     if (response.responseText !== '') {
                         Ext.MessageBox.alert({
                             title : 'Process Locked',
-                            msg : 'This Process is being edited by another user: ' + Ext.decode(response.responseText),
+                            msg : 'This process is locked for editing by another user. Please try again later.',
                             buttons: Ext.Msg.OK,
                             fn: function() {
                                 me.confirmClosed = true;
@@ -155,9 +155,9 @@ Ext.define('Savanna.process.controller.ProcessController', {
         var me = this;
 
         var newProcess = {'class': 'go.GraphLinksModel', 'nodeKeyProperty': 'uri', 'nodeDataArray': [{'category':'Start'}], 'linkDataArray': []};
-        newProcess.uri = this.utils().getURI('ProcessModel');  //todo: remove this code once the instance creation starts working
+        //newProcess.uri = this.utils().getURI('ProcessModel');  //todo: remove this code once the instance creation starts working
         newProcess.nodeDataArray[0].uri = this.utils().getURI('Start');
-        this.store.add(newProcess);
+        this.store.loadRawData(newProcess);
         this.load(diagram, this.store.first());
 
         // make a process instance
