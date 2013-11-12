@@ -29,6 +29,10 @@ Ext.define('Savanna.process.controller.FullProcessMetadataController', {
         processDescription: {
             blur: 'processDescriptionBlur'
         },
+        categoryValue: true,
+        categoryChooserButton: {
+            click: 'onCategoryChooserButtonSelect'
+        },
         imageBrowser: true,
         informationPanel: true,
         itemSources: true
@@ -87,6 +91,10 @@ Ext.define('Savanna.process.controller.FullProcessMetadataController', {
     processDescriptionBlur: function(e) {
         var value = {label: "Description", comment: null, value: e.getValue()};
         this.storeHelper.updateBotLevItemInStore(null, value, this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Description'));
+    },
+
+    onCategoryChooserButtonSelect: function(e) {
+        console.log('onCategoryChooserButtonSelect');
     }
 
 });
