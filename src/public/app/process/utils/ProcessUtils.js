@@ -187,7 +187,7 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
     },
 
     addByproduct: function(e, obj) {
-        this.addStepPart(obj, 'ProcessItem', 'Byproduct', 'ByproductLink');
+        this.addStepPart(obj, 'ProcessItem', 'By-product', 'ByproductLink');
     },
 
     addResult: function(e, obj) {

@@ -113,7 +113,7 @@ Ext.define('Savanna.process.controller.ProcessController', {
                     if (response.responseText) {
                         Ext.MessageBox.alert(
                             'Process Locked',
-                            'This process is being edited by another user: ' + response.responseText,
+                            'This process is locked for editing by another user. Please try again later.',
                             function() {
                                 me.confirmClosed = true;
                                 view[view.closeAction]();
