@@ -46,35 +46,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
         width: '100%'
     },
 
-    items: [{
-        xtype: 'panel',
-        itemId: 'results-searchSources',
-        ui: 'simple',
-        title: 'search sources',
-        layout: 'vbox',
-        align: 'left',
-        margin: '0 0 10 0'
-    },
-    {
-        xtype: 'panel',
-        itemId: 'results-refineSearch',
-        hidden: true,
-        bbar: {
-            padding: 0,
-            margin: '10 0 0 0',
-            items: ['->',{
-                text:'Keyword Reset',
-                itemId:'resultsFacetsReset',
-                padding: 0,
-                margin: 0
-            }]}
-    },
-    {
-        xtype: 'container',
-        itemId: 'results-refineSearchFacets',
-        cls: 'refineSearchFacets',
-        padding: '0 10 10 10'
-    }],
+    items: [],
 
     initComponent: function () {
         this.mixins.storeable.initStore.call(this);
@@ -87,21 +59,59 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
          remove DALs that have been deselected
          */
 
+         var resulstsSearchSources = Ext.create('Ext.panel.Panel', {
+                                                    xtype: 'panel',
+                                                    itemId: 'results-searchSources',
+                                                    ui: 'simple',
+                                                    title: 'search sources',
+                                                    layout: 'vbox',
+                                                    align: 'left',
+                                                    margin: '0 0 10 0'
+                                                });
+        /* This panel is hidden until the bug with refine search can be fixed. */
+        var resulstsRefineSearch = Ext.create('Ext.panel.Panel', {
+                                                    itemId: 'results-refineSearch',
+                                                    hidden: true,
+                                                    bbar: {
+                                                        padding: 0,
+                                                        margin: '10 0 0 0',
+                                                        items: ['->',{
+                                                            text:'Keyword Reset',
+                                                            itemId:'resultsFacetsReset',
+                                                            padding: 0,
+                                                            margin: 0
+                                                        }]
+                                                    }
+                                                });
+        var resulstsSearchFacets = Ext.create('Ext.container.Container', {
+                                                    itemId: 'results-refineSearchFacets',
+                                                    cls: 'refineSearchFacets',
+                                                    padding: '0 10 10 10'
+                                                });
+        this.add(resulstsSearchSources);
+
         if (!this.queryById('refinesearch')) {
+            if (!this.queryById('results-refineSearch')) {
+                this.add(resulstsRefineSearch);
+            }
             this.down('#results-refineSearch').add(this.createRefineSearchPanel());
         }
 
         if (!this.queryById('refineterms')) {
+            if (!this.queryById('results-refineSearch')) {
+                this.add(resulstsRefineSearch);
+            }
             this.down('#results-refineSearch').add(this.createRefineTermsPanel());
         }
 
         var facetTabs = this.createFacetsTabPanel();    // always do this...
 
         if (!this.queryById('resultsfacets')) {
-
+            if (!this.queryById('results-refineSearchFacets')) {
+                this.add(resulstsSearchFacets);
+            }
             this.down('#results-refineSearchFacets').add(facetTabs);    // ...but only add if doesn't exist
         }
-
 
         var startingItemsLength = this.items.length; // determine where to insert the dals, above facets
 
