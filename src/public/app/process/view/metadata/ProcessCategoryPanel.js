@@ -29,7 +29,6 @@ Ext.define('Savanna.process.view.metadata.ProcessCategoryPanel', {
 
             this.up('process_category_window').selectedCategoryUri = record.get('uri');
             this.up('process_category_window').selectedCategoryLabel = record.get('label');
-
         }
     },
 

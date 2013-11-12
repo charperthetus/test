@@ -1,6 +1,5 @@
 /**
  * Created with IntelliJ IDEA.
- * User: ksonger
  * Date: 10/24/13
  * Time: 3:26 PM
  * To change this template use File | Settings | File Templates.
@@ -35,9 +34,8 @@ Ext.define('Savanna.process.view.metadata.ProcessCategoryWindow', {
     viewer: null,
 
     initComponent: function () {
-//        this.items = this.setupItems();
-
         var me = this;
+
         Ext.Ajax.request({
             url: SavannaConfig.processCategoryPerspective + ';jsessionid=' + Savanna.jsessionid,
             method: 'GET',
@@ -63,17 +61,6 @@ Ext.define('Savanna.process.view.metadata.ProcessCategoryWindow', {
                     itemId: 'processCategoryPanel',
                     rootId: Ext.JSON.decode(response.responseText).results[0].id
                 }));
-
-//                /*
-//                add the typeahead results panel
-//                 */
-//                me.add(Ext.create('Savanna.itemView.view.createItem.TypeAheadResults', {
-//                    itemId: 'parentitems_results',
-//                    store: Ext.create('Savanna.itemView.store.AutoCompleteStore', {
-//                        urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/model/search/typeahead/',
-//                        paramsObj: { pageStart: 0, pageSize: 20, alphabetical: false, type: 'Item' }
-//                    })
-//                }));
 
             },
 
