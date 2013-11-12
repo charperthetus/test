@@ -143,22 +143,56 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
     },
 
     // To simplify this code we define a function for creating a context menu button
-    makeContextMenuItem: function (text, action, visiblePredicate) {
+    makeContextMenuItem: function (text, action, visiblePredicate) {    
         var gmake = go.GraphObject.make;
+        
         if (visiblePredicate === undefined) visiblePredicate = function () {
             return true;
         };
-        return gmake("ContextMenuButton",
-            gmake(go.TextBlock, text),
-            { click: action },
-            new go.Binding("visible", "", visiblePredicate).ofObject());
+
+      var buttonFillNormal = '#ffffff'
+      var buttonStrokeNormal = "transparent";
+      var buttonFillOver = '#ebf1f4'
+      var buttonStrokeOver = "transparent";
+    
+      var button =
+        gmake(go.Panel, "Auto",
+          { isActionable: true },  // handle mouse events without involving other tools
+          gmake(go.Shape,  // the border
+            { name: "ContextMenuButton",
+              figure: "Rectangle",
+              desiredSize: new go.Size(118, 26),
+              fill: buttonFillNormal,
+              stroke: 'transparent',
+             strokeWidth: 0
+            }),
+          gmake(go.Panel, "Auto", {padding: new go.Margin(2,2,2,10), alignment: go.Spot.Left},
+          gmake(go.TextBlock, text)),{ click: action },
+          new go.Binding("visible", "", visiblePredicate).ofObject()
+        );
+    
+      button.mouseEnter = function(e, obj, prev) {
+        var button = obj;
+        var diagram = button.diagram;
+        var shape = button.elt(0);
+        shape.fill = buttonFillOver;
+        shape.stroke = buttonStrokeOver;
+      };
+      button.mouseLeave = function(e, obj, next) {
+        var button = obj;
+        var diagram = button.diagram;
+        var shape = button.elt(0);
+        shape.fill = buttonFillNormal;
+        shape.stroke = buttonStrokeNormal;
+      };
+      return button; 
     },
 
     // a context menu is an Adornment with a bunch of buttons in them
     makeContextMenu: function () {
         var gmake = go.GraphObject.make;
-        return gmake(go.Adornment, "Vertical",  
-            this.makeContextMenuItem("Toggle Optional",
+        return gmake(go.Adornment, "Vertical",  {background:'#333333', padding: new go.Margin(1) },
+            this.makeContextMenuItem("Make Optional",
                 function (e, obj) {  // the OBJ is this Button
                     var contextmenu = obj.part;  // the Button is in the context menu Adornment
                     
@@ -168,7 +202,27 @@ Ext.define('Savanna.process.utils.ViewTemplates', {
                 },
                 function(contextmenu) {
                     var obj = contextmenu.adornedPart;
-                    return (Savanna.process.utils.ProcessUtils.optionalCategories.indexOf(obj.category) >= 0);
+                    var dm = obj.diagram;
+                    var firstObj = dm.selection.first();
+                    var optional = !firstObj.data.isOptional;
+
+                    return ((Savanna.process.utils.ProcessUtils.optionalCategories.indexOf(obj.category) >= 0) && (optional === true));
+                }),
+            this.makeContextMenuItem("Make Mandatory",
+                function (e, obj) {  // the OBJ is this Button
+                    var contextmenu = obj.part;  // the Button is in the context menu Adornment
+                    
+                    var part = contextmenu.adornedPart;  // the adornedPart is the Part that the context menu adorns
+                    // now can do something with PART, or with its data, or with the Adornment (the context menu)
+                    Savanna.process.utils.ProcessUtils.toggleOptional(part.diagram);
+                },
+                function(contextmenu) {
+                   var obj = contextmenu.adornedPart;
+                   var dm = obj.diagram;
+                   var firstObj = dm.selection.first();
+                   var optional = !firstObj.data.isOptional;
+                    
+                   return ((Savanna.process.utils.ProcessUtils.optionalCategories.indexOf(obj.category) >= 0) && (optional === false));
                 }),
             this.makeContextMenuItem("Add Alternates",
                 function (e, obj) {
