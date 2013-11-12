@@ -11,6 +11,7 @@ Ext.define("Savanna.flexpaper.view.FlexpaperEntityWindow", {
     align: "stretchmax",
     title: 'Entity Types',
     minWidth: 120,
+    constrain: true,
     initComponent:function()    {
         this.callParent();
     },

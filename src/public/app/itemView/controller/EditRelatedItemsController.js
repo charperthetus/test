@@ -73,7 +73,7 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
                             cls:'related-items-control',
                             store: Ext.create('Savanna.itemView.store.AutoCompleteStore', {
                                 urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/model/search/keyword/property/' + encodeURI(relatedItemsGroup.get('predicateUri')),
-                                paramsObj: { pageStart:0, pageSize:20, alphabetical: true }
+                                paramsObj: { pageStart:0, pageSize:20, alphabetical: false }
                             }),
                             width:160,
                             listeners: {

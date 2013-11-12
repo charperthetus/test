@@ -140,7 +140,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
         if (component.down('search_resultsDals_resultsterms')) {   // doesn't exist if results page has not yet been created
 
-            component.down('search_resultsDals_resultsterms').queryById('termValues').removeAll();  // remove refine terms in results screen
+            component.down('search_resultsDals_resultsterms').removeAll();  // remove refine terms in results screen
         }
 
         var form = component.down('#search_form'),

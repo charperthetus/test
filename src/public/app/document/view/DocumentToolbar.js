@@ -69,22 +69,6 @@ Ext.define("Savanna.document.view.DocumentToolbar", {
                     itemId: "zoomFit",
                     tooltip: "Zoom Fit"
                 },
-                {
-                    text: "View",
-                    itemId: "toolMenu",
-                    menu: [
-                        {
-                            text: "Single Page",
-                            itemId: "singlePageView",
-                            tooltip: "Single Page"
-                        },
-                        {
-                            text: "Thumbnails",
-                            itemId: "thumbView",
-                            tooltip: "Thumbnails"
-                        }
-                    ]
-                },
                 '->',
                 {
                     xtype: 'button',
@@ -94,21 +78,7 @@ Ext.define("Savanna.document.view.DocumentToolbar", {
                     cls: 'toolbarButtonFramework',
                     glyph: 'arrowNavLeft',
                     itemId: "previousPage",
-                    tooltip: 'Previous'
-                },
-                {
-                    xtype: 'label',
-                    text: 'Previous Page / Next Page'
-                },
-                {
-                    xtype: 'button',
-                    width: 25,
-                    height: 25,
-                    cls: 'toolbarButtonFramework',
-                    ui: 'icon-dark',
-                    glyph: 'arrowNavRight',
-                    itemId: "nextPage",
-                    tooltip: 'Next'
+                    tooltip: 'Previous page'
                 },
                 {
                     xtype: "textfield",
@@ -135,6 +105,16 @@ Ext.define("Savanna.document.view.DocumentToolbar", {
                     ui: 'flat-toolbar-button',
                     tooltip: 'Number of pages in the document'
                 },
+                {
+                    xtype: 'button',
+                    width: 25,
+                    height: 25,
+                    cls: 'toolbarButtonFramework',
+                    glyph: 'arrowNavRight',
+                    itemId: "nextPage",
+                    tooltip: 'Next page'
+                },
+
                 '->',
                 {
                     xtype: "thetus-searchfield",

@@ -290,11 +290,17 @@
         color:#454545;
         opacity:1;
         font-size:20px;
-        margin:2px 2px 2px 2px;
+        margin:4px 5px 2px 1px;
         padding: 0 0 0 0;
         text-align:center;
+        &:disabled{
+            color:#CCCCCC;
+        }
+        //TODO: Remove or fix color after Thursday's UIKit meeting.
+        //This hover color is the same as the regular color (per Kelvin),
+        //but this hover code has been left in case UX would like this changed.
         &:hover, &:active, &:focus{
-            color:#808080;
+            color:#454545;
         }
     }
 }
@@ -324,7 +330,7 @@
     vertical-align: middle;
     margin: 3px 3px 3px 3px;
     &:hover, &:active, &:focus{
-        border: 1px solid #333333;
+        border: 1px solid #999999;
     }
     &:select{
         background-color: rgba(36, 36, 36, 0.35);

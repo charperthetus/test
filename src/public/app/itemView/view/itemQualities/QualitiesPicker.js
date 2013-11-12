@@ -15,7 +15,8 @@ Ext.define('Savanna.itemView.view.itemQualities.QualitiesPicker', {
 
     requires: [
         'Savanna.itemView.store.AutoCompleteStore',
-        'Savanna.itemView.controller.QualitiesPickerController'
+        'Savanna.itemView.controller.QualitiesPickerController',
+        'ThetusUikit.ux.form.SearchField'
     ],
 
     controller: 'Savanna.itemView.controller.QualitiesPickerController',
@@ -29,6 +30,8 @@ Ext.define('Savanna.itemView.view.itemQualities.QualitiesPicker', {
     updatedStore: false,
 
     store: null,
+
+    constrain: true,
 
     autoShow: true,
 
@@ -52,21 +55,12 @@ Ext.define('Savanna.itemView.view.itemQualities.QualitiesPicker', {
             width: '100%',
             items: [
                 {
-                    xtype: 'textfield',
+                    xtype: 'thetus-searchfield',
                     itemId: 'filterQualitiesField',
                     flex: 1,
-                    emptyText: 'Find a Quality',
-                    enableKeyEvents: true
-                },
-                {
-                    xtype: 'button',
-                    text: 'Search',
-                    itemId: 'searchQualitiesBtn'
-                },
-                {
-                    xtype: 'button',
-                    text: 'Clear',
-                    itemId: 'clearQualitiesFilter'
+                    emptyText: 'Search',
+                    enableKeyEvents: true,
+                    margin: 2
                 }
             ]
         },
@@ -88,13 +82,9 @@ Ext.define('Savanna.itemView.view.itemQualities.QualitiesPicker', {
                     flex: 1,
                     tpl: Ext.create('Ext.XTemplate',
                         '<tpl if="selected">',
-//                            '<tpl if="editable">',
-                        '<input type="checkbox" id="qualityCheck" checked/>&nbsp;&nbsp;&nbsp;&nbsp;{label}',
-//                            '<tpl else>',
-//                                '<input type="checkbox" id="qualityCheck" checked disabled/>&nbsp;&nbsp;&nbsp;&nbsp;{label}',
-//                            '</tpl>',
+                            '<input type="checkbox" id="qualityCheck" checked/>&nbsp;&nbsp;&nbsp;&nbsp;{label}',
                         '<tpl else>',
-                        '<input type="checkbox" id="qualityCheck"/>&nbsp;&nbsp;&nbsp;&nbsp;{label}',
+                            '<input type="checkbox" id="qualityCheck"/>&nbsp;&nbsp;&nbsp;&nbsp;{label}',
                         '</tpl>')
                 }
             ]
@@ -134,7 +124,7 @@ Ext.define('Savanna.itemView.view.itemQualities.QualitiesPicker', {
 
     buttons: [
         {
-            text: 'Add',
+            text: 'OK',
             itemId: 'okBtn',
             ui: 'commit',
             margin: '0 0 10 0'
@@ -157,7 +147,7 @@ Ext.define('Savanna.itemView.view.itemQualities.QualitiesPicker', {
 
         this.store = Ext.create('Savanna.itemView.store.AutoCompleteStore', {
             urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/model/' + encodeURI(this.getStoreHelper().itemUri()) + '/qualities',
-            paramsObj: {pageStart: 0, pageSize: 100, alphabetical: true}
+            paramsObj: {pageStart: 0, pageSize: 100, alphabetical: false}
         });
 
 
