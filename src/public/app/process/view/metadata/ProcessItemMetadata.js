@@ -22,27 +22,23 @@ Ext.define('Savanna.process.view.metadata.ProcessItemMetadata', {
     items: [
         {
             xtype: 'container',
-            layout: 'hbox',
+            layout: 'vbox',
             items: [
                 {
-                    xtype: 'label',
-                    itemId: 'itemTitle',
-                    width: '80%'
-                },
-                {
-                    xtype: 'button',
-                    text: 'Open',
-                    itemId: 'openBtn'
-                }
-            ]
-        },
-        {
-            xtype: 'container',
-            layout: 'hbox',
-            items: [
-                {
-                    xtype: 'textarea',
-                    itemId: 'itemDescription'
+                    xtype: 'container',
+                    layout: 'hbox',
+                    items: [
+                        {
+                            xtype: 'label',
+                            itemId: 'itemTitle',
+                            width: '80%'
+                        },
+                        {
+                            xtype: 'button',
+                            text: 'Open',
+                            itemId: 'openBtn'
+                        }
+                    ]
                 },
                 {
                     xtype: 'image',
@@ -57,8 +53,29 @@ Ext.define('Savanna.process.view.metadata.ProcessItemMetadata', {
             border: 3,
             items: [
                 {
+                    xtype: 'label',
+                    text: 'Title',
+                    width: '95%'
+                },
+                {
                     xtype: 'textfield',
-                    itemId: 'itemInstanceTitle'
+                    itemId: 'itemInstanceTitle',
+                    width: '95%'
+                },
+                {
+                    xtype: 'label',
+                    text: 'Description',
+                    width: '95%'
+                },
+                {
+                    xtype: 'textarea',
+                    itemId: 'itemDescription',
+                    width: '95%'
+                },
+                {
+                    xtype: 'label',
+                    text: 'Role',
+                    width: '95%'
                 },
                 {
                     xtype: 'container',
