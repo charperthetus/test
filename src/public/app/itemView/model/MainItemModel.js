@@ -40,6 +40,13 @@ Ext.define('Savanna.itemView.model.MainItemModel', {
             model: 'Savanna.itemView.model.PropertyGroupModel',
             name: 'propertyGroups',
             associationKey:'propertyGroups'
+        },
+        {
+            type: 'belongsTo',
+            model: 'Savanna.process.model.Process',
+            name: 'nodeDataArray',
+            associationKey: 'nodeDataArray',
+            foreignKey: 'label'
         }
     ]
 });

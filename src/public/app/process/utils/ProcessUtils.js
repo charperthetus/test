@@ -14,6 +14,13 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         return Ext.getCmp(parent.id);
     },
 
+    getStore: function(diagram) {
+        var canvas = this.getCanvas(diagram);
+        var store = canvas.up('process_component').getController().store;
+        store.getAt(0).nodeDataArrayStore.filterOnLoad = false;
+        return store.getAt(0).nodeDataArrayStore;
+    },
+
     getUUID: function() {
         var uuid = Ext.data.IdGenerator.get('uuid').generate();
         return 'x' + uuid;
@@ -123,7 +130,9 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         var diagram = obj.diagram;
         diagram.startTransaction('addNode');
         var clickedNode = obj.part;
-        var nodeData = {'category': category, 'label': description};
+        var nodeData = this.populateDefaultNodeJson();
+        nodeData.category = category;
+        nodeData.label = description;
         nodeData.uri = this.getURI(category);
         this.setRepresentsUri(nodeData, classUri, diagram);
 
@@ -132,6 +141,9 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         }
 
         diagram.model.addNodeData(nodeData);
+        var modelInstance = Ext.create('Savanna.itemView.model.MainItemModel');
+        Ext.apply(modelInstance.data, nodeData);
+        this.getStore(diagram).loadRawData(modelInstance, true);
 
         var linkData = { category: linkType, from: clickedNode.data.uri, to: nodeData.uri };
         if (clickedNode.category == 'DecisionPoint') {
@@ -148,10 +160,14 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         var diagram = obj.diagram;
         diagram.startTransaction('addAlternate');
         var altsGroup = obj.part;
-        var nodeData = {category: 'ProcessItem', label: label, group: altsGroup.data.uri };
+        var nodeData = this.populateDefaultNodeJson();
+        nodeData.category = 'ProcessItem';
+        nodeData.label = label;
+        nodeData.group = altsGroup.data.uri;
         nodeData.uri = this.getURI(nodeData.category);
         this.setRepresentsUri(nodeData, classUri, diagram);
         diagram.model.addNodeData(nodeData);
+        this.getStore(diagram).loadRawData(nodeData);
         diagram.commitTransaction('addAlternate');
         this.startTextEdit(diagram, nodeData);
     },
@@ -165,11 +181,16 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         diagram.startTransaction('addStepPart');
         var actionGroup = obj.part;
         var stepGroup = actionGroup.containingGroup;
-        var nodeData = {category: category, label: label, group: stepGroup.data.uri, isOptional: false};
+        var nodeData = this.populateDefaultNodeJson();
+        nodeData.category = category;
+        nodeData.label = label;
+        nodeData.group = stepGroup.data.uri;
+        nodeData.isOptional = false;
         nodeData.uri = this.getURI(nodeData.category);
         this.setRepresentsUri(nodeData, null, diagram);
 
         diagram.model.addNodeData(nodeData);
+        this.getStore(diagram).loadRawData(nodeData);
 
         var linkData = {  category: linkType, from: actionGroup.data.uri, to: nodeData.uri };
         linkData.uri = this.getURI('ProcessLink');
@@ -198,11 +219,14 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         diagram.startTransaction('addResult');
         var actionGroup = obj.part;
         var stepGroup = actionGroup.containingGroup;
-        var nodeData = {'category': category, 'label': label};
+        var nodeData = this.populateDefaultNodeJson();
+        nodeData.category = category;
+        nodeData.label = label;
         nodeData.uri = this.getURI(nodeData.category);
         this.setRepresentsUri(nodeData, null, diagram);
 
         diagram.model.addNodeData(nodeData);
+        this.getStore(diagram).loadRawData(nodeData);
 
         var linkData = {  category: linkType, from: stepGroup.data.uri, to: nodeData.uri };
         linkData.uri = this.getURI('ProcessLink');
@@ -216,10 +240,14 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         diagram.startTransaction('addAction');
 
         var actionsGroup = obj.part;
-        var nodeData = {'category': 'ProcessAction', 'label': label, 'group':actionsGroup.data.uri};
+        var nodeData = this.populateDefaultNodeJson();
+        nodeData.category = 'ProcessAction';
+        nodeData.label = label;
+        nodeData.group = actionsGroup.data.uri;
         nodeData.uri = this.getURI(nodeData.category);
         this.setRepresentsUri(nodeData, classUri, diagram);
         diagram.model.addNodeData(nodeData);
+        this.getStore(diagram).loadRawData(nodeData);
 
         diagram.commitTransaction('addAction');
         this.startTextEdit(diagram, nodeData);
@@ -230,18 +258,32 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         var diagram = obj.diagram;
         diagram.startTransaction('addStep');
 
-        var step = {category: 'ProcessModel', label: 'Untitled Step', isGroup: true, isSubGraphExpanded: true, isOptional: false};
+        var step = this.populateDefaultNodeJson();
+        step.category = 'ProcessModel';
+        step.label = 'Untitled Step';
+        step.isGroup = true;
+        step.isSubGraphExpanded = true;
+        step.isOptional = false;
         step.uri = this.getURI(step.category);
         diagram.model.addNodeData(step);
+        this.getStore(diagram).loadRawData(step);
 
-        var actionsGroup = {'category': 'InternalGroup', 'isGroup': true, 'group': step.uri};
+        var actionsGroup = this.populateDefaultNodeJson();
+        actionsGroup.category = 'InternalGroup';
+        actionsGroup.isGroup = true;
+        actionsGroup.group = step.uri;
         actionsGroup.uri = this.getURI(actionsGroup.category);
         diagram.model.addNodeData(actionsGroup);
+        this.getStore(diagram).loadRawData(actionsGroup);
 
-        var action = {'category': 'ProcessAction', 'label': 'Action', 'group': actionsGroup.uri};
+        var action = this.populateDefaultNodeJson();
+        action.category = 'ProcessAction';
+        action.label = 'Action';
+        action.group = actionsGroup.uri;
         action.uri = this.getURI(action.category);
         this.setRepresentsUri(action, null, diagram);
         diagram.model.addNodeData(action);
+        this.getStore(diagram).loadRawData(action);
 
         var clickedNode = obj.part;
         var newLink = {from: clickedNode.data.uri, to: step.uri };
@@ -309,9 +351,12 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
 
         diagram.startTransaction('addMerge');
 
-        var mergeNode = {'category': 'MergePoint', 'label': ''};
+        var mergeNode = this.populateDefaultNodeJson();
+        mergeNode.category = 'MergePoint';
+        mergeNode.label = '';
         mergeNode.uri = this.getURI(mergeNode.category);
         diagram.model.addNodeData(mergeNode);
+        this.getStore(diagram).loadRawData(mergeNode);
 
         var prevNodeNames = [];
         var outputNode;
@@ -327,9 +372,12 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
                 if (!Ext.Array.contains(prevNodeNames, nodeText)) {
                     Ext.Array.include(prevNodeNames, nodeText);
 
-                    outputNode = {'category': 'ProcessItem', 'label': nodeText};
+                    outputNode = this.populateDefaultNodeJson();
+                    outputNode.category = 'ProcessItem';
+                    outputNode.label = nodeText;
                     outputNode.uri = this.getURI(outputNode.category);
                     diagram.model.addNodeData(outputNode);
+                    this.getStore(diagram).loadRawData(outputNode);
 
                     var otherLink = { category: 'ProcessLink', from: mergeNode.uri, to: outputNode.uri };
                     otherLink.uri = this.getURI('ProcessLink');
@@ -383,12 +431,16 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
 
         diagram.startTransaction('addAlts');
 
-        var altsGroupData = {'category': 'AltsGroup', 'label': 'Alternates', 'isGroup': true};
+        var altsGroupData = this.populateDefaultNodeJson();
+        altsGroupData.category = 'AltsGroup';
+        altsGroupData.label = 'Alternates';
+        altsGroupData.isGroup = true;
         if (selItem.containingGroup) {
             altsGroupData.group = selItem.containingGroup.data.uri;
         }
         altsGroupData.uri = this.getURI(altsGroupData.category);
         diagram.model.addNodeData(altsGroupData);
+        this.getStore(diagram).loadRawData(altsGroupData);
 
         var altsGroup = diagram.findNodeForData(altsGroupData);
 
@@ -486,7 +538,69 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
             }
         }
         diagram.commitTransaction('toggleExpanded');
-    }
+    },
 
+    populateDefaultNodeJson: function() {
+        return {
+            label: '',
+            propertyGroups: [
+                {
+                    label: 'Header',
+                    values: [
+                        {
+                            label: 'Type',
+                            values: []
+                        },
+                        {
+                            label: 'Description',
+                            values: []
+                        }
+                    ]
+                },
+                {
+                    label: 'Images',
+                    values: [
+                        {
+                            label: 'Images',
+                            values: []
+                        }
+                    ]
+                },
+                {
+                    label: 'Related Items',
+                    values: [
+                        {
+                            label: 'has role',
+                            values: []
+                        }
+                    ]
+                },
+                {
+                    label: 'Properties',
+                    values: []
+                },
+                {
+                     label: 'Annotations',
+                     values: [
+                         {
+                             label: 'Quantity',
+                             values: []
+                         }
+                     ]
+                 },
+                 {
+                      label: 'Sources',
+                      values: [
+                          {
+                              label: 'Source Document',
+                              values: []
+                          }
+                      ]
+                  }
+             ]
+
+        };
+
+    }
 
 });
