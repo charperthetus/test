@@ -249,7 +249,6 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
         // Set the saving state
         this.saving = state;
-        console.log(this.saving);
     },
 
     getItemViewData: function () {
@@ -482,7 +481,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
     beforeClose: function (panel) {
 
         // Check if in edit mode (and prompt the user to save changes)
-        if (this.getView().getEditMode()){
+        if (this.getView().getEditMode() && !this.saving){
             var me = this;
             Ext.Msg.show({
                 title: 'Close Item',
@@ -509,14 +508,14 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
                         panel[panel.closeAction]();
                     
                     } else {
-                        //do nothing, leave the process open
+                        //do nothing, leave the item open
                     }
                 }
             });
             return false;
 
         // Check if we're already saving to prevent closing
-        } else if ( this.saving ) {
+        } else if (this.saving) {
             return false;
 
         // Else proceed
