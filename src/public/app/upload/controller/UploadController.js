@@ -107,19 +107,25 @@ Ext.define('Savanna.upload.controller.UploadController', {
         var file;
         this.currentlyUploadingCount += files.length;
         var currentUploadsView = component.up('upload_uploadcomponent').down('upload_part_currentuploads');
+        var classificationButton = component.up('upload_uploadcomponent').down('#classificationButton');
         currentUploadsView.setVisible(true);
         var uploadGrid = currentUploadsView.down('#uploadsDataGrid');
         for (var i = 0 ; i < files.length ; i++){
             file = files[i];
             var tempId = Ext.id();
-            this.uploadFileViaXMLHttpRequest(this.buildUploadUrl() , file,  uploadGrid, tempId);
-            uploadGrid.store.add({ status:'pending', fileName: file.name , fileSize: file.size , progress:'Queued', fileId: tempId});
+            this.uploadFileViaXMLHttpRequest(this.buildUploadUrl() , file,  uploadGrid, tempId,
+                classificationButton.getPortionMarking());
+            uploadGrid.store.add({ status:'pending', fileName: file.name , fileSize: file.size , progress:'Queued',
+                fileId: tempId, classification: classificationButton.getText()});
         }
     },
 
-    uploadFileViaXMLHttpRequest:function(url, file, uploadGrid, tempId) {
+    uploadFileViaXMLHttpRequest:function(url, file, uploadGrid, tempId, portionMarking) {
         var formData = new FormData();
         formData.append(file.name, file);
+        if(portionMarking) {
+            formData.append('classification', portionMarking);
+        }
         var xhr = new XMLHttpRequest();
         xhr.open('POST', url, true);
         xhr.cors = true;

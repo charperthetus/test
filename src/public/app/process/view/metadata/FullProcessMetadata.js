@@ -24,8 +24,31 @@ Ext.define('Savanna.process.view.metadata.FullProcessMetadata', {
     overflowY: 'auto',
 
     ui: 'off-white',
-
+    cls:['white-grid-view-panel-edit', 'item-view-column'],
     items: [
+        {
+            xtype: 'label',
+            text: 'Title'
+        },
+        {
+            xtype: 'textfield',
+            itemId: 'processTitle',
+            enableKeyEvents: true
+        },
+        {
+            xtype: 'textarea',
+            fieldLabel: 'Description',
+            labelAlign: 'top',
+            itemId: 'processDescription',
+            width: '100%',
+            enableKeyEvents: true
+        },
+
+        {
+            xtype: 'itemview_imagesgrid_edit',
+            itemId: 'imageBrowser',
+            header: false
+        },
         {
             xtype: 'informationpanel',
             itemId: 'informationPanel',
@@ -33,11 +56,7 @@ Ext.define('Savanna.process.view.metadata.FullProcessMetadata', {
             region: 'center',
             split: true
         },
-        {
-            xtype: 'itemview_imagesgrid_edit',
-            itemId: 'imageBrowser',
-            header: false
-        },
+
         {
             xtype: 'document_sources',
             editMode: true,

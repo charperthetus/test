@@ -23,6 +23,12 @@ Ext.define('Savanna.process.controller.FullProcessMetadataController', {
             savechanges: 'onSaveChanges',
             processUriChanged: 'onUriChanged'
         },
+        processTitle: {
+            blur: 'processTitleBlur'
+        },
+        processDescription: {
+            blur: 'processDescriptionBlur'
+        },
         imageBrowser: true,
         informationPanel: true,
         itemSources: true
@@ -49,19 +55,22 @@ Ext.define('Savanna.process.controller.FullProcessMetadataController', {
         if(success) {
             this.storeHelper.init(this.store);
             this.getProcessTitle().setValue(this.store.getAt(0).data.label);
-            this.getProcessDescription().setValue(this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Description').valuesStore.getAt(0).data.value);
+
+            if (this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Description').valuesStore.getAt(0)) {
+                this.getProcessDescription().setValue(this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Description').valuesStore.getAt(0).data.value);
+            }
+
             this.getImageBrowser().storeHelper = this.storeHelper;
             this.getImageBrowser().store = record[0].propertyGroupsStore.getById('Images').valuesStore;
             this.getImageBrowser().fireEvent('EditImagesGrid:Setup', record[0].propertyGroupsStore.getById('Images').valuesStore.getById('Images').valuesStore.data.items);
             this.getItemSources().storeHelper = this.storeHelper;
             this.getItemSources().store = record[0].propertyGroupsStore.getById('Sources').valuesStore;
             Ext.bind(this.getItemSources().addSourcesGrid(record[0].propertyGroupsStore.getById('Sources').valuesStore.getById('Source Document').valuesStore), this.getItemSources());
-            this.getDetailsPanel().setItemURI(encodeURI(this.mainProcessUri));
+            this.getInformationPanel().setItemUri(encodeURI(this.mainProcessUri));
         }
     },
 
     onSaveChanges: function() {
-        console.log('FullProcessMetadataController saveChanges');
         if(this.store && this.store.getAt(0)) {
             this.store.getAt(0).setDirty();
             this.store.sync();
@@ -69,17 +78,15 @@ Ext.define('Savanna.process.controller.FullProcessMetadataController', {
     },
 
     processTitleBlur: function(e) {
-        if(this.store.getAt(0).data.label !== e.getValue()) {
-            this.store.getAt(0).data.label = e.getValue();
-            this.store.getAt(0).setDirty();
-        }
+        var value = {label: e.getValue(), comment: null, value: e.getValue()};
+        this.storeHelper.updateBotLevItemInStore(null, value, this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Label'));
+        this.store.getAt(0).data.label = e.getValue();
+        this.getView().up('process_component').setTitle(this.store.getAt(0).data.label);
     },
 
     processDescriptionBlur: function(e) {
-        if( this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Description').valuesStore.getAt(0).data.value !== e.getValue() ) {
-            this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Description').valuesStore.getAt(0).data.value = e.getValue();
-            this.store.getAt(0).setDirty();
-        }
+        var value = {label: "Description", comment: null, value: e.getValue()};
+        this.storeHelper.updateBotLevItemInStore(null, value, this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Description'));
     }
 
 });

@@ -27,7 +27,6 @@ Ext.define('Savanna.itemView.view.header.EditHeader', {
 
     margin: 10,
 
-
     items: [
         {
             xtype: 'label',
@@ -68,7 +67,7 @@ Ext.define('Savanna.itemView.view.header.EditHeader', {
                     showTags: true,
                     itemId: 'addIntendedUseBox',
                     store: Ext.create('Savanna.itemView.store.AutoCompleteStore', {
-                        paramsObj: { pageStart:0, pageSize:20, alphabetical: true }
+                        paramsObj: { pageStart:0, pageSize:20, alphabetical: false }
                     }),
                     flex: 1
 
@@ -97,14 +96,6 @@ Ext.define('Savanna.itemView.view.header.EditHeader', {
                     itemId: 'parentsList',
                     html:'',
                     width:'96%'
-                },
-
-                {
-                    xtype: 'button',
-                    itemId: 'parentChooser',
-                    glyph: 'searchBinoculars',
-                    tooltip: "Click to browse types",
-                    width:'4%'
                 }
             ]
         },

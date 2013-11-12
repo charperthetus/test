@@ -107,20 +107,20 @@ Ext.define('Savanna.process.controller.ProcessController', {
         var uri = this.getView().getItemUri();
         if (uri) {
             Ext.Ajax.request({
-                url: SavannaConfig.itemLockUrl + /*encodeURI*/(uri) + ';jsessionid=' + Savanna.jsessionid,
+                url: SavannaConfig.itemLockUrl + encodeURI(uri) + ';jsessionid=' + Savanna.jsessionid,
                 method: 'GET',
                 success: function(response){
                     if (response.responseText) {
-                        me.store.load({callback: me.onStoreLoaded, scope: me});
-                    } else {
                         Ext.MessageBox.alert(
                             'Process Locked',
-                            'This Process is being edited by another user.',
+                            'This Process is being edited by another user: ' + response.responseText,
                             function() {
                                 me.confirmClosed = true;
                                 view[view.closeAction]();
                             }
                         );
+                    } else {
+                        me.store.load({callback: me.onStoreLoaded, scope: me});
                     }
                 },
                 failure: function(response){
@@ -165,8 +165,14 @@ Ext.define('Savanna.process.controller.ProcessController', {
                 if (response.responseText.charAt(0) === '{') {
                     //looks like it might really be json
                     var message = Ext.decode(response.responseText);
-                    me.store.getAt(0).set('uri', message.uri);
-                    me.getView().down('#processSidepanel').fireEvent('processUriChange', encodeURIComponent(message.uri));
+                    var uri = message.uri
+                    var index = uri.indexOf('ModelItemInstance');
+                    if ( index >= 0 ) {
+                        uri = message.uri.slice(0,index);
+                        uri = uri.concat('ProcessModel');
+                    }
+                    me.store.getAt(0).set('uri', uri);
+                    me.getView().down('#processSidepanel').fireEvent('processUriChange', uri);
                 } else {
                     // probably an error page even though we got a 200
                     // todo: we should have a standard mechanism of reporting errors. For now writing this to console matches how we handle other server errors  (500)
@@ -287,7 +293,7 @@ Ext.define('Savanna.process.controller.ProcessController', {
     releaseLock: function() {
         var uri = this.store.getAt(0).data.uri;
         Ext.Ajax.request({
-            url: SavannaConfig.itemLockUrl + /*encodeURI*/(uri) + ';jsessionid=' + Savanna.jsessionid,
+            url: SavannaConfig.itemLockUrl + encodeURI(uri) + ';jsessionid=' + Savanna.jsessionid,
             method: 'DELETE',
             success: function(){
                 // nothing to do
@@ -368,6 +374,7 @@ Ext.define('Savanna.process.controller.ProcessController', {
     },
 
     onSave: function() {
+        this.store.first().setDirty(); // force dirty for now
         this.store.sync();
     },
 

@@ -22,7 +22,7 @@ Ext.define('Savanna.itemView.view.createItem.ParentItems', {
         'Savanna.itemView.view.createItem.TypeAheadResults'
     ],
 
-    title: 'Item Types',
+    title: 'Item Type',
 
     items: [],
 
@@ -125,7 +125,7 @@ Ext.define('Savanna.itemView.view.createItem.ParentItems', {
                     itemId: 'filterParentItemsField',
                     flex: 1,
                     margin: 2,
-                    emptyText: 'Find a parent item',
+                    emptyText: 'Search',
                     enableKeyEvents: true
                 }
             ]

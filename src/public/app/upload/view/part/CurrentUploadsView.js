@@ -109,6 +109,43 @@ Ext.define('Savanna.upload.view.part.CurrentUploadsView', {
                     width: 60,
                     renderer : Savanna.upload.controller.UploadController.formatFileSize
                 },{
+                    text: 'Classification',
+                    borderWidth: 0,
+                    dataIndex: 'classification',
+                    resizable: false,
+                    sortable: false,
+                    hideable: false,
+                    flex: 1,
+                    renderer: function(value, metadata) {
+                        var background, color;
+                        switch(value) {
+                            case 'TOP SECRET':
+                                background = "#FFFA53";
+                                color = "#000000";
+                                break;
+                            case 'SECRET':
+                                background = "#ED1C24";
+                                color = "#FFFFFF";
+                                break;
+                            case 'CONFIDENTIAL':
+                                background = "#235FAC";
+                                color = "#FFFFFF";
+                                break;
+                            case 'UNCLASSIFIED':
+                                background = "#4CB748";
+                                color = "#FFFFFF";
+                                break;
+                            default:
+                                background = "#878787";
+                                color = "#FFFFFF";
+                                break;
+                        }
+                        metadata.style = 'background-color:' + background +
+                                         ';color:' + color +
+                                         ';text-align:center;';
+                        return value;
+                    }
+                },{
                     text: 'Progress',
                     borderWidth: 0,
                     dataIndex: 'progress',

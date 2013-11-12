@@ -23,12 +23,6 @@ Ext.define("Savanna.document.controller.DocumentController", {
         previousPage: {
             click: 'onPreviousPage'
         },
-        singlePageView: {
-            click: 'onSinglePageView'
-        },
-        thumbView: {
-            click: 'onThumbView'
-        },
         exportDoc: {
             click: 'onExportDoc'
         },
@@ -47,7 +41,6 @@ Ext.define("Savanna.document.controller.DocumentController", {
 		
 		this.dvId = this.getView().docViewId;
     },
-	
 
 	onSelectTool: function() {
        $FlexPaper(this.dvId).setCurrentCursor("TextSelectorCursor");
@@ -60,7 +53,6 @@ Ext.define("Savanna.document.controller.DocumentController", {
         $FlexPaper(this.dvId).setZoom($FlexPaper(this.dvId).scale - .2);
     },
     onZoomFit: function() {
-		//TODO:Need to discuss with thetus regarding single and two page with zoom fit
         $FlexPaper(this.dvId).fitHeight();
     },
     onNextPage : function() {
