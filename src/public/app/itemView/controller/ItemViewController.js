@@ -521,7 +521,7 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
 
         // Check if we're already saving to prevent closing
         } else if (this.saving) {
-            Ext.Msg.alert('Item Saving', 'The item is currently saving, please wait until it is complete to continue.');
+            Ext.Msg.alert('Item Is Saving', 'The Item is still saving. You can close the Item once it is done saving.');
             return false;
 
         // Else proceed
