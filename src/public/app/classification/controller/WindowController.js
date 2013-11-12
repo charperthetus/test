@@ -121,7 +121,7 @@ Ext.define('Savanna.classification.controller.WindowController', {
 
     requestRestrictionsByPortionMarking: function() {
         var portionMarking = this.getView().getPortionMarking();
-        if(portionMarking) {
+        if(portionMarking && portionMarking !== 'UNSPECIFIED') {
             this.makeRestrictionsAjaxRequest('restrictions/string', Ext.JSON.encode(portionMarking),
                 this.onSuccessRestrictionsByPortionMarking);
         }
