@@ -50,11 +50,12 @@ Ext.define('Savanna.process.view.part.Toolbar', {
                          text: 'Delete',
                          itemId: 'deleteProcess'
                     },
-                    '-',
-                    {
-                         text: 'Workflow...',
-                         itemId: 'workflow'
-                    },
+                    //Removing for release as it doesn't quite work
+//                    '-',
+//                    {
+//                         text: 'Workflow...',
+//                         itemId: 'workflow'
+//                    },
                     '-',
                     {
                          text: 'Expand All Steps',

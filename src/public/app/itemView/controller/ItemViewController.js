@@ -35,9 +35,10 @@ Ext.define('Savanna.itemView.controller.ItemViewController', {
             click: 'onEditDelete'
         },
 
-        workflowButton: {
-            click: 'onWorkflowSelect'
-        },
+        //Pulling for the release as it doesn't quite work yet.
+//        workflowButton: {
+//            click: 'onWorkflowSelect'
+//        },
 
         relatedItemsView: {
             'ItemView:OpenItem': 'openItem'
