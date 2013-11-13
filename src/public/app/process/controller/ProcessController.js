@@ -36,9 +36,10 @@ Ext.define('Savanna.process.controller.ProcessController', {
         redo: {
             click: 'handleRedo'
         },
-        workflow: {
-            click: 'onWorkflowSelect'
-        },
+        //removing for release as it doesn't quite work yet
+//        workflow: {
+//            click: 'onWorkflowSelect'
+//        },
         merge: {
             click: 'handleMerge'
         },

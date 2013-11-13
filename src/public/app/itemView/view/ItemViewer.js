@@ -77,12 +77,13 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                                 },
                                 {
                                     xtype: 'menuseparator'
-                                },
-
-                                {
-                                    text: 'Workflow...',
-                                    itemId:'workflowButton'
                                 }
+                                //Pulling for the release as it does not quite work yet.
+//
+//                                {
+//                                    text: 'Workflow...',
+//                                    itemId:'workflowButton'
+//                                }
                             ]
                         },
                         '->',

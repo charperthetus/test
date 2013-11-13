@@ -4,8 +4,27 @@
  *	@descriptiong This is a homeless bit of code. Sets styling for MetaData panels 
  *				   I'm not proud of this.
  */
+.off-white-bg{
+	.x-panel-body-default-closable{
+		background-color: #F2F2F2 !important;
+	}
+}
+
+.x-toolbar{
+	.x-toolbar-text.heading2{
+	  font-size: 14px;
+	  line-height: 21px;
+	  //space between paragraphs should be 25px (12 + 13). If you need to kill padding on top or bottom, add align_top or align_bottom.
+	  margin: 0;
+	  font-weight: bold;
+	  padding-left: 10px;
+	}
+}
 
 .x-panel-body-off-white{
+	
+	
+	
 	.x-fieldset{
 		margin-bottom: 10px;
 		

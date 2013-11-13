@@ -23,12 +23,12 @@ Ext.define('Savanna.process.view.metadata.MetadataTabPanel', {
     collapseMode : 'header',
     headerPosition: 'left',
     collapsedCls : 'light-blue',
-
+    title: 'Detials',
     layout: 'fit',
-
+    cls: 'off-white-bg',
     items: [
         {
-            xtype: 'form',
+            xtype: 'container',
             layout: 'card',
             itemId:'hiddenPanel',
             header: false,
@@ -38,6 +38,8 @@ Ext.define('Savanna.process.view.metadata.MetadataTabPanel', {
             items: [
                 {
                     xtype: 'label',
+                    width: '100%',
+                    margin: 10,
                     itemId: 'nothingHereLabel',
                     text: 'Loading Information'
                 },
