@@ -373,7 +373,7 @@ Ext.define('Savanna.process.controller.ProcessController', {
         var uri = this.store.getAt(0).data.uri;
         var view = this.getView();
         Ext.Ajax.request({
-            url: SavannaConfig.modelProcessLoadUrl + uri + ';jsessionid=' + Savanna.jsessionid,
+            url: SavannaConfig.modelProcessLoadUrl + encodeURI(uri) + ';jsessionid=' + Savanna.jsessionid,
             method: 'DELETE',
             success: function(response) {
                 me.releaseLock();
