@@ -65,8 +65,11 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
 
         if(me.getView().store.getById('Type').data.values.length)  {
             var parents = '';
-            Ext.each(me.getView().store.getById('Type').data.values, function(type)    {
-                parents = parents + '<input type="button" name="' + type.value + '" value="' + type.label +  '" id="openParentItem" />' + '>';
+            Ext.each(me.getView().store.getById('Type').data.values, function(type) {
+                // Only show immediate parent(s), we check the inheritedFrom proprety to determine this
+                if (!type.inheritedFrom) {
+                    parents = parents + '<input type="button" name="' + type.value + '" value="' + type.label +  '" id="openParentItem" />';                    
+                }
             });
             me.getView().queryById('parentsList').update(parents);
 
