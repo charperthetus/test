@@ -7,16 +7,15 @@
  */
 
 Ext.define('Savanna.process.view.metadata.FullProcessMetadata', {
-    extend: 'Ext.form.Panel',
+    extend: 'Ext.container.Container',
     alias: 'widget.full_process_metadata',
-
-    layout: 'form',
 
     requires: [
         'Savanna.process.controller.FullProcessMetadataController',
         'Savanna.itemView.view.imageBrowser.ImagesGridEdit',
         'Savanna.sources.view.Sources',
-        'Savanna.metadata.view.part.InformationPanel'
+        'Savanna.metadata.view.part.InformationPanel',
+        'Ext.form.Panel'
     ],
 
     controller: 'Savanna.process.controller.FullProcessMetadataController',
@@ -25,28 +24,31 @@ Ext.define('Savanna.process.view.metadata.FullProcessMetadata', {
 
     ui: 'off-white',
     cls:['white-grid-view-panel-edit', 'item-view-column'],
+    
     items: [
         {
             xtype: 'form',
             collapsible: true,
             title: 'Process Summary',
+            ui: 'off-white',
+            defaults: {
+                padding: '0 5',
+            },
             items: [
                 {
                     fieldLabel: 'Title',
-                    labelAlign: 'top',
+                    labelAlign: 'left',
+                    labelWidth: 30,
                     xtype: 'textfield',
                     itemId: 'processTitle',
                     enableKeyEvents: true
                 },
-
                 {
-                    xtype: 'label',
-                    text: 'Category:'
-                },
-                {
-                    xtype: 'container',
+                    xtype: 'fieldset',
                     layout: 'hbox',
                     width: '100%',
+                    title: 'Category',
+                    border: false,
                     items: [
                         {
                             xtype: 'label',
@@ -57,7 +59,8 @@ Ext.define('Savanna.process.view.metadata.FullProcessMetadata', {
                         {
                             xtype: 'button',
                             itemId: 'categoryChooserButton',
-                            glyph: 'searchBinoculars'
+                            glyph: 'searchBinoculars',
+                            margin: '10 0 0 0'
                         }
                     ]
                 },
@@ -67,7 +70,7 @@ Ext.define('Savanna.process.view.metadata.FullProcessMetadata', {
                     fieldLabel: 'Description',
                     labelAlign: 'top',
                     itemId: 'processDescription',
-                    width: '100%',
+                    width: '97%',
                     enableKeyEvents: true
                 },
 

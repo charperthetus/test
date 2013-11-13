@@ -21,7 +21,7 @@ Ext.define('Savanna.metadata.view.Classification', {
         var me = this;
 
         me.on('beforerender', Ext.bind(function() {
-            me.down('#displayValue').setFieldLabel(me.getDisplayLabel());
+            me.setTitle(me.getDisplayLabel());
             me.down('#displayValue').setValue((null === me.getValue()) ? '&nbsp;' : me.getValue());
         }, this));
     },
