@@ -29,6 +29,9 @@ Ext.define('Savanna.process.view.metadata.ProcessItemMetadata', {
             ui: 'off-white',
             layout: 'vbox',
             width: '100%',
+            defualts: {
+                padding: '0 10'
+            },
             items: [
                 {
                     xtype: 'fieldcontainer',
@@ -76,6 +79,9 @@ Ext.define('Savanna.process.view.metadata.ProcessItemMetadata', {
             itemId: 'instancePanel',
             collapsible: true,
             title: 'Process Item',
+            defualts: {
+                padding: '0 10'
+            },
             items: [
                 {
                     xtype: 'fieldcontainer',
@@ -279,6 +285,9 @@ Ext.define('Savanna.process.view.metadata.ProcessItemMetadata', {
             xtype: 'itemview_edit_qualities',
             title: 'Properties',
             itemId: 'itemQualities',
+            defualts: {
+                padding: '0 10'
+            },
             ui: 'off-white'
         }
     ]
