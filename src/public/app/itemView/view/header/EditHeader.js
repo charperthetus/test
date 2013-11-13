@@ -72,7 +72,8 @@ Ext.define('Savanna.itemView.view.header.EditHeader', {
                     xtype: 'button',
                     itemId: 'intendedUseChooserBtn',
                     glyph: 'searchBinoculars',
-                    cls: 'toolbarButtonFramework',
+                    cls: 'itemViewButtonFramework',
+                    margin: '0 0 3 3',
                     width:25,
                     height:25,
                     tooltip: "Click to browse intended uses"
