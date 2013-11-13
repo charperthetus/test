@@ -269,7 +269,7 @@ Ext.define('Savanna.process.controller.ProcessController', {
             overview = Ext.create('Savanna.process.view.part.Overview', {});
             overview.setDiagram(this.getCanvas().diagram);
             processViewport.overview = overview;
-            processViewport.add(overview);
+            processViewport.insert(2, overview);
         }
     },
 
