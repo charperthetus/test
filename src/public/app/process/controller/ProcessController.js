@@ -154,7 +154,6 @@ Ext.define('Savanna.process.controller.ProcessController', {
         var me = this;
 
         var newProcess = {'class': 'go.GraphLinksModel', 'nodeKeyProperty': 'uri', 'nodeDataArray': [], 'linkDataArray': []};
-        //newProcess.uri = this.utils().getURI('ProcessModel');  //todo: remove this code once the instance creation starts working
         newProcess.nodeDataArray[0] = this.utils().populateDefaultNodeJson();
         newProcess.nodeDataArray[0].category = 'Start';
         newProcess.nodeDataArray[0].uri = this.utils().getURI('Start');
@@ -319,7 +318,7 @@ Ext.define('Savanna.process.controller.ProcessController', {
                 msg: "Do you want to save the changes you made in this process?\nYour changes will be lost if you don't save them.",
                 width: 375,
                 buttons: Ext.Msg.YESNOCANCEL,
-                buttonText: {yes: "Don't Save", no: 'Save', cancel: 'Cancel'},
+                buttonText: {yes: "Save", no: "Don't Save", cancel: 'Cancel'},
                 fn: function(button) {
                     if(button == 'yes'){
                         //save and close
@@ -357,14 +356,14 @@ Ext.define('Savanna.process.controller.ProcessController', {
                 buttons:Ext.Msg.YESNO,
                 buttonText: {yes: 'OK', no: 'Cancel'},
                 title: 'Delete Process',
-                msg: 'Are you sure you want to permanently delete this process?'
-            },
-            function(btn) {
-               if (btn == 'yes') {
-                   me.deleteProcess();
-               } else {
-                   //cancel
-               }
+                msg: 'Are you sure you want to permanently delete this process?',
+                fn: function(btn) {
+                    if (btn == 'yes') {
+                        me.deleteProcess();
+                    } else {
+                        //cancel
+                    }
+                }
             }
         );
     },
@@ -374,7 +373,7 @@ Ext.define('Savanna.process.controller.ProcessController', {
         var uri = this.store.getAt(0).data.uri;
         var view = this.getView();
         Ext.Ajax.request({
-            url: SavannaConfig.modelProcessLoadUrl + uri + ';jsessionid=' + Savanna.jsessionid,
+            url: SavannaConfig.modelProcessLoadUrl + encodeURI(uri) + ';jsessionid=' + Savanna.jsessionid,
             method: 'DELETE',
             success: function(response) {
                 me.releaseLock();
@@ -398,10 +397,23 @@ Ext.define('Savanna.process.controller.ProcessController', {
     //
 
     textEdited: function(e) {
-        var curTextEdit = e.diagram.toolManager.textEditingTool.currentTextEditor;
-        if (curTextEdit.hasOwnProperty('onCommit')) {
-            curTextEdit['onCommit'](e.subject);
+        var textEditingTool = e.diagram.toolManager.textEditingTool;
+        var textBlock = textEditingTool.textBlock;
+        var currentTextEditor = textEditingTool.currentTextEditor;
+        if (currentTextEditor.hasOwnProperty('onCommit')) {
+            currentTextEditor['onCommit'](e.subject);
         }
+        var nodeData = textBlock.part.data;
+        var nodeDataArrayStore = this.store.getAt(0).nodeDataArrayStore;
+        var len = nodeDataArrayStore.data.length;
+        for (var i= 0; i<len; i++) {
+            var storeData = nodeDataArrayStore.getAt(i);
+            if (storeData.data.uri === nodeData.uri) {
+                break;
+            }
+        }
+        this.store.getAt(0).nodeDataArrayStore.getAt(i).data.label = textBlock.text;
+        this.getView().down('#processSidepanel').fireEvent('textEdited');
     },
 
     partResized: function(diagramEvent) {
