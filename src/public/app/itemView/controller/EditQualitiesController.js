@@ -82,7 +82,8 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
                 itemId: 'valuesChooser',
                 width:25,
                 height:25,
-                cls: 'toolbarButtonFramework',
+                margin: '10 5 0 5',
+                cls: 'itemViewButtonFramework',
                 listeners: {
                     click: me.launchValuesChooser.bind(me, data.label)
                 }

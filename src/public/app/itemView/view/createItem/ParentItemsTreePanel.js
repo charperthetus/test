@@ -15,7 +15,7 @@ Ext.define('Savanna.itemView.view.createItem.ParentItemsTreePanel', {
     rootVisible: false,
     width: '100%',
     height: '100%',
-    margin: 7,
+    margin: '0 0 0 10',
     padding: 0,
     frame: true,
     cls: 'tree_wrap',

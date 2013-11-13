@@ -342,6 +342,24 @@
         background-color: rgba(36, 36, 36, 0.35);
     }
 }
+
+.itemViewButtonFramework {
+    @include thetus-toolbar-icon-button;
+    display:inline-block;
+    height: 26px;
+    width: 26px;
+    top: 5px;
+    border: 1px solid #FFFFFF;
+    vertical-align: middle;
+    margin: 3px 3px 3px 3px;
+    &:hover, &:active, &:focus{
+        border: 1px solid #999999;
+    }
+    &:select{
+        background-color: rgba(36, 36, 36, 0.35);
+    }
+}
+
 .toolbarDividerFramework {
     height: 20px;
     width: 0.5px;
