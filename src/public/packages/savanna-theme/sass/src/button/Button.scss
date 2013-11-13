@@ -266,8 +266,14 @@
     height: 38px;
     top:0;
 
-    &:hover, &:active, &:focus,
+    &.logoButtonFramework.#{$prefix}btn-brand-header-toolbar-large-over,
     .logoButtonFramework.#{$prefix}btn-brand-header-toolbar-large-focus {
+        background-image: $brand-header-logo-image;
+        background-repeat: no-repeat;
+        background-position: top left;
+        width: 193px;
+        height: 38px;
+        top:0;
         @include opacity(0.85);
     }
 }
