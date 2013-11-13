@@ -33,19 +33,20 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
                 {
                     xtype: 'label',
                     text: relatedItemsGroup.get('label'),
-                    cls:['h2', 'related-item-edit-header'],
+                    cls:['h2', 'bold', 'align_bottom'],
+                    padding: '0 15 0 15',
                     width:'100%'
                 },{
                     xtype: 'panel',
                     value: relatedItemsGroup.get('predicateUri'),
                     name: relatedItemsGroup.get('label'),
-                    margin:'0 0 10 0',
                     listeners: {
                         boxready: Ext.bind(this.onDropItemReady, this)
                     },
                     height:79,
                     width: '100%',
-                    cls:'related-item-drop-zone',
+                    ui: 'dropzone',
+                    margin: '0 15 0 15',
                     layout: {
                         type: 'hbox',
                         align: 'middle',
@@ -111,7 +112,7 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
 
         var addNewRelationship = Ext.create('Savanna.itemView.view.relatedItems.RelationshipPicker', {
             width: 500,
-            height: 300,
+            maxHeight: 300,
             selectionStore: this.getView().store,
             relationshipNameArray: this.relationshipNameArray,
             storeHelper: this.getView().storeHelper

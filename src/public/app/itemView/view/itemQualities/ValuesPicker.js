@@ -36,7 +36,7 @@ Ext.define('Savanna.itemView.view.itemQualities.ValuesPicker', {
 
     autoShow: true,
 
-    padding: '30 30 0 30',
+    padding: '0 15 5 15',
 
     width: '100%',
 
@@ -48,7 +48,6 @@ Ext.define('Savanna.itemView.view.itemQualities.ValuesPicker', {
         {
             xtype: 'grid',
             title: 'Available Values',
-            padding: '0 0 15 0',
             itemId: 'availableValuesGroup',
             cls:'value-picker-row',
             height: 285,
@@ -94,9 +93,9 @@ Ext.define('Savanna.itemView.view.itemQualities.ValuesPicker', {
                     dataIndex: 'label',
                     tpl: Ext.create('Ext.XTemplate',
                         '<tpl if="editable">',
-                            '<button id="removeSelectedValue" class="close-Btn"></button>',
+                            '<i type="button" id="removeSelectedValue" value="x" ></button>',
                         '<tpl else>',
-                            '<button id="removeSelectedValue" class="close-Btn" disabled></button>',
+                            '<i type="button" id="removeSelectedValue" value="x" disabled></button>',
                         '</tpl>')
                 }
             ]
@@ -107,8 +106,7 @@ Ext.define('Savanna.itemView.view.itemQualities.ValuesPicker', {
         {
             text: 'OK',
             itemId: 'okBtn',
-            ui:'commit',
-            margin:'0 0 10 0'
+            ui:'commit'
         },
         {
             text: 'Cancel',

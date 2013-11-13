@@ -470,7 +470,20 @@
   }
 }
 
-#removeSelectedValue, #removeSelectedQuality{
+#removeSelectedValue {
+  @include thetus-icons;
+  display: none;
+ &:before{
+   content:'closeRollout';
+ }
+  &:hover{
+    &:before{
+      content:'closeRollover';
+    }
+  }
+}
+
+#removeSelectedQuality{
   @include thetus-icons;
   display: none;
  &:before{

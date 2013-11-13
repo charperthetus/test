@@ -27,6 +27,8 @@ Ext.define('Savanna.itemView.view.itemQualities.QualitiesPicker', {
         storeHelper: null
     },
 
+    ghost: false,
+
     updatedStore: false,
 
     store: null,
@@ -35,7 +37,7 @@ Ext.define('Savanna.itemView.view.itemQualities.QualitiesPicker', {
 
     autoShow: true,
 
-    padding: '30 30 0 30',
+    padding: '0 15 5 15',
 
     width: '100%',
 
@@ -60,14 +62,13 @@ Ext.define('Savanna.itemView.view.itemQualities.QualitiesPicker', {
                     flex: 1,
                     emptyText: 'Search',
                     enableKeyEvents: true,
-                    margin: 2
+                    margin: '0 0 10 0'
                 }
             ]
         },
         {
             xtype: 'grid',
             title: '',
-            padding: '0 0 15 0',
             itemId: 'availableQualitiesGroup',
             cls: 'value-picker-row',
             height: 285,
@@ -94,7 +95,7 @@ Ext.define('Savanna.itemView.view.itemQualities.QualitiesPicker', {
             title: 'Selected Quality',
             itemId: 'selectedQualitiesGroup',
             cls: 'value-picker-row-hover',
-            height: 150,
+            height: 100,
             width: '100%',
             hideHeaders: true,
             store: this.store,
@@ -126,8 +127,7 @@ Ext.define('Savanna.itemView.view.itemQualities.QualitiesPicker', {
         {
             text: 'OK',
             itemId: 'okBtn',
-            ui: 'commit',
-            margin: '0 0 10 0'
+            ui: 'commit'
         },
         {
             text: 'Cancel',
