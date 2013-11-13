@@ -153,7 +153,6 @@ Ext.define('Savanna.process.controller.ProcessController', {
         var me = this;
 
         var newProcess = {'class': 'go.GraphLinksModel', 'nodeKeyProperty': 'uri', 'nodeDataArray': [], 'linkDataArray': []};
-        //newProcess.uri = this.utils().getURI('ProcessModel');  //todo: remove this code once the instance creation starts working
         newProcess.nodeDataArray[0] = this.utils().populateDefaultNodeJson();
         newProcess.nodeDataArray[0].category = 'Start';
         newProcess.nodeDataArray[0].uri = this.utils().getURI('Start');
@@ -397,10 +396,23 @@ Ext.define('Savanna.process.controller.ProcessController', {
     //
 
     textEdited: function(e) {
-        var curTextEdit = e.diagram.toolManager.textEditingTool.currentTextEditor;
-        if (curTextEdit.hasOwnProperty('onCommit')) {
-            curTextEdit['onCommit'](e.subject);
+        var textEditingTool = e.diagram.toolManager.textEditingTool;
+        var textBlock = textEditingTool.textBlock;
+        var currentTextEditor = textEditingTool.currentTextEditor;
+        if (currentTextEditor.hasOwnProperty('onCommit')) {
+            currentTextEditor['onCommit'](e.subject);
         }
+        var nodeData = textBlock.part.data;
+        var nodeDataArrayStore = this.store.getAt(0).nodeDataArrayStore;
+        var len = nodeDataArrayStore.data.length;
+        for (var i= 0; i<len; i++) {
+            var storeData = nodeDataArrayStore.getAt(i);
+            if (storeData.data.uri === nodeData.uri) {
+                break;
+            }
+        }
+        this.store.getAt(0).nodeDataArrayStore.getAt(i).data.label = textBlock.text;
+        this.getView().down('#processSidepanel').fireEvent('textEdited');
     },
 
     partResized: function(diagramEvent) {
