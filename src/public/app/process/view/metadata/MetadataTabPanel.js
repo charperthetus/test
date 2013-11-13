@@ -23,7 +23,7 @@ Ext.define('Savanna.process.view.metadata.MetadataTabPanel', {
     collapseMode : 'header',
     headerPosition: 'left',
     collapsedCls : 'light-blue',
-    title: 'Detials',
+    title: '',
     layout: 'fit',
     cls: 'off-white-bg',
     items: [

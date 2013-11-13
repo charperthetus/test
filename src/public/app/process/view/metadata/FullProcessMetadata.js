@@ -32,7 +32,7 @@ Ext.define('Savanna.process.view.metadata.FullProcessMetadata', {
             title: 'Process Summary',
             ui: 'off-white',
             defaults: {
-                padding: '0 5',
+                padding: '0 5'
             },
             items: [
                 {

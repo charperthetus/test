@@ -18,7 +18,7 @@ Ext.define('Savanna.process.controller.MetadataController', {
         itemMetadata: {
             readyForDisplay: 'showItemView'
         },
-        nothingHereLabel: true
+        nothingHereLabel: true,
      },
 
     constructor: function (options) {
@@ -109,6 +109,10 @@ Ext.define('Savanna.process.controller.MetadataController', {
 
     showItemView: function() {
         this.getHiddenPanel().getLayout().setActiveItem(this.getItemMetadata());
+
+        // TODO: Fix me so that we are called from the controller with a get method
+        // Unfortuantly we shouldn't have to do this is we build our component structure properly.
+        Ext.ComponentQuery.query('#rnrmDescriptionContainer')[0].doLayout();
     },
 
     showProcessView: function() {
