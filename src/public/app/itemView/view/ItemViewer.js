@@ -273,10 +273,11 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                                     itemId:'newItemButton'
                                 },
 
-                                {
-                                    text: 'Workflow...',
-                                    itemId:'workflowButton'
-                                },
+                                // Pulling for 1.0.9, will use later
+                                // {
+                                //     text: 'Workflow...',
+                                //     itemId:'workflowButton'
+                                // },
 
                                 {
                                     text: 'Delete Item',
