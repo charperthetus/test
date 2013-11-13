@@ -83,7 +83,6 @@ Ext.define('Savanna.process.controller.FullProcessMetadataController', {
 
     processTitleBlur: function(e) {
         var value = {label: e.getValue(), comment: null, value: e.getValue()};
-        this.storeHelper.updateBotLevItemInStore(null, value, this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Label'));
         this.store.getAt(0).data.label = e.getValue();
         this.nodeData.label = e.getValue();
         this.mainNode.label = e.getValue();

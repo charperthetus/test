@@ -30,6 +30,7 @@ Ext.define('Savanna.process.controller.MetadataController', {
         this.setDiagram(this.getView().up('process_component').down('#canvas').diagram);
         this.setCanvas(this.getView().up('process_component').down('#canvas'));
         this.getDiagram().addDiagramListener('ChangedSelection', Ext.bind(this.selectionChanged, this));
+        this.getCanvas().on('itemReLoaded', this.itemReLoaded, this);
     },
 
     selectionChanged: function(e) {
@@ -74,8 +75,14 @@ Ext.define('Savanna.process.controller.MetadataController', {
                 break;
             }
         }
-        // this is an item
+
         this.setUpItemDetails(store, i);
+    },
+
+    itemReLoaded: function(index) {
+        this.getItemMetadata().fireEvent('clearPanel');
+        var store = this.getView().up('process_component').getController().store.getAt(0).nodeDataArrayStore;
+        this.setUpItemDetails(store, index);
     },
 
     setUpProcessDetails: function(itemUri) {

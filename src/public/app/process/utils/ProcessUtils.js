@@ -49,20 +49,6 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
             data.representsClassUri = classUri;
 
             var me = this;
-//
-//            // make a real instance
-//            Ext.Ajax.request({
-//                url: SavannaConfig.itemViewUrl + encodeURI(classUri) + '/instance;jsessionid=' + Savanna.jsessionid,
-//                method: 'GET',
-//                success: function(response){
-//                    var message = Ext.decode(response.responseText);
-//                    data.representsItemUri = message.uri;
-//                    me.getCanvas(diagram).fireEvent('itemInstanceCreated');
-//                },
-//                failure: function(response){
-//                    console.log('Server Side Failure: ' + response.status);
-//                }
-//            });
 
             Ext.Ajax.request({
                 url: SavannaConfig.itemViewUrl + encodeURI(classUri) + ';jsessionid=' + Savanna.jsessionid,
@@ -94,6 +80,10 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
                                         val.editable = false;
                                     });
 
+                                    Ext.each(prop.valuesStore.data.items, function(valuesStoreVal) {
+                                        valuesStoreVal.data.editable = false;
+                                    });
+
                                     storeData.propertyGroupsStore.getById('Properties').data.values.push(prop.data);
                                 });
                             }
@@ -116,21 +106,94 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         if (data && classUri && (data.category === 'ProcessAction' || data.category === 'ProcessItem')) {
             data.representsClassUri = classUri;
 
-//            var me = this;
-//            // make a real instance
-//            Ext.Ajax.request({
-//                url: SavannaConfig.itemViewUrl + encodeURI(classUri) + '/instance/type;jsessionid=' + Savanna.jsessionid,
-//                jsonData: classUri,
-//                method: 'POST',
-//                success: function(){
-//                    // nothing to do
-//                    me.getCanvas(diagram).fireEvent('itemInstanceCreated');
-//                },
-//                failure: function(response){
-//                    console.log('changeRepresentsUri: Server Side Failure: ' + response.status);
-//                }
-//            });
-            this.getCanvas(diagram).fireEvent('itemInstanceCreated');
+            if (data.category === 'ProcessItem') {
+                var me = this;
+                // make a real instance
+                Ext.Ajax.request({
+                    url: SavannaConfig.itemViewUrl + encodeURI(classUri) + ';jsessionid=' + Savanna.jsessionid,
+                    method: 'GET',
+                    success: function(response){
+                        var message = Ext.decode(response.responseText);
+                        data.className = message.label;
+                        data.classUri = message.uri;
+                        data.classDescription = message.propertyGroups[0].values[4].values[0].value;
+                        data.classPrimaryImage = message.propertyGroups[1].values[0].values.length > 0 ? message.propertyGroups[1].values[0].values[0].value : null;
+
+                        var store = me.getStore(diagram);
+                        var len = store.data.length;
+
+                        for (var i= 0; i<len; i++) {
+                            var storeData = store.getAt(i);
+                            if (storeData.data.uri === data.uri) {
+                                storeData.data.className = data.className;
+                                storeData.data.classUri = data.classUri;
+                                storeData.data.classDescription = data.classDescription;
+                                storeData.data.classPrimaryImage = data.classPrimaryImage;
+
+                                var userAssertedQualities = [];
+
+                                Ext.each(storeData.propertyGroupsStore.getById('Properties').data.values, function(currentProp) {
+                                    var values = [];
+                                    Ext.each(currentProp.values, function (currentVal) {
+                                        if (currentVal.editable) {
+                                            values.push(currentVal);
+                                        }
+                                    });
+
+                                    if (values.length > 0) {
+                                        userAssertedQualities.push({label: currentProp.label, predicateUri: currentProp.predicateUri, values: values});
+                                    }
+                                });
+
+                                storeData.propertyGroupsStore.getById('Properties').valuesStore.removeAll();
+                                Ext.Array.erase(storeData.propertyGroupsStore.getById('Properties').data.values, 0, storeData.propertyGroupsStore.getById('Properties').data.values.length);
+
+                                if (message.propertyGroups[3].values) {
+                                    storeData.propertyGroupsStore.getById('Properties').valuesStore.loadRawData(message.propertyGroups[3].values);
+
+                                    Ext.each(storeData.propertyGroupsStore.getById('Properties').valuesStore.data.items, function(prop) {
+                                        Ext.each(prop.data.values, function(val) {
+                                            val.editable = false;
+                                        });
+
+                                        storeData.propertyGroupsStore.getById('Properties').data.values.push(prop.data);
+                                    });
+                                }
+
+                                if (userAssertedQualities.length > 0) {
+                                    Ext.each(userAssertedQualities, function(assertedQuality) {
+                                        if (storeData.propertyGroupsStore.getById('Properties').valuesStore.getById(assertedQuality.label)) {
+                                            //add the values to the existing quality
+                                            Ext.each(assertedQuality.values, function(assertedValue) {
+                                                if (storeData.propertyGroupsStore.getById('Properties').valuesStore.getById(assertedQuality.label).valuesStore.getById(assertedValue.label)) {
+                                                    //value exists already from inherited values
+                                                }
+                                                else {
+                                                    //add the value to the existing quality
+                                                    storeData.propertyGroupsStore.getById('Properties').valuesStore.getById(assertedQuality.label).valuesStore.add(assertedValue);
+                                                    storeData.propertyGroupsStore.getById('Properties').valuesStore.getById(assertedQuality.label).data.values.push(assertedValue);
+                                                }
+                                            });
+                                        }
+                                        else {
+                                            //just add the whole quality with values
+                                            storeData.propertyGroupsStore.getById('Properties').valuesStore.add(assertedQuality);
+                                            storeData.propertyGroupsStore.getById('Properties').data.values.push(assertedQuality);
+                                        }
+                                    });
+                                }
+
+                                break;
+                            }
+                        }
+
+                        me.getCanvas(diagram).fireEvent('itemReLoaded', i);
+                    },
+                    failure: function(response){
+                        console.log('changeRepresentsUri: Server Side Failure: ' + response.status);
+                    }
+                });
+            }
         }
     },
 
