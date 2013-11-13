@@ -17,22 +17,15 @@ Ext.define('Savanna.itemView.view.header.EditHeader', {
         'Savanna.itemView.controller.EditHeaderController'
     ],
 
-    cls: 'itemview',
-
     storeHelper: null,
 
     layout: 'vbox',
 
     header: false,
 
-    margin: 10,
+    margin: '15 15 0 15' ,
 
     items: [
-        {
-            xtype: 'label',
-            margin: "0 0 0 0",
-            text: 'Title'
-        },
         {
             xtype: 'textfield',
             itemId: 'itemNameField',
@@ -41,8 +34,8 @@ Ext.define('Savanna.itemView.view.header.EditHeader', {
         },
         {
             xtype: 'label',
-            margin: "15 0 0 0",
-            text: 'Alias'
+            text: 'Alias',
+            cls: ['bold', 'align_bottom', 'itemView_lineHeight']
         },
         {
             xtype: 'auto_complete',
@@ -53,12 +46,15 @@ Ext.define('Savanna.itemView.view.header.EditHeader', {
         },
         {
             xtype: 'label',
-            margin: "15 0 0 0",
-            text: 'Intended Use'
+            text: 'Intended Use',
+            cls: ['bold', 'align_bottom', 'itemView_lineHeight']
         },
         {
             xtype: 'container',
-            layout: 'hbox',
+            layout: {
+                type: 'hbox',
+                align: 'start'
+            },
             width: '100%',
             items: [
                 {
@@ -76,14 +72,18 @@ Ext.define('Savanna.itemView.view.header.EditHeader', {
                     xtype: 'button',
                     itemId: 'intendedUseChooserBtn',
                     glyph: 'searchBinoculars',
+                    cls: 'itemViewButtonFramework',
+                    margin: '0 0 3 3',
+                    width:25,
+                    height:25,
                     tooltip: "Click to browse intended uses"
                 }
             ]
         },
         {
             xtype: 'label',
-            margin: "20 0 0 0",
-            text: 'Type'
+            text: 'Type',
+            cls: ['bold', 'align_bottom', 'itemView_lineHeight']
         },
         {
             xtype: 'container',
@@ -102,7 +102,8 @@ Ext.define('Savanna.itemView.view.header.EditHeader', {
         {
             xtype: 'label',
             margin: '20 0 0 0',
-            text: 'Description'
+            text: 'Description',
+            cls: ['bold', 'align_bottom', 'itemView_lineHeight']
         },
         {
             xtype: 'textarea',

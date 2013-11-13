@@ -66,7 +66,7 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
         if(me.getView().store.getById('Type').data.values.length)  {
             var parents = '';
             Ext.each(me.getView().store.getById('Type').data.values, function(type)    {
-                parents = parents + '<input type="button" name="' + type.value + '" value="' + type.label + '" id="openParentItem" />';
+                parents = parents + '<input type="button" name="' + type.value + '" value="' + type.label +  '" id="openParentItem" />' + '>';
             });
             me.getView().queryById('parentsList').update(parents);
 
@@ -125,7 +125,7 @@ Ext.define('Savanna.itemView.controller.EditHeaderController', {
 
         var vChooser = Ext.create('Savanna.itemView.view.itemQualities.ValuesPicker', {
             width: 500,
-            height: 600,
+            maxHeight: 520,
             selectionStore: this.getView().store.getById("Intended Use").valuesStore,
             valNameArray: valNameArray,
             disabledItemsArray: disabledNameArray,

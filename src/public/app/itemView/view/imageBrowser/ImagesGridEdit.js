@@ -70,6 +70,7 @@ Ext.define('Savanna.itemView.view.imageBrowser.ImagesGridEdit', {
     }, {
         xtype: 'label',
         flex: 1,
+        margin: '0, 0, 10, 10',
         itemId: 'uploadStatusMessage',
         hidden: true
     

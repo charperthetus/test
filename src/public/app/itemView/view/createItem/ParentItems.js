@@ -41,6 +41,7 @@ Ext.define('Savanna.itemView.view.createItem.ParentItems', {
     header: {
         xtype: 'header',
         cls: 'item-header-font',
+        margin: '0 0 0 2',
         style: {
             "background": '#FFFFFF'
         }

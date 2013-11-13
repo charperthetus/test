@@ -45,13 +45,13 @@ Ext.define('Savanna.itemView.view.createItem.CreateItem', {
                 xtype: 'itemview_parenttree',
                 itemId: 'parentItemsTreePanel',
                 cls: 'create-item-coloumn',
-                flex: 2
+                width: 300
             },
             {
                 xtype: 'itemview_parentdetails',
                 itemId: 'parentItemsDetailsPanel',
                 cls: 'create-item-coloumn',
-                flex: 3
+                flex: 1
             }
         ];
 
