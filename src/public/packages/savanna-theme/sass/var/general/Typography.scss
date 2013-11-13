@@ -3,14 +3,14 @@
 .heading1 {
   font-size: 20px;
   font-weight: bold;
-}
+};
 .heading2 {
   font-size: 14px;
   line-height: 21px;
   //space between paragraphs should be 25px (12 + 13). If you need to kill padding on top or bottom, add align_top or align_bottom.
   margin: 0;
   font-weight: bold;
-}
+};
 .heading3 {
   font-size: 12px;
   font-weight: bold;
@@ -18,7 +18,7 @@
   //space between paragraphs should be 21px (10 + 11). If you need to kill padding on top or bottom, add align_top or align_bottom.
   margin-top: 10px;
   margin-bottom: 11px;
-}
+};
 
 .heading2 .x-form-display-field{
 	@extend .heading2;
