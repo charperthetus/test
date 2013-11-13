@@ -21,5 +21,9 @@
 }
 
 .heading2 .x-form-display-field{
-	@extend .heading2
+	@extend .heading2;
+}
+
+.itemView_lineHeight {
+    margin-top:5;
 }

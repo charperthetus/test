@@ -23,23 +23,23 @@ Ext.define('Savanna.itemView.view.itemQualities.EditItemQualities', {
 
     width: '100%',
 
-    padding:'10 0 10 0',
-
     tbar: [
         {
             xtype: 'auto_complete',
             itemId: 'addPropAutoChooser',
             labelType: 'Click to add a quality',
-            margin:'10 0 0 10',
-            width: '66%',
+            margin: '10 5 0 0',
+            width: '90%',
             store: Ext.create('Savanna.itemView.store.AutoCompleteStore', {
                 urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/model/search/typeahead',
                 paramsObj: {pageStart: 0, pageSize: 20, alphabetical: false, type: 'Quality', userAssertableOnly: true}
             })
-        },
-        {
+        },{
             xtype: 'button',
             glyph: 'searchBinoculars',
+            cls: 'toolbarButtonFramework',
+            width:25,
+            height:25,
             itemId: 'qualitiesChooser',
             tooltip: 'Click to browse qualities'
         },

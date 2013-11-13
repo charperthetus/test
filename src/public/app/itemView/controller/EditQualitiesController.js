@@ -80,8 +80,9 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
             picker = Ext.create('Ext.button.Button', {
                 glyph:'searchBinoculars',
                 itemId: 'valuesChooser',
-                height:43,
-                cls:'edit-qualities-button',
+                width:25,
+                height:25,
+                cls: 'toolbarButtonFramework',
                 listeners: {
                     click: me.launchValuesChooser.bind(me, data.label)
                 }
@@ -132,7 +133,8 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
 
         var vChooser = Ext.create('Savanna.itemView.view.itemQualities.ValuesPicker', {
             width: 500,
-            height: 600,
+            minHeight: 400,
+            maxHeight: 600,
             selectionStore: this.getView().store.getById(storeName).valuesStore,
             valNameArray: valNameArray,
             disabledItemsArray: disabledNameArray,
@@ -164,7 +166,7 @@ Ext.define('Savanna.itemView.controller.EditQualitiesController', {
         });
         var qChooser = Ext.create('Savanna.itemView.view.itemQualities.QualitiesPicker', {
             width: 500,
-            height: 600,
+            maxHeight: 600,
             selectionStore: this.getView().store,
             propNameArray: this.propNameArray,
             storeHelper: this.getView().storeHelper
