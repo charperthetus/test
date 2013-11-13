@@ -8,7 +8,8 @@ Ext.define('Savanna.process.controller.MetadataController', {
 
     control: {
         view: {
-            processUriChange: 'setUpProcessDetails'
+            processUriChange: 'setUpProcessDetails',
+            textEdited: 'nodeTextEdited'
         },
         hiddenPanel: true,
         fullProcessMetadata: {
@@ -17,7 +18,7 @@ Ext.define('Savanna.process.controller.MetadataController', {
         itemMetadata: {
             readyForDisplay: 'showItemView'
         },
-        nothingHereLabel: true
+        nothingHereLabel: true,
      },
 
     constructor: function (options) {
@@ -86,6 +87,12 @@ Ext.define('Savanna.process.controller.MetadataController', {
         this.setUpItemDetails(store, index);
     },
 
+    nodeTextEdited: function() {
+        if (this.getDiagram().selection.first().data.category === 'ProcessItem') {
+            this.getItemMetadata().fireEvent('updateLabelFromNode');
+        }
+    },
+
     setUpProcessDetails: function(itemUri) {
         // load the side panel initially or just show it
         if( null !== itemUri ) {
@@ -102,6 +109,10 @@ Ext.define('Savanna.process.controller.MetadataController', {
 
     showItemView: function() {
         this.getHiddenPanel().getLayout().setActiveItem(this.getItemMetadata());
+
+        // TODO: Fix me so that we are called from the controller with a get method
+        // Unfortuantly we shouldn't have to do this is we build our component structure properly.
+        Ext.ComponentQuery.query('#rnrmDescriptionContainer')[0].doLayout();
     },
 
     showProcessView: function() {

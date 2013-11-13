@@ -21,7 +21,8 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
     control: {
         view: {
             processItemUriChanged: 'onUriChanged',
-            clearPanel: 'onClearPanel'
+            clearPanel: 'onClearPanel',
+            updateLabelFromNode: 'updateItemLabel'
         },
         openBtn: {
             click: 'onOpenBtnClick'
@@ -137,6 +138,10 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
         var nodeData = this.getView().up('process_component').getController().store.getAt(0).data.nodeDataArray[this.index]
         nodeData.label = e.getValue();
         diagram.findNodeForData(nodeData).updateTargetBindings('label');
+    },
+
+    updateItemLabel: function() {
+        this.getItemInstanceTitle().setValue(this.store.getAt(this.index).data.label);
     },
 
     addingRole: function(tagName, tagData, aView) {

@@ -35,6 +35,7 @@ Ext.define('Savanna.process.view.metadata.ProcessItemMetadata', {
             items: [
                 {
                     xtype: 'fieldcontainer',
+                    itemId: 'rnrmDescriptionContainer',
                     layout: 'hbox',
                     width: '100%',
                     align: 'stretch',
