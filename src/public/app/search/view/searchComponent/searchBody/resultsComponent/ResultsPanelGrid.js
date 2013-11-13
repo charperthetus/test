@@ -31,7 +31,8 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
             tpl: new Ext.XTemplate(
                 '<div style="position: relative" >',
                 '<div class="resultDiv">',
-                '{[this.getImgDiv(values)]}',
+                //Pulling thumbnails for this release
+//                '{[this.getImgDiv(values)]}',
                 '<div class="grid-cell-title"><strong>{title}</strong></div>',
                 '<div class="contentDiv">({composite}) - {[this.parseDate(new Date(values.publishedDate))]} - {documentFileName}<br />{previewString}</div>',
                 '</div>',
