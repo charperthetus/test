@@ -34,7 +34,7 @@ Ext.define('Savanna.itemView.view.itemQualities.EditItemQualities', {
             width: '66%',
             store: Ext.create('Savanna.itemView.store.AutoCompleteStore', {
                 urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/model/search/typeahead',
-                paramsObj: {pageStart: 0, pageSize: 20, alphabetical: false, type: 'Quality', userAssertableOnly: true}
+                paramsObj: {pageStart: 0, pageSize: 20, alphabetical: false, type: 'Quality'}
             })
         },
         {

@@ -3,19 +3,19 @@ Ext.define('Savanna.process.controller.MetadataController', {
 
     config: {
         diagram: null,
-        processUri: null,
         canvas: null
     },
 
     control: {
         view: {
-            processUriChange: 'setUpProcessDetails',
-            processclose: 'onProcessClose'
+            processUriChange: 'setUpProcessDetails'
         },
         hiddenPanel: true,
-        fullProcessMetadata: true,
+        fullProcessMetadata: {
+            readyForDisplay: 'showProcessView'
+        },
         itemMetadata: {
-            itemReadyForDisplay: 'showTheItemView'
+            readyForDisplay: 'showItemView'
         },
         nothingHereLabel: true
      },
@@ -34,7 +34,7 @@ Ext.define('Savanna.process.controller.MetadataController', {
 
     selectionChanged: function(e) {
         // save the existing set of changes, if any
-        this.saveChanges();
+        this.clearPanel();
 
         // then load up the panel for the new selection
         if (1 === this.getDiagram().selection.count) {
@@ -79,11 +79,9 @@ Ext.define('Savanna.process.controller.MetadataController', {
     },
 
     setUpProcessDetails: function(itemUri) {
-        // get proper info from service for item configs
+        // load the side panel initially or just show it
         if( null !== itemUri ) {
-            this.setProcessUri( itemUri );
-            this.getHiddenPanel().getLayout().setActiveItem(this.getFullProcessMetadata());
-            this.getFullProcessMetadata().fireEvent('processUriChanged', itemUri);
+            this.getFullProcessMetadata().fireEvent('processUriChanged', itemUri, this.getView().up('process_component').getController().store.getAt(0).nodeDataArrayStore);
         } else {
             // show the process details panel
             this.getHiddenPanel().getLayout().setActiveItem(this.getFullProcessMetadata());
@@ -94,16 +92,15 @@ Ext.define('Savanna.process.controller.MetadataController', {
         this.getItemMetadata().fireEvent('processItemUriChanged', store, index);
     },
 
-    showTheItemView: function() {
+    showItemView: function() {
         this.getHiddenPanel().getLayout().setActiveItem(this.getItemMetadata());
     },
 
-    saveChanges: function() {
-        // TODO: save the existing set of changes, if any
-        this.getHiddenPanel().getLayout().getActiveItem().fireEvent('savechanges');
+    showProcessView: function() {
+        this.getHiddenPanel().getLayout().setActiveItem(this.getFullProcessMetadata());
     },
 
-    onProcessClose: function() {
-        this.saveChanges();
+    clearPanel: function() {
+        this.getHiddenPanel().getLayout().getActiveItem().fireEvent('clearPanel');
     }
 });

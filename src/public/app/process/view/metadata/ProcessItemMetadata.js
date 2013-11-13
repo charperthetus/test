@@ -23,7 +23,9 @@ Ext.define('Savanna.process.view.metadata.ProcessItemMetadata', {
 
     items: [
         {
-            xtype: 'container',
+            xtype: 'form',
+            collapsible: true,
+            title: "RNRM Item",
             layout: 'vbox',
             items: [
                 {
@@ -48,6 +50,7 @@ Ext.define('Savanna.process.view.metadata.ProcessItemMetadata', {
                         {
                             xtype: 'textarea',
                             itemId: 'itemDescription',
+                            editable: false,
                             readOnly: true
                         },
                         {
@@ -62,14 +65,17 @@ Ext.define('Savanna.process.view.metadata.ProcessItemMetadata', {
             ]
         },
         {
-            xtype: 'panel',
+            xtype: 'form',
             layout: 'vbox',
             border: 3,
+            itemId: 'instancePanel',
+            collapsible: true,
+            title: 'Process Item',
             items: [
                 {
                     xtype: 'textfield',
                     itemId: 'itemInstanceTitle',
-                    fieldLabel: 'Instance Title',
+                    fieldLabel: 'Title',
                     labelAlign: 'top',
                     width: '95%'
                 },
@@ -249,14 +255,13 @@ Ext.define('Savanna.process.view.metadata.ProcessItemMetadata', {
                             }
                         }
                     ]
+                },
+                {
+                    xtype: 'itemview_edit_qualities',
+                    title: 'Properties',
+                    itemId: 'itemQualities'
                 }
             ]
-        },
-        {
-            xtype: 'itemview_edit_qualities',
-            collapsible: true,
-            title: 'Properties',
-            itemId: 'itemQualities'
         }
     ]
 });
