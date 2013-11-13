@@ -72,7 +72,7 @@ Ext.define('Savanna.process.controller.FullProcessMetadataController', {
         this.getItemSources().storeHelper = this.storeHelper;
         this.getItemSources().store = this.store.getAt(0).propertyGroupsStore.getById('Sources').valuesStore;
         Ext.bind(this.getItemSources().addSourcesGrid(this.store.getAt(0).propertyGroupsStore.getById('Sources').valuesStore.getById('Source Document').valuesStore), this.getItemSources());
-        this.getInformationPanel().setItemUri(encodeURI(this.store.getAt(0).data.mainProcessUri));
+        this.getInformationPanel().setItemUri(this.store.getAt(0).data.mainProcessUri);
 
         if(this.store.getAt(0).data.categoryLabel && 0 < this.store.getAt(0).data.categoryLabel.length) {
             this.getCategoryValue().setText(this.store.getAt(0).data.categoryLabel);
@@ -83,7 +83,6 @@ Ext.define('Savanna.process.controller.FullProcessMetadataController', {
 
     processTitleBlur: function(e) {
         var value = {label: e.getValue(), comment: null, value: e.getValue()};
-        this.storeHelper.updateBotLevItemInStore(null, value, this.store.getAt(0).propertyGroupsStore.getById('Header').valuesStore.getById('Label'));
         this.store.getAt(0).data.label = e.getValue();
         this.nodeData.label = e.getValue();
         this.mainNode.label = e.getValue();

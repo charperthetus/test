@@ -33,6 +33,7 @@ Ext.define('Savanna.process.controller.MetadataController', {
     },
 
     selectionChanged: function(e) {
+        this.getCanvas().un('itemReLoaded', this.itemReLoaded, this);
         // save the existing set of changes, if any
         this.clearPanel();
 
@@ -42,6 +43,7 @@ Ext.define('Savanna.process.controller.MetadataController', {
 
             switch(itemCategory) {
                 case 'ProcessItem':
+                    this.getCanvas().on('itemReLoaded', this.itemReLoaded, this);
                     //show loading screen
                     this.getHiddenPanel().getLayout().setActiveItem(this.getNothingHereLabel());
 
@@ -74,8 +76,14 @@ Ext.define('Savanna.process.controller.MetadataController', {
                 break;
             }
         }
-        // this is an item
+
         this.setUpItemDetails(store, i);
+    },
+
+    itemReLoaded: function(index) {
+        this.getItemMetadata().fireEvent('clearPanel');
+        var store = this.getView().up('process_component').getController().store.getAt(0).nodeDataArrayStore;
+        this.setUpItemDetails(store, index);
     },
 
     setUpProcessDetails: function(itemUri) {

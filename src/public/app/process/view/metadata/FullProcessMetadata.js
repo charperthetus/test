@@ -88,6 +88,7 @@ Ext.define('Savanna.process.view.metadata.FullProcessMetadata', {
         {
             xtype: 'document_sources',
             editMode: true,
+            autoSave: false,
             itemId: 'itemSources',
             itemURI: 'xx%2FItem',
             header: {

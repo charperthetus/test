@@ -67,10 +67,12 @@ Ext.define('Savanna.sources.controller.Sources', {
     },
 
     updateStore: function() {
-        this.getView().storeHelper.fetchMainStore().getAt(0).setDirty();
-        this.getView().storeHelper.fetchMainStore().sync({
-            callback: Ext.bind(this.onEditDoneCallback, this, [], true)
-        });
+        if (this.getView().getAutoSave()) {
+            this.getView().storeHelper.fetchMainStore().getAt(0).setDirty();
+            this.getView().storeHelper.fetchMainStore().sync({
+                callback: Ext.bind(this.onEditDoneCallback, this, [], true)
+            });
+        }
     },
 
     onEditDoneCallback: function (records, operation, success) {
