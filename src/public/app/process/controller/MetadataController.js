@@ -8,7 +8,8 @@ Ext.define('Savanna.process.controller.MetadataController', {
 
     control: {
         view: {
-            processUriChange: 'setUpProcessDetails'
+            processUriChange: 'setUpProcessDetails',
+            textEdited: 'nodeTextEdited'
         },
         hiddenPanel: true,
         fullProcessMetadata: {
@@ -84,6 +85,12 @@ Ext.define('Savanna.process.controller.MetadataController', {
         this.getItemMetadata().fireEvent('clearPanel');
         var store = this.getView().up('process_component').getController().store.getAt(0).nodeDataArrayStore;
         this.setUpItemDetails(store, index);
+    },
+
+    nodeTextEdited: function() {
+        if (this.getDiagram().selection.first().data.category === 'ProcessItem') {
+            this.getItemMetadata().fireEvent('updateLabelFromNode');
+        }
     },
 
     setUpProcessDetails: function(itemUri) {

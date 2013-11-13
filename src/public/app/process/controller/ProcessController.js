@@ -355,14 +355,14 @@ Ext.define('Savanna.process.controller.ProcessController', {
                 buttons:Ext.Msg.YESNO,
                 buttonText: {yes: 'OK', no: 'Cancel'},
                 title: 'Delete Process',
-                msg: 'Are you sure you want to permanently delete this process?'
-            },
-            function(btn) {
-               if (btn == 'yes') {
-                   me.deleteProcess();
-               } else {
-                   //cancel
-               }
+                msg: 'Are you sure you want to permanently delete this process?',
+                fn: function(btn) {
+                    if (btn == 'yes') {
+                        me.deleteProcess();
+                    } else {
+                        //cancel
+                    }
+                }
             }
         );
     },
