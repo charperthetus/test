@@ -8,6 +8,7 @@
  */
 
 // /* IMPORTS */
+@import 'class/off-white-bg';
 
 // /* MIXINS */
 @if $include-panel-uis == true {
@@ -29,8 +30,8 @@
         $uikit-ui: 'off-white',
         $uikit-header-background-color: #f2f2f2,
         $uikit-header-color: #333,
-        $uikit-header-border-color: #cccccc,
-    	$uikit-header-border-width: 1px 0,
+        $uikit-header-inner-border-color: #ccc,
+        $uikit-header-inner-border-width: 1px 0,
     	$uikit-header-padding: 7px,
     	$uikit-header-line-height: 14px,
     	$uikit-header-text-transform: capitalize,
