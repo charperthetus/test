@@ -88,18 +88,18 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
                                                     cls: 'refineSearchFacets',
                                                     padding: '0 10 10 10'
                                                 });
-        this.add(resulstsSearchSources);
+        this.insert(0, resulstsSearchSources);
 
         if (!this.queryById('refinesearch')) {
             if (!this.queryById('results-refineSearch')) {
-                this.add(resulstsRefineSearch);
+                this.insert(1, resulstsRefineSearch);
             }
             this.down('#results-refineSearch').add(this.createRefineSearchPanel());
         }
 
         if (!this.queryById('refineterms')) {
             if (!this.queryById('results-refineSearch')) {
-                this.add(resulstsRefineSearch);
+                this.insert(1, resulstsRefineSearch);
             }
             this.down('#results-refineSearch').add(this.createRefineTermsPanel());
         }
@@ -108,7 +108,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
 
         if (!this.queryById('resultsfacets')) {
             if (!this.queryById('results-refineSearchFacets')) {
-                this.add(resulstsSearchFacets);
+                this.insert(2, resulstsSearchFacets);
             }
             this.down('#results-refineSearchFacets').add(facetTabs);    // ...but only add if doesn't exist
         }
