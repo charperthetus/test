@@ -107,7 +107,7 @@ Ext.define('Savanna.process.controller.ProcessController', {
         var uri = this.getView().getItemUri();
         if (uri) {
             Ext.Ajax.request({
-                url: SavannaConfig.itemLockUrl + encodeURI(uri) + ';jsessionid=' + Savanna.jsessionid,
+                url: SavannaConfig.itemLockUrl + uri + ';jsessionid=' + Savanna.jsessionid,
                 method: 'GET',
                 success: function(response){
                     if (response.responseText !== '') {
@@ -136,6 +136,7 @@ Ext.define('Savanna.process.controller.ProcessController', {
 
     onStoreLoaded: function (records) {
         this.load(this.getCanvas().diagram, records[0]);
+        this.getView().down('#processSidepanel').fireEvent('processUriChange', this.store.getAt(0).data.uri);
     },
 
     load: function(diagram, rec) {
@@ -173,6 +174,9 @@ Ext.define('Savanna.process.controller.ProcessController', {
                         uri = message.uri.slice(0,index);
                         uri = uri.concat('ProcessModel');
                     }
+
+                    uri = encodeURI(uri);
+                    me.getView().setItemUri(uri);
                     me.store.getAt(0).set('uri', uri);
                     me.getView().down('#processSidepanel').fireEvent('processUriChange', uri);
                 } else {
@@ -295,7 +299,7 @@ Ext.define('Savanna.process.controller.ProcessController', {
     releaseLock: function() {
         var uri = this.store.getAt(0).data.uri;
         Ext.Ajax.request({
-            url: SavannaConfig.itemLockUrl + encodeURI(uri) + ';jsessionid=' + Savanna.jsessionid,
+            url: SavannaConfig.itemLockUrl + uri + ';jsessionid=' + Savanna.jsessionid,
             method: 'DELETE',
             success: function(){
                 // nothing to do
@@ -369,7 +373,7 @@ Ext.define('Savanna.process.controller.ProcessController', {
         var uri = this.store.getAt(0).data.uri;
         var view = this.getView();
         Ext.Ajax.request({
-            url: SavannaConfig.modelProcessLoadUrl + encodeURI(encodeURIComponent(uri)) + ';jsessionid=' + Savanna.jsessionid,
+            url: SavannaConfig.modelProcessLoadUrl + uri + ';jsessionid=' + Savanna.jsessionid,
             method: 'DELETE',
             success: function(response) {
                 me.releaseLock();

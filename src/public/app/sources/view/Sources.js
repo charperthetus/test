@@ -15,6 +15,10 @@ Ext.define('Savanna.sources.view.Sources', {
 
     title: 'Sources',
 
+    config: {
+        autoSave: true
+    },
+
     ui:'off-white',
 
     layout: 'vbox',
@@ -55,9 +59,12 @@ Ext.define('Savanna.sources.view.Sources', {
                 }
             ]
         }
-
-
     ],
+
+    constructor: function(configs) {
+        this.callParent(arguments);
+        this.initConfig(configs);
+    },
 
     addSourcesGrid: function(store){
         if (this.queryById('listOfSources') === null ){

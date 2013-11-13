@@ -57,7 +57,9 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
                     var message = Ext.decode(response.responseText);
                     data.className = message.label;
                     data.classUri = message.uri;
-                    data.classDescription = message.propertyGroups[0].values[4].values[0].value;
+
+                    var desc = message.propertyGroups[0].values[4].values[0];
+                    data.classDescription = desc ? desc.value: "";
                     data.classPrimaryImage = message.propertyGroups[1].values[0].values.length > 0 ? message.propertyGroups[1].values[0].values[0].value : null;
 
                     var store = me.getStore(diagram);
@@ -116,7 +118,9 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
                         var message = Ext.decode(response.responseText);
                         data.className = message.label;
                         data.classUri = message.uri;
-                        data.classDescription = message.propertyGroups[0].values[4].values[0].value;
+
+                        var desc = message.propertyGroups[0].values[4].values[0];
+                        data.classDescription = desc ? desc.value: "";
                         data.classPrimaryImage = message.propertyGroups[1].values[0].values.length > 0 ? message.propertyGroups[1].values[0].values[0].value : null;
 
                         var store = me.getStore(diagram);

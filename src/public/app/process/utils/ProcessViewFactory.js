@@ -8,7 +8,7 @@ Ext.define('Savanna.process.utils.ProcessViewFactory', {
         if (type.toLowerCase() === 'process'){
             return Ext.create('Savanna.process.view.ProcessEditorComponent', {
                 title: label,
-                itemUri: uri
+                itemUri: encodeURI(uri)
             });
         }else {
             return null;
