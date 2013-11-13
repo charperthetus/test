@@ -38,6 +38,8 @@ Ext.define('Savanna.process.view.metadata.MetadataTabPanel', {
             items: [
                 {
                     xtype: 'label',
+                    width: '100%',
+                    margin: 10,
                     itemId: 'nothingHereLabel',
                     text: 'Loading Information'
                 },
