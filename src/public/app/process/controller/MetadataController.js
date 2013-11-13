@@ -8,8 +8,7 @@ Ext.define('Savanna.process.controller.MetadataController', {
 
     control: {
         view: {
-            processUriChange: 'setUpProcessDetails',
-            processclose: 'onProcessClose'
+            processUriChange: 'setUpProcessDetails'
         },
         hiddenPanel: true,
         fullProcessMetadata: {
@@ -35,7 +34,7 @@ Ext.define('Savanna.process.controller.MetadataController', {
 
     selectionChanged: function(e) {
         // save the existing set of changes, if any
-        this.saveChanges();
+        this.clearPanel();
 
         // then load up the panel for the new selection
         if (1 === this.getDiagram().selection.count) {
@@ -101,12 +100,7 @@ Ext.define('Savanna.process.controller.MetadataController', {
         this.getHiddenPanel().getLayout().setActiveItem(this.getFullProcessMetadata());
     },
 
-    saveChanges: function() {
-        // TODO: save the existing set of changes, if any
-        this.getHiddenPanel().getLayout().getActiveItem().fireEvent('savechanges');
-    },
-
-    onProcessClose: function() {
-        this.saveChanges();
+    clearPanel: function() {
+        this.getHiddenPanel().getLayout().getActiveItem().fireEvent('clearPanel');
     }
 });

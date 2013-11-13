@@ -21,7 +21,7 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
     control: {
         view: {
             processItemUriChanged: 'onUriChanged',
-            savechanges: 'onSaveChanges'
+            clearPanel: 'onClearPanel'
         },
         openBtn: {
             click: 'onOpenBtnClick'
@@ -30,9 +30,6 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
         itemTitle: true,
         itemDescription: true,
         itemPrimeImage: true,
-        unlockBtn: {
-            click: 'onUnlockBtnClick'
-        },
         instancePanel: true,
         itemInstanceTitle: {
             blur: 'instanceTitleBlur'
@@ -125,7 +122,7 @@ Ext.define('Savanna.process.controller.ProcessItemMetadataController', {
         this.getView().fireEvent('readyForDisplay');
     },
 
-    onSaveChanges: function() {
+    onClearPanel: function() {
         this.clearValues();
     },
 

@@ -28,13 +28,10 @@ Ext.define('Savanna.process.view.metadata.MetadataTabPanel', {
 
     items: [
         {
-            title:'Information',
             xtype: 'form',
             layout: 'card',
             itemId:'hiddenPanel',
-            header: {
-                ui: 'off-white'
-            },
+            header: false,
             ui: 'off-white',
             width:'100%',
             height:'100%',
