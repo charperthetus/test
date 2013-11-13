@@ -38,7 +38,7 @@ Ext.define('Savanna.process.view.part.Overview', {
                 gmake(go.Part,
                     { layerName: "Tool" },
                     gmake(go.Shape,
-                        { name: "SHAPE", fill: null, stroke: "#3ca8c8", strokeWidth: 2 }));
+                        { name: "SHAPE", fill: null, stroke: "#3ca8c8", strokeWidth: 3, stretch: go.GraphObject.Fill }));
 
 
 
