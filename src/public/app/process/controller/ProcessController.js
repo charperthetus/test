@@ -318,7 +318,7 @@ Ext.define('Savanna.process.controller.ProcessController', {
                 msg: "Do you want to save the changes you made in this process?\nYour changes will be lost if you don't save them.",
                 width: 375,
                 buttons: Ext.Msg.YESNOCANCEL,
-                buttonText: {yes: "Don't Save", no: 'Save', cancel: 'Cancel'},
+                buttonText: {yes: "Save", no: "Don't Save", cancel: 'Cancel'},
                 fn: function(button) {
                     if(button == 'yes'){
                         //save and close
