@@ -14,7 +14,7 @@ Ext.define('Savanna.map.view.part.OL3MapComponent', {
         element = Ext.DomHelper.insertHtml(
             'afterBegin',
             this.getEl().dom,
-            '<div class="map" style="width: 100%; height: 100%; position: absolute;"></div>'
+            '<div class="map" style="width: 100%; height: 100%; position: fixed"></div>'
         );
 
         this.map = new ol.Map({
