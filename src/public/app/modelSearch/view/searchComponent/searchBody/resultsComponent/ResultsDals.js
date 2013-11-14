@@ -33,7 +33,6 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
     height:'100%',
 
     layout: 'vbox',
-    border: false,
     autoScroll: true,
 
     mixins: {
@@ -41,6 +40,13 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
     },
 
     store: 'Savanna.modelSearch.store.DalSources',
+
+    defaults: {
+        padding: 10,
+        width: '100%'
+    },
+
+    items: [],
 
     initComponent: function () {
         this.mixins.storeable.initStore.call(this);
@@ -53,21 +59,59 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
          remove DALs that have been deselected
          */
 
+         var resulstsSearchSources = Ext.create('Ext.panel.Panel', {
+                                                    xtype: 'panel',
+                                                    itemId: 'results-searchSources',
+                                                    ui: 'simple',
+                                                    title: 'search sources',
+                                                    layout: 'vbox',
+                                                    align: 'left',
+                                                    margin: '0 0 10 0'
+                                                });
+        /* This panel is hidden until the bug with refine search can be fixed. */
+        var resulstsRefineSearch = Ext.create('Ext.panel.Panel', {
+                                                    itemId: 'results-refineSearch',
+                                                    hidden: true,
+                                                    bbar: {
+                                                        padding: 0,
+                                                        margin: '10 0 0 0',
+                                                        items: ['->',{
+                                                            text:'Keyword Reset',
+                                                            itemId:'resultsFacetsReset',
+                                                            padding: 0,
+                                                            margin: 0
+                                                        }]
+                                                    }
+                                                });
+        var resulstsSearchFacets = Ext.create('Ext.container.Container', {
+                                                    itemId: 'results-refineSearchFacets',
+                                                    cls: 'refineSearchFacets',
+                                                    padding: '0 10 10 10'
+                                                });
+        this.insert(0, resulstsSearchSources);
+
         if (!this.queryById('refinesearch')) {
-            this.add(this.createRefineSearchPanel());
+            if (!this.queryById('results-refineSearch')) {
+                this.insert(1, resulstsRefineSearch);
+            }
+            this.down('#results-refineSearch').add(this.createRefineSearchPanel());
         }
 
         if (!this.queryById('refineterms')) {
-            this.add(this.createRefineTermsPanel());
+            if (!this.queryById('results-refineSearch')) {
+                this.insert(1, resulstsRefineSearch);
+            }
+            this.down('#results-refineSearch').add(this.createRefineTermsPanel());
         }
 
         var facetTabs = this.createFacetsTabPanel();    // always do this...
 
         if (!this.queryById('resultsfacets')) {
-
-            this.add(facetTabs);    // ...but only add if doesn't exist
+            if (!this.queryById('results-refineSearchFacets')) {
+                this.insert(2, resulstsSearchFacets);
+            }
+            this.down('#results-refineSearchFacets').add(facetTabs);    // ...but only add if doesn't exist
         }
-
 
         var startingItemsLength = this.items.length; // determine where to insert the dals, above facets
 
@@ -78,9 +122,9 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
 
             if (!exists) {
                 myPanel = this.createDalPanel(record);
-                myPanel.down('#dalName').setText(record.get('displayName'));
+                myPanel.setText(record.get('displayName'));
 
-                this.insert(this.items.length - startingItemsLength, myPanel);
+                this.down('#results-searchSources').insert(this.items.length - startingItemsLength, myPanel);
             } else {
                 this.updateDalStatus(dalId);
             }
@@ -92,15 +136,13 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
     createDalPanel: function (myRecord) {
         return Ext.create('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsOptions', {
             itemId: myRecord.get('id'),
-            hidden: true,
             dalName: myRecord.get('displayName')
         });
     },
 
     createRefineSearchPanel: function () {
         return Ext.create('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent.resultsDals.ResultsRefineSearchbar', {
-            itemId: 'refinesearch',
-            ui:'left-padding'
+            itemId: 'refinesearch'
         });
     },
 
@@ -215,12 +257,13 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
         var myDal = this.queryById(dalId);
 
         var styleStatus = {
-            'success': myDal.dalLoadSuccess,
-            'fail': myDal.dalLoadFail,
-            'pending': myDal.dalLoadPending,
-            'none': myDal.dalLoadNone
+            'success': 'icon-success',
+            'fail': 'icon-alert',
+            'pending': 'icon-pending',
+            'none': 'loadNone'
         };
-        myDal.down('#dalStatusIcon').getEl().setStyle(styleStatus[status]);
+        
+        myDal.setIconCls(styleStatus[status]);
 
         var me = this,
             count = 0;
@@ -232,7 +275,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
                     count = searchResult.store.totalCount;
                 }
 
-                myDal.down('#dalName').setText(me.store.getById(dalId).get('displayName') + ' ' + '(' + count + ')');
+                myDal.setText(me.store.getById(dalId).get('displayName') + ' ' + '(' + count + ')');
             }
         });
     }

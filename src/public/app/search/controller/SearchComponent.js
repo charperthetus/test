@@ -14,7 +14,6 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         'Savanna.search.store.SearchResults',
         'Savanna.search.view.searchComponent.searchBody.searchMap.SearchLocationComboBox',
         'Savanna.controller.Factory',
-        'Savanna.metadata.store.Metadata',
         'Savanna.search.model.ResultMetadata',
         'Savanna.search.store.ResultsMetadata'
     ],
@@ -44,7 +43,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             },
             'search_searchcomponent #search_terms': {
                 'onsearchclick': this.handleSearchSubmit,
-                'onclearclick' : this.clearSearch
+                'onclearclick' : this.clearAdvancedSearch
             },
             'search_searchcomponent #searchadvanced_menu textfield': {
                 keyup: this.handleSearchTermKeyUp
@@ -53,15 +52,12 @@ Ext.define('Savanna.search.controller.SearchComponent', {
                 click: this.handleSearchSubmit
             },
             'search_searchcomponent #search_clear': {
-                click: this.clearSearch
-            },
-            'search_searchcomponent #advancedsearch_submit': {
-                click: this.handleSearchSubmit
+                click: this.clearAdvancedSearch
             },
             'search_searchcomponent #searchadvanced_menu': {
                 render: function (menu) {
                     menu.queryById('close_panel').on('click', this.handleClose);
-                    menu.queryById('advancedsearch_submit').on('click', me.handleSearchSubmit, me);
+                    menu.queryById('advancedsearch_submit').on('click', me.handleAdvancedSearchSubmit, me);
                 }
             },
             'search_searchcomponent #searchDalsButton': {
@@ -141,7 +137,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
         if (component.down('search_resultsDals_resultsterms')) {   // doesn't exist if results page has not yet been created
 
-            component.down('search_resultsDals_resultsterms').queryById('termValues').removeAll();  // remove refine terms in results screen
+            component.down('search_resultsDals_resultsterms').removeAll();  // remove refine terms in results screen
         }
 
         var form = component.down('#search_form'),
@@ -206,20 +202,6 @@ Ext.define('Savanna.search.controller.SearchComponent', {
          hide Start New Search button
          */
         component.down('#search_reset_button').setVisible(false);
-    },
-
-    clearSearch: function (elem) {
-        var component = elem.up('search_searchcomponent');
-
-        var form = elem.findParentByType('search_searchcomponent').down('#searchbar');
-
-        var formField = form.queryById('searchadvanced_menu').queryById('form_container');
-
-        Ext.Array.each(formField.query('searchadvanced_textfield'), function (field) {
-            if (field.xtype === 'searchadvanced_textfield') {
-                field.setValue('');
-            }
-        });
 
         // Clear Map: Search Results and  location search polygon
         //search options > location is in a tab so check if it exists
@@ -232,7 +214,20 @@ Ext.define('Savanna.search.controller.SearchComponent', {
             component.down('#resultMapCanvas').resultsLayer.removeAllFeatures();
             component.fireEvent('clearPopUpOnNewSearch', event, component.down('search_resultscomponent'));
         }
+    },
 
+    clearAdvancedSearch: function (elem) {
+        var component = elem.up('search_searchcomponent');
+
+        var form = elem.findParentByType('search_searchcomponent').down('#searchbar');
+
+        var formField = form.queryById('searchadvanced_menu').queryById('form_container');
+
+        Ext.Array.each(formField.query('searchadvanced_textfield'), function (field) {
+            if (field.xtype === 'searchadvanced_textfield') {
+                field.setValue('');
+            }
+        });
     },
 
     resetCustomSearchOptions:function(component) {
@@ -242,6 +237,11 @@ Ext.define('Savanna.search.controller.SearchComponent', {
     },
 
     handleSearchSubmit: function (btn) {
+        this.clearAdvancedSearch(btn);
+        this.doSearch(btn);
+    },
+
+    handleAdvancedSearchSubmit: function (btn) {
         this.doSearch(btn);
     },
 
@@ -417,6 +417,11 @@ Ext.define('Savanna.search.controller.SearchComponent', {
         resultsDal.updateDalStatus(dal.get('id'), 'pending');   // begin in a pending state
     },
 
+    getSearchTerms: function(elem) {
+        var component = this.getSearchComponent(elem);
+        return component.down('#search_terms');
+    },
+
     doSearch: function (elem) {
 
         var component = this.getSearchComponent(elem),
@@ -426,6 +431,7 @@ Ext.define('Savanna.search.controller.SearchComponent', {
 
         var searchString = component.queryById('searchbar').buildSearchString(),
             resultsComponent = component.queryById('searchresults');
+        this.getSearchTerms(elem).setValue(searchString); //shows the search string with the advanced terms
 
         var mapView = component.down('#searchMapCanvas');
 

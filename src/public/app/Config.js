@@ -16,6 +16,8 @@ Ext.define('Savanna.Config', {
         sc.itemViewPerspective = rUrl + 'rest/perspective/';
         sc.itemCreateUrl = rUrl + 'rest/model/item/create/';
         sc.itemDeleteUrl = rUrl + 'rest/model/item/';
+        sc.modelProcessLoadUrl = rUrl + 'rest/model/process/';
+        sc.modelProcessSaveUrl = rUrl + 'rest/model/process/save';
         sc.modelSearchUrl = rUrl + 'rest/model/search/keyword/item';
         sc.dalSourcesUrl = rUrl + 'rest/search/sources'; // local dev version: 'resources/data/testSearchDalsWithFormData.json',
         sc.locationSearch = rUrl + '/rest/map/search';   // local dev version: 'resources/data/testSearchLocationSearch.json',
@@ -23,14 +25,17 @@ Ext.define('Savanna.Config', {
         sc.uploadUrl = rUrl + 'rest/document/upload';
         sc.metadataUrl = rUrl + 'rest/metadata';
         sc.capcoUrl = rUrl + 'rest/capco/';
-        sc.processUrl = rUrl + 'rest/modelProcess'
+        sc.processUrl = rUrl + 'rest/modelProcess';
+        sc.processCategoryPerspective = rUrl + 'rest/perspective/process/';
+        sc.workflowActions = rUrl + 'rest/workflow/actions';
+        sc.workflowEvents = rUrl + 'rest/workflow/events/';
+        sc.workflowRejectionReasons = rUrl + 'rest//workflow/rejectionReasons';
+        sc.workflowStates = rUrl + 'rest/workflow/states';
+        sc.workflowStatesPrivate = rUrl + 'rest/workflow/states/private';
+        sc.workflowStatesRejected = rUrl + 'rest/workflow/states/rejected';
 
         sc.mockItemViewUrl = rUrl + 'rest/model/mock/item/';
 
-        // TODO: replace this test URL with real endpoint once we have one....
-        sc.processTemplatesUrl = 'resources/data/Process.json';
-        sc.metadataTestDataUrl = 'resources/data/Metadata.json';
-        sc.ureaProcessDataUrl = 'resources/data/UreaProcess.json';
         //Version number of the build - This is replaced in the build process
         sc.version = '0.1-SNAPSHOT_dev';
     }

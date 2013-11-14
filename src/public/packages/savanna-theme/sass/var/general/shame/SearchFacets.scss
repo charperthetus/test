@@ -1,0 +1,38 @@
+.refineSearchFacets{
+	border-top: 1px solid #ccc;
+	// margin-top: 10px;
+	
+	.x-toolbar-defualt, .x-toolbar {
+		margin: 0;
+		padding: 0;
+		.x-toolbar-text.bold{
+			font-weight: bold;
+		}
+	}
+}
+
+.customDatePanel{
+	margin-left: 5px;
+	
+	.x-anchor-form-item:nth-child(n+2){
+		margin-top: -15px;
+	}
+	
+	.x-form-trigger-wrap {
+		width: 115px !important;
+	}
+}
+
+.refine-term.x-tab-autocomplete-tag-top {
+  	float: left;
+  	background-color: #d6e8f2;
+  	padding: 3px 5px;
+  	margin: 5px 3px 0 0!important;
+  	
+  	.x-tab-inner{
+  		font-weight: normal;
+  	}
+  	.x-tab-close-btn:before{
+  		color: #75b3d3;
+  	}
+}

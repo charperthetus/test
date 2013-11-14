@@ -9,19 +9,22 @@
 Ext.define('Savanna.itemView.store.ItemViewStoreHelper', {
     store: null,
     mainStore: null,
+    index: 0,
 
     requires: [
         'Ext.data.IdGenerator',
         'Ext.data.UuidGenerator'
     ],
 
-    init: function(store) {
+    init: function(store, index) {
         this.store = store;
-        this.mainStore = store.getAt(0).data.propertyGroups;
+        this.index = index ? index : 0;
+        this.mainStore = store.getAt(this.index).data.propertyGroups;
+
     },
 
     itemUri: function() {
-        return this.store.getAt(0).data.uri;
+        return this.store.getAt(this.index).data.uri;
     },
 
     fetchMainStore: function() {
@@ -109,6 +112,48 @@ Ext.define('Savanna.itemView.store.ItemViewStoreHelper', {
         store.valuesStore.remove(store.valuesStore.getById(tagName));
     },
 
+    updateBotLevItemInStore: function (tagName, data, store) {
+        if (store.valuesStore.getAt(0)) {
+            if (tagName) {
+                for (var i = 0; i < store.data.values.length; i++) {
+                    if (store.data.values[i].label === tagName) {
+                        this.updateData(data, store.data.values[i]);
+                        break;
+                    }
+                }
+
+                this.updateData(data, store.valuesStore.getById(tagName).data);
+            }
+            else {
+                this.updateData(data, store.data.values[0]);
+                this.updateData(data, store.valuesStore.data.items[0].data);
+            }
+        } else {
+            if (tagName) {
+                this.addBotLevItemInStore(tagName, {uri: data.value}, store);
+            }
+            else {
+                this.addBotLevItemInStore(data.value, null, store);
+            }
+        }
+    },
+
+    updateData: function (data, item) {
+        item.value = data.value;
+        item.label = data.label;
+        item.comment = data.comment;
+    },
+
+    removeBotLevItemInStoreByUri: function(uri, store) {
+        for (var i = 0; i < store.data.values.length; i++) {
+            if (store.data.values[i].value === uri) {
+                Ext.Array.remove(store.data.values, store.data.values[i]);
+                store.valuesStore.remove(store.valuesStore.getAt(i));
+                break;
+            }
+        }
+    },
+
     createNewModelInstance: function(label, uri) {
         var mod = Ext.create('Savanna.itemView.model.PropertyGroupValueModel');
         mod.data.id = label;
@@ -126,16 +171,21 @@ Ext.define('Savanna.itemView.store.ItemViewStoreHelper', {
         var mod = Ext.create('Savanna.itemView.model.PropertyGroupValueValueModel');
         mod.data.id = label;
         mod.data.label = label;
-        mod.data.uri = this.getUUID();
-        mod.data.value = uri;
+        mod.data.uri = this.getUUID(uri);
+        mod.data.value = uri ? uri : label;
         mod.data.editable = true;
         mod.data.version = 0;
         mod.data.inheritedFrom = null;
         return mod;
     },
 
-    getUUID: function() {
+    getUUID: function(uri) {
+        var endStr = "/ModelProperty";
         var uuid = Ext.data.IdGenerator.get('uuid').generate();
-        return 'x' + uuid  + '/' + "ModelProperty";
+
+        if (uri && uri.indexOf("%2FImage%2F") >= 0) {
+            endStr = "/ModelImageProperty";
+        }
+        return 'x' + uuid  + endStr;
     }
 });

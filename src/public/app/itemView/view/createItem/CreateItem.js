@@ -21,13 +21,23 @@ Ext.define('Savanna.itemView.view.createItem.CreateItem', {
 
     title: 'Create Item',
 
+    constrain: true,
+
     autoShow: true,
 
     layout: 'hbox',
 
     selectedParentUri: null,
 
+    selectedParentLabel: null,
+
+    ghost: false,
+
     items: [],
+
+    creating: true,
+
+    viewer: null,
 
     setupItems: function () {
         var content = [
@@ -35,13 +45,13 @@ Ext.define('Savanna.itemView.view.createItem.CreateItem', {
                 xtype: 'itemview_parenttree',
                 itemId: 'parentItemsTreePanel',
                 cls: 'create-item-coloumn',
-                flex: 1
+                width: 300
             },
             {
                 xtype: 'itemview_parentdetails',
                 itemId: 'parentItemsDetailsPanel',
                 cls: 'create-item-coloumn',
-                flex: 2
+                flex: 1
             }
         ];
 
@@ -52,24 +62,42 @@ Ext.define('Savanna.itemView.view.createItem.CreateItem', {
 
         this.items = this.setupItems();
 
-        this.buttons = this.setupButtons();
+        this.dockedItems = this.setupDockedItems();
 
         this.callParent(arguments);
     },
 
-    setupButtons: function () {
-        var btns = [
+    setupDockedItems: function () {
+
+        return [
             {
-                text: 'OK',
-                itemId: 'commitBtn',
-                ui: 'commit',
-                margin: '0 0 10 0'
-            },
-            {
-                text: 'CANCEL',
-                itemId: 'cancelBtn'
+                xtype: 'toolbar',
+
+                dock: 'top',
+                itemId: 'createItemDockedItemsTop',
+                items: [
+                    {
+                        xtype: 'label',
+                        width: '100%',
+                        padding:10,
+                        html: 'Select an Item type that best represents the kind of Item you want to create. The new Item will inherit the qualities and relationships of the selected type.'
+                    }
+                ]
             }
         ];
-        return btns;
-    }
+    },
+
+    buttons: [
+
+        {
+            text: 'OK',
+            itemId: 'commitBtn',
+            ui: 'commit',
+            margin: '0 0 10 0'
+        },
+        {
+            text: 'Cancel',
+            itemId: 'cancelBtn'
+        }
+    ]
 });

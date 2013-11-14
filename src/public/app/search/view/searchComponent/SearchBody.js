@@ -49,25 +49,28 @@ Ext.define('Savanna.search.view.searchComponent.SearchBody', {
                 ui: 'light-toolbar',
                 defaults: {
                     ui: 'toggle',
-                    toggleGroup: 'search-options'
+                    toggleGroup: 'search-options',
+                    allowDepress: false
                 },
                 items: [{
                     text: 'Search Sources',
                     itemId: 'searchDalsButton',
+                    width: 92,
                     pressed: true
                 }, { 
                     xtype: 'tbseparator' 
                 }, {
-                    text: 'Location',
+                    text: 'Location Search',
                     itemId: 'searchMapButton'
                 }]},
             bbar: {
                 ui: 'dark-toolbar',
-
+                cls: 'toolbar-paddingSmall',
                 items: [
                 '->', {
                         xtype: 'button',
                         ui: 'commit',
+                       
                         scale: 'large',
                         text: 'Search',
                         itemId: 'toolbarsearchbutton'

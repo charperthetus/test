@@ -3,22 +3,22 @@ Ext.define('Savanna.process.controller.MetadataController', {
 
     config: {
         diagram: null,
-        processUri: null
+        canvas: null
     },
 
     control: {
         view: {
             processUriChange: 'setUpProcessDetails',
-            processclose: 'onProcessClose'
+            textEdited: 'nodeTextEdited'
         },
-        hiddenPanel: {
-            boxready: 'onBeforeHiddenPanelShow'
+        hiddenPanel: true,
+        fullProcessMetadata: {
+            readyForDisplay: 'showProcessView'
         },
-        fullProcessMetadata:  {
-            boxready: 'addFullProcessMetadataListeners'
+        itemMetadata: {
+            readyForDisplay: 'showItemView'
         },
-        stepMetadata: true,
-        itemMetadata: true
+        nothingHereLabel: true,
      },
 
     constructor: function (options) {
@@ -29,31 +29,34 @@ Ext.define('Savanna.process.controller.MetadataController', {
     init: function() {
         this.callParent(arguments);
         this.setDiagram(this.getView().up('process_component').down('#canvas').diagram);
-
+        this.setCanvas(this.getView().up('process_component').down('#canvas'));
         this.getDiagram().addDiagramListener('ChangedSelection', Ext.bind(this.selectionChanged, this));
     },
 
     selectionChanged: function(e) {
+        this.getCanvas().un('itemReLoaded', this.itemReLoaded, this);
         // save the existing set of changes, if any
-        this.saveChanges();
+        this.clearPanel();
 
         // then load up the panel for the new selection
         if (1 === this.getDiagram().selection.count) {
-            var itemUri = encodeURIComponent(this.getDiagram().selection.first().data.uri);
             var itemCategory = this.getDiagram().selection.first().data.category;
 
             switch(itemCategory) {
-                case 'ProcessModel':
-                case 'InternalGroup':
-                    // this is a step
-                    this.setUpStepDetails(itemUri);
-                    break;
                 case 'ProcessItem':
-                    // this is an item
-                    this.setUpItemDetails(itemUri);
+                    this.getCanvas().on('itemReLoaded', this.itemReLoaded, this);
+                    //show loading screen
+                    this.getHiddenPanel().getLayout().setActiveItem(this.getNothingHereLabel());
+
+                    if (this.getDiagram().selection.first().data.className) {
+                        this.itemLoaded();
+                    }
+                    else {
+                        this.getCanvas().on('itemLoaded', this.itemLoaded, this);
+                    }
+
                     break;
                 default:
-                    //console.log("we don't know what this is yet", itemUri);
                     this.setUpProcessDetails(null);
                     break;
             }
@@ -63,55 +66,60 @@ Ext.define('Savanna.process.controller.MetadataController', {
         }
     },
 
+    itemLoaded: function() {
+        this.getCanvas().un('itemLoaded', this.itemLoaded, this);
+        var store = this.getView().up('process_component').getController().store.getAt(0).nodeDataArrayStore;
+        var len = store.data.length;
+
+        for (var i= 0; i<len; i++) {
+            var storeData = store.getAt(i);
+            if (storeData.data.uri === this.getDiagram().selection.first().data.uri) {
+                break;
+            }
+        }
+
+        this.setUpItemDetails(store, i);
+    },
+
+    itemReLoaded: function(index) {
+        this.getItemMetadata().fireEvent('clearPanel');
+        var store = this.getView().up('process_component').getController().store.getAt(0).nodeDataArrayStore;
+        this.setUpItemDetails(store, index);
+    },
+
+    nodeTextEdited: function() {
+        if (this.getDiagram().selection.first().data.category === 'ProcessItem') {
+            this.getItemMetadata().fireEvent('updateLabelFromNode');
+        }
+    },
+
     setUpProcessDetails: function(itemUri) {
-        // get proper info from service for item configs
+        // load the side panel initially or just show it
         if( null !== itemUri ) {
-            this.setProcessUri( itemUri );
-            this.getHiddenPanel().getLayout().setActiveItem(this.getFullProcessMetadata());
-            this.getFullProcessMetadata().fireEvent('processUriChanged', itemUri);
+            this.getFullProcessMetadata().fireEvent('processUriChanged', itemUri, this.getView().up('process_component').getController().store.getAt(0).nodeDataArrayStore);
         } else {
             // show the process details panel
             this.getHiddenPanel().getLayout().setActiveItem(this.getFullProcessMetadata());
         }
     },
 
-    setUpStepDetails: function(itemUri) {
-        this.getStepMetadata().show();
-
-        this.getStepMetadata().fireEvent('stepUriChanged', itemUri);
-        this.getHiddenPanel().getLayout().setActiveItem(this.getStepMetadata());
+    setUpItemDetails: function(store, index) {
+        this.getItemMetadata().fireEvent('processItemUriChanged', store, index);
     },
 
-    setUpItemDetails: function(itemUri) {
-        this.getItemMetadata().show();
-
-        this.getItemMetadata().fireEvent('processUriChanged', itemUri);
+    showItemView: function() {
         this.getHiddenPanel().getLayout().setActiveItem(this.getItemMetadata());
+
+        // TODO: Fix me so that we are called from the controller with a get method
+        // Unfortuantly we shouldn't have to do this is we build our component structure properly.
+        Ext.ComponentQuery.query('#rnrmDescriptionContainer')[0].doLayout();
     },
 
-    addFullProcessMetadataListeners: function(process_details) {
-        process_details.down('#processTitle').addListener('change', this.processLabelChangeHandler);
-        process_details.down('#processDescription').addListener('change', this.processLabelChangeHandler);
+    showProcessView: function() {
+        this.getHiddenPanel().getLayout().setActiveItem(this.getFullProcessMetadata());
     },
 
-    processLabelChangeHandler: function(text, newValue, oldValue, eOpts) {
-        console.log('processLabelChangeHandler', arguments);
-    },
-
-    processSelectionChanged: function(e) {
-        console.log('processSelectionChanged selection size', this.getDiagram().selection.count);
-    },
-
-    onBeforeHiddenPanelShow: function() {
-        //this.getHiddenPanel().getTabBar().setVisible(false);
-    },
-
-    saveChanges: function() {
-        // TODO: save the existing set of changes, if any
-        console.log('saveChanges');
-    },
-
-    onProcessClose: function() {
-        this.saveChanges();
+    clearPanel: function() {
+        this.getHiddenPanel().getLayout().getActiveItem().fireEvent('clearPanel');
     }
 });

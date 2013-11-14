@@ -4,19 +4,29 @@ Ext.define('Savanna.itemView.util.ItemViewFactory', {
         'Savanna.itemView.view.ItemViewer'
     ],
 
-    getComponentForType: function(type, uri, label, otherParams){
+    getComponentForType: function (type, uri, label, otherParams) {
         var editMode = false;
-        if(otherParams && otherParams.hasOwnProperty('editMode')){
+        var itemStore = null;
+
+        if (otherParams && otherParams.hasOwnProperty('editMode')) {
             editMode = otherParams.editMode;
         }
-        if (type.toLowerCase() == 'item'){
-            return Ext.create('Savanna.itemView.view.ItemViewer', {
-                title: label,
-                itemUri: encodeURI(uri),
-                autoScroll: true,
-                editMode: editMode
-            });
-        }else {
+
+        if (otherParams) {
+            itemStore = otherParams.itemStore;
+        }
+
+        if (type.toLowerCase() == 'item') {
+
+                return Ext.create('Savanna.itemView.view.ItemViewer', {
+                    title: label,
+                    itemUri: encodeURI(uri),
+                    autoScroll: true,
+                    editMode: editMode,
+                    itemStore: itemStore
+                });
+
+        } else {
             return null;
         }
     }

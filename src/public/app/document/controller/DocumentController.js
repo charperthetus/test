@@ -5,9 +5,6 @@ Ext.define("Savanna.document.controller.DocumentController", {
     dvId: null,
     control: {
         searchText: true,
-        handTool: {
-            click: 'onHandTool'
-        },
         selectTool: {
             click: 'onSelectTool'
         },
@@ -26,34 +23,27 @@ Ext.define("Savanna.document.controller.DocumentController", {
         previousPage: {
             click: 'onPreviousPage'
         },
-        singlePageView: {
-            click: 'onSinglePageView'
-        },
-        thumbView: {
-            click: 'onThumbView'
-        },
-        twoPageView: {
-            click: 'onTwoPageView'
-        },
-        searchDoc: {
-            click: 'onSearchDoc'
-        },
         exportDoc: {
             click: 'onExportDoc'
         },
         printDoc: {
             click: 'onPrintDoc'
-        }
+        },
+        searchText:{//search textbox enter event
+                keyup:'handleSearchTextKeyUp'
+        },
+	currentPage: {
+		keyup: 'handlePageTextKeyUp'
+	}		
+		
     },
     init: function () {
-        this.dvId = this.getView().docViewId;
+		
+		this.dvId = this.getView().docViewId;
     },
-    onHandTool: function() {
-        $FlexPaper(this.dvId).setCurrentCursor("ArrowCursor");
-        this.currentTool = "hand";
-    },
-    onSelectTool: function() {
-        $FlexPaper(this.dvId).setCurrentCursor("TextSelectorCursor");
+
+	onSelectTool: function() {
+       $FlexPaper(this.dvId).setCurrentCursor("TextSelectorCursor");
         this.currentTool = "select";
     },
     onZoomIn: function() {
@@ -63,12 +53,7 @@ Ext.define("Savanna.document.controller.DocumentController", {
         $FlexPaper(this.dvId).setZoom($FlexPaper(this.dvId).scale - .2);
     },
     onZoomFit: function() {
-        //TODO:Need to discuss with thetus regarding single and two page with zoom fit
         $FlexPaper(this.dvId).fitHeight();
-        if( this.currentView != 'TwoPage') {
-            $FlexPaper(this.dvId).fitwidth();
-        }
-
     },
     onNextPage : function() {
         $FlexPaper(this.dvId).nextPage();
@@ -77,16 +62,13 @@ Ext.define("Savanna.document.controller.DocumentController", {
         $FlexPaper(this.dvId).prevPage();
     },
     onSinglePageView:function() {
+	this.currentPageNumber = $FlexPaper(this.dvId).getCurrPage();
         $FlexPaper(this.dvId).switchMode("Portrait");
-        this.currentView='Portrait';
+		this.currentView='Portrait';
     },
     onThumbView:function() {
         $FlexPaper(this.dvId).switchMode("Tile");
         this.currentView='Tile';
-    },
-    onTwoPageView:function() {
-        $FlexPaper(this.dvId).switchMode("TwoPage");
-        this.currentView ='TwoPage';
     },
     onSearchDoc : function() {
         var searchText = this.getSearchText().getValue();
@@ -98,8 +80,22 @@ Ext.define("Savanna.document.controller.DocumentController", {
         $FlexPaper(this.dvId).printPaper();
     },
     onExportDoc : function() {
-        location.href =  SavannaConfig.documentUrl + this.getView().itemUri + "/original;jsessionid=" + Savanna.jsessionid
-    }
-
+        location.href =  SavannaConfig.documentUrl + this.getView().itemUri + "/;jsessionid=" 
+							+ Savanna.jsessionid;
+    },
+    //search text key up handler
+    handleSearchTextKeyUp: function (field, evt) {
+        //check the enter key is pressed or not
+        if (evt.keyCode === Ext.EventObject.ENTER) {
+            this.onSearchDoc();
+        }
+    },
+     //hange the page change event
+     handlePageTextKeyUp : function(field , event){
+        if(event.keyCode == Ext.EventObject.ENTER){
+                $FlexPaper(this.dvId).gotoPage(field.getValue());
+        }
+     }
+    
 
 });

@@ -18,13 +18,15 @@ Ext.define('Savanna.classification.view.ClassificationWindow', {
     width: 480,
     height: 526,
     padding:15,
+    ghost: false,
+    constrain: true,
 
     bbar: [
         '->',
         {
             xtype: 'button',
             itemId: 'finishButton',
-            text: 'Finish',
+            text: 'OK',
             ui: 'commit'
         },
         {
@@ -64,7 +66,6 @@ Ext.define('Savanna.classification.view.ClassificationWindow', {
             displayField: 'displayLabel',
             valueField: 'id',
             allowBlank: false,
-            forceSelection: true,
             editable: false,
             anchor: '100%'
         },

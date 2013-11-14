@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.thetus.savanna.html5</groupId>
     <artifactId>Savanna-Html-Client</artifactId>
-    <version>0.1-SNAPSHOT</version>
+    <version>2.0.0-c2is2-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>HTML5 Savanna Client</name>
 
@@ -30,7 +30,7 @@
         <dependency>
             <groupId>com.thetus.savanna.html5</groupId>
             <artifactId>Savanna-Html-UIKit</artifactId>
-            <version>0.9</version>
+            <version>1.4</version>
             <type>zip</type>
         </dependency>
        

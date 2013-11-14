@@ -26,90 +26,99 @@ Ext.define('Savanna.image.view.part.ImageViewer', {
         me.tooltips = me.tooltips || {};
 
         me.tooltips = Ext.applyIf(me.tooltips, {
-            stretchHorizontally: 'Stretch horizontally',
-            stretchVertically: 'Stretch vertically',
-            stretchOptimally: 'Stretch optimally',
+            stretchHorizontally: 'Fit width' ,
+            stretchVertically: 'Fit height',
+            stretchOptimally: 'Fit to screen',
             zoomIn: 'Zoom in',
             zoomOut: 'Zoom out',
             rotateClockwise: 'Rotate clockwise',
-            rotateAntiClockwise: 'Rotate anticlockwise'
+            rotateAntiClockwise: 'Rotate counterclockwise'
         });
 
         me.items = [{
             xtype: 'toolbar',
             height: 33,
             ui: 'thetus-toolbar',
-            items: [{
-                xtype: 'button',
-                width:25,
-                height:25,
-                ui: 'icon-dark',
-                cls: 'toolbarButtonFramework',
-                tooltip: me.tooltips.stretchHorizontally,
-                itemId:'fitWideButton',
-                glyph: 'maxWidth',
-                listeners: { click: me.stretchHorizontally, scope: me }
-            }, {
-                xtype: 'button',
-                width:25,
-                height:25,
-                ui: 'icon-dark',
-                cls: 'toolbarButtonFramework',
-                tooltip: me.tooltips.stretchVertically,
-                itemId:'fitHighButton',
-                glyph: 'maxHeight',
-                listeners: { click: me.stretchVertically, scope: me }
-            }, {
-                xtype: 'button',
-                width:25,
-                height:25,
-                ui: 'icon-dark',
-                cls: 'toolbarButtonFramework',
-                tooltip: me.tooltips.stretchOptimally,
-                itemId:'fitToTabButton',
-                glyph: 'showAll',
-                listeners: { click: me.stretchOptimally, scope: me }
-            }, {
-                xtype: 'button',
-                width:25,
-                height:25,
-                ui: 'icon-dark',
-                cls: 'toolbarButtonFramework',
-                tooltip: me.tooltips.zoomIn,
-                itemId:'zoomInButton',
-                glyph: 'zoomIn',
-                listeners: { click: me.zoomIn, scope: me }
-            }, {
-                xtype: 'button',
-                width:25,
-                height:25,
-                ui: 'icon-dark',
-                cls: 'toolbarButtonFramework',
-                tooltip: me.tooltips.zoomOut,
-                itemId:'zoomOutButton',
-                glyph: 'zoomOut',
-                listeners: { click: me.zoomOut, scope: me }
-            }, {
-                xtype: 'button',
-                width:25,
-                height:25,
-                ui: 'icon-dark',
-                cls: 'toolbarButtonFramework',
-                tooltip: me.tooltips.rotateClockwise,
-                itemId:'rotateClockwiseButton',
-                glyph: 'clockwise',
-                listeners: { click: me.rotateClockwise, scope: me }
-            }, {
-                xtype: 'button',
-                width:25,
-                height:25,
-                ui: 'icon-dark',
-                cls: 'toolbarButtonFramework',
-                tooltip: me.tooltips.rotateAntiClockwise,
-                itemId:'rotateCounterClockwiseButton',
-                glyph: 'counterClockwise',
-                listeners: { click: me.rotateAntiClockwise, scope: me }
-            }]
+            items: [
+                { xtype: 'tbspacer', width: 5 },
+                {
+                    xtype: 'button',
+                    width:25,
+                    height:25,
+                    cls: 'toolbarButtonFramework',
+                    tooltip: me.tooltips.zoomIn,
+                    itemId:'zoomInButton',
+                    glyph: 'zoomIn',
+                    listeners: { click: me.zoomIn, scope: me }
+                }, {
+                    xtype: 'button',
+                    width:25,
+                    height:25,
+                    cls: 'toolbarButtonFramework',
+                    tooltip: me.tooltips.zoomOut,
+                    itemId:'zoomOutButton',
+                    glyph: 'zoomOut',
+                    listeners: { click: me.zoomOut, scope: me }
+                },
+                //divider
+                {
+                    xtype: 'container',
+                    cls: 'toolbarDividerFramework',
+                    width:1,
+                    height:20
+                },{
+                    xtype: 'button',
+                    width:25,
+                    height:25,
+                    cls: 'toolbarButtonFramework',
+                    tooltip: me.tooltips.stretchOptimally,
+                    itemId:'fitToTabButton',
+                    glyph: 'showAll',
+                    listeners: { click: me.stretchOptimally, scope: me }
+                }, {
+                    xtype: 'button',
+                    width:25,
+                    height:25,
+                    cls: 'toolbarButtonFramework',
+                    tooltip: me.tooltips.stretchHorizontally,
+                    itemId:'fitWideButton',
+                    glyph: 'maxWidth',
+                    listeners: { click: me.stretchHorizontally, scope: me }
+                }, {
+                    xtype: 'button',
+                    width:25,
+                    height:25,
+                    cls: 'toolbarButtonFramework',
+                    tooltip: me.tooltips.stretchVertically,
+                    itemId:'fitHighButton',
+                    glyph: 'maxHeight',
+                    listeners: { click: me.stretchVertically, scope: me }
+                },
+                //divider
+                {
+                    xtype: 'container',
+                    cls: 'toolbarDividerFramework',
+                    width:1,
+                    height:20
+                },{
+                    xtype: 'button',
+                    width:25,
+                    height:25,
+                    cls: 'toolbarButtonFramework',
+                    tooltip: me.tooltips.rotateClockwise,
+                    itemId:'rotateClockwiseButton',
+                    glyph: 'clockwise',
+                    listeners: { click: me.rotateClockwise, scope: me }
+                }, {
+                    xtype: 'button',
+                    width:25,
+                    height:25,
+                    cls: 'toolbarButtonFramework',
+                    tooltip: me.tooltips.rotateAntiClockwise,
+                    itemId:'rotateCounterClockwiseButton',
+                    glyph: 'counterClockwise',
+                    listeners: { click: me.rotateAntiClockwise, scope: me }
+                }]
         }, {
             xtype: 'container',
             itemId: 'imagecontainer',

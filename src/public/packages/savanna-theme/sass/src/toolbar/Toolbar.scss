@@ -76,9 +76,9 @@
 );
 
 .#{$prefix}toolbar-thetus-toolbar {
+    padding: $toolbar-vertical-spacing 0 $toolbar-vertical-spacing 0;
   .#{$prefix}box-inner{
     border-bottom: solid 1px #999999;
-    border-top: solid 1px #999999;
     padding-left: 8px;
     padding-right: 8px;
   }
@@ -97,7 +97,7 @@
   $ui: 'off-white',
   $background-color: #f2f2f2,
   $border-color: #cccccc,
-  $border-width: 1px 0 0 0
+  $border-width: 0
 );
 
 /*

@@ -15,6 +15,12 @@ Ext.define('Savanna.sources.view.Sources', {
 
     title: 'Sources',
 
+    config: {
+        autoSave: true
+    },
+
+    ui:'off-white',
+
     layout: 'vbox',
 
     width: "100%",
@@ -42,7 +48,7 @@ Ext.define('Savanna.sources.view.Sources', {
             },
             width:'100%',
             margin:'0 0 10 0',
-            padding:'0 10 0 10',
+            padding: 10,
             height:79,
             bodyCls: 'inner-edit-zone',
             items: [
@@ -53,9 +59,12 @@ Ext.define('Savanna.sources.view.Sources', {
                 }
             ]
         }
-
-
     ],
+
+    constructor: function(configs) {
+        this.callParent(arguments);
+        this.initConfig(configs);
+    },
 
     addSourcesGrid: function(store){
         if (this.queryById('listOfSources') === null ){
@@ -63,11 +72,13 @@ Ext.define('Savanna.sources.view.Sources', {
                 xtype: 'grid',
                 itemId: 'listOfSources',
                 width: '100%',
-                height: 285,
+                autoHeight: true,
                 renderTo: Ext.getBody(),
                 store: store,
 
                 title: 'Supporting Resources (' + store.count() + ')',
+                ui:'off-white',
+                padding: 10,
 
                 hideHeaders: true,
 
@@ -75,11 +86,22 @@ Ext.define('Savanna.sources.view.Sources', {
                     {
                         xtype: 'templatecolumn',
                         dataIndex: 'values',
+                        flex: 10,
+                        sortable: false,
+                        tpl: Ext.create('Ext.XTemplate',
+                            '<input type="button" name="{uri}" value="{label}" id="openResourceDoc" />'
+                        )
+                    },
+                    {
+                        xtype: 'templatecolumn',
+                        dataIndex: 'values',
                         flex: 1,
                         sortable: false,
                         tpl: Ext.create('Ext.XTemplate',
-                            '<tpl for="values">',
-                            '<input type="button" name="{uri}" value="{label}" id="openResourceDoc" />',
+                            '<tpl if="editable">',
+                                '<input type="button" name="{value}" data-editable="{editable}" value="X" id="delResourceDoc" />',
+                            '<tpl else>',
+                                '<input type="button" name="{value}" data-editable="{editable}" disabled="disabled" value="X" id="delResourceDoc" />',
                             '</tpl>'
                         )
                     }
@@ -88,5 +110,6 @@ Ext.define('Savanna.sources.view.Sources', {
         } else {
             this.queryById('listOfSources').reconfigure(store);
         }
+        this.queryById('listOfSources').setTitle('Supporting Resources (' + store.count() + ')');
     }
 });

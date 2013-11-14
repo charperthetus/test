@@ -17,58 +17,53 @@ Ext.define('Savanna.itemView.view.header.EditHeader', {
         'Savanna.itemView.controller.EditHeaderController'
     ],
 
-    cls: 'itemview',
-
     storeHelper: null,
 
     layout: 'vbox',
 
-    header:false,
+    header: false,
 
-    margin: 10,
-
+    margin: '15 15 0 15' ,
 
     items: [
         {
-            xtype: 'label',
-            margin: "0 0 0 0",
-            text: 'Title'
-        },
-        {
             xtype: 'textfield',
             itemId: 'itemNameField',
-            width:'100%'
+            enableKeyEvents: true,
+            width: '100%'
         },
         {
             xtype: 'label',
-            margin: "15 0 0 0",
-            text: 'Alias'
+            text: 'Alias',
+            cls: ['bold', 'align_bottom', 'itemView_lineHeight']
         },
         {
             xtype: 'auto_complete',
-            labelType: 'Click to add an Alias',
+            labelType: 'Click to add an alias',
             itemId: 'addAliasBox',
             showTags: true,
             hasNoStore: true
         },
         {
             xtype: 'label',
-            margin: "15 0 0 0",
-            text: 'Intended Use'
+            text: 'Intended Use',
+            cls: ['bold', 'align_bottom', 'itemView_lineHeight']
         },
         {
             xtype: 'container',
-            layout: 'hbox',
+            layout: {
+                type: 'hbox',
+                align: 'start'
+            },
             width: '100%',
             items: [
                 {
                     xtype: 'auto_complete',
-                    labelType: 'Click to add an Intended Use',
+                    labelType: 'Click to add an intended use',
                     showTags: true,
                     itemId: 'addIntendedUseBox',
                     store: Ext.create('Savanna.itemView.store.AutoCompleteStore', {
-                        urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/model/search/keyword/property/',
-                        paramsObj: { pageStart:0, pageSize:20, alphabetical: true }
+                        paramsObj: { pageStart:0, pageSize:20, alphabetical: false }
                     }),
                     flex: 1
 
@@ -76,38 +71,46 @@ Ext.define('Savanna.itemView.view.header.EditHeader', {
                 {
                     xtype: 'button',
                     itemId: 'intendedUseChooserBtn',
-                    glyph:'searchBinoculars'
+                    glyph: 'searchBinoculars',
+                    cls: 'itemViewButtonFramework',
+                    margin: '0 0 3 3',
+                    width:25,
+                    height:25,
+                    tooltip: "Click to browse intended uses"
                 }
             ]
         },
         {
             xtype: 'label',
-            margin: "20 0 0 0",
-            text: 'Type'
+            text: 'Type',
+            cls: ['bold', 'align_bottom', 'itemView_lineHeight']
         },
         {
             xtype: 'container',
             layout: 'hbox',
-            margin: "0 0 0 -11",
+            width:'100%',
             items: [
+
                 {
-                    xtype: 'button',
-                    itemId: 'parentBtn',
-                    text: 'Parent Class'
-                },
-                {
-                    xtype: 'button',
-                    itemId: 'parentChooser',
-                    glyph:'searchBinoculars'
+                    xtype: 'panel',
+                    itemId: 'parentsList',
+                    html:'',
+                    width:'96%'
                 }
             ]
         },
         {
+            xtype: 'label',
+            margin: '20 0 0 0',
+            text: 'Description',
+            cls: ['bold', 'align_bottom', 'itemView_lineHeight']
+        },
+        {
             xtype: 'textarea',
-            margin: "20 0 0 0",
             itemId: 'itemDescription',
             name: 'description',
             width: '100%',
+            emptyText: 'Click to add a description',
             value: '',
             grow: true
         }

@@ -1,11 +1,12 @@
 Ext.define('Savanna.itemView.view.ItemViewer', {
-    extend: 'Ext.panel.Panel',
+    extend: 'Savanna.component.ClassificationPanel',
 
     alias: 'widget.itemview_itemviewer',
 
     cls: 'itemview',
 
     requires: [
+        'Savanna.component.ClassificationPanel',
         'Ext.grid.Panel',
         'Savanna.itemView.controller.ItemViewController',
         'Savanna.itemView.view.header.ViewHeader',
@@ -19,13 +20,12 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
         'Savanna.itemView.view.imageBrowser.ImagesGridEdit',
         'Savanna.components.autoComplete.AutoComplete',
         'Savanna.itemView.view.imageBrowser.ImageThumbnail',
-        'Savanna.itemView.view.workflow.WorkflowSelect',
         'Savanna.itemView.view.annotationProperties.AnnotationProperties',
         'Savanna.component.ClassificationPanel',
         'Savanna.itemView.store.AutoCompleteStore',
         'Savanna.itemView.store.ItemViewStoreHelper',
-        'Savanna.metadata.view.Details',
-        'Savanna.sources.view.Sources'
+        'Savanna.sources.view.Sources',
+        'Savanna.metadata.controller.InformationPanelController'
     ],
 
     layout: 'card',
@@ -37,7 +37,8 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
         itemUri: null,
         editMode:false,
         itemStore:null,
-        selectedParentUri: null
+        selectedParentUri: null,
+        selectedParentLabel: null
     },
 
     constructor: function(configs) {
@@ -63,7 +64,9 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                 overflowY: 'auto',
                 tbar:{
                     ui:'thetus-toolbar',
+                    height: 33,
                     items:[
+                        { xtype: 'tbspacer', width: 5 },
                         {
                             xtype: 'button',
                             text: 'Options',
@@ -74,27 +77,27 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                                 },
                                 {
                                     xtype: 'menuseparator'
-                                },
-
-                                {
-                                    text: 'Workflow',
-                                    itemId:'workflowButton'
-                                },
-
-                                {
-                                    xtype: 'menuseparator'
-                                },
-                                {
-                                    xtype: 'menuseparator'
                                 }
+                                //Pulling for the release as it does not quite work yet.
+//
+//                                {
+//                                    text: 'Workflow...',
+//                                    itemId:'workflowButton'
+//                                }
                             ]
                         },
                         '->',
                         {
                             xtype: 'button',
                             itemId: 'editModeButton',
-                            text: 'Edit'
-                        }
+                            disabled: true,
+                            width:25,
+                            height:25,
+                            cls: 'toolbarButtonFramework',
+                            glyph: 'edit',
+                            tooltip: "Edit"
+                        },
+                        { xtype: 'tbspacer', width: 5 }
                     ]
                 },
                 items:  [
@@ -102,7 +105,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                         xtype:'panel',
                         flex:1,
                         bodyStyle:{
-                            backgroundColor:"#f2f2f2"
+                            backgroundColor:"#999999"
                         },
                         layout:{
                             type: 'hbox',
@@ -127,6 +130,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                                         cls: 'item-view-column',
                                         flex:1,
                                         layout:'anchor',
+                                        margin:'1 0 0 0',
                                         autoScroll: true,
                                         items: [
                                             {
@@ -210,7 +214,8 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                     {
                         xtype: 'panel',
                         itemId: 'itemInfoPanel',
-                        title: 'Details',
+                        title: '',
+                        ui:'light-blue',
                         cls:['white-grid-view-panel-edit', 'item-view-column'],
                         autoScroll: true,
                         width: '30%',
@@ -218,18 +223,27 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                         maxWidth:412,
                         layout: 'vbox',
                         collapsible: true,
+                        collapseDirection:'right',
                         animCollapse:false,
                         collapseMode:'header',
                         resizable:true,
                         headerPosition:'left',
                         items: [
                             {
+                                xtype: 'informationpanel',
+                                itemId: 'informationPanel',
+                                collapsible: true,
+                                itemUri: this.getItemUri() ,
+                                width: '100%'
+                            },
+                            {
                                 xtype: 'document_sources',
                                 editMode: false,
                                 itemId: 'itemSources',
                                 header:{
-                                    ui:'light-blue'
-                                }
+                                    ui:'off-white'
+                                },
+                                width: '100%'
                             }
                         ]
                     }
@@ -247,7 +261,9 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                 autoScroll: true,
                 tbar:{
                     ui:'thetus-toolbar',
+                    height: 33,
                     items:[
+                        { xtype: 'tbspacer', width: 5 },
                         {
                             xtype: 'button',
                             text: 'Options',
@@ -257,13 +273,14 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                                     itemId:'newItemButton'
                                 },
 
-                                {
-                                    text: 'Workflow',
-                                    itemId:'workflowButton'
-                                },
+                                // Pulling for 1.0.9, will use later
+                                // {
+                                //     text: 'Workflow...',
+                                //     itemId:'workflowButton'
+                                // },
 
                                 {
-                                    text: 'Delete',
+                                    text: 'Delete Item',
                                     itemId:'deleteItemButton'
                                 }
                             ]
@@ -272,23 +289,31 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                         {
                             xtype: 'button',
                             itemId: 'editCancelButton',
-                            text: 'Discard Changes'
+                            width:25,
+                            height:25,
+                            cls: 'toolbarButtonFramework',
+                            glyph: 'closeRollover',
+                            tooltip: "Cancel changes"
                         },
                         {
                             xtype: 'button',
                             itemId: 'editDeleteButton',
-                            text: 'Delete'
-                        },
-                        {
-                            xtype: 'button',
-                            itemId: 'editSaveButton',
-                            text: 'Save'
+                            width:25,
+                            height:25,
+                            cls: 'toolbarButtonFramework',
+                            glyph: 'trash',
+                            tooltip: "Delete Item"
                         },
                         {
                             xtype: 'button',
                             itemId: 'editDoneButton',
-                            text: 'Done'
-                        }
+                            width:25,
+                            height:25,
+                            cls: 'toolbarButtonFramework',
+                            glyph: 'done',
+                            tooltip: "Done"
+                        },
+                        { xtype: 'tbspacer', width: 5 }
                     ]
                 },
                 items:  [
@@ -296,7 +321,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                         xtype:'panel',
                         flex:1,
                         bodyStyle:{
-                            backgroundColor:"#f2f2f2"
+                            backgroundColor:"#999999"
                         },
                         layout:{
                             type: 'hbox',
@@ -354,6 +379,7 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                                         xtype: 'panel',
                                         cls: 'item-view-column',
                                         flex:1,
+                                        margin:'1 0 0 0',
                                         layout:'anchor',
                                         autoScroll: true,
                                         items: [
@@ -395,7 +421,8 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                     {
                         xtype: 'panel',
                         itemId: 'itemInfoPanel',
-                        title: 'Details',
+                        title: '',
+                        ui:'light-blue',
                         width: '30%',
                         minWidth:345,
                         maxWidth:412,
@@ -403,17 +430,25 @@ Ext.define('Savanna.itemView.view.ItemViewer', {
                         autoScroll: true,
                         layout: 'vbox',
                         collapsible: true,
+                        collapseDirection:'right',
                         animCollapse:false,
                         collapseMode:'header',
                         resizable:true,
                         headerPosition:'left',
                         items: [
                             {
+                                xtype: 'informationpanel',
+                                itemId: 'informationPanel',
+                                collapsible: true,
+                                itemUri: this.getItemUri() ,
+                                width: '100%'
+                            },
+                            {
                                 xtype: 'document_sources',
                                 editMode: true,
                                 itemId: 'itemSourcesEdit',
                                 header:{
-                                    ui:'light-blue'
+                                    ui:'off-white'
                                 }
                             }
                         ]

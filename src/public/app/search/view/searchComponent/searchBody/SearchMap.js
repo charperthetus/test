@@ -32,7 +32,9 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.SearchMap', {
             xtype: 'button',
             itemId: 'drawLocationSearch',
             glyph: 'polygonTop',
-            ui: 'basic'
+            ui: 'basic',
+            cls: 'locationSearch-drawPolygon',
+            tooltip:'Click to outline search area'
         }
     ],
     tbar: {

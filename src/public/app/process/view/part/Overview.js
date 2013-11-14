@@ -10,7 +10,10 @@ Ext.define('Savanna.process.view.part.Overview', {
         this.diagram = val;
 
         if (this.overview) {
+
+
             this.overview.observed = val;
+
         }
     },
 
@@ -29,14 +32,20 @@ Ext.define('Savanna.process.view.part.Overview', {
                 'z-index: 10"></div>');
 
             this.overview = new go.Overview(domElem);
+
+            var gmake = go.GraphObject.make;
+            this.overview.box =
+                gmake(go.Part,
+                    { layerName: "Tool" },
+                    gmake(go.Shape,
+                        { name: "SHAPE", fill: null, stroke: "#3ca8c8", strokeWidth: 3, stretch: go.GraphObject.Fill }));
+
+
+
             this.overview.observed = this.diagram;
-            
-            //TODO Not Working, caused the overview magenta to disappear but nothing is in its place.
-            var pt = new go.Part();
-            var ad = new go.Adornment();
-            ad.adornedObject = new go.Shape('rectangle', { strokeWidth: 4, stroke: "red" });
-            pt.addAdornment('ov', ad);
-            this.overview.box = pt;
+
+
+
         }
     }
 }); 
