@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.thetus.savanna.html5</groupId>
     <artifactId>Savanna-Html-Client</artifactId>
-    <version>1.0.9-c2is2-SNAPSHOT</version>
+    <version>1.0.9-c2is2</version>
     <packaging>pom</packaging>
     <name>HTML5 Savanna Client</name>
 
