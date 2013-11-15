@@ -24,10 +24,6 @@ Ext.define('Savanna.map.controller.MapController', {
             userFeatureAdded: 'addFeatureEvent'
         },
 
-        removeSelectedFeature: {
-            click: 'removeSelectedFeature'
-        },
-
         addPointFeature: {
             click: 'activateDrawPoint'
         },

@@ -21,8 +21,7 @@ Ext.define('Savanna.map.controller.EditFeatureController', {
     cancelEditFeature: function () {
         var mapComponent = this.getCancelEditFeature().up('mapcomponent');
         var editFeaturePanel = mapComponent.down('map_edit_feature');
-        editFeaturePanel.columns = [];
-        editFeaturePanel.hide();
+        editFeaturePanel.destroy();
     },
 
     submitFeatureEdit: function () {

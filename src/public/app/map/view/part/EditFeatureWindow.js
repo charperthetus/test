@@ -9,32 +9,34 @@ Ext.define('Savanna.map.view.part.EditFeatureWindow', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.map_edit_feature',
 
-    requires: 'Savanna.map.controller.EditFeatureController',
+    requires: [
+        'Savanna.map.controller.EditFeatureController',
+        'Ext.grid.plugin.RowEditing'
+    ],
+
 
     controller: 'Savanna.map.controller.EditFeatureController',
 
 //    layout: 'vbox',
     height: 400,
     width: 250,
-    minWidth: 200,
-    minHeight: 100,
     autoScroll: true,
     sortableColumns: false,
     floating: true,
     toFrontOnShow: false,
     draggable: true,
+    hidden: true,
+
+    style: {
+        'overflow': "visible"
+    },
 
     columns: [],
 
-    editFeature: {},
-
-    selType: 'rowmodel',
-
     plugins: [
         Ext.create('Ext.grid.plugin.RowEditing', {
-            clicksToEdit: 1
-        })
-    ],
+        clicksToEdit: 1
+    })],
 
     header: {
         title: 'Edit Feature'

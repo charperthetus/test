@@ -20,6 +20,7 @@ Ext.define('Savanna.map.controller.DataCardController', {
 
     editFeature: function () {
         var mapComponent = this.getEditFeatureData().up('mapcomponent');
+        EventHub.fireEvent('hideDataCard');
         var currentFeature = mapComponent.down('map_popup_datacard').currentFeature;
         var editFeatureView = mapComponent.down('map_edit_feature');
         editFeatureView.show();
@@ -27,7 +28,7 @@ Ext.define('Savanna.map.controller.DataCardController', {
     },
 
     setUpEditWindow: function (feature, mapComponent) {
-        var editFeatureWindow = mapComponent.down('map_edit_feature')
+        var editFeatureWindow = mapComponent.down('map_edit_feature');
         var fields = [];
         var values = [];
         for (var key in feature.attributes) {
