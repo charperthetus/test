@@ -13,8 +13,6 @@ Ext.define('Savanna.desktop.controller.WorkspaceController', {
             createprocess: 'createProcess',
             createitem: 'createItem',
             createmap: 'createMap',
-            singleview: 'onSingleView',
-            splitview: 'onSplitView',
             tabchange: 'onTabChange'
         }
     },
