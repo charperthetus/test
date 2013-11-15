@@ -2,7 +2,7 @@ Ext.define('Savanna.map.controller.MapController', {
     extend: 'Deft.mvc.ViewController',
 
     requires: [
-        'Savanna.map.view.part.AddFeatureWindow'
+        'Savanna.map.view.part.EditFeatureWindow'
     ],
 
     dataCardState: {
@@ -13,15 +13,15 @@ Ext.define('Savanna.map.controller.MapController', {
         featureY: 0
     },
 
-    drawToolInUse: false,
+    drawToolInUse: 'none',
 
     control: {
         ol3Map: {
-            resize: 'updateMapSize'
-        },
-
-        addPointWindow: {
-            click: 'showAddFeatureWindow'
+            resize: 'updateMapSize',
+            clickEvent: 'clickEvent',
+            dragStart: 'dragStart',
+            dragEnd: 'checkDataCardState',
+            userFeatureAdded: 'addFeatureEvent'
         },
 
         removeSelectedFeature: {
@@ -29,143 +29,144 @@ Ext.define('Savanna.map.controller.MapController', {
         },
 
         addPointFeature: {
-            click: 'activateAddPoint'
+            click: 'activateDrawPoint'
         },
 
         drawLineFeature: {
             click: 'activateDrawLine'
-        }
-//
-//        drawPolygonFeature: {
-//            click: 'activateDrawPolygon'
-//        }
+        },
 
+        drawPolygonFeature: {
+            click: 'activateDrawPolygon'
+        }
     },
 
     init: function() {
-        EventHub.on('itemSelected', this.enableGeoInputField, this);
-        EventHub.on('addFeature', this.addFeatureToMap, this);
-        EventHub.on('randomFeature', this.randomFeatureToMap, this);
-        EventHub.on('clickEvent', this.clickEvent, this);
-        EventHub.on('selectEvent', this.hideDataCard, this);
-        EventHub.on('dragStart', this.dragStart, this);
-        EventHub.on('dragEnd', this.checkDataCardState, this);
-        EventHub.on('removeSelectedFeature', this.removeSelectedFeature, this);
-        EventHub.on('doubleclick', this.doubleClickEvent, this);
+        EventHub.on('hideDataCard', this.hideDataCard, this);
         this.callParent(arguments);
     },
 
     destroy: function() {
-        EventHub.un('itemSelected', this.enableGeoInputField, this);
-        EventHub.un('addFeature', this.addFeatureToMap, this);
-        EventHub.un('randomFeature', this.randomFeatureToMap, this);
-        EventHub.un('clickEvent', this.clickEvent, this);
-        EventHub.un('selectEvent', this.hideDataCard, this);
-        EventHub.un('dragStart', this.dragStart, this);
-        EventHub.un('dragEnd', this.checkDataCardState, this);
-        EventHub.un('removeSelectedFeature', this.removeSelectedFeature, this);
-        EventHub.un('doubleclick', this.doubleClickEvent, this);
+        EventHub.un('hideDataCard', this.hideDataCard, this);
         this.callParent(arguments);
     },
 
-    doubleClickEvent: function () {
+    addFeatureEvent: function (evt) {
+        var feature = evt.features[0];
+        feature.attributes = {
+            Feature_Type: this.drawToolInUse,
+            Importance: Math.floor(Math.random() * (100 - 3 + 1)) + 3,
+            Date_Created: Ext.Date.format(new Date(), 'F j, Y, g:i a')
+        };
         var mapCanvas = this.getOl3Map();
         var map = mapCanvas.map;
         map.removeInteraction(map.drawInteraction);
+        map.drawInteraction = {};
+
+        /*
+        Add the select interaction back to the map
+         */
+        map.addInteraction(map.selectInteraction);
+
         var mapComponent = mapCanvas.up('mapcomponent');
         mapComponent.down('#addPointFeature').enable();
         mapComponent.down('#drawLineFeature').enable();
-        mapComponent.down('#drawLineFeature').toolsInUse = false;
-        this.drawToolInUse = false;
+        mapComponent.down('#drawPolygonFeature').enable();
+        this.drawToolInUse = 'none';
+    },
+
+    activateDrawPoint: function () {
+        var mapCanvas = this.getOl3Map();
+        var map = mapCanvas.map;
+        var mapComponent = mapCanvas.up('mapcomponent');
+        this.hideDataCard();
+
+        /*
+         Remove the select interaction from the map while feature is being drawn
+         */
+        map.removeInteraction(map.selectInteraction);
+
+        /*
+         need to find better way of calling userCreatedLayer
+         */
+        var targetLayer = map.getLayers().array_[1];
+
+        /*
+         Disable buttons while drawing feature
+         */
+        mapComponent.down('#addPointFeature').disable();
+        mapComponent.down('#drawLineFeature').disable();
+        mapComponent.down('#drawPolygonFeature').disable();
+        this.drawToolInUse = 'point';
+
+        map.drawInteraction = new ol.interaction.Draw({
+            layer: targetLayer,
+            type: 'point'
+        });
+        map.addInteraction(map.drawInteraction);
     },
 
     activateDrawLine: function () {
         var mapCanvas = this.getOl3Map();
         var map = mapCanvas.map;
         var mapComponent = mapCanvas.up('mapcomponent');
+        this.hideDataCard();
+
+        /*
+        Remove the select interaction from the map while feature is being drawn
+         */
+        map.removeInteraction(map.selectInteraction);
+
+        /*
+        need to find better way of calling userCreatedLayer
+         */
+        var targetLayer = map.getLayers().array_[1];
 
         /*
         Disable buttons while drawing feature
          */
         mapComponent.down('#addPointFeature').disable();
         mapComponent.down('#drawLineFeature').disable();
-        mapComponent.down('#drawLineFeature').toolsInUse = true;
-        this.drawToolInUse = true;
+        mapComponent.down('#drawPolygonFeature').disable();
+        this.drawToolInUse = 'linestring';
 
         map.drawInteraction = new ol.interaction.Draw({
-            layer: new ol.layer.Vector({
-                source: new ol.source.Vector({parser: null}),
-                style: new ol.style.Style({
-                    rules: [
-                        new ol.style.Rule({
-                            filter: 'renderIntent("selected")',
-                            symbolizers: [
-                                new ol.style.Shape({
-                                    fill: new ol.style.Fill({
-                                        color: '#0099ff',
-                                        opacity: 1
-                                    }),
-                                    stroke: new ol.style.Stroke({
-                                        color: 'white',
-                                        opacity: 0.75
-                                    }),
-                                    size: 14
-                                }),
-                                new ol.style.Fill({
-                                    color: '#ffffff',
-                                    opacity: 0.5
-                                }),
-                                new ol.style.Stroke({
-                                    color: 'white',
-                                    width: 5
-                                }),
-                                new ol.style.Stroke({
-                                    color: '#0099ff',
-                                    width: 3
-                                })
-                            ]
-                        }),
-                        new ol.style.Rule({
-                            filter: 'renderIntent("temporary")',
-                            symbolizers: [
-                                new ol.style.Shape({
-                                    fill: new ol.style.Fill({
-                                        color: '#0099ff',
-                                        opacity: 1
-                                    }),
-                                    stroke: new ol.style.Stroke({
-                                        color: 'white',
-                                        opacity: 0.75
-                                    }),
-                                    size: 14,
-                                    zIndex: 1
-                                })
-                            ]
-                        })
-                    ],
-                    symbolizers: [
-                        new ol.style.Shape({
-                            fill: new ol.style.Fill({
-                                color: '#ffcc33',
-                                opacity: 1
-                            }),
-                            size: 14
-                        }),
-                        new ol.style.Fill({
-                            color: 'white',
-                            opacity: 0.2
-                        }),
-                        new ol.style.Stroke({
-                            color: '#ffcc33',
-                            width: 2
-                        })
-                    ]
-                })
-            }),
+            layer: targetLayer,
             type: 'linestring'
         });
         map.addInteraction(map.drawInteraction);
 
+    },
+
+    activateDrawPolygon: function () {
+        var mapCanvas = this.getOl3Map();
+        var map = mapCanvas.map;
+        var mapComponent = mapCanvas.up('mapcomponent');
+        this.hideDataCard();
+
+        /*
+         Remove the select interaction from the map while feature is being drawn
+         */
+        map.removeInteraction(map.selectInteraction);
+
+        /*
+         need to find better way of calling userCreatedLayer
+         */
+        var targetLayer = map.getLayers().array_[1];
+
+        /*
+         Disable buttons while drawing feature
+         */
+        mapComponent.down('#addPointFeature').disable();
+        mapComponent.down('#drawLineFeature').disable();
+        mapComponent.down('#drawPolygonFeature').disable();
+        this.drawToolInUse = 'polygon';
+
+        map.drawInteraction = new ol.interaction.Draw({
+            layer: targetLayer,
+            type: 'polygon'
+        });
+        map.addInteraction(map.drawInteraction);
     },
 
     getSelectedFeature: function (layerList) {
@@ -191,23 +192,15 @@ Ext.define('Savanna.map.controller.MapController', {
     },
 
     clickEvent: function (evt) {
-        console.log(arguments);
-        var mapComponent = this.getAddPointWindow().up('mapcomponent');
+        var mapComponent = this.getOl3Map().up('mapcomponent');
         var map = mapComponent.down('ol3mapcomponent').map;
-
-        /*
-        If the Add Point Feature button is disabled call addPointOnClick method
-         */
-        var addPointButton = mapComponent.down('#addPointFeature');
-        if (addPointButton.toolInUse === true) {
-            this.addPointOnClick(evt, addPointButton);
-        }
-
         var features;
         var layersQuery = map.getLayers().array_;
         features = this.getSelectedFeature(layersQuery);
         if (features.selected.length === 1) {
             this.displayDataCard(features.selected[0], evt, mapComponent);
+        } else {
+            this.hideDataCard();
         }
     },
 
@@ -215,180 +208,57 @@ Ext.define('Savanna.map.controller.MapController', {
         this.getOl3Map().getMap().updateSize();
     },
 
-    showAddFeatureWindow: function () {
-        var mapComponent = this.getAddPointWindow().up('mapcomponent');
-        var window = mapComponent.down('#createFeatureWindow');
-        window.show();
-    },
-
     removeSelectedFeature: function () {
         var mapComponent = this.getAddPointWindow().up('mapcomponent');
         var map = mapComponent.down('ol3mapcomponent').map;
-        var layersQuery = map.getLayers().array_;
-        var features = this.getSelectedFeature(layersQuery);
-        if (features.selected) {
-            for (var i = 0; i < features.selected.length; i++){
-                map.removeLayer(features.selected[i]);
+        var userVectorLayer = map.getLayers().array_[1];
+        var features = userVectorLayer.featureCache_.idLookup_;
+        for (var key in features) {
+            if (features[key].renderIntent_ === 'selected') {
+                userVectorLayer.removeFeatures([features[key]]);
             }
+            this.hideDataCard();
         }
-        if (features.hidden) {
-            for (var j = 0; j < features.hidden.length; j++){
-                map.removeLayer(features.hidden[j]);
-            }
-        }
-        this.hideDataCard();
-    },
-
-    enableGeoInputField: function () {
-        var mapComponent = this.getAddPointWindow().up('mapcomponent');
-        var window = mapComponent.down('#createFeatureWindow');
-        var addFeatureButton = window.down('#addFeatureToMap');
-        addFeatureButton.enable();
-    },
-
-    randomFeatureToMap : function () {
-        var randomFeature = [];
-        var numberOfPoints = Math.floor(Math.random() * (15 - 3 + 1)) + 3;
-        for (var i = 0; i < numberOfPoints; i++) {
-            randomFeature.push([(Math.random() * (180 - (-180)) + (-180)),
-                (Math.random() * (90 - (-90)) + (-90))]);
-        }
-        var coordinates = [randomFeature];
-        var newRandomFeature = {
-            type: 'Polygon',
-            coordinates: coordinates
-        };
-        this.addVector(newRandomFeature);
-    },
-
-    addFeatureToMap: function () {
-        var mapComponent = this.getAddPointWindow().up('mapcomponent');
-        var fieldText = mapComponent.down('#createFeatureWindow').down('#jsonInputField');
-        this.addVector(fieldText.rawValue);
-
-    },
-
-    addVector: function (data) {
-        var mapComponent = this.getAddPointWindow().up('mapcomponent');
-        var map = mapComponent.down('ol3mapcomponent').map;
-        var vector = new ol.layer.Vector({
-            source: new ol.source.Vector({
-                parser: new ol.parser.GeoJSON(),
-                data: data,
-                attributions: {
-                    Title: 'This is a really cool spot',
-                    Importance: Math.floor(Math.random() * (100 - 3 + 1)) + 3,
-                    Date_Created: Ext.Date.format(new Date(), 'F j, Y, g:i a'),
-                    fieldTest1: 'S - This is a test field to see if there is a limit to the number of characters you can put into one of these here cells. I remember back in old savanna when map limited this to 184 characters and sometimes it would upset Deane and I would have to explain that it is ESRIs fault and now we get to see if this is Senchas issue or GeoServer...',
-                    fieldTest2: 'C',
-                    fieldTest3: 'R',
-                    fieldTest4: 'O',
-                    fieldTest5: 'L',
-                    fieldTest6: 'L'
-                }
-            }),
-            id: 'vector',
-            style: new ol.style.Style({rules: [
-                new ol.style.Rule({
-                    symbolizers: [
-                        new ol.style.Fill({
-                            color: 'white',
-                            opacity: 0.6
-                        }),
-                        new ol.style.Stroke({
-                            color: '#319FD3',
-                            opacity: 1
-                        }),
-//                        new ol.style.Icon({
-//                            url: './resources/OpenLayers-2.13.1/img/mapMarker.png'
-//                        })
-                        new ol.style.Shape({
-                            size: 20,
-                            fill: new ol.style.Fill({
-                                color: 'white',
-                                opacity: 0.6
-                            }),
-                            stroke: new ol.style.Stroke({
-                                color: '#319FD3',
-                                opacity: 1
-                            })
-                        })
-                    ]
-                }),
-                new ol.style.Rule({
-                    filter: 'renderIntent("selected")',
-                    symbolizers: [
-                        new ol.style.Fill({
-                            color: '#ffffff',
-                            opacity: 0.5
-                        }),
-                        new ol.style.Shape({
-                            size: 20,
-                            fill: new ol.style.Fill({
-                                color: 'white',
-                                opacity: 0.5
-                            }),
-                            stroke: new ol.style.Stroke({
-                                color: '#319FD3',
-                                opacity: 1
-                            })
-                        })
-                    ]
-                })
-            ]})
-        });
-        map.addLayer(vector);
-    },
-
-    activateAddPoint: function () {
-        var button = this.getAddPointFeature();
-        button.disable();
-        button.toolInUse = true;
-        this.drawToolInUse = true;
-    },
-
-    addPointOnClick: function (evt, button) {
-        var pointFeature = {};
-        var pointTransform = ol.proj.transform([evt.coordinate_[0], evt.coordinate_[1]], 'EPSG:3857', 'EPSG:4326');
-        pointFeature.coordinates = [pointTransform[0], pointTransform[1]];
-        pointFeature.type = 'Point';
-        this.addVector(pointFeature);
-        button.enable();
-        button.toolInUse = false;
-        this.drawToolInUse = false;
     },
 
     displayDataCard: function (feature, evt, mapComponent) {
         var dataCard = mapComponent.down('#featureDataCard');
-        if (this.drawToolInUse === false){
+        if (this.drawToolInUse === 'none'){
             this.setUpDataCardContent(feature, mapComponent);
             dataCard.show();
             this.position(dataCard, mapComponent, evt.pixel_);
         }
     },
 
-    setUpDataCardContent: function (feature, mapComponent) {
+    setUpDataCardContent: function (layer, mapComponent) {
         var dataCardGrid = mapComponent.down('map_popup_datacard');
-        var attributes = feature.source_.attributions_;
-        var dataItems = [];
-        for (var key in attributes) {
-            dataItems.push({'field': key, 'value': attributes[key]});
-        }
-        var data = {'items': dataItems};
-        var columns = [
-            {text: 'Field Name', dataIndex: 'field', flex: 1, menuDisabled: true},
-            {text: 'Value', dataIndex: 'value', flex: 1, menuDisabled: true}
-        ];
-        dataCardGrid.reconfigure(Ext.create('Ext.data.Store', {
-            fields: ['field','value'],
-            data: data,
-            proxy: {
-                type: 'memory',
-                reader: {
-                    type: 'json',
-                    root: 'items'
+        var featureList = layer.featureCache_.idLookup_;
+        for (var key in featureList) {
+            if (featureList[key].renderIntent_ === 'selected') {
+                var selectedFeature = featureList[key];
+                var dataItems = [];
+                var attributes = featureList[key].attributes;
+                for (var index in attributes) {
+                    dataItems.push({'field': index, 'value': attributes[index]});
                 }
-            }}), columns);
+                var data = {'items': dataItems};
+                var columns = [
+                    {text: 'Field Name', dataIndex: 'field', flex: 1, menuDisabled: true},
+                    {text: 'Value', dataIndex: 'value', flex: 1, menuDisabled: true}
+                ];
+                dataCardGrid.reconfigure(Ext.create('Ext.data.Store', {
+                    fields: ['field','value'],
+                    data: data,
+                    proxy: {
+                        type: 'memory',
+                        reader: {
+                            type: 'json',
+                            root: 'items'
+                        }
+                    }}), columns);
+            }
+        }
+        dataCardGrid.currentFeature = selectedFeature;
     },
 
     position: function(dataCard, mapComponent, pixel) {
@@ -447,16 +317,20 @@ Ext.define('Savanna.map.controller.MapController', {
     },
 
     dragStart: function (evt) {
+        var mapComponent = this.getOl3Map().up('mapcomponent');
+        var dataCard = mapComponent.down('#featureDataCard');
         this.dataCardState.lastX = evt.browserEvent.offsetX;
         this.dataCardState.lastY = evt.browserEvent.offsetY;
+        if (dataCard.hidden === false){
+            this.dataCardState.type = 'on-move'
+        }
         this.hideDataCard();
     },
 
     hideDataCard: function () {
-        this.dataCardState.type = 'in-place';
-        var mapComponent = this.getAddPointWindow().up('mapcomponent');
+        var mapComponent = this.getOl3Map().up('mapcomponent');
         var dataCard = mapComponent.down('#featureDataCard');
-        if (dataCard.hidden === false){
+        if (dataCard.hidden === false && this.dataCardState.type === 'in-place'){
             this.unselectFeature(mapComponent);
         }
         dataCard.hide();
@@ -470,7 +344,7 @@ Ext.define('Savanna.map.controller.MapController', {
                 var pathToIntent = layerList[i].featureCache_.idLookup_;
                 for (var key in pathToIntent) {
                     if (pathToIntent[key].renderIntent_ === 'selected'){
-                        this.dataCardState.type = 'on-move';
+                        pathToIntent[key].setRenderIntent('default');
                     }
                 }
             }
@@ -478,8 +352,7 @@ Ext.define('Savanna.map.controller.MapController', {
     },
 
     checkDataCardState: function (evt) {
-        console.log(evt.browserEvent.offsetX, evt.browserEvent.offsetY);
-        var mapComponent = this.getAddPointWindow().up('mapcomponent');
+        var mapComponent = this.getOl3Map().up('mapcomponent');
         var dataCard = mapComponent.down('#featureDataCard');
         var moveX = this.dataCardState.lastX - evt.browserEvent.offsetX;
         var moveY = this.dataCardState.lastY - evt.browserEvent.offsetY;

@@ -9,6 +9,10 @@ Ext.define('Savanna.map.view.part.DataCard', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.map_popup_datacard',
 
+    requires: 'Savanna.map.controller.DataCardController',
+
+    controller: 'Savanna.map.controller.DataCardController',
+
 //    requires: 'Savanna.map.view.part.DataCardGrid',
 
     height: 175,
@@ -32,13 +36,7 @@ Ext.define('Savanna.map.view.part.DataCard', {
         {
             xtype: 'button',
             itemId: 'removeSelectedFeature',
-            text: 'Remove Feature',
-            listeners: {
-                'click' : function () {
-                    EventHub.fireEvent('removeSelectedFeature', arguments);
-                },
-                scope: this
-            }
+            text: 'Remove Feature'
         },
         '->',
         {

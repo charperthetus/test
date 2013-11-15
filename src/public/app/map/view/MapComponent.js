@@ -18,24 +18,18 @@ Ext.define('Savanna.map.view.MapComponent', {
             itemId: 'ol3Map'
         },
         {
-            xtype: 'map_add_feature_window',
-            itemId: 'createFeatureWindow',
+            xtype: 'map_popup_datacard',
+            itemId: 'featureDataCard',
             hidden: true
         },
         {
-            xtype: 'map_popup_datacard',
-            itemId: 'featureDataCard',
+            xtype: 'map_edit_feature',
+            itemId: 'editFeatureWindow',
             hidden: true
         }
     ],
 
     tbar: [
-        {
-            xtype: 'button',
-            itemId: 'addPointWindow',
-            text: 'Add Feature Menu'
-        },
-        '-',
         {
             xtype: 'button',
             itemId: 'removeSelectedFeature',
@@ -45,22 +39,19 @@ Ext.define('Savanna.map.view.MapComponent', {
         {
             xtype: 'button',
             itemId: 'addPointFeature',
-            text: 'Add Point Feature',
-            toolInUse: false
+            text: 'Add Point Feature'
         },
         '-',
         {
             xtype: 'button',
             itemId: 'drawLineFeature',
-            text: 'Add Line Feature',
-            toolInUse: false
+            text: 'Add Line Feature'
         },
         '-',
         {
             xtype: 'button',
             itemId: 'drawPolygonFeature',
-            text: 'Add Polygon Feature',
-            disabled: true
+            text: 'Add Polygon Feature'
         }
     ]
 });
