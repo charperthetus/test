@@ -228,14 +228,18 @@
         $uikit-text-decoration: $button-basic-text-decoration
     );
     
+    /* Should probably be in UIKit */
     @include uikit-button(
         $uikit-ui: 'toggle-toolbar-small',
         $uikit-padding: $button-toggle-padding,
         $uikit-text-padding: $button-toggle-text-padding,
-        $uikit-color: $button-toggle-color-pressed,
-        $uikit-color-pressed: $button-toggle-color-pressed,
-        $uikit-color-over: $button-toggle-color-pressed,
-        $uikit-color-focus: $button-toggle-color-pressed
+        $uikit-color: $defaultButtonBaseColor,
+        $uikit-color-pressed: $dark-color,
+        $uikit-color-over: $dark-color,
+        $uikit-color-focus: $dark-color,
+        $uikit-font-weight-pressed: bold,
+        $uikit-text-decoration: none
+        
     );
 }
 
@@ -262,8 +266,14 @@
     height: 38px;
     top:0;
 
-    &:hover, &:active, &:focus,
+    &.logoButtonFramework.#{$prefix}btn-brand-header-toolbar-large-over,
     .logoButtonFramework.#{$prefix}btn-brand-header-toolbar-large-focus {
+        background-image: $brand-header-logo-image;
+        background-repeat: no-repeat;
+        background-position: top left;
+        width: 193px;
+        height: 38px;
+        top:0;
         @include opacity(0.85);
     }
 }
@@ -286,11 +296,17 @@
         color:#454545;
         opacity:1;
         font-size:20px;
-        margin:2px 2px 2px 2px;
+        margin:4px 5px 2px 1px;
         padding: 0 0 0 0;
         text-align:center;
+        &:disabled{
+            color:#CCCCCC;
+        }
+        //TODO: Remove or fix color after Thursday's UIKit meeting.
+        //This hover color is the same as the regular color (per Kelvin),
+        //but this hover code has been left in case UX would like this changed.
         &:hover, &:active, &:focus{
-            color:#808080;
+            color:#454545;
         }
     }
 }
@@ -318,14 +334,32 @@
     width: 26px;
     border: 1px solid #F2F2F2;
     vertical-align: middle;
-    margin:3px 3px 3px 3px;
+    margin: 3px 3px 3px 3px;
     &:hover, &:active, &:focus{
-        border: 1px solid #333333;
+        border: 1px solid #999999;
     }
     &:select{
         background-color: rgba(36, 36, 36, 0.35);
     }
 }
+
+.itemViewButtonFramework {
+    @include thetus-toolbar-icon-button;
+    display:inline-block;
+    height: 26px;
+    width: 26px;
+    top: 5px;
+    border: 1px solid #FFFFFF;
+    vertical-align: middle;
+    margin: 3px 3px 3px 3px;
+    &:hover, &:active, &:focus{
+        border: 1px solid #999999;
+    }
+    &:select{
+        background-color: rgba(36, 36, 36, 0.35);
+    }
+}
+
 .toolbarDividerFramework {
     height: 20px;
     width: 0.5px;
@@ -454,7 +488,20 @@
   }
 }
 
-#removeSelectedValue, #removeSelectedQuality{
+#removeSelectedValue {
+  @include thetus-icons;
+  display: none;
+ &:before{
+   content:'closeRollout';
+ }
+  &:hover{
+    &:before{
+      content:'closeRollover';
+    }
+  }
+}
+
+#removeSelectedQuality{
   @include thetus-icons;
   display: none;
  &:before{

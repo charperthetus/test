@@ -37,9 +37,10 @@ Ext.define('Savanna.process.view.part.PaletteWindow', {
     modal: false,
     closable: false,
     constrain: true, //limit this window to the parent container
-    width: 200,
+    width: 210,
     ghost: false,
     items: [],
+    autoScroll: true,
 
     initComponent: function() {
         this.items = this.setupItems();
@@ -56,7 +57,7 @@ Ext.define('Savanna.process.view.part.PaletteWindow', {
                 xtype: 'process_itemlist',
                 itemId: 'itemList',
                 collapsible: true,
-                collapsed:true,
+                collapsed:false,
                 width:"100%",
                 header: {
                     xtype: 'header',
@@ -76,7 +77,7 @@ Ext.define('Savanna.process.view.part.PaletteWindow', {
                 xtype: 'process_actionlist',
                 itemId: 'actionList',
                 collapsible: true,
-                collapsed:true,
+                collapsed:false,
                 width:"100%",
                 header: {
                     xtype: 'header',

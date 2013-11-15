@@ -9,9 +9,13 @@ Ext.define('Savanna.search.view.searchComponent.searchBar.SearchForm', {
         ],
 
         border: false,
+        hideAdvancedLink: false,
 
         initComponent:function()    {
             this.callParent(arguments);
+            if(this.hideAdvancedLink){
+               this.down('#searchadvanced_btn').destroy();
+            }
         },
 
         items:  [
@@ -80,7 +84,7 @@ Ext.define('Savanna.search.view.searchComponent.searchBar.SearchForm', {
                                 cls: ['align_top', 'align_bottom'],
                                 itemId: 'none_words',
                                 tabIndex: 4,
-                                configs:{ join: ' NOT ', booleanType: 'none' }
+                                configs:{ join: '', booleanType: 'none' } // join member is not used for this type
                             },
                             {
                                 xtype: 'panel',

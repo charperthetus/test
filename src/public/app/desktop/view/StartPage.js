@@ -2,6 +2,7 @@ Ext.define('Savanna.desktop.view.StartPage', {
     extend: 'Ext.container.Container',
     alias: 'widget.desktop_startpage',
     controller: 'Savanna.desktop.controller.StartPageController',
+    cls:'startpage',
     requires: [
         'Savanna.desktop.controller.StartPageController',
         'Savanna.desktop.view.StartPageItem'
@@ -9,7 +10,7 @@ Ext.define('Savanna.desktop.view.StartPage', {
     layout: {
         type:'hbox',
         pack: 'center',
-        defaultMargins: 10
+        defaultMargins: {top: 30, right: 10, bottom: 30, left: 10}
     },
     items: [
         {
@@ -18,27 +19,30 @@ Ext.define('Savanna.desktop.view.StartPage', {
                 {
                     xtype: 'image',
                     src: '/resources/images/discover.jpg',
-                    height: 254 //This needed to be set explicitly otherwise on the first draw it doesn't show
+                    height: 254 //These heights and widths are needed to be set explicitly otherwise it doesn't show
                 },
                 {
-                    xtype: 'label',
-                    text: 'Discover Content and Knowledge'
+                    xtype: 'container',
+                    html: '<div class="title"><p>Discover Content and Knowledge</p></div>'
                 },
                 {
                     xtype: 'startpageitem',
+                    cls:'startpageitem first',
                     width: 270,
+                    height: 109,
                     itemId: 'openSearch',
                     text: 'Search for Content',
-                    subtext: 'Discover content...??',
-                    image: '/resources/images/dashboardicon.png'
+                    subtext: 'Search for content inside Savanna or in external data sources.',
+                    glyph: 'search'
                 },
                 {
                     xtype: 'startpageitem',
                     text: 'Search for Knowledge',
                     width: 270,
+                    height: 109,
                     itemId: 'openModelSearch',
-                    subtext: 'Discover items and processes in your knowledge reference model',
-                    image: '/resources/images/dashboardicon.png'
+                    subtext: 'Discover items and processes in the knowledge reference model.',
+                    glyph: 'searchBinoculars'
                 }
             ]
         },
@@ -51,24 +55,27 @@ Ext.define('Savanna.desktop.view.StartPage', {
                     height: 254
                 },
                 {
-                    xtype: 'label',
-                    text: 'Create Knowledge'
+                    xtype: 'container',
+                    html: '<div class="title"><p class="short">Create Knowledge</p></div>'
                 },
                 {
                     xtype: 'startpageitem',
+                    cls:'startpageitem first',
                     width: 270,
+                    height: 109,
                     text: 'Create an Item',
                     itemId: 'createitem',
-                    subtext: 'Create new reference items to extend your knowledge reference model',
-                    image: '/resources/images/dashboardicon.png'
+                    subtext: 'Extend the knowledge reference model by creating new reference items.',
+                    glyph: 'rnmItem'
                 },
                 {
                     xtype: 'startpageitem',
                     text: 'Create a Process',
                     width: 270,
+                    height: 109,
                     itemId: 'createprocess',
-                    subtext: 'Create processes using items',
-                    image: '/resources/images/dashboardicon.png'
+                    subtext: 'Create processes using items in the knowledge reference model.',
+                    glyph: 'topDown'
                 }
             ]
         }

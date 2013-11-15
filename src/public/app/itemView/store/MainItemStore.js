@@ -30,6 +30,7 @@ Ext.define('Savanna.itemView.store.MainItemStore', {
             startParam: undefined,
             limitParam: undefined,
             pageParam: undefined,
+            timeout: 120000,
             reader: {
                 type: 'json'
             },

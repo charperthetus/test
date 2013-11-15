@@ -13,126 +13,120 @@ Ext.define("Savanna.document.view.DocumentToolbar", {
             xtype: "toolbar",
             itemId: "tools",
             height: 33,
+            width: '100%',
             ui: 'thetus-toolbar',
             hideMode: "display",
-            layout:{
+            layout: {
                 pack: 'start'
             },
             items: [
+                { xtype: 'tbspacer', width: 5 },
                 {
                     xtype: 'button',
-                    width:25,
-                    height:25,
-                    cls: 'toolbarButtonFramework',
-                    ui: 'icon-dark',
-                    glyph: 'hand',
-                    itemId: "handTool",
-                    tooltip: 'Hand'
-                },{
-                    xtype: 'button',
-                    width:25,
-                    height:25,
+                    paddingLeft: 5,
+                    width: 25,
+                    height: 25,
                     cls: 'toolbarButtonFramework',
                     ui: 'icon-dark',
                     glyph: 'cursor',
                     itemId: "selectTool",
                     tooltip: 'Select'
-                },{
-                    xtype: 'button',
-                    width:25,
-                    height:25,
-                    cls: 'toolbarButtonFramework',
-                    ui: 'icon-dark',
-                    glyph: 'zoomIn',
-                    itemId: "zoomIn",
-                    tooltip: "Zoom In"
-
                 },
                 //divider
                 {
                     xtype: 'container',
                     cls: 'toolbarDividerFramework',
-                    width:1,
-                    height:20
-                },{
+                    width: 1,
+                    height: 20
+                },
+                {
                     xtype: 'button',
-                    width:25,
-                    height:25,
+                    width: 25,
+                    height: 25,
+                    cls: 'toolbarButtonFramework',
+                    ui: 'icon-dark',
+                    glyph: 'zoomIn',
+                    itemId: "zoomIn",
+                    tooltip: "Zoom In"
+                },
+                {
+                    xtype: 'button',
+                    width: 25,
+                    height: 25,
                     cls: 'toolbarButtonFramework',
                     ui: 'icon-dark',
                     glyph: 'zoomOut',
                     itemId: "zoomOut",
                     tooltip: "Zoom Out"
-                },{
+                },
+                {
                     xtype: 'button',
-                    width:25,
-                    height:25,
+                    width: 25,
+                    height: 25,
                     cls: 'toolbarButtonFramework',
-                    ui:'icon-dark',
+                    ui: 'icon-dark',
                     glyph: 'showAll',
                     itemId: "zoomFit",
                     tooltip: "Zoom Fit"
-                },{
-                    text: "View",
-                    itemId: "toolMenu",
-                    menu: [
-                        {
-                            text: "Single Page",
-                            itemId: "singlePageView",
-                            tooltip: "Single Page"
-                        },
-                        {
-                            text: "Two Page",
-                            itemId: "twoPageView",
-                            tooltip: "Two Page"
-
-                        },
-                        {
-                            text: "Thumbnails",
-                            itemId: "thumbView",
-                            tooltip: "Thumbnails"
-
-                        }
-                    ]
                 },
                 '->',
                 {
                     xtype: 'button',
-                    width:25,
-                    height:25,
+                    width: 25,
+                    height: 25,
                     ui: 'icon-dark',
                     cls: 'toolbarButtonFramework',
                     glyph: 'arrowNavLeft',
                     itemId: "previousPage",
-                    tooltip: 'Previous'
+                    tooltip: 'Previous page'
                 },
-                {
-                    xtype: 'button',
-                    width:25,
-                    height:25,
-                    cls: 'toolbarButtonFramework',
-                    ui: 'icon-dark',
-                    glyph: 'arrowNavRight',
-                    itemId: "nextPage",
-                    tooltip: 'Next'
-                },
-                '->',
                 {
                     xtype: "textfield",
-                    itemId: "searchText",
-                    tooltip: 'Search'
+                    itemId: "currentPage",
+                    width: 35,
+                    name: "curentPage",
+                    ui: 'flat-toolbar-button',
+                    enableKeyEvents: true,
+                    tooltip: 'Current Page of the document',
+                    size: 8
                 },
                 {
-                    text: "Search",
-                    itemId: "searchDoc",
-                    width: 45,
+                    xtype: 'label',
+                    text: '/',
+                    size: 3,
+                    style: {
+                        'margin': '5px'
+                    }
+                },
+                {
+                    xtype: 'label',
+                    itemId: 'totalPages',
+                    size: 4,
                     ui: 'flat-toolbar-button',
-                    tooltip: 'Search'
+                    tooltip: 'Number of pages in the document'
                 },
                 {
                     xtype: 'button',
-                    width:25,
-                    height:25,
+                    width: 25,
+                    height: 25,
+                    cls: 'toolbarButtonFramework',
+                    glyph: 'arrowNavRight',
+                    itemId: "nextPage",
+                    tooltip: 'Next page'
+                },
+
+                '->',
+                {
+                    xtype: "thetus-searchfield",
+                    itemId: "searchText",
+                    enableKeyEvents: true,
+                    tooltip: 'Search'
+                },
+                { xtype: 'tbspacer', width: 3 },
+                {
+                    xtype: 'button',
+                    width: 25,
+                    height: 25,
                     cls: 'toolbarButtonFramework',
                     ui: 'icon-dark',
                     glyph: 'export',
@@ -141,8 +135,8 @@ Ext.define("Savanna.document.view.DocumentToolbar", {
                 },
                 {
                     xtype: 'button',
-                    width:25,
-                    height:25,
+                    width: 25,
+                    height: 25,
                     cls: 'toolbarButtonFramework',
                     ui: 'icon-dark',
                     glyph: 'print',

@@ -33,19 +33,20 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
                 {
                     xtype: 'label',
                     text: relatedItemsGroup.get('label'),
-                    cls:['h2', 'related-item-edit-header'],
+                    cls:['h2', 'bold', 'align_bottom'],
+                    padding: '0 15 0 15',
                     width:'100%'
                 },{
                     xtype: 'panel',
                     value: relatedItemsGroup.get('predicateUri'),
                     name: relatedItemsGroup.get('label'),
-                    margin:'0 0 10 0',
                     listeners: {
                         boxready: Ext.bind(this.onDropItemReady, this)
                     },
                     height:79,
                     width: '100%',
-                    cls:'related-item-drop-zone',
+                    ui: 'dropzone',
+                    margin: '0 15 0 15',
                     layout: {
                         type: 'hbox',
                         align: 'middle',
@@ -73,7 +74,7 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
                             cls:'related-items-control',
                             store: Ext.create('Savanna.itemView.store.AutoCompleteStore', {
                                 urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/model/search/keyword/property/' + encodeURI(relatedItemsGroup.get('predicateUri')),
-                                paramsObj: { pageStart:0, pageSize:20, alphabetical: true }
+                                paramsObj: { pageStart:0, pageSize:20, alphabetical: false }
                             }),
                             width:160,
                             listeners: {
@@ -102,9 +103,16 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
     },
 
     addRelationshipType: function() {
+
+        // Reset the relationship name array as it's persisting (possibly a singleton?) between items
+        this.relationshipNameArray = [];
+        Ext.each(this.getView().store.data.items, function(model) {
+            this.relationshipNameArray.push(model.data.label);
+        }, this);
+
         var addNewRelationship = Ext.create('Savanna.itemView.view.relatedItems.RelationshipPicker', {
             width: 500,
-            height: 600,
+            maxHeight: 300,
             selectionStore: this.getView().store,
             relationshipNameArray: this.relationshipNameArray,
             storeHelper: this.getView().storeHelper
@@ -119,7 +127,6 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
             this.relationshipNameArray = [];
             this.getView().storeHelper.updateMainStore(this.getView().store.data.items, 'Related Items');
             this.setupData(this.getView().store.data.items);
-            this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
         }
     },
 
@@ -213,14 +220,12 @@ Ext.define('Savanna.itemView.controller.EditRelatedItemsController', {
         item.value = itemUri;
         myPanel.add(this.buildAddItem(item, relatedItemGroupName));
         this.getView().storeHelper.addBotLevItemInStore(itemLabel, itemRecord, this.getView().store.getById(relatedItemGroupName));
-        this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
         this.updateHeader();
     },
 
     // Removing the tag from the store on a child auto-complete
     removeItem: function(itemName, groupName) {
         this.getView().storeHelper.removeBotLevItemInStore(itemName, this.getView().store.getById(groupName));
-        this.getView().up('itemview_itemviewer').fireEvent('ItemView:SaveEnable');
     },
 
     // Iterates over the bottom-level leafs in the store and adds the number to the header.

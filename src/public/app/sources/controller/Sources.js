@@ -18,9 +18,6 @@ Ext.define('Savanna.sources.controller.Sources', {
             listeners: {
                 itemclick: 'openSourceDocument'
             }
-//        },
-//        supportingResourcesDrop: {
-//              boxready: 'onDropItemReady'
         }
     },
 
@@ -30,11 +27,16 @@ Ext.define('Savanna.sources.controller.Sources', {
     },
     
     openSourceDocument: function( grid, record, item, index, e, eOpts) {
-            if (e.target.id === "openResourceDoc") {
-                EventHub.fireEvent('open', {uri: e.target.name, type: 'Rich', label: e.target.label});
-            }
-        },
-
+        if (e.target.id === "openResourceDoc") {
+            EventHub.fireEvent('open', {uri: e.target.name, type: 'Rich', label: e.target.label});
+        } else if (e.target.id === "delResourceDoc") {
+            this.getView().storeHelper.removeBotLevItemInStoreByUri(e.target.name, this.getView().store.getById('Source Document'));
+            this.updateStore();
+            this.getView().queryById('listOfSources').reconfigure(this.getView().store.getById('Source Document').valuesStore);
+            this.getView().queryById('listOfSources').setTitle('Supporting Resources (' + this.getView().store.getById('Source Document').valuesStore.count() + ')');
+        }
+    },
+    
     onDropItemReady: function(container){
         var myDropBox = container.getEl();
         if (myDropBox){
@@ -58,22 +60,24 @@ Ext.define('Savanna.sources.controller.Sources', {
     notifyItemDropTarget: function(ddSource, e, data, container) {
         data.records.forEach(function(rec) {
             this.getView().storeHelper.addBotLevItemInStore(rec.data.title, rec.data, this.getView().store.getById('Source Document'));
+        }, this);
+        this.updateStore();
+        this.getView().addSourcesGrid(this.getView().store.getById('Source Document').valuesStore);
+
+    },
+
+    updateStore: function() {
+        if (this.getView().getAutoSave()) {
             this.getView().storeHelper.fetchMainStore().getAt(0).setDirty();
             this.getView().storeHelper.fetchMainStore().sync({
                 callback: Ext.bind(this.onEditDoneCallback, this, [], true)
             });
-        }, this);
-        this.getView().addSourcesGrid(this.getView().store)
-
+        }
     },
 
     onEditDoneCallback: function (records, operation, success) {
         if (!success) {
-            //Ext.Error.raise({
-            //    msg: 'Updating record failed.'
-            //})
-        } else {
-            //this.getView().getById('listOfSources').reconfigure(this.store);
+            // TODO handle error
         }
     },
 

@@ -21,66 +21,47 @@ Ext.define('Savanna.process.view.ProcessEditorComponent', {
 
     controller: 'Savanna.process.controller.ProcessController',
 
-    layout: {
-        type: 'border'
-    },
+    layout: 'border',
 
-    tbar: [],
-    items: [],
-
-    overview: null,
-
-    initComponent: function() {
-        this.items = this.setupItems();
-        this.callParent(arguments);
-    },
-
-    // CUSTOM METHODS
-
-    setupItems: function() {
-        return [
-            {
-                xtype: 'panel',
-                region: 'center',
-                height: '100%',
-                layout: {
-                    type: 'absolute'
-                },
-                tbar: [
-                    {
-                        xtype: 'process_toolbar',
-                        height: 33
-                    }
-                ],
-                items:[
-                    {
-                        xtype: 'process_canvas',
-                        itemId: 'canvas',
-                        width: '100%',
-                        height: '100%'
-                    },
-                    {
-                        xtype: 'process_palettewindow',
-                        itemId: 'palette',
-                        autoShow: true,
-                        x: 15, //DI needs to position this window correctly
-                        y: 15
-                    }
-                ]
+    items: [
+        {
+            xtype: 'panel',
+            region: 'center',
+            height: '100%',
+            layout: 'absolute',
+            tbar: {
+                ui: 'thetus-toolbar',
+                xtype: 'process_toolbar',
+                height: 33
             },
-            {
-                xtype: 'process_metadata',
-                itemId: 'processSidepanel',
-                region: 'east',
-                collapsible: true,
-                headerPosition: 'left',
-                collapseMode: 'header',
-                overflowY: 'auto',
-                autoScroll: true,
-                split: true,
-                height:'100%',
-                width: '30%'
-            }
-        ];
-    }
+            items:[
+                {
+                    xtype: 'process_canvas',
+                    itemId: 'canvas',
+                    width: '100%',
+                    height: '100%'
+                },
+                {
+                    xtype: 'process_palettewindow',
+                    itemId: 'palette',
+                    autoShow: true,
+                    x: 15,
+                    y: 15
+                }
+            ]
+        },
+        {
+            xtype: 'process_metadata',
+            itemId: 'processSidepanel',
+            region: 'east',
+            collapsible: true,
+            headerPosition: 'left',
+            collapseMode: 'header',
+            overflowY: 'auto',
+            autoScroll: true,
+            split: true,
+            height:'100%',
+            width: '30%'
+        }
+    ]
 });

@@ -14,3 +14,29 @@
     text-decoration: none;
     font-size: 16px;
 }
+
+/* This should be added to UIKIT */
+.search-error{
+    &:before{
+        @include thetus-icons;
+    }
+}
+
+.close-btn {
+    @include thetus-icons;
+    
+    &:before{
+        content: 'closeRollout';
+    }
+    &:hover:before{
+        content: 'closeRollover';
+    }
+
+    &[disabled], .disabled{
+        @include opacity(0.8);
+
+        &:hover:before{
+            content: 'closeRollout';
+        }
+    }
+}

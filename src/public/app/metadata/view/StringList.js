@@ -1,70 +1,80 @@
-/**
- * Created with IntelliJ IDEA.
- * User: mfawver
- * Date: 9/26/13
- * Time: 9:32 PM
- * To change this template use File | Settings | File Templates.
- */
-
 Ext.define('Savanna.metadata.view.StringList', {
     extend: 'Savanna.metadata.view.MetadataItemView',
     alias: 'widget.metadata_stringlist',
 
-    requires: ['Ext.layout.container.Form'],
+    requires: [
+        'Ext.form.FieldContainer',
+        'Ext.layout.container.Form',
+        'Ext.form.field.Display',
+        'Ext.form.FieldSet'
+    ],
 
-    initComponent: function () {
-        this.callParent(arguments);
-        var me = this;
-
-        me.on('beforerender', Ext.bind(function() {
-            if(me.getEditable() && me.getEditMode()) {
-                me.setTitle(me.displayLabel + ':');
-            } else {
-                me.setTitle(me.displayLabel + ':');
-            }
-        }, this));
+    beforeRender: function() {
+        this.setTitle(this.getDisplayLabel() + ':');
     },
 
     makeEditViewItems: function() {
-        var me = this;
-        if (null === me.getValue()) {
-            me.setValue([]);
+
+        if(!this.getValue()) {
+            this.setValue([]);
         }
-        if (0 === me.getValue().length) {
-            me.value.push('');
+        if(!this.getValue().length) {
+            this.getValue().push('');
         }
-        
-        var stackAndAddContainer = Ext.create('Ext.form.FieldSet', {
-            itemId: 'stackandaddcontainer',
+
+        var editFieldSet = Ext.create('Ext.form.FieldSet', {
+            itemId: 'editFieldSet',
             layout: 'vbox',
             width: '100%',
             border: false
         });
+        this.createEditItems(editFieldSet);
 
-        me.createEditItems(stackAndAddContainer);
-        
-        var newItemButton = Ext.create('Ext.button.Button', {
+        var addButton = Ext.create('Ext.button.Button', {
             text: 'Add',
             cls: 'stringList-addBtn',
             listeners: {
-                click: function () {
-                    me.addNewItem();
-                }
+                click: this.addItem,
+                scope: this
             }
         });
-        me.add(stackAndAddContainer);
-        me.add(newItemButton);
+        this.add(editFieldSet);
+        this.add(addButton);
     },
 
-    createEditItems: function(stackContainer) {
+    makeViewViewItems: function() {
+        var me = this;
+
+        var contains = Ext.create('Ext.form.FieldContainer', {
+            layout: 'form',
+            itemId: 'valueContainer',
+            width: '100%',
+            border: false
+        });
+        if(null !== me.value && 0 !== me.value.length) {
+            Ext.Array.each(me.value, function(stringElement) {
+                var theLabel = Ext.create('Ext.form.field.Display', {});
+                theLabel.setValue( stringElement );
+                contains.add( theLabel );
+            });
+        }
+        me.add(contains);
+    },
+
+    addItem: function() {
+        var value = Ext.Array.clone(this.getValue());
+        value.push('');
+        this.setValue(value);
+    },
+
+    createEditItems: function(editFieldSet) {
         var me = this;
         var cloneArray = Ext.Array.clone(me.getValue());
         Ext.Array.each(cloneArray, function(stringElement, index, allItems) {
             var editAndDeleteContainer = me.makeEditAndDeleteContainer(index);
             me.makeEditAndDeleteItem(index, editAndDeleteContainer, stringElement, allItems );
-            stackContainer.add(editAndDeleteContainer);
+            editFieldSet.add(editAndDeleteContainer);
         });
-
     },
 
     makeEditAndDeleteContainer: function(index) {
@@ -78,32 +88,7 @@ Ext.define('Savanna.metadata.view.StringList', {
     },
 
     deleteItem: function(index) {
-        var cloneArray = Ext.Array.clone(this.getValue());
-        if(1 < this.getValue().length) {
-            Ext.Array.remove(cloneArray, cloneArray[index]);
-            this.setValue(cloneArray);
-        } else {
-            cloneArray[0] = '';
-            this.setValue(cloneArray);
-        }
-
-        this.clearAndRecreate();
-    },
-
-    addNewItem: function() {
-        this.value.push('');
-        this.clearAndRecreate();
-
-        var containerId = '#EandDContainer'+parseInt(this.getValue().length-1);
-        var item = this.down(containerId);
-        if(item) {
-            item.down('textfield').focus();
-        }
-    },
-
-    clearAndRecreate: function() {
-        this.down('#stackandaddcontainer').removeAll();
-        this.createEditItems(this.down('#stackandaddcontainer'));
+        this.setValue(Ext.Array.erase(Ext.Array.clone(this.getValue()), index, 1));
     },
 
     makeEditAndDeleteItem: function(index, container, stringElement, allItems) {
@@ -112,7 +97,7 @@ Ext.define('Savanna.metadata.view.StringList', {
             allowBlank: true,
             flex: 9,
             value: stringElement,
-            
+
             listeners: {
                 blur: function(d) {
                     allItems[index] = d.getValue().trim();
@@ -132,26 +117,24 @@ Ext.define('Savanna.metadata.view.StringList', {
             }
         });
         container.add(deleteButton);
-
     },
 
-    makeViewViewItems: function() {
-        var me = this;
-        
-        var contains = Ext.create('Ext.form.FieldContainer', {
-            layout: 'form',
-            width: '100%',
-            border: false
-        });
-        if(null !== me.value && 0 !== me.value.length) {
-            Ext.Array.each(me.value, function(stringElement) {
-                var theLabel = Ext.create('Ext.form.field.Display', {});
-                theLabel.setValue( stringElement );
-                contains.add( theLabel );
-            });
+    updateValue: function(newValue) {
+        var container;
+        if(this.getEditMode() && this.getEditable()) {
+            container = this.down('#editFieldSet');
+            container.removeAll();
+            this.createEditItems(container);
+        } else {
+            container = this.down('#valueContainer');
+            container.removeAll();
+            for(var i = 0; i < newValue.length; i++) {
+                var display = Ext.create('Ext.form.field.Display', {
+                    value: newValue[i]
+                });
+                container.add(display);
+            }
         }
-        me.add(contains);
-
     }
 
 });

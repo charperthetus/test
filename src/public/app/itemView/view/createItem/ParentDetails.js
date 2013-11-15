@@ -23,7 +23,6 @@ Ext.define('Savanna.itemView.view.createItem.ParentDetails', {
         'Ext.Img'
     ],
 
-    title: 'Selection',
     header: {
         xtype: 'header',
         cls: 'item-header-font',
@@ -70,9 +69,9 @@ Ext.define('Savanna.itemView.view.createItem.ParentDetails', {
                 xtype: 'panel',
                 itemId: 'parentdetails_textpanel',
                 padding:    {
-                    left:10
+                    left: 10,
+                    top: 41
                 },
-
                 tpl: Ext.create('Ext.XTemplate',
                     '<b>{label}</b><br /><br />',
                     '{description}'

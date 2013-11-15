@@ -5,11 +5,8 @@ Ext.define('Savanna.document.util.DocumentViewFactory', {
     ],
 
     getComponentForType: function(type, uri, label){
-        if (type.toLowerCase() == 'rich' || type.toLowerCase() == 'text'){
-            return Ext.create('Savanna.document.view.DocumentComponent', {
-                title: label,
-                itemUri: encodeURI(uri)
-            });
+        if (type.toLowerCase() == 'rich'){
+            window.open('resources/document/?docId=' + encodeURI(uri) + '&name=' + label, uri);
         }else {
             return null;
         }

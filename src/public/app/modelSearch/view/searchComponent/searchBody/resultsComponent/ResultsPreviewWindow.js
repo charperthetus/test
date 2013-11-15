@@ -15,6 +15,7 @@ Ext.define('Savanna.modelSearch.view.searchComponent.searchBody.resultsComponent
     floating: true,
         hideCollapseTool: true,
     closeAction: 'hide',
+    constrain: true,
     width:640,
     height:500,
     header:true,

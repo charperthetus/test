@@ -17,13 +17,21 @@ Ext.define('Savanna.itemView.model.MainItemModel', {
     fields: [
         { name: 'label'},
         { name: 'uri'},
+        { name: 'editable'},
+        { name: 'deletable'},
         { name: 'version'},
         { name: 'created'},
         { name: 'createdBy'},
         { name: 'lastModified'},
         { name: 'lastModifiedBy'},
         { name: 'kvPairGroups'},
-        { name: 'propertyGroups'}
+        { name: 'propertyGroups'},
+        { name: 'classDescription'},
+        { name: 'className'},
+        { name: 'classPrimaryImage'},
+        { name: 'classUri'},
+        { name: 'categoryLabel'},
+        { name: 'categoryUri'}
     ],
 
     associations: [

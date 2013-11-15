@@ -29,10 +29,10 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
             hideable: false, //No hide menu for a single column
             xtype: 'templatecolumn',
             tpl: new Ext.XTemplate(
-
                 '<div style="position: relative" >',
                 '<div class="resultDiv">',
-                '<div class="sourceDiv"><img src="{documentSource}"/></div>',
+                //Pulling thumbnails for this release
+//                '{[this.getImgDiv(values)]}',
                 '<div class="grid-cell-title"><strong>{title}</strong></div>',
                 '<div class="contentDiv">({composite}) - {[this.parseDate(new Date(values.publishedDate))]} - {documentFileName}<br />{previewString}</div>',
                 '</div>',
@@ -41,6 +41,11 @@ Ext.define('Savanna.search.view.searchComponent.searchBody.resultsComponent.Resu
                 {
                     parseDate: function (v) {
                         return Ext.Date.format(new Date(v), 'F d, Y');
+                    },
+                    getImgDiv: function(record){
+                        if (record.contentType === 'Image'){
+                            return '<div class="sourceDiv" ><img src="' + record.documentSource + '"/></div>';
+                        }
                     }
                 }
             )

@@ -37,7 +37,7 @@ Ext.define('Savanna.process.view.part.Canvas', {
                 itemId: 'itemTextEditor',
                 diagram: this.diagram,
                 store: Ext.create('Savanna.process.store.TypeAheadStore', {
-                    paramsObj: { pageStart: 0, pageSize: 20, alphabetical: true, type: "Item" }
+                    paramsObj: { pageStart: 0, pageSize: 20, alphabetical: false, type: "Item" }
                 })
             }
         );
@@ -50,7 +50,7 @@ Ext.define('Savanna.process.view.part.Canvas', {
                 itemId: 'actionTextEditor',
                 diagram: this.diagram,
                 store: Ext.create('Savanna.process.store.TypeAheadStore', {
-                    paramsObj: { pageStart: 0, pageSize: 20, alphabetical: true, type: "Action" }
+                    paramsObj: { pageStart: 0, pageSize: 20, alphabetical: false, type: "Action" }
                 })
             }
         );
@@ -89,5 +89,14 @@ Ext.define('Savanna.process.view.part.Canvas', {
         //mouseUpTools
         toolManager.contextMenuTool.enabled = false;
         toolManager.clickCreatingTool.enabled = false;
+        
+        
+        var gmake = go.GraphObject.make;
+        diagram.toolManager.dragSelectingTool.box =
+            gmake(go.Part,
+                { layerName: "Tool" },
+                gmake(go.Shape,
+                    { name: "SHAPE", fill: null, stroke: "#3ca8c8", strokeWidth: 2 }));
+
     }
 });

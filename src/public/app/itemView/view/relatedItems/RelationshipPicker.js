@@ -31,9 +31,11 @@ Ext.define('Savanna.itemView.view.relatedItems.RelationshipPicker', {
 
     store: 'Savanna.itemView.store.AutoCompleteStore',
 
+    constrain: true,
+
     autoShow: true,
 
-    padding: '30 30 0 30',
+    padding: '0 15 5 15',
 
     width: '100%',
 
@@ -45,7 +47,6 @@ Ext.define('Savanna.itemView.view.relatedItems.RelationshipPicker', {
         {
             xtype: 'grid',
             title: 'Available Relationships',
-            padding: '0 0 15 0',
             itemId: 'availableRelationshipGroup',
             cls:'value-picker-row',
             width: '100%',
@@ -70,13 +71,12 @@ Ext.define('Savanna.itemView.view.relatedItems.RelationshipPicker', {
 
     buttons: [
         {
-            text: 'OK',
+            text: 'Add',
             itemId: 'okBtn',
-            ui:'commit',
-            margin:'0 0 10 0'
+            ui:'commit'
         },
         {
-            text: 'cancel',
+            text: 'Cancel',
             itemId: 'cancelBtn'
         }
     ],
@@ -89,8 +89,8 @@ Ext.define('Savanna.itemView.view.relatedItems.RelationshipPicker', {
     afterRender: function () {
         this.callParent(arguments);
         this.store = Ext.create(this.store, {
-            urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/model/' + encodeURI(this.getStoreHelper().itemUri()) + '/relationships',
-            paramsObj: {pageStart:0, pageSize:100, alphabetical: true}
+            urlEndPoint: SavannaConfig.savannaUrlRoot + 'rest/model/search/typeahead',
+            paramsObj: {pageStart:0, pageSize:10, alphabetical: true, userAssertableOnly: true, type: 'Relationship'}
         });
 
         this.store.load({

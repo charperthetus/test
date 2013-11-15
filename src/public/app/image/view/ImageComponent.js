@@ -5,7 +5,7 @@ Ext.define('Savanna.image.view.ImageComponent', {
 
     requires: [
         'Savanna.image.view.part.ImageViewer',
-        'Savanna.metadata.view.Details'
+        'Savanna.metadata.view.DetailsPanel'
     ],
 
     layout: 'border',
@@ -29,10 +29,10 @@ Ext.define('Savanna.image.view.ImageComponent', {
                 src: SavannaConfig.documentUrl + imageUri + '/original'
             },
             {
-                xtype: 'metadata_details',
-                itemId: 'imageDetails',
-                itemURI: imageUri,
+                xtype: 'detailspanel',
+                itemUri: imageUri,
                 collapsible: true,
+                collapseDirection:'right',
                 region: 'east',
                 split: true,
                 width: '30%'

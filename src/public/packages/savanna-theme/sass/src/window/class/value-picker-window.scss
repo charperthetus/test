@@ -7,7 +7,7 @@
   }
   .#{$prefix}panel-header-body{
     .#{$prefix}header-text{
-      color: $dark_font;
+      color: $dark-color;
     }
   }
   .#{$prefix}panel-body{
@@ -20,9 +20,7 @@
     background:none;
     border-color:transparent;
   }
-  td, tr, table, .#{$prefix}grid-cell {
-    border-color:transparent;
-  }
+
   .#{$prefix}grid-row-selected {
     .#{$prefix}grid-td {
       border-style: $grid-row-cell-selected-border-style;

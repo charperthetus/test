@@ -13,8 +13,9 @@
 @import 'shame/ProcessEditor';
 @import 'shame/ItemViewer';
 @import 'shame/MetaData';
-@import 'shame/SearchFacets-CustomDate.scss';
+@import 'shame/SearchFacets.scss';
 @import 'shame/SearchLocationComboBox';
+@import 'shame/SearchLocationDrawPolygon';
 
 // This is needed until we get an actual divider in center of the app
 .secondPanel {

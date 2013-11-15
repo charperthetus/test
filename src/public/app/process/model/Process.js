@@ -8,11 +8,26 @@
 Ext.define('Savanna.process.model.Process', {
     extend: 'Ext.data.Model',
 
+    requires: [
+        'Savanna.itemView.model.MainItemModel'
+    ],
+
     fields: [
         { name: 'class', type: 'string' },
         { name: 'nodeKeyProperty', type: 'string' },
         { name: 'uri', type: 'string' },
+        { name: 'label'},
+        { name: 'description'},
         'nodeDataArray',
         'linkDataArray'
+    ],
+
+    associations: [
+        {
+            type: 'hasMany',
+            model: 'Savanna.itemView.model.MainItemModel',
+            name: 'nodeDataArray',
+            associationKey:'nodeDataArray'
+        }
     ]
 });

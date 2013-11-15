@@ -27,13 +27,9 @@ Ext.define('Savanna.itemView.controller.QualitiesPickerController', {
             click: 'cancelQualitySelections'
         },
         filterQualitiesField: {
-            keydown: 'filterKeydown'
-        },
-        searchQualitiesBtn: {
-            click: 'filterQualities'
-        },
-        clearQualitiesFilter: {
-            click: 'clearFilter'
+            keydown: 'filterKeydown',
+            'onsearchclick' : 'filterQualities',
+            'onclearclick' : 'clearFilter'
         }
     },
 
@@ -46,50 +42,50 @@ Ext.define('Savanna.itemView.controller.QualitiesPickerController', {
     },
 
     filterQualities: function () {
+
         this.getView().store.getProxy().extraParams.q = this.getView().queryById('filterQualitiesField').getValue();
         this.getView().store.reload();
     },
 
     clearFilter: function() {
+
         this.getView().queryById('filterQualitiesField').setValue("");
         this.getView().store.getProxy().extraParams.q = "";
         this.getView().store.reload();
     },
 
     qualityChecked: function (grid, record, item, index, e, eOpts) {
+
         if (e.target.checked) {
             // Create a new model for the store, mapping the data to fit the model
             var newQualitiesModel = this.getView().getStoreHelper().createNewModelInstance(record.data.label, record.data.uri);
 
             // Add a new model into the store
             this.getView().queryById('selectedQualitiesGroup').store.add(newQualitiesModel);
-            this.getView().getPropNameArray().push(record.data.label);
+            this.getView().queryById('selectedQualitiesGroup').reconfigure(this.getView().queryById('selectedQualitiesGroup').store);
+
         }
         else if (e.target.id === "qualityCheck") {
-            Ext.Array.remove(this.getView().getPropNameArray(), record.data.label);
 
             //remove from store
             var store = this.getView().queryById('selectedQualitiesGroup').store;
             store.remove(store.getById(record.data.label));
+
         }
     },
 
     qualityRemoved: function (grid, record, item, index, e, eOpts) {
+
         if (e.target.id === "removeSelectedQuality") {
             var me = this;
-            Ext.Array.remove(this.getView().getPropNameArray() , record.data.label);
 
             Ext.each(this.getView().store.data.items, function(value) {
-                if (Ext.Array.contains(me.getView().getPropNameArray(), value.data.label)) {
                     value.data.selected = true;
-                }
-                else {
-                    value.data.selected = false;
-                }
             });
 
             this.getView().queryById('availableQualitiesGroup').reconfigure(this.getView().store);
             grid.store.remove(grid.store.getById(record.data.label));
+            grid.store.sync();
         }
     },
 

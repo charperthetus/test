@@ -8,16 +8,34 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
 
     knownUriTypes: ['Start', 'DecisionPoint', 'ProcessModel', 'ProcessAction', 'ProcessItem', 'InternalGroup', 'MergePoint', 'ProcessLink', 'AltsGroup'],
 
+    getCanvas:function(diagram) {
+        var div = diagram.div;
+        var parent = div.parentNode;
+        return Ext.getCmp(parent.id);
+    },
+
+    getStore: function(diagram) {
+        var canvas = this.getCanvas(diagram);
+        var store = canvas.up('process_component').getController().store;
+        store.getAt(0).nodeDataArrayStore.filterOnLoad = false;
+        return store.getAt(0).nodeDataArrayStore;
+    },
+
+    getUUID: function() {
+        var uuid = Ext.data.IdGenerator.get('uuid').generate();
+        return 'x' + uuid;
+    },
+
     getURI: function(category) {
         // by convention, category names are the same as the URI type
         if (this.knownUriTypes.indexOf(category) < 0) {
             console.log('Unknown uriType in getURI: ', category);
         }
-        var uuid = Ext.data.IdGenerator.get('uuid').generate();
-        return 'x' + uuid  + '/' + category;
+        var uuid = this.getUUID();
+        return uuid + '/' + category;
      },
 
-    setRepresentsUri: function(data, classUri) {
+    setRepresentsUri: function(data, classUri, diagram) {
         if (data && (data.category === 'ProcessAction' || data.category === 'ProcessItem'))
         {
             if (!classUri) {
@@ -30,13 +48,53 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
 
             data.representsClassUri = classUri;
 
-            // make a real instance
+            var me = this;
+
             Ext.Ajax.request({
-                url: SavannaConfig.itemViewUrl + encodeURI(classUri) + '/instance;jsessionid=' + Savanna.jsessionid,
+                url: SavannaConfig.itemViewUrl + encodeURI(classUri) + ';jsessionid=' + Savanna.jsessionid,
                 method: 'GET',
                 success: function(response){
                     var message = Ext.decode(response.responseText);
-                    data.representsItemUri = message.uri;
+                    data.className = message.label;
+                    data.classUri = message.uri;
+
+                    var desc = message.propertyGroups[0].values[4].values[0];
+                    data.classDescription = desc ? desc.value: "";
+                    data.classPrimaryImage = message.propertyGroups[1].values[0].values.length > 0 ? message.propertyGroups[1].values[0].values[0].value : null;
+
+                    var store = me.getStore(diagram);
+                    var len = store.data.length;
+
+                    for (var i= 0; i<len; i++) {
+                        var storeData = store.getAt(i);
+                        if (storeData.data.uri === data.uri) {
+                            storeData.data.className = data.className;
+                            storeData.data.classUri = data.classUri;
+                            storeData.data.classDescription = data.classDescription;
+                            storeData.data.classPrimaryImage = data.classPrimaryImage;
+
+                            if (message.propertyGroups[3].values) {
+                                storeData.propertyGroupsStore.getById('Properties').valuesStore.filterOnLoad = false;
+                                storeData.propertyGroupsStore.getById('Properties').valuesStore.loadRawData(message.propertyGroups[3].values);
+
+                                Ext.each(storeData.propertyGroupsStore.getById('Properties').valuesStore.data.items, function(prop) {
+                                    Ext.each(prop.data.values, function(val) {
+                                        val.editable = false;
+                                    });
+
+                                    Ext.each(prop.valuesStore.data.items, function(valuesStoreVal) {
+                                        valuesStoreVal.data.editable = false;
+                                    });
+
+                                    storeData.propertyGroupsStore.getById('Properties').data.values.push(prop.data);
+                                });
+                            }
+
+                            break;
+                        }
+                    }
+
+                    me.getCanvas(diagram).fireEvent('itemLoaded');
                 },
                 failure: function(response){
                     console.log('Server Side Failure: ' + response.status);
@@ -44,6 +102,103 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
             });
         }
 
+    },
+
+    changeRepresentsUri: function(data, classUri, diagram) {
+        if (data && classUri && (data.category === 'ProcessAction' || data.category === 'ProcessItem')) {
+            data.representsClassUri = classUri;
+
+            if (data.category === 'ProcessItem') {
+                var me = this;
+                // make a real instance
+                Ext.Ajax.request({
+                    url: SavannaConfig.itemViewUrl + encodeURI(classUri) + ';jsessionid=' + Savanna.jsessionid,
+                    method: 'GET',
+                    success: function(response){
+                        var message = Ext.decode(response.responseText);
+                        data.className = message.label;
+                        data.classUri = message.uri;
+
+                        var desc = message.propertyGroups[0].values[4].values[0];
+                        data.classDescription = desc ? desc.value: "";
+                        data.classPrimaryImage = message.propertyGroups[1].values[0].values.length > 0 ? message.propertyGroups[1].values[0].values[0].value : null;
+
+                        var store = me.getStore(diagram);
+                        var len = store.data.length;
+
+                        for (var i= 0; i<len; i++) {
+                            var storeData = store.getAt(i);
+                            if (storeData.data.uri === data.uri) {
+                                storeData.data.className = data.className;
+                                storeData.data.classUri = data.classUri;
+                                storeData.data.classDescription = data.classDescription;
+                                storeData.data.classPrimaryImage = data.classPrimaryImage;
+
+                                var userAssertedQualities = [];
+
+                                Ext.each(storeData.propertyGroupsStore.getById('Properties').data.values, function(currentProp) {
+                                    var values = [];
+                                    Ext.each(currentProp.values, function (currentVal) {
+                                        if (currentVal.editable) {
+                                            values.push(currentVal);
+                                        }
+                                    });
+
+                                    if (values.length > 0) {
+                                        userAssertedQualities.push({label: currentProp.label, predicateUri: currentProp.predicateUri, values: values});
+                                    }
+                                });
+
+                                storeData.propertyGroupsStore.getById('Properties').valuesStore.removeAll();
+                                Ext.Array.erase(storeData.propertyGroupsStore.getById('Properties').data.values, 0, storeData.propertyGroupsStore.getById('Properties').data.values.length);
+
+                                if (message.propertyGroups[3].values) {
+                                    storeData.propertyGroupsStore.getById('Properties').valuesStore.loadRawData(message.propertyGroups[3].values);
+
+                                    Ext.each(storeData.propertyGroupsStore.getById('Properties').valuesStore.data.items, function(prop) {
+                                        Ext.each(prop.data.values, function(val) {
+                                            val.editable = false;
+                                        });
+
+                                        storeData.propertyGroupsStore.getById('Properties').data.values.push(prop.data);
+                                    });
+                                }
+
+                                if (userAssertedQualities.length > 0) {
+                                    Ext.each(userAssertedQualities, function(assertedQuality) {
+                                        if (storeData.propertyGroupsStore.getById('Properties').valuesStore.getById(assertedQuality.label)) {
+                                            //add the values to the existing quality
+                                            Ext.each(assertedQuality.values, function(assertedValue) {
+                                                if (storeData.propertyGroupsStore.getById('Properties').valuesStore.getById(assertedQuality.label).valuesStore.getById(assertedValue.label)) {
+                                                    //value exists already from inherited values
+                                                }
+                                                else {
+                                                    //add the value to the existing quality
+                                                    storeData.propertyGroupsStore.getById('Properties').valuesStore.getById(assertedQuality.label).valuesStore.add(assertedValue);
+                                                    storeData.propertyGroupsStore.getById('Properties').valuesStore.getById(assertedQuality.label).data.values.push(assertedValue);
+                                                }
+                                            });
+                                        }
+                                        else {
+                                            //just add the whole quality with values
+                                            storeData.propertyGroupsStore.getById('Properties').valuesStore.add(assertedQuality);
+                                            storeData.propertyGroupsStore.getById('Properties').data.values.push(assertedQuality);
+                                        }
+                                    });
+                                }
+
+                                break;
+                            }
+                        }
+
+                        me.getCanvas(diagram).fireEvent('itemReLoaded', i);
+                    },
+                    failure: function(response){
+                        console.log('changeRepresentsUri: Server Side Failure: ' + response.status);
+                    }
+                });
+            }
+        }
     },
 
     startTextEdit: function(diagram, nodeData) {
@@ -63,18 +218,6 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
             show = true;
         }
 
-        // never show for descendants of an Action Node
-        var parent = obj.findTreeParentNode();
-        if (parent && parent.category == 'InternalGroup') {
-            show = false;
-        }
-
-        //never show for nodes contained in an AltsGroup
-        var group = obj.containingGroup;
-        if (group && group.category == 'AltsGroup') {
-            show = false;
-        }
-
         var names = ['LinkGadget','StepGadget','DecisionGadget'];
         for (var i = 0; i < names.length; i++) {
             var gadget = obj.findObject(names[i]);
@@ -88,15 +231,18 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         var diagram = obj.diagram;
         diagram.startTransaction('addNode');
         var clickedNode = obj.part;
-        var nodeData = {'category': category, 'label': description};
+        var nodeData = this.populateDefaultNodeJson();
+        nodeData.category = category;
+        nodeData.label = description;
         nodeData.uri = this.getURI(category);
-        this.setRepresentsUri(nodeData, classUri);
+        this.setRepresentsUri(nodeData, classUri, diagram);
 
         if (clickedNode.data.group) {
             nodeData.group = clickedNode.data.group;
         }
 
         diagram.model.addNodeData(nodeData);
+        this.getStore(diagram).loadRawData(nodeData, true);
 
         var linkData = { category: linkType, from: clickedNode.data.uri, to: nodeData.uri };
         if (clickedNode.category == 'DecisionPoint') {
@@ -113,10 +259,14 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         var diagram = obj.diagram;
         diagram.startTransaction('addAlternate');
         var altsGroup = obj.part;
-        var nodeData = {category: 'ProcessItem', label: label, group: altsGroup.data.uri };
+        var nodeData = this.populateDefaultNodeJson();
+        nodeData.category = 'ProcessItem';
+        nodeData.label = label;
+        nodeData.group = altsGroup.data.uri;
         nodeData.uri = this.getURI(nodeData.category);
-        this.setRepresentsUri(nodeData, classUri);
+        this.setRepresentsUri(nodeData, classUri, diagram);
         diagram.model.addNodeData(nodeData);
+        this.getStore(diagram).loadRawData(nodeData, true);
         diagram.commitTransaction('addAlternate');
         this.startTextEdit(diagram, nodeData);
     },
@@ -130,17 +280,31 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         diagram.startTransaction('addStepPart');
         var actionGroup = obj.part;
         var stepGroup = actionGroup.containingGroup;
-        var nodeData = {category: category, label: label, group: stepGroup.data.uri, isOptional: false};
+        var nodeData = this.populateDefaultNodeJson();
+        nodeData.category = category;
+        nodeData.label = label;
+        nodeData.group = stepGroup.data.uri;
+        nodeData.isOptional = false;
         nodeData.uri = this.getURI(nodeData.category);
-        this.setRepresentsUri(nodeData, null);
+        this.setRepresentsUri(nodeData, null, diagram);
 
         diagram.model.addNodeData(nodeData);
+        this.getStore(diagram).loadRawData(nodeData, true);
 
         var linkData = {  category: linkType, from: actionGroup.data.uri, to: nodeData.uri };
         linkData.uri = this.getURI('ProcessLink');
         diagram.model.addLinkData(linkData);
         diagram.commitTransaction('addStepPart');
         this.startTextEdit(diagram, nodeData);
+        
+        var tmpObj = diagram.findNodeForData(nodeData);
+        // never show for descendants of an Action Node
+        var parent = tmpObj.findTreeParentNode();
+        if (parent && parent.category == 'InternalGroup') {  
+            if (tmpObj.findObject('gadgetsMenu') !== null){
+                tmpObj.findObject("MAIN").remove(tmpObj.findObject('gadgetsMenu'));
+            }
+        }
     },
 
     addInput: function(e, obj) {
@@ -152,7 +316,7 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
     },
 
     addByproduct: function(e, obj) {
-        this.addStepPart(obj, 'ProcessItem', 'Byproduct', 'ByproductLink');
+        this.addStepPart(obj, 'ProcessItem', 'By-product', 'ByproductLink');
     },
 
     addResult: function(e, obj) {
@@ -163,11 +327,14 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         diagram.startTransaction('addResult');
         var actionGroup = obj.part;
         var stepGroup = actionGroup.containingGroup;
-        var nodeData = {'category': category, 'label': label};
+        var nodeData = this.populateDefaultNodeJson();
+        nodeData.category = category;
+        nodeData.label = label;
         nodeData.uri = this.getURI(nodeData.category);
-        this.setRepresentsUri(nodeData, null);
+        this.setRepresentsUri(nodeData, null, diagram);
 
         diagram.model.addNodeData(nodeData);
+        this.getStore(diagram).loadRawData(nodeData, true);
 
         var linkData = {  category: linkType, from: stepGroup.data.uri, to: nodeData.uri };
         linkData.uri = this.getURI('ProcessLink');
@@ -181,10 +348,14 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         diagram.startTransaction('addAction');
 
         var actionsGroup = obj.part;
-        var nodeData = {'category': 'ProcessAction', 'label': label, 'group':actionsGroup.data.uri};
+        var nodeData = this.populateDefaultNodeJson();
+        nodeData.category = 'ProcessAction';
+        nodeData.label = label;
+        nodeData.group = actionsGroup.data.uri;
         nodeData.uri = this.getURI(nodeData.category);
-        this.setRepresentsUri(nodeData, classUri);
+        this.setRepresentsUri(nodeData, classUri, diagram);
         diagram.model.addNodeData(nodeData);
+        this.getStore(diagram).loadRawData(nodeData, true);
 
         diagram.commitTransaction('addAction');
         this.startTextEdit(diagram, nodeData);
@@ -195,18 +366,32 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         var diagram = obj.diagram;
         diagram.startTransaction('addStep');
 
-        var step = {category: 'ProcessModel', label: 'Description', isGroup: true, isSubGraphExpanded: true, isOptional: false};
+        var step = this.populateDefaultNodeJson();
+        step.category = 'ProcessModel';
+        step.label = 'Untitled Step';
+        step.isGroup = true;
+        step.isSubGraphExpanded = true;
+        step.isOptional = false;
         step.uri = this.getURI(step.category);
         diagram.model.addNodeData(step);
+        this.getStore(diagram).loadRawData(step, true);
 
-        var actionsGroup = {'category': 'InternalGroup', 'isGroup': true, 'group': step.uri};
+        var actionsGroup = this.populateDefaultNodeJson();
+        actionsGroup.category = 'InternalGroup';
+        actionsGroup.isGroup = true;
+        actionsGroup.group = step.uri;
         actionsGroup.uri = this.getURI(actionsGroup.category);
         diagram.model.addNodeData(actionsGroup);
+        this.getStore(diagram).loadRawData(actionsGroup, true);
 
-        var action = {'category': 'ProcessAction', 'label': 'Action', 'group': actionsGroup.uri};
+        var action = this.populateDefaultNodeJson();
+        action.category = 'ProcessAction';
+        action.label = 'Action';
+        action.group = actionsGroup.uri;
         action.uri = this.getURI(action.category);
-        this.setRepresentsUri(action, null);
+        this.setRepresentsUri(action, null, diagram);
         diagram.model.addNodeData(action);
+        this.getStore(diagram).loadRawData(action, true);
 
         var clickedNode = obj.part;
         var newLink = {from: clickedNode.data.uri, to: step.uri };
@@ -225,8 +410,8 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
     addMerge: function(diagram) {
         if (diagram.selection.count < 2){
             Ext.Msg.show({
-                title: 'Join Error',
-                msg: 'Select at least two item to merge.', //todo: get final wording for error
+                title: 'Link Error',
+                msg: 'You can only link Items that have no children.',
                 buttons: Ext.Msg.OK
             });
             return;
@@ -245,8 +430,8 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
 
             if (node.data.category != category) {
                 Ext.Msg.show({
-                    title: 'Join Error',
-                    msg: 'Select items that are of the same type to merge.', //todo: get final wording for error
+                    title: 'Link Error',
+                    msg: 'You can only link Items of the same type.',
                     buttons: Ext.Msg.OK
                 });
                 return;
@@ -255,8 +440,8 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
 
             if (node.containingGroup) {
                 Ext.Msg.show({
-                    title: 'Join Error',
-                    msg: 'Select items that are not inside a step to merge.', //todo: get final wording for error
+                    title: 'Link Error',
+                    msg: 'You can only link Items that are not inside a step.',
                     buttons: Ext.Msg.OK
                 });
                 return;
@@ -264,8 +449,8 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
 
             if (node.data.category == 'ProcessItem' && node.findLinksOutOf().count > 0) {
                 Ext.Msg.show({
-                    title: 'Join Error',
-                    msg: 'Select items that have no children to merge.', //todo: get final wording for error
+                    title: 'Link Error',
+                    msg: 'You can only link Items that have no children.',
                     buttons: Ext.Msg.OK
                 });
                 return;
@@ -274,9 +459,12 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
 
         diagram.startTransaction('addMerge');
 
-        var mergeNode = {'category': 'MergePoint', 'label': ''};
+        var mergeNode = this.populateDefaultNodeJson();
+        mergeNode.category = 'MergePoint';
+        mergeNode.label = '';
         mergeNode.uri = this.getURI(mergeNode.category);
         diagram.model.addNodeData(mergeNode);
+        this.getStore(diagram).loadRawData(mergeNode, true);
 
         var prevNodeNames = [];
         var outputNode;
@@ -292,9 +480,12 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
                 if (!Ext.Array.contains(prevNodeNames, nodeText)) {
                     Ext.Array.include(prevNodeNames, nodeText);
 
-                    outputNode = {'category': 'ProcessItem', 'label': nodeText};
+                    outputNode = this.populateDefaultNodeJson();
+                    outputNode.category = 'ProcessItem';
+                    outputNode.label = nodeText;
                     outputNode.uri = this.getURI(outputNode.category);
                     diagram.model.addNodeData(outputNode);
+                    this.getStore(diagram).loadRawData(outputNode, true);
 
                     var otherLink = { category: 'ProcessLink', from: mergeNode.uri, to: outputNode.uri };
                     otherLink.uri = this.getURI('ProcessLink');
@@ -330,7 +521,7 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         if (diagram.selection.count != 1){
             Ext.Msg.show({
                 title: 'Alternates Error',
-                msg: 'Select one and only one item to add alternates to.', //todo: get final wording for error
+                msg: 'You can only add alternates to one Item at a time.',
                 buttons: Ext.Msg.OK
             });
             return;
@@ -340,7 +531,7 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         if (selItem.category != 'ProcessItem') {
             Ext.Msg.show({
                 title: 'Alternates Error',
-                msg: 'Select a process item to add alternates to.', //todo: get final wording for error
+                msg: 'You can only add alternates to a selected process.',
                 buttons: Ext.Msg.OK
             });
             return;
@@ -348,12 +539,16 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
 
         diagram.startTransaction('addAlts');
 
-        var altsGroupData = {'category': 'AltsGroup', 'label': 'Alternates', 'isGroup': true};
+        var altsGroupData = this.populateDefaultNodeJson();
+        altsGroupData.category = 'AltsGroup';
+        altsGroupData.label = 'Alternates';
+        altsGroupData.isGroup = true;
         if (selItem.containingGroup) {
             altsGroupData.group = selItem.containingGroup.data.uri;
         }
         altsGroupData.uri = this.getURI(altsGroupData.category);
         diagram.model.addNodeData(altsGroupData);
+        this.getStore(diagram).loadRawData(altsGroupData, true);
 
         var altsGroup = diagram.findNodeForData(altsGroupData);
 
@@ -385,6 +580,14 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
         diagram.commitTransaction('addAlts');
 
         this.startTextEdit(diagram, altsGroupData);
+        
+        var tmpObj = diagram.findNodeForData(altsGroupData);
+        //never show for nodes contained in an AltsGroup
+        if (tmpObj && tmpObj.category == 'AltsGroup') { 
+            if (tmpObj.findObject('gadgetsMenu') !== null){
+                tmpObj.findObject("MAIN").remove(tmpObj.findObject('gadgetsMenu'));
+            }
+        } 
     },
 
     onNodeMouseDrop: function(obj, data, linkType) {
@@ -439,6 +642,77 @@ Ext.define('Savanna.process.utils.ProcessUtils', {
             }
         }
         diagram.commitTransaction('toggleOptional');
+    },
+
+    toggleExpanded: function(diagram, expand) {
+        diagram.startTransaction('toggleExpanded');
+        var iterator = diagram.nodes;
+        while ( iterator.next() ){
+            var node = iterator.value;
+            if (node instanceof go.Group) {
+                node.isSubGraphExpanded = expand;
+            }
+        }
+        diagram.commitTransaction('toggleExpanded');
+    },
+
+    populateDefaultNodeJson: function() {
+        return {
+            label: '',
+            propertyGroups: [
+                {
+                    label: 'Header',
+                    values: [
+                        {
+                            label: 'Description',
+                            values: []
+                        }
+                    ]
+                },
+                {
+                    label: 'Images',
+                    values: [
+                        {
+                            label: 'Images',
+                            values: []
+                        }
+                    ]
+                },
+                {
+                    label: 'Related Items',
+                    values: [
+                        {
+                            label: 'has role',
+                            values: []
+                        }
+                    ]
+                },
+                {
+                    label: 'Properties',
+                    values: []
+                },
+                {
+                     label: 'Annotations',
+                     values: [
+                         {
+                             label: 'Quantity',
+                             values: []
+                         }
+                     ]
+                 },
+                 {
+                      label: 'Sources',
+                      values: [
+                          {
+                              label: 'Source Document',
+                              values: []
+                          }
+                      ]
+                  }
+             ]
+
+        };
+
     }
 
 });
