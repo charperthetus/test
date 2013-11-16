@@ -27,11 +27,6 @@ Ext.define('Savanna.map.view.MapComponent', {
             hidden: true
         },
         {
-            xtype: 'map_edit_feature',
-            itemId: 'editFeatureWindow',
-            hidden: true
-        },
-        {
             xtype: 'panel',
             item: 'mapSidePanel',
             region: 'east',

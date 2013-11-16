@@ -49,11 +49,11 @@ Ext.define('Savanna.map.controller.MapController', {
 
     addFeatureEvent: function (evt) {
         var feature = evt.features[0];
-        feature.attributes = {
-            Feature_Type: this.drawToolInUse,
-            Importance: Math.floor(Math.random() * (100 - 3 + 1)) + 3,
-            Date_Created: Ext.Date.format(new Date(), 'F j, Y, g:i a')
-        };
+        feature.attributes = [
+            {field: "Feature_Type", value: this.drawToolInUse},
+            {field: "Date_Created", value: Ext.Date.format(new Date(), 'F j, Y, g:i a')},
+            {field: "Importance", value: Math.floor(Math.random() * (100 - 3 + 1)) + 3}
+        ];
         var mapCanvas = this.getOl3Map();
         var map = mapCanvas.map;
         map.removeInteraction(map.drawInteraction);
@@ -234,8 +234,8 @@ Ext.define('Savanna.map.controller.MapController', {
                 var selectedFeature = featureList[key];
                 var dataItems = [];
                 var attributes = featureList[key].attributes;
-                for (var index in attributes) {
-                    dataItems.push({'field': index, 'value': attributes[index]});
+                for (var i = 0; i < attributes.length; i++) {
+                    dataItems.push(attributes[i]);
                 }
                 var data = {'items': dataItems};
                 var columns = [

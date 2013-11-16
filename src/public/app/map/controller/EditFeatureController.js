@@ -19,12 +19,20 @@ Ext.define('Savanna.map.controller.EditFeatureController', {
     },
 
     cancelEditFeature: function () {
-        var mapComponent = this.getCancelEditFeature().up('mapcomponent');
-        var editFeaturePanel = mapComponent.down('map_edit_feature');
+        var editFeaturePanel = this.getCancelEditFeature().up('map_edit_feature');
         editFeaturePanel.destroy();
     },
 
     submitFeatureEdit: function () {
-        console.log('Shit was changed...')
+        var editFeaturePanel = this.getSubmitEditFeature().up('map_edit_feature');
+        var editStore = editFeaturePanel.getStore();
+        var attributes = [];
+        var items = editStore.data.items;
+        for (var i = 0; i < items.length; i++) {
+            attributes.push(items[i].data)
+        }
+        var feature = editFeaturePanel.currentFeature;
+        feature.attributes = attributes;
+        editFeaturePanel.destroy();
     }
 });

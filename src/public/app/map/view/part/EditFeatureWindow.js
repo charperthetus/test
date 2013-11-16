@@ -56,6 +56,10 @@ Ext.define('Savanna.map.view.part.EditFeatureWindow', {
         }
     ],
 
+    initComponent: function () {
+        this.callParent(arguments);
+    },
+
     onRender: function () {
         this.callParent(arguments);
     }

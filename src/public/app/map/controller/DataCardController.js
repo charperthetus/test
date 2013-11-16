@@ -8,6 +8,8 @@
 Ext.define('Savanna.map.controller.DataCardController', {
     extend: 'Deft.mvc.ViewController',
 
+    requires: 'Savanna.map.view.part.EditFeatureWindow',
+
     control: {
         editFeatureData: {
             click: 'editFeature'
@@ -22,36 +24,24 @@ Ext.define('Savanna.map.controller.DataCardController', {
         var mapComponent = this.getEditFeatureData().up('mapcomponent');
         EventHub.fireEvent('hideDataCard');
         var currentFeature = mapComponent.down('map_popup_datacard').currentFeature;
-        var editFeatureView = mapComponent.down('map_edit_feature');
+        var editFeatureView = Ext.create('Savanna.map.view.part.EditFeatureWindow');
         editFeatureView.show();
-        this.setUpEditWindow(currentFeature, mapComponent);
+        this.setUpEditWindow(currentFeature, editFeatureView);
     },
 
-    setUpEditWindow: function (feature, mapComponent) {
-        var editFeatureWindow = mapComponent.down('map_edit_feature');
-        var fields = [];
-        var values = [];
-        for (var key in feature.attributes) {
-            fields.push(key);
-            values.push(feature.attributes[key]);
-        }
-
-        /*
-        Set up the items object in the fieldset
-         */
+    setUpEditWindow: function (feature, editFeatureView) {
+        editFeatureView.currentFeature = feature;
         var items = [];
-        for (var i = 0; i < fields.length; i++) {
-            items.push({
-                'field': fields[i], 'value': values[i]
-            })
+        var attributes = feature.attributes;
+        for (var i = 0; i < attributes.length; i++) {
+            items.push(attributes[i]);
         }
         var data = {'items': items};
         var columns = [
             {text: 'Field Name', dataIndex: 'field', flex: 1, menuDisabled: true},
             {text: 'Value', dataIndex: 'value', flex: 1, menuDisabled: true, editor: 'textfield'}
         ];
-
-        editFeatureWindow.reconfigure(Ext.create('Ext.data.Store', {
+        var gridStore = Ext.create('Ext.data.Store', {
             fields: ['field','value'],
             data: data,
             proxy: {
@@ -60,8 +50,9 @@ Ext.define('Savanna.map.controller.DataCardController', {
                     type: 'json',
                     root: 'items'
                 }
-            }}), columns);
+            }});
 
+        editFeatureView.reconfigure(gridStore, columns);
     },
 
     removeSelectedFeature: function () {
