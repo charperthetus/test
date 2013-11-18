@@ -43,7 +43,7 @@ Ext.define('Savanna.map.view.MapComponent', {
             tbar: [
                 {
                     xtype: 'button',
-                    glyph: 61698,
+                    glyph: 'addLayer',
                     size: 24,
                     menu: {
                         items: [
