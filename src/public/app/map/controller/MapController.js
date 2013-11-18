@@ -77,19 +77,90 @@ Ext.define('Savanna.map.controller.MapController', {
 
     checkUserLayerStatus: function () {
         var mapView = this.getOl3Map();
-        if (mapView.userLayer === null) {
-            mapView.userLayer = mapView.userLayerStyle;
-            mapView.map.addLayer(mapView.userLayer);
-            mapView.userLayer.on('featureadd', function (arguments) {
+        if (!mapView.getUserLayer()) {
+            var userLayer = new ol.layer.Vector({
+                source: new ol.source.Vector({
+                }),
+                id: 'vector',
+                style: new ol.style.Style({
+                    rules: [
+                        new ol.style.Rule({
+                            filter: 'renderIntent("selected")',
+                            symbolizers: [
+                                new ol.style.Shape({
+                                    fill: new ol.style.Fill({
+                                        color: '#0099ff',
+                                        opacity: 1
+                                    }),
+                                    stroke: new ol.style.Stroke({
+                                        color: 'white',
+                                        opacity: 0.75
+                                    }),
+                                    size: 14
+                                }),
+                                new ol.style.Fill({
+                                    color: '#ffffff',
+                                    opacity: 0.5
+                                }),
+                                new ol.style.Stroke({
+                                    color: 'white',
+                                    width: 5
+                                }),
+                                new ol.style.Stroke({
+                                    color: '#0099ff',
+                                    width: 3
+                                })
+                            ]
+                        }),
+                        new ol.style.Rule({
+                            filter: 'renderIntent("temporary")',
+                            symbolizers: [
+                                new ol.style.Shape({
+                                    fill: new ol.style.Fill({
+                                        color: '#0099ff',
+                                        opacity: 1
+                                    }),
+                                    stroke: new ol.style.Stroke({
+                                        color: 'white',
+                                        opacity: 0.75
+                                    }),
+                                    size: 14,
+                                    zIndex: 1
+                                })
+                            ]
+                        })
+                    ],
+                    symbolizers: [
+                        new ol.style.Shape({
+                            fill: new ol.style.Fill({
+                                color: '#ffcc33',
+                                opacity: 1
+                            }),
+                            size: 14
+                        }),
+                        new ol.style.Fill({
+                            color: 'white',
+                            opacity: 0.2
+                        }),
+                        new ol.style.Stroke({
+                            color: '#ffcc33',
+                            width: 2
+                        })
+                    ]
+                })
+            });
+            mapView.setUserLayer(userLayer);
+            mapView.map.addLayer(userLayer);
+            userLayer.on('featureadd', function (arguments) {
                 mapView.fireEvent('userFeatureAdded', arguments)
             }, mapView);
         }
     },
 
     activateDrawPoint: function () {
-        var mapCanvas = this.getOl3Map();
-        var map = mapCanvas.map;
-        var mapComponent = mapCanvas.up('mapcomponent');
+        var mapView = this.getOl3Map();
+        var map = mapView.map;
+        var mapComponent = mapView.up('mapcomponent');
         this.hideDataCard();
         this.checkUserLayerStatus();
 
@@ -101,7 +172,7 @@ Ext.define('Savanna.map.controller.MapController', {
         /*
          need to find better way of calling userCreatedLayer
          */
-        var targetLayer = mapCanvas.userLayer;
+        var targetLayer = mapView.getUserLayer();
 
         /*
          Disable buttons while drawing feature
@@ -119,9 +190,9 @@ Ext.define('Savanna.map.controller.MapController', {
     },
 
     activateDrawLine: function () {
-        var mapCanvas = this.getOl3Map();
-        var map = mapCanvas.map;
-        var mapComponent = mapCanvas.up('mapcomponent');
+        var mapView = this.getOl3Map();
+        var map = mapView.map;
+        var mapComponent = mapView.up('mapcomponent');
         this.hideDataCard();
         this.checkUserLayerStatus();
 
@@ -133,7 +204,7 @@ Ext.define('Savanna.map.controller.MapController', {
         /*
         need to find better way of calling userCreatedLayer
          */
-        var targetLayer = mapCanvas.userLayer;
+        var targetLayer = mapView.getUserLayer();
 
         /*
         Disable buttons while drawing feature
@@ -152,9 +223,9 @@ Ext.define('Savanna.map.controller.MapController', {
     },
 
     activateDrawPolygon: function () {
-        var mapCanvas = this.getOl3Map();
-        var map = mapCanvas.map;
-        var mapComponent = mapCanvas.up('mapcomponent');
+        var mapView = this.getOl3Map();
+        var map = mapView.map;
+        var mapComponent = mapView.up('mapcomponent');
         this.hideDataCard();
         this.checkUserLayerStatus();
 
@@ -166,7 +237,7 @@ Ext.define('Savanna.map.controller.MapController', {
         /*
          need to find better way of calling userCreatedLayer
          */
-        var targetLayer = mapCanvas.userLayer;
+        var targetLayer = mapView.getUserLayer();
 
         /*
          Disable buttons while drawing feature
@@ -186,7 +257,6 @@ Ext.define('Savanna.map.controller.MapController', {
     getSelectedFeature: function (layerList) {
         var features = {};
         var selection = [];
-        var hiddens = [];
         for (var i = 0; i < layerList.length; i++) {
             if (layerList[i].featureCache_){
                 var pathToIntent = layerList[i].featureCache_.idLookup_;
@@ -194,14 +264,10 @@ Ext.define('Savanna.map.controller.MapController', {
                     if (pathToIntent[key].renderIntent_ === 'selected') {
                         selection.push(layerList[i]);
                     }
-                    if (pathToIntent[key].renderIntent_ === 'hidden'){
-                        hiddens.push(layerList[i]);
-                    }
                 }
             }
         }
         features.selected = selection;
-        features.hidden = hiddens;
         return features
     },
 
@@ -224,8 +290,8 @@ Ext.define('Savanna.map.controller.MapController', {
 
     removeSelectedFeature: function () {
         var mapComponent = this.getAddPointWindow().up('mapcomponent');
-        var map = mapComponent.down('ol3mapcomponent').map;
-        var userVectorLayer = map.getLayers().array_[1];
+        var mapView = mapComponent.down('ol3mapcomponent');
+        var userVectorLayer = mapView.getUserLayer();
         var features = userVectorLayer.featureCache_.idLookup_;
         for (var key in features) {
             if (features[key].renderIntent_ === 'selected') {
