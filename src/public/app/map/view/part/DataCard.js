@@ -13,24 +13,18 @@ Ext.define('Savanna.map.view.part.DataCard', {
 
     controller: 'Savanna.map.controller.DataCardController',
 
-//    requires: 'Savanna.map.view.part.DataCardGrid',
-
     height: 175,
     width: 375,
     style: {
         'overflow': "visible"
     },
     columns: [],
-    layout: 'vbox',
+    layout: 'fit',
     autoScroll: true,
     sortableColumns: false,
     floating: true,
     toFrontOnShow: false,
     hidden: true,
-//    defaults: {
-//        // applied to each contained panel
-//        border: false
-//    },
 
     bbar: [
         {
