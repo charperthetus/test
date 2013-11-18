@@ -2,7 +2,7 @@ Ext.define('Savanna.map.controller.MapController', {
     extend: 'Deft.mvc.ViewController',
 
     requires: [
-        'Savanna.map.view.part.EditFeatureWindow'
+        'Savanna.map.view.part.EditFeature'
     ],
 
     dataCardState: {
@@ -75,11 +75,23 @@ Ext.define('Savanna.map.controller.MapController', {
         this.drawToolInUse = 'none';
     },
 
+    checkUserLayerStatus: function () {
+        var mapView = this.getOl3Map();
+        if (mapView.userLayer === null) {
+            mapView.userLayer = mapView.userLayerStyle;
+            mapView.map.addLayer(mapView.userLayer);
+            mapView.userLayer.on('featureadd', function (arguments) {
+                mapView.fireEvent('userFeatureAdded', arguments)
+            }, mapView);
+        }
+    },
+
     activateDrawPoint: function () {
         var mapCanvas = this.getOl3Map();
         var map = mapCanvas.map;
         var mapComponent = mapCanvas.up('mapcomponent');
         this.hideDataCard();
+        this.checkUserLayerStatus();
 
         /*
          Remove the select interaction from the map while feature is being drawn
@@ -89,7 +101,7 @@ Ext.define('Savanna.map.controller.MapController', {
         /*
          need to find better way of calling userCreatedLayer
          */
-        var targetLayer = map.getLayers().array_[1];
+        var targetLayer = mapCanvas.userLayer;
 
         /*
          Disable buttons while drawing feature
@@ -111,6 +123,7 @@ Ext.define('Savanna.map.controller.MapController', {
         var map = mapCanvas.map;
         var mapComponent = mapCanvas.up('mapcomponent');
         this.hideDataCard();
+        this.checkUserLayerStatus();
 
         /*
         Remove the select interaction from the map while feature is being drawn
@@ -120,7 +133,7 @@ Ext.define('Savanna.map.controller.MapController', {
         /*
         need to find better way of calling userCreatedLayer
          */
-        var targetLayer = map.getLayers().array_[1];
+        var targetLayer = mapCanvas.userLayer;
 
         /*
         Disable buttons while drawing feature
@@ -143,6 +156,7 @@ Ext.define('Savanna.map.controller.MapController', {
         var map = mapCanvas.map;
         var mapComponent = mapCanvas.up('mapcomponent');
         this.hideDataCard();
+        this.checkUserLayerStatus();
 
         /*
          Remove the select interaction from the map while feature is being drawn
@@ -152,7 +166,7 @@ Ext.define('Savanna.map.controller.MapController', {
         /*
          need to find better way of calling userCreatedLayer
          */
-        var targetLayer = map.getLayers().array_[1];
+        var targetLayer = mapCanvas.userLayer;
 
         /*
          Disable buttons while drawing feature

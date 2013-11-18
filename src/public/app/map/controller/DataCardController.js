@@ -8,7 +8,7 @@
 Ext.define('Savanna.map.controller.DataCardController', {
     extend: 'Deft.mvc.ViewController',
 
-    requires: 'Savanna.map.view.part.EditFeatureWindow',
+    requires: 'Savanna.map.view.part.EditFeature',
 
     control: {
         editFeatureData: {
@@ -27,7 +27,7 @@ Ext.define('Savanna.map.controller.DataCardController', {
         if (mapComponent.down('map_edit_feature') != null) {
             mapComponent.down('map_edit_feature').destroy();
         }
-        var editFeatureView = Ext.create('Savanna.map.view.part.EditFeatureWindow');
+        var editFeatureView = Ext.create('Savanna.map.view.part.EditFeature');
         var featureDetailsView = mapComponent.down('#featureDetailsView');
         featureDetailsView.add(editFeatureView);
         editFeatureView.show();

@@ -5,7 +5,7 @@
  * Time: 9:04 AM
  * To change this template use File | Settings | File Templates.
  */
-Ext.define('Savanna.map.view.part.EditFeatureWindow', {
+Ext.define('Savanna.map.view.part.EditFeature', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.map_edit_feature',
 

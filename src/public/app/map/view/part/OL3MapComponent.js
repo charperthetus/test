@@ -10,84 +10,82 @@ Ext.define('Savanna.map.view.part.OL3MapComponent', {
         map: null
     },
 
+    userLayer: null,
+
+    userLayerStyle: new ol.layer.Vector({
+        source: new ol.source.Vector({
+        }),
+        id: 'vector',
+        style: new ol.style.Style({
+            rules: [
+                new ol.style.Rule({
+                    filter: 'renderIntent("selected")',
+                    symbolizers: [
+                        new ol.style.Shape({
+                            fill: new ol.style.Fill({
+                                color: '#0099ff',
+                                opacity: 1
+                            }),
+                            stroke: new ol.style.Stroke({
+                                color: 'white',
+                                opacity: 0.75
+                            }),
+                            size: 14
+                        }),
+                        new ol.style.Fill({
+                            color: '#ffffff',
+                            opacity: 0.5
+                        }),
+                        new ol.style.Stroke({
+                            color: 'white',
+                            width: 5
+                        }),
+                        new ol.style.Stroke({
+                            color: '#0099ff',
+                            width: 3
+                        })
+                    ]
+                }),
+                new ol.style.Rule({
+                    filter: 'renderIntent("temporary")',
+                    symbolizers: [
+                        new ol.style.Shape({
+                            fill: new ol.style.Fill({
+                                color: '#0099ff',
+                                opacity: 1
+                            }),
+                            stroke: new ol.style.Stroke({
+                                color: 'white',
+                                opacity: 0.75
+                            }),
+                            size: 14,
+                            zIndex: 1
+                        })
+                    ]
+                })
+            ],
+            symbolizers: [
+                new ol.style.Shape({
+                    fill: new ol.style.Fill({
+                        color: '#ffcc33',
+                        opacity: 1
+                    }),
+                    size: 14
+                }),
+                new ol.style.Fill({
+                    color: 'white',
+                    opacity: 0.2
+                }),
+                new ol.style.Stroke({
+                    color: '#ffcc33',
+                    width: 2
+                })
+            ]
+        })
+    }),
+
     onRender: function() {
         var element;
-
-        /*
-        Create user Vector default style rules
-         */
-
-        var userVectorLayer = new ol.layer.Vector({
-            source: new ol.source.Vector({
-            }),
-            id: 'vector',
-            style: new ol.style.Style({
-                rules: [
-                    new ol.style.Rule({
-                        filter: 'renderIntent("selected")',
-                        symbolizers: [
-                            new ol.style.Shape({
-                                fill: new ol.style.Fill({
-                                    color: '#0099ff',
-                                    opacity: 1
-                                }),
-                                stroke: new ol.style.Stroke({
-                                    color: 'white',
-                                    opacity: 0.75
-                                }),
-                                size: 14
-                            }),
-                            new ol.style.Fill({
-                                color: '#ffffff',
-                                opacity: 0.5
-                            }),
-                            new ol.style.Stroke({
-                                color: 'white',
-                                width: 5
-                            }),
-                            new ol.style.Stroke({
-                                color: '#0099ff',
-                                width: 3
-                            })
-                        ]
-                    }),
-                    new ol.style.Rule({
-                        filter: 'renderIntent("temporary")',
-                        symbolizers: [
-                            new ol.style.Shape({
-                                fill: new ol.style.Fill({
-                                    color: '#0099ff',
-                                    opacity: 1
-                                }),
-                                stroke: new ol.style.Stroke({
-                                    color: 'white',
-                                    opacity: 0.75
-                                }),
-                                size: 14,
-                                zIndex: 1
-                            })
-                        ]
-                    })
-                ],
-                symbolizers: [
-                    new ol.style.Shape({
-                        fill: new ol.style.Fill({
-                            color: '#ffcc33',
-                            opacity: 1
-                        }),
-                        size: 14
-                    }),
-                    new ol.style.Fill({
-                        color: 'white',
-                        opacity: 0.2
-                    }),
-                    new ol.style.Stroke({
-                        color: '#ffcc33',
-                        width: 2
-                    })
-                ]
-            })
-        });
 
         this.callParent(arguments);
 
@@ -101,8 +99,7 @@ Ext.define('Savanna.map.view.part.OL3MapComponent', {
             layers: [
                 new ol.layer.Tile({
                     source: new ol.source.MapQuestOpenAerial()
-                }), userVectorLayer
-            ],
+                })],
             renderer: ol.RendererHint.CANVAS
         });
 
@@ -125,10 +122,6 @@ Ext.define('Savanna.map.view.part.OL3MapComponent', {
         this.map.on('singleclick', function(evt) {
             this.event = evt;
             task.delay(50, null, this);
-        }, this);
-
-        userVectorLayer.on('featureadd', function (arguments) {
-            this.fireEvent('userFeatureAdded', arguments)
         }, this);
 
         /*
