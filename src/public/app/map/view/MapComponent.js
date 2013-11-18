@@ -64,26 +64,6 @@ Ext.define('Savanna.map.view.MapComponent', {
                 }
             ],
 
-//            tbar: [
-//                {
-//                    xtype: 'button',
-//                    itemId: 'addPointFeature',
-//                    text: 'Add Point Feature'
-//                },
-//                '-',
-//                {
-//                    xtype: 'button',
-//                    itemId: 'drawLineFeature',
-//                    text: 'Add Line Feature'
-//                },
-//                '-',
-//                {
-//                    xtype: 'button',
-//                    itemId: 'drawPolygonFeature',
-//                    text: 'Add Polygon Feature'
-//                }
-//            ],
-
             items: [
                 {
                     xtype: 'panel',
@@ -96,11 +76,5 @@ Ext.define('Savanna.map.view.MapComponent', {
                 }
             ]
         }
-    ]/*,
-
-    listeners: {
-        afterrender: function () {
-            this.down('#featureDetailsView').collapse();
-        }
-    }*/
+    ]
 });
