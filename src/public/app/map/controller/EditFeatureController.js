@@ -19,8 +19,9 @@ Ext.define('Savanna.map.controller.EditFeatureController', {
     },
 
     cancelEditFeature: function () {
-        var editFeaturePanel = this.getCancelEditFeature().up('map_edit_feature');
-        editFeaturePanel.destroy();
+        this.getCancelEditFeature().up('#featureDetailsView').collapse();
+        this.getCancelEditFeature().up('map_edit_feature').destroy();
+        EventHub.fireEvent('unselectFeature');
     },
 
     submitFeatureEdit: function () {
@@ -33,6 +34,8 @@ Ext.define('Savanna.map.controller.EditFeatureController', {
         }
         var feature = editFeaturePanel.currentFeature;
         feature.attributes = attributes;
+        this.getSubmitEditFeature().up('#featureDetailsView').collapse();
         editFeaturePanel.destroy();
+        EventHub.fireEvent('unselectFeature');
     }
 });

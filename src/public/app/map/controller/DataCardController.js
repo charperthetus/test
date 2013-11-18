@@ -22,11 +22,17 @@ Ext.define('Savanna.map.controller.DataCardController', {
 
     editFeature: function () {
         var mapComponent = this.getEditFeatureData().up('mapcomponent');
-        EventHub.fireEvent('hideDataCard');
+        mapComponent.down('map_popup_datacard').hide();
         var currentFeature = mapComponent.down('map_popup_datacard').currentFeature;
+        if (mapComponent.down('map_edit_feature') != null) {
+            mapComponent.down('map_edit_feature').destroy();
+        }
         var editFeatureView = Ext.create('Savanna.map.view.part.EditFeatureWindow');
+        var featureDetailsView = mapComponent.down('#featureDetailsView');
+        featureDetailsView.add(editFeatureView);
         editFeatureView.show();
         this.setUpEditWindow(currentFeature, editFeatureView);
+        featureDetailsView.expand();
     },
 
     setUpEditWindow: function (feature, editFeatureView) {
@@ -67,5 +73,4 @@ Ext.define('Savanna.map.controller.DataCardController', {
         }
         EventHub.fireEvent('hideDataCard', arguments);
     }
-
 });

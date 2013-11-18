@@ -16,13 +16,9 @@ Ext.define('Savanna.map.view.part.EditFeatureWindow', {
 
 
     controller: 'Savanna.map.controller.EditFeatureController',
-
-//    layout: 'vbox',
-    height: 400,
-    width: 250,
+    minHeight: 200,
     autoScroll: true,
     sortableColumns: false,
-    floating: true,
     toFrontOnShow: false,
     draggable: true,
     hidden: true,
@@ -39,7 +35,8 @@ Ext.define('Savanna.map.view.part.EditFeatureWindow', {
     })],
 
     header: {
-        title: 'Edit Feature'
+        title: 'Edit Feature',
+        ui:'off-white'
     },
 
     bbar: [

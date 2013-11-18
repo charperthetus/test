@@ -39,11 +39,13 @@ Ext.define('Savanna.map.controller.MapController', {
 
     init: function() {
         EventHub.on('hideDataCard', this.hideDataCard, this);
+        EventHub.on('unselectFeature', this.unselectFeature, this);
         this.callParent(arguments);
     },
 
     destroy: function() {
         EventHub.un('hideDataCard', this.hideDataCard, this);
+        EventHub.un('unselectFeature', this.unselectFeature, this);
         this.callParent(arguments);
     },
 
@@ -52,6 +54,8 @@ Ext.define('Savanna.map.controller.MapController', {
         feature.attributes = [
             {field: "Feature_Type", value: this.drawToolInUse},
             {field: "Date_Created", value: Ext.Date.format(new Date(), 'F j, Y, g:i a')},
+            {field: "Title", value: 'None'},
+            {field: "Location_Description", value: 'None'},
             {field: "Importance", value: Math.floor(Math.random() * (100 - 3 + 1)) + 3}
         ];
         var mapCanvas = this.getOl3Map();
@@ -327,13 +331,13 @@ Ext.define('Savanna.map.controller.MapController', {
         var mapComponent = this.getOl3Map().up('mapcomponent');
         var dataCard = mapComponent.down('#featureDataCard');
         if (dataCard.hidden === false && this.dataCardState.type === 'in-place'){
-            this.unselectFeature(mapComponent);
+            this.unselectFeature();
         }
         dataCard.hide();
     },
 
-    unselectFeature: function (mapComponent) {
-        var map = mapComponent.down('ol3mapcomponent').map;
+    unselectFeature: function () {
+        var map = this.getOl3Map().up('mapcomponent').down('ol3mapcomponent').map;
         var layerList = map.getLayers().array_;
         for (var i = 0; i < layerList.length; i++) {
             if (layerList[i].featureCache_){

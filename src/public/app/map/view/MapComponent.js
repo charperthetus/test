@@ -39,31 +39,68 @@ Ext.define('Savanna.map.view.MapComponent', {
             collapseMode : 'header',
             headerPosition: 'left',
             collapsedCls : 'light-blue',
+
             tbar: [
                 {
                     xtype: 'button',
-                    itemId: 'addPointFeature',
-                    text: 'Add Point Feature'
-                },
-                '-',
-                {
-                    xtype: 'button',
-                    itemId: 'drawLineFeature',
-                    text: 'Add Line Feature'
-                },
-                '-',
-                {
-                    xtype: 'button',
-                    itemId: 'drawPolygonFeature',
-                    text: 'Add Polygon Feature'
+                    glyph: 61698,
+                    size: 24,
+                    menu: {
+                        items: [
+                            {
+                                itemId: 'addPointFeature',
+                                text: 'Add Point Feature'
+                            },
+                            {
+                                itemId: 'drawLineFeature',
+                                text: 'Add Line Feature'
+                            },
+                            {
+                                itemId: 'drawPolygonFeature',
+                                text: 'Add Polygon Feature'
+                            }
+                        ]
+                    }
                 }
             ],
 
+//            tbar: [
+//                {
+//                    xtype: 'button',
+//                    itemId: 'addPointFeature',
+//                    text: 'Add Point Feature'
+//                },
+//                '-',
+//                {
+//                    xtype: 'button',
+//                    itemId: 'drawLineFeature',
+//                    text: 'Add Line Feature'
+//                },
+//                '-',
+//                {
+//                    xtype: 'button',
+//                    itemId: 'drawPolygonFeature',
+//                    text: 'Add Polygon Feature'
+//                }
+//            ],
+
             items: [
+                {
+                    xtype: 'panel',
+                    itemId: 'featureDetailsView',
+                    title: 'Feature View',
+                    collapsible: true
+                },
                 {
                     xtype: 'informationpanel'
                 }
             ]
         }
-    ]
+    ]/*,
+
+    listeners: {
+        afterrender: function () {
+            this.down('#featureDetailsView').collapse();
+        }
+    }*/
 });

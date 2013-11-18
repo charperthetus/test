@@ -49,17 +49,18 @@ Ext.define('Savanna.map.view.part.OL3MapComponent', {
                     filter: 'renderIntent("selected")',
                     symbolizers: [
                         new ol.style.Fill({
-                            color: '#ffffff',
-                            opacity: 0.5
+                            color: '#FF0000',
+                            opacity: 0.4
                         }),
                         new ol.style.Shape({
                             size: 20,
                             fill: new ol.style.Fill({
-                                color: 'white',
-                                opacity: 0.5
+                                color: '#FF0000',
+                                opacity: 0.4
                             }),
                             stroke: new ol.style.Stroke({
                                 color: '#319FD3',
+                                size: 3,
                                 opacity: 1
                             })
                         })
