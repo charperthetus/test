@@ -4,7 +4,8 @@ Ext.define('Savanna.map.view.part.OL3MapComponent', {
 
     config: {
         map: null,
-        userLayer: null
+        userLayer: null,
+        currentSelection: null
     },
 
     onRender: function() {
@@ -32,10 +33,6 @@ Ext.define('Savanna.map.view.part.OL3MapComponent', {
 
         this.map.on('dragstart', function(evt) {
             this.fireEvent('dragStart', evt);
-        }, this);
-
-        this.map.on('dragend', function (evt){
-            this.fireEvent('dragEnd', evt);
         }, this);
 
         var task = new Ext.util.DelayedTask(function(){

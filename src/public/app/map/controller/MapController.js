@@ -5,22 +5,13 @@ Ext.define('Savanna.map.controller.MapController', {
         'Savanna.map.view.part.EditFeature'
     ],
 
-    dataCardState: {
-        type: 'in-place',
-        lastX: 0,
-        lastY: 0,
-        featureX: 0,
-        featureY: 0
-    },
-
     drawToolInUse: 'none',
 
     control: {
         ol3Map: {
             resize: 'updateMapSize',
             clickEvent: 'clickEvent',
-            dragStart: 'dragStart',
-            dragEnd: 'checkDataCardState',
+            dragStart: 'hideDataCard',
             userFeatureAdded: 'addFeatureEvent'
         },
 
@@ -255,7 +246,6 @@ Ext.define('Savanna.map.controller.MapController', {
     },
 
     getSelectedFeature: function (layerList) {
-        var features = {};
         var selection = [];
         for (var i = 0; i < layerList.length; i++) {
             if (layerList[i].featureCache_){
@@ -267,22 +257,22 @@ Ext.define('Savanna.map.controller.MapController', {
                 }
             }
         }
-        features.selected = selection;
-        return features
+        this.getOl3Map().setCurrentSelection(selection);
     },
 
     clickEvent: function (evt) {
         var mapComponent = this.getOl3Map().up('mapcomponent');
         var map = mapComponent.down('ol3mapcomponent').map;
-        var features;
         var layersQuery = map.getLayers().array_;
-        features = this.getSelectedFeature(layersQuery);
-        if (features.selected.length === 1) {
-            this.displayDataCard(features.selected[0], evt, mapComponent);
+        this.getSelectedFeature(layersQuery);
+        var features = mapComponent.down('ol3mapcomponent').getCurrentSelection();
+        if (features.length === 1) {
+            this.displayDataCard(features[0], evt, mapComponent);
         } else {
             this.hideDataCard();
         }
     },
+
 
     updateMapSize: function() {
         this.getOl3Map().getMap().updateSize();
@@ -343,9 +333,6 @@ Ext.define('Savanna.map.controller.MapController', {
 
     position: function(dataCard, mapComponent, pixel) {
         //define the position that the popup window and assign class to popup anchor
-        this.dataCardState.featureX = pixel[0];
-        this.dataCardState.featureY = pixel[1];
-
         var dom = Ext.dom.Query.select('.popUpAnchor');
         var dataCardAnchor = Ext.get(dom[0]);
         dataCardAnchor.removeCls("top left right bottom");
@@ -396,51 +383,23 @@ Ext.define('Savanna.map.controller.MapController', {
         dataCardAnchor.setLeftTop(ancLeft, ancTop);
     },
 
-    dragStart: function (evt) {
-        var mapComponent = this.getOl3Map().up('mapcomponent');
-        var dataCard = mapComponent.down('#featureDataCard');
-        this.dataCardState.lastX = evt.browserEvent.offsetX;
-        this.dataCardState.lastY = evt.browserEvent.offsetY;
-        if (dataCard.hidden === false){
-            this.dataCardState.type = 'on-move'
-        }
-        this.hideDataCard();
-    },
-
     hideDataCard: function () {
         var mapComponent = this.getOl3Map().up('mapcomponent');
         var dataCard = mapComponent.down('#featureDataCard');
-        if (dataCard.hidden === false && this.dataCardState.type === 'in-place'){
-            this.unselectFeature();
-        }
         dataCard.hide();
     },
 
     unselectFeature: function () {
-        var map = this.getOl3Map().up('mapcomponent').down('ol3mapcomponent').map;
-        var layerList = map.getLayers().array_;
-        for (var i = 0; i < layerList.length; i++) {
-            if (layerList[i].featureCache_){
-                var pathToIntent = layerList[i].featureCache_.idLookup_;
+        var selection = this.getOl3Map().getCurrentSelection();
+        for (var i = 0; i < selection.length; i++) {
+            if (selection[i].featureCache_){
+                var pathToIntent = selection[i].featureCache_.idLookup_;
                 for (var key in pathToIntent) {
                     if (pathToIntent[key].renderIntent_ === 'selected'){
                         pathToIntent[key].setRenderIntent('default');
                     }
                 }
             }
-        }
-    },
-
-    checkDataCardState: function (evt) {
-        var mapComponent = this.getOl3Map().up('mapcomponent');
-        var dataCard = mapComponent.down('#featureDataCard');
-        var moveX = this.dataCardState.lastX - evt.browserEvent.offsetX;
-        var moveY = this.dataCardState.lastY - evt.browserEvent.offsetY;
-        var pixel = [(this.dataCardState.featureX - moveX), (this.dataCardState.featureY - moveY)];
-        if (this.dataCardState.type === 'on-move') {
-            this.position(dataCard, mapComponent, pixel);
-            dataCard.show();
-            this.dataCardState.type = 'in-place';
         }
     }
 });

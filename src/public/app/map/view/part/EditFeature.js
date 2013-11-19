@@ -20,7 +20,6 @@ Ext.define('Savanna.map.view.part.EditFeature', {
     autoScroll: true,
     sortableColumns: false,
     toFrontOnShow: false,
-    draggable: true,
     hidden: true,
 
     style: {
