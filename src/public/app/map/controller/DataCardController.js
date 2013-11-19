@@ -23,7 +23,7 @@ Ext.define('Savanna.map.controller.DataCardController', {
     editFeature: function () {
         var mapComponent = this.getEditFeatureData().up('mapcomponent');
         mapComponent.down('map_popup_datacard').hide();
-        var currentFeature = mapComponent.down('map_popup_datacard').currentFeature;
+        var currentFeature = mapComponent.down('map_popup_datacard').getCurrentFeature();
         if (mapComponent.down('map_edit_feature') != null) {
             mapComponent.down('map_edit_feature').destroy();
         }
@@ -36,7 +36,6 @@ Ext.define('Savanna.map.controller.DataCardController', {
     },
 
     setUpEditWindow: function (feature, editFeatureView) {
-        editFeatureView.currentFeature = feature;
         var items = [];
         var attributes = feature.attributes;
         for (var i = 0; i < attributes.length; i++) {
@@ -63,14 +62,10 @@ Ext.define('Savanna.map.controller.DataCardController', {
 
     removeSelectedFeature: function () {
         var mapComponent = this.getEditFeatureData().up('mapcomponent');
-        var map = mapComponent.down('ol3mapcomponent').map;
-        var userVectorLayer = map.getLayers().array_[1];
-        var features = userVectorLayer.featureCache_.idLookup_;
-        for (var key in features) {
-            if (features[key].renderIntent_ === 'selected') {
-                userVectorLayer.removeFeatures([features[key]]);
-            }
-        }
+        var mapView = mapComponent.down('ol3mapcomponent');
+        var userVectorLayer = mapView.getUserLayer();
+        var feature = mapComponent.down('map_popup_datacard').getCurrentFeature()
+        userVectorLayer.removeFeatures([feature]);
         EventHub.fireEvent('hideDataCard', arguments);
     }
 });

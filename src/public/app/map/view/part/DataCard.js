@@ -13,6 +13,10 @@ Ext.define('Savanna.map.view.part.DataCard', {
 
     controller: 'Savanna.map.controller.DataCardController',
 
+    config: {
+        currentFeature: null
+    },
+
     height: 175,
     width: 375,
     style: {

@@ -32,7 +32,7 @@ Ext.define('Savanna.map.controller.EditFeatureController', {
         for (var i = 0; i < items.length; i++) {
             attributes.push(items[i].data)
         }
-        var feature = editFeaturePanel.currentFeature;
+        var feature = this.getSubmitEditFeature().up('mapcomponent').down('map_popup_datacard').getCurrentFeature();
         feature.attributes = attributes;
         this.getSubmitEditFeature().up('#featureDetailsView').collapse();
         editFeaturePanel.destroy();

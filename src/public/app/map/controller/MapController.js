@@ -338,7 +338,7 @@ Ext.define('Savanna.map.controller.MapController', {
                     }}), columns);
             }
         }
-        dataCardGrid.currentFeature = selectedFeature;
+        dataCardGrid.setCurrentFeature(selectedFeature);
     },
 
     position: function(dataCard, mapComponent, pixel) {
