@@ -6,13 +6,16 @@ Ext.define('Savanna.map.controller.MapController', {
     ],
 
     drawToolInUse: 'none',
+    identifyTool: 'disabled',
+    modifyTool: 'disabled',
 
     control: {
         ol3Map: {
             resize: 'updateMapSize',
             clickEvent: 'clickEvent',
             dragStart: 'hideDataCard',
-            userFeatureAdded: 'addFeatureEvent'
+            userFeatureAdded: 'addFeatureEvent',
+            zoomEvent: 'hideDataCard'
         },
 
         addPointFeature: {
@@ -25,6 +28,14 @@ Ext.define('Savanna.map.controller.MapController', {
 
         drawPolygonFeature: {
             click: 'activateDrawPolygon'
+        },
+
+        identifyFeature: {
+            click: 'activateIdentify'
+        },
+
+        modifyFeatureTool: {
+            click: 'activateModifyTool'
         }
     },
 
@@ -109,6 +120,23 @@ Ext.define('Savanna.map.controller.MapController', {
                                 new ol.style.Shape({
                                     fill: new ol.style.Fill({
                                         color: '#0099ff',
+                                        opacity: 1
+                                    }),
+                                    stroke: new ol.style.Stroke({
+                                        color: 'white',
+                                        opacity: 0.75
+                                    }),
+                                    size: 14,
+                                    zIndex: 1
+                                })
+                            ]
+                        }),
+                        new ol.style.Rule({
+                            filter: 'renderIntent("future")',
+                            symbolizers: [
+                                new ol.style.Shape({
+                                    fill: new ol.style.Fill({
+                                        color: '#00ff33',
                                         opacity: 1
                                     }),
                                     stroke: new ol.style.Stroke({
@@ -266,10 +294,24 @@ Ext.define('Savanna.map.controller.MapController', {
         var layersQuery = map.getLayers().array_;
         this.getSelectedFeature(layersQuery);
         var features = mapComponent.down('ol3mapcomponent').getCurrentSelection();
-        if (features.length === 1) {
+        if (features.length === 1 && this.identifyTool === 'active') {
             this.displayDataCard(features[0], evt, mapComponent);
+            this.getIdentifyFeature().enable();
+            this.getModifyFeatureTool().enable();
+            this.identifyTool = 'disabled';
+        } else if (features.length === 1 && this.modifyTool === 'active'){
+            this.hideDataCard();
+            this.handleModifyInteraction();
         } else {
             this.hideDataCard();
+            if (this.getOl3Map().map.modifyInteraction != null) {
+                this.getOl3Map().map.removeInteraction(this.getOl3Map().map.modifyInteraction);
+                this.getOl3Map().map.modifyInteraction = null;
+            }
+            this.getIdentifyFeature().enable();
+            this.getModifyFeatureTool().enable();
+            this.modifyTool = 'disabled';
+            this.identifyTool = 'disabled';
         }
     },
 
@@ -401,5 +443,27 @@ Ext.define('Savanna.map.controller.MapController', {
                 }
             }
         }
+    },
+
+    activateIdentify: function () {
+        this.getIdentifyFeature().disable();
+        this.getModifyFeatureTool().disable();
+        this.identifyTool = 'active';
+    },
+
+    activateModifyTool: function () {
+        this.getModifyFeatureTool().disable();
+        this.getIdentifyFeature().disable();
+        this.modifyTool = 'active';
+    },
+
+    handleModifyInteraction: function () {
+        var map = this.getOl3Map().map;
+        var Layers = map.getLayers().array_;
+        map.modifyInteraction = new ol.interaction.Modify({
+            layers: Layers
+        });
+        map.addInteraction(map.modifyInteraction);
+        this.modifyTool = 'disabled';
     }
 });

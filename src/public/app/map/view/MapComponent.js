@@ -61,6 +61,16 @@ Ext.define('Savanna.map.view.MapComponent', {
                             }
                         ]
                     }
+                },
+                {
+                    xtype: 'button',
+                    itemId: 'identifyFeature',
+                    text: 'Identify'
+                },
+                {
+                    xtype: 'button',
+                    itemId: 'modifyFeatureTool',
+                    text: 'Modify'
                 }
             ],
 

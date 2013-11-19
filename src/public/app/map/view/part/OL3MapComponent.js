@@ -30,6 +30,9 @@ Ext.define('Savanna.map.view.part.OL3MapComponent', {
         /*
         Map Events
          */
+        this.map.on('moveend', function (evt){
+            this.fireEvent('zoomEvent', evt);
+        }, this);
 
         this.map.on('dragstart', function(evt) {
             this.fireEvent('dragStart', evt);
