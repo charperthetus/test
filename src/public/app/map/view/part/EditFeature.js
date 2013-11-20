@@ -14,6 +14,10 @@ Ext.define('Savanna.map.view.part.EditFeature', {
         'Ext.grid.plugin.RowEditing'
     ],
 
+    config: {
+        currentIndex: 0
+    },
+
 
     controller: 'Savanna.map.controller.EditFeatureController',
     minHeight: 200,
@@ -33,16 +37,28 @@ Ext.define('Savanna.map.view.part.EditFeature', {
         clicksToEdit: 1
     })],
 
-    header: {
-        title: 'Edit Feature',
-        ui:'off-white'
-    },
+    tbar: [
+        {
+            xtype: 'button',
+            itemId: 'previousFeature',
+            text: '<',
+            direction: 'prev',
+            disabled: true
+        },
+        '->',
+        {
+            xtype: 'button',
+            itemId: 'nextFeature',
+            text: '>',
+            direction: 'next'
+        }
+    ],
 
     bbar: [
         {
             xtype: 'button',
-            itemId: 'cancelEditFeature',
-            text: 'Cancel'
+            itemId: 'removeFeature',
+            text: 'Remove Feature'
         },
         '->',
         {

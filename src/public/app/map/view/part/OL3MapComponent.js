@@ -5,7 +5,8 @@ Ext.define('Savanna.map.view.part.OL3MapComponent', {
     config: {
         map: null,
         userLayer: null,
-        currentSelection: null
+        currentSelection: null,
+        featureIndex: 0
     },
 
     onRender: function() {

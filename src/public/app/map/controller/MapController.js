@@ -6,16 +6,13 @@ Ext.define('Savanna.map.controller.MapController', {
     ],
 
     drawToolInUse: 'none',
-    identifyTool: 'disabled',
     modifyTool: 'disabled',
 
     control: {
         ol3Map: {
             resize: 'updateMapSize',
             clickEvent: 'clickEvent',
-            dragStart: 'hideDataCard',
-            userFeatureAdded: 'addFeatureEvent',
-            zoomEvent: 'hideDataCard'
+            userFeatureAdded: 'addFeatureEvent'
         },
 
         addPointFeature: {
@@ -28,38 +25,38 @@ Ext.define('Savanna.map.controller.MapController', {
 
         drawPolygonFeature: {
             click: 'activateDrawPolygon'
-        },
-
-        identifyFeature: {
-            click: 'activateIdentify'
-        },
-
-        modifyFeatureTool: {
-            click: 'activateModifyTool'
         }
     },
 
     init: function() {
-        EventHub.on('hideDataCard', this.hideDataCard, this);
         EventHub.on('unselectFeature', this.unselectFeature, this);
+        EventHub.on('updateFeatureView', this.updateFeatureView, this);
+        EventHub.on('removeCurrentFeature', this.removeCurrentFeature, this);
         this.callParent(arguments);
     },
 
     destroy: function() {
-        EventHub.un('hideDataCard', this.hideDataCard, this);
         EventHub.un('unselectFeature', this.unselectFeature, this);
+        EventHub.un('updateFeatureView', this.updateFeatureView, this);
+        EventHub.un('removeCurrentFeature', this.removeCurrentFeature, this);
         this.callParent(arguments);
     },
 
     addFeatureEvent: function (evt) {
         var feature = evt.features[0];
-        feature.attributes = [
-            {field: "Feature_Type", value: this.drawToolInUse},
-            {field: "Date_Created", value: Ext.Date.format(new Date(), 'F j, Y, g:i a')},
-            {field: "Title", value: 'None'},
-            {field: "Location_Description", value: 'None'},
-            {field: "Importance", value: Math.floor(Math.random() * (100 - 3 + 1)) + 3}
-        ];
+
+        /*
+        Set the default fields for the user layer
+         */
+        feature.values_.Feature_Type = this.drawToolInUse;
+        feature.values_.Date_Created = Ext.Date.format(new Date(), 'F j, Y, g:i a');
+        feature.values_.Title = 'None';
+        feature.values_.Location_Description = 'None';
+        feature.values_.Importance = Math.floor(Math.random() * (100 - 3 + 1)) + 3;
+
+        /*
+        Remove the draw interaction from the map
+         */
         var mapCanvas = this.getOl3Map();
         var map = mapCanvas.map;
         map.removeInteraction(map.drawInteraction);
@@ -180,7 +177,6 @@ Ext.define('Savanna.map.controller.MapController', {
         var mapView = this.getOl3Map();
         var map = mapView.map;
         var mapComponent = mapView.up('mapcomponent');
-        this.hideDataCard();
         this.checkUserLayerStatus();
 
         /*
@@ -212,7 +208,6 @@ Ext.define('Savanna.map.controller.MapController', {
         var mapView = this.getOl3Map();
         var map = mapView.map;
         var mapComponent = mapView.up('mapcomponent');
-        this.hideDataCard();
         this.checkUserLayerStatus();
 
         /*
@@ -245,7 +240,6 @@ Ext.define('Savanna.map.controller.MapController', {
         var mapView = this.getOl3Map();
         var map = mapView.map;
         var mapComponent = mapView.up('mapcomponent');
-        this.hideDataCard();
         this.checkUserLayerStatus();
 
         /*
@@ -280,7 +274,7 @@ Ext.define('Savanna.map.controller.MapController', {
                 var pathToIntent = layerList[i].featureCache_.idLookup_;
                 for (var key in pathToIntent) {
                     if (pathToIntent[key].renderIntent_ === 'selected') {
-                        selection.push(layerList[i]);
+                        selection.push(pathToIntent[key]);
                     }
                 }
             }
@@ -293,142 +287,24 @@ Ext.define('Savanna.map.controller.MapController', {
         var map = mapComponent.down('ol3mapcomponent').map;
         var layersQuery = map.getLayers().array_;
         this.getSelectedFeature(layersQuery);
-        var features = mapComponent.down('ol3mapcomponent').getCurrentSelection();
-        if (features.length === 1 && this.identifyTool === 'active') {
-            this.displayDataCard(features[0], evt, mapComponent);
-            this.getIdentifyFeature().enable();
-            this.getModifyFeatureTool().enable();
-            this.identifyTool = 'disabled';
-        } else if (features.length === 1 && this.modifyTool === 'active'){
-            this.hideDataCard();
-            this.handleModifyInteraction();
-        } else {
-            this.hideDataCard();
-            if (this.getOl3Map().map.modifyInteraction != null) {
-                this.getOl3Map().map.removeInteraction(this.getOl3Map().map.modifyInteraction);
-                this.getOl3Map().map.modifyInteraction = null;
+        if (this.getOl3Map().getCurrentSelection().length > 0) {
+            if (this.getOl3Map().getCurrentSelection().length <= this.getOl3Map().getFeatureIndex()){
+                this.getOl3Map().setFeatureIndex(0);
+                this.updateFeatureView();
+            } else {
+                this.updateFeatureView();
             }
-            this.getIdentifyFeature().enable();
-            this.getModifyFeatureTool().enable();
-            this.modifyTool = 'disabled';
-            this.identifyTool = 'disabled';
+        } else {
+            if (mapComponent.down('map_edit_feature')) {
+                mapComponent.down('map_edit_feature').destroy();
+                mapComponent.down('#featureDetailsView').collapse();
+            }
         }
     },
 
 
     updateMapSize: function() {
         this.getOl3Map().getMap().updateSize();
-    },
-
-    removeSelectedFeature: function () {
-        var mapComponent = this.getAddPointWindow().up('mapcomponent');
-        var mapView = mapComponent.down('ol3mapcomponent');
-        var userVectorLayer = mapView.getUserLayer();
-        var features = userVectorLayer.featureCache_.idLookup_;
-        for (var key in features) {
-            if (features[key].renderIntent_ === 'selected') {
-                userVectorLayer.removeFeatures([features[key]]);
-            }
-            this.hideDataCard();
-        }
-    },
-
-    displayDataCard: function (feature, evt, mapComponent) {
-        var dataCard = mapComponent.down('#featureDataCard');
-        if (this.drawToolInUse === 'none'){
-            this.setUpDataCardContent(feature, mapComponent);
-            dataCard.show();
-            this.position(dataCard, mapComponent, evt.pixel_);
-        }
-    },
-
-    setUpDataCardContent: function (layer, mapComponent) {
-        var dataCardGrid = mapComponent.down('map_popup_datacard');
-        var featureList = layer.featureCache_.idLookup_;
-        for (var key in featureList) {
-            if (featureList[key].renderIntent_ === 'selected') {
-                var selectedFeature = featureList[key];
-                var dataItems = [];
-                var attributes = featureList[key].attributes;
-                for (var i = 0; i < attributes.length; i++) {
-                    dataItems.push(attributes[i]);
-                }
-                var data = {'items': dataItems};
-                var columns = [
-                    {text: 'Field Name', dataIndex: 'field', flex: 1, menuDisabled: true},
-                    {text: 'Value', dataIndex: 'value', flex: 1, menuDisabled: true}
-                ];
-                dataCardGrid.reconfigure(Ext.create('Ext.data.Store', {
-                    fields: ['field','value'],
-                    data: data,
-                    proxy: {
-                        type: 'memory',
-                        reader: {
-                            type: 'json',
-                            root: 'items'
-                        }
-                    }}), columns);
-            }
-        }
-        dataCardGrid.setCurrentFeature(selectedFeature);
-    },
-
-    position: function(dataCard, mapComponent, pixel) {
-        //define the position that the popup window and assign class to popup anchor
-        var dom = Ext.dom.Query.select('.popUpAnchor');
-        var dataCardAnchor = Ext.get(dom[0]);
-        dataCardAnchor.removeCls("top left right bottom");
-        var mapBox = mapComponent.getBox(true);
-        var shift;
-        var top = null;
-        var left = null;
-        var ancLeft = null;
-        var ancTop = null;
-
-        var horizontalOffset = (pixel[0] > mapBox.width / 2) ? 'right' : 'left';
-        var verticalOffset = (pixel[1] > mapBox.height / 2) ? 'bottom' : 'top';
-        dataCardAnchor.addCls(horizontalOffset);
-        dataCardAnchor.addCls(verticalOffset);
-        var anchorSize = {
-            height: 44,
-            width: 51
-        };
-
-        if (horizontalOffset === 'right') {
-            left = pixel[0] - dataCard.width;
-            if (left < 0) {
-                shift = Math.abs(pixel[0] - dataCard.width) + 5;
-                left = left + shift;
-                ancLeft = dataCard.width - anchorSize.width - shift;
-            } else {
-                ancLeft = dataCard.width - anchorSize.width;
-            }
-        } else {
-            left = pixel[0];
-            if (left + dataCard.width > mapBox.width) {
-                shift = (left + dataCard.width + 5) - (mapBox.width);
-                left = left - shift;
-                ancLeft = 0 + shift;
-            } else {
-                ancLeft = 0;
-            }
-        }
-        if (verticalOffset === 'bottom') {
-            top = pixel[1] - (dataCard.height + anchorSize.height);
-            ancTop = dataCard.height;
-        } else {
-            top = pixel[1] + anchorSize.height;
-            ancTop -= anchorSize.height;
-        }
-        //Set the position of the feature popup panel and the popup anchor
-        dataCard.setPosition(left, top);
-        dataCardAnchor.setLeftTop(ancLeft, ancTop);
-    },
-
-    hideDataCard: function () {
-        var mapComponent = this.getOl3Map().up('mapcomponent');
-        var dataCard = mapComponent.down('#featureDataCard');
-        dataCard.hide();
     },
 
     unselectFeature: function () {
@@ -445,25 +321,69 @@ Ext.define('Savanna.map.controller.MapController', {
         }
     },
 
-    activateIdentify: function () {
-        this.getIdentifyFeature().disable();
-        this.getModifyFeatureTool().disable();
-        this.identifyTool = 'active';
+    updateFeatureView: function () {
+        if (this.drawToolInUse === 'none'){
+            var currentSelection = this.getOl3Map().getCurrentSelection();
+            var mapComponent = this.getOl3Map().up('mapcomponent');
+            var currentIndex = this.getOl3Map().getFeatureIndex();
+            var currentFeature = currentSelection[currentIndex];
+            if (mapComponent.down('map_edit_feature') != null) {
+                mapComponent.down('map_edit_feature').destroy();
+            }
+            var editFeatureView = Ext.create('Savanna.map.view.part.EditFeature');
+            var userLayer = this.getOl3Map().getUserLayer();
+            var inUserLayer = false;
+            for (var key in userLayer.featureCache_.idLookup_) {
+                if (currentFeature === userLayer.featureCache_.idLookup_[key]){
+                    inUserLayer = true;
+                }
+            }
+            if (inUserLayer === false) {
+                editFeatureView.down('#removeFeature').disable();
+            }
+            var featureDetailsView = mapComponent.down('#featureDetailsView');
+            featureDetailsView.add(editFeatureView);
+            editFeatureView.show();
+            editFeatureView.down('#previousFeature').setDisabled((currentIndex > 0)? false:true);
+            editFeatureView.down('#nextFeature').setDisabled((currentIndex < currentSelection.length -1)? false:true);
+            this.setUpEditWindow(currentFeature, editFeatureView);
+            featureDetailsView.expand();
+        }
     },
 
-    activateModifyTool: function () {
-        this.getModifyFeatureTool().disable();
-        this.getIdentifyFeature().disable();
-        this.modifyTool = 'active';
+    setUpEditWindow: function (feature, editFeatureView) {
+        var items = [];
+        var attributes = feature.values_;
+        for (var key in attributes) {
+            if (key != 'geometry') {
+                items.push({field: key, value: attributes[key]})
+            }
+        }
+        var data = {'items': items};
+        var columns = [
+            {text: 'Field Name', dataIndex: 'field', flex: 1, menuDisabled: true},
+            {text: 'Value', dataIndex: 'value', flex: 1, menuDisabled: true, editor: 'textfield'}
+        ];
+        var gridStore = Ext.create('Ext.data.Store', {
+            fields: ['field','value'],
+            data: data,
+            proxy: {
+                type: 'memory',
+                reader: {
+                    type: 'json',
+                    root: 'items'
+                }
+            }});
+        editFeatureView.reconfigure(gridStore, columns);
     },
 
-    handleModifyInteraction: function () {
-        var map = this.getOl3Map().map;
-        var Layers = map.getLayers().array_;
-        map.modifyInteraction = new ol.interaction.Modify({
-            layers: Layers
-        });
-        map.addInteraction(map.modifyInteraction);
-        this.modifyTool = 'disabled';
+    removeCurrentFeature: function () {
+        var userLayer = this.getOl3Map().getUserLayer();
+        var currentSelection = this.getOl3Map().getCurrentSelection();
+        var currentIndex = this.getOl3Map().getFeatureIndex();
+        userLayer.removeFeatures([currentSelection[currentIndex]]);
+        currentSelection.splice(currentIndex,1);
+        this.getOl3Map().setFeatureIndex(0);
+        this.updateFeatureView();
     }
 });

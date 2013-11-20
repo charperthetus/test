@@ -7,8 +7,7 @@ Ext.define('Savanna.map.view.MapComponent', {
         'Ext.layout.container.Border',
         'Savanna.map.view.part.OL3MapComponent',
         'Ext.layout.container.Fit',
-        'Savanna.metadata.view.part.InformationPanel',
-        'Savanna.map.view.part.DataCard'
+        'Savanna.metadata.view.part.InformationPanel'
     ],
 
     controller: 'Savanna.map.controller.MapController',
@@ -20,11 +19,6 @@ Ext.define('Savanna.map.view.MapComponent', {
             xtype: 'ol3mapcomponent',
             itemId: 'ol3Map',
             region: 'center'
-        },
-        {
-            xtype: 'map_popup_datacard',
-            itemId: 'featureDataCard',
-            hidden: true
         },
         {
             xtype: 'panel',
@@ -61,16 +55,6 @@ Ext.define('Savanna.map.view.MapComponent', {
                             }
                         ]
                     }
-                },
-                {
-                    xtype: 'button',
-                    itemId: 'identifyFeature',
-                    text: 'Identify'
-                },
-                {
-                    xtype: 'button',
-                    itemId: 'modifyFeatureTool',
-                    text: 'Modify'
                 }
             ],
 

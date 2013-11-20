@@ -9,8 +9,16 @@ Ext.define('Savanna.map.controller.EditFeatureController', {
     extend: 'Deft.mvc.ViewController',
 
     control: {
-        cancelEditFeature: {
-            click: 'cancelEditFeature'
+        previousFeature: {
+            click: 'navigateFeatures'
+        },
+
+        nextFeature: {
+            click: 'navigateFeatures'
+        },
+
+        removeFeature: {
+            click: 'removeFeature'
         },
 
         submitEditFeature: {
@@ -18,24 +26,38 @@ Ext.define('Savanna.map.controller.EditFeatureController', {
         }
     },
 
-    cancelEditFeature: function () {
-        this.getCancelEditFeature().up('#featureDetailsView').collapse();
-        this.getCancelEditFeature().up('map_edit_feature').destroy();
-        EventHub.fireEvent('unselectFeature');
+    removeFeature: function () {
+        var response = confirm('Are you sure you want to delete this feature?');
+        if (response === true) {
+            EventHub.fireEvent('removeCurrentFeature');
+        }
     },
 
     submitFeatureEdit: function () {
         var editFeaturePanel = this.getSubmitEditFeature().up('map_edit_feature');
+        var mapView = this.getSubmitEditFeature().up('mapcomponent').down('ol3mapcomponent');
+        var feature = mapView.getCurrentSelection()[mapView.getFeatureIndex()];
         var editStore = editFeaturePanel.getStore();
         var attributes = [];
         var items = editStore.data.items;
         for (var i = 0; i < items.length; i++) {
-            attributes.push(items[i].data)
+            var key = items[i].data.field;
+            feature.values_[key] = items[i].data.value;
         }
-        var feature = this.getSubmitEditFeature().up('mapcomponent').down('map_popup_datacard').getCurrentFeature();
-        feature.attributes = attributes;
-        this.getSubmitEditFeature().up('#featureDetailsView').collapse();
-        editFeaturePanel.destroy();
-        EventHub.fireEvent('unselectFeature');
+        EventHub.fireEvent('updateFeatureView');
+//        this.getSubmitEditFeature().up('#featureDetailsView').collapse();
+//        editFeaturePanel.destroy();
+//        EventHub.fireEvent('unselectFeature');
+    },
+
+    navigateFeatures: function (button) {
+        var mapView = this.getSubmitEditFeature().up('mapcomponent').down('ol3mapcomponent');
+        if(mapView.getFeatureIndex() <= mapView.getCurrentSelection().length - 1) {
+            var newIndex = mapView.getFeatureIndex();
+            newIndex += (button.direction === 'next')? 1:-1;
+            mapView.setFeatureIndex(newIndex);
+        }
+        EventHub.fireEvent('updateFeatureView');
     }
+
 });
