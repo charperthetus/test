@@ -280,6 +280,7 @@ Ext.define('Savanna.map.controller.MapController', {
             }
         }
         this.getOl3Map().setCurrentSelection(selection);
+        console.log(this.getOl3Map().getCurrentSelection());
     },
 
     clickEvent: function (evt) {
@@ -322,33 +323,50 @@ Ext.define('Savanna.map.controller.MapController', {
     },
 
     updateFeatureView: function () {
-        if (this.drawToolInUse === 'none'){
-            var currentSelection = this.getOl3Map().getCurrentSelection();
-            var mapComponent = this.getOl3Map().up('mapcomponent');
-            var currentIndex = this.getOl3Map().getFeatureIndex();
-            var currentFeature = currentSelection[currentIndex];
-            if (mapComponent.down('map_edit_feature') != null) {
-                mapComponent.down('map_edit_feature').destroy();
-            }
-            var editFeatureView = Ext.create('Savanna.map.view.part.EditFeature');
-            var userLayer = this.getOl3Map().getUserLayer();
-            var inUserLayer = false;
-            for (var key in userLayer.featureCache_.idLookup_) {
-                if (currentFeature === userLayer.featureCache_.idLookup_[key]){
-                    inUserLayer = true;
+        var currentSelection = this.getOl3Map().getCurrentSelection();
+        var mapComponent = this.getOl3Map().up('mapcomponent');
+        var currentIndex = this.getOl3Map().getFeatureIndex();
+        var featureDetailsView = mapComponent.down('#featureDetailsView');
+
+        /*
+        First check to see if the current selection has features if it doesnt then clean up the feature view
+         */
+        if (currentSelection.length === 0 && mapComponent.down('map_edit_feature')) {
+            mapComponent.down('map_edit_feature').destroy();
+            featureDetailsView.collapse();
+        } else {
+            if (this.drawToolInUse === 'none'){
+                var currentFeature = currentSelection[currentIndex];
+                if (mapComponent.down('map_edit_feature') != null) {
+                    mapComponent.down('map_edit_feature').destroy();
                 }
+                var editFeatureView = Ext.create('Savanna.map.view.part.EditFeature');
+                var userLayer = this.getOl3Map().getUserLayer();
+                var inUserLayer = false;
+
+                /*
+                Check to see if the current feature is in the user layer. If it isn't then disable remove feature (temp solution)
+                 */
+                for (var key in userLayer.featureCache_.idLookup_) {
+                    if (currentFeature === userLayer.featureCache_.idLookup_[key]){
+                        inUserLayer = true;
+                    }
+                }
+                if (inUserLayer === false) {
+                    editFeatureView.down('#removeFeature').disable();
+                }
+
+                /*
+                Set up the rest of the feature view and display it.
+                 */
+                featureDetailsView.add(editFeatureView);
+                editFeatureView.show();
+                editFeatureView.down('#featureIndexDisplay').setText((currentIndex + 1) + ' of ' + currentSelection.length);
+                editFeatureView.down('#previousFeature').setDisabled((currentIndex > 0)? false:true);
+                editFeatureView.down('#nextFeature').setDisabled((currentIndex < currentSelection.length -1)? false:true);
+                this.setUpEditWindow(currentFeature, editFeatureView);
+                featureDetailsView.expand();
             }
-            if (inUserLayer === false) {
-                editFeatureView.down('#removeFeature').disable();
-            }
-            var featureDetailsView = mapComponent.down('#featureDetailsView');
-            featureDetailsView.add(editFeatureView);
-            editFeatureView.show();
-            editFeatureView.down('#featureIndexDisplay').setText((currentIndex + 1) + ' of ' + currentSelection.length);
-            editFeatureView.down('#previousFeature').setDisabled((currentIndex > 0)? false:true);
-            editFeatureView.down('#nextFeature').setDisabled((currentIndex < currentSelection.length -1)? false:true);
-            this.setUpEditWindow(currentFeature, editFeatureView);
-            featureDetailsView.expand();
         }
     },
 
