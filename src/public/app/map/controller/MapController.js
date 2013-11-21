@@ -344,6 +344,7 @@ Ext.define('Savanna.map.controller.MapController', {
             var featureDetailsView = mapComponent.down('#featureDetailsView');
             featureDetailsView.add(editFeatureView);
             editFeatureView.show();
+            editFeatureView.down('#featureIndexDisplay').setText((currentIndex + 1) + ' of ' + currentSelection.length);
             editFeatureView.down('#previousFeature').setDisabled((currentIndex > 0)? false:true);
             editFeatureView.down('#nextFeature').setDisabled((currentIndex < currentSelection.length -1)? false:true);
             this.setUpEditWindow(currentFeature, editFeatureView);

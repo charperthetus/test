@@ -39,17 +39,22 @@ Ext.define('Savanna.map.view.part.EditFeature', {
 
     tbar: [
         {
-            xtype: 'button',
-            itemId: 'previousFeature',
-            text: '<',
-            direction: 'prev',
-            disabled: true
+            xtype: 'label',
+            itemId: 'featureIndexDisplay'
         },
         '->',
         {
             xtype: 'button',
+            itemId: 'previousFeature',
+            text: 'Previous',
+            direction: 'prev',
+            disabled: true
+        },
+        '-',
+        {
+            xtype: 'button',
             itemId: 'nextFeature',
-            text: '>',
+            text: 'Next',
             direction: 'next'
         }
     ],
