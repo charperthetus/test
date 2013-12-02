@@ -6,6 +6,8 @@ sencha-compile-temp-dir
 # ignore Idea-specific files
 *.iml
 .idea
+*.ipr
+*.iws
 
 # ignore Mac-specific files
 .DS_Store

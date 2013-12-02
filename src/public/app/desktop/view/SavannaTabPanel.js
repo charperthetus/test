@@ -52,7 +52,7 @@ Ext.define('Savanna.desktop.view.SavannaTabPanel', {
                         scope: this
                     },
                     {
-                        text: 'Map',
+                        text: 'Create a Map',
                         handler: this.mapHandler,
                         scope: this
                     }

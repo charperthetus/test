@@ -6,10 +6,31 @@ Ext.define('Savanna.map.view.part.OL3MapToolbar', {
     height: 33,
 
     items: [
+        {
+            itemId: 'drawPointButton',
+            glyph: 'location',
+            cls: 'toolbarButtonFramework',
+            width:25,
+            height:25
+        },
+        {
+            itemId: 'drawLineButton',
+            glyph: 'freehand',
+            cls: 'toolbarButtonFramework',
+            width:25,
+            height:25
+        },
+        {
+            itemId: 'drawPolygonButton',
+            glyph: 'polygonTop',
+            cls: 'toolbarButtonFramework',
+            width:25,
+            height:25
+        },
         '->',
         {
-            itemId: 'addLayerButton',
-            glyph: 'addLayer',
+            itemId: 'saveMapButton',
+            glyph: 'saveMap',
             cls: 'toolbarButtonFramework',
             width:25,
             height:25

@@ -11,7 +11,19 @@ var express = require('express'),
     path = require('path'),
     modRewrite = require('connect-modrewrite'),
     fs = require('fs'),
-    app = express();
+    app = express(),
+    httpProxy = require('http-proxy'),
+    routingProxy = new httpProxy.RoutingProxy();
+
+var geoserverProxy = function (pattern, host, port) {
+    return function (req, res, next) {
+        if (req.url.match(pattern)) {
+            routingProxy.proxyRequest(req, res, {host: host, port: port})
+        } else {
+            next();
+        }
+    }
+};
 
 // Templating engine
 app.set('views', __dirname + '/views');
@@ -19,6 +31,7 @@ app.set('view engine', 'ejs');
 
 // all environments
 app.set('port', process.env.PORT || 3000);
+app.use(geoserverProxy(/\/geoserver\/.*/, 'arcgisrs', 8080));
 app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.bodyParser());

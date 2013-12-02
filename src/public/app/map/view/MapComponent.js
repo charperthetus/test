@@ -6,8 +6,7 @@ Ext.define('Savanna.map.view.MapComponent', {
         'Savanna.map.controller.MapController',
         'Ext.layout.container.Border',
         'Savanna.map.view.part.OL3MapPanel',
-        'Ext.tree.Panel',
-        'Savanna.metadata.view.part.InformationPanel'
+        'Savanna.map.view.part.OL3MapSidePanel'
     ],
 
     controller: 'Savanna.map.controller.MapController',
@@ -21,23 +20,11 @@ Ext.define('Savanna.map.view.MapComponent', {
             region: 'center'
         },
         {
-            xtype: 'panel',
-            itemId: 'mapSidePanel',
+            xtype: 'ol3mapsidepanel',
+            itemId: 'ol3MapSidePanel',
             region: 'east',
-            width: '30%',
-            layout: 'anchor',
-            collapsible: true,
-            header: {
-                ui: 'light-blue'
-            },
-            ui: 'off-white',
-            collapseMode : 'header',
-            headerPosition: 'left',
-            collapsedCls : 'light-blue',
-
-            items: [{
-                xtype: 'informationpanel'
-            }]
+            height: '100%',
+            width: 300
         }
     ]
 });

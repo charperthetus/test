@@ -12,6 +12,6 @@
     "underscore": "*",
     "connect-modrewrite": "*",
     "ejs": "0.8.4",
-    "async": "*"
+    "http-proxy": "*"
   }
 }
