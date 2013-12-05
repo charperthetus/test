@@ -6,7 +6,7 @@ Ext.define('Savanna.map.controller.MapController', {
         ol3Map: {
             boxready: 'addMapBaseLayer',
             resize: 'updateMapSize',
-            featureadd: 'onFeatureAdd'
+            mapclick: 'onMapClick'
         },
         drawPointButton: {
             click: 'activateDrawPoint'
@@ -22,7 +22,8 @@ Ext.define('Savanna.map.controller.MapController', {
             addwms: 'addMapWmsLayer',
             upload: 'uploadLayer'
         },
-        ol3MapLayerList: true
+        ol3MapLayerList: true,
+        editFeaturePanel: true
     },
 
     addMapBaseLayer: function() {
@@ -38,16 +39,67 @@ Ext.define('Savanna.map.controller.MapController', {
         this.getOl3Map().getMap().updateSize();
     },
 
-    onFeatureAdd: function(feature, targetLayer) {
+    onMapClick: function(event) {
         var ol3Map = this.getOl3Map();
-        var layers = ol3Map.getMap().getLayers();
-        if(layers.getArray().indexOf(targetLayer) === -1) {
-            this.addLayer(targetLayer);
-        }
-        // Remove the current map interaction.
-        ol3Map.getMap().removeInteraction(ol3Map.getInteraction());
+        var userLayer = ol3Map.getUserLayer();
+        var features = userLayer.getSource().getFeatures();
+        var numFeatures = features.length;
+        if(ol3Map.getNumFeatures() != numFeatures) {
+            if(ol3Map.getNumFeatures() === 0) {
+                this.addLayer(userLayer);
+            }
 
-        ol3Map.setInteraction(null);
+            this.addFeature(features[numFeatures - 1]);
+
+            ol3Map.setNumFeatures(numFeatures);
+            ol3Map.getMap().removeInteraction(ol3Map.getInteraction());
+            ol3Map.setInteraction(null);
+        }
+        else {
+            var map = ol3Map.getMap();
+            var shiftCheck = event.browserEvent.shiftKey;
+            var pixel = map.getEventPixel(event.browserEvent);
+            map.getFeatures({
+                pixel: pixel,
+                layers: map.getLayers().getArray(),
+                success: Ext.bind(this.onGetFeatures, this, [shiftCheck], true)
+            });
+        }
+    },
+
+    addFeature: function(feature) {
+        var attributes = feature.values_;
+        attributes.Date_Created = Ext.Date.format(new Date(), 'F j, Y, g:i a');
+        attributes.Title = 'None';
+        attributes.Location_Description = 'None';
+        attributes.Importance = Math.floor(Math.random() * (100 - 3 + 1)) + 3;
+    },
+
+    onGetFeatures: function(features, shiftCheck) {
+        var ol3Map = this.getOl3Map();
+
+        var newSelection = [];
+        for(var key in features) {
+            for(var j = 0; j < features[key].length; j++) {
+                newSelection.push({
+                    layerId: key,
+                    feature: features[key][j]
+                });
+            }
+        }
+
+        if(shiftCheck) {
+            var currentSelection = ol3Map.getSelectedFeatures();
+            newSelection = currentSelection.concat(newSelection);
+        }
+        ol3Map.setSelectedFeatures(newSelection);
+
+        if(newSelection.length > 0 && newSelection.length <= ol3Map.getFeatureIndex()) {
+            ol3Map.setFeatureIndex(0);
+        }
+
+        this.getEditFeaturePanel().fireEvent('updatefeaturepanel',
+            newSelection, ol3Map.getFeatureIndex(), ol3Map.getUserLayer());
     },
 
     activateDrawPoint: function () {
@@ -126,6 +178,16 @@ Ext.define('Savanna.map.controller.MapController', {
         });
         var refNode = root.firstChild;
         root.insertBefore(node, refNode);
+    },
+
+    removeLayer: function(layer) {
+        // Remove layer from map.
+        this.getOl3Map().getMap().removeLayer(layer);
+
+        // Remove layer from layer list.
+        var root = this.getOl3MapLayerList().getRoot();
+        var node = root.findChild('layerId', layer.id);
+        root.remove(node);
     },
 
     createVectorLayer: function(typeName) {

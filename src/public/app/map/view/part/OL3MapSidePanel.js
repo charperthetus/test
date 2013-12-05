@@ -3,7 +3,8 @@ Ext.define('Savanna.map.view.part.OL3MapSidePanel', {
     alias: 'widget.ol3mapsidepanel',
     requires: [
         'Savanna.map.view.part.OL3MapLayerPanel',
-        'Savanna.metadata.view.part.InformationPanel'
+        'Savanna.metadata.view.part.InformationPanel',
+        'Savanna.map.view.part.EditFeaturePanel'
     ],
 
     layout: 'vbox',
@@ -22,6 +23,12 @@ Ext.define('Savanna.map.view.part.OL3MapSidePanel', {
         {
             xtype: 'ol3maplayerpanel',
             itemId: 'ol3MapLayerPanel'
+        },
+        {
+            xtype: 'editfeaturepanel',
+            itemId: 'editFeaturePanel',
+            collapsible: true,
+            collapsed: true
         },
         {
             xtype: 'informationpanel',

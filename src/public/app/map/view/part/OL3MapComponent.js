@@ -3,8 +3,11 @@ Ext.define('Savanna.map.view.part.OL3MapComponent', {
     alias: 'widget.ol3mapcomponent',
 
     config: {
+        selectedFeatures: null,
         interaction: null,
         userLayer: null,
+        numFeatures: 0,
+        featureIndex: 0,
         map: null
     },
 
@@ -25,7 +28,7 @@ Ext.define('Savanna.map.view.part.OL3MapComponent', {
     },
 
     setupMap: function() {
-        return new ol.Map({
+        var map = new ol.Map({
             interactions: ol.interaction.defaults().extend([new ol.interaction.Select()]),
             renderer: ol.RendererHint.CANVAS,
             view: new ol.View2D({
@@ -33,6 +36,8 @@ Ext.define('Savanna.map.view.part.OL3MapComponent', {
                 zoom: 4
             })
         });
+        map.on('singleclick', this.onClick, this);
+        return map;
     },
 
     setupUserLayer: function() {
@@ -123,16 +128,11 @@ Ext.define('Savanna.map.view.part.OL3MapComponent', {
                 ]
             })
         });
-        userLayer.on('featureadd', this.onFeatureAdd, this);
         userLayer.label = 'Feature Layer';
         return userLayer;
     },
 
-    onFeatureAdd: function(event) {
-        var feature = event.features.shift();
-        var targetLayer = event.target;
-        this.fireEvent(event.type, feature, targetLayer);
+    onClick: function(event) {
+        this.fireEvent('mapclick', event);
     }
-
-
 });

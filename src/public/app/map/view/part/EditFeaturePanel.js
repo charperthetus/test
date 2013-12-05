@@ -1,28 +1,44 @@
-Ext.define('Savanna.map.view.part.EditFeatureGridPanel', {
+Ext.define('Savanna.map.view.part.EditFeaturePanel', {
     extend: 'Ext.grid.Panel',
-    alias: 'widget.editfeaturegridpanel',
+    alias: 'widget.editfeaturepanel',
 
     requires: [
         'Savanna.map.controller.EditFeatureController',
         'Ext.grid.plugin.RowEditing'
     ],
 
+    title: 'Edit Feature',
+    header: {
+        ui: 'off-white'
+    },
+    collapsible: true,
+    width: '100%',
+
     config: {
         currentIndex: 0
     },
 
     controller: 'Savanna.map.controller.EditFeatureController',
-    minHeight: 200,
-    autoScroll: true,
     sortableColumns: false,
-    toFrontOnShow: false,
-    hidden: true,
 
     style: {
         'overflow': "visible"
     },
 
-    columns: [],
+    columns: [
+        {
+            text: 'Field Name',
+            dataIndex: 'field',
+            flex: 1,
+            menuDisabled: true
+        },
+        {
+            text: 'Value',
+            dataIndex: 'value',
+            flex: 1,
+            editor: 'textfield'
+        }
+    ],
 
     plugins: [
         Ext.create('Ext.grid.plugin.RowEditing', {
@@ -63,5 +79,20 @@ Ext.define('Savanna.map.view.part.EditFeatureGridPanel', {
             itemId: 'submitEditFeature',
             text: 'Submit'
         }
-    ]
+    ],
+
+    initComponent: function() {
+        this.callParent(arguments);
+        this.store = Ext.create('Ext.data.Store', {
+            fields: ['field', 'value'],
+            data: {},
+            proxy: {
+                type: 'memory',
+                reader: {
+                    type: 'json',
+                    root: 'item'
+                }
+            }
+        });
+    }
 });
