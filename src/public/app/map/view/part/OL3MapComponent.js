@@ -6,8 +6,10 @@ Ext.define('Savanna.map.view.part.OL3MapComponent', {
         selectedFeatures: null,
         interaction: null,
         userLayer: null,
-        numFeatures: 0,
         featureIndex: 0,
+        numFeatures: 0,
+        guideFeature: null,
+        guideLayer: null,
         map: null
     },
 
