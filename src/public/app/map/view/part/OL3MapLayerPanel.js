@@ -47,6 +47,16 @@ Ext.define('Savanna.map.view.part.OL3MapLayerPanel', {
                                     scope: this
                                 },
                                 {
+                                    text: 'Add KML Layer',
+                                    handler: this.kmlHandler,
+                                    scope: this
+                                },
+                                {
+                                    text: 'Create User Layer',
+                                    handler: this.createUserLayerHandler,
+                                    scope: this
+                                },
+                                {
                                     text: 'Add Layer via Upload',
                                     handler: this.uploadHandler,
                                     scope: this
@@ -70,6 +80,14 @@ Ext.define('Savanna.map.view.part.OL3MapLayerPanel', {
 
     wmsHandler: function() {
         this.fireEvent('addwms', this);
+    },
+
+    kmlHandler: function() {
+        this.fireEvent('addkml', this);
+    },
+
+    createUserLayerHandler: function() {
+        this.fireEvent('createuserlayer', this);
     },
 
     uploadHandler: function() {

@@ -20,7 +20,9 @@ Ext.define('Savanna.map.controller.MapController', {
         ol3MapLayerPanel: {
             addvector: 'addMapVectorLayer',
             addwms: 'addMapWmsLayer',
-            upload: 'uploadLayer'
+            addkml: 'addMapKmlLayer',
+            upload: 'uploadLayer',
+            createuserlayer: 'createUserLayer'
         },
         ol3MapLayerList: true,
         editFeaturePanel: true
@@ -141,6 +143,19 @@ Ext.define('Savanna.map.controller.MapController', {
         this.addLayer(wmsLayer);
     },
 
+    addMapKmlLayer: function() {
+        var kmlLayer = new ol.layer.Vector({
+            source: new ol.source.Vector({
+                parser: new ol.parser.KML(),
+                url: 'http://www.corsproxy.com/earthquake.usgs.gov/earthquakes/feed/v1.0/summary/1.0_week_age.kml',
+                crossOrigin: 'anonymous'
+            })
+        });
+        kmlLayer.id = 'kml';
+        kmlLayer.label = 'USGS EarthQuake KML Service';
+        this.addLayer(kmlLayer);
+    },
+
     uploadLayer: function() {
         var window = Ext.create('Savanna.map.view.part.layerUpload.LayerUploadWindow');
         window.show();
@@ -165,6 +180,8 @@ Ext.define('Savanna.map.controller.MapController', {
         // Add layer to map.
         this.getOl3Map().getMap().addLayer(layer);
 
+        var layerList = this.getOl3Map().getMap().getLayers();
+
         // Add layer to layer list.
         var layerIndex = this.getOl3MapLayerList().getRootNode().childNodes.length;
         var layerLabel = layer.label;
@@ -179,6 +196,8 @@ Ext.define('Savanna.map.controller.MapController', {
         var refNode = root.firstChild;
         root.insertBefore(node, refNode);
     },
+
+
 
     removeLayer: function(layer) {
         // Remove layer from map.
@@ -301,5 +320,79 @@ Ext.define('Savanna.map.controller.MapController', {
 
         // Add the new interaction.
         ol3Map.getMap().addInteraction(drawInteraction);
+    },
+
+    createUserLayer: function () {
+        //TODO:move this into a deft service and use promise api
+        var uuidLayerName = Ext.data.IdGenerator.get('uuid').generate();
+        var username = Savanna.userInfo.username;
+        var auth = 'YWRtaW46Z2Vvc2VydmVy';
+        var xmlAsString =
+            '<featureType>'
+                + '<name>' +  uuidLayerName + '</name>'
+                + '<nativeName>' +  uuidLayerName + '</nativeName>'
+                + '<title>DemoLayer</title>'
+                + '<srs>EPSG:4326</srs>'
+                + '<attributes>'
+                + '<attribute>'
+                + '<name>the_geom</name>'
+                + '<binding>com.vividsolutions.jts.geom.Geometry</binding>'
+                + '</attribute>'
+                + '<attribute>'
+                + '<name>id</name>'
+                + '<binding>java.lang.String</binding>'
+                + '</attribute>'
+                + '<attribute>'
+                + '<name>attributes</name>'
+                + '<binding>java.lang.String</binding>'
+                + '</attribute>'
+                + '</attributes>'
+                + '</featureType>';
+        Ext.Ajax.request({
+            //todo: this will need to have the username in the url for the geoserver workspace once security is implemented
+            url : '/geoserver/rest/workspaces/SAVANNA_USER_ADMIN/datastores/savanna_user_admin/featuretypes',
+            method: 'POST',
+            xmlData: xmlAsString,
+            requestHeaders: {Authorization : auth},
+            headers: {'Content-Type': 'text/xml'},
+            success: function(response){
+                console.log(response.responseXML);
+            },
+            failure: function(response){
+                console.log(response.responseXML);
+            }
+        });
+
+    },
+
+    wfsUpdateAttributes: function(layerID, featureID, propertyList){
+        //test wfs update command on layer
+        var username = Savanna.userInfo.username;
+        var auth = 'YWRtaW46Z2Vvc2VydmVy';
+        var updateXML =
+            '<wfs:Transaction service="WFS" version="1.0.0" '
+                + 'xmlns:usa="http://census.gov" '
+                + 'xmlns:ogc="http://www.opengis.net/ogc" '
+                + 'xmlns:wfs="http://www.opengis.net/wfs"> '
+                + '<wfs:Update typeName="' + layerID + '">';
+        for (key in propertyList){
+            if (key != 'geometry') {
+                updateXML += '<wfs:Property><wfs:Name>'+ key + '</wfs:Name><wfs:Value>'+ propertyList[key] + '</wfs:Value></wfs:Property>';
+            }
+        };
+        updateXML += '<ogc:Filter><ogc:FeatureId fid="' + featureID + '"/></ogc:Filter></wfs:Update></wfs:Transaction>'
+        Ext.Ajax.request({
+            url : '/geoserver/wfs',
+            method: 'POST',
+            xmlData: updateXML,
+            requestHeaders: {Authorization : auth},
+            headers: {'Content-Type': 'text/xml'},
+            success: function(response){
+                console.log(response);
+            },
+            failure: function(response){
+                console.log(response);
+            }
+        });
     }
 });
