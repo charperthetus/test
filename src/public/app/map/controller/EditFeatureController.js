@@ -53,6 +53,7 @@ Ext.define('Savanna.map.controller.EditFeatureController', {
                 for(var k = 0; k < layerFeatures.length; k++) {
                     if(this.feature === layerFeatures[k]) {
                         inUserLayer = true;
+                        this.getRemoveFeature().enable();
                         break;
                     }
                 }
@@ -69,6 +70,7 @@ Ext.define('Savanna.map.controller.EditFeatureController', {
             this.getFeatureIndexDisplay().setText((index + 1) + ' of ' + selection.length);
             this.getPreviousFeature().setDisabled(!(index > 0));
             this.getNextFeature().setDisabled(!(index < selection.length - 1));
+            this.getView().expand();
         }
         else {
             this.getFeatureIndexDisplay().setText('');
@@ -98,19 +100,18 @@ Ext.define('Savanna.map.controller.EditFeatureController', {
         });
 
         this.getView().reconfigure(store, null);
-        this.getView().expand();
+        this.getView().fireEvent('createguidelayer', feature);
     },
 
     removeFeature: function () {
         var response = confirm('Are you sure you want to delete this feature?');
         if (response === true) {
-            EventHub.fireEvent('removeCurrentFeature');
+            this.getView().fireEvent('removecurrentfeature', this.feature);
         }
     },
 
     submitFeatureEdit: function () {
         var editStore = this.getView().getStore();
-        var attributes = [];
         var items = editStore.data.items;
         for (var i = 0; i < items.length; i++) {
             var key = items[i].data.field;
@@ -120,13 +121,12 @@ Ext.define('Savanna.map.controller.EditFeatureController', {
     },
 
     navigateFeatures: function (button) {
-        var mapView = this.getSubmitEditFeature().up('mapcomponent').down('ol3mapcomponent');
-        if(mapView.getFeatureIndex() <= mapView.getCurrentSelection().length - 1) {
-            var newIndex = mapView.getFeatureIndex();
+        if(this.index <= this.selection.length - 1) {
+            var newIndex = this.index;
             newIndex += (button.direction === 'next')? 1:-1;
-            mapView.setFeatureIndex(newIndex);
+            this.index = newIndex;
         }
-        EventHub.fireEvent('updateFeatureView');
+        this.updateTheView(this.selection, this.index, this.layer);
     }
 
 });

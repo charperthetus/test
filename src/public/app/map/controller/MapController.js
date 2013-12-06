@@ -25,7 +25,13 @@ Ext.define('Savanna.map.controller.MapController', {
             createuserlayer: 'createUserLayer'
         },
         ol3MapLayerList: true,
-        editFeaturePanel: true
+        editFeaturePanel: {
+            live: true,
+            listeners: {
+                createguidelayer: 'showCurrentFeatureOnMap',
+                removecurrentfeature: 'removeFeatures'
+            }
+        }
     },
 
     addMapBaseLayer: function() {
@@ -46,6 +52,13 @@ Ext.define('Savanna.map.controller.MapController', {
         var userLayer = ol3Map.getUserLayer();
         var features = userLayer.getSource().getFeatures();
         var numFeatures = features.length;
+
+        // Remove the guide layer to disallow a selection to be made on it.
+        if (ol3Map.getGuideLayer()) {
+            ol3Map.getMap().removeLayer(ol3Map.getGuideLayer());
+            ol3Map.setGuideLayer(null);
+        }
+
         if(ol3Map.getNumFeatures() != numFeatures) {
             if(ol3Map.getNumFeatures() === 0) {
                 this.addLayer(userLayer);
@@ -58,14 +71,16 @@ Ext.define('Savanna.map.controller.MapController', {
             ol3Map.setInteraction(null);
         }
         else {
-            var map = ol3Map.getMap();
-            var shiftCheck = event.browserEvent.shiftKey;
-            var pixel = map.getEventPixel(event.browserEvent);
-            map.getFeatures({
-                pixel: pixel,
-                layers: map.getLayers().getArray(),
-                success: Ext.bind(this.onGetFeatures, this, [shiftCheck], true)
-            });
+            if (!ol3Map.getInteraction()){
+                var map = ol3Map.getMap();
+                var shiftCheck = event.browserEvent.shiftKey;
+                var pixel = map.getEventPixel(event.browserEvent);
+                map.getFeatures({
+                    pixel: pixel,
+                    layers: map.getLayers().getArray(),
+                    success: Ext.bind(this.onGetFeatures, this, [shiftCheck], true)
+                });
+            }
         }
     },
 
@@ -75,6 +90,9 @@ Ext.define('Savanna.map.controller.MapController', {
         attributes.Title = 'None';
         attributes.Location_Description = 'None';
         attributes.Importance = Math.floor(Math.random() * (100 - 3 + 1)) + 3;
+
+        this.getOl3Map().setSelectedFeatures(feature);
+        this.onGetFeatures([[feature]], false);
     },
 
     onGetFeatures: function(features, shiftCheck) {
@@ -83,6 +101,7 @@ Ext.define('Savanna.map.controller.MapController', {
         var newSelection = [];
         for(var key in features) {
             for(var j = 0; j < features[key].length; j++) {
+                var renderCheck = features[key][j].getId();
                 newSelection.push({
                     layerId: key,
                     feature: features[key][j]
@@ -196,8 +215,6 @@ Ext.define('Savanna.map.controller.MapController', {
         var refNode = root.firstChild;
         root.insertBefore(node, refNode);
     },
-
-
 
     removeLayer: function(layer) {
         // Remove layer from map.
@@ -394,5 +411,87 @@ Ext.define('Savanna.map.controller.MapController', {
                 console.log(response);
             }
         });
+    },
+
+    showCurrentFeatureOnMap: function (currentFeature) {
+        /*
+         This method creates a temporary guide layer to show which feature is the current index on the map
+         */
+        var ol3Map = this.getOl3Map();
+        var map = ol3Map.map;
+
+        if (currentFeature){
+            if (ol3Map.getGuideLayer()) {
+                map.removeLayer(ol3Map.getGuideLayer());
+                ol3Map.setGuideLayer(null);
+            }
+            ol3Map.setGuideFeature(currentFeature);
+            var guideLayer = new ol.layer.Vector({
+                source: new ol.source.Vector({
+                }),
+                id: 'guideLayer',
+                style: new ol.style.Style({
+                    rules: [
+                        new ol.style.Rule({
+                            symbolizers: [
+                                new ol.style.Shape({
+                                    fill: new ol.style.Fill({
+                                        color: '#FF00FF',
+                                        opacity: 1
+                                    }),
+                                    stroke: new ol.style.Stroke({
+                                        color: 'white',
+                                        opacity: 0.75
+                                    }),
+                                    size: 14
+                                }),
+                                new ol.style.Fill({
+                                    color: '#FF00FF',
+                                    opacity: 0.5
+                                }),
+                                new ol.style.Stroke({
+                                    color: 'white',
+                                    width: 5
+                                }),
+                                new ol.style.Stroke({
+                                    color: '#FF00FF',
+                                    width: 3
+                                })
+                            ]
+                        })
+                    ]
+                })
+            });
+            guideLayer.getSource().featureCache_.add(ol3Map.getGuideFeature());
+            ol3Map.setGuideLayer(guideLayer);
+            map.addLayer(guideLayer);
+        } else {
+            if (ol3Map.getGuideLayer()){
+                map.removeLayer(ol3Map.getGuideLayer());
+            }
+        }
+    },
+
+    removeFeatures: function (feature) {
+        var ol3Map = this.getOl3Map();
+
+        // Remove guide layer if it exists
+        if (ol3Map.getGuideLayer()) {
+            ol3Map.getMap().removeLayer(ol3Map.getGuideLayer());
+            ol3Map.setGuideLayer(null);
+        }
+
+        ol3Map.getUserLayer().getSource().removeFeatures([feature]);
+        ol3Map.getSelectedFeatures().splice(ol3Map.getFeatureIndex(),1);
+
+        /*
+         Subtract from the feature count on the user layer
+         */
+        ol3Map.setNumFeatures(ol3Map.getNumFeatures() - 1);
+
+        ol3Map.setFeatureIndex(0);
+
+        this.getEditFeaturePanel().fireEvent('updatefeaturepanel',
+            ol3Map.getSelectedFeatures(), ol3Map.getFeatureIndex(), ol3Map.getUserLayer());
     }
 });
