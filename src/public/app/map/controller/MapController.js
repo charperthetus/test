@@ -142,7 +142,9 @@ Ext.define('Savanna.map.controller.MapController', {
                 url: '/geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=usa:states&maxfeatures=100&outputformat=json'
             })
         });
-        vectorLayer.id = 'vectorLayer';
+        vectorLayer.id = Ext.data.IdGenerator.get('uuid').generate();
+        //todo: name will be concat of workspace:layername
+        vectorLayer.name = 'usa:states';
         vectorLayer.label = 'My Vector Layer';
         this.addLayer(vectorLayer);
     },
@@ -157,7 +159,8 @@ Ext.define('Savanna.map.controller.MapController', {
                 }
             })
         });
-        wmsLayer.id = 'wmsLayer';
+        wmsLayer.id = Ext.data.IdGenerator.get('uuid').generate();
+        wmsLayer.name = 'topp:states';
         wmsLayer.label = 'My WMS Layer';
         this.addLayer(wmsLayer);
     },
@@ -189,7 +192,8 @@ Ext.define('Savanna.map.controller.MapController', {
             var layerId = workspaceName + ':' + layerName;
 
             var layer = this.createVectorLayer(layerId);
-            layer.id = layerId;
+            layer.id = Ext.data.IdGenerator.get('uuid').generate();
+            layer.name = layerId;
             layer.label = layerName;
             this.addLayer(layer);
         }
